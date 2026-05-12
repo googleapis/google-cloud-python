@@ -46,6 +46,8 @@ def _test_google_api_imports():
     try:
         # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
         # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        # Remove this comment and the ignore pragma upon completing:
+        # https://github.com/googleapis/google-cloud-python/issues/17045
         import db_dtypes  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires db-dtypes") from ex
@@ -53,6 +55,8 @@ def _test_google_api_imports():
     try:
         # pydata-google-auth does not have type hints nor stubs that mypy uses for type checking.
         # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        # Remove this comment and the ignore pragma upon completing:
+        # https://github.com/googleapis/google-cloud-python/issues/17045
         import pydata_google_auth  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires pydata-google-auth") from ex
@@ -60,6 +64,8 @@ def _test_google_api_imports():
     try:
         # google-auth-oauthlib does not have type hints nor stubs that mypy uses for type checking.
         # This import is solely to test if the package is installed, so we ignore the "unused import" warning.
+        # Remove this comment and the ignore pragma upon completing:
+        # https://github.com/googleapis/google-cloud-python/issues/17045
         from google_auth_oauthlib.flow import InstalledAppFlow  # type: ignore[import-untyped] # noqa: F401
     except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires google-auth-oauthlib") from ex

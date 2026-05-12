@@ -8,6 +8,8 @@ import warnings
 from typing import Any, Optional, Tuple
 
 # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+# Remove this comment and the ignore pragma upon completing:
+# https://github.com/googleapis/google-cloud-python/issues/17045
 import db_dtypes  # type: ignore[import-untyped]
 import pandas
 import pyarrow

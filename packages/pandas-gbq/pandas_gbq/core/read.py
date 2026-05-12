@@ -35,6 +35,8 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
     #missing-data-casting-rules-and-indexing
     """
     # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+    # Remove this comment and the ignore pragma upon completing:
+    # https://github.com/googleapis/google-cloud-python/issues/17045
     import db_dtypes  # type: ignore[import-untyped]
 
     # If you update this mapping, also update the table at
@@ -81,6 +83,8 @@ def _finalize_dtypes(
     https://github.com/googleapis/python-bigquery-pandas/issues/365
     """
     # db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+    # Remove this comment and the ignore pragma upon completing:
+    # https://github.com/googleapis/google-cloud-python/issues/17045
     import db_dtypes  # type: ignore[import-untyped]
     import pandas.api.types
 
