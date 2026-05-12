@@ -28,6 +28,9 @@ import bigframes.session.executor
 
 _DEFAULT: Literal["default"] = "default"
 
+ProgressBarType = Literal["default", "auto", "notebook", "terminal"] | None
+QueryPlanType = list[google.cloud.bigquery.job.query.QueryPlanEntry] | None
+
 
 class Subscriber:
     def __init__(
@@ -103,9 +106,7 @@ class Event:
 @dataclasses.dataclass(frozen=True)
 class EventEnvelope:
     event: Event
-    progress_bar: Literal[
-        "default", "auto", "notebook", "terminal"
-    ] | None = None  # noqa: E501
+    progress_bar: ProgressBarType = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -190,9 +191,7 @@ class BigQueryReceivedEvent(ExecutionRunning):
     job_id: str | None = None
     statement_type: str | None = None
     state: str | None = None
-    query_plan: list[
-        google.cloud.bigquery.job.query.QueryPlanEntry
-    ] | None = None  # noqa: E501
+    query_plan: QueryPlanType = None
     created: datetime.datetime | None = None
     started: datetime.datetime | None = None
     ended: datetime.datetime | None = None
