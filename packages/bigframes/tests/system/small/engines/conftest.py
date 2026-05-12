@@ -44,21 +44,44 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
         yield session
 
 
-@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
-def engine(request, bigquery_client: bigquery.Client) -> semi_executor.SemiExecutor:
-    if request.param == "pyarrow":
-        return local_scan_executor.LocalScanExecutor()
-    if request.param == "polars":
-        return polars_executor.PolarsExecutor()
+@pytest.fixture(scope="session")
+def pyarrow_engine():
+    return local_scan_executor.LocalScanExecutor()
+
+
+@pytest.fixture(scope="session")
+def polars_engine():
+    return polars_executor.PolarsExecutor()
+
+
+@pytest.fixture(scope="session")
+def bq_engine(bigquery_client):
     publisher = events.Publisher()
+    return direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, compiler="ibis", publisher=publisher
+    )
+
+
+@pytest.fixture(scope="session")
+def sqlglot_engine(bigquery_client):
+    publisher = events.Publisher()
+    return direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, compiler="sqlglot", publisher=publisher
+    )
+
+
+@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
+def engine(
+    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine
+) -> semi_executor.SemiExecutor:
+    if request.param == "pyarrow":
+        return pyarrow_engine
+    if request.param == "polars":
+        return polars_engine
     if request.param == "bq":
-        return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client, publisher=publisher
-        )
+        return bq_engine
     if request.param == "bq-sqlglot":
-        return direct_gbq_execution.DirectGbqExecutor(
-            bigquery_client, compiler="sqlglot", publisher=publisher
-        )
+        return sqlglot_engine
     raise ValueError(f"Unrecognized param: {request.param}")
 
 
