@@ -210,7 +210,7 @@ def value_to_bigquery_field(
     # Set the SchemaField datatype to the given default_type if the value
     # being assessed is None.
     if value is None:
-        return schema.SchemaField(name, default_type)
+        return schema.SchemaField(name, default_type or "STRING")
 
     # Map from Python types to BigQuery types. This isn't super exhaustive
     # because we rely more on pyarrow, which can check more than one value to

@@ -39,8 +39,8 @@ def encode_chunk(dataframe):
     # Convert to a BytesIO buffer so that unicode text is properly handled.
     # See: https://github.com/pydata/pandas-gbq/issues/106
     body = csv_buffer.getvalue()
-    body = body.encode("utf-8")
-    return io.BytesIO(body)
+    body_bytes = body.encode("utf-8")
+    return io.BytesIO(body_bytes)
 
 
 def split_dataframe(dataframe, chunksize=None):
@@ -69,7 +69,7 @@ def cast_dataframe_for_parquet(
     See: https://github.com/googleapis/python-bigquery-pandas/issues/421
     """
 
-    columns = schema.get("fields", [])
+    columns = schema.get("fields", []) if schema is not None else []
 
     # Protect against an explicit None in the dictionary.
     columns = columns if columns is not None else []
@@ -131,7 +131,7 @@ def cast_dataframe_for_csv(
 ) -> pandas.DataFrame:
     """Cast columns to needed dtype when writing CSV files."""
 
-    columns = schema.get("fields", [])
+    columns = schema.get("fields", []) if schema is not None else []
 
     # Protect against an explicit None in the dictionary.
     columns = columns if columns is not None else []
@@ -281,7 +281,7 @@ def load_csv_from_file(
         finally:
             chunk_buffer.close()
 
-    return load_csv(dataframe, write_disposition, chunksize, bq_schema, load_chunk)
+    return load_csv(dataframe, write_disposition, chunksize, list(bq_schema), load_chunk)
 
 
 def load_chunks(

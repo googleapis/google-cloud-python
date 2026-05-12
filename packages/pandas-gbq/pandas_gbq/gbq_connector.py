@@ -26,10 +26,11 @@ from pandas_gbq.contexts import context
 from pandas_gbq.exceptions import QueryTimeout
 from pandas_gbq.features import FEATURES
 
+tqdm: Any = None
 try:
     import tqdm  # noqa
 except ImportError:
-    tqdm = None
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -204,6 +205,7 @@ class GbqConnector:
         ].get("timeoutMs")
 
         if timeout_ms:
+            assert isinstance(timeout_ms, (str, int, float))
             timeout_ms = int(timeout_ms)
             # Having too small a timeout_ms results in individual
             # API calls timing out before they can finish.
@@ -220,6 +222,7 @@ class GbqConnector:
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
+        assert isinstance(job_config, bigquery.QueryJobConfig)
         job_config.dry_run = dry_run
 
         if FEATURES.bigquery_has_query_and_wait:
