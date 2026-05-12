@@ -73,12 +73,8 @@ jobs:
             echo "=========================================================="
             cd "$pkg"
             
-            # NO_COLOR=1 and anchored regex prevents the docstring bug
-            if NO_COLOR=1 python -m nox -l | grep -qE "^\s*(\*|-)\s+${SESSION}\b"; then
-              python -m nox -s "${SESSION}" || FAILED=1
-            else
-              echo "⏭️ Session '${SESSION}' not defined for $pkg. Safely skipping."
-            fi
+            # Run unconditionally. If it doesn't exist, Nox will throw an error.
+            python -m nox -s "${SESSION}" || FAILED=1
             
             cd "$GITHUB_WORKSPACE"
           done
