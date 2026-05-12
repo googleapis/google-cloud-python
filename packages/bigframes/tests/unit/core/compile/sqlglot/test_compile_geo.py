@@ -16,6 +16,7 @@ import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.geopandas as gpd
+from shapely.geometry import LineString  # type: ignore
 
 pytest.importorskip("pytest_snapshot")
 
@@ -44,7 +45,7 @@ def test_st_regionstats_without_optional_args(compiler_session, snapshot):
 
 
 def test_st_simplify(compiler_session, snapshot):
-    geos = gpd.GeoSeries(["POINT(1 1)"], session=compiler_session)
+    geos = gpd.GeoSeries([LineString([(0, 0), (1, 1), (2, 0)])], session=compiler_session)
     result = bbq.st_simplify(
         geos,
         tolerance_meters=123.125,
