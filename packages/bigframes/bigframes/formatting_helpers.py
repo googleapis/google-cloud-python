@@ -541,9 +541,8 @@ def render_bqquery_finished_event_plaintext(
 
     bytes_str = ""
     if event.total_bytes_processed is not None:
-        bytes_str = (
-            f" {humanize.naturalsize(event.total_bytes_processed)} processed."
-        )
+        size_str = humanize.naturalsize(event.total_bytes_processed)
+        bytes_str = f" {size_str} processed."
 
     slot_time_str = ""
     if event.slot_millis is not None:
@@ -609,9 +608,8 @@ def get_formatted_time(val):
         Duration string
     """
     try:
-        return humanize.naturaldelta(
-            datetime.timedelta(milliseconds=float(val))
-        )
+        delta = datetime.timedelta(milliseconds=float(val))
+        return humanize.naturaldelta(delta)
     except Exception:
         return val
 
