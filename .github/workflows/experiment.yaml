@@ -129,16 +129,21 @@ jobs:
           export UV_COMPILE_BYTECODE=1
           FAILED=0
           
+          # Use the exact session name Nox expects
+          SESSION="prerelease_deps-3.14"
+          
           for pkg in ${{ matrix.chunk.packages }}; do
             echo "=========================================================="
             echo "🚀 TESTING PRERELEASE: $pkg (Python 3.14)"
             echo "=========================================================="
             cd "$pkg"
             
-            if uvx --with 'nox[uv]' nox -l | grep -q "prerelease"; then
-              uvx --with 'nox[uv]' nox -s "prerelease" || FAILED=1
+            # NO_COLOR=1 prevents ANSI codes from breaking the regex
+            # ^\s*(\*|-) ensures we only match the actual session name column
+            if NO_COLOR=1 uvx --with 'nox[uv]' nox -l | grep -qE "^\s*(\*|-)\s+${SESSION}\b"; then
+              uvx --with 'nox[uv]' nox -s "${SESSION}" || FAILED=1
             else
-              echo "⏭️ Session 'prerelease' not defined for $pkg. Safely skipping."
+              echo "⏭️ Session '${SESSION}' not defined for $pkg. Safely skipping."
             fi
             
             cd "$GITHUB_WORKSPACE"
