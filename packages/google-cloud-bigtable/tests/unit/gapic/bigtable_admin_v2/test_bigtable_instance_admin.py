@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1784,6 +1778,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -1801,6 +1796,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -1933,6 +1929,7 @@ async def test_get_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -1951,6 +1948,7 @@ async def test_get_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -2455,6 +2453,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -2472,6 +2471,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -2605,6 +2605,7 @@ async def test_update_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -2623,6 +2624,7 @@ async def test_update_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -6531,11 +6533,7 @@ async def test_list_app_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_app_profiles(request={})
-        ).pages:
+        async for page_ in (await client.list_app_profiles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8797,11 +8795,7 @@ async def test_list_hot_tablets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hot_tablets(request={})
-        ).pages:
+        async for page_ in (await client.list_hot_tablets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10049,11 +10043,7 @@ async def test_list_logical_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_logical_views(request={})
-        ).pages:
+        async for page_ in (await client.list_logical_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12004,11 +11994,7 @@ async def test_list_materialized_views_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_materialized_views(request={})
-        ).pages:
+        async for page_ in (await client.list_materialized_views(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12814,7 +12800,7 @@ def test_create_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -13004,7 +12990,7 @@ def test_get_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -13184,7 +13170,7 @@ def test_list_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -13359,7 +13345,7 @@ def test_update_instance_rest_required_fields(request_type=instance.Instance):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -13483,7 +13469,7 @@ def test_partial_update_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partial_update_instance_rest_unset_required_fields():
@@ -13665,7 +13651,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -13856,7 +13842,7 @@ def test_create_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -14044,7 +14030,7 @@ def test_get_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -14223,7 +14209,7 @@ def test_list_clusters_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -14444,7 +14430,7 @@ def test_partial_update_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partial_update_cluster_rest_unset_required_fields():
@@ -14629,7 +14615,7 @@ def test_delete_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -14829,7 +14815,7 @@ def test_create_app_profile_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_app_profile_rest_unset_required_fields():
@@ -15025,7 +15011,7 @@ def test_get_app_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_app_profile_rest_unset_required_fields():
@@ -15216,7 +15202,7 @@ def test_list_app_profiles_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_app_profiles_rest_unset_required_fields():
@@ -15473,7 +15459,7 @@ def test_update_app_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_app_profile_rest_unset_required_fields():
@@ -15684,7 +15670,7 @@ def test_delete_app_profile_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_app_profile_rest_unset_required_fields():
@@ -15871,7 +15857,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -16046,7 +16032,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -16237,7 +16223,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -16436,7 +16422,7 @@ def test_list_hot_tablets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_hot_tablets_rest_unset_required_fields():
@@ -16712,7 +16698,7 @@ def test_create_logical_view_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_logical_view_rest_unset_required_fields():
@@ -16903,7 +16889,7 @@ def test_get_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_logical_view_rest_unset_required_fields():
@@ -17096,7 +17082,7 @@ def test_list_logical_views_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_logical_views_rest_unset_required_fields():
@@ -17349,7 +17335,7 @@ def test_update_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_logical_view_rest_unset_required_fields():
@@ -17534,7 +17520,7 @@ def test_delete_logical_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_logical_view_rest_unset_required_fields():
@@ -17736,7 +17722,7 @@ def test_create_materialized_view_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_materialized_view_rest_unset_required_fields():
@@ -17930,7 +17916,7 @@ def test_get_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_materialized_view_rest_unset_required_fields():
@@ -18124,7 +18110,7 @@ def test_list_materialized_views_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_materialized_views_rest_unset_required_fields():
@@ -18380,7 +18366,7 @@ def test_update_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_materialized_view_rest_unset_required_fields():
@@ -18566,7 +18552,7 @@ def test_delete_materialized_view_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_materialized_view_rest_unset_required_fields():
@@ -19482,6 +19468,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -19542,6 +19529,7 @@ async def test_update_instance_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                edition=instance.Instance.Edition.ENTERPRISE,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
             )
@@ -20481,6 +20469,7 @@ def test_get_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20503,6 +20492,7 @@ def test_get_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20760,6 +20750,7 @@ def test_update_instance_rest_call_success(request_type):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            edition=instance.Instance.Edition.ENTERPRISE,
             satisfies_pzs=True,
             satisfies_pzi=True,
         )
@@ -20782,6 +20773,7 @@ def test_update_instance_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.edition == instance.Instance.Edition.ENTERPRISE
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
 
@@ -20894,6 +20886,7 @@ def test_partial_update_instance_rest_call_success(request_type):
         "display_name": "display_name_value",
         "state": 1,
         "type_": 1,
+        "edition": 1,
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "satisfies_pzs": True,
