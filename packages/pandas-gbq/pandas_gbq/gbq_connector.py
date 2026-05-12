@@ -7,8 +7,8 @@ from __future__ import annotations
 import logging
 import time
 import typing
-from typing import Any, Dict, Optional, Union
 import warnings
+from typing import Any, Dict, Optional, Union
 
 # Only import at module-level at type checking time to avoid circular
 # dependencies in the pandas package, which has an optional dependency on
@@ -16,15 +16,15 @@ import warnings
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-from pandas_gbq import dry_runs
 import pandas_gbq.constants
-from pandas_gbq.contexts import context
 import pandas_gbq.core.read
 import pandas_gbq.environment as environment
 import pandas_gbq.exceptions
+import pandas_gbq.query
+from pandas_gbq import dry_runs
+from pandas_gbq.contexts import context
 from pandas_gbq.exceptions import QueryTimeout
 from pandas_gbq.features import FEATURES
-import pandas_gbq.query
 
 try:
     import tqdm  # noqa
