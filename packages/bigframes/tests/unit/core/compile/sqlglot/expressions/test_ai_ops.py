@@ -30,11 +30,8 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
-        output_schema=None,
+        request_type="SHARED"
     )
 
     sql = utils._apply_ops_to_sql(
@@ -51,9 +48,6 @@ def test_ai_generate_with_connection_id(scalar_types_df: dataframe.DataFrame, sn
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
-        output_schema=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -70,8 +64,6 @@ def test_ai_generate_with_output_schema(scalar_types_df: dataframe.DataFrame, sn
         prompt_context=(None, " is the same as ", None),
         connection_id=None,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
         output_schema="x INT64, y FLOAT64",
     )
 
@@ -87,11 +79,7 @@ def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snap
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
-        endpoint=None,
-        request_type="shared",
         model_params=json.dumps(dict()),
-        output_schema=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -106,10 +94,7 @@ def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -128,8 +113,6 @@ def test_ai_generate_bool_with_connection_id(
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -146,9 +129,6 @@ def test_ai_generate_bool_with_model_param(
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
-        endpoint=None,
-        request_type="shared",
         model_params=json.dumps(dict()),
     )
 
@@ -165,10 +145,7 @@ def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -188,8 +165,6 @@ def test_ai_generate_int_with_connection_id(
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -207,9 +182,6 @@ def test_ai_generate_int_with_model_param(
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
-        endpoint=None,
-        request_type="shared",
         model_params=json.dumps(dict()),
     )
 
@@ -226,10 +198,7 @@ def test_ai_generate_double(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -249,8 +218,6 @@ def test_ai_generate_double_with_connection_id(
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
-        request_type="shared",
-        model_params=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -268,9 +235,6 @@ def test_ai_generate_double_with_model_param(
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
-        endpoint=None,
-        request_type="shared",
         model_params=json.dumps(dict()),
     )
 
@@ -286,11 +250,6 @@ def test_ai_embed(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIEmbed(
         endpoint="text-embedding-005",
-        model=None,
-        task_type=None,
-        title=None,
-        model_params=None,
-        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
@@ -303,10 +262,6 @@ def test_ai_embed_with_connection_id(scalar_types_df: dataframe.DataFrame, snaps
 
     op = ops.AIEmbed(
         endpoint="text-embedding-005",
-        model=None,
-        task_type=None,
-        title=None,
-        model_params=None,
         connection_id=CONNECTION_ID,
     )
 
@@ -319,12 +274,7 @@ def test_ai_embed_with_model(scalar_types_df: dataframe.DataFrame, snapshot):
     col_name = "string_col"
 
     op = ops.AIEmbed(
-        endpoint=None,
         model="embeddinggemma-300m",
-        task_type=None,
-        title=None,
-        model_params=None,
-        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
@@ -339,11 +289,9 @@ def test_ai_embed_with_task_type_and_title(
 
     op = ops.AIEmbed(
         endpoint="text-embedding-005",
-        model=None,
-        task_type="retrieval_document",
+        task_type="RETRIEVAL_DOCUMENT",
         title="My Document",
         model_params=json.dumps({"outputDimensionality": 256}),
-        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
@@ -358,7 +306,7 @@ def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
     op = ops.AIIf(
         prompt_context=(None, " is the same as ", None),
         connection_id=connection_id,
-        optimization_mode="minimize_cost",
+        optimization_mode="MINIMIZE_COST",
         max_error_ratio=0.5,
     )
 
@@ -374,7 +322,6 @@ def test_ai_if_with_endpoint(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIIf(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
     )
 
@@ -392,11 +339,7 @@ def test_ai_classify(scalar_types_df: dataframe.DataFrame, snapshot, connection_
     op = ops.AIClassify(
         prompt_context=(None,),
         categories=("greeting", "rejection"),
-        examples=None,
         connection_id=connection_id,
-        endpoint=None,
-        optimization_mode=None,
-        max_error_ratio=None,
     )
 
     sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
@@ -411,9 +354,7 @@ def test_ai_classify_with_params(scalar_types_df: dataframe.DataFrame, snapshot)
         prompt_context=(None,),
         categories=("greeting", "rejection"),
         examples=(("hi", "greeting"), ("bye", "rejection")),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
-        optimization_mode=None,
         max_error_ratio=0.1,
     )
 
@@ -429,8 +370,6 @@ def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot, connection_id)
     op = ops.AIScore(
         prompt_context=(None, " is the same as ", None),
         connection_id=connection_id,
-        endpoint=None,
-        max_error_ratio=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -447,7 +386,6 @@ def test_ai_score_with_endpoint_and_max_error_ratio(
 
     op = ops.AIScore(
         prompt_context=(None, " is the same as ", None),
-        connection_id=None,
         endpoint="gemini-2.5-flash",
         max_error_ratio=0.5,
     )
@@ -465,8 +403,6 @@ def test_ai_similarity(scalar_types_df: dataframe.DataFrame, snapshot, connectio
 
     op = ops.AISimilarity(
         endpoint="text-embedding-005",
-        model=None,
-        model_params=None,
         connection_id=connection_id,
     )
 
@@ -481,10 +417,7 @@ def test_ai_similarity_with_model(scalar_types_df: dataframe.DataFrame, snapshot
     col_name = "string_col"
 
     op = ops.AISimilarity(
-        endpoint=None,
         model="embeddinggemma-300m",
-        model_params=None,
-        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(
@@ -499,9 +432,7 @@ def test_ai_similarity_with_model_param(scalar_types_df: dataframe.DataFrame, sn
 
     op = ops.AISimilarity(
         endpoint="text-embedding-005",
-        model=None,
         model_params=json.dumps({"outputDimensionality": 256}),
-        connection_id=None,
     )
 
     sql = utils._apply_ops_to_sql(
