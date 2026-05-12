@@ -14,9 +14,12 @@
 
 import base64
 import datetime
+import decimal
 import gzip
 import json
+import uuid
 from dataclasses import dataclass
+from google.cloud.spanner_v1.data_types import Interval, JsonObject
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -36,6 +39,14 @@ def _serialize_value(val: Any) -> Any:
         return {"__type__": "bytes", "value": base64.b64encode(val).decode("utf-8")}
     elif isinstance(val, datetime.datetime):
         return {"__type__": "datetime", "value": val.isoformat()}
+    elif isinstance(val, datetime.date):
+        return {"__type__": "date", "value": val.isoformat()}
+    elif isinstance(val, decimal.Decimal):
+        return {"__type__": "decimal", "value": str(val)}
+    elif isinstance(val, uuid.UUID):
+        return {"__type__": "uuid", "value": str(val)}
+    elif isinstance(val, Interval):
+        return {"__type__": "interval", "value": str(val)}
     elif hasattr(val, "_pb"):
         return {
             "__type__": "protobuf",
@@ -48,6 +59,8 @@ def _serialize_value(val: Any) -> Any:
             "class": val.__class__.__name__,
             "value": MessageToDict(val, preserving_proto_field_name=True),
         }
+    elif isinstance(val, JsonObject):
+        return {"__type__": "json_object", "value": val.serialize()}
     elif isinstance(val, dict):
         return {k: _serialize_value(v) for k, v in val.items()}
     elif isinstance(val, list):
@@ -68,6 +81,16 @@ def _deserialize_value(val: Any) -> Any:
                 if dt_str.endswith("Z"):
                     dt_str = dt_str[:-1] + "+00:00"
                 return datetime.datetime.fromisoformat(dt_str)
+            elif t == "date":
+                return datetime.date.fromisoformat(val["value"])
+            elif t == "decimal":
+                return decimal.Decimal(val["value"])
+            elif t == "uuid":
+                return uuid.UUID(val["value"])
+            elif t == "interval":
+                return Interval.from_str(val["value"])
+            elif t == "json_object":
+                return JsonObject.from_str(val["value"])
             elif t == "tuple":
                 return tuple(_deserialize_value(x) for x in val["value"])
             elif t == "protobuf":
