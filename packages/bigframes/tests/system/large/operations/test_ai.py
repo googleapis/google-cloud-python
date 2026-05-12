@@ -229,7 +229,7 @@ def test_map(session, gemini_flash_model, output_schema, output_col):
     )
 
 
-def test_map_multimodel(session, gemini_flash_model):
+def test_map_multimodal(session, gemini_flash_model):
     with bigframes.option_context(
         AI_OP_EXP_OPTION,
         True,

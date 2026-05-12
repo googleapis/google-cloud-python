@@ -571,7 +571,7 @@ def test_map(session, gemini_flash_model):
     )
 
 
-def test_map_multimodel(session, gemini_flash_model):
+def test_map_multimodal(session, gemini_flash_model):
     with bigframes.option_context(
         SEM_OP_EXP_OPTION,
         True,
