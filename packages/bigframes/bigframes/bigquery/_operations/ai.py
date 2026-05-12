@@ -1227,7 +1227,7 @@ def _to_dataframe(
     raise ValueError(f"Unsupported data type: {type(data)}")
 
 
-def _upper_optional(input: str | None) -> str | None:
-    if input is None:
+def _upper_optional(value: str | None) -> str | None:
+    if value is None:
         return None
-    return input.upper()
+    return value.upper()
