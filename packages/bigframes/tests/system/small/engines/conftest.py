@@ -46,16 +46,13 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
 
 
 @pytest.fixture(scope="session")
-def sqlglot_engine(
-    bigquery_client: bigquery.Client,
-    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
-):
-    return direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client,
-        bqstoragereadclient=bigquery_storage_read_client,
-        compiler="sqlglot",
-        publisher=events.Publisher(),
-    )
+def pyarrow_engine():
+    return local_scan_executor.LocalScanExecutor()
+
+
+@pytest.fixture(scope="session")
+def polars_engine():
+    return polars_executor.PolarsExecutor()
 
 
 @pytest.fixture(scope="session")
@@ -63,6 +60,18 @@ def bq_engine(
     bigquery_client: bigquery.Client,
     bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
 ):
+    publisher = events.Publisher()
+    return direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, compiler="ibis", publisher=publisher
+    )
+
+
+@pytest.fixture(scope="session")
+def engine(
+    request,
+    sqlglot_engine,
+    bq_engine,
+) -> semi_executor.SemiExecutor:
     return direct_gbq_execution.DirectGbqExecutor(
         bigquery_client,
         bqstoragereadclient=bigquery_storage_read_client,
@@ -72,14 +81,12 @@ def bq_engine(
 
 @pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
 def engine(
-    request,
-    sqlglot_engine,
-    bq_engine,
+    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine
 ) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
-        return local_scan_executor.LocalScanExecutor()
+        return pyarrow_engine
     if request.param == "polars":
-        return polars_executor.PolarsExecutor()
+        return polars_engine
     if request.param == "bq":
         return bq_engine
     if request.param == "bq-sqlglot":

@@ -67,7 +67,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.31.0
+    version: 1.32.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -1153,10 +1153,11 @@ libraries:
   - name: google-cloud-geminidataanalytics
     version: 0.12.0
     apis:
+      - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
       - path: google/cloud/geminidataanalytics/v1alpha
     python:
-      default_version: v1alpha
+      default_version: v1
   - name: google-cloud-gke-backup
     version: 0.8.0
     apis:
@@ -2251,6 +2252,13 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       default_version: v4
+  - name: google-maps-mapmanagement
+    version: 0.0.0
+    apis:
+      - path: google/maps/mapmanagement/v2beta
+    copyright_year: "2026"
+    python:
+      default_version: v2beta
   - name: google-maps-mapsplatformdatasets
     version: 0.7.0
     apis:

@@ -2405,7 +2405,7 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_access_token_rest_unset_required_fields():
@@ -2582,7 +2582,7 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_id_token_rest_unset_required_fields():
@@ -2759,7 +2759,7 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sign_blob_rest_unset_required_fields():
@@ -2934,7 +2934,7 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
             expected_params = [
             ]
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sign_jwt_rest_unset_required_fields():
