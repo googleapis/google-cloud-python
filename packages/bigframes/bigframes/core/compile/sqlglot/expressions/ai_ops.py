@@ -150,8 +150,6 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
                 sge.Kwarg(this=field, expression=sge.array(*example_expressions))
             )
         else:
-            args.append(
-                sge.Kwarg(this=field, expression=sge.convert(value))
-            )
+            args.append(sge.Kwarg(this=field, expression=sge.convert(value)))
 
     return args

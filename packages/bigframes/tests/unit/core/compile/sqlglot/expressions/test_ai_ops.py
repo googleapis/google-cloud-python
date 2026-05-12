@@ -31,7 +31,7 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
         endpoint="gemini-2.5-flash",
-        request_type="SHARED"
+        request_type="SHARED",
     )
 
     sql = utils._apply_ops_to_sql(
