@@ -85,32 +85,23 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_nary_op(ops.GoogleSqlScalarOp, pass_op=True)
 def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
-    arg_templates = []
-    if op.calling_convention == CallingConvention.FUNCTION:
-        for i, operand in enumerate(operands):
-            if i < len(op.args):
-                arg_spec = op.args[i]
-            else:
-                assert op.args[-1].is_vararg, f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
-                arg_spec = op.args[-1]
-            if operand.is_omitted:
-                assert arg_spec.optional, f"Argument omitted, but not optional"
-                continue
-            elif arg_spec.arg_name:
-                arg_templates.append(f"{arg_spec.arg_name} => {operand.expr.sql(dialect='bigquery')}")
-            else:
-                arg_templates.append(operand.expr.sql(dialect='bigquery'))
-        args_template = ", ".join(arg_templates)
-        return sg.parse_one(f"{op.sql_name}({args_template})", dialect="bigquery")
-    elif op.calling_convention == CallingConvention.PREFIX:
-        assert len(operands) == 1, "prefix op expects exactly 1 arg"
-        return sg.parse_one(f"{op.sql_name} {operands[0].expr.sql(dialect='bigquery')}", dialect="bigquery")
-    elif op.calling_convention == CallingConvention.INFIX:
-        assert len(operands) == 2, 'infix op expects exactly 2 args'
-        return sg.parse_one(f"{operands[0].expr.sql(dialect='bigquery')} {op.sql_name} {operands[1].expr.sql(dialect='bigquery')}", dialect="bigquery")
-
-    raise NotImplementedError(f"Calling convention {op.calling_convention} not supported for {op}")
-
+    args = []
+    for i, operand in enumerate(operands):
+        if i < len(op.args):
+            arg_spec = op.args[i]
+        else:
+            assert op.args[-1].is_vararg, f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+            arg_spec = op.args[-1]
+        if operand.is_omitted:
+            assert arg_spec.optional, f"Argument omitted, but not optional"
+            continue
+        elif arg_spec.arg_name:
+            args.append(
+                sge.Kwarg(this=arg_spec.arg_name, expression=operand.expr)
+            )
+        else:
+            args.append(operand.expr)
+    return sg.func(op.sql_name, *args)
 
 @register_nary_op(ops.SqlScalarOp, pass_op=True)
 def _(*operands: TypedExpr, op: ops.SqlScalarOp) -> sge.Expression:

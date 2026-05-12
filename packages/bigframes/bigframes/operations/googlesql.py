@@ -25,13 +25,6 @@ import bigframes.operations.type as op_typing
 from bigframes import dtypes
 
 
-class CallingConvention(Enum):
-    FUNCTION = auto()  # standard: name(arg1, arg2)
-    INFIX = auto()  # operator: arg1 name arg2 (e.g., +)
-    PREFIX = auto()  # operator: name arg1 (e.g., NOT)
-    SPECIAL = auto()  # Custom compilation template (e.g., CAST, EXTRACT)
-
-
 @dataclasses.dataclass(frozen=True)
 class ArgSpec:
     arg_name: str | None = None
@@ -55,12 +48,10 @@ class GoogleSqlScalarOp(ops.NaryOp):
     name: typing.ClassVar[str] = "googlesql_scalar"
 
     # syntax
-    sql_name: str  # for function `sql_name`(a, b), for infix a `sql_name`` b, for prefix `sql_name` a
+    sql_name: str
     args: tuple[ArgSpec, ...]
     # typing
     signature: typing.Callable[..., dtypes.ExpressionType]
-    # syntax again
-    calling_convention: CallingConvention = CallingConvention.FUNCTION
 
     # semantics
     is_deterministic: bool = True
