@@ -365,7 +365,7 @@ class ResolvedDerefOp(DerefOp):
 
 
 @dataclasses.dataclass(frozen=True)
-class Omitted(Expression):
+class OmittedArg(Expression):
     """Represents an omitted optional arg used calling a function."""
 
     @property

@@ -189,7 +189,7 @@ class Impure(Value):
 
 
 @public
-class Omitted(Value):
+class OmittedArg(Value):
     pass
 
 
