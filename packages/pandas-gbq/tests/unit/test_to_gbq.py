@@ -11,8 +11,8 @@ import unittest.mock as mock
 import google.api_core.exceptions
 import google.cloud.bigquery
 import pandas as pd
-from pandas import DataFrame
 import pytest
+from pandas import DataFrame
 
 from pandas_gbq import gbq
 

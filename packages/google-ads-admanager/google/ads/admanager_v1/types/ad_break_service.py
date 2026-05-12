@@ -198,7 +198,7 @@ class UpdateAdBreakRequest(proto.Message):
             The ``AdBreak``'s ``name`` is used to identify the
             ``AdBreak`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     ad_break: ad_break_messages.AdBreak = proto.Field(

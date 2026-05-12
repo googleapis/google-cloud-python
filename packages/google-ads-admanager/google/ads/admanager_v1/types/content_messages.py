@@ -28,7 +28,7 @@ __protobuf__ = proto.module(
 
 
 class Content(proto.Message):
-    r"""A piece of content from a Publisher's CMS.
+    r"""A piece of ``Content`` from a Publisher's CMS.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

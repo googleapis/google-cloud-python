@@ -605,11 +605,11 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178
         "db-dtypes",
         # Ensure we catch breaking changes in the client libraries early.
-        "git+https://github.com/googleapis/python-bigquery.git#egg=google-cloud-bigquery",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery&subdirectory=packages/google-cloud-bigquery",
         "--upgrade",
         "-e",
         "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
-        "git+https://github.com/googleapis/python-bigquery-pandas.git#egg=pandas-gbq",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=pandas-gbq&subdirectory=packages/pandas-gbq",
     )
 
     # Print out prerelease package versions.
@@ -709,6 +709,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
+        "notebooks/generative_ai/ai_movie_poster.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",  # Needs BUCKET_URI.
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",  # Needs BUCKET_URI.
@@ -725,6 +726,8 @@ def notebook(session: nox.Session):
         # This anywidget notebook uses deferred execution, so it won't
         # produce metrics for the performance benchmark script.
         "notebooks/dataframes/anywidget_mode.ipynb",
+        # Needs a connection
+        "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension,
