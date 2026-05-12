@@ -101,17 +101,22 @@ def _construct_prompt(
     prompt_context: tuple[str | None, ...],
     param_name: str = "prompt",
 ) -> sge.Kwarg:
-    prompt: list[str | sge.Expression] = []
+    expressions = []
     column_ref_idx = 0
 
-    for elem in prompt_context:
+    for idx, elem in enumerate(prompt_context):
+        field_name = f"_field_{idx + 1}"
         if elem is None:
-            prompt.append(exprs[column_ref_idx].expr)
+            value = exprs[column_ref_idx].expr
             column_ref_idx += 1
         else:
-            prompt.append(sge.Literal.string(elem))
+            value = sge.Literal.string(elem)
 
-    return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
+        expressions.append(
+            sge.PropertyEQ(this=sge.to_identifier(field_name), expression=value)
+        )
+
+    return sge.Kwarg(this=param_name, expression=sge.Struct(expressions=expressions))
 
 
 def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
