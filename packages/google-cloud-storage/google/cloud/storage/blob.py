@@ -5325,6 +5325,7 @@ class Retention(dict):
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
 
+
 class ObjectCustomContextPayload(dict):
     """Payload for a custom context.
 

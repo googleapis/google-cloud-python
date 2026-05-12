@@ -6385,11 +6385,13 @@ class _Bucket(object):
             )
         )
 
+
 import unittest
 import datetime
 import mock
 from google.cloud.storage.blob import Blob, ObjectContexts, ObjectCustomContextPayload
 from google.cloud.storage._helpers import _UTC
+
 
 class TestObjectContexts(unittest.TestCase):
     def test_payload_ctor(self):
@@ -6425,13 +6427,19 @@ class TestObjectContexts(unittest.TestCase):
         self.assertIn("key", contexts.custom)
         payload = contexts.custom["key"]
         self.assertEqual(payload.value, "val")
-        self.assertEqual(payload.create_time, datetime.datetime(2025, 1, 1, tzinfo=_UTC))
-        self.assertEqual(payload.update_time, datetime.datetime(2025, 1, 2, tzinfo=_UTC))
+        self.assertEqual(
+            payload.create_time, datetime.datetime(2025, 1, 1, tzinfo=_UTC)
+        )
+        self.assertEqual(
+            payload.update_time, datetime.datetime(2025, 1, 2, tzinfo=_UTC)
+        )
 
     def test_blob_contexts_property(self):
         bucket = mock.Mock()
         bucket.name = "b"
-        bucket.__getitem__ = mock.Mock(side_effect=lambda x: "b" if x in (0, -1) else None)
+        bucket.__getitem__ = mock.Mock(
+            side_effect=lambda x: "b" if x in (0, -1) else None
+        )
         blob = Blob("blob-name", bucket=bucket)
         self.assertIsInstance(blob.contexts, ObjectContexts)
         self.assertEqual(blob.contexts.custom, {})
@@ -6443,27 +6451,39 @@ class TestObjectContexts(unittest.TestCase):
         blob.contexts = None
         self.assertIsNone(blob._properties["contexts"])
 
+
 class TestListBlobsFilter(unittest.TestCase):
-    def test_client_list_blobs_filter(self):
+    @staticmethod
+    def _make_client(*args, **kw):
         from google.cloud.storage.client import Client
+        import google.auth.credentials
+
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials.universe_domain = "googleapis.com"
+        kw["credentials"] = kw.get("credentials") or credentials
+        return Client(*args, **kw)
+
+    def test_client_list_blobs_filter(self):
         from google.cloud.storage.bucket import Bucket
-        client = Client(project="p")
+
+        client = self._make_client(project="p")
         bucket = Bucket(client, name="b")
 
         with mock.patch.object(client, "_list_resource") as mocked:
-            list(client.list_blobs(bucket, filter_="contexts.custom.foo = \"bar\""))
+            list(client.list_blobs(bucket, filter_='contexts.custom.foo = "bar"'))
 
             mocked.assert_called_once()
             args, kwargs = mocked.call_args
             extra_params = kwargs["extra_params"]
-            self.assertEqual(extra_params["filter"], "contexts.custom.foo = \"bar\"")
+            self.assertEqual(extra_params["filter"], 'contexts.custom.foo = "bar"')
 
     def test_bucket_list_blobs_filter(self):
         from google.cloud.storage.bucket import Bucket
+
         client = mock.Mock()
         bucket = Bucket(client, name="b")
 
-        bucket.list_blobs(filter_="contexts.custom.foo = \"bar\"")
+        bucket.list_blobs(filter_='contexts.custom.foo = "bar"')
         client.list_blobs.assert_called_with(
             bucket,
             max_results=None,
@@ -6482,14 +6502,25 @@ class TestListBlobsFilter(unittest.TestCase):
             match_glob=None,
             include_folders_as_prefixes=None,
             soft_deleted=None,
-            filter_="contexts.custom.foo = \"bar\"",
+            filter_='contexts.custom.foo = "bar"',
         )
 
+
 class TestSerialization(unittest.TestCase):
-    def test_blob_patch_contexts(self):
+    @staticmethod
+    def _make_client(*args, **kw):
         from google.cloud.storage.client import Client
+        import google.auth.credentials
+
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials.universe_domain = "googleapis.com"
+        kw["credentials"] = kw.get("credentials") or credentials
+        return Client(*args, **kw)
+
+    def test_blob_patch_contexts(self):
         from google.cloud.storage.bucket import Bucket
-        client = Client(project="p")
+
+        client = self._make_client(project="p")
         bucket = Bucket(client, name="b")
         blob = Blob("blob-name", bucket=bucket)
 
@@ -6504,9 +6535,9 @@ class TestSerialization(unittest.TestCase):
             self.assertEqual(sent_resource["contexts"]["custom"]["key"]["value"], "val")
 
     def test_blob_patch_contexts_none(self):
-        from google.cloud.storage.client import Client
         from google.cloud.storage.bucket import Bucket
-        client = Client(project="p")
+
+        client = self._make_client(project="p")
         bucket = Bucket(client, name="b")
         blob = Blob("blob-name", bucket=bucket)
 
