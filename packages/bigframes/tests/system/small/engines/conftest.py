@@ -62,15 +62,17 @@ def bq_engine(
 ):
     publisher = events.Publisher()
     return direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="ibis", publisher=publisher
+        bigquery_client,
+        bqstoragereadclient=bigquery_storage_read_client,
+        publisher=events.Publisher(),
+        compiler='ibis'
     )
 
 
 @pytest.fixture(scope="session")
-def engine(
-    request,
-    sqlglot_engine,
-    bq_engine,
+def sqlglot_engine(
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
 ) -> semi_executor.SemiExecutor:
     return direct_gbq_execution.DirectGbqExecutor(
         bigquery_client,

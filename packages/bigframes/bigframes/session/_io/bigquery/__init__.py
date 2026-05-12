@@ -329,6 +329,11 @@ def start_query_job_optional(
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> google.cloud.bigquery.table.RowIterator:
+    """
+    Run a bigquery query, with job optional.
+
+    See: https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
+    """
     add_and_trim_labels(job_config, session=session)
     try:
         results_iterator = bq_client._query_and_wait_bigframes(

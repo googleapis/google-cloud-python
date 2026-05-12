@@ -47,7 +47,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         *,
         publisher: bigframes.core.events.Publisher,
-        compiler: Literal["ibis", "sqlglot"] = "ibis",
+        compiler: Literal["ibis", "sqlglot"] = "sqlglot",
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         labels: Mapping[str, str] = {},
     ):
