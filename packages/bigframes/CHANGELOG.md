@@ -447,7 +447,7 @@
 
 ### Bug Fixes
 
-* Deflake ai_gen_bool multimodel test ([#2085](https://github.com/googleapis/python-bigquery-dataframes/issues/2085)) ([566a37a](https://github.com/googleapis/python-bigquery-dataframes/commit/566a37a30ad5677aef0c5f79bdd46bca2139cc1e))
+* Deflake ai_gen_bool multimodal test ([#2085](https://github.com/googleapis/python-bigquery-dataframes/issues/2085)) ([566a37a](https://github.com/googleapis/python-bigquery-dataframes/commit/566a37a30ad5677aef0c5f79bdd46bca2139cc1e))
 * Do not scroll page selector in anywidget `repr_mode` ([#2082](https://github.com/googleapis/python-bigquery-dataframes/issues/2082)) ([5ce5d63](https://github.com/googleapis/python-bigquery-dataframes/commit/5ce5d63fcb51bfb3df2769108b7486287896ccb9))
 * Fix the potential invalid VPC egress configuration ([#2068](https://github.com/googleapis/python-bigquery-dataframes/issues/2068)) ([cce4966](https://github.com/googleapis/python-bigquery-dataframes/commit/cce496605385f2ac7ab0becc0773800ed5901aa5))
 * Return a DataFrame containing query stats for all non-SELECT statements ([#2071](https://github.com/googleapis/python-bigquery-dataframes/issues/2071)) ([a52b913](https://github.com/googleapis/python-bigquery-dataframes/commit/a52b913d9d8794b4b959ea54744a38d9f2f174e7))
