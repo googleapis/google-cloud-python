@@ -31,8 +31,11 @@ _DEFAULT: Literal["default"] = "default"
 
 class Subscriber:
     def __init__(
-        self, callback: Callable[[Event], None], *, publisher: Publisher
-    ):  # noqa: E501
+        self,
+        callback: Callable[[EventEnvelope | Event], None],
+        *,
+        publisher: Publisher,  # noqa: E501
+    ):
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
@@ -73,7 +76,9 @@ class Publisher:
         self._subscribers_lock = threading.Lock()
         self._subscribers: Set[Subscriber] = set()
 
-    def subscribe(self, callback: Callable[[Event], None]) -> Subscriber:
+    def subscribe(
+        self, callback: Callable[[EventEnvelope | Event], None]
+    ) -> Subscriber:
         # TODO(b/448176657): figure out how to handle subscribers/publishers in
         # a background thread. Maybe subscribers should be thread-local?
         subscriber = Subscriber(callback, publisher=self)
@@ -85,7 +90,7 @@ class Publisher:
         with self._subscribers_lock:
             self._subscribers.remove(subscriber)
 
-    def publish(self, envelope: "EventEnvelope"):
+    def publish(self, envelope: EventEnvelope | Event):
         with self._subscribers_lock:
             for subscriber in self._subscribers:
                 subscriber(envelope)
@@ -98,7 +103,9 @@ class Event:
 @dataclasses.dataclass(frozen=True)
 class EventEnvelope:
     event: Event
-    progress_bar: Literal["default", "auto", "notebook", "terminal"] | None = None
+    progress_bar: (
+        Literal["default", "auto", "notebook", "terminal"] | None
+    ) = None  # noqa: E501
 
 
 @dataclasses.dataclass(frozen=True)
@@ -183,7 +190,9 @@ class BigQueryReceivedEvent(ExecutionRunning):
     job_id: str | None = None
     statement_type: str | None = None
     state: str | None = None
-    query_plan: list[google.cloud.bigquery.job.query.QueryPlanEntry] | None = None
+    query_plan: (
+        list[google.cloud.bigquery.job.query.QueryPlanEntry] | None
+    ) = None  # noqa: E501
     created: datetime.datetime | None = None
     started: datetime.datetime | None = None
     ended: datetime.datetime | None = None
