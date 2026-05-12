@@ -29,7 +29,7 @@ from pandas_gbq.exceptions import (  # noqa: F401 - imported solely to support a
     TableCreationError,
 )
 from pandas_gbq.features import FEATURES
-from pandas_gbq.gbq_connector import (
+from pandas_gbq.gbq_connector import (  # noqa: F401
     GbqConnector,  # noqa: F401 - imported solely to support a backwards compatible export
     _get_client,  # noqa: F401 - imported solely to support a backwards compatible export
 )
