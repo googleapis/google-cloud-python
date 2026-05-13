@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ class PolicyBasedRoute(proto.Message):
             one with the lowest-numbered priority value
             wins. The default value is
             1000. The priority value must be from 1 to
-            65535, inclusive.
+                65535, inclusive.
         warnings (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Warnings]):
             Output only. If potential misconfigurations
             are detected for this route, this field will be

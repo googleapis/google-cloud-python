@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -691,11 +691,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_authorization_policy(request=request)
+                operation = await client.create_authorization_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -853,11 +853,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_authorization_policy(request=request)
+                operation = await client.update_authorization_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1001,11 +1001,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_authorization_policy(request=request)
+                operation = await client.delete_authorization_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1433,11 +1433,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backend_authentication_config(request=request)
+                operation = await client.create_backend_authentication_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1622,11 +1622,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backend_authentication_config(request=request)
+                operation = await client.update_backend_authentication_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1797,11 +1797,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backend_authentication_config(request=request)
+                operation = await client.delete_backend_authentication_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2204,11 +2204,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_server_tls_policy(request=request)
+                operation = await client.create_server_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2368,11 +2368,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_server_tls_policy(request=request)
+                operation = await client.update_server_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2522,11 +2522,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_server_tls_policy(request=request)
+                operation = await client.delete_server_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2914,11 +2914,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_client_tls_policy(request=request)
+                operation = await client.create_client_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3069,11 +3069,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_client_tls_policy(request=request)
+                operation = await client.update_client_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3214,11 +3214,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_client_tls_policy(request=request)
+                operation = await client.delete_client_tls_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3612,11 +3612,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_gateway_security_policy(request=request)
+                operation = await client.create_gateway_security_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3772,11 +3772,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_gateway_security_policy(request=request)
+                operation = await client.update_gateway_security_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3924,11 +3924,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_gateway_security_policy(request=request)
+                operation = await client.delete_gateway_security_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4343,11 +4343,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_gateway_security_policy_rule(request=request)
+                operation = await client.create_gateway_security_policy_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4517,11 +4517,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_gateway_security_policy_rule(request=request)
+                operation = await client.update_gateway_security_policy_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4676,11 +4676,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_gateway_security_policy_rule(request=request)
+                operation = await client.delete_gateway_security_policy_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5065,11 +5065,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_url_list(request=request)
+                operation = await client.create_url_list(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5216,11 +5216,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_url_list(request=request)
+                operation = await client.update_url_list(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5353,11 +5353,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_url_list(request=request)
+                operation = await client.delete_url_list(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5748,11 +5748,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_tls_inspection_policy(request=request)
+                operation = await client.create_tls_inspection_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5910,11 +5910,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_tls_inspection_policy(request=request)
+                operation = await client.update_tls_inspection_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6058,11 +6058,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_tls_inspection_policy(request=request)
+                operation = await client.delete_tls_inspection_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6445,11 +6445,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_authz_policy(request=request)
+                operation = await client.create_authz_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6595,11 +6595,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_authz_policy(request=request)
+                operation = await client.update_authz_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6733,11 +6733,11 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_authz_policy(request=request)
+                operation = await client.delete_authz_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
