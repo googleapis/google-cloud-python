@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -609,11 +609,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_order(request=request)
+                operation = await client.create_order(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -765,11 +765,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_order(request=request)
+                operation = await client.update_order(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -903,11 +903,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_order(request=request)
+                operation = await client.delete_order(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1035,11 +1035,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.submit_order(request=request)
+                operation = await client.submit_order(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1160,11 +1160,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.cancel_order(request=request)
+                operation = await client.cancel_order(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1530,11 +1530,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_site(request=request)
+                operation = await client.create_site(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1684,11 +1684,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_site(request=request)
+                operation = await client.update_site(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1822,11 +1822,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_site(request=request)
+                operation = await client.delete_site(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2199,11 +2199,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_hardware_group(request=request)
+                operation = await client.create_hardware_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2357,11 +2357,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_hardware_group(request=request)
+                operation = await client.update_hardware_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2496,11 +2496,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_hardware_group(request=request)
+                operation = await client.delete_hardware_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2877,11 +2877,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_hardware(request=request)
+                operation = await client.create_hardware(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3033,11 +3033,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_hardware(request=request)
+                operation = await client.update_hardware(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3171,11 +3171,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_hardware(request=request)
+                operation = await client.delete_hardware(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3542,11 +3542,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_comment(request=request)
+                operation = await client.create_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4531,11 +4531,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_zone(request=request)
+                operation = await client.create_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4685,11 +4685,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_zone(request=request)
+                operation = await client.update_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4823,11 +4823,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_zone(request=request)
+                operation = await client.delete_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4956,11 +4956,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.signal_zone_state(request=request)
+                operation = await client.signal_zone_state(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5093,11 +5093,11 @@ class GDCHardwareManagementAsyncClient:
                 )
 
                 # Make the request
-                operation = client.request_order_date_change(request=request)
+                operation = await client.request_order_date_change(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
