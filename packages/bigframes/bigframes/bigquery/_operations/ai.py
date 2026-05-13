@@ -904,7 +904,7 @@ def classify(
     assert len(series_list) > 0
 
     if examples is not None:
-        example_tuples = tuple(
+        example_tuples: Any = tuple(
             (ex[0], tuple(ex[1]) if isinstance(ex[1], (list, tuple)) else ex[1])
             for ex in examples
         )

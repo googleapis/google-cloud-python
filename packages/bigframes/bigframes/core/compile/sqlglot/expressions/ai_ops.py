@@ -143,7 +143,9 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
             example_expressions = []
             for key, val in value:
                 if isinstance(val, (list, tuple)):
-                    val_expr = sge.array(*[sge.Literal.string(v) for v in val])
+                    val_expr: sge.Array | sge.Literal = sge.array(
+                        *[sge.Literal.string(v) for v in val]
+                    )
                 else:
                     val_expr = sge.Literal.string(val)
                 example_expressions.append(

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast
+from typing import cast, Any
 
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
@@ -2054,7 +2054,7 @@ def _construct_examples(
     results: list[ibis_types.StructValue] = []
 
     for example in examples:
-        value = example[1]
+        value: Any = example[1]
         if isinstance(example[1], (list, tuple)):
             value = list(example[1])
 
