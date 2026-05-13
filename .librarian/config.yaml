@@ -3,7 +3,7 @@
 
 # Release-only mode prevents legacylibrarian from generating any packages.
 # legacylibrarian is only used for releasing; librarian is used for generation.
-release_only_mode: false
+release_only_mode: true
 
 global_files_allowlist:
   # Allow the container to read and write the root `CHANGELOG.md`
