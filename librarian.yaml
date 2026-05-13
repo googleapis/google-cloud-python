@@ -51,7 +51,6 @@ default:
 libraries:
   - name: bigframes
     version: 2.39.0
-    skip_release: true
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
