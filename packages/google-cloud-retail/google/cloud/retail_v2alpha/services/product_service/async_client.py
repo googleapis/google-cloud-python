@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1052,11 +1052,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.purge_products(request=request)
+                operation = await client.purge_products(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1165,11 +1165,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_products(request=request)
+                operation = await client.import_products(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1273,11 +1273,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_products(request=request)
+                operation = await client.export_products(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1432,11 +1432,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.set_inventory(request=request)
+                operation = await client.set_inventory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1676,11 +1676,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_fulfillment_places(request=request)
+                operation = await client.add_fulfillment_places(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1845,11 +1845,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_fulfillment_places(request=request)
+                operation = await client.remove_fulfillment_places(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2012,11 +2012,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_local_inventories(request=request)
+                operation = await client.add_local_inventories(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2179,11 +2179,11 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_local_inventories(request=request)
+                operation = await client.remove_local_inventories(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
