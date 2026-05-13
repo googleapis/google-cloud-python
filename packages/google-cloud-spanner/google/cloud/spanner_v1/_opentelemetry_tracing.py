@@ -19,10 +19,7 @@ from contextlib import contextmanager
 from datetime import datetime
 
 from opentelemetry import trace
-from opentelemetry.semconv.attributes.otel_attributes import (
-    OTEL_SCOPE_NAME,
-    OTEL_SCOPE_VERSION,
-)
+
 from opentelemetry.trace.status import Status, StatusCode
 
 from google.cloud.spanner_v1._helpers import (
@@ -99,9 +96,9 @@ def trace_call(
         "db.url": SpannerClient.DEFAULT_ENDPOINT,
         "db.instance": db_name,
         "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
-        OTEL_SCOPE_NAME: TRACER_NAME,
+        "otel.scope.name": TRACER_NAME,
         "cloud.region": cloud_region,
-        OTEL_SCOPE_VERSION: TRACER_VERSION,
+        "otel.scope.version": TRACER_VERSION,
         # Standard GCP attributes for OTel, attributes are used for internal purpose and are subjected to change
         "gcp.client.service": "spanner",
         "gcp.client.version": TRACER_VERSION,
