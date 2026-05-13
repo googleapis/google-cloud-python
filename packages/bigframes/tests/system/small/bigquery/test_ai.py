@@ -339,7 +339,9 @@ def test_ai_classify_with_examples(session):
 def test_ai_classify_output_mode(session, bq_connection):
     s = bpd.Series(["cat", "orchid"], session=session)
 
-    result = bbq.ai.classify(s, ["animal", "plant"], output_mode="multi", examples=[("dog", ["animal"])])
+    result = bbq.ai.classify(
+        s, ["animal", "plant"], output_mode="multi", examples=[("dog", ["animal"])]
+    )
 
     assert len(result) == len(s)
     assert result.dtype == dtypes.list_type(dtypes.STRING_DTYPE)
