@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-service-management",
+    "name": "google-cloud-servicemanagement",
     "version": "1.16.0"
   },
   "snippets": [

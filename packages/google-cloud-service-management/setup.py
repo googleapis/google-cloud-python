@@ -21,10 +21,10 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-service-management"
+name = "google-cloud-servicemanagement"
 
 
-description = "Google Cloud Service Management API client library"
+description = "Google Cloud Servicemanagement API client library"
 
 version = None
 
@@ -53,7 +53,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-management"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-servicemanagement"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

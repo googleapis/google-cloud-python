@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##
-# google-cloud-service-management documentation build configuration file
+# google-cloud-servicemanagement documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -82,7 +82,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-service-management"
+project = "google-cloud-servicemanagement"
 copyright = "2025, Google, LLC"
 author = "Google APIs"
 
@@ -156,7 +156,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-service-management",
+    "description": "Google Cloud Client Libraries for google-cloud-servicemanagement",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -250,7 +250,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-service-management-doc"
+htmlhelp_basename = "google-cloud-servicemanagement-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -283,8 +283,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-service-management.tex",
-        "google-cloud-service-management Documentation",
+        "google-cloud-servicemanagement.tex",
+        "google-cloud-servicemanagement Documentation",
         author,
         "manual",
     )
@@ -318,8 +318,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-service-management",
-        "google-cloud-service-management Documentation",
+        "google-cloud-servicemanagement",
+        "google-cloud-servicemanagement Documentation",
         [author],
         1,
     )
@@ -337,11 +337,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-service-management",
-        "google-cloud-service-management Documentation",
+        "google-cloud-servicemanagement",
+        "google-cloud-servicemanagement Documentation",
         author,
-        "google-cloud-service-management",
-        "google-cloud-service-management Library",
+        "google-cloud-servicemanagement",
+        "google-cloud-servicemanagement Library",
         "APIs",
     )
 ]

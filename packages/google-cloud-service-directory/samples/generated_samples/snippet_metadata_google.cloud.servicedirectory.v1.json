@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-service-directory",
+    "name": "google-cloud-servicedirectory",
     "version": "1.17.0"
   },
   "snippets": [

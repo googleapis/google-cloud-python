@@ -49,7 +49,7 @@ PREVIEW_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = "google-cloud-service-management"
+PACKAGE_NAME = "google-cloud-servicemanagement"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",

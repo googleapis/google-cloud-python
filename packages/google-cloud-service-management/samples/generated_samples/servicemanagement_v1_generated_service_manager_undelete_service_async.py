@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-service-management
+#   python3 -m pip install google-cloud-servicemanagement
 
 
 # [START servicemanagement_v1_generated_ServiceManager_UndeleteService_async]

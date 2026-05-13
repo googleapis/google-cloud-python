@@ -21,10 +21,10 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-service-control"
+name = "google-cloud-servicecontrol"
 
 
-description = "Google Cloud Service Control API client library"
+description = "Google Cloud Servicecontrol API client library"
 
 version = None
 
@@ -52,7 +52,7 @@ dependencies = [
     "protobuf >= 4.25.8, < 8.0.0",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-control"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-servicecontrol"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
