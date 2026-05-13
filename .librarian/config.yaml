@@ -41,3 +41,4 @@ libraries:
   # Disable automatic releases until system tests are sped up or reorganized.
   - id: "google-cloud-firestore"
     release_blocked: true
+
