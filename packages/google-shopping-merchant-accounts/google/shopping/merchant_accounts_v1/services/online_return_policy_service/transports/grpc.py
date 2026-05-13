@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,8 +119,9 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     ads and free listings
 
     programs. This API defines the following resource model:
+    --------------------------------------------------------
 
-    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+    [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
