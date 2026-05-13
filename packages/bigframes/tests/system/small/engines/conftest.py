@@ -65,7 +65,7 @@ def bq_engine(
         bigquery_client,
         bqstoragereadclient=bigquery_storage_read_client,
         publisher=events.Publisher(),
-        compiler='ibis'
+        compiler="ibis",
     )
 
 
