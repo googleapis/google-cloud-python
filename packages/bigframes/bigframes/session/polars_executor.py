@@ -34,7 +34,7 @@ from bigframes.operations import (
     numeric_ops,
     string_ops,
 )
-from bigframes.session import executor, semi_executor
+from bigframes.session import execution_spec, executor, semi_executor
 
 if TYPE_CHECKING:
     import polars as pl
@@ -140,20 +140,20 @@ class PolarsExecutor(semi_executor.SemiExecutor):
     def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
         if not self._can_execute(plan):
             return None
-        # Note: Ignoring ordered flag, as just executing totally ordered is fine.
+        if execution_spec.destination_spec is not None:
+            return None
         try:
             lazy_frame: pl.LazyFrame = self._compiler.compile(
                 array_value.ArrayValue(plan).node
             )
         except Exception:
             return None
-        if peek is not None:
-            lazy_frame = lazy_frame.limit(peek)
+        if execution_spec.peek is not None:
+            lazy_frame = lazy_frame.limit(execution_spec.peek)
         pa_table = lazy_frame.collect().to_arrow()
         return executor.LocalExecuteResult(
             data=pa_table,

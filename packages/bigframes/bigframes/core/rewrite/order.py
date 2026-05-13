@@ -47,6 +47,15 @@ def bake_order(
     return node
 
 
+def pull_out_order(
+    node: bigframes.core.nodes.BigFrameNode,
+) -> Tuple[bigframes.core.nodes.BigFrameNode, bigframes.core.ordering.RowOrdering]:
+    import bigframes.core.rewrite.slices
+
+    node = node.bottom_up(bigframes.core.rewrite.slices.rewrite_slice)
+    return _pull_up_order(node, order_root=True)
+
+
 # Makes ordering explicit in window definitions
 def _pull_up_order(
     root: bigframes.core.nodes.BigFrameNode,
@@ -153,7 +162,7 @@ def _pull_up_order(
                 )
         elif isinstance(node, bigframes.core.nodes.ReadTableNode):
             if node.source.ordering is not None:
-                return node.with_order_cols()
+                return node.pull_out_order()
             else:
                 # No defined ordering
                 return node, bigframes.core.ordering.RowOrdering()
@@ -272,7 +281,7 @@ def _pull_up_order(
                 offsets_id
             )
             return new_explode, child_order.join(inner_order)
-        raise ValueError(f"Unexpected node: {node}")
+        raise ValueError(f"Unexpected node type {type(node).__name__}")
 
     def pull_order_concat(
         node: bigframes.core.nodes.ConcatNode,

@@ -14,6 +14,7 @@
 import pathlib
 from typing import Generator
 
+import google.cloud.bigquery_storage_v1
 import pandas as pd
 import pytest
 from google.cloud import bigquery
@@ -55,18 +56,28 @@ def polars_engine():
 
 
 @pytest.fixture(scope="session")
-def bq_engine(bigquery_client):
+def bq_engine(
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+):
     publisher = events.Publisher()
     return direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="ibis", publisher=publisher
+        bigquery_client,
+        bqstoragereadclient=bigquery_storage_read_client,
+        publisher=events.Publisher(),
+        compiler="ibis",
     )
 
 
 @pytest.fixture(scope="session")
-def sqlglot_engine(bigquery_client):
-    publisher = events.Publisher()
+def sqlglot_engine(
+    bigquery_client: bigquery.Client,
+    bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
+) -> semi_executor.SemiExecutor:
     return direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="sqlglot", publisher=publisher
+        bigquery_client,
+        bqstoragereadclient=bigquery_storage_read_client,
+        publisher=events.Publisher(),
     )
 
 
