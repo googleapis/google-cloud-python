@@ -142,9 +142,20 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
+    session.install(RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # Check formatting
     session.run(
         "ruff",
         "format",
