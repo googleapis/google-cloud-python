@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -2152,11 +2146,7 @@ async def test_list_triggers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_triggers(request={})
-        ).pages:
+        async for page_ in (await client.list_triggers(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4052,11 +4042,7 @@ async def test_list_channels_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_channels(request={})
-        ).pages:
+        async for page_ in (await client.list_channels(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5911,11 +5897,7 @@ async def test_list_providers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_providers(request={})
-        ).pages:
+        async for page_ in (await client.list_providers(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6819,11 +6801,7 @@ async def test_list_channel_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_channel_connections(request={})
-        ).pages:
+        async for page_ in (await client.list_channel_connections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9142,11 +9120,7 @@ async def test_list_message_buses_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_message_buses(request={})
-        ).pages:
+        async for page_ in (await client.list_message_buses(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9699,9 +9673,7 @@ async def test_list_message_bus_enrollments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_message_bus_enrollments(request={})
         ).pages:
             pages.append(page_)
@@ -11650,11 +11622,7 @@ async def test_list_enrollments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_enrollments(request={})
-        ).pages:
+        async for page_ in (await client.list_enrollments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13585,11 +13553,7 @@ async def test_list_pipelines_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_pipelines(request={})
-        ).pages:
+        async for page_ in (await client.list_pipelines(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15522,11 +15486,7 @@ async def test_list_google_api_sources_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_google_api_sources(request={})
-        ).pages:
+        async for page_ in (await client.list_google_api_sources(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16716,7 +16676,7 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_trigger_rest_unset_required_fields():
@@ -16900,7 +16860,7 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_triggers_rest_unset_required_fields():
@@ -17170,7 +17130,7 @@ def test_create_trigger_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_trigger_rest_unset_required_fields():
@@ -17474,7 +17434,7 @@ def test_delete_trigger_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_trigger_rest_unset_required_fields():
@@ -17658,7 +17618,7 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_channel_rest_unset_required_fields():
@@ -17841,7 +17801,7 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_channels_rest_unset_required_fields():
@@ -18110,7 +18070,7 @@ def test_create_channel_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_channel_rest_unset_required_fields():
@@ -18406,7 +18366,7 @@ def test_delete_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_channel_rest_unset_required_fields():
@@ -18579,7 +18539,7 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_provider_rest_unset_required_fields():
@@ -18767,7 +18727,7 @@ def test_list_providers_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_providers_rest_unset_required_fields():
@@ -19020,7 +18980,7 @@ def test_get_channel_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_channel_connection_rest_unset_required_fields():
@@ -19212,7 +19172,7 @@ def test_list_channel_connections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_channel_connections_rest_unset_required_fields():
@@ -19486,7 +19446,7 @@ def test_create_channel_connection_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_channel_connection_rest_unset_required_fields():
@@ -19685,7 +19645,7 @@ def test_delete_channel_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_channel_connection_rest_unset_required_fields():
@@ -19868,7 +19828,7 @@ def test_get_google_channel_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_google_channel_config_rest_unset_required_fields():
@@ -20053,7 +20013,7 @@ def test_update_google_channel_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_google_channel_config_rest_unset_required_fields():
@@ -20241,7 +20201,7 @@ def test_get_message_bus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_message_bus_rest_unset_required_fields():
@@ -20434,7 +20394,7 @@ def test_list_message_buses_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_message_buses_rest_unset_required_fields():
@@ -20695,7 +20655,7 @@ def test_list_message_bus_enrollments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_message_bus_enrollments_rest_unset_required_fields():
@@ -20974,7 +20934,7 @@ def test_create_message_bus_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_message_bus_rest_unset_required_fields():
@@ -21177,7 +21137,7 @@ def test_update_message_bus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_message_bus_rest_unset_required_fields():
@@ -21381,7 +21341,7 @@ def test_delete_message_bus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_message_bus_rest_unset_required_fields():
@@ -21570,7 +21530,7 @@ def test_get_enrollment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_enrollment_rest_unset_required_fields():
@@ -21761,7 +21721,7 @@ def test_list_enrollments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_enrollments_rest_unset_required_fields():
@@ -22034,7 +21994,7 @@ def test_create_enrollment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_enrollment_rest_unset_required_fields():
@@ -22235,7 +22195,7 @@ def test_update_enrollment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_enrollment_rest_unset_required_fields():
@@ -22437,7 +22397,7 @@ def test_delete_enrollment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_enrollment_rest_unset_required_fields():
@@ -22624,7 +22584,7 @@ def test_get_pipeline_rest_required_fields(request_type=eventarc.GetPipelineRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_pipeline_rest_unset_required_fields():
@@ -22812,7 +22772,7 @@ def test_list_pipelines_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_pipelines_rest_unset_required_fields():
@@ -23082,7 +23042,7 @@ def test_create_pipeline_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_pipeline_rest_unset_required_fields():
@@ -23280,7 +23240,7 @@ def test_update_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_pipeline_rest_unset_required_fields():
@@ -23478,7 +23438,7 @@ def test_delete_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_pipeline_rest_unset_required_fields():
@@ -23671,7 +23631,7 @@ def test_get_google_api_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_google_api_source_rest_unset_required_fields():
@@ -23865,7 +23825,7 @@ def test_list_google_api_sources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_google_api_sources_rest_unset_required_fields():
@@ -24145,7 +24105,7 @@ def test_create_google_api_source_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_google_api_source_rest_unset_required_fields():
@@ -24349,7 +24309,7 @@ def test_update_google_api_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_google_api_source_rest_unset_required_fields():
@@ -24554,7 +24514,7 @@ def test_delete_google_api_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_google_api_source_rest_unset_required_fields():

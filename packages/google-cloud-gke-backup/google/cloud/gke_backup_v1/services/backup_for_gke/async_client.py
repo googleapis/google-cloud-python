@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -395,11 +395,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_plan(request=request)
+                operation = await client.create_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -788,11 +788,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_plan(request=request)
+                operation = await client.update_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -936,11 +936,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_plan(request=request)
+                operation = await client.delete_backup_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1074,11 +1074,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_channel(request=request)
+                operation = await client.create_backup_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1473,11 +1473,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_channel(request=request)
+                operation = await client.update_backup_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1621,11 +1621,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_channel(request=request)
+                operation = await client.delete_backup_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2001,11 +2001,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup(request=request)
+                operation = await client.create_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2400,11 +2400,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup(request=request)
+                operation = await client.update_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2546,11 +2546,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2928,11 +2928,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_restore_plan(request=request)
+                operation = await client.create_restore_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3324,11 +3324,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_restore_plan(request=request)
+                operation = await client.update_restore_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3469,11 +3469,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_restore_plan(request=request)
+                operation = await client.delete_restore_plan(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3608,11 +3608,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_restore_channel(request=request)
+                operation = await client.create_restore_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4008,11 +4008,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_restore_channel(request=request)
+                operation = await client.update_restore_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4157,11 +4157,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_restore_channel(request=request)
+                operation = await client.delete_restore_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4542,11 +4542,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_restore(request=request)
+                operation = await client.create_restore(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4937,11 +4937,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_restore(request=request)
+                operation = await client.update_restore(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5081,11 +5081,11 @@ class BackupForGKEAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_restore(request=request)
+                operation = await client.delete_restore(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
