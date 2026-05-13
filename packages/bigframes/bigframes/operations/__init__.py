@@ -126,6 +126,7 @@ from bigframes.operations.geo_ops import (
     geo_x_op,
     geo_y_op,
 )
+from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
     JSONExtract,
     JSONExtractArray,
@@ -229,7 +230,6 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
-from bigframes.operations.googlesql import GoogleSqlScalarOp
 
 __all__ = [
     # Base ops
