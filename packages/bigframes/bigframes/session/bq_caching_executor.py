@@ -191,7 +191,9 @@ class BigQueryCachingExecutor(executor.Executor):
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
         self._publisher.publish(bigframes.core.events.ExecutionStarted())
-        maybe_result = await self._try_execute_semi_executors(array_value, execution_spec)
+        maybe_result = await self._try_execute_semi_executors(
+            array_value, execution_spec
+        )
         if maybe_result is not None:
             return maybe_result
         result = await self._execute_bigquery(array_value, execution_spec)
@@ -240,7 +242,7 @@ class BigQueryCachingExecutor(executor.Executor):
             if not execution_spec.promise_under_10gb:
                 table = await asyncio.to_thread(
                     self.storage_manager.create_temp_table,
-                    array_value.schema.to_bigquery()
+                    array_value.schema.to_bigquery(),
                 )
                 execution_spec = dataclasses.replace(
                     execution_spec,
@@ -419,7 +421,8 @@ class BigQueryCachingExecutor(executor.Executor):
             plan, ordering = rewrite.pull_out_order(plan)
         destination_table = await asyncio.to_thread(
             self.storage_manager.create_temp_table,
-            plan.schema.to_bigquery(), cluster_cols
+            plan.schema.to_bigquery(),
+            cluster_cols,
         )
         arr_value = bigframes.core.ArrayValue(plan)
         execution_spec = ex_spec.ExecutionSpec(
@@ -445,17 +448,20 @@ class BigQueryCachingExecutor(executor.Executor):
         """
         # Once rewriting is available, will want to rewrite before
         # evaluating execution cost.
-        return tree_properties.is_trivially_executable(
-            self.prepare_plan(array_value.node)
-        )
+        simplified_plan = self._prepare_plan_simplify(array_value.node)
+        return tree_properties.is_trivially_executable(simplified_plan)
 
     def _prepare_plan_simplify(self, plan: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        """Prepare the plan by simplifying it with caches and removing unused operators."""
         plan = self.cache.subsitute_cached_subplans(plan)
         plan = rewrite.column_pruning(plan)
         plan = plan.top_down(rewrite.fold_row_counts)
         return plan
 
-    async def _prepare_plan_bq_execution(self, plan: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    async def _prepare_plan_bq_execution(
+        self, plan: nodes.BigFrameNode
+    ) -> nodes.BigFrameNode:
+        """Prepare the plan for BigQuery execution by caching subtrees and uploading large local sources."""
         if bigframes.options.compute.enable_multi_query_execution:
             await self._simplify_with_caching(plan)
         plan = self._prepare_plan_simplify(plan)
