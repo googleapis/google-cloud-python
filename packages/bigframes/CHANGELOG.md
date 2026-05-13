@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.39.0...bigframes-v2.40.0) (2026-05-13)
+
+
+### Documentation
+
+* Add docs to the to_csv methods of dataframe and series (#16570) ([a8fccefd868e3474d3a2cfbabc03364891e05824](https://github.com/googleapis/google-cloud-python/commit/a8fccefd868e3474d3a2cfbabc03364891e05824))
+
+
+### Features
+
+* add more params to ai.classify (#16990) ([e9c52b12c02f8b15e43b62e6f3fb7617ac3bdfd9](https://github.com/googleapis/google-cloud-python/commit/e9c52b12c02f8b15e43b62e6f3fb7617ac3bdfd9))
+* add support for `hparam_range` and `hparam_candidates` to `bigframes.bigquery.create_model` (#16640) ([ca47835ce0e381c0833545ca1cf7734c3c34ceb5](https://github.com/googleapis/google-cloud-python/commit/ca47835ce0e381c0833545ca1cf7734c3c34ceb5))
+* update ai.score to match its SQL version (#16919) ([9f42fe1436df61ca0abad77bb4b51ed983a85a48](https://github.com/googleapis/google-cloud-python/commit/9f42fe1436df61ca0abad77bb4b51ed983a85a48))
+* update ai.if_() params to match the SQL version (#16857) ([f3cb4ad04a15a58a931d4feb43b172805209cf58](https://github.com/googleapis/google-cloud-python/commit/f3cb4ad04a15a58a931d4feb43b172805209cf58))
+* Support unstable sort_values, sort_index (#16665) ([bbdeb70fff766dc51bcac32b5312c13ce16764d4](https://github.com/googleapis/google-cloud-python/commit/bbdeb70fff766dc51bcac32b5312c13ce16764d4))
+* Support Expression objects in create_model options (#16606) ([cf12ffd858bdba0a95dba8fd591ed9adcf8c0e8a](https://github.com/googleapis/google-cloud-python/commit/cf12ffd858bdba0a95dba8fd591ed9adcf8c0e8a))
+* implement ai.similarity (#16771) ([d4afa2c835d53983ecd22e2f9835107791cde65f](https://github.com/googleapis/google-cloud-python/commit/d4afa2c835d53983ecd22e2f9835107791cde65f))
+* implement ai.embed (#16759) ([fcb4579b9e273c3ad43ed150f4ef0fbb7daeef2c](https://github.com/googleapis/google-cloud-python/commit/fcb4579b9e273c3ad43ed150f4ef0fbb7daeef2c))
+* Add bigframes.execution_history API to track BigQuery jobs (#16588) ([fa20a740b15accf2b1ae18a9ac20b75f006dbcad](https://github.com/googleapis/google-cloud-python/commit/fa20a740b15accf2b1ae18a9ac20b75f006dbcad))
+* Support loading avro, orc data (#16555) ([6d46cba3777c1b2adf6f1f86f6d3db3ea30c55d2](https://github.com/googleapis/google-cloud-python/commit/6d46cba3777c1b2adf6f1f86f6d3db3ea30c55d2))
+* Add numpy ufunc support to col expressions (#16554) ([2f792abd5d48ec680305e1e4ec9136360e16c9a5](https://github.com/googleapis/google-cloud-python/commit/2f792abd5d48ec680305e1e4ec9136360e16c9a5))
+
+
+### Bug Fixes
+
+* avoid `copy` argument warning in `to_pandas` (#16917) ([fe5245b8f20dd94231e72e2572609e029ee137c7](https://github.com/googleapis/google-cloud-python/commit/fe5245b8f20dd94231e72e2572609e029ee137c7))
+* BigFrames respects bq default region (#16933) ([ef9945a5d6296e6bbf00b6ef980462f5a0b91b20](https://github.com/googleapis/google-cloud-python/commit/ef9945a5d6296e6bbf00b6ef980462f5a0b91b20))
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* Fix bugs compiling ambiguous ids and in subqueries (#16617) ([479e44ddb8ba7515797f062064c4ebf2db5d09f2](https://github.com/googleapis/google-cloud-python/commit/479e44ddb8ba7515797f062064c4ebf2db5d09f2))
+* avoid views when querying BigLake tables from SQL cells (#16562) ([fdd3e0de66377d75ec235e4fc071e4ecc33a35c7](https://github.com/googleapis/google-cloud-python/commit/fdd3e0de66377d75ec235e4fc071e4ecc33a35c7))
+
 ## [2.39.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.38.0...v2.39.0) (2026-03-31)
 
 
