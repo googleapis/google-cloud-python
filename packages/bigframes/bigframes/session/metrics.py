@@ -243,6 +243,7 @@ class ExecutionMetrics:
         except ImportError:
             return
 
+        # Direct publisher.publish calls pass raw Event objects, while background query callbacks wrap events in an EventEnvelope to preserve progress bar context.
         if isinstance(envelope, bigframes.core.events.EventEnvelope):
             event = envelope.event
         else:
