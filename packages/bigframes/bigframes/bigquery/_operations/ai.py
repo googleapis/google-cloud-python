@@ -842,9 +842,12 @@ def classify(
     input: PROMPT_TYPE,
     categories: tuple[str, ...] | list[str],
     *,
-    examples: list[tuple[str, str]] | None = None,
+    examples: list[tuple[str, str]]
+    | list[tuple[str, list[str] | tuple[str, ...]]]
+    | None = None,
     connection_id: str | None = None,
     endpoint: str | None = None,
+    output_mode: Literal["single", "multi"] | None = None,
     optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
     max_error_ratio: float | None = None,
 ) -> series.Series:
@@ -870,10 +873,11 @@ def classify(
             or pandas Series.
         categories (tuple[str, ...] | list[str]):
             Categories to classify the input into.
-        examples (list[tuple[str, str]], optional):
+        examples (list[tuple[str, str]] | list[tuple[str, list[str] | tuple[str, ...]]], optional):
             An array that contains representative examples of input strings and the output category
-            that you expect. You can provide examples to help the model understand your
-            intended threshold for a condition with nuanced or subjective logic. We recommend providing at most 5 examples.
+            that you expect. If ``output_mode`` is ``multi``, each example output must be a list or tuple of strings.
+            You can provide examples to help the model understand your intended threshold for a condition with nuanced
+            or subjective logic. We recommend providing at most 5 examples.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
@@ -881,6 +885,9 @@ def classify(
             A STRING value that specifies the Vertex AI endpoint to use for the model. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically
             identifies and uses the full endpoint of the model.
+        output_mode (Literal["single", "multi"], optional):
+            A STRING value that indicates whether a single input can be classified into multiple categories.
+            Supported values are ``single`` and ``multi``.
         optimization_mode (Literal["minimize_cost", "maximize_quality"], optional):
             A STRING value that specifies the optimization strategy to use. Supported values are ``minimize_cost``
             and ``maximize_quality``.
@@ -890,13 +897,19 @@ def classify(
             This argument isn't supported when ``optimization_mode`` is set to ``minimize_cost``.
 
     Returns:
-        bigframes.series.Series: A new series of strings.
+        bigframes.series.Series: A new series of strings (or a series of arrays of strings if ``output_mode`` is specified).
     """
 
     prompt_context, series_list = _separate_context_and_series(input)
     assert len(series_list) > 0
 
-    example_tuples = tuple(examples) if examples is not None else None
+    if examples is not None:
+        example_tuples = tuple(
+            (ex[0], tuple(ex[1]) if isinstance(ex[1], (list, tuple)) else ex[1])
+            for ex in examples
+        )
+    else:
+        example_tuples = None
 
     operator = ai_ops.AIClassify(
         prompt_context=tuple(prompt_context),
@@ -904,6 +917,7 @@ def classify(
         examples=example_tuples,
         connection_id=connection_id,
         endpoint=endpoint,
+        output_mode=output_mode,
         optimization_mode=_upper_optional(optimization_mode),
         max_error_ratio=max_error_ratio,
     )

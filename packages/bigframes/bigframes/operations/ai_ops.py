@@ -160,13 +160,18 @@ class AIClassify(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     categories: tuple[str, ...]
-    examples: tuple[tuple[str, str], ...] | None = None
+    examples: (
+        tuple[tuple[str, str], ...] | tuple[tuple[str, tuple[str, ...]], ...] | None
+    ) = None
     connection_id: str | None = None
     endpoint: str | None = None
+    output_mode: str | None = None
     optimization_mode: str | None = None
     max_error_ratio: float | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if self.output_mode is not None:
+            return dtypes.list_type(dtypes.STRING_DTYPE)
         return dtypes.STRING_DTYPE
 
 

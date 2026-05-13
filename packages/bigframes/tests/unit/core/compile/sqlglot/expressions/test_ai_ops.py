@@ -363,6 +363,41 @@ def test_ai_classify_with_params(scalar_types_df: dataframe.DataFrame, snapshot)
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_ai_classify_with_output_mode(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIClassify(
+        prompt_context=(None,),
+        categories=("greeting", "rejection"),
+        output_mode="multi",
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_classify_multi_with_list_examples(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    col_name = "string_col"
+
+    examples = (
+        ("hi", ("greeting", "positive")),
+        ("bye", ("rejection", "negative")),
+    )
+    op = ops.AIClassify(
+        prompt_context=(None,),
+        categories=("greeting", "rejection"),
+        examples=examples,
+        output_mode="multi",
+    )
+
+    sql = utils._apply_ops_to_sql(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 @pytest.mark.parametrize("connection_id", [None, CONNECTION_ID])
 def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot, connection_id):
     col_name = "string_col"
