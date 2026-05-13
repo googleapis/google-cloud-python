@@ -21,7 +21,7 @@ from google.cloud import bigquery
 
 
 @dataclasses.dataclass(frozen=True)
-class  ExecutionSpec:
+class ExecutionSpec:
     # destination for the result of the operation. Executor may also incidentally create other temporary tables for its own purposes.
     destination_spec: Union[
         TableOutputSpec, GcsOutputSpec, EphemeralTableSpec, None
@@ -51,8 +51,7 @@ class  ExecutionSpec:
         """
         return dataclasses.replace(
             self,
-            
-        )     
+        )
 
 
 # Used internally by execution

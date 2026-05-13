@@ -277,7 +277,9 @@ class Block:
         row_count = (
             self.session._executor.execute(
                 self.expr.row_count(),
-                execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False).with_current_configuration(),
+                execution_spec.ExecutionSpec(
+                    promise_under_10gb=True, ordered=False
+                ).with_current_configuration(),
             )
             .batches()
             .to_py_scalar()
@@ -684,7 +686,9 @@ class Block:
             )
             result = self.session._executor.execute(
                 self.expr,
-                execution_spec.ExecutionSpec(promise_under_10gb=under_10gb, peek=n).with_current_configuration(),
+                execution_spec.ExecutionSpec(
+                    promise_under_10gb=under_10gb, peek=n
+                ).with_current_configuration(),
             )
             df = result.batches().to_pandas()
             return self._copy_index_to_pandas(df)

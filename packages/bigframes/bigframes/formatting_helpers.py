@@ -136,6 +136,7 @@ def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
 
 current_display_id: Optional[str] = None
 
+
 def create_progress_callback():
     # bind potentially thread-local config to the callback so that it uses the user thread
     # config even if callback is invoked from a worker thread.
@@ -213,6 +214,7 @@ def create_progress_callback():
             elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
                 message = render_bqquery_finished_event_plaintext(event)
                 print(message)
+
     return progress_callback
 
 
