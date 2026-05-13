@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1909,11 +1903,7 @@ async def test_list_key_rings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_key_rings(request={})
-        ).pages:
+        async for page_ in (await client.list_key_rings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2438,11 +2428,7 @@ async def test_list_crypto_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_crypto_keys(request={})
-        ).pages:
+        async for page_ in (await client.list_crypto_keys(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2994,11 +2980,7 @@ async def test_list_crypto_key_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_crypto_key_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_crypto_key_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3523,11 +3505,7 @@ async def test_list_import_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_import_jobs(request={})
-        ).pages:
+        async for page_ in (await client.list_import_jobs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4073,11 +4051,7 @@ async def test_list_retired_resources_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_retired_resources(request={})
-        ).pages:
+        async for page_ in (await client.list_retired_resources(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13902,7 +13876,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_key_rings_rest_unset_required_fields():
@@ -14162,7 +14136,7 @@ def test_list_crypto_keys_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_crypto_keys_rest_unset_required_fields():
@@ -14431,7 +14405,7 @@ def test_list_crypto_key_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_crypto_key_versions_rest_unset_required_fields():
@@ -14698,7 +14672,7 @@ def test_list_import_jobs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_import_jobs_rest_unset_required_fields():
@@ -14963,7 +14937,7 @@ def test_list_retired_resources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_retired_resources_rest_unset_required_fields():
@@ -15210,7 +15184,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_key_ring_rest_unset_required_fields():
@@ -15385,7 +15359,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_crypto_key_rest_unset_required_fields():
@@ -15570,7 +15544,7 @@ def test_get_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_crypto_key_version_rest_unset_required_fields():
@@ -15750,7 +15724,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_public_key_rest_unset_required_fields():
@@ -15928,7 +15902,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_import_job_rest_unset_required_fields():
@@ -16112,7 +16086,7 @@ def test_get_retired_resource_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_retired_resource_rest_unset_required_fields():
@@ -16308,7 +16282,7 @@ def test_create_key_ring_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_key_ring_rest_unset_required_fields():
@@ -16521,7 +16495,7 @@ def test_create_crypto_key_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_crypto_key_rest_unset_required_fields():
@@ -16725,7 +16699,7 @@ def test_create_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_crypto_key_version_rest_unset_required_fields():
@@ -16918,7 +16892,7 @@ def test_delete_crypto_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_crypto_key_rest_unset_required_fields():
@@ -17102,7 +17076,7 @@ def test_delete_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_crypto_key_version_rest_unset_required_fields():
@@ -17290,7 +17264,7 @@ def test_import_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_crypto_key_version_rest_unset_required_fields():
@@ -17437,7 +17411,7 @@ def test_create_import_job_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_import_job_rest_unset_required_fields():
@@ -17630,7 +17604,7 @@ def test_update_crypto_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_rest_unset_required_fields():
@@ -17825,7 +17799,7 @@ def test_update_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_version_rest_unset_required_fields():
@@ -18027,7 +18001,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_primary_version_rest_unset_required_fields():
@@ -18227,7 +18201,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_destroy_crypto_key_version_rest_unset_required_fields():
@@ -18413,7 +18387,7 @@ def test_restore_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restore_crypto_key_version_rest_unset_required_fields():
@@ -18596,7 +18570,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_encrypt_rest_unset_required_fields():
@@ -18789,7 +18763,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_decrypt_rest_unset_required_fields():
@@ -18982,7 +18956,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_raw_encrypt_rest_unset_required_fields():
@@ -19117,7 +19091,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_raw_decrypt_rest_unset_required_fields():
@@ -19247,7 +19221,7 @@ def test_asymmetric_sign_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_asymmetric_sign_rest_unset_required_fields():
@@ -19438,7 +19412,7 @@ def test_asymmetric_decrypt_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_asymmetric_decrypt_rest_unset_required_fields():
@@ -19631,7 +19605,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_mac_sign_rest_unset_required_fields():
@@ -19828,7 +19802,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_mac_verify_rest_unset_required_fields():
@@ -20024,7 +19998,7 @@ def test_decapsulate_rest_required_fields(request_type=service.DecapsulateReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_decapsulate_rest_unset_required_fields():

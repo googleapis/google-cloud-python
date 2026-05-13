@@ -7,8 +7,8 @@ from __future__ import annotations
 import copy
 from typing import Any, List
 
-from google.cloud import bigquery
 import pandas
+from google.cloud import bigquery
 
 
 def get_query_stats(

@@ -1920,7 +1920,7 @@ def ai_generate(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
         op.output_schema,  # type: ignore
     ).to_expr()
@@ -1934,7 +1934,7 @@ def ai_generate_bool(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1947,7 +1947,7 @@ def ai_generate_int(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1960,7 +1960,7 @@ def ai_generate_double(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1972,7 +1972,7 @@ def ai_embed(value: ibis_types.Value, op: ops.AIEmbed) -> ibis_types.StructValue
         connection_id=op.connection_id,  # type: ignore
         endpoint=op.endpoint,  # type: ignore
         model=op.model,  # type: ignore
-        task_type=op.task_type.upper() if op.task_type is not None else None,  # type: ignore
+        task_type=op.task_type,  # type: ignore
         title=op.title,  # type: ignore
         model_params=op.model_params,  # type: ignore
     ).to_expr()
@@ -1984,7 +1984,7 @@ def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.optimization_mode,  # type: ignore
         op.max_error_ratio,  # type: ignore
     ).to_expr()
 
@@ -1999,7 +1999,7 @@ def ai_classify(
         _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.optimization_mode,  # type: ignore
         op.max_error_ratio,  # type: ignore
     ).to_expr()
 

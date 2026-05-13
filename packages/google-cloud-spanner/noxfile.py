@@ -31,7 +31,6 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 ALL_PYTHON: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",

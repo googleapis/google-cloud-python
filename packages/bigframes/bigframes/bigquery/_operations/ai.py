@@ -49,7 +49,7 @@ def generate(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    request_type: Literal["dedicated", "shared", "unspecified"] = "unspecified",
+    request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
     model_params: Mapping[Any, Any] | None = None,
     output_schema: Mapping[str, str] | None = None,
 ) -> series.Series:
@@ -130,7 +130,7 @@ def generate(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
         endpoint=endpoint,
-        request_type=request_type,
+        request_type=_upper_optional(request_type),
         model_params=json.dumps(model_params) if model_params else None,
         output_schema=output_schema_str,
     )
@@ -144,7 +144,7 @@ def generate_bool(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    request_type: Literal["dedicated", "shared", "unspecified"] = "unspecified",
+    request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
     model_params: Mapping[Any, Any] | None = None,
 ) -> series.Series:
     """
@@ -208,7 +208,7 @@ def generate_bool(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
         endpoint=endpoint,
-        request_type=request_type,
+        request_type=_upper_optional(request_type),
         model_params=json.dumps(model_params) if model_params else None,
     )
 
@@ -221,7 +221,7 @@ def generate_int(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    request_type: Literal["dedicated", "shared", "unspecified"] = "unspecified",
+    request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
     model_params: Mapping[Any, Any] | None = None,
 ) -> series.Series:
     """
@@ -282,7 +282,7 @@ def generate_int(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
         endpoint=endpoint,
-        request_type=request_type,
+        request_type=_upper_optional(request_type),
         model_params=json.dumps(model_params) if model_params else None,
     )
 
@@ -295,7 +295,7 @@ def generate_double(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    request_type: Literal["dedicated", "shared", "unspecified"] = "unspecified",
+    request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
     model_params: Mapping[Any, Any] | None = None,
 ) -> series.Series:
     """
@@ -356,7 +356,7 @@ def generate_double(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
         endpoint=endpoint,
-        request_type=request_type,
+        request_type=_upper_optional(request_type),
         model_params=json.dumps(model_params) if model_params else None,
     )
 
@@ -754,7 +754,7 @@ def embed(
     operator = ai_ops.AIEmbed(
         endpoint=endpoint,
         model=model,
-        task_type=task_type,
+        task_type=_upper_optional(task_type),
         title=title,
         model_params=json.dumps(model_params) if model_params else None,
         connection_id=connection_id,
@@ -776,7 +776,7 @@ def if_(
     *,
     connection_id: str | None = None,
     endpoint: str | None = None,
-    optimization_mode: Literal["minimize_cost", "maximize_quality"] = "minimize_cost",
+    optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
     max_error_ratio: float | None = None,
 ) -> series.Series:
     """
@@ -831,7 +831,7 @@ def if_(
         prompt_context=tuple(prompt_context),
         connection_id=connection_id,
         endpoint=endpoint,
-        optimization_mode=optimization_mode,
+        optimization_mode=_upper_optional(optimization_mode),
         max_error_ratio=max_error_ratio,
     )
 
@@ -905,7 +905,7 @@ def classify(
         examples=example_tuples,
         connection_id=connection_id,
         endpoint=endpoint,
-        optimization_mode=optimization_mode,
+        optimization_mode=_upper_optional(optimization_mode),
         max_error_ratio=max_error_ratio,
     )
 
@@ -1208,7 +1208,7 @@ def _convert_series(
     result = convert.to_bf_series(s, default_index=None, session=session)
 
     if result.dtype == dtypes.OBJ_REF_DTYPE:
-        # Support multimodel
+        # Support multimodal
         import bigframes.bigquery as bbq
 
         return bbq.obj.get_access_url(result, mode="R")
@@ -1230,3 +1230,9 @@ def _to_dataframe(
         return data
 
     raise ValueError(f"Unsupported data type: {type(data)}")
+
+
+def _upper_optional(value: str | None) -> str | None:
+    if value is None:
+        return None
+    return value.upper()
