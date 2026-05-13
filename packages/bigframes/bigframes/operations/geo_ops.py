@@ -19,7 +19,6 @@ import bigframes.operations.type as op_typing
 from bigframes import dtypes
 from bigframes.operations import base_ops
 
-
 GeoStAstextOp = base_ops.create_unary_op(
     name="geo_st_astext",
     type_signature=op_typing.FixedOutputType(
