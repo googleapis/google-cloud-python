@@ -2783,9 +2783,7 @@ async def test_list_sessions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
-            await client.list_sessions(request={})
-        ).pages:
+        async for page_ in (await client.list_sessions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
