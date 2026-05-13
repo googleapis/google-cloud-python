@@ -15,8 +15,7 @@
 import pandas.testing
 
 from bigframes.core import nodes
-from bigframes.session import semi_executor, execution_spec
-
+from bigframes.session import execution_spec, semi_executor
 
 SPEC = execution_spec.ExecutionSpec(
     ordered=True,

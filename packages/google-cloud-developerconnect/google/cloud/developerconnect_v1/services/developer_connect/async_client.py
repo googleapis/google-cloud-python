@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -599,11 +599,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_connection(request=request)
+                operation = await client.create_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -745,11 +745,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_connection(request=request)
+                operation = await client.update_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -885,11 +885,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_connection(request=request)
+                operation = await client.delete_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1031,11 +1031,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_git_repository_link(request=request)
+                operation = await client.create_git_repository_link(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1175,11 +1175,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_git_repository_link(request=request)
+                operation = await client.delete_git_repository_link(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2423,11 +2423,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_account_connector(request=request)
+                operation = await client.create_account_connector(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2581,11 +2581,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_account_connector(request=request)
+                operation = await client.update_account_connector(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2722,11 +2722,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_account_connector(request=request)
+                operation = await client.delete_account_connector(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3096,11 +3096,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_user(request=request)
+                operation = await client.delete_user(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3338,11 +3338,11 @@ class DeveloperConnectAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_self(request=request)
+                operation = await client.delete_self(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
