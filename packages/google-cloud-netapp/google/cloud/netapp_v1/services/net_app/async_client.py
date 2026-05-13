@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -507,11 +507,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_storage_pool(request=request)
+                operation = await client.create_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -778,11 +778,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_storage_pool(request=request)
+                operation = await client.update_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -919,11 +919,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_storage_pool(request=request)
+                operation = await client.delete_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1053,11 +1053,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.validate_directory_service(request=request)
+                operation = await client.validate_directory_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1165,11 +1165,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.switch_active_replica_zone(request=request)
+                operation = await client.switch_active_replica_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1513,11 +1513,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_volume(request=request)
+                operation = await client.create_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1663,11 +1663,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_volume(request=request)
+                operation = await client.update_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1801,11 +1801,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_volume(request=request)
+                operation = await client.delete_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1933,11 +1933,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.revert_volume(request=request)
+                operation = await client.revert_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2039,11 +2039,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.establish_volume_peering(request=request)
+                operation = await client.establish_volume_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2383,11 +2383,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_snapshot(request=request)
+                operation = await client.create_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2530,11 +2530,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_snapshot(request=request)
+                operation = await client.delete_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2663,11 +2663,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_snapshot(request=request)
+                operation = await client.update_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3056,11 +3056,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_active_directory(request=request)
+                operation = await client.create_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3214,11 +3214,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_active_directory(request=request)
+                operation = await client.update_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3357,11 +3357,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_active_directory(request=request)
+                operation = await client.delete_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3622,11 +3622,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_kms_config(request=request)
+                operation = await client.create_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3884,11 +3884,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_kms_config(request=request)
+                operation = await client.update_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4024,11 +4024,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.encrypt_volumes(request=request)
+                operation = await client.encrypt_volumes(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4215,11 +4215,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_kms_config(request=request)
+                operation = await client.delete_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4594,11 +4594,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_replication(request=request)
+                operation = await client.create_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4741,11 +4741,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_replication(request=request)
+                operation = await client.delete_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4879,11 +4879,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_replication(request=request)
+                operation = await client.update_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5015,11 +5015,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.stop_replication(request=request)
+                operation = await client.stop_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5116,11 +5116,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resume_replication(request=request)
+                operation = await client.resume_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5220,11 +5220,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reverse_replication_direction(request=request)
+                operation = await client.reverse_replication_direction(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5326,11 +5326,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.establish_peering(request=request)
+                operation = await client.establish_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5429,11 +5429,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.sync_replication(request=request)
+                operation = await client.sync_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5536,11 +5536,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_vault(request=request)
+                operation = await client.create_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5922,11 +5922,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_vault(request=request)
+                operation = await client.update_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6065,11 +6065,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_vault(request=request)
+                operation = await client.delete_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6205,11 +6205,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup(request=request)
+                operation = await client.create_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6596,11 +6596,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6728,11 +6728,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup(request=request)
+                operation = await client.update_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6872,11 +6872,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_policy(request=request)
+                operation = await client.create_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7258,11 +7258,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_policy(request=request)
+                operation = await client.update_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7400,11 +7400,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_policy(request=request)
+                operation = await client.delete_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7778,11 +7778,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_quota_rule(request=request)
+                operation = await client.create_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7932,11 +7932,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_quota_rule(request=request)
+                operation = await client.update_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8073,11 +8073,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_quota_rule(request=request)
+                operation = await client.delete_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8205,11 +8205,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_backup_files(request=request)
+                operation = await client.restore_backup_files(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8556,11 +8556,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_host_group(request=request)
+                operation = await client.create_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8710,11 +8710,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_host_group(request=request)
+                operation = await client.update_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8848,11 +8848,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_host_group(request=request)
+                operation = await client.delete_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
