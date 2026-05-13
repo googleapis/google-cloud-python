@@ -2,7 +2,7 @@ SELECT
   AI.EMBED(
     `string_col`,
     endpoint => 'text-embedding-005',
-    task_type => 'retrieval_document',
+    task_type => 'RETRIEVAL_DOCUMENT',
     title => 'My Document',
     model_params => JSON '{"outputDimensionality": 256}'
   ) AS `result`
