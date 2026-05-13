@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -616,11 +616,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_source(request=request)
+                operation = await client.create_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -753,11 +753,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_source(request=request)
+                operation = await client.update_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -891,11 +891,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_source(request=request)
+                operation = await client.delete_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1524,11 +1524,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_utilization_report(request=request)
+                operation = await client.create_utilization_report(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1672,11 +1672,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_utilization_report(request=request)
+                operation = await client.delete_utilization_report(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2057,11 +2057,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_datacenter_connector(request=request)
+                operation = await client.create_datacenter_connector(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2205,11 +2205,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_datacenter_connector(request=request)
+                operation = await client.delete_datacenter_connector(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2338,11 +2338,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.upgrade_appliance(request=request)
+                operation = await client.upgrade_appliance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2445,11 +2445,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_migrating_vm(request=request)
+                operation = await client.create_migrating_vm(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2821,11 +2821,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_migrating_vm(request=request)
+                operation = await client.update_migrating_vm(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2959,11 +2959,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_migrating_vm(request=request)
+                operation = await client.delete_migrating_vm(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3094,11 +3094,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.start_migration(request=request)
+                operation = await client.start_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3226,11 +3226,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resume_migration(request=request)
+                operation = await client.resume_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3332,11 +3332,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.pause_migration(request=request)
+                operation = await client.pause_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3438,11 +3438,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.finalize_migration(request=request)
+                operation = await client.finalize_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3565,11 +3565,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.extend_migration(request=request)
+                operation = await client.extend_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3672,11 +3672,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_clone_job(request=request)
+                operation = await client.create_clone_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3821,11 +3821,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.cancel_clone_job(request=request)
+                operation = await client.cancel_clone_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4199,11 +4199,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cutover_job(request=request)
+                operation = await client.create_cutover_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4338,11 +4338,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.cancel_cutover_job(request=request)
+                operation = await client.cancel_cutover_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4943,11 +4943,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_group(request=request)
+                operation = await client.create_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5080,11 +5080,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_group(request=request)
+                operation = await client.update_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5218,11 +5218,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_group(request=request)
+                operation = await client.delete_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5349,11 +5349,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_group_migration(request=request)
+                operation = await client.add_group_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5475,11 +5475,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_group_migration(request=request)
+                operation = await client.remove_group_migration(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5852,11 +5852,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_target_project(request=request)
+                operation = await client.create_target_project(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5996,11 +5996,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_target_project(request=request)
+                operation = await client.update_target_project(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6137,11 +6137,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_target_project(request=request)
+                operation = await client.delete_target_project(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6752,11 +6752,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_image_import(request=request)
+                operation = await client.create_image_import(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6895,11 +6895,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_image_import(request=request)
+                operation = await client.delete_image_import(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7262,11 +7262,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.cancel_image_import_job(request=request)
+                operation = await client.cancel_image_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7398,11 +7398,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_disk_migration_job(request=request)
+                operation = await client.create_disk_migration_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7790,11 +7790,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_disk_migration_job(request=request)
+                operation = await client.update_disk_migration_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7932,11 +7932,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_disk_migration_job(request=request)
+                operation = await client.delete_disk_migration_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8065,11 +8065,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.run_disk_migration_job(request=request)
+                operation = await client.run_disk_migration_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8192,11 +8192,11 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                operation = client.cancel_disk_migration_job(request=request)
+                operation = await client.cancel_disk_migration_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -160,7 +160,7 @@ def test_ai_generate_bool(session):
 
 def test_ai_generate_bool_multi_model(session):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
     )
 
     result = bbq.ai.generate_bool((df["image"], " contains an animal"))
@@ -197,7 +197,7 @@ def test_ai_generate_int(session):
 
 def test_ai_generate_int_multi_model(session):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
     )
 
     result = bbq.ai.generate_int(
@@ -236,7 +236,7 @@ def test_ai_generate_double(session):
 
 def test_ai_generate_double_multi_model(session):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
     )
 
     result = bbq.ai.generate_double(
@@ -307,7 +307,7 @@ def test_ai_if(session):
 
 def test_ai_if_multi_model(session, bq_connection):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
+        "gs://bigframes-dev-testing/a_multimodal/images/*",
         name="image",
         connection=bq_connection,
     )
@@ -338,7 +338,7 @@ def test_ai_classify_with_examples(session):
 
 def test_ai_classify_multi_model(session, bq_connection):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
+        "gs://bigframes-dev-testing/a_multimodal/images/*",
         name="image",
         connection=bq_connection,
     )
@@ -361,7 +361,7 @@ def test_ai_score(session):
 
 def test_ai_score_multi_model(session):
     df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+        "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
     )
     prompt = ("Rank the liveliness of ", df["image"], "on the scale from 1 to 3")
 

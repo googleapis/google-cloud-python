@@ -29,6 +29,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
 import google.cloud.exceptions
 import google.cloud.functions_v2 as functions_v2
+import google.cloud.bigquery_storage_v1
 import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
 import numpy as np
@@ -112,6 +113,13 @@ def gcs_folder(gcs_client: storage.Client):
 @pytest.fixture(scope="session")
 def bigquery_client(session: bigframes.Session) -> bigquery.Client:
     return session.bqclient
+
+
+@pytest.fixture(scope="session")
+def bigquery_storage_read_client(
+    session: bigframes.Session,
+) -> google.cloud.bigquery_storage_v1.BigQueryReadClient:
+    return session.bqstoragereadclient
 
 
 @pytest.fixture(scope="session")

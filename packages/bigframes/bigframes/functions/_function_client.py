@@ -142,7 +142,7 @@ class FunctionClient:
         # TODO(swast): plumb through the original, user-facing api_name.
         import bigframes.session._io.bigquery
 
-        _, query_job = bigframes.session._io.bigquery.start_query_with_client(
+        _, query_job = bigframes.session._io.bigquery.start_query_with_job(
             cast(bigquery.Client, self._session.bqclient),
             create_function_ddl,
             job_config=bigquery.QueryJobConfig(),
@@ -150,7 +150,6 @@ class FunctionClient:
             project=None,
             timeout=None,
             metrics=None,
-            query_with_job=True,
             publisher=self._session._publisher,
         )
         logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
