@@ -22,6 +22,7 @@ import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
 from google.cloud import bigquery
 
+import bigframes
 import bigframes.core.compile
 import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
 import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
@@ -92,8 +93,12 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             )
 
         job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
+        if self._labels:
+            job_config.labels.update(self._labels)
         if spec.labels:
             job_config.labels.update(spec.labels)
+        if spec.maximum_bytes_billed is not None:
+            job_config.maximum_bytes_billed = spec.maximum_bytes_billed
 
         iterator, query_job = await asyncio.to_thread(
             self._run_execute_query,
@@ -154,14 +159,6 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         """
         Starts BigQuery query job and waits for results.
         """
-        if bigframes.options.compute.maximum_bytes_billed is not None:
-            job_config.maximum_bytes_billed = (
-                bigframes.options.compute.maximum_bytes_billed
-            )
-
-        if self._labels:
-            job_config.labels.update(self._labels)
-
         try:
             if query_with_job:
                 return bq_io.start_query_with_job(

@@ -21,7 +21,7 @@ from google.cloud import bigquery
 
 
 @dataclasses.dataclass(frozen=True)
-class ExecutionSpec:
+class  ExecutionSpec:
     # destination for the result of the operation. Executor may also incidentally create other temporary tables for its own purposes.
     destination_spec: Union[
         TableOutputSpec, GcsOutputSpec, EphemeralTableSpec, None
@@ -35,10 +35,24 @@ class ExecutionSpec:
     # This is an optimization flag for gbq execution, it doesn't change semantics, but if promise is falsely made, errors may occur
     promise_under_10gb: bool = False
 
+    # BigQuery specific options
     labels: tuple[tuple[str, str], ...] = ()
+    maximum_bytes_billed: Optional[int] = None
+    enable_multi_query_execution: Optional[bool] = None
 
     def add_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
         return dataclasses.replace(self, labels=self.labels + tuple(labels.items()))
+
+    def with_current_configuration(self) -> ExecutionSpec:
+        """
+        Grabs the current global or thread-local config and binds it to the execution spec.
+
+        Returns a new ExecutionSpec with the current configuration applied.
+        """
+        return dataclasses.replace(
+            self,
+            
+        )     
 
 
 # Used internally by execution

@@ -293,7 +293,7 @@ class Index:
 
         count_scalar = (
             self._block.session._executor.execute(
-                count_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
+                count_result, ex_spec.ExecutionSpec(promise_under_10gb=True).with_current_configuration()
             )
             .batches()
             .to_py_scalar()
@@ -308,7 +308,7 @@ class Index:
             position_result = filtered_block._expr.aggregate([(min_agg, "position")])
             position_scalar = (
                 self._block.session._executor.execute(
-                    position_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
+                    position_result, ex_spec.ExecutionSpec(promise_under_10gb=True).with_current_configuration()
                 )
                 .batches()
                 .to_py_scalar()
@@ -347,7 +347,7 @@ class Index:
         result_df = (
             self._block.session._executor.execute(
                 combined_result,
-                execution_spec=ex_spec.ExecutionSpec(promise_under_10gb=True),
+                execution_spec=ex_spec.ExecutionSpec(promise_under_10gb=True).with_current_configuration(),
             )
             .batches()
             .to_pandas()

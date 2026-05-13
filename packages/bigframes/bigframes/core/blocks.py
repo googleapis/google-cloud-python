@@ -277,7 +277,7 @@ class Block:
         row_count = (
             self.session._executor.execute(
                 self.expr.row_count(),
-                execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False),
+                execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False).with_current_configuration(),
             )
             .batches()
             .to_py_scalar()
@@ -590,7 +590,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=ordered,
-            ),
+            ).with_current_configuration(),
         )
         pa_table = execute_result.batches().to_arrow_table()
 
@@ -684,7 +684,7 @@ class Block:
             )
             result = self.session._executor.execute(
                 self.expr,
-                execution_spec.ExecutionSpec(promise_under_10gb=under_10gb, peek=n),
+                execution_spec.ExecutionSpec(promise_under_10gb=under_10gb, peek=n).with_current_configuration(),
             )
             df = result.batches().to_pandas()
             return self._copy_index_to_pandas(df)
@@ -713,7 +713,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=True,
-            ),
+            ).with_current_configuration(),
         )
         result_batches = execution_result.batches()
 
@@ -777,7 +777,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=materialize_options.ordered,
-            ),
+            ).with_current_configuration(),
         )
         result_batches = execute_result.batches()
 
@@ -1621,7 +1621,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=True,
                 ordered=True,
-            ),
+            ).with_current_configuration(),
         )
         row_count = (
             self.session._executor.execute(
@@ -1629,7 +1629,7 @@ class Block:
                 execution_spec.ExecutionSpec(
                     promise_under_10gb=True,
                     ordered=False,
-                ),
+                ).with_current_configuration(),
             )
             .batches()
             .to_py_scalar()
