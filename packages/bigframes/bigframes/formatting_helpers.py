@@ -163,6 +163,7 @@ def progress_callback(
         # This will allow cleanup to continue.
         return
 
+    # Direct publisher.publish calls pass raw Event objects, while background query callbacks wrap events in an EventEnvelope to preserve progress bar context.
     if isinstance(envelope, bigframes.core.events.EventEnvelope):
         event = envelope.event
         progress_bar = envelope.progress_bar
