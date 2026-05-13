@@ -868,13 +868,14 @@ def test_blob_compose_delete_source_objects(shared_bucket, blobs_to_delete):
 
     assert destination.download_as_bytes() == payload_1 + payload_2
 
-    if source_1.exists():
-        blobs_to_delete.append(source_1)
-    assert not source_1.exists()
-
-    if source_2.exists():
-        blobs_to_delete.append(source_2)
-    assert not source_2.exists()
+    try:
+        assert not source_1.exists()
+        assert not source_2.exists()
+    finally:
+        if source_1.exists():
+            blobs_to_delete.append(source_1)
+        if source_2.exists():
+            blobs_to_delete.append(source_2)
 
 
 def test_blob_compose_new_blob_wo_content_type(shared_bucket, blobs_to_delete):
