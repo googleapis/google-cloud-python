@@ -39,12 +39,11 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "google-cloud-core >= 1.4.4, < 3.0.0",
+    "google-api-core[grpc] >= 2.19.0, <3.0.0",
+    "google-cloud-core >= 2.0.0, < 3.0.0",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
-    "proto-plus >= 1.22.0, <2.0.0",
+    "proto-plus >= 1.22.3, <2.0.0",
     "sqlparse >= 0.4.4",
-    "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
     "protobuf >= 4.25.8, < 8.0.0",
     "grpc-interceptor >= 0.15.4",
     # Make OpenTelemetry a core dependency
