@@ -13,6 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
+import asyncio
 from typing import Callable, Literal, Mapping, Optional, Tuple
 
 import google.api_core.exceptions
@@ -58,7 +59,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         self._metrics = metrics
         self._labels = labels
 
-    def execute(
+    async def execute(
         self,
         plan: nodes.BigFrameNode,
         spec: execution_spec.ExecutionSpec,
@@ -94,7 +95,8 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         if spec.labels:
             job_config.labels.update(spec.labels)
 
-        iterator, query_job = self._run_execute_query(
+        iterator, query_job = await asyncio.to_thread(
+            self._run_execute_query,
             sql=compiled.sql,
             job_config=job_config,
             query_with_job=(not can_skip_job),

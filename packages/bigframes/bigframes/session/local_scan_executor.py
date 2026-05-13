@@ -24,7 +24,7 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
     Executes plans reducible to a arrow table scan.
     """
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
         execution_spec: execution_spec.ExecutionSpec,
