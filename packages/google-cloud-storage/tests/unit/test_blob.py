@@ -4480,6 +4480,45 @@ class Test_Blob(unittest.TestCase):
             _target_object=destination,
         )
 
+    def test_compose_w_delete_source_objects(self):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        content_type = "text/plain"
+        delete_source_objects = True
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+        destination = self._make_one(destination_name, bucket=bucket)
+        destination.content_type = content_type
+
+        destination.compose(
+            sources=[source_1, source_2],
+            delete_source_objects=delete_source_objects,
+        )
+
+        expected_path = f"/b/name/o/{destination_name}/compose"
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {"contentType": content_type},
+            "deleteSourceObjects": delete_source_objects,
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
     def test_compose_minimal_w_user_project_w_timeout(self):
         source_1_name = "source-1"
         source_2_name = "source-2"
