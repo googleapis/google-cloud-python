@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -380,11 +380,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_build(request=request)
+                operation = await client.create_build(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1044,11 +1044,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.retry_build(request=request)
+                operation = await client.retry_build(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1223,11 +1223,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.approve_build(request=request)
+                operation = await client.approve_build(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2074,11 +2074,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.run_build_trigger(request=request)
+                operation = await client.run_build_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2341,11 +2341,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_worker_pool(request=request)
+                operation = await client.create_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2641,11 +2641,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_worker_pool(request=request)
+                operation = await client.delete_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2782,11 +2782,11 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_worker_pool(request=request)
+                operation = await client.update_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
