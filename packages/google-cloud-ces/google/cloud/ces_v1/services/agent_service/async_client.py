@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -653,11 +653,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_app(request=request)
+                operation = await client.create_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -928,11 +928,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_app(request=request)
+                operation = await client.delete_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1062,11 +1062,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_app(request=request)
+                operation = await client.export_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1190,11 +1190,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_app(request=request)
+                operation = await client.import_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3130,11 +3130,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_conversations(request=request)
+                operation = await client.batch_delete_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5906,11 +5906,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_app_version(request=request)
+                operation = await client.restore_app_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
