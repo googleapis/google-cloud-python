@@ -162,7 +162,7 @@ class Udf(Protocol):
     """
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf: ...  # noqa: E704
+    def udf_def(self) -> udf_def.BigqueryUdf: ...
 
 
 class BigqueryCallableRoutine:
