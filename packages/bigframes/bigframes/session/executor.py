@@ -321,7 +321,7 @@ class Executor(abc.ABC):
         raise NotImplementedError("to_sql not implemented for this executor")
 
     @abc.abstractmethod
-    def execute(
+    async def execute(
         self,
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
