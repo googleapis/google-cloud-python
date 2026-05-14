@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2026 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
+    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -389,6 +390,7 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
+        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",

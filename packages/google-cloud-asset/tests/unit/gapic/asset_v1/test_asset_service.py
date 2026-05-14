@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2026 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    import mock
+
 import json
 import math
-import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
-from unittest import mock
-from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -2048,7 +2054,11 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_assets(request={})).pages:
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_assets(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4492,7 +4502,11 @@ async def test_search_all_resources_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.search_all_resources(request={})).pages:
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.search_all_resources(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5049,7 +5063,11 @@ async def test_search_all_iam_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.search_all_iam_policies(request={})).pages:
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.search_all_iam_policies(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7306,7 +7324,11 @@ async def test_list_saved_queries_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_saved_queries(request={})).pages:
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_saved_queries(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8817,7 +8839,11 @@ async def test_analyze_org_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.analyze_org_policies(request={})).pages:
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.analyze_org_policies(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9398,7 +9424,9 @@ async def test_analyze_org_policy_governed_containers_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.analyze_org_policy_governed_containers(request={})
         ).pages:
             pages.append(page_)
@@ -9979,7 +10007,9 @@ async def test_analyze_org_policy_governed_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.analyze_org_policy_governed_assets(request={})
         ).pages:
             pages.append(page_)
@@ -10097,7 +10127,7 @@ def test_export_assets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_export_assets_rest_unset_required_fields():
@@ -10234,7 +10264,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_list_assets_rest_unset_required_fields():
@@ -10497,7 +10527,7 @@ def test_batch_get_assets_history_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_batch_get_assets_history_rest_unset_required_fields():
@@ -10630,7 +10660,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_create_feed_rest_unset_required_fields():
@@ -10813,7 +10843,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_get_feed_rest_unset_required_fields():
@@ -10987,7 +11017,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_list_feeds_rest_unset_required_fields():
@@ -11157,7 +11187,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_update_feed_rest_unset_required_fields():
@@ -11336,7 +11366,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_delete_feed_rest_unset_required_fields():
@@ -11525,7 +11555,7 @@ def test_search_all_resources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_search_all_resources_rest_unset_required_fields():
@@ -11795,7 +11825,7 @@ def test_search_all_iam_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_search_all_iam_policies_rest_unset_required_fields():
@@ -12054,7 +12084,7 @@ def test_analyze_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_iam_policy_rest_unset_required_fields():
@@ -12185,7 +12215,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_iam_policy_longrunning_rest_unset_required_fields():
@@ -12335,7 +12365,7 @@ def test_analyze_move_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_move_rest_unset_required_fields():
@@ -12469,7 +12499,7 @@ def test_query_assets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_query_assets_rest_unset_required_fields():
@@ -12609,7 +12639,7 @@ def test_create_saved_query_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_create_saved_query_rest_unset_required_fields():
@@ -12798,7 +12828,7 @@ def test_get_saved_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_get_saved_query_rest_unset_required_fields():
@@ -12986,7 +13016,7 @@ def test_list_saved_queries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_list_saved_queries_rest_unset_required_fields():
@@ -13236,7 +13266,7 @@ def test_update_saved_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_update_saved_query_rest_unset_required_fields():
@@ -13426,7 +13456,7 @@ def test_delete_saved_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_delete_saved_query_rest_unset_required_fields():
@@ -13622,7 +13652,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_batch_get_effective_iam_policies_rest_unset_required_fields():
@@ -13778,7 +13808,7 @@ def test_analyze_org_policies_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_org_policies_rest_unset_required_fields():
@@ -14072,7 +14102,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
@@ -14376,7 +14406,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
+            assert expected_params == actual_params
 
 
 def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
