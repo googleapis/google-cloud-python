@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# flake8: noqa: E501
-
 from __future__ import annotations
 
 import dataclasses
@@ -39,7 +37,7 @@ class Subscriber:
         self,
         callback: Callable[[EventEnvelope], None],
         *,
-        publisher: Publisher,  # noqa: E501
+        publisher: Publisher,
     ):
         self._publisher = publisher
         self._callback = callback
@@ -83,7 +81,10 @@ class Publisher:
         self._subscribers_lock = threading.Lock()
         self._subscribers: Set[Subscriber] = set()
 
-    def subscribe(self, callback: Callable[[EventEnvelope], None]) -> Subscriber:
+    def subscribe(
+        self,
+        callback: Callable[[EventEnvelope], None],
+    ) -> Subscriber:
         # TODO(b/448176657): figure out how to handle subscribers/publishers in
         # a background thread. Maybe subscribers should be thread-local?
         subscriber = Subscriber(callback, publisher=self)
