@@ -52,7 +52,10 @@ dependencies = [
 extras = {
     "libcst": "libcst >= 0.2.5",
     "pandas": ["pandas>=1.3.4"],
-    "storage": ["google-cloud-storage >=2.14.0, <4.0.0"],
+    "storage": [
+        "google-cloud-storage >=2.14.0, <4.0.0",
+        "google-auth >= 2.23.3, <3.0.0",
+    ],
 }
 
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl"
