@@ -391,6 +391,7 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
+    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -432,6 +433,7 @@ libraries:
       - google/cloud/automl_v1beta1/services/tables/__init__.py
       - google/cloud/automl_v1beta1/services/tables/gcs_client.py
       - google/cloud/automl_v1beta1/services/tables/tables_client.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: automl
@@ -736,7 +738,6 @@ libraries:
     version: 1.47.0
     apis:
       - path: google/cloud/compute/v1
-    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
@@ -959,8 +960,12 @@ libraries:
     apis:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
-    skip_generate: true
     python:
+      opt_args_by_api:
+        google/cloud/dialogflow/v2:
+          - resource-name-alias=ces.googleapis.com/Tool:CesTool
+        google/cloud/dialogflow/v2beta1:
+          - resource-name-alias=ces.googleapis.com/Tool:CesTool
       metadata_name_override: dialogflow
       default_version: v2
   - name: google-cloud-dialogflow-cx
@@ -1426,6 +1431,7 @@ libraries:
     version: 2.30.0
     apis:
       - path: google/monitoring/v3
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1658,6 +1664,7 @@ libraries:
     version: 2.38.0
     apis:
       - path: google/pubsub/v1
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1904,6 +1911,7 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1932,6 +1940,7 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_MANUAL
