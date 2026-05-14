@@ -19,8 +19,7 @@ from typing import TYPE_CHECKING, Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    from bigframes.options import ComputeOptions
+from bigframes.options import ComputeOptions
 
 
 @dataclasses.dataclass(frozen=True)
@@ -37,10 +36,10 @@ class BqComputeOptions:
             extra_query_labels=tuple(compute_options.extra_query_labels.items()),
         )
 
-    def add_labels(self, labels: Mapping[str, str]) -> BqComputeOptions:
+    def push_labels(self, labels: Mapping[str, str]) -> BqComputeOptions:
         return dataclasses.replace(
             self,
-            extra_query_labels=self.extra_query_labels + tuple(labels.items()),
+            extra_query_labels=tuple(labels.items()) + self.extra_query_labels,
         )
 
 
@@ -75,7 +74,7 @@ class ExecutionSpec:
         new_bq_config = BqComputeOptions.from_compute_options(compute_options)
         if self.bigquery_config:
             # merge labels, new ComputeOptions takes priority for everything else
-            new_bq_config = new_bq_config.add_labels(
+            new_bq_config = new_bq_config.push_labels(
                 dict(self.bigquery_config.extra_query_labels)
             )
         return dataclasses.replace(self, bigquery_config=new_bq_config)

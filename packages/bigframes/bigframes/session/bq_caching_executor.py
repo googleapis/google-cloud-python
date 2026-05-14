@@ -148,7 +148,6 @@ class BigQueryCachingExecutor(executor.Executor):
                 *self._semi_executors,
                 polars_executor.PolarsExecutor(),
             )
-        self._upload_lock = threading.Lock()
         self._gbq_executor = direct_gbq_execution.DirectGbqExecutor(
             bqclient,
             compiler=compiler_name,
@@ -198,7 +197,7 @@ class BigQueryCachingExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
-        self._publisher.publish(bigframes.core.events.ExecutionStarted())
+        await self._publisher.publish_async(bigframes.core.events.ExecutionStarted())
         maybe_result = await self._try_execute_semi_executors(
             array_value, execution_spec
         )
@@ -208,7 +207,7 @@ class BigQueryCachingExecutor(executor.Executor):
             array_value,
             execution_spec,
         )
-        self._publisher.publish(
+        await self._publisher.publish_async(
             bigframes.core.events.ExecutionFinished(
                 result=result,
             )
@@ -224,7 +223,7 @@ class BigQueryCachingExecutor(executor.Executor):
         for exec in self._semi_executors:
             maybe_result = await exec.execute(plan, execution_spec)
             if maybe_result:
-                self._publisher.publish(
+                await self._publisher.publish_async(
                     bigframes.core.events.ExecutionFinished(
                         result=maybe_result,
                     )
