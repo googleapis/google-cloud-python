@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -948,11 +948,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_plugin(request=request)
+                operation = await client.delete_plugin(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1091,11 +1091,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_plugin_instance(request=request)
+                operation = await client.create_plugin_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1254,11 +1254,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.execute_plugin_instance_action(request=request)
+                operation = await client.execute_plugin_instance_action(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1645,11 +1645,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.enable_plugin_instance_action(request=request)
+                operation = await client.enable_plugin_instance_action(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1784,11 +1784,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.disable_plugin_instance_action(request=request)
+                operation = await client.disable_plugin_instance_action(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2071,11 +2071,11 @@ class ApiHubPluginAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_plugin_instance(request=request)
+                operation = await client.delete_plugin_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
