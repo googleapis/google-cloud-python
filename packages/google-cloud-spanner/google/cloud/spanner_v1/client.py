@@ -32,13 +32,11 @@ import os
 import threading
 import warnings
 from typing import Optional
-
 import google.api_core.client_options
 import grpc
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.client import ClientWithProject
-
 from google.cloud.spanner_admin_database_v1 import (
     DatabaseAdminClient as DatabaseAdminClient,
 )
@@ -55,6 +53,7 @@ from google.cloud.spanner_admin_instance_v1 import (
 from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
     InstanceAdminGrpcTransport,
 )
+from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _merge_query_options,
@@ -62,7 +61,6 @@ from google.cloud.spanner_v1._helpers import (
     _validate_client_context,
 )
 from google.cloud.spanner_v1.gapic_version import __version__
-from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.metrics.constants import METRIC_EXPORT_INTERVAL_MS
 from google.cloud.spanner_v1.metrics.metrics_exporter import (
     CloudMonitoringMetricsExporter,
@@ -84,6 +82,7 @@ except ImportError:
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
 SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR = "SPANNER_DISABLE_BUILTIN_METRICS"
+LOG_CLIENT_OPTIONS_ENV_VAR = "GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS"
 _EMULATOR_HOST_HTTP_SCHEME = (
     "%s contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. %s is intended to be used without a scheme: ex %s=localhost:8080."
     % ((EMULATOR_ENV_VAR,) * 3)
@@ -112,6 +111,10 @@ _metrics_monitor_lock = threading.Lock()
 
 def _get_spanner_enable_builtin_metrics_env():
     return os.getenv(SPANNER_DISABLE_BUILTIN_METRICS_ENV_VAR) != "true"
+
+
+def _get_spanner_log_client_options_env():
+    return os.getenv(LOG_CLIENT_OPTIONS_ENV_VAR, "false").lower() == "true"
 
 
 def _initialize_metrics(project, credentials):
@@ -226,8 +229,7 @@ class Client(ClientWithProject):
             the Spanner built-in metrics collection and exporting.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
-             and ``admin`` are :data:`True`
-    """
+             and ``admin`` are :data:`True`"""
 
     _instance_admin_api = None
     _database_admin_api = None
@@ -316,6 +318,28 @@ class Client(ClientWithProject):
         self._default_transaction_options = default_transaction_options
         self._nth_client_id = Client.NTH_CLIENT.increment()
         self._nth_request = AtomicCounter(0)
+        self._host = "spanner.googleapis.com"
+        if self._emulator_host:
+            self._host = self._emulator_host
+        elif self._experimental_host:
+            self._host = self._experimental_host
+        elif self._client_options and self._client_options.api_endpoint:
+            self._host = self._client_options.api_endpoint
+        if _get_spanner_log_client_options_env():
+            self._log_spanner_options()
+
+    def _log_spanner_options(self):
+        """Logs Spanner client options."""
+        log.info(
+            "Spanner options: \n  Project ID: %s\n  Host: %s\n  Route to leader enabled: %s\n  Directed read options: %s\n  Default transaction options: %s\n  Observability options: %s\n  Built-in metrics enabled: %s",
+            self.project,
+            self._host,
+            self.route_to_leader_enabled,
+            self._directed_read_options,
+            self._default_transaction_options,
+            self._observability_options,
+            _get_spanner_enable_builtin_metrics_env(),
+        )
 
     @property
     def _next_nth_request(self):
