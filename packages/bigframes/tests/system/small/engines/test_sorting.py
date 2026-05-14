@@ -16,7 +16,7 @@ import pytest
 
 import bigframes.operations as bf_ops
 from bigframes.core import array_value, nodes, ordering
-from bigframes.session import polars_executor, execution_spec
+from bigframes.session import execution_spec, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")

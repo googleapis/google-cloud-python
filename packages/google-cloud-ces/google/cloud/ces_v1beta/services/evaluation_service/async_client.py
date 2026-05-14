@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -396,11 +396,11 @@ class EvaluationServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.run_evaluation(request=request)
+                operation = await client.run_evaluation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -795,11 +795,11 @@ class EvaluationServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.generate_evaluation(request=request)
+                operation = await client.generate_evaluation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -925,11 +925,11 @@ class EvaluationServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_evaluations(request=request)
+                operation = await client.import_evaluations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1760,11 +1760,11 @@ class EvaluationServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_evaluation_run(request=request)
+                operation = await client.delete_evaluation_run(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4244,11 +4244,11 @@ class EvaluationServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_evaluations(request=request)
+                operation = await client.export_evaluations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
