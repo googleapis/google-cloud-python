@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1774,11 +1768,7 @@ async def test_list_apis_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_apis(request={})
-        ).pages:
+        async for page_ in (await client.list_apis(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3668,11 +3658,7 @@ async def test_list_api_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_api_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5590,11 +5576,7 @@ async def test_list_api_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_specs(request={})
-        ).pages:
+        async for page_ in (await client.list_api_specs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8093,11 +8075,7 @@ async def test_list_api_spec_revisions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_spec_revisions(request={})
-        ).pages:
+        async for page_ in (await client.list_api_spec_revisions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9304,11 +9282,7 @@ async def test_list_api_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_api_deployments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11541,9 +11515,7 @@ async def test_list_api_deployment_revisions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_api_deployment_revisions(request={})
         ).pages:
             pages.append(page_)
@@ -12728,11 +12700,7 @@ async def test_list_artifacts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_artifacts(request={})
-        ).pages:
+        async for page_ in (await client.list_artifacts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14548,7 +14516,7 @@ def test_list_apis_rest_required_fields(request_type=registry_service.ListApisRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_apis_rest_unset_required_fields():
@@ -14793,7 +14761,7 @@ def test_get_api_rest_required_fields(request_type=registry_service.GetApiReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_rest_unset_required_fields():
@@ -14986,7 +14954,7 @@ def test_create_api_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_rest_unset_required_fields():
@@ -15179,7 +15147,7 @@ def test_update_api_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_rest_unset_required_fields():
@@ -15367,7 +15335,7 @@ def test_delete_api_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_rest_unset_required_fields():
@@ -15552,7 +15520,7 @@ def test_list_api_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_versions_rest_unset_required_fields():
@@ -15802,7 +15770,7 @@ def test_get_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_version_rest_unset_required_fields():
@@ -16002,7 +15970,7 @@ def test_create_api_version_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_version_rest_unset_required_fields():
@@ -16200,7 +16168,7 @@ def test_update_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_version_rest_unset_required_fields():
@@ -16395,7 +16363,7 @@ def test_delete_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_version_rest_unset_required_fields():
@@ -16581,7 +16549,7 @@ def test_list_api_specs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_specs_rest_unset_required_fields():
@@ -16835,7 +16803,7 @@ def test_get_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_spec_rest_unset_required_fields():
@@ -17018,7 +16986,7 @@ def test_get_api_spec_contents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_spec_contents_rest_unset_required_fields():
@@ -17212,7 +17180,7 @@ def test_create_api_spec_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_spec_rest_unset_required_fields():
@@ -17408,7 +17376,7 @@ def test_update_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_spec_rest_unset_required_fields():
@@ -17599,7 +17567,7 @@ def test_delete_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_spec_rest_unset_required_fields():
@@ -17787,7 +17755,7 @@ def test_tag_api_spec_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_tag_api_spec_revision_rest_unset_required_fields():
@@ -17929,7 +17897,7 @@ def test_list_api_spec_revisions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_spec_revisions_rest_unset_required_fields():
@@ -18129,7 +18097,7 @@ def test_rollback_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_api_spec_rest_unset_required_fields():
@@ -18262,7 +18230,7 @@ def test_delete_api_spec_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_spec_revision_rest_unset_required_fields():
@@ -18454,7 +18422,7 @@ def test_list_api_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_deployments_rest_unset_required_fields():
@@ -18708,7 +18676,7 @@ def test_get_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_deployment_rest_unset_required_fields():
@@ -18909,7 +18877,7 @@ def test_create_api_deployment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_deployment_rest_unset_required_fields():
@@ -19108,7 +19076,7 @@ def test_update_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_deployment_rest_unset_required_fields():
@@ -19304,7 +19272,7 @@ def test_delete_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_deployment_rest_unset_required_fields():
@@ -19492,7 +19460,7 @@ def test_tag_api_deployment_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_tag_api_deployment_revision_rest_unset_required_fields():
@@ -19634,7 +19602,7 @@ def test_list_api_deployment_revisions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_deployment_revisions_rest_unset_required_fields():
@@ -19840,7 +19808,7 @@ def test_rollback_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_api_deployment_rest_unset_required_fields():
@@ -19973,7 +19941,7 @@ def test_delete_api_deployment_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_deployment_revision_rest_unset_required_fields():
@@ -20163,7 +20131,7 @@ def test_list_artifacts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_artifacts_rest_unset_required_fields():
@@ -20412,7 +20380,7 @@ def test_get_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_artifact_rest_unset_required_fields():
@@ -20594,7 +20562,7 @@ def test_get_artifact_contents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_artifact_contents_rest_unset_required_fields():
@@ -20788,7 +20756,7 @@ def test_create_artifact_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_artifact_rest_unset_required_fields():
@@ -20976,7 +20944,7 @@ def test_replace_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_replace_artifact_rest_unset_required_fields():
@@ -21153,7 +21121,7 @@ def test_delete_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_artifact_rest_unset_required_fields():
