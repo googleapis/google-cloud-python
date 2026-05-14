@@ -34,7 +34,7 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         self.bqstoragereadclient = bqstoragereadclient
         self.project = project
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
         execution_spec: execution_spec.ExecutionSpec,
