@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import asyncio
+
+import pytest
 
 import bigframes.operations as bf_ops
 from bigframes.core import array_value, nodes, ordering
@@ -97,7 +98,9 @@ def test_polars_engines_skips_unrecognized_order_expr(
         ),
     )
     node = nodes.OrderByNode(node, ORDER_EXPRESSIONS)
-    result = asyncio.run(engine.execute(node, execution_spec.ExecutionSpec(ordered=True)))
+    result = asyncio.run(
+        engine.execute(node, execution_spec.ExecutionSpec(ordered=True))
+    )
     assert result is None
 
 

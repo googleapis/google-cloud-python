@@ -65,7 +65,9 @@ def test_execute_experimental_routes_to_sqlglot(mock_executor, monkeypatch):
     monkeypatch.setattr(bigframes.options.experiments, "sql_compiler", "experimental")
     mock_executor.execute(array_value, execution_spec)
 
-    execution_spec.with_bq_labels.assert_called_once_with({"bigframes-compiler": "sqlglot"})
+    execution_spec.with_bq_labels.assert_called_once_with(
+        {"bigframes-compiler": "sqlglot"}
+    )
     mock_executor._sqlglot_executor.execute.assert_called_once_with(
         array_value, execution_spec
     )
