@@ -26,6 +26,8 @@ import google.api_core.exceptions as api_core_exceptions
 import google.cloud.bigquery as bigquery
 import humanize
 
+import bigframes._config
+
 if TYPE_CHECKING:
     import bigframes.core.events
 

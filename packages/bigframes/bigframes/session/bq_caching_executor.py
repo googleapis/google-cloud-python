@@ -41,6 +41,7 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
+from bigframes._config import ComputeOptions
 from bigframes.core import bq_data, compile, guid, identifiers, local_data, rewrite
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
@@ -183,6 +184,8 @@ class BigQueryCachingExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
+        # Need to grab thread local before starting async execution.
+        execution_spec = execution_spec.with_compute_options(bigframes.options.compute)
         return _run_sync(
             self._execute_async(
                 array_value,
@@ -319,7 +322,9 @@ class BigQueryCachingExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
-        gbq_plan = await self._prepare_plan_bq_execution(array_value.node)
+        gbq_plan = await self._prepare_plan_bq_execution(
+            array_value.node, execution_spec.bigquery_config
+        )
         result = await self._gbq_executor.execute(gbq_plan, execution_spec)
         if result is None:
             raise ValueError(
@@ -395,10 +400,13 @@ class BigQueryCachingExecutor(executor.Executor):
     def cached(
         self, array_value: bigframes.core.ArrayValue, *, config: executor.CacheConfig
     ) -> None:
+        # Get compute options before passing to async method, can be thread-local
+        bq_compute_options = ex_spec.BqComputeOptions.from_compute_options(
+            bigframes.options.compute
+        )
         return _run_sync(
             self._cached_async(
-                array_value,
-                config=config,
+                array_value, config=config, compute_options=bq_compute_options
             )
         )
 
@@ -407,6 +415,7 @@ class BigQueryCachingExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         *,
         config: executor.CacheConfig,
+        compute_options: ex_spec.BqComputeOptions,
     ) -> None:
         """Write the block to a session table."""
         # First, see if we can reuse the existing cache
@@ -429,25 +438,23 @@ class BigQueryCachingExecutor(executor.Executor):
 
         if config.optimize_for == "auto":
             await self._cache_with_session_awareness(
-                array_value, enable_multi_query_execution=enable_multi_query_execution
+                array_value, compute_options=compute_options
             )
         elif config.optimize_for == "head":
-            await self._cache_with_offsets(
-                array_value, enable_multi_query_execution=enable_multi_query_execution
-            )
+            await self._cache_with_offsets(array_value, compute_options=compute_options)
         else:
             assert isinstance(config.optimize_for, executor.HierarchicalKey)
             await self._cache_with_cluster_cols(
                 array_value,
                 cluster_cols=config.optimize_for.columns,
-                enable_multi_query_execution=enable_multi_query_execution,
+                compute_options=compute_options,
             )
 
     async def _execute_to_cached_table(
         self,
         plan: nodes.BigFrameNode,
         cache_spec: ex_spec.CacheSpec,
-        enable_multi_query_execution: bool,
+        compute_options: ex_spec.BqComputeOptions,
     ) -> executor.ExecuteResult:
         # "ephemeral" temp tables created in the course of exeuction, don't need to be allocated
         # materialized ordering only really makes sense for internal temp tables used by caching
@@ -474,7 +481,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 cluster_cols=cluster_cols,
                 if_exists="replace",
             ),
-            enable_multi_query_execution=enable_multi_query_execution,
+            bigquery_config=compute_options,
         )
         # We don't use _execute_gbq_table_export, as this result is internal, not exported.
         result = await self._execute_gbq_query_only(
@@ -506,13 +513,13 @@ class BigQueryCachingExecutor(executor.Executor):
         return plan
 
     async def _prepare_plan_bq_execution(
-        self, plan: nodes.BigFrameNode, enable_multi_query_execution: bool
+        self,
+        plan: nodes.BigFrameNode,
+        compute_options: ex_spec.BqComputeOptions,
     ) -> nodes.BigFrameNode:
         """Prepare the plan for BigQuery execution by caching subtrees and uploading large local sources."""
-        if enable_multi_query_execution:
-            await self._simplify_with_caching(
-                plan, enable_multi_query_execution=enable_multi_query_execution
-            )
+        if compute_options.enable_multi_query_execution:
+            await self._simplify_with_caching(plan, compute_options=compute_options)
         plan = self._prepare_plan_simplify(plan)
         plan = await self._substitute_large_local_sources(plan)
         return plan
@@ -521,7 +528,7 @@ class BigQueryCachingExecutor(executor.Executor):
         self,
         array_value: bigframes.core.ArrayValue,
         cluster_cols: Sequence[str],
-        enable_multi_query_execution: bool,
+        compute_options: ex_spec.BqComputeOptions,
     ):
         """Executes the query and uses the resulting table to rewrite future executions."""
         cluster_cols = [
@@ -533,7 +540,7 @@ class BigQueryCachingExecutor(executor.Executor):
         result = await self._execute_to_cached_table(
             array_value.node,
             ex_spec.CacheSpec(cluster_cols=tuple(cluster_cols), ordering="order_key"),
-            enable_multi_query_execution=enable_multi_query_execution,
+            compute_options=compute_options,
         )
         assert isinstance(result, executor.BQTableExecuteResult)
         assert result._data.ordering is not None
@@ -542,13 +549,13 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _cache_with_offsets(
         self,
         array_value: bigframes.core.ArrayValue,
-        enable_multi_query_execution: bool,
+        compute_options: ex_spec.BqComputeOptions,
     ):
         """Executes the query and uses the resulting table to rewrite future executions."""
         result = await self._execute_to_cached_table(
             array_value.node,
             ex_spec.CacheSpec(ordering="offsets_col"),
-            enable_multi_query_execution=enable_multi_query_execution,
+            compute_options=compute_options,
         )
         assert isinstance(result, executor.BQTableExecuteResult)
         assert result._data.ordering is not None
@@ -557,7 +564,7 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _cache_with_session_awareness(
         self,
         array_value: bigframes.core.ArrayValue,
-        enable_multi_query_execution: bool,
+        compute_options: ex_spec.BqComputeOptions,
     ) -> None:
         session_forest = [obj._block._expr.node for obj in array_value.session.objects]
         # These node types are cheap to re-compute
@@ -569,22 +576,22 @@ class BigQueryCachingExecutor(executor.Executor):
             await self._cache_with_cluster_cols(
                 bigframes.core.ArrayValue(target),
                 cluster_cols_sql_names,
-                enable_multi_query_execution=enable_multi_query_execution,
+                compute_options=compute_options,
             )
         elif not target.order_ambiguous:
             await self._cache_with_offsets(
                 bigframes.core.ArrayValue(target),
-                enable_multi_query_execution=enable_multi_query_execution,
+                compute_options=compute_options,
             )
         else:
             await self._cache_with_cluster_cols(
                 bigframes.core.ArrayValue(target),
                 [],
-                enable_multi_query_execution=enable_multi_query_execution,
+                compute_options=compute_options,
             )
 
     async def _simplify_with_caching(
-        self, plan: nodes.BigFrameNode, enable_multi_query_execution: bool
+        self, plan: nodes.BigFrameNode, compute_options: ex_spec.BqComputeOptions
     ):
         """Attempts to handle the complexity by caching duplicated subtrees and breaking the query into pieces."""
         # Apply existing caching first
@@ -596,13 +603,13 @@ class BigQueryCachingExecutor(executor.Executor):
                 return
 
             did_cache = await self._cache_most_complex_subtree(
-                plan, enable_multi_query_execution=enable_multi_query_execution
+                plan, compute_options=compute_options
             )
             if not did_cache:
                 return
 
     async def _cache_most_complex_subtree(
-        self, node: nodes.BigFrameNode, enable_multi_query_execution: bool
+        self, node: nodes.BigFrameNode, compute_options: ex_spec.BqComputeOptions
     ) -> bool:
         # TODO: If query fails, retry with lower complexity limit
         selection = tree_properties.select_cache_target(
@@ -622,7 +629,7 @@ class BigQueryCachingExecutor(executor.Executor):
         await self._cache_with_cluster_cols(
             bigframes.core.ArrayValue(selection),
             [],
-            enable_multi_query_execution=enable_multi_query_execution,
+            compute_options=compute_options,
         )
         return True
 

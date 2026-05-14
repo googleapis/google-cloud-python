@@ -15,9 +15,33 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Literal, Mapping, Optional, Union
+from typing import TYPE_CHECKING, Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
+
+if TYPE_CHECKING:
+    from bigframes.options import ComputeOptions
+
+
+@dataclasses.dataclass(frozen=True)
+class BqComputeOptions:
+    enable_multi_query_execution: bool = True
+    maximum_bytes_billed: Optional[int] = None
+    extra_query_labels: tuple[tuple[str, str], ...] = ()
+
+    @classmethod
+    def from_compute_options(cls, compute_options: ComputeOptions) -> BqComputeOptions:
+        return cls(
+            enable_multi_query_execution=compute_options.enable_multi_query_execution,
+            maximum_bytes_billed=compute_options.maximum_bytes_billed,
+            extra_query_labels=tuple(compute_options.extra_query_labels.items()),
+        )
+
+    def add_labels(self, labels: Mapping[str, str]) -> BqComputeOptions:
+        return dataclasses.replace(
+            self,
+            extra_query_labels=self.extra_query_labels + tuple(labels.items()),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -36,22 +60,25 @@ class ExecutionSpec:
     promise_under_10gb: bool = False
 
     # BigQuery specific options
-    labels: tuple[tuple[str, str], ...] = ()
-    maximum_bytes_billed: Optional[int] = None
-    enable_multi_query_execution: Optional[bool] = None
+    bigquery_config: Optional[BqComputeOptions] = None
 
-    def add_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
-        return dataclasses.replace(self, labels=self.labels + tuple(labels.items()))
+    def with_bq_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
+        bq_config = self.bigquery_config or BqComputeOptions()
+        return dataclasses.replace(self, bigquery_config=bq_config.add_labels(labels))
 
-    def with_current_configuration(self) -> ExecutionSpec:
+    def with_compute_options(self, compute_options: ComputeOptions) -> ExecutionSpec:
         """
         Grabs the current global or thread-local config and binds it to the execution spec.
 
         Returns a new ExecutionSpec with the current configuration applied.
         """
-        return dataclasses.replace(
-            self,
-        )
+        new_bq_config = BqComputeOptions.from_compute_options(compute_options)
+        if self.bigquery_config:
+            # merge labels, new ComputeOptions takes priority for everything else
+            new_bq_config = new_bq_config.add_labels(
+                dict(self.bigquery_config.extra_query_labels)
+            )
+        return dataclasses.replace(self, bigquery_config=new_bq_config)
 
 
 # Used internally by execution

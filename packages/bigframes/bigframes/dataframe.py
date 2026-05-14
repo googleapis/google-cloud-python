@@ -4202,7 +4202,7 @@ class DataFrame:
                 ex_spec.GcsOutputSpec(
                     uri=path_or_buf, format="csv", export_options=tuple(options.items())
                 )
-            ).with_current_configuration(),
+            ),
         )
         self._set_internal_query_job(result.query_job)
         return None
@@ -4251,7 +4251,7 @@ class DataFrame:
             export_array.rename_columns(id_overrides),
             ex_spec.ExecutionSpec(
                 ex_spec.GcsOutputSpec(uri=path_or_buf, format="json", export_options=())
-            ).with_current_configuration(),
+            ),
         )
         self._set_internal_query_job(result.query_job)
         return None
@@ -4334,7 +4334,7 @@ class DataFrame:
                     cluster_cols=tuple(clustering_fields),
                     if_exists=if_exists,
                 )
-            ).with_current_configuration(),
+            ),
         )
         assert result.query_job is not None
         self._set_internal_query_job(result.query_job)
@@ -4414,7 +4414,7 @@ class DataFrame:
                     format="parquet",
                     export_options=tuple(export_options.items()),
                 )
-            ).with_current_configuration(),
+            ),
         )
         self._set_internal_query_job(result.query_job)
         return None

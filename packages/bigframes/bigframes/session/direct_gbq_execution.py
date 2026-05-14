@@ -95,10 +95,13 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
         if self._labels:
             job_config.labels.update(self._labels)
-        if spec.labels:
-            job_config.labels.update(spec.labels)
-        if spec.maximum_bytes_billed is not None:
-            job_config.maximum_bytes_billed = spec.maximum_bytes_billed
+        if spec.bigquery_config is not None:
+            if spec.bigquery_config.extra_query_labels:
+                job_config.labels.update(spec.bigquery_config.extra_query_labels)
+            if spec.bigquery_config.maximum_bytes_billed is not None:
+                job_config.maximum_bytes_billed = (
+                    spec.bigquery_config.maximum_bytes_billed
+                )
 
         iterator, query_job = await asyncio.to_thread(
             self._run_execute_query,
