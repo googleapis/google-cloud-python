@@ -17,8 +17,7 @@ replacements:
   - paths: [
       packages/google-cloud-automl/setup.py,
     ]
-    before: |
-      dependencies = [\s\S]*?"protobuf >= 4.25.8, < 8.0.0",
+    before: '(?s)dependencies = \[.*?\]\nextras = \{\}'
     after: |
       dependencies = [
           "google-api-core[grpc] >= 2.17.1, <3.0.0",
@@ -30,13 +29,7 @@ replacements:
           "proto-plus >= 1.22.3, <2.0.0",
           "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
           "protobuf >= 4.25.8, < 8.0.0",
-    count: 1
-  - paths: [
-      packages/google-cloud-automl/setup.py,
-    ]
-    before: |
-      extras = \{\}
-    after: |
+      ]
       extras = {
           "libcst": "libcst >= 0.2.5",
           "pandas": ["pandas>=1.1.3"],
@@ -99,15 +92,15 @@ replacements:
   - paths: [
       packages/google-cloud-automl/noxfile.py,
     ]
-    before: |
-      unit_deps_all[\s\S]*?UNIT_TEST_EXTERNAL_DEPENDENCIES
+    before: '(?s)([ \t]+)unit_deps_all = (?:(?!UNIT_TEST_EXTRAS)[\s\S])*?session\.install\(\*unit_deps_all\)'
     after: |
-      unit_deps_all = (
-          UNIT_TEST_STANDARD_DEPENDENCIES
-          \+ UNIT_TEST_EXTERNAL_DEPENDENCIES
-          \+ UNIT_TEST_EXTRAS
-      )
-    count: 1
+      \g<1>unit_deps_all = (
+      \g<1>    UNIT_TEST_STANDARD_DEPENDENCIES
+      \g<1>    + UNIT_TEST_EXTERNAL_DEPENDENCIES
+      \g<1>    + UNIT_TEST_EXTRAS
+      \g<1>)
+      \g<1>session.install(*unit_deps_all)
+    count: 2
   - paths: [
       packages/google-cloud-automl/noxfile.py,
     ]
