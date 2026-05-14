@@ -396,14 +396,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             )
 
     def _copy_regional_access_boundary_manager(self, target):
-        """Copies the regional access boundary manager to another instance."""
-        # Create a new manager for the clone to isolate background refresh locks and threads,
-        # but share the immutable data reference to avoid unnecessary initial lookups.
-        new_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
-        new_manager._data = self._rab_manager._data
-        # Preserve the type of refresh manager (sync or async)
-        new_manager.refresh_manager = self._rab_manager.refresh_manager.__class__()
-        target._rab_manager = new_manager
+        """Copies the regional access boundary manager state to another instance."""
+        target._rab_manager._data = self._rab_manager._data
+        target._rab_manager._use_blocking_regional_access_boundary_lookup = (
+            self._rab_manager._use_blocking_regional_access_boundary_lookup
+        )
 
     def _set_regional_access_boundary(self, seed):
         """Applies the regional_access_boundary provided via the seed on these

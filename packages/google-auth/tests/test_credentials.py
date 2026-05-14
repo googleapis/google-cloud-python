@@ -154,16 +154,19 @@ def test_before_request_with_regional_access_boundary():
     assert headers["x-allowed-locations"] == DUMMY_BOUNDARY
 
 
-def test_copy_regional_access_boundary_manager_preserves_type():
-    class CustomRefreshManager(object):
-        pass
-
+def test_copy_regional_access_boundary_manager_state_and_config():
     creds = CredentialsImpl()
-    creds._rab_manager.refresh_manager = CustomRefreshManager()
+    creds._rab_manager._data = mock.sentinel.rab_data
+    creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
 
     new_creds = creds._make_copy()
 
-    assert isinstance(new_creds._rab_manager.refresh_manager, CustomRefreshManager)
+    # Verify references to immutable boundary data are shared
+    assert new_creds._rab_manager._data == mock.sentinel.rab_data
+    # Verify blocking config flag is preserved
+    assert new_creds._rab_manager._use_blocking_regional_access_boundary_lookup is True
+    # Verify target manager object is isolated (kept from constructor, not replaced)
+    assert new_creds._rab_manager is not creds._rab_manager
 
 
 def test_before_request_metrics():
