@@ -872,6 +872,8 @@ class Certificate(proto.Message):
             Certificate.
         scope (google.cloud.certificate_manager_v1.types.Certificate.Scope):
             Immutable. The scope of the certificate.
+        used_by (MutableSequence[google.cloud.certificate_manager_v1.types.Certificate.UsedBy]):
+            Output only. The list of resources that use this Certificate.
     """
 
     class Scope(proto.Enum):
@@ -920,6 +922,25 @@ class Certificate(proto.Message):
             proto.STRING,
             number=2,
         )
+
+    class UsedBy(proto.Message):
+        r"""Defines a resource that uses the certificate.
+
+        Attributes:
+            name (str):
+                Output only. Full name of the resource, as defined in
+                `AIP-122 <https://google.aip.dev/122#full-resource-names>`_,
+                e.g.
+                ``//certificatemanager.googleapis.com/projects/*/locations/*/certificateMaps/*/certificateMapEntries/*``
+                or
+                ``//compute.googleapis.com/projects/*/locations/*/targetHttpsProxies/*``.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
 
     class ManagedCertificate(proto.Message):
         r"""Configuration and state of a Managed Certificate.
@@ -1203,6 +1224,13 @@ class Certificate(proto.Message):
         number=12,
         enum=Scope,
     )
+    used_by: MutableSequence[UsedBy] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=UsedBy,
+    )
+
+
 
 
 class CertificateMap(proto.Message):
