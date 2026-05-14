@@ -48,6 +48,8 @@ from cli import (
     _get_api_generator_options,
     _get_library_dist_name,
     _get_library_id,
+    _get_actual_library_id,
+    _get_library_path,
     _get_libraries_to_prepare_for_release,
     _get_new_library_config,
     _get_previous_version,
@@ -2045,3 +2047,53 @@ def test_get_repo_name_from_repo_metadata_missing_repo(mocker):
     mocker.patch("cli._read_json_file", return_value={})
     with pytest.raises(ValueError):
         _get_repo_name_from_repo_metadata("base", "library_id", False)
+
+
+def test_get_actual_library_id():
+    assert _get_actual_library_id("google-cloud-language") == "google-cloud-language"
+    assert _get_actual_library_id("google-cloud-language-preview") == "google-cloud-language"
+    assert _get_actual_library_id("google-cloud-language-preview-preview") == "google-cloud-language-preview"
+
+
+@pytest.mark.parametrize(
+    "library_id, is_mono_repo, expected_path",
+    [
+        ("google-cloud-language", True, "packages/google-cloud-language"),
+        ("google-cloud-language-preview", True, "preview-packages/google-cloud-language"),
+        ("google-cloud-language", False, "."),
+        ("google-cloud-language-preview", False, "."),
+    ],
+)
+def test_get_library_path(library_id, is_mono_repo, expected_path):
+    assert _get_library_path(library_id, is_mono_repo) == expected_path
+
+
+def test_update_changelog_for_library_preview_package(mocker):
+    """Tests that _update_changelog_for_library writes to preview-packages directory for preview libraries."""
+    mock_content = """# Changelog
+
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-language-preview/#history
+"""
+    mock_read = mocker.patch("cli._read_text_file", return_value=mock_content)
+    mock_write = mocker.patch("cli._write_text_file")
+    mock_path_exists = mocker.patch("cli.os.path.lexists", return_value=True)
+    _update_changelog_for_library(
+        "repo",
+        "output",
+        _MOCK_LIBRARY_CHANGES,
+        "1.2.3",
+        "1.2.2",
+        "google-cloud-language-preview",
+        True,
+        "{id}-v{version}",
+    )
+
+    assert mock_write.call_count == 2
+    mock_write.assert_any_call(
+        "output/preview-packages/google-cloud-language/CHANGELOG.md", mocker.ANY
+    )
+    mock_write.assert_any_call(
+        "output/preview-packages/google-cloud-language/docs/CHANGELOG.md", mocker.ANY
+    )

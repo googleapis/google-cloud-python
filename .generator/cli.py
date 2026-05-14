@@ -323,6 +323,32 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
+def _get_actual_library_id(library_id: str) -> str:
+    """Extracts the folder name from the library id by removing any -preview suffix."""
+    if library_id.endswith("-preview"):
+        return library_id[:-8]
+    return library_id
+
+
+def _get_library_path(library_id: str, is_mono_repo: bool) -> str:
+    """Gets the relative path of the library in the repository.
+
+    Args:
+        library_id(str): The library id.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
+
+    Returns:
+        str: The relative path to the library.
+    """
+    if not is_mono_repo:
+        return "."
+    if library_id.endswith("-preview"):
+        actual_id = _get_actual_library_id(library_id)
+        return f"preview-packages/{actual_id}"
+    return f"packages/{library_id}"
+
+
+
 def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     """Runs the synthtool post-processor on the output directory.
 
@@ -575,7 +601,7 @@ def _get_repo_metadata_file_path(base: str, library_id: str, is_mono_repo: bool)
     Returns:
         str: The absolute path to the .repo-metadata.json file.
     """
-    path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+    path_to_library = _get_library_path(library_id, is_mono_repo)
     return f"{base}/{path_to_library}/.repo-metadata.json"
 
 
@@ -1570,11 +1596,12 @@ def _update_changelog_for_library(
         tag_format(str): The format of the git tag.
     """
     if is_mono_repo:
-        relative_path = f"packages/{library_id}/CHANGELOG.md"
-        docs_relative_path = f"packages/{library_id}/docs/CHANGELOG.md"
+        path_to_library = _get_library_path(library_id, is_mono_repo)
+        relative_path = f"{path_to_library}/CHANGELOG.md"
+        docs_relative_path = f"{path_to_library}/docs/CHANGELOG.md"
     else:
         relative_path = "CHANGELOG.md"
-        docs_relative_path = f"docs/CHANGELOG.md"
+        docs_relative_path = "docs/CHANGELOG.md"
 
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
@@ -1670,7 +1697,7 @@ def handle_release_stage(
                     f"{library_id} version: {previous_version}\n"
                 )
 
-            path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+            path_to_library = _get_library_path(library_id, is_mono_repo)
 
             _update_version_for_library(repo, output, path_to_library, version)
             if library_changes is not None:
