@@ -80,7 +80,7 @@ def get_agent_identity_certificate_path():
     import json
 
     cert_config_path = os.environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-    
+
     # Check if the well-known workload directory is mounted.
     well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
     has_well_known_dir = os.path.exists(well_known_dir)
@@ -98,13 +98,16 @@ def get_agent_identity_certificate_path():
             if cert_config_path:
                 with open(cert_config_path, "r") as f:
                     cert_config = json.load(f)
-                    
+
                     if not isinstance(cert_config, dict):
                         return None
 
                     cert_configs = cert_config.get("cert_configs", {})
                     workload_config = cert_configs.get("workload", {})
-                    if not isinstance(workload_config, dict) or "cert_path" not in workload_config:
+                    if (
+                        not isinstance(workload_config, dict)
+                        or "cert_path" not in workload_config
+                    ):
                         return None
 
                     cert_path = workload_config["cert_path"]

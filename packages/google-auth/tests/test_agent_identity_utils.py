@@ -272,9 +272,7 @@ class TestAgentIdentityUtils:
         self, mock_sleep, tmpdir, monkeypatch
     ):
         config_path = tmpdir.join("config.json")
-        config_path.write(
-            json.dumps({"cert_configs": {"workload": {}}})
-        )
+        config_path.write(json.dumps({"cert_configs": {"workload": {}}}))
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
         )
