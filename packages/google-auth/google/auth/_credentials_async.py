@@ -64,7 +64,27 @@ class Credentials(credentials.Credentials, metaclass=abc.ABCMeta):
                 await self.refresh(request)
             else:
                 self.refresh(request)
+
+        if inspect.iscoroutinefunction(self._after_refresh):
+            await self._after_refresh(request, method, url, headers)
+        else:
+            self._after_refresh(request, method, url, headers)
+
         self.apply(headers)
+
+    def _after_refresh(self, request, method, url, headers):
+        """Hook for subclasses to perform actions after refresh but before
+        applying credentials to headers.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+            method (str): The request's HTTP method or the RPC method being
+                invoked.
+            url (str): The request's URI or the RPC service's URI.
+            headers (Mapping[str, str]): The request's headers.
+        """
+        pass
 
 
 class CredentialsWithQuotaProject(credentials.CredentialsWithQuotaProject):
