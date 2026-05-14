@@ -514,10 +514,10 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _prepare_plan_bq_execution(
         self,
         plan: nodes.BigFrameNode,
-        compute_options: ex_spec.BqComputeOptions,
+        compute_options: Optional[ex_spec.BqComputeOptions] = None,
     ) -> nodes.BigFrameNode:
         """Prepare the plan for BigQuery execution by caching subtrees and uploading large local sources."""
-        if compute_options.enable_multi_query_execution:
+        if compute_options is not None and compute_options.enable_multi_query_execution:
             await self._simplify_with_caching(plan, compute_options=compute_options)
         plan = self._prepare_plan_simplify(plan)
         plan = await self._substitute_large_local_sources(plan)
