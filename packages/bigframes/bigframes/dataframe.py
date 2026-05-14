@@ -820,21 +820,8 @@ class DataFrame:
         )
 
     def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
-        df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        """Process ObjectRef columns for display. (Deprecated)"""
+        return self, []
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """

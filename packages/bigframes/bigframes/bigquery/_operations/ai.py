@@ -25,6 +25,7 @@ import pandas as pd
 
 from bigframes import dataframe, dtypes, series, session
 from bigframes import pandas as bpd
+from bigframes.bigquery._operations import obj as bq_obj
 from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
 from bigframes.core.compile.sqlglot import sql as sg_sql
@@ -1183,7 +1184,7 @@ def _separate_context_and_series(
     if isinstance(prompt, series.Series):
         if prompt.dtype == dtypes.OBJ_REF_DTYPE:
             # Multi-model support
-            return [None], [prompt.blob.read_url()]
+            return [None], [bq_obj.get_access_url(prompt, mode="R")]
         return [None], [prompt]
 
     prompt_context: List[str | None] = []
@@ -1220,7 +1221,7 @@ def _convert_series(
 
     if result.dtype == dtypes.OBJ_REF_DTYPE:
         # Support multimodal
-        return result.blob.read_url()
+        return bq_obj.get_access_url(result, mode="R")
     return result
 
 

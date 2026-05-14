@@ -364,6 +364,14 @@ def generate_managed_function_code(
         )
 
     udf_code_block = []
+    if code_def.package_requirements:
+        # Include package requirements as comments to help force a new
+        # BigQuery UDF definition when only package requirements change.
+        packages_comment = "# Packages: " + ", ".join(
+            sorted(code_def.package_requirements)
+        )
+        udf_code_block.append(packages_comment)
+
     if not capture_references and signature.is_row_processor:
         # Enable postponed evaluation of type annotations. This converts all
         # type hints to strings at runtime, which is necessary for correctly
