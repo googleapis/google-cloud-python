@@ -1337,12 +1337,12 @@ def test_context_with_no_query_cache_from_context(monkeypatch):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
+    context = magics.Context()
     conn = make_connection()
-    monkeypatch.setattr(magics.context, "_connection", conn)
-    monkeypatch.setattr(magics.context, "project", "project-from-context")
-    monkeypatch.setattr(
-        magics.context.default_query_job_config, "use_query_cache", False
-    )
+    context._connection = conn
+    context.project = "project-from-context"
+    context.default_query_job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    monkeypatch.setattr(magics, "context", context)
 
     ip.run_cell_magic("bigquery", "", QUERY_STRING)
 
@@ -1415,12 +1415,16 @@ def test_bigquery_magic_with_progress_bar_type(monkeypatch):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
-    magics.context.progress_bar_type = None
+    context = magics.Context()
+    conn = make_connection()
+    context._connection = conn
+    context.progress_bar_type = None
+    context.project = "unit-test-project"
+    monkeypatch.setattr(magics, "context", context)
 
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True
     )
-    magics.context.project = "unit-test-project"
 
     with run_query_patch as run_query_mock:
         ip.run_cell_magic(
