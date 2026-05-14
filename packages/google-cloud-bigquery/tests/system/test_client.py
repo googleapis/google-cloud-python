@@ -304,6 +304,18 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.friendly_name, "Friendly")
         self.assertEqual(got.description, "Description")
 
+    def test_get_dataset_w_public_biglake(self):
+        dataset_id = "bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data"
+
+        dataset = Config.CLIENT.get_dataset(dataset_id)
+        self.assertEqual(
+            dataset.dataset_id, "biglake-public-nyc-taxi-iceberg.public_data"
+        )
+        self.assertEqual(dataset.project, "bigquery-public-data")
+        self.assertGreater(
+            dataset.created, datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+        )
+
     def test_create_dataset_with_default_rounding_mode(self):
         DATASET_ID = _make_dataset_id("create_dataset_rounding_mode")
         dataset = self.temp_dataset(DATASET_ID, default_rounding_mode="ROUND_HALF_EVEN")
@@ -692,6 +704,18 @@ class TestBigQuery(unittest.TestCase):
         helpers.retry_403(Config.CLIENT.create_table)(table_arg)
         with self.assertRaises(exceptions.BadRequest):
             Config.CLIENT.delete_dataset(dataset)
+
+    def test_get_table_w_public_biglake(self):
+        table_id = "bigquery-public-data.biglake-public-nyc-taxi-iceberg.public_data.nyc_taxicab"
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(table.table_id, "nyc_taxicab")
+        self.assertEqual(
+            table.dataset_id, "biglake-public-nyc-taxi-iceberg.public_data"
+        )
+        self.assertEqual(table.project, "bigquery-public-data")
+        schema_names = [field.name for field in table.schema]
+        self.assertGreater(len(schema_names), 0)
 
     def test_get_table_w_public_dataset(self):
         public = "bigquery-public-data"
