@@ -521,9 +521,9 @@ class API:
                             excluded_addresses=set([]),
                         )
                 else:
-                    all_resource_messages = collections.ChainMap(
+                    all_resource_messages = dict(collections.ChainMap(
                         *(proto.resource_messages for proto in api.all_protos.values())
-                    )
+                    ))
 
                     # Create a global map of services to support cross-proto lookup
                     # for extended LROs.
