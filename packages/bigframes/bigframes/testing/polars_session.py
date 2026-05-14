@@ -33,7 +33,7 @@ import bigframes.session.metrics
 class TestExecutor(bigframes.session.executor.Executor):
     compiler = bigframes.core.compile.polars.PolarsCompiler()
 
-    async def execute(
+    def execute(
         self,
         array_value: bigframes.core.ArrayValue,
         execution_spec: bigframes.session.execution_spec.ExecutionSpec,
