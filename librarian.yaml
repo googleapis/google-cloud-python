@@ -391,7 +391,6 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -433,7 +432,6 @@ libraries:
       - google/cloud/automl_v1beta1/services/tables/__init__.py
       - google/cloud/automl_v1beta1/services/tables/gcs_client.py
       - google/cloud/automl_v1beta1/services/tables/tables_client.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: automl
