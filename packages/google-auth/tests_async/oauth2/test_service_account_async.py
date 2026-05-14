@@ -296,6 +296,29 @@ class TestCredentials(object):
             assert mock_lookup.called
             assert "x-allowed-locations" not in headers
 
+    def test_unpickle_old_credentials_without_rab(self):
+        import pickle
+        from google.auth import _regional_access_boundary_utils
+
+        credentials = self.make_credentials()
+        old_state = credentials.__dict__.copy()
+        if "_rab_manager" in old_state:
+            del old_state["_rab_manager"]
+        if "_use_non_blocking_refresh" in old_state:
+            del old_state["_use_non_blocking_refresh"]
+        if "_refresh_worker" in old_state:
+            del old_state["_refresh_worker"]
+
+        new_instance = type(credentials).__new__(type(credentials))
+        new_instance.__setstate__(old_state)
+
+        # Verify the manager was correctly restored with the async refresh manager!
+        assert hasattr(new_instance, "_rab_manager")
+        assert isinstance(
+            new_instance._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
 
 class TestIDTokenCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"

@@ -73,6 +73,13 @@ class Credentials(
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
         )
 
+    def __setstate__(self, state):
+        """Restores the credential state and ensures the async refresh manager is attached."""
+        super().__setstate__(state)
+        self._rab_manager.refresh_manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
     @_helpers.copy_docstring(credentials_async.Credentials)
     async def refresh(self, request):
         assertion = self._make_authorization_grant_assertion()
