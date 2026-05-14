@@ -1340,8 +1340,9 @@ def test_context_with_no_query_cache_from_context(monkeypatch):
     context = magics.Context()
     conn = make_connection()
     context._connection = conn
-    context.project = "project-from-context"
+    context.credentials = mock.create_autospec(google.auth.credentials.Credentials)
     context.default_query_job_config = bigquery.QueryJobConfig(use_query_cache=False)
+    context.project = "project-from-context"
     monkeypatch.setattr(magics, "context", context)
 
     ip.run_cell_magic("bigquery", "", QUERY_STRING)
@@ -1418,6 +1419,7 @@ def test_bigquery_magic_with_progress_bar_type(monkeypatch):
     context = magics.Context()
     conn = make_connection()
     context._connection = conn
+    context.credentials = mock.create_autospec(google.auth.credentials.Credentials)
     context.progress_bar_type = None
     context.project = "unit-test-project"
     monkeypatch.setattr(magics, "context", context)
