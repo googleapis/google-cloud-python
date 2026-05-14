@@ -14,8 +14,6 @@
 
 """Shared helper functions for formatting jobs related info."""
 
-# flake8: noqa: E501
-
 from __future__ import annotations
 
 import datetime
@@ -165,7 +163,8 @@ def progress_callback(
         # This will allow cleanup to continue.
         return
 
-    # Publisher.publish automatically wraps raw Event objects in an EventEnvelope, ensuring subscribers receive a consistent contract.
+    # Publisher.publish automatically wraps raw Event objects in an
+    # EventEnvelope, ensuring subscribers receive a consistent contract.
     assert isinstance(envelope, bigframes.core.events.EventEnvelope)
     event = envelope.event
     progress_bar = envelope.progress_bar
