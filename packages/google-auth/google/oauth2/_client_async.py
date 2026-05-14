@@ -404,22 +404,24 @@ async def _lookup_regional_access_boundary_request_no_throw(
                 )
             else:
                 response = await request(method="GET", url=url, headers=headers)
-        except asyncio.TimeoutError:
-            return False, {}, False
-        except exceptions.TransportError:
-            return False, {}, False
 
-        response_bytes = await response.content()
-        response_body = (
-            response_bytes.decode("utf-8")
-            if hasattr(response_bytes, "decode")
-            else response_bytes
-        )
+            # Supports both modern google.auth.aio (exposing read()) and legacy transports (exposing content())
+            if hasattr(response, "read"):
+                response_bytes = await response.read()
+            else:
+                response_bytes = await response.content()
+        except (asyncio.TimeoutError, exceptions.TransportError):
+            return False, {}, False
 
         try:
+            response_body = (
+                response_bytes.decode("utf-8")
+                if hasattr(response_bytes, "decode")
+                else response_bytes
+            )
             response_data = json.loads(response_body)
-        except ValueError:
-            response_data = response_body
+        except (UnicodeDecodeError, ValueError):
+            return False, {}, False
 
         status_code = (
             response.status_code

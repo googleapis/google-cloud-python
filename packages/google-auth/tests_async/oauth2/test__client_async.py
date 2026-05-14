@@ -26,6 +26,7 @@ from google.auth import _jwt_async as jwt
 from google.auth import exceptions
 from google.oauth2 import _client as sync_client
 from google.oauth2 import _client_async as _client
+from google.auth.aio import transport as aio_transport
 from tests.oauth2 import test__client as test_client
 
 
@@ -37,6 +38,17 @@ def make_request(response_data, status=http_client.OK, text=False):
     response.data.read = mock.AsyncMock(spec=["__call__"], return_value=data)
     response.content = mock.AsyncMock(spec=["__call__"], return_value=data)
     request = mock.AsyncMock(spec=["transport.Request"])
+    request.return_value = response
+    return request
+
+
+def make_aio_request(response_data, status_code=http_client.OK, text=False):
+    """Creates a mock request/response conforming to the google.auth.aio.transport interface (exposing .status_code and .read())."""
+    response = mock.AsyncMock(spec=aio_transport.Response)
+    response.status_code = status_code
+    data = response_data if text else json.dumps(response_data).encode("utf-8")
+    response.read = mock.AsyncMock(return_value=data)
+    request = mock.AsyncMock(spec=aio_transport.Request)
     request.return_value = response
     return request
 
@@ -497,7 +509,25 @@ async def test__token_endpoint_request_no_throw_with_retry(can_retry):
 
 @pytest.mark.asyncio
 async def test__lookup_regional_access_boundary_success():
-    request = make_request({"encodedLocations": "0xA30", "locations": ["us-central1"]})
+    request = make_aio_request({"encodedLocations": "0xA30", "locations": ["us-central1"]})
+    result = await _client._lookup_regional_access_boundary(
+        request, "http://example.com"
+    )
+    assert result == {"encodedLocations": "0xA30", "locations": ["us-central1"]}
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_legacy_transport():
+    # Create a legacy mock response that has .status and .content()
+    response = mock.AsyncMock(spec=["transport.Response"])
+    response.status = http_client.OK
+
+    data = json.dumps({"encodedLocations": "0xA30", "locations": ["us-central1"]}).encode("utf-8")
+    response.content = mock.AsyncMock(return_value=data)
+
+    request = mock.AsyncMock(spec=["transport.Request"])
+    request.return_value = response
+
     result = await _client._lookup_regional_access_boundary(
         request, "http://example.com"
     )
@@ -506,7 +536,25 @@ async def test__lookup_regional_access_boundary_success():
 
 @pytest.mark.asyncio
 async def test__lookup_regional_access_boundary_malformed():
-    request = make_request({"locations": ["us-central1"]})
+    request = make_aio_request({"locations": ["us-central1"]})
+    result = await _client._lookup_regional_access_boundary(
+        request, "http://example.com"
+    )
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_invalid_json():
+    request = make_aio_request("Service Unavailable", text=True)
+    result = await _client._lookup_regional_access_boundary(
+        request, "http://example.com"
+    )
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_non_dict_response():
+    request = make_aio_request(123)
     result = await _client._lookup_regional_access_boundary(
         request, "http://example.com"
     )
@@ -558,3 +606,24 @@ async def test__lookup_regional_access_boundary_request_no_throw_bad_gateway_ret
     assert success is True
     assert data == {"encodedLocations": "0xA30"}
     assert request.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test__lookup_regional_access_boundary_request_no_throw_transport_error():
+    request = mock.AsyncMock(spec=["transport.Request"])
+    request.side_effect = exceptions.TransportError("Socket connection failed")
+
+    (
+        success,
+        data,
+        retryable,
+    ) = await _client._lookup_regional_access_boundary_request_no_throw(
+        request, "http://example.com"
+    )
+
+    assert success is False
+    assert data == {}
+    assert retryable is False
+
+
+
