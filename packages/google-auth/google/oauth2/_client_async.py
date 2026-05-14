@@ -91,11 +91,17 @@ async def _token_endpoint_request_no_throw(
         except ValueError:
             response_data = response_body
 
-        if response.status == http_client.OK:
+        status_code = (
+            response.status_code
+            if hasattr(response, "status_code")
+            else response.status
+        )
+
+        if status_code == http_client.OK:
             return True, response_data, None
 
         retryable_error = client._can_retry(
-            status_code=response.status, response_data=response_data
+            status_code=status_code, response_data=response_data
         )
 
         if not can_retry or not retryable_error:
@@ -321,7 +327,7 @@ async def _lookup_regional_access_boundary(request, url, headers=None, fail_fast
         # Error was already logged by _lookup_regional_access_boundary_request
         return None
 
-    if "encodedLocations" not in response_data:
+    if not isinstance(response_data, dict) or "encodedLocations" not in response_data:
         client._LOGGER.error(
             "Regional Access Boundary response malformed: missing 'encodedLocations' key in %s",
             response_data,
@@ -399,18 +405,21 @@ async def _lookup_regional_access_boundary_request_no_throw(
         try:
             if timeout:
                 response = await asyncio.wait_for(
-                    request(method="GET", url=url, headers=headers), timeout=timeout
+                    request(method="GET", url=url, headers=headers, timeout=timeout),
+                    timeout=timeout,
                 )
             else:
                 response = await request(method="GET", url=url, headers=headers)
         except asyncio.TimeoutError:
             return False, {}, False
+        except exceptions.TransportError:
+            return False, {}, False
 
-        response_body1 = await response.content()
+        response_bytes = await response.content()
         response_body = (
-            response_body1.decode("utf-8")
-            if hasattr(response_body1, "decode")
-            else response_body1
+            response_bytes.decode("utf-8")
+            if hasattr(response_bytes, "decode")
+            else response_bytes
         )
 
         try:
@@ -418,13 +427,19 @@ async def _lookup_regional_access_boundary_request_no_throw(
         except ValueError:
             response_data = response_body
 
-        if response.status == http_client.OK:
+        status_code = (
+            response.status_code
+            if hasattr(response, "status_code")
+            else response.status
+        )
+
+        if status_code == http_client.OK:
             return True, response_data, None
 
         retryable_error = client._can_retry(
-            status_code=response.status, response_data=response_data
+            status_code=status_code, response_data=response_data
         )
-        if response.status == http_client.BAD_GATEWAY:
+        if status_code == http_client.BAD_GATEWAY:
             retryable_error = True
 
         if not can_retry or not retryable_error:
