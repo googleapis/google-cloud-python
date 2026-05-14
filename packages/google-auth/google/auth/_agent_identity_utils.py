@@ -103,6 +103,9 @@ def get_agent_identity_certificate_path():
                         return None
 
                     cert_configs = cert_config.get("cert_configs", {})
+                    if not isinstance(cert_configs, dict):
+                        return None
+
                     workload_config = cert_configs.get("workload", {})
                     if (
                         not isinstance(workload_config, dict)
