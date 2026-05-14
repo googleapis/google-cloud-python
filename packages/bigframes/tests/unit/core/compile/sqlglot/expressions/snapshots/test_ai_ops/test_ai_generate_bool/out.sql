@@ -1,6 +1,6 @@
 SELECT
   AI.GENERATE_BOOL(
-    prompt => STRUCT(`string_col` AS _field_1, ' is the same as ' AS _field_2, `string_col` AS _field_3),
+    prompt => (`string_col`, ' is the same as ', `string_col`),
     endpoint => 'gemini-2.5-flash'
   ) AS `result`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

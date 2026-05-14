@@ -1,6 +1,6 @@
 SELECT
   AI.IF(
-    prompt => STRUCT(`string_col` AS _field_1, ' is the same as ' AS _field_2, `string_col` AS _field_3),
+    prompt => (`string_col`, ' is the same as ', `string_col`),
     connection_id => 'bigframes-dev.us.bigframes-default-connection',
     optimization_mode => 'MINIMIZE_COST',
     max_error_ratio => 0.5
