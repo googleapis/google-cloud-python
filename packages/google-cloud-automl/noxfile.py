@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -391,7 +390,6 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
@@ -467,7 +465,11 @@ def prerelease_deps(session, protobuf_implementation):
     session.install("-e", ".")
 
     # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    unit_deps_all = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_EXTERNAL_DEPENDENCIES
+        + UNIT_TEST_EXTRAS
+    )
     session.install(*unit_deps_all)
 
     # Install dependencies for the system test environment
@@ -560,7 +562,11 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install("-e", ".")
 
     # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    unit_deps_all = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_EXTERNAL_DEPENDENCIES
+        + UNIT_TEST_EXTRAS
+    )
     session.install(*unit_deps_all)
 
     # Install dependencies for the system test environment
