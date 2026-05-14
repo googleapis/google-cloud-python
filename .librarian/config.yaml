@@ -30,9 +30,6 @@ libraries:
   # TODO(b/501132869): Disabling automatic releases until resolved.
   - id: "google-cloud-bigtable"
     release_blocked: true
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/16780): Disabling automatic releases until resolved.
-  - id: "google-cloud-compute"
-    release_blocked: true
   # TODO(https://github.com/googleapis/google-cloud-python/issues/16962):
   # Disable automatic releases until tests stabilize.
   - id: "pandas-gbq"
