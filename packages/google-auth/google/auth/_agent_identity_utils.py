@@ -99,28 +99,31 @@ def get_agent_identity_certificate_path():
                 with open(cert_config_path, "r") as f:
                     cert_config = json.load(f)
 
-                    if not isinstance(cert_config, dict):
-                        return None
+                cert_configs = (
+                    cert_config.get("cert_configs")
+                    if isinstance(cert_config, dict)
+                    else None
+                )
+                workload_config = (
+                    cert_configs.get("workload")
+                    if isinstance(cert_configs, dict)
+                    else None
+                )
 
-                    cert_configs = cert_config.get("cert_configs", {})
-                    if not isinstance(cert_configs, dict):
-                        return None
+                if (
+                    not isinstance(workload_config, dict)
+                    or "cert_path" not in workload_config
+                ):
+                    return None
 
-                    workload_config = cert_configs.get("workload", {})
-                    if (
-                        not isinstance(workload_config, dict)
-                        or "cert_path" not in workload_config
-                    ):
-                        return None
+                cert_path = workload_config["cert_path"]
+                if _is_certificate_file_ready(cert_path):
+                    return cert_path
 
-                    cert_path = workload_config["cert_path"]
-                    if _is_certificate_file_ready(cert_path):
-                        return cert_path
+                # The config was parsed, but the cert file is not ready yet
+                target_path = cert_path
 
-                    # The config was parsed, but the cert file is not ready yet
-                    target_path = cert_path
-
-            # Path B: Config is NOT set, fallback to the the well-known path
+            # Path B: Config is NOT set, fallback to the well-known path
             else:
                 if _is_certificate_file_ready(_WELL_KNOWN_CERT_PATH):
                     return _WELL_KNOWN_CERT_PATH
