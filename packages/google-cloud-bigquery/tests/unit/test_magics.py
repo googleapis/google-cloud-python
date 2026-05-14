@@ -2045,7 +2045,7 @@ def test_bigquery_magic_query_variable_not_identifier(monkeypatch):
     # considered a table name, thus we expect an error that the table ID is not valid.
     output = captured_io.stderr
     assert "ERROR:" in output
-    assert "must be a fully-qualified ID" in output
+    assert "Could not parse table_id." in output
 
 
 @pytest.mark.usefixtures("ipython_interactive")

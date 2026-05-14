@@ -291,7 +291,7 @@ class TableReference(_TableBase):
 
     @classmethod
     def from_api_repr(
-        cls, resource: dict | _string_references.ParsedTableReference
+        cls, resource: Union[dict, _string_references.ParsedTableReference]
     ) -> "TableReference":
         """Factory:  construct a table reference given its API representation
 

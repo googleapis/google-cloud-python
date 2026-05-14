@@ -125,7 +125,7 @@ class DatasetReference(object):
 
     @classmethod
     def from_api_repr(
-        cls, resource: dict | _string_references.ParsedDatasetReference
+        cls, resource: Union[dict, _string_references.ParsedDatasetReference]
     ) -> "DatasetReference":
         """Factory: construct a dataset reference given its API representation
 

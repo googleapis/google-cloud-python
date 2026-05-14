@@ -19,12 +19,10 @@
 from __future__ import annotations
 
 import re
-import typing
-
-from google.cloud.bigquery import _helpers
+from typing import TypedDict, Union
 
 
-ParsedDatasetReference = typing.TypedDict(
+ParsedDatasetReference = TypedDict(
     "ParsedDatasetReference",
     {
         "projectId": str,
@@ -33,7 +31,7 @@ ParsedDatasetReference = typing.TypedDict(
 )
 
 
-ParsedTableReference = typing.TypedDict(
+ParsedTableReference = TypedDict(
     "ParsedTableReference",
     {
         "projectId": str,
@@ -86,7 +84,7 @@ _RELATIVE_TABLE_REFERENCE_PATTERN = re.compile(
 
 
 def parse_dataset_reference(
-    dataset_id: str, *, default_project: str | None
+    dataset_id: str, *, default_project: Union[str, None]
 ) -> ParsedDatasetReference:
     """Parse a dataset ID string.
 
@@ -122,7 +120,7 @@ def parse_dataset_reference(
 
 
 def parse_table_reference(
-    table_id: str, *, default_project: str | None
+    table_id: str, *, default_project: Union[str, None]
 ) -> ParsedTableReference:
     """Parse a table ID string.
 
