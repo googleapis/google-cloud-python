@@ -91,17 +91,11 @@ async def _token_endpoint_request_no_throw(
         except ValueError:
             response_data = response_body
 
-        status_code = (
-            response.status_code
-            if hasattr(response, "status_code")
-            else response.status
-        )
-
-        if status_code == http_client.OK:
+        if response.status == http_client.OK:
             return True, response_data, None
 
         retryable_error = client._can_retry(
-            status_code=status_code, response_data=response_data
+            status_code=response.status, response_data=response_data
         )
 
         if not can_retry or not retryable_error:
