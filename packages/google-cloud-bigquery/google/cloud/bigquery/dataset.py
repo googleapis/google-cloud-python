@@ -30,6 +30,7 @@ from google.cloud.bigquery.routine import Routine, RoutineReference
 from google.cloud.bigquery.table import Table, TableReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery import external_config
+from google.cloud.bigquery import _string_references
 
 
 def _get_table_reference(self, table_id: str) -> TableReference:
@@ -123,7 +124,7 @@ class DatasetReference(object):
     routine = _get_routine_reference
 
     @classmethod
-    def from_api_repr(cls, resource: dict) -> "DatasetReference":
+    def from_api_repr(cls, resource: dict | _string_references.ParsedDatasetReference) -> "DatasetReference":
         """Factory: construct a dataset reference given its API representation
 
         Args:
@@ -166,28 +167,11 @@ class DatasetReference(object):
                 If ``dataset_id`` is not a fully-qualified dataset ID in
                 standard SQL format.
         """
-        output_dataset_id = dataset_id
-        parts = _helpers._split_id(dataset_id)
-
-        if len(parts) == 1:
-            if default_project is not None:
-                output_project_id = default_project
-            else:
-                raise ValueError(
-                    "When default_project is not set, dataset_id must be a "
-                    "fully-qualified dataset ID in standard SQL format, "
-                    'e.g., "project.dataset_id" got {}'.format(dataset_id)
-                )
-        elif len(parts) == 2:
-            output_project_id, output_dataset_id = parts
-        else:
-            raise ValueError(
-                "Too many parts in dataset_id. Expected a fully-qualified "
-                "dataset ID in standard SQL format, "
-                'e.g. "project.dataset_id", got {}'.format(dataset_id)
-            )
-
-        return cls(output_project_id, output_dataset_id)
+        return cls.from_api_repr(
+            _string_references.parse_dataset_reference(
+                dataset_id=dataset_id,
+                default_project=default_project,
+        ))
 
     def to_api_repr(self) -> dict:
         """Construct the API resource representation of this dataset reference
