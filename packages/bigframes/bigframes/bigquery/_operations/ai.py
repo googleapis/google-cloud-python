@@ -14,8 +14,7 @@
 
 """This module integrates BigQuery built-in AI functions for use with Series/DataFrame objects,
 such as AI.GENERATE_BOOL:
-https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-bool
-"""
+https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-bool"""
 
 from __future__ import annotations
 
@@ -1170,9 +1169,7 @@ def _separate_context_and_series(
     if isinstance(prompt, series.Series):
         if prompt.dtype == dtypes.OBJ_REF_DTYPE:
             # Multi-model support
-            import bigframes.bigquery as bbq
-
-            return [None], [bbq.obj.get_access_url(prompt, mode="R")]
+            return [None], [prompt.blob.read_url()]
         return [None], [prompt]
 
     prompt_context: List[str | None] = []
@@ -1209,9 +1206,7 @@ def _convert_series(
 
     if result.dtype == dtypes.OBJ_REF_DTYPE:
         # Support multimodal
-        import bigframes.bigquery as bbq
-
-        return bbq.obj.get_access_url(result, mode="R")
+        return result.blob.read_url()
     return result
 
 
