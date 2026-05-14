@@ -199,9 +199,10 @@ class Session(
             self._clients_provider = clients_provider
             self._location = context.location or "US"
         else:
-            credentials, project = (
-                bigframes._config.auth.resolve_credentials_and_project(context)
-            )
+            (
+                credentials,
+                project,
+            ) = bigframes._config.auth.resolve_credentials_and_project(context)
             if context.location is None:
                 with bigquery.Client(
                     project=project,
@@ -584,6 +585,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
     ) -> dataframe.DataFrame: ...
@@ -593,6 +595,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
     ) -> pandas.Series: ...
@@ -601,8 +604,8 @@ class Session(
     def _read_gbq_colab(
         self,
         query: str,
-        # TODO: Add a callback parameter that takes some kind of Event object.
         *,
+        callback: Optional[Callable[[bigframes.core.events.Event], None]] = None,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: bool = False,
     ) -> Union[dataframe.DataFrame, pandas.Series]:
@@ -615,6 +618,8 @@ class Session(
             query (str):
                 A SQL query string to execute. Results (if any) are turned into
                 a DataFrame.
+            callback (Optional[Callable[[bigframes.core.events.Event], None]]):
+                Callback to receive query execution events.
             pyformat_args (dict):
                 A dictionary of potential variables to replace in ``query``.
                 Note: strings are _not_ escaped. Use query parameters for these,
@@ -634,13 +639,21 @@ class Session(
             dry_run=dry_run,
         )
 
-        return self._loader.read_gbq_query(
-            query=query,
-            index_col=bigframes.enums.DefaultIndexKind.NULL,
-            force_total_order=False,
-            dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
-            allow_large_results=allow_large_results,
-        )
+        def _run_query():
+            return self._loader.read_gbq_query(
+                query=query,
+                index_col=bigframes.enums.DefaultIndexKind.NULL,
+                force_total_order=False,
+                dry_run=typing.cast(
+                    Union[Literal[False], Literal[True]], dry_run
+                ),
+                allow_large_results=allow_large_results,
+            )
+
+        if callback is not None:
+            with self._publisher.subscribe(callback):
+                return _run_query()
+        return _run_query()
 
     @overload
     def read_gbq_query(  # type: ignore[overload-overlap]

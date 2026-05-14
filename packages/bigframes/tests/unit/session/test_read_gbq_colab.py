@@ -126,3 +126,13 @@ def test_read_gbq_colab_doesnt_set_destination_table():
 
     assert query == "SELECT 'my-test-query';"
     assert config.destination is None
+
+
+def test_read_gbq_colab_with_callback():
+    """Make sure callback receives events during execution."""
+    session = mocks.create_bigquery_session()
+    callback = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'my-test-query';", callback=callback)
+
+    assert callback.call_count > 0
