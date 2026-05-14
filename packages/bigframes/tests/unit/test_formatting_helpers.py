@@ -223,7 +223,7 @@ def test_progress_callback_falls_back_to_global():
     with mock.patch("bigframes._config.options.display.progress_bar", "terminal"):
         with mock.patch("bigframes.formatting_helpers.in_ipython", return_value=False):
             with mock.patch("builtins.print") as mock_print:
-                formatting_helpers.progress_callback(envelope)
+                formatting_helpers.create_progress_callback()(envelope)
                 mock_print.assert_called_once()
 
 
@@ -236,5 +236,5 @@ def test_progress_callback_respects_envelope_progress_bar():
     with mock.patch("bigframes._config.options.display.progress_bar", "terminal"):
         with mock.patch("bigframes.formatting_helpers.in_ipython", return_value=False):
             with mock.patch("builtins.print") as mock_print:
-                formatting_helpers.progress_callback(envelope)
+                formatting_helpers.create_progress_callback()(envelope)
                 mock_print.assert_not_called()
