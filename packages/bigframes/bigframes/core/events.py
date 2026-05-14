@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# flake8: noqa: E501
+
 from __future__ import annotations
 
 import dataclasses
@@ -35,7 +37,7 @@ QueryPlanType = list[google.cloud.bigquery.job.query.QueryPlanEntry] | None
 class Subscriber:
     def __init__(
         self,
-        callback: Callable[[EventEnvelope | Event], None],
+        callback: Callable[[EventEnvelope], None],
         *,
         publisher: Publisher,  # noqa: E501
     ):
@@ -65,10 +67,12 @@ class Subscriber:
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_value is not None:
             self(
-                UnknownErrorEvent(
-                    exc_type=exc_type,
-                    exc_value=exc_value,
-                    traceback=traceback,
+                EventEnvelope(
+                    UnknownErrorEvent(
+                        exc_type=exc_type,
+                        exc_value=exc_value,
+                        traceback=traceback,
+                    )
                 )
             )
         self.close()
@@ -79,9 +83,7 @@ class Publisher:
         self._subscribers_lock = threading.Lock()
         self._subscribers: Set[Subscriber] = set()
 
-    def subscribe(
-        self, callback: Callable[[EventEnvelope | Event], None]
-    ) -> Subscriber:
+    def subscribe(self, callback: Callable[[EventEnvelope], None]) -> Subscriber:
         # TODO(b/448176657): figure out how to handle subscribers/publishers in
         # a background thread. Maybe subscribers should be thread-local?
         subscriber = Subscriber(callback, publisher=self)
@@ -94,6 +96,8 @@ class Publisher:
             self._subscribers.remove(subscriber)
 
     def publish(self, envelope: EventEnvelope | Event):
+        if not isinstance(envelope, EventEnvelope):
+            envelope = EventEnvelope(event=envelope)
         with self._subscribers_lock:
             for subscriber in self._subscribers:
                 subscriber(envelope)

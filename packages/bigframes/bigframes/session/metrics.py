@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# flake8: noqa: E501
+
 from __future__ import annotations
 
 import dataclasses
@@ -243,11 +245,9 @@ class ExecutionMetrics:
         except ImportError:
             return
 
-        # Direct publisher.publish calls pass raw Event objects, while background query callbacks wrap events in an EventEnvelope to preserve progress bar context.
-        if isinstance(envelope, bigframes.core.events.EventEnvelope):
-            event = envelope.event
-        else:
-            event = envelope
+        # Publisher.publish automatically wraps raw Event objects in an EventEnvelope, ensuring subscribers receive a consistent contract.
+        assert isinstance(envelope, bigframes.core.events.EventEnvelope)
+        event = envelope.event
 
         if isinstance(event, bigframes.core.events.ExecutionFinished):
             if event.result and isinstance(event.result, LocalExecuteResult):

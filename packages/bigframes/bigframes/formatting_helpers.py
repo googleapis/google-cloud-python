@@ -14,6 +14,8 @@
 
 """Shared helper functions for formatting jobs related info."""
 
+# flake8: noqa: E501
+
 from __future__ import annotations
 
 import datetime
@@ -163,13 +165,10 @@ def progress_callback(
         # This will allow cleanup to continue.
         return
 
-    # Direct publisher.publish calls pass raw Event objects, while background query callbacks wrap events in an EventEnvelope to preserve progress bar context.
-    if isinstance(envelope, bigframes.core.events.EventEnvelope):
-        event = envelope.event
-        progress_bar = envelope.progress_bar
-    else:
-        event = envelope
-        progress_bar = bigframes.core.events._DEFAULT
+    # Publisher.publish automatically wraps raw Event objects in an EventEnvelope, ensuring subscribers receive a consistent contract.
+    assert isinstance(envelope, bigframes.core.events.EventEnvelope)
+    event = envelope.event
+    progress_bar = envelope.progress_bar
 
     if progress_bar == bigframes.core.events._DEFAULT:
         progress_bar = bigframes._config.options.display.progress_bar
