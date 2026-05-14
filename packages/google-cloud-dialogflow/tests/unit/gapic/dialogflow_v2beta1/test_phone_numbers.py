@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -45,6 +39,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1832,11 +1827,7 @@ async def test_list_phone_numbers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_phone_numbers(request={})
-        ).pages:
+        async for page_ in (await client.list_phone_numbers(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3034,7 +3025,7 @@ def test_list_phone_numbers_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_phone_numbers_rest_unset_required_fields():
@@ -3285,7 +3276,7 @@ def test_update_phone_number_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_phone_number_rest_unset_required_fields():
@@ -3471,7 +3462,7 @@ def test_delete_phone_number_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_phone_number_rest_unset_required_fields():
@@ -3654,7 +3645,7 @@ def test_undelete_phone_number_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_undelete_phone_number_rest_unset_required_fields():
@@ -4249,6 +4240,11 @@ def test_update_phone_number_rest_call_success(request_type):
         "phone_number": "phone_number_value",
         "conversation_profile": "conversation_profile_value",
         "lifecycle_state": 1,
+        "allowed_sip_trunks": {
+            "sip_trunks": ["sip_trunks_value1", "sip_trunks_value2"],
+            "carrier_ids": ["carrier_ids_value1", "carrier_ids_value2"],
+        },
+        "purge_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5568,8 +5564,34 @@ def test_parse_phone_number_path():
     assert expected == actual
 
 
+def test_sip_trunk_path():
+    project = "oyster"
+    location = "nudibranch"
+    siptrunk = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/sipTrunks/{siptrunk}".format(
+        project=project,
+        location=location,
+        siptrunk=siptrunk,
+    )
+    actual = PhoneNumbersClient.sip_trunk_path(project, location, siptrunk)
+    assert expected == actual
+
+
+def test_parse_sip_trunk_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "siptrunk": "nautilus",
+    }
+    path = PhoneNumbersClient.sip_trunk_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PhoneNumbersClient.parse_sip_trunk_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5579,7 +5601,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = PhoneNumbersClient.common_billing_account_path(**expected)
 
@@ -5589,7 +5611,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5599,7 +5621,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = PhoneNumbersClient.common_folder_path(**expected)
 
@@ -5609,7 +5631,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5619,7 +5641,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = PhoneNumbersClient.common_organization_path(**expected)
 
@@ -5629,7 +5651,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5639,7 +5661,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = PhoneNumbersClient.common_project_path(**expected)
 
@@ -5649,8 +5671,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5661,8 +5683,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = PhoneNumbersClient.common_location_path(**expected)
 

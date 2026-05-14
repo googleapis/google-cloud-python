@@ -960,8 +960,12 @@ libraries:
     apis:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
-    skip_generate: true
     python:
+      opt_args_by_api:
+        google/cloud/dialogflow/v2:
+          - resource-name-alias=ces.googleapis.com/Tool:CesTool
+        google/cloud/dialogflow/v2beta1:
+          - resource-name-alias=ces.googleapis.com/Tool:CesTool
       metadata_name_override: dialogflow
       default_version: v2
   - name: google-cloud-dialogflow-cx

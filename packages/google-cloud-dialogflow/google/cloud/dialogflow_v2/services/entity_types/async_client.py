@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1026,11 +1026,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_update_entity_types(request=request)
+                operation = await client.batch_update_entity_types(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1145,11 +1145,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_entity_types(request=request)
+                operation = await client.batch_delete_entity_types(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1308,11 +1308,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_entities(request=request)
+                operation = await client.batch_create_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1484,11 +1484,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_update_entities(request=request)
+                operation = await client.batch_update_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1656,11 +1656,11 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_entities(request=request)
+                operation = await client.batch_delete_entities(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
