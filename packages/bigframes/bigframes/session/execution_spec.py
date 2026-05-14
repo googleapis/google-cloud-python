@@ -19,7 +19,7 @@ from typing import TYPE_CHECKING, Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
-from bigframes.options import ComputeOptions
+from bigframes._config import ComputeOptions
 
 
 @dataclasses.dataclass(frozen=True)
@@ -63,7 +63,7 @@ class ExecutionSpec:
 
     def with_bq_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
         bq_config = self.bigquery_config or BqComputeOptions()
-        return dataclasses.replace(self, bigquery_config=bq_config.add_labels(labels))
+        return dataclasses.replace(self, bigquery_config=bq_config.push_labels(labels))
 
     def with_compute_options(self, compute_options: ComputeOptions) -> ExecutionSpec:
         """
