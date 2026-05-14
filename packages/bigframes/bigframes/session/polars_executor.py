@@ -137,7 +137,7 @@ class PolarsExecutor(semi_executor.SemiExecutor):
 
         self._compiler = PolarsCompiler()
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
         execution_spec: execution_spec.ExecutionSpec,
@@ -154,7 +154,8 @@ class PolarsExecutor(semi_executor.SemiExecutor):
             return None
         if execution_spec.peek is not None:
             lazy_frame = lazy_frame.limit(execution_spec.peek)
-        pa_table = lazy_frame.collect().to_arrow()
+        pl_df = await lazy_frame.collect_async()
+        pa_table = pl_df.to_arrow()
         return executor.LocalExecuteResult(
             data=pa_table,
             bf_schema=plan.schema,
