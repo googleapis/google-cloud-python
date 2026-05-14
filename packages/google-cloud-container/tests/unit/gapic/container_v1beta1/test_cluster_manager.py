@@ -40,6 +40,8 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.rpc.code_pb2 as code_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1281,7 +1283,11 @@ def test_cluster_manager_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/container",
+                "https://www.googleapis.com/auth/container.read-only",
+            ),
             scopes=None,
             default_host="container.googleapis.com",
             ssl_credentials=None,
@@ -18030,7 +18036,11 @@ def test_cluster_manager_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/container",
+                "https://www.googleapis.com/auth/container.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -18056,7 +18066,11 @@ def test_cluster_manager_auth_adc():
         ClusterManagerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/container",
+                "https://www.googleapis.com/auth/container.read-only",
+            ),
             quota_project_id=None,
         )
 
@@ -18076,7 +18090,11 @@ def test_cluster_manager_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/container",
+                "https://www.googleapis.com/auth/container.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -18128,7 +18146,11 @@ def test_cluster_manager_transport_create_channel(transport_class, grpc_helpers)
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/container",
+                "https://www.googleapis.com/auth/container.read-only",
+            ),
             scopes=["1", "2"],
             default_host="container.googleapis.com",
             ssl_credentials=None,

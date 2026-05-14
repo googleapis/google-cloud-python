@@ -22,6 +22,8 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.rpc.code_pb2 as code_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -43,6 +45,7 @@ __protobuf__ = proto.module(
         "EvictionGracePeriod",
         "EvictionMinimumReclaim",
         "NodeConfig",
+        "TaintConfig",
         "AdvancedMachineFeatures",
         "NodeNetworkConfig",
         "AdditionalNodeNetworkConfig",
@@ -77,6 +80,8 @@ __protobuf__ = proto.module(
         "ParallelstoreCsiDriverConfig",
         "HighScaleCheckpointingConfig",
         "LustreCsiDriverConfig",
+        "SlurmOperatorConfig",
+        "NodeReadinessConfig",
         "SliceControllerConfig",
         "RayOperatorConfig",
         "GkeBackupAgentConfig",
@@ -88,6 +93,8 @@ __protobuf__ = proto.module(
         "PodCIDROverprovisionConfig",
         "IPAllocationPolicy",
         "Cluster",
+        "NodeCreationConfig",
+        "ControlPlaneEgress",
         "RBACBindingConfig",
         "UserManagedKeysConfig",
         "AnonymousAuthenticationConfig",
@@ -136,10 +143,12 @@ __protobuf__ = proto.module(
         "BestEffortProvisioning",
         "AutoUpgradeOptions",
         "MaintenancePolicy",
+        "DisruptionBudget",
         "MaintenanceWindow",
         "TimeWindow",
         "MaintenanceExclusionOptions",
         "RecurringTimeWindow",
+        "RecurringMaintenanceWindow",
         "DailyMaintenanceWindow",
         "SetNodePoolManagementRequest",
         "SetNodePoolSizeRequest",
@@ -202,6 +211,7 @@ __protobuf__ = proto.module(
         "UpgradeAvailableEvent",
         "SecurityBulletinEvent",
         "Autopilot",
+        "ClusterPolicyConfig",
         "PrivilegedAdmissionConfig",
         "WorkloadPolicyConfig",
         "LoggingConfig",
@@ -231,9 +241,13 @@ __protobuf__ = proto.module(
         "UpgradeDetails",
         "FetchNodePoolUpgradeInfoRequest",
         "NodePoolUpgradeInfo",
+        "ScheduleUpgradeConfig",
         "GkeAutoUpgradeConfig",
         "NetworkTierConfig",
+        "SecretSyncConfig",
         "ManagedOpenTelemetryConfig",
+        "ManagedMachineLearningDiagnosticsConfig",
+        "PodSnapshotConfig",
     },
 )
 
@@ -318,7 +332,7 @@ class NodePoolUpdateStrategy(proto.Enum):
             upgrade parallelism.
         SHORT_LIVED (5):
             SHORT_LIVED is the dedicated upgrade strategy for
-            QueuedProvisioning and flex start nodepools scaled up only
+            QueuedProvisioning and flex start node pools scaled up only
             by enqueueing to the Dynamic Workload Scheduler (DWS).
     """
 
@@ -447,6 +461,9 @@ class LinuxNodeConfig(proto.Message):
             See
             https://docs.kernel.org/admin-guide/mm/transhuge.html
             for more details.
+        custom_node_init (google.cloud.container_v1.types.LinuxNodeConfig.CustomNodeInit):
+            Optional. Allow users to run arbitrary bash
+            script or container on the node.
         swap_config (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig):
             Optional. Enables and configures swap space
             on nodes. If omitted, swap is disabled.
@@ -458,6 +475,11 @@ class LinuxNodeConfig(proto.Message):
             will be provisioned with a Container-Optimized
             OS image that enforces kernel module signature
             verification.
+        accurate_time_config (google.cloud.container_v1.types.LinuxNodeConfig.AccurateTimeConfig):
+            Optional. The accurate time configuration for
+            the node pool.
+
+            This field is a member of `oneof`_ ``_accurate_time_config``.
     """
 
     class CgroupMode(proto.Enum):
@@ -571,6 +593,72 @@ class LinuxNodeConfig(proto.Message):
             proto.INT32,
             number=2,
             optional=True,
+        )
+
+    class CustomNodeInit(proto.Message):
+        r"""Support for running custom init code while bootstrapping
+        nodes.
+
+        Attributes:
+            init_script (google.cloud.container_v1.types.LinuxNodeConfig.CustomNodeInit.InitScript):
+                Optional. The init script to be executed on
+                the node.
+        """
+
+        class InitScript(proto.Message):
+            r"""InitScript provide a simply bash script to be executed on the
+            node.
+
+            Attributes:
+                gcs_uri (str):
+                    The Cloud Storage URI for storing the init script. Format:
+                    gs://BUCKET_NAME/OBJECT_NAME The service account on the node
+                    pool must have read access to the object. User can't
+                    configure both gcs_uri and gcp_secret_manager_secret_uri.
+                gcs_generation (int):
+                    The generation of the init script stored in Gloud Storage.
+                    This is the required field to identify the version of the
+                    init script. User can get the genetaion from
+                    ``gcloud storage objects describe gs://BUCKET_NAME/OBJECT_NAME --format="value(generation)"``
+                    or from the "Version history" tab of the object in the Cloud
+                    Console UI.
+                args (MutableSequence[str]):
+                    Optional. The optional arguments line to be
+                    passed to the init script.
+                gcp_secret_manager_secret_uri (str):
+                    The resource name of the secret manager secret hosting the
+                    init script. Both global and regional secrets are supported
+                    with format below: Global secret:
+                    projects/{project}/secrets/{secret}/versions/{version}
+                    Regional secret:
+                    projects/{project}/locations/{location}/secrets/{secret}/versions/{version}
+                    Example: projects/1234567890/secrets/script_1/versions/1.
+                    Accept version number only, not support version alias. User
+                    can't configure both gcp_secret_manager_secret_uri and
+                    gcs_uri.
+            """
+
+            gcs_uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            gcs_generation: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            args: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            gcp_secret_manager_secret_uri: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+
+        init_script: "LinuxNodeConfig.CustomNodeInit.InitScript" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="LinuxNodeConfig.CustomNodeInit.InitScript",
         )
 
     class SwapConfig(proto.Message):
@@ -753,7 +841,7 @@ class LinuxNodeConfig(proto.Message):
 
         class Policy(proto.Enum):
             r"""Defines the kernel module loading policy for nodes in the
-            nodepool.
+            node pool.
 
             Values:
                 POLICY_UNSPECIFIED (0):
@@ -787,6 +875,27 @@ class LinuxNodeConfig(proto.Message):
             enum="LinuxNodeConfig.NodeKernelModuleLoading.Policy",
         )
 
+    class AccurateTimeConfig(proto.Message):
+        r"""AccurateTimeConfig contains configuration for the accurate
+        time synchronization feature.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            enable_ptp_kvm_time_sync (bool):
+                Enables enhanced time synchronization using
+                PTP-KVM.
+
+                This field is a member of `oneof`_ ``_enable_ptp_kvm_time_sync``.
+        """
+
+        enable_ptp_kvm_time_sync: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+
     sysctls: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -813,6 +922,11 @@ class LinuxNodeConfig(proto.Message):
         number=5,
         enum=TransparentHugepageDefrag,
     )
+    custom_node_init: CustomNodeInit = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=CustomNodeInit,
+    )
     swap_config: SwapConfig = proto.Field(
         proto.MESSAGE,
         number=12,
@@ -823,6 +937,12 @@ class LinuxNodeConfig(proto.Message):
         proto.MESSAGE,
         number=13,
         message=NodeKernelModuleLoading,
+    )
+    accurate_time_config: AccurateTimeConfig = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        optional=True,
+        message=AccurateTimeConfig,
     )
 
 
@@ -1053,6 +1173,10 @@ class NodeKubeletConfig(proto.Message):
             individually instead of as a group.
 
             This field is a member of `oneof`_ ``_single_process_oom_kill``.
+        crash_loop_back_off (google.cloud.container_v1.types.NodeKubeletConfig.CrashLoopBackOffConfig):
+            Optional. Contains configuration options to
+            modify node-level parameters for container
+            restart behavior.
         shutdown_grace_period_seconds (int):
             Optional. shutdown_grace_period_seconds is the maximum
             allowed grace period (in seconds) the total duration that
@@ -1076,6 +1200,34 @@ class NodeKubeletConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_shutdown_grace_period_critical_pods_seconds``.
     """
+
+    class CrashLoopBackOffConfig(proto.Message):
+        r"""Contains config to modify node-level parameters for container
+        restart behavior.
+
+        Attributes:
+            max_container_restart_period (str):
+                Optional. The maximum duration the backoff
+                delay can accrue to for container restarts,
+                minimum 1 second, maximum 300 seconds. If not
+                set, defaults to the internal crashloopbackoff
+                maximum.
+
+                The string must be a sequence of decimal
+                numbers, each with optional fraction and a unit
+                suffix, such as "300ms".
+                Valid time units are "ns", "us" (or "µs"), "ms",
+                "s", "m", "h".
+
+                See
+                https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#configurable-container-restart-delay
+                for more details.
+        """
+
+        max_container_restart_period: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     cpu_manager_policy: str = proto.Field(
         proto.STRING,
@@ -1164,6 +1316,11 @@ class NodeKubeletConfig(proto.Message):
         proto.BOOL,
         number=22,
         optional=True,
+    )
+    crash_loop_back_off: CrashLoopBackOffConfig = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=CrashLoopBackOffConfig,
     )
     shutdown_grace_period_seconds: int = proto.Field(
         proto.INT32,
@@ -1570,18 +1727,25 @@ class NodeConfig(proto.Message):
             https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
             for available image types.
         labels (MutableMapping[str, str]):
-            The map of Kubernetes labels (key/value
-            pairs) to be applied to each node. These will
-            added in addition to any default label(s) that
-            Kubernetes may apply to the node.
-            In case of conflict in label keys, the applied
-            set may differ depending on the Kubernetes
-            version -- it's best to assume the behavior is
-            undefined and conflicts should be avoided.
-            For more information, including usage and the
-            valid values, see:
+            The Kubernetes labels (key/value pairs) to apply to each
+            node. The values in this field are added to the set of
+            default labels Kubernetes applies to nodes.
 
-            https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+            This field has the following restrictions:
+
+            - Labels must use a valid Kubernetes syntax and character
+              set, as defined in
+              https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set.
+            - This field supports up to 1,024 total characters in a
+              single request.
+
+            Depending on the Kubernetes version, keys in this field
+            might conflict with the keys of the default labels, which
+            might change which of your labels are applied to the nodes.
+            Assume that the behavior is unpredictable and avoid label
+            key conflicts. For more information about the default
+            labels, see:
+            https://kubernetes.io/docs/reference/labels-annotations-taints/
         local_ssd_count (int):
             The number of local SSD disks to be attached
             to the node.
@@ -1746,6 +1910,11 @@ class NodeConfig(proto.Message):
             underutilized nodes. If not set, nodes are
             scaled down by default behavior, i.e. according
             to the chosen autoscaling profile.
+        taint_config (google.cloud.container_v1.types.TaintConfig):
+            Optional. The taint configuration for the
+            node pool.
+
+            This field is a member of `oneof`_ ``_taint_config``.
     """
 
     class LocalSsdEncryptionMode(proto.Enum):
@@ -2018,6 +2187,55 @@ class NodeConfig(proto.Message):
         number=60,
         message=duration_pb2.Duration,
     )
+    taint_config: "TaintConfig" = proto.Field(
+        proto.MESSAGE,
+        number=62,
+        optional=True,
+        message="TaintConfig",
+    )
+
+
+class TaintConfig(proto.Message):
+    r"""TaintConfig contains the configuration for the taints of the
+    node pool.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        architecture_taint_behavior (google.cloud.container_v1.types.TaintConfig.ArchitectureTaintBehavior):
+            Optional. Controls architecture tainting
+            behavior.
+
+            This field is a member of `oneof`_ ``_architecture_taint_behavior``.
+    """
+
+    class ArchitectureTaintBehavior(proto.Enum):
+        r"""Controls architecture tainting behavior for a node pool.
+        New values may be added in the future.
+
+        Values:
+            ARCHITECTURE_TAINT_BEHAVIOR_UNSPECIFIED (0):
+                Specifies that the behavior is unspecified,
+                defaults to ARM.
+            NONE (1):
+                Disables default architecture taints on the
+                node pool.
+            ARM (2):
+                Taints all the nodes in the node pool with
+                the default ARM taint.
+        """
+
+        ARCHITECTURE_TAINT_BEHAVIOR_UNSPECIFIED = 0
+        NONE = 1
+        ARM = 2
+
+    architecture_taint_behavior: ArchitectureTaintBehavior = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=ArchitectureTaintBehavior,
+    )
 
 
 class AdvancedMachineFeatures(proto.Message):
@@ -2148,7 +2366,7 @@ class NodeNetworkConfig(proto.Message):
             This field is a member of `oneof`_ ``_network_performance_config``.
         pod_cidr_overprovision_config (google.cloud.container_v1.types.PodCIDROverprovisionConfig):
             [PRIVATE FIELD] Pod CIDR size overprovisioning config for
-            the nodepool.
+            the node pool.
 
             Pod CIDR size per node depends on max_pods_per_node. By
             default, the value of max_pods_per_node is rounded off to
@@ -2174,26 +2392,34 @@ class NodeNetworkConfig(proto.Message):
             The ratio is Usage/[Total number of IPs in the secondary
             range], Usage=numNodes\ *numZones*\ podIPsPerNode.
         subnetwork (str):
-            Optional. The subnetwork name/path for the
-            node pool. Format:
+            Optional. The subnetwork name/path for the node pool.
+            Format:
             projects/{project}/regions/{region}/subnetworks/{subnetwork}
-            If the cluster is associated with multiple
-            subnetworks, the subnetwork can be either:
+            If the cluster is associated with multiple subnetworks, the
+            subnetwork can be either:
 
-            1. A user supplied subnetwork name/full path
-                during node pool creation.    Example1:
-                my-subnet
-               Example2:
-            projects/gke-project/regions/us-central1/subnetworks/my-subnet
-            2. A subnetwork path picked based on the IP
-                utilization during node pool    creation and
-                is immutable.
+            - A user supplied subnetwork name during node pool creation
+              (e.g., ``my-subnet``). The name must be between 1 and 63
+              characters long, start with a letter, contain only
+              letters, numbers, and hyphens, and end with a letter or a
+              number.
+            - A full subnetwork path during node pool creation, such as
+              ``projects/gke-project/regions/us-central1/subnetworks/my-subnet``
+            - A subnetwork path picked based on the IP utilization
+              during node pool creation and is immutable.
         network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
             Output only. The network tier configuration
             for the node pool inherits from the
             cluster-level configuration and remains
             immutable throughout the node pool's lifecycle,
             including during upgrades.
+        accelerator_network_profile (str):
+            Immutable. The accelerator network profile
+            for the node pool. For now the only valid value
+            is "auto". If specified, the network
+            configuration of the nodes in this node pool
+            will be managed by this profile for the
+            supported machine types, zone, etc.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -2284,6 +2510,10 @@ class NodeNetworkConfig(proto.Message):
         proto.MESSAGE,
         number=20,
         message="NetworkTierConfig",
+    )
+    accelerator_network_profile: str = proto.Field(
+        proto.STRING,
+        number=21,
     )
 
 
@@ -2596,13 +2826,11 @@ class ContainerdConfig(proto.Message):
 
             Attributes:
                 fqdns (MutableSequence[str]):
-                    List of fully qualified domain names (FQDN).
-                    Specifying port is supported.
-                    Wildcards are NOT supported.
-                    Examples:
+                    List of fully qualified domain names (FQDN). Specifying port
+                    is supported. Wildcards are NOT supported. Examples:
 
-                    - my.customdomain.com
-                    - 10.0.1.2:5000
+                    - ``my.customdomain.com``
+                    - ``10.0.1.2:5000``
                 gcp_secret_manager_certificate_config (google.cloud.container_v1.types.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig):
                     Secret Manager certificate configuration.
 
@@ -2670,18 +2898,15 @@ class ContainerdConfig(proto.Message):
 
         Attributes:
             server (str):
-                Defines the host name of the registry server,
-                which will be used to create configuration file
-                as /etc/containerd/hosts.d/<server>/hosts.toml.
-                It supports fully qualified domain names (FQDN)
-                and IP addresses:
+                Defines the host name of the registry server, which will be
+                used to create configuration file as
+                /etc/containerd/hosts.d//hosts.toml. It supports fully
+                qualified domain names (FQDN) and IP addresses: Specifying
+                port is supported, while scheme and path are NOT supported.
+                Wildcards are NOT supported. Examples:
 
-                Specifying port is supported.
-                Wildcards are NOT supported.
-                Examples:
-
-                - my.customdomain.com
-                - 10.0.1.2:5000
+                - ``my.customdomain.com``
+                - ``10.0.1.2:5000``
             hosts (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.HostConfig]):
                 HostConfig configures a list of host-specific
                 configurations for the server.
@@ -2783,16 +3008,14 @@ class ContainerdConfig(proto.Message):
 
             Attributes:
                 host (str):
-                    Host configures the registry host/mirror.
-                    It supports fully qualified domain names (FQDN)
-                    and IP addresses:
+                    Host configures the registry host/mirror. It supports fully
+                    qualified domain names (FQDNs) and IP addresses. Specifying
+                    scheme, port or path is supported. Scheme can only be http
+                    or https. Wildcards are NOT supported. Examples:
 
-                    Specifying port is supported.
-                    Wildcards are NOT supported.
-                    Examples:
-
-                    - my.customdomain.com
-                    - 10.0.1.2:5000
+                    - ``my.customdomain.com``
+                    - ``https://my.customdomain.com/path``
+                    - ``10.0.1.2:5000``
                 capabilities (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.HostCapability]):
                     Capabilities represent the capabilities of
                     the registry host, specifying what operations a
@@ -3166,9 +3389,17 @@ class AddonsConfig(proto.Message):
             Checkpointing add-on.
         lustre_csi_driver_config (google.cloud.container_v1.types.LustreCsiDriverConfig):
             Configuration for the Lustre CSI driver.
+        pod_snapshot_config (google.cloud.container_v1.types.PodSnapshotConfig):
+            Optional. Configuration for the Pod Snapshot
+            feature.
+        slurm_operator_config (google.cloud.container_v1.types.SlurmOperatorConfig):
+            Configuration for the Slurm Operator.
         slice_controller_config (google.cloud.container_v1.types.SliceControllerConfig):
             Optional. Configuration for the slice
             controller add-on.
+        node_readiness_config (google.cloud.container_v1.types.NodeReadinessConfig):
+            Optional. Configuration for
+            NodeReadinessController add-on.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -3253,10 +3484,25 @@ class AddonsConfig(proto.Message):
         number=23,
         message="LustreCsiDriverConfig",
     )
+    pod_snapshot_config: "PodSnapshotConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="PodSnapshotConfig",
+    )
+    slurm_operator_config: "SlurmOperatorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="SlurmOperatorConfig",
+    )
     slice_controller_config: "SliceControllerConfig" = proto.Field(
         proto.MESSAGE,
         number=26,
         message="SliceControllerConfig",
+    )
+    node_readiness_config: "NodeReadinessConfig" = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message="NodeReadinessConfig",
     )
 
 
@@ -3630,6 +3876,14 @@ class LustreCsiDriverConfig(proto.Message):
                longer required as of GKE node version
                1.33.2-gke.4655000, unless you are connecting to a Lustre
                instance that has the ``gke-support-enabled`` flag.
+        disable_multi_nic (bool):
+            When set to true, this disables multi-NIC
+            support for the Lustre CSI driver.
+            By default, GKE enables multi-NIC support, which
+            allows the Lustre CSI driver to automatically
+            detect and configure all suitable network
+            interfaces on a node to maximize I/O performance
+            for demanding workloads.
     """
 
     enabled: bool = proto.Field(
@@ -3639,6 +3893,41 @@ class LustreCsiDriverConfig(proto.Message):
     enable_legacy_lustre_port: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    disable_multi_nic: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class SlurmOperatorConfig(proto.Message):
+    r"""Configuration for the Slurm Operator.
+
+    Attributes:
+        enabled (bool):
+            When enabled, it runs a Slurm Operator that
+            manages the set of compute pods for Slurm
+            Cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class NodeReadinessConfig(proto.Message):
+    r"""Configuration for the GKE Node Readiness Controller.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether the GKE Node Readiness
+            Controller is enabled for this cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
@@ -4517,8 +4806,8 @@ class Cluster(proto.Message):
         fleet (google.cloud.container_v1.types.Fleet):
             Fleet information for the cluster.
         security_posture_config (google.cloud.container_v1.types.SecurityPostureConfig):
-            Enable/Disable Security Posture API features
-            for the cluster.
+            Optional. Enable/Disable Security Posture API
+            features for the cluster.
         control_plane_endpoints_config (google.cloud.container_v1.types.ControlPlaneEndpointsConfig):
             Configuration for all cluster's control plane
             endpoints.
@@ -4532,8 +4821,12 @@ class Cluster(proto.Message):
         secret_manager_config (google.cloud.container_v1.types.SecretManagerConfig):
             Secret CSI driver configuration.
         compliance_posture_config (google.cloud.container_v1.types.CompliancePostureConfig):
-            Enable/Disable Compliance Posture features
-            for the cluster.
+            Optional. Deprecated: Compliance Posture is
+            no longer supported. For more details, see
+            https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.
+
+            Enable/Disable Compliance Posture features for
+            the cluster.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
 
@@ -4558,9 +4851,24 @@ class Cluster(proto.Message):
         anonymous_authentication_config (google.cloud.container_v1.types.AnonymousAuthenticationConfig):
             Configuration for limiting anonymous access
             to all endpoints except the health checks.
+        schedule_upgrade_config (google.cloud.container_v1.types.ScheduleUpgradeConfig):
+            Optional. Configuration for scheduled
+            upgrades.
+        secret_sync_config (google.cloud.container_v1.types.SecretSyncConfig):
+            Configuration for sync Secret Manager secrets
+            as k8s secrets.
         managed_opentelemetry_config (google.cloud.container_v1.types.ManagedOpenTelemetryConfig):
             Configuration for Managed OpenTelemetry
             pipeline.
+        control_plane_egress (google.cloud.container_v1.types.ControlPlaneEgress):
+            Configuration for control plane egress
+            control.
+        managed_machine_learning_diagnostics_config (google.cloud.container_v1.types.ManagedMachineLearningDiagnosticsConfig):
+            Configuration for Managed Machine Learning
+            Diagnostics.
+        node_creation_config (google.cloud.container_v1.types.NodeCreationConfig):
+            Optional. Configuration for Node Creation
+            Mode.
     """
 
     class Status(proto.Enum):
@@ -4964,10 +5272,102 @@ class Cluster(proto.Message):
         number=164,
         message="AnonymousAuthenticationConfig",
     )
+    schedule_upgrade_config: "ScheduleUpgradeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=165,
+        message="ScheduleUpgradeConfig",
+    )
+    secret_sync_config: "SecretSyncConfig" = proto.Field(
+        proto.MESSAGE,
+        number=166,
+        message="SecretSyncConfig",
+    )
     managed_opentelemetry_config: "ManagedOpenTelemetryConfig" = proto.Field(
         proto.MESSAGE,
         number=168,
         message="ManagedOpenTelemetryConfig",
+    )
+    control_plane_egress: "ControlPlaneEgress" = proto.Field(
+        proto.MESSAGE,
+        number=169,
+        message="ControlPlaneEgress",
+    )
+    managed_machine_learning_diagnostics_config: "ManagedMachineLearningDiagnosticsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=171,
+        message="ManagedMachineLearningDiagnosticsConfig",
+    )
+    node_creation_config: "NodeCreationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=174,
+        message="NodeCreationConfig",
+    )
+
+
+class NodeCreationConfig(proto.Message):
+    r"""NodeCreationConfig defines the settings of node creation
+    mode.
+
+    Attributes:
+        node_creation_mode (google.cloud.container_v1.types.NodeCreationConfig.Mode):
+            The mode of node creation.
+    """
+
+    class Mode(proto.Enum):
+        r"""The mode of node creation.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                When no user input is provided.
+            VIA_KUBELET (1):
+                Kubelet registers itself.
+            VIA_CONTROL_PLANE (2):
+                gcp-controller-manager automatically creates
+                the node object after CSR approval.
+        """
+
+        MODE_UNSPECIFIED = 0
+        VIA_KUBELET = 1
+        VIA_CONTROL_PLANE = 2
+
+    node_creation_mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+
+
+class ControlPlaneEgress(proto.Message):
+    r"""ControlPlaneEgress defines the settings needed to enable
+    control plane egress control.
+
+    Attributes:
+        mode (google.cloud.container_v1.types.ControlPlaneEgress.Mode):
+            Defines the mode of control plane egress.
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode defines the mode of control plane egress.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value not specified.
+            VIA_CONTROL_PLANE (1):
+                Control plane has public IP and no
+                restriction on egress.
+            NONE (2):
+                No public IP on control plane and only
+                internal allowlisted egress.
+        """
+
+        MODE_UNSPECIFIED = 0
+        VIA_CONTROL_PLANE = 1
+        NONE = 2
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
     )
 
 
@@ -5127,7 +5527,11 @@ class AnonymousAuthenticationConfig(proto.Message):
 
 
 class CompliancePostureConfig(proto.Message):
-    r"""CompliancePostureConfig defines the settings needed to
+    r"""Deprecated: Compliance Posture is no longer supported.
+    For more details, see
+    https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.
+
+    CompliancePostureConfig defines the settings needed to
     enable/disable features for the Compliance Posture.
 
 
@@ -5240,6 +5644,11 @@ class SecurityPostureConfig(proto.Message):
                 Applies Security Posture features on the
                 cluster.
             ENTERPRISE (3):
+                Deprecated: Security Posture Enterprise
+                features are no longer supported. For more
+                details, see
+                https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.
+
                 Applies the Security Posture off cluster
                 Enterprise level features.
         """
@@ -5260,6 +5669,10 @@ class SecurityPostureConfig(proto.Message):
                 Disables vulnerability scanning on the
                 cluster.
             VULNERABILITY_BASIC (2):
+                Deprecated: Basic vulnerability scanning is
+                no longer supported. For more details, see
+                https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.
+
                 Applies basic vulnerability scanning on the
                 cluster.
             VULNERABILITY_ENTERPRISE (3):
@@ -5667,8 +6080,12 @@ class ClusterUpdate(proto.Message):
 
             This field is a member of `oneof`_ ``_desired_secret_manager_config``.
         desired_compliance_posture_config (google.cloud.container_v1.types.CompliancePostureConfig):
-            Enable/Disable Compliance Posture features
-            for the cluster.
+            Deprecated: Compliance Posture is no longer
+            supported. For more details, see
+            https://cloud.google.com/kubernetes-engine/docs/deprecations/posture-management-deprecation.
+
+            Enable/Disable Compliance Posture features for
+            the cluster.
 
             This field is a member of `oneof`_ ``_desired_compliance_posture_config``.
         desired_node_kubelet_config (google.cloud.container_v1.types.NodeKubeletConfig):
@@ -5724,12 +6141,27 @@ class ClusterUpdate(proto.Message):
         desired_network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
             The desired network tier configuration for
             the cluster.
+        desired_secret_sync_config (google.cloud.container_v1.types.SecretSyncConfig):
+            Configuration for sync Secret Manager secrets
+            as k8s secrets.
         desired_privileged_admission_config (google.cloud.container_v1.types.PrivilegedAdmissionConfig):
             The desired privileged admission config for
             the cluster.
+        desired_control_plane_egress (google.cloud.container_v1.types.ControlPlaneEgress):
+            The desired control plane egress control
+            config for the cluster.
         desired_managed_opentelemetry_config (google.cloud.container_v1.types.ManagedOpenTelemetryConfig):
             The desired managed open telemetry
             configuration.
+        desired_autopilot_cluster_policy_config (google.cloud.container_v1.types.ClusterPolicyConfig):
+            The desired autopilot cluster policies that
+            to be enforced in the cluster.
+        desired_managed_machine_learning_diagnostics_config (google.cloud.container_v1.types.ManagedMachineLearningDiagnosticsConfig):
+            The desired managed machine learning
+            diagnostics configuration.
+        desired_node_creation_config (google.cloud.container_v1.types.NodeCreationConfig):
+            Optional. The desired NodeCreationConfig for
+            the cluster.
     """
 
     desired_node_version: str = proto.Field(
@@ -6096,15 +6528,40 @@ class ClusterUpdate(proto.Message):
         number=155,
         message="NetworkTierConfig",
     )
+    desired_secret_sync_config: "SecretSyncConfig" = proto.Field(
+        proto.MESSAGE,
+        number=158,
+        message="SecretSyncConfig",
+    )
     desired_privileged_admission_config: "PrivilegedAdmissionConfig" = proto.Field(
         proto.MESSAGE,
         number=159,
         message="PrivilegedAdmissionConfig",
     )
+    desired_control_plane_egress: "ControlPlaneEgress" = proto.Field(
+        proto.MESSAGE,
+        number=160,
+        message="ControlPlaneEgress",
+    )
     desired_managed_opentelemetry_config: "ManagedOpenTelemetryConfig" = proto.Field(
         proto.MESSAGE,
         number=163,
         message="ManagedOpenTelemetryConfig",
+    )
+    desired_autopilot_cluster_policy_config: "ClusterPolicyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=164,
+        message="ClusterPolicyConfig",
+    )
+    desired_managed_machine_learning_diagnostics_config: "ManagedMachineLearningDiagnosticsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=166,
+        message="ManagedMachineLearningDiagnosticsConfig",
+    )
+    desired_node_creation_config: "NodeCreationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=171,
+        message="NodeCreationConfig",
     )
 
 
@@ -6155,7 +6612,7 @@ class AdditionalIPRangesConfig(proto.Message):
     class Status(proto.Enum):
         r"""Additional subnet with DRAINING status will not be selected during
         new node pool creation. To undrain the draining status, update the
-        cluster to set the sunbet to ACTIVE status. To remove the additional
+        cluster to set the subnet to ACTIVE status. To remove the additional
         subnet, use the update cluster API to remove the subnet from the
         desired_additional_ip_ranges list. IP ranges can be removed
         regardless of its status, as long as no node pools are using them.
@@ -6989,6 +7446,8 @@ class UpdateNodePoolRequest(proto.Message):
             underutilized nodes. If not set, nodes are
             scaled down by default behavior, i.e. according
             to the chosen autoscaling profile.
+        taint_config (google.cloud.container_v1.types.TaintConfig):
+            The taint configuration for the node pool.
     """
 
     project_id: str = proto.Field(
@@ -7162,6 +7621,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=49,
         message=duration_pb2.Duration,
+    )
+    taint_config: "TaintConfig" = proto.Field(
+        proto.MESSAGE,
+        number=51,
+        message="TaintConfig",
     )
 
 
@@ -8366,6 +8830,9 @@ class NodePool(proto.Message):
         node_drain_config (google.cloud.container_v1.types.NodePool.NodeDrainConfig):
             Specifies the node drain configuration for
             this node pool.
+        maintenance_policy (google.cloud.container_v1.types.NodePool.NodePoolMaintenancePolicy):
+            Optional. Specifies the maintenance policy
+            for the node pool.
     """
 
     class Status(proto.Enum):
@@ -8651,7 +9118,7 @@ class NodePool(proto.Message):
 
         Attributes:
             enabled (bool):
-                Denotes that this nodepool is QRM specific,
+                Denotes that this node pool is QRM specific,
                 meaning nodes can be only obtained through
                 queuing via the Cluster Autoscaler
                 ProvisioningRequest API.
@@ -8664,12 +9131,22 @@ class NodePool(proto.Message):
 
     class NodeDrainConfig(proto.Message):
         r"""NodeDrainConfig contains the node drain related
-        configurations for this nodepool.
+        configurations for this node pool.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
+            pdb_timeout_duration (google.protobuf.duration_pb2.Duration):
+                The duration of the PDB timeout period for
+                node drain.
+
+                This field is a member of `oneof`_ ``_pdb_timeout_duration``.
+            grace_termination_duration (google.protobuf.duration_pb2.Duration):
+                The duration of the grace termination period
+                for node drain.
+
+                This field is a member of `oneof`_ ``_grace_termination_duration``.
             respect_pdb_during_node_pool_deletion (bool):
                 Whether to respect PDB during node pool
                 deletion.
@@ -8677,10 +9154,73 @@ class NodePool(proto.Message):
                 This field is a member of `oneof`_ ``_respect_pdb_during_node_pool_deletion``.
         """
 
+        pdb_timeout_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
+        grace_termination_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
         respect_pdb_during_node_pool_deletion: bool = proto.Field(
             proto.BOOL,
             number=3,
             optional=True,
+        )
+
+    class ExclusionUntilEndOfSupport(proto.Message):
+        r"""Defines the maintenance exclusion for the node pool.
+
+        Attributes:
+            enabled (bool):
+                Optional. Indicates whether the exclusion is
+                enabled.
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The start time of the
+                maintenance exclusion. It is output only. It is
+                the exclusion creation time.
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The end time of the maintenance
+                exclusion. It is output only. It is the cluster
+                control plane version's end of support time, or
+                end of extended support time when the cluster is
+                on extended support channel.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class NodePoolMaintenancePolicy(proto.Message):
+        r"""Defines the maintenance policy for the node pool.
+
+        Attributes:
+            exclusion_until_end_of_support (google.cloud.container_v1.types.NodePool.ExclusionUntilEndOfSupport):
+                Optional. The exclusion until end of support
+                for the node pool.
+        """
+
+        exclusion_until_end_of_support: "NodePool.ExclusionUntilEndOfSupport" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="NodePool.ExclusionUntilEndOfSupport",
+            )
         )
 
     name: str = proto.Field(
@@ -8783,6 +9323,11 @@ class NodePool(proto.Message):
         proto.MESSAGE,
         number=116,
         message=NodeDrainConfig,
+    )
+    maintenance_policy: NodePoolMaintenancePolicy = proto.Field(
+        proto.MESSAGE,
+        number=118,
+        message=NodePoolMaintenancePolicy,
     )
 
 
@@ -8894,6 +9439,9 @@ class MaintenancePolicy(proto.Message):
             a ``get()`` request to the cluster to get the current
             resource version and include it with requests to set the
             policy.
+        disruption_budget (google.cloud.container_v1.types.DisruptionBudget):
+            Optional. The upgrade disruption budget for
+            the cluster control plane.
     """
 
     window: "MaintenanceWindow" = proto.Field(
@@ -8904,6 +9452,52 @@ class MaintenancePolicy(proto.Message):
     resource_version: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    disruption_budget: "DisruptionBudget" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="DisruptionBudget",
+    )
+
+
+class DisruptionBudget(proto.Message):
+    r"""DisruptionBudget defines the upgrade disruption budget for
+    the cluster control plane.
+
+    Attributes:
+        minor_version_disruption_interval (google.protobuf.duration_pb2.Duration):
+            Optional. The minimum duration between two
+            minor version upgrades of the control plane.
+        patch_version_disruption_interval (google.protobuf.duration_pb2.Duration):
+            Optional. The minimum duration between two
+            patch version upgrades of the control plane.
+        last_minor_version_disruption_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time a minor version
+            upgrade was performed on the control plane.
+        last_disruption_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time a disruption was
+            performed on the control plane.
+    """
+
+    minor_version_disruption_interval: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    patch_version_disruption_interval: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    last_minor_version_disruption_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_disruption_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -8932,6 +9526,15 @@ class MaintenanceWindow(proto.Message):
             occur at any time.
 
             This field is a member of `oneof`_ ``policy``.
+        recurring_maintenance_window (google.cloud.container_v1.types.RecurringMaintenanceWindow):
+            RecurringMaintenanceWindow specifies some
+            number of recurring time periods for maintenance
+            to occur. The time windows may be overlapping.
+            If no maintenance windows are set, maintenance
+            can occur at any time. Alternative to
+            RecurringWindow, with renamed fields.
+
+            This field is a member of `oneof`_ ``policy``.
         maintenance_exclusions (MutableMapping[str, google.cloud.container_v1.types.TimeWindow]):
             Exceptions to maintenance window.
             Non-emergency maintenance should not occur in
@@ -8949,6 +9552,12 @@ class MaintenanceWindow(proto.Message):
         number=3,
         oneof="policy",
         message="RecurringTimeWindow",
+    )
+    recurring_maintenance_window: "RecurringMaintenanceWindow" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="policy",
+        message="RecurringMaintenanceWindow",
     )
     maintenance_exclusions: MutableMapping[str, "TimeWindow"] = proto.MapField(
         proto.STRING,
@@ -9111,6 +9720,69 @@ class RecurringTimeWindow(proto.Message):
     recurrence: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class RecurringMaintenanceWindow(proto.Message):
+    r"""Represents an arbitrary window of time that recurs.
+    Will replace RecurringTimeWindow.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        delay_until (google.type.date_pb2.Date):
+            Optional. Specifies the date before which
+            will not be scheduled. Depending on the
+            recurrence, this may be the date the first
+            window appears. Days are measured in the UTC
+            timezone. This setting must be used when
+            INTERVAL>1 or FREQ=WEEKLY/MONTHLY and no BYDAY
+            specified.
+
+            This field is a member of `oneof`_ ``_delay_until``.
+        window_start_time (google.type.timeofday_pb2.TimeOfDay):
+            Required. Start time of the window on days
+            that it is scheduled, assuming UTC timezone.
+        window_duration (google.protobuf.duration_pb2.Duration):
+            Required. Duration of the window.
+        recurrence (str):
+            Required. An RRULE
+            (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for
+            how this window recurs.
+
+            For example, to have something repeat every weekday, you'd
+            use: ``FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR``
+
+            To repeat some window daily (equivalent to the
+            DailyMaintenanceWindow): ``FREQ=DAILY``
+
+            For the first weekend of every month:
+            ``FREQ=MONTHLY;BYSETPOS=1;BYDAY=SA,SU``
+
+            The FREQ values of HOURLY, MINUTELY, and SECONDLY are not
+            supported.
+    """
+
+    delay_until: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message=date_pb2.Date,
+    )
+    window_start_time: timeofday_pb2.TimeOfDay = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timeofday_pb2.TimeOfDay,
+    )
+    window_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    recurrence: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -9407,10 +10079,13 @@ class ClusterAutoscaling(proto.Message):
                 Use default configuration.
             NO_PERFORMANCE (1):
                 Avoid extra IP consumption.
+            NONE (2):
+                Use default configuration.
         """
 
         AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED = 0
         NO_PERFORMANCE = 1
+        NONE = 2
 
     enable_node_autoprovisioning: bool = proto.Field(
         proto.BOOL,
@@ -9630,8 +10305,8 @@ class NodePoolAutoscaling(proto.Message):
         autoprovisioned (bool):
             Can this node pool be deleted automatically.
         location_policy (google.cloud.container_v1.types.NodePoolAutoscaling.LocationPolicy):
-            Location policy used when scaling up a
-            nodepool.
+            Location policy used when scaling up a node
+            pool.
         total_min_node_count (int):
             Minimum number of nodes in the node pool. Must be greater
             than or equal to 0 and less than or equal to
@@ -9647,7 +10322,7 @@ class NodePoolAutoscaling(proto.Message):
 
     class LocationPolicy(proto.Enum):
         r"""Location policy specifies how zones are picked when scaling
-        up the nodepool.
+        up the node pool.
 
         Values:
             LOCATION_POLICY_UNSPECIFIED (0):
@@ -11095,11 +11770,17 @@ class DatabaseEncryption(proto.Message):
                 Secrets in etcd are stored in plain text (at
                 etcd level) - this is unrelated to Compute
                 Engine level full disk encryption.
+            ALL_OBJECTS_ENCRYPTION_ENABLED (3):
+                Encryption of all objects in the storage is
+                enabled. There is no guarantee that all objects
+                in the storage are encrypted, but eventually
+                they will be.
         """
 
         UNKNOWN = 0
         ENCRYPTED = 1
         DECRYPTED = 2
+        ALL_OBJECTS_ENCRYPTION_ENABLED = 3
 
     class CurrentState(proto.Enum):
         r"""Current State of etcd encryption.
@@ -11126,6 +11807,17 @@ class DatabaseEncryption(proto.Message):
             CURRENT_STATE_DECRYPTION_ERROR (6):
                 De-crypting Secrets to plain text in etcd
                 encountered an error.
+            CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED (8):
+                Encryption of all objects in the storage is
+                enabled. It does not guarantee that all objects
+                in the storage are encrypted, but eventually
+                they will be.
+            CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_PENDING (9):
+                Enablement of the encryption of all objects
+                in storage is pending.
+            CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ERROR (10):
+                Enabling encryption of all objects in storage
+                encountered an error.
         """
 
         CURRENT_STATE_UNSPECIFIED = 0
@@ -11135,6 +11827,9 @@ class DatabaseEncryption(proto.Message):
         CURRENT_STATE_ENCRYPTION_ERROR = 4
         CURRENT_STATE_DECRYPTION_PENDING = 5
         CURRENT_STATE_DECRYPTION_ERROR = 6
+        CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED = 8
+        CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_PENDING = 9
+        CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ERROR = 10
 
     class OperationError(proto.Message):
         r"""OperationError records errors seen from CloudKMS keys
@@ -11788,6 +12483,9 @@ class UpgradeInfoEvent(proto.Message):
         Values:
             STATE_UNSPECIFIED (0):
                 STATE_UNSPECIFIED indicates the state is unspecified.
+            SCHEDULED (1):
+                SCHEDULED indicates the upgrade was
+                scheduled.
             STARTED (3):
                 STARTED indicates the upgrade has started.
             SUCCEEDED (4):
@@ -11800,6 +12498,7 @@ class UpgradeInfoEvent(proto.Message):
         """
 
         STATE_UNSPECIFIED = 0
+        SCHEDULED = 1
         STARTED = 3
         SUCCEEDED = 4
         FAILED = 5
@@ -12131,6 +12830,9 @@ class Autopilot(proto.Message):
             PrivilegedAdmissionConfig is the
             configuration related to privileged admission
             control.
+        cluster_policy_config (google.cloud.container_v1.types.ClusterPolicyConfig):
+            ClusterPolicyConfig denotes cluster level
+            policies that are enforced for the cluster.
     """
 
     enabled: bool = proto.Field(
@@ -12146,6 +12848,63 @@ class Autopilot(proto.Message):
         proto.MESSAGE,
         number=4,
         message="PrivilegedAdmissionConfig",
+    )
+    cluster_policy_config: "ClusterPolicyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ClusterPolicyConfig",
+    )
+
+
+class ClusterPolicyConfig(proto.Message):
+    r"""ClusterPolicyConfig stores the configuration for cluster wide
+    policies.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        no_system_mutation (bool):
+            Denotes that preventing creation and mutation
+            of resources in GKE managed namespaces and
+            cluster-scoped GKE managed resources .
+
+            This field is a member of `oneof`_ ``_no_system_mutation``.
+        no_system_impersonation (bool):
+            Denotes preventing impersonation and CSRs for
+            GKE System users.
+
+            This field is a member of `oneof`_ ``_no_system_impersonation``.
+        no_unsafe_webhooks (bool):
+            Denotes preventing unsafe webhooks.
+
+            This field is a member of `oneof`_ ``_no_unsafe_webhooks``.
+        no_standard_node_pools (bool):
+            Denotes preventing standard node pools and
+            requiring only autopilot node pools.
+
+            This field is a member of `oneof`_ ``_no_standard_node_pools``.
+    """
+
+    no_system_mutation: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    no_system_impersonation: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        optional=True,
+    )
+    no_unsafe_webhooks: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    no_standard_node_pools: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+        optional=True,
     )
 
 
@@ -12392,7 +13151,7 @@ class RayClusterMonitoringConfig(proto.Message):
 
 class NodePoolLoggingConfig(proto.Message):
     r"""NodePoolLoggingConfig specifies logging configuration for
-    nodepools.
+    node pools.
 
     Attributes:
         variant_config (google.cloud.container_v1.types.LoggingVariantConfig):
@@ -13022,7 +13781,8 @@ class SecretManagerConfig(proto.Message):
 
 
 class BootDisk(proto.Message):
-    r"""BootDisk specifies the boot disk configuration for nodepools.
+    r"""BootDisk specifies the boot disk configuration for node
+    pools.
 
     Attributes:
         disk_type (str):
@@ -13356,12 +14116,12 @@ class UpgradeDetails(proto.Message):
 
 class FetchNodePoolUpgradeInfoRequest(proto.Message):
     r"""FetchNodePoolUpgradeInfoRequest fetches the upgrade
-    information of a nodepool.
+    information of a node pool.
 
     Attributes:
         name (str):
-            Required. The name (project, location, cluster, nodepool) of
-            the nodepool to get. Specified in the format
+            Required. The name (project, location, cluster, node pool)
+            of the node pool to get. Specified in the format
             ``projects/*/locations/*/clusters/*/nodePools/*`` or
             ``projects/*/zones/*/clusters/*/nodePools/*``.
         version (str):
@@ -13381,7 +14141,7 @@ class FetchNodePoolUpgradeInfoRequest(proto.Message):
 
 class NodePoolUpgradeInfo(proto.Message):
     r"""NodePoolUpgradeInfo contains the upgrade information of a
-    nodepool.
+    node pool.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -13404,13 +14164,13 @@ class NodePoolUpgradeInfo(proto.Message):
         upgrade_details (MutableSequence[google.cloud.container_v1.types.UpgradeDetails]):
             The list of past auto upgrades.
         end_of_standard_support_timestamp (str):
-            The nodepool's current minor version's end of
-            standard support timestamp.
+            The node pool's current minor version's end
+            of standard support timestamp.
 
             This field is a member of `oneof`_ ``_end_of_standard_support_timestamp``.
         end_of_extended_support_timestamp (str):
-            The nodepool's current minor version's end of
-            extended support timestamp.
+            The node pool's current minor version's end
+            of extended support timestamp.
 
             This field is a member of `oneof`_ ``_end_of_extended_support_timestamp``.
     """
@@ -13501,6 +14261,21 @@ class NodePoolUpgradeInfo(proto.Message):
     )
 
 
+class ScheduleUpgradeConfig(proto.Message):
+    r"""Configuration for scheduled upgrades on the cluster.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether or not scheduled upgrades
+            are enabled.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class GkeAutoUpgradeConfig(proto.Message):
     r"""GkeAutoUpgradeConfig is the configuration for GKE auto
     upgrades.
@@ -13579,6 +14354,67 @@ class NetworkTierConfig(proto.Message):
     )
 
 
+class SecretSyncConfig(proto.Message):
+    r"""Configuration for sync Secret Manager secrets as k8s secrets.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Enable/Disable Secret Sync Config.
+
+            This field is a member of `oneof`_ ``_enabled``.
+        rotation_config (google.cloud.container_v1.types.SecretSyncConfig.SyncRotationConfig):
+            Rotation config for secret manager.
+
+            This field is a member of `oneof`_ ``_rotation_config``.
+    """
+
+    class SyncRotationConfig(proto.Message):
+        r"""SyncRotationConfig is config for secret manager auto
+        rotation.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            enabled (bool):
+                Whether the rotation is enabled.
+
+                This field is a member of `oneof`_ ``_enabled``.
+            rotation_interval (google.protobuf.duration_pb2.Duration):
+                The interval between two consecutive
+                rotations. Default rotation interval is 2
+                minutes.
+
+                This field is a member of `oneof`_ ``_rotation_interval``.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        rotation_interval: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    rotation_config: SyncRotationConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message=SyncRotationConfig,
+    )
+
+
 class ManagedOpenTelemetryConfig(proto.Message):
     r"""ManagedOpenTelemetryConfig is the configuration for the GKE
     Managed OpenTelemetry pipeline.
@@ -13617,6 +14453,44 @@ class ManagedOpenTelemetryConfig(proto.Message):
         number=1,
         optional=True,
         enum=Scope,
+    )
+
+
+class ManagedMachineLearningDiagnosticsConfig(proto.Message):
+    r"""ManagedMachineLearningDiagnosticsConfig is the configuration
+    for the GKE Managed Machine Learning Diagnostics pipeline.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Enable/Disable Managed Machine Learning
+            Diagnostics.
+
+            This field is a member of `oneof`_ ``_enabled``.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+
+
+class PodSnapshotConfig(proto.Message):
+    r"""PodSnapshotConfig is the configuration for GKE Pod Snapshots
+    feature.
+
+    Attributes:
+        enabled (bool):
+            Whether or not the Pod Snapshots feature is
+            enabled.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 

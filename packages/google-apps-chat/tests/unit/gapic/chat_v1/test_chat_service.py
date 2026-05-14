@@ -1369,6 +1369,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.create_message(request)
@@ -1387,6 +1388,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -1525,6 +1527,7 @@ async def test_create_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -1544,6 +1547,7 @@ async def test_create_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3107,6 +3111,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.get_message(request)
@@ -3125,6 +3130,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3257,6 +3263,7 @@ async def test_get_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3276,6 +3283,7 @@ async def test_get_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3450,6 +3458,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.update_message(request)
@@ -3468,6 +3477,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3596,6 +3606,7 @@ async def test_update_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3615,6 +3626,7 @@ async def test_update_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -16805,6 +16817,7 @@ def test_create_message_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "create_message_notification_options",
             "message_id",
             "message_reply_option",
             "request_id",
@@ -16869,6 +16882,7 @@ def test_create_message_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "createMessageNotificationOptions",
                 "messageId",
                 "messageReplyOption",
                 "requestId",
@@ -25650,6 +25664,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25766,6 +25781,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25799,6 +25815,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -27406,6 +27423,7 @@ def test_create_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -27513,6 +27531,7 @@ def test_create_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -27536,6 +27555,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28045,6 +28065,7 @@ def test_get_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28068,6 +28089,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28624,6 +28646,7 @@ def test_update_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -28731,6 +28754,7 @@ def test_update_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28754,6 +28778,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 

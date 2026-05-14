@@ -45,6 +45,7 @@ from google.cloud.geminidataanalytics_v1.types.context import (
     LookerGoldenQuery,
     LookerQuery,
     MatchedQuery,
+    QueryParameter,
     QueryParameterValues,
     UserFunctions,
 )
@@ -140,6 +141,7 @@ __all__ = (
     "LookerGoldenQuery",
     "LookerQuery",
     "MatchedQuery",
+    "QueryParameter",
     "QueryParameterValues",
     "UserFunctions",
     "Conversation",

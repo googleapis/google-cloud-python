@@ -26,8 +26,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.support_v2 import gapic_version as package_version
+from google.cloud.support_v2.types import comment, comment_service
 from google.cloud.support_v2.types import comment as gcs_comment
-from google.cloud.support_v2.types import comment_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -162,6 +162,11 @@ class CommentServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_comment: gapic_v1.method.wrap_method(
+                self.get_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -191,6 +196,15 @@ class CommentServiceTransport(abc.ABC):
     ) -> Callable[
         [comment_service.CreateCommentRequest],
         Union[gcs_comment.Comment, Awaitable[gcs_comment.Comment]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_comment(
+        self,
+    ) -> Callable[
+        [comment_service.GetCommentRequest],
+        Union[comment.Comment, Awaitable[comment.Comment]],
     ]:
         raise NotImplementedError()
 
