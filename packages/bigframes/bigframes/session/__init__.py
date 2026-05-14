@@ -183,7 +183,9 @@ class Session(
         # Publisher needs to be created before the other objects, especially
         # the executors, because they access it.
         self._publisher = bigframes.core.events.Publisher()
-        self._publisher.subscribe(bigframes.formatting_helpers.progress_callback)
+        self._publisher.subscribe(
+            bigframes.formatting_helpers.create_progress_callback()
+        )
 
         if context is None:
             context = bigquery_options.BigQueryOptions()

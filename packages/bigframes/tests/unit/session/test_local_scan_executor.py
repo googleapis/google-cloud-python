@@ -13,6 +13,8 @@
 # limitations under the License.
 from __future__ import annotations
 
+import asyncio
+
 import pyarrow
 import pytest
 
@@ -76,7 +78,7 @@ def test_local_scan_executor_with_slice(start, stop, expected_rows, object_under
         stop=stop,
     )
 
-    result = object_under_test.execute(plan, SPEC)
+    result = asyncio.run(object_under_test.execute(plan, SPEC))
     result_table = pyarrow.Table.from_batches(result.batches().arrow_batches)
     assert result_table.num_rows == expected_rows
 
@@ -102,4 +104,4 @@ def test_local_scan_executor_with_slice_unsupported_inputs(
         stop=stop,
         step=step,
     )
-    assert object_under_test.execute(plan, SPEC) is None
+    assert asyncio.run(object_under_test.execute(plan, SPEC)) is None

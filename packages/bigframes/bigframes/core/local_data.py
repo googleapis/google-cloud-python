@@ -248,10 +248,11 @@ def _iter_table(
         elif dtype == bigframes.dtypes.TIMEDELTA_DTYPE:
             if duration_type == "int":
                 yield from map(
-                    lambda x: ((x.days * 3600 * 24) + x.seconds) * 1_000_000
-                    + x.microseconds
-                    if x is not None
-                    else x,
+                    lambda x: (
+                        ((x.days * 3600 * 24) + x.seconds) * 1_000_000 + x.microseconds
+                        if x is not None
+                        else x
+                    ),
                     values,
                 )
             else:

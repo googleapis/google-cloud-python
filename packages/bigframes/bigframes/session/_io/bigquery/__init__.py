@@ -67,11 +67,6 @@ def create_job_configs_labels(
     if job_configs_labels is None:
         job_configs_labels = {}
 
-    # If the user has labels they wish to set, make sure we set those first so
-    # they are preserved.
-    for key, value in bigframes.options.compute.extra_query_labels.items():
-        job_configs_labels[key] = value
-
     if api_methods and "bigframes-api" not in job_configs_labels:
         job_configs_labels["bigframes-api"] = api_methods[0]
         del api_methods[0]
@@ -250,7 +245,9 @@ def format_option(key: str, value: Union[bool, str]) -> str:
     return f"{key}={repr(value)}"
 
 
-def add_and_trim_labels(job_config, session=None):
+def add_and_trim_labels(
+    job_config, session=None, extra_query_labels: Optional[Mapping[str, str]] = None
+):
     """
     Add additional labels to the job configuration and trim the total
     number of labels to ensure they do not exceed MAX_LABELS_COUNT labels

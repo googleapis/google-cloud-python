@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 
+import asyncio
+import concurrent.futures
 import dataclasses
 import datetime
 import threading
@@ -80,6 +82,9 @@ class Publisher:
     def __init__(self):
         self._subscribers_lock = threading.Lock()
         self._subscribers: Set[Subscriber] = set()
+        self._executor: concurrent.futures.Executor = (
+            concurrent.futures.ThreadPoolExecutor()
+        )
 
     def subscribe(
         self,
@@ -102,6 +107,18 @@ class Publisher:
         with self._subscribers_lock:
             for subscriber in self._subscribers:
                 subscriber(envelope)
+
+    async def publish_async(self, envelope: EventEnvelope | Event):
+        if not isinstance(envelope, EventEnvelope):
+            envelope = EventEnvelope(event=envelope)
+        with self._subscribers_lock:
+            subscribers_snapshot = list(self._subscribers)
+        loop = asyncio.get_running_loop()
+        tasks = [
+            loop.run_in_executor(self._executor, subscriber, envelope)
+            for subscriber in subscribers_snapshot
+        ]
+        return await asyncio.gather(*tasks, return_exceptions=True)
 
 
 class Event:

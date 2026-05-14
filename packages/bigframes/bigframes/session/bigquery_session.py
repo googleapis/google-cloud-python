@@ -119,7 +119,11 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             bfbqio.start_query_job_optional(
                 self.bqclient,
                 f"CALL BQ.ABORT_SESSION('{self._session_id}')",
-                job_config=bigquery.QueryJobConfig(),
+                # Assume this is being called in the user thread, so we can access
+                # this thread-local config.
+                job_config=bigquery.QueryJobConfig(
+                    labels=bigframes.options.compute.extra_query_labels
+                ),
                 location=self.location,
                 project=None,
                 timeout=None,

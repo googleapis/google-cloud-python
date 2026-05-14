@@ -26,6 +26,8 @@ import google.api_core.exceptions as api_core_exceptions
 import google.cloud.bigquery as bigquery
 import humanize
 
+import bigframes._config
+
 if TYPE_CHECKING:
     import bigframes.core.events
 
@@ -147,86 +149,92 @@ def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
 current_display_id: Optional[str] = None
 
 
-def progress_callback(
-    envelope: Any,
-):
-    """Displays a progress bar while the query is running"""
-    global current_display_id
+def create_progress_callback():
+    # bind potentially thread-local config to the callback so that it uses the user thread
+    # config even if callback is invoked from a worker thread.
+    display_opts = bigframes._config.options.display
 
-    try:
-        import bigframes._config
-        import bigframes.core.events
-    except ImportError:
-        # Since this gets called from __del__, skip if the import fails
-        # to avoid
-        # ImportError: sys.meta_path is None, Python is likely shutting down.
-        # This will allow cleanup to continue.
-        return
+    def progress_callback(
+        envelope: Any,
+    ):
+        """Displays a progress bar while the query is running"""
+        global current_display_id
 
-    # Publisher.publish automatically wraps raw Event objects in an
-    # EventEnvelope, ensuring subscribers receive a consistent contract.
-    assert isinstance(envelope, bigframes.core.events.EventEnvelope)
-    event = envelope.event
-    progress_bar = envelope.progress_bar
+        try:
+            import bigframes._config
+            import bigframes.core.events
+        except ImportError:
+            # Since this gets called from __del__, skip if the import fails to avoid
+            # ImportError: sys.meta_path is None, Python is likely shutting down.
+            # This will allow cleanup to continue.
+            return
 
-    if progress_bar == bigframes.core.events._DEFAULT:
-        progress_bar = bigframes._config.options.display.progress_bar
+        # Publisher.publish automatically wraps raw Event objects in an
+        # EventEnvelope, ensuring subscribers receive a consistent contract.
+        assert isinstance(envelope, bigframes.core.events.EventEnvelope)
+        event = envelope.event
+        progress_bar = envelope.progress_bar
 
-    if progress_bar == "auto":
-        progress_bar = "notebook" if in_ipython() else "terminal"
+        if progress_bar == bigframes.core.events._DEFAULT:
+            progress_bar = display_opts.progress_bar
 
-    if progress_bar == "notebook":
-        import IPython.display as display
+        if progress_bar == "auto":
+            progress_bar = "notebook" if in_ipython() else "terminal"
 
-        display_html = None
+        if progress_bar == "notebook":
+            import IPython.display as display
 
-        if isinstance(event, bigframes.core.events.ExecutionStarted):
-            # Start a new context for progress output.
-            current_display_id = None
+            display_html = None
 
-        elif isinstance(event, bigframes.core.events.BigQuerySentEvent):
-            display_html = render_bqquery_sent_event_html(event)
+            if isinstance(event, bigframes.core.events.ExecutionStarted):
+                # Start a new context for progress output.
+                current_display_id = None
 
-        elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
-            display_html = render_bqquery_retry_event_html(event)
+            elif isinstance(event, bigframes.core.events.BigQuerySentEvent):
+                display_html = render_bqquery_sent_event_html(event)
 
-        elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
-            display_html = render_bqquery_received_event_html(event)
+            elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
+                display_html = render_bqquery_retry_event_html(event)
 
-        elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
-            display_html = render_bqquery_finished_event_html(event)
+            elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
+                display_html = render_bqquery_received_event_html(event)
 
-        elif isinstance(event, bigframes.core.events.SessionClosed):
-            display_html = f"Session {event.session_id} closed."
+            elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
+                display_html = render_bqquery_finished_event_html(event)
 
-        if display_html:
-            if current_display_id:
-                display.update_display(
-                    display.HTML(display_html),
-                    display_id=current_display_id,
-                )
-            else:
-                current_display_id = str(random.random())
-                display.display(
-                    display.HTML(display_html),
-                    display_id=current_display_id,
-                )
+            elif isinstance(event, bigframes.core.events.SessionClosed):
+                display_html = f"Session {event.session_id} closed."
 
-    elif progress_bar == "terminal":
-        message = None
+            if display_html:
+                if current_display_id:
+                    display.update_display(
+                        display.HTML(display_html),
+                        display_id=current_display_id,
+                    )
+                else:
+                    current_display_id = str(random.random())
+                    display.display(
+                        display.HTML(display_html),
+                        display_id=current_display_id,
+                    )
 
-        if isinstance(event, bigframes.core.events.BigQuerySentEvent):
-            message = render_bqquery_sent_event_plaintext(event)
-            print(message)
-        elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
-            message = render_bqquery_retry_event_plaintext(event)
-            print(message)
-        elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
-            message = render_bqquery_received_event_plaintext(event)
-            print(message)
-        elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
-            message = render_bqquery_finished_event_plaintext(event)
-            print(message)
+        elif progress_bar == "terminal":
+            message = None
+
+            if isinstance(event, bigframes.core.events.BigQuerySentEvent):
+                message = render_bqquery_sent_event_plaintext(event)
+                print(message)
+            elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
+                message = render_bqquery_retry_event_plaintext(event)
+                print(message)
+            elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
+                message = render_bqquery_received_event_plaintext(event)
+                print(message)
+            elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
+                message = render_bqquery_finished_event_plaintext(event)
+                print(message)
+
+    return progress_callback
 
 
 def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):

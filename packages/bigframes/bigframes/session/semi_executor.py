@@ -24,7 +24,7 @@ class SemiExecutor(abc.ABC):
     A semi executor executes a subset of possible plans, returns None for unsupported plans.
     """
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
         execution_spec: execution_spec.ExecutionSpec,
