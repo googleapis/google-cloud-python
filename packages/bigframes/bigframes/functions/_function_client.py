@@ -155,9 +155,16 @@ class FunctionClient:
         logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
 
     def _format_function_options(self, function_options: dict) -> str:
+        def format_val(val):
+            if isinstance(val, str):
+                return f"'{val}'"
+            if isinstance(val, (list, tuple)):
+                return str(list(val))
+            return str(val)
+
         return ", ".join(
             [
-                f"{key}='{val}'" if isinstance(val, str) else f"{key}={val}"
+                f"{key}={format_val(val)}"
                 for key, val in function_options.items()
                 if val is not None
             ]
