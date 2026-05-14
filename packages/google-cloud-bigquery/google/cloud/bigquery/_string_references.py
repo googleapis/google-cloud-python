@@ -16,84 +16,153 @@
 
 # TODO(b/513204277): Consolidate these transformations with pandas-gbq and bigframes.
 
+from __future__ import annotations
+
+import re
 import typing
 
 from google.cloud.bigquery import _helpers
 
 
 ParsedDatasetReference = typing.TypedDict(
-    'ParsedDatasetReference',
+    "ParsedDatasetReference",
     {
         "projectId": str,
         "datasetId": str,
-    }
+    },
 )
 
 
 ParsedTableReference = typing.TypedDict(
-    'ParsedTableReference',
+    "ParsedTableReference",
     {
         "projectId": str,
         "datasetId": str,
         "tableId": str,
-    }
+    },
 )
 
 
-def parse_dataset_reference(dataset_id: str, *, default_project: str | None) -> ParsedDatasetReference:
-        """Parse a dataset ID string.
+_FULLY_QUALIFIED_DATASET_REFERENCE_PATTERN = re.compile(
+    # In the past, organizations could prefix their project IDs with a domain
+    # name. Such projects still exist, especially at Google.
+    r"^(?P<legacy_project_domain>[^:]+:)?"
+    r"(?P<project>[^.]+)\."
+    # Match dataset or catalog + namespace.
+    #
+    # Namespace could be arbitrarily deeply nested in Iceberg/BigLake. Support
+    # this without catastrophic backtracking by moving the trailing "." to the
+    # table group.
+    r"(?P<inner_parts>.*)"
+)
 
-        Returns:
-            ParsedDatasetReference: A typed dictionary (to avoid circular dependencies).
-        
-        Raises:
-            ValueError: When a fully-qualified dataset ID can't be determined.
-        """
-        output_dataset_id = dataset_id
-        parts = _helpers._split_id(dataset_id)
 
-        if len(parts) == 1:
-            if default_project is not None:
-                output_project_id = default_project
-            else:
-                raise ValueError(
-                    "When default_project is not set, dataset_id must be a "
-                    "fully-qualified dataset ID in standard SQL format, "
-                    'e.g., "project.dataset_id" got {}'.format(dataset_id)
-                )
-        elif len(parts) == 2:
-            output_project_id, output_dataset_id = parts
+_FULLY_QUALIFIED_TABLE_REFERENCE_PATTERN = re.compile(
+    # In the past, organizations could prefix their project IDs with a domain
+    # name. Such projects still exist, especially at Google.
+    r"^(?P<legacy_project_domain>[^:]+:)?"
+    r"(?P<project>[^.]+)\."
+    # Match dataset or catalog + namespace.
+    #
+    # Namespace could be arbitrarily deeply nested in Iceberg/BigLake. Support
+    # this without catastrophic backtracking by moving the trailing "." to the
+    # table group.
+    r"(?P<inner_parts>.*)"
+    # Table names can't contain ".", as that's used as the separator.
+    r"\.(?P<table>[^.]+)$"
+)
+
+
+_RELATIVE_TABLE_REFERENCE_PATTERN = re.compile(
+    # Match dataset or catalog + namespace.
+    #
+    # Namespace could be arbitrarily deeply nested in Iceberg/BigLake. Support
+    # this without catastrophic backtracking by moving the trailing "." to the
+    # table group.
+    r"(?P<inner_parts>.*)"
+    # Table names can't contain ".", as that's used as the separator.
+    r"\.(?P<table>[^.]+)$"
+)
+
+
+def parse_dataset_reference(
+    dataset_id: str, *, default_project: str | None
+) -> ParsedDatasetReference:
+    """Parse a dataset ID string.
+
+    Returns:
+        ParsedDatasetReference: A typed dictionary (to avoid circular dependencies).
+
+    Raises:
+        ValueError: When a fully-qualified dataset ID can't be determined.
+    """
+    regex_match = _FULLY_QUALIFIED_DATASET_REFERENCE_PATTERN.match(dataset_id)
+    if regex_match:
+        legacy_project_domain = regex_match.group("legacy_project_domain")
+        project = regex_match.group("project")
+
+        if legacy_project_domain:
+            output_project_id = f"{legacy_project_domain}{project}"
         else:
-            raise ValueError(
-                "Too many parts in dataset_id. Expected a fully-qualified "
-                "dataset ID in standard SQL format, "
-                'e.g. "project.dataset_id", got {}'.format(dataset_id)
-            )
-        
-        return {"datasetId": output_dataset_id, "projectId": output_project_id}
+            output_project_id = project
 
+        return {
+            "projectId": output_project_id,
+            "datasetId": regex_match.group("inner_parts"),
+        }
 
-def parse_table_reference(table_id: str, *, default_project: str | None) -> ParsedTableReference:
-        """Parse a table ID string.
-
-        Returns:
-            ParsedTableReference: A typed dictionary (to avoid circular dependencies).
-        
-        Raises:
-            ValueError: When a fully-qualified table ID can't be determined.
-        """
-        (
-            output_project_id,
-            output_dataset_id,
-            output_table_id,
-        ) = _helpers._parse_3_part_id(
-            table_id, default_project=default_project, property_name="table_id"
+    if not default_project:
+        raise ValueError(
+            "When default_project is not set, dataset_id must be a "
+            "fully-qualified dataset ID in standard SQL format, "
+            'e.g., "project.dataset_id" got {}'.format(dataset_id)
         )
 
-        if output_project_id is None:
-            raise ValueError(
-                "Could not determine project ID. Supply a fully-qualified table ID, "
-                f"such as 'project.dataset.table', got {table_id}."
-            )
+    return {"datasetId": dataset_id, "projectId": default_project}
 
-        return {"projectId": output_project_id, "datasetId": output_dataset_id, "tableId": output_table_id}
+
+def parse_table_reference(
+    table_id: str, *, default_project: str | None
+) -> ParsedTableReference:
+    """Parse a table ID string.
+
+    Returns:
+        ParsedTableReference: A typed dictionary (to avoid circular dependencies).
+
+    Raises:
+        ValueError: When a fully-qualified table ID can't be determined.
+    """
+    regex_match = _FULLY_QUALIFIED_TABLE_REFERENCE_PATTERN.match(table_id)
+    if regex_match:
+        legacy_project_domain = regex_match.group("legacy_project_domain")
+        project = regex_match.group("project")
+
+        if legacy_project_domain:
+            output_project_id = f"{legacy_project_domain}{project}"
+        else:
+            output_project_id = project
+
+        return {
+            "projectId": output_project_id,
+            "datasetId": regex_match.group("inner_parts"),
+            "tableId": regex_match.group("table"),
+        }
+
+    if not default_project:
+        raise ValueError(
+            "Could not determine project ID. Supply a default project or a fully-qualified table ID, "
+            f"such as 'project.dataset.table'. Got {table_id}."
+        )
+
+    regex_match = _RELATIVE_TABLE_REFERENCE_PATTERN.match(table_id)
+    if not regex_match:
+        raise ValueError(
+            "Could not parse table_id. Expected a table ID"
+            f"such as 'project.dataset.table', but got {table_id}."
+        )
+
+    return {
+        "projectId": default_project,
+        "datasetId": regex_match.group("inner_parts"),
+        "tableId": regex_match.group("table"),
+    }

@@ -286,10 +286,13 @@ class TableReference(_TableBase):
             _string_references.parse_table_reference(
                 table_id=table_id,
                 default_project=default_project,
-        ))
+            )
+        )
 
     @classmethod
-    def from_api_repr(cls, resource: dict | _string_references.ParsedTableReference) -> "TableReference":
+    def from_api_repr(
+        cls, resource: dict | _string_references.ParsedTableReference
+    ) -> "TableReference":
         """Factory:  construct a table reference given its API representation
 
         Args:

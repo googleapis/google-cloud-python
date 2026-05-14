@@ -44,9 +44,27 @@ from google.cloud import bigquery
             "string-project",
             "string_dataset",
         ),
+        (
+            "my-biglake-project.biglake_catalog.namespace_a.namespace_b",
+            "ignored-default-project",
+            "my-biglake-project",
+            # BigLake tables are usable from the BigQuery metadata APIs by
+            # combining catalog and namespace into the datasetId field. See
+            # internal issue b/512823729.
+            "biglake_catalog.namespace_a.namespace_b",
+        ),
+        (
+            "example.com:my-biglake-project.biglake_catalog.namespace_a.namespace_b",
+            "ignored-default-project",
+            # BigLake tables should be usable from legacy domain-scoped project IDs.
+            "example.com:my-biglake-project",
+            "biglake_catalog.namespace_a.namespace_b",
+        ),
     ),
 )
-def test_dataset_reference(value, default_project, expected_project_id, expected_dataset_id):
+def test_dataset_reference(
+    value, default_project, expected_project_id, expected_dataset_id
+):
     got = bigquery.DatasetReference.from_string(value, default_project=default_project)
     assert got.project == expected_project_id
     assert got.dataset_id == expected_dataset_id
@@ -63,23 +81,30 @@ def test_dataset_reference(value, default_project, expected_project_id, expected
             "string-project:string_dataset",
             "dataset_id must be a fully-qualified dataset ID",
         ),
-        (
-            "google.com.string-project.dataset_id",
-            "Too many parts in dataset_id.",
-        ),
-        (
-            "google.com:string-project.dataset_id.table_id",
-            "Too many parts in dataset_id.",
-        )
     ),
 )
-def test_dataset_reference_without_default_project_value_error(value, expected_error_message):
+@pytest.mark.parametrize(
+    ("default_project",),
+    (
+        (None,),
+        ("",),
+    ),
+)
+def test_dataset_reference_without_default_project_value_error(
+    value, expected_error_message, default_project
+):
     with pytest.raises(ValueError, match=expected_error_message):
-        bigquery.DatasetReference.from_string(value, default_project=None)
+        bigquery.DatasetReference.from_string(value, default_project=default_project)
 
 
 @pytest.mark.parametrize(
-    ("value", "default_project", "expected_project_id", "expected_dataset_id", "expected_table_id"),
+    (
+        "value",
+        "default_project",
+        "expected_project_id",
+        "expected_dataset_id",
+        "expected_table_id",
+    ),
     (
         (
             "string-project.string_dataset.string_table",
@@ -109,9 +134,29 @@ def test_dataset_reference_without_default_project_value_error(value, expected_e
             "string_dataset",
             "string_table",
         ),
+        (
+            "my-biglake-project.biglake_catalog.namespace_a.namespace_b.biglake_table",
+            "ignored-default-project",
+            "my-biglake-project",
+            # BigLake tables are usable from the BigQuery metadata APIs by
+            # combining catalog and namespace into the datasetId field. See
+            # internal issue b/512823729.
+            "biglake_catalog.namespace_a.namespace_b",
+            "biglake_table",
+        ),
+        (
+            "example.com:my-biglake-project.biglake_catalog.namespace_a.namespace_b.biglake_table",
+            "ignored-default-project",
+            # BigLake tables should be usable from legacy domain-scoped project IDs.
+            "example.com:my-biglake-project",
+            "biglake_catalog.namespace_a.namespace_b",
+            "biglake_table",
+        ),
     ),
 )
-def test_table_reference(value, default_project, expected_project_id, expected_dataset_id, expected_table_id):
+def test_table_reference(
+    value, default_project, expected_project_id, expected_dataset_id, expected_table_id
+):
     got = bigquery.TableReference.from_string(value, default_project=default_project)
     assert got.project == expected_project_id
     assert got.dataset_id == expected_dataset_id
@@ -121,23 +166,18 @@ def test_table_reference(value, default_project, expected_project_id, expected_d
 @pytest.mark.parametrize(
     ("value",),
     (
-        (
-            "string_table",
-        ),
-        (
-            "string_dataset.string_table",
-        ),
-        (
-            "string-project:string_dataset.string_table",
-        ),
-        (
-            "google.com.string-project.dataset_id",
-        ),
-        (
-            "a.b.c.d",
-        )
+        ("string_table",),
+        ("string_dataset.string_table",),
+        ("string-project:string_dataset.string_table",),
     ),
 )
-def test_table_reference_without_default_project_value_error(value):
-    with pytest.raises(ValueError, match="table_id must be a fully-qualified ID in standard SQL format"):
-        bigquery.TableReference.from_string(value, default_project=None)
+@pytest.mark.parametrize(
+    ("default_project",),
+    (
+        (None,),
+        ("",),
+    ),
+)
+def test_table_reference_without_default_project_value_error(value, default_project):
+    with pytest.raises(ValueError, match="Supply a default project"):
+        bigquery.TableReference.from_string(value, default_project=default_project)

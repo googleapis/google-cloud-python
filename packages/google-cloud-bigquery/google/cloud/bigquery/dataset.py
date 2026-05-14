@@ -124,7 +124,9 @@ class DatasetReference(object):
     routine = _get_routine_reference
 
     @classmethod
-    def from_api_repr(cls, resource: dict | _string_references.ParsedDatasetReference) -> "DatasetReference":
+    def from_api_repr(
+        cls, resource: dict | _string_references.ParsedDatasetReference
+    ) -> "DatasetReference":
         """Factory: construct a dataset reference given its API representation
 
         Args:
@@ -171,7 +173,8 @@ class DatasetReference(object):
             _string_references.parse_dataset_reference(
                 dataset_id=dataset_id,
                 default_project=default_project,
-        ))
+            )
+        )
 
     def to_api_repr(self) -> dict:
         """Construct the API resource representation of this dataset reference
