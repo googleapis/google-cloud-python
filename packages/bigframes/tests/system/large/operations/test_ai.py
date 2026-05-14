@@ -64,7 +64,7 @@ def test_filter_multi_model(session, gemini_flash_model):
         THRESHOLD_OPTION,
         10,
     ):
-        df = session.from_glob_path(
+        df = session._from_glob_path(
             "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
         )
         df["prey"] = series.Series(
@@ -238,7 +238,7 @@ def test_map_multimodal(session, gemini_flash_model):
         THRESHOLD_OPTION,
         10,
     ):
-        df = session.from_glob_path(
+        df = session._from_glob_path(
             "gs://bigframes-dev-testing/a_multimodal/images/*", name="image"
         )
         df["scenario"] = series.Series(

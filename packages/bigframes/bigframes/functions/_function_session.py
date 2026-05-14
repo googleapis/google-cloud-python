@@ -824,7 +824,7 @@ class FunctionSession:
                 bq_connection_manager,
                 session=session,  # type: ignore
             )
-            code_def = udf_def.CodeDef.from_func(func)
+            code_def = udf_def.CodeDef.from_func(func, package_requirements=packages)
             config = udf_def.ManagedFunctionConfig(
                 code=code_def,
                 signature=udf_sig,

@@ -140,12 +140,17 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
                 )
             )
         elif field == "examples":
-            example_expressions = [
-                sge.Tuple(
-                    expressions=[sge.Literal.string(key), sge.Literal.string(val)]
+            example_expressions = []
+            for key, val in value:
+                if isinstance(val, (list, tuple)):
+                    val_expr: sge.Array | sge.Literal = sge.array(
+                        *[sge.Literal.string(v) for v in val]
+                    )
+                else:
+                    val_expr = sge.Literal.string(val)
+                example_expressions.append(
+                    sge.Tuple(expressions=[sge.Literal.string(key), val_expr])
                 )
-                for key, val in value
-            ]
             args.append(
                 sge.Kwarg(this=field, expression=sge.array(*example_expressions))
             )

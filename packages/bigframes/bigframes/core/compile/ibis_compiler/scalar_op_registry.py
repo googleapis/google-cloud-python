@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast
+from typing import cast, Any
 
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
@@ -1999,6 +1999,7 @@ def ai_classify(
         _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
+        op.output_mode,  # type: ignore
         op.optimization_mode,  # type: ignore
         op.max_error_ratio,  # type: ignore
     ).to_expr()
@@ -2045,7 +2046,7 @@ def _construct_prompt(
 
 
 def _construct_examples(
-    examples: tuple[tuple[str, str]] | None,
+    examples: tuple[tuple[str, str | tuple[str, ...]], ...] | None,
 ) -> ibis_types.ArrayValue | None:
     if examples is None:
         return None
@@ -2053,12 +2054,11 @@ def _construct_examples(
     results: list[ibis_types.StructValue] = []
 
     for example in examples:
-        ibis_example = ibis.struct(
-            {
-                "_field_1": example[0],
-                "_field_2": example[1],
-            }
-        )
+        value: Any = example[1]
+        if isinstance(example[1], (list, tuple)):
+            value = list(example[1])
+
+        ibis_example = ibis.struct({"_field_1": example[0], "_field_2": value})
         results.append(ibis_example)
 
     return ibis.array(results)
