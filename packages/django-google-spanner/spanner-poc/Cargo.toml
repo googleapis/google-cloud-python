@@ -15,7 +15,7 @@ pyo3 = { version = "0.22", features = ["extension-module", "abi3-py39"] }
 
 # Async and gRPC execution stack
 tokio = { version = "1", features = ["full"] }
-tonic = { version = "0.12", features = ["tls", "tls-roots"] }
+tonic = { version = "0.12", features = ["tls", "tls-native-roots"] }
 prost = "0.13"
 prost-types = "0.13"
 
