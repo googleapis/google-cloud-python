@@ -4491,7 +4491,9 @@ class Test_Blob(unittest.TestCase):
         client._post_resource.return_value = api_response
         bucket = _Bucket(client=client)
         source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_1._properties["generation"] = 1
         source_2 = self._make_one(source_2_name, bucket=bucket)
+        source_2._properties["generation"] = 2
         destination = self._make_one(destination_name, bucket=bucket)
         destination.content_type = content_type
 
