@@ -48,7 +48,7 @@ from cli import (
     _get_api_generator_options,
     _get_library_dist_name,
     _get_library_id,
-    _get_actual_library_id,
+    _get_package_name,
     _get_library_path,
     _get_libraries_to_prepare_for_release,
     _get_new_library_config,
@@ -2081,10 +2081,10 @@ def test_get_repo_name_from_repo_metadata_missing_repo(mocker):
         _get_repo_name_from_repo_metadata("base", "library_id", False)
 
 
-def test_get_actual_library_id():
-    assert _get_actual_library_id("google-cloud-language") == "google-cloud-language"
-    assert _get_actual_library_id("google-cloud-language-preview") == "google-cloud-language"
-    assert _get_actual_library_id("google-cloud-language-preview-preview") == "google-cloud-language-preview"
+def test_get_package_name():
+    assert _get_package_name("google-cloud-language") == "google-cloud-language"
+    assert _get_package_name("google-cloud-language-preview") == "google-cloud-language"
+    assert _get_package_name("google-cloud-language-preview-preview") == "google-cloud-language-preview"
 
 
 @pytest.mark.parametrize(

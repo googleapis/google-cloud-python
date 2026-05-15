@@ -323,7 +323,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _get_actual_library_id(library_id: str) -> str:
+def _get_package_name(library_id: str) -> str:
     """Extracts the folder name from the library id by removing any -preview suffix."""
     if library_id.endswith("-preview"):
         return library_id[:-8]
@@ -343,8 +343,8 @@ def _get_library_path(library_id: str, is_mono_repo: bool) -> str:
     if not is_mono_repo:
         return "."
     if library_id.endswith("-preview"):
-        actual_id = _get_actual_library_id(library_id)
-        return f"preview-packages/{actual_id}"
+        package_name = _get_package_name(library_id)
+        return f"preview-packages/{package_name}"
     return f"packages/{library_id}"
 
 
@@ -1556,9 +1556,9 @@ def _process_changelog(
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
-    actual_library_id = _get_actual_library_id(library_id)
+    package_name = _get_package_name(library_id)
     anchor_pattern = re.compile(
-        rf"(\[1\]: https://pypi\.org/project/{actual_library_id}/#history)",
+        rf"(\[1\]: https://pypi\.org/project/{package_name}/#history)",
         re.MULTILINE,
     )
     replacement_text = f"\\g<1>\n\n{new_entry_text}"
