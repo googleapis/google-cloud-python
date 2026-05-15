@@ -15,15 +15,13 @@
 import base64
 import hashlib
 import json
-from unittest import mock
 import urllib.parse
+from unittest import mock
 
-from cryptography import x509
 import pytest
+from cryptography import x509
 
-from google.auth import _agent_identity_utils
-from google.auth import environment_vars
-from google.auth import exceptions
+from google.auth import _agent_identity_utils, environment_vars, exceptions
 
 # A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
 NON_AGENT_IDENTITY_CERT_BYTES = (
@@ -60,15 +58,22 @@ class TestAgentIdentityUtils:
         cert = _agent_identity_utils.parse_certificate(NON_AGENT_IDENTITY_CERT_BYTES)
         assert not _agent_identity_utils._is_agent_identity_certificate(cert)
 
-    def test__is_agent_identity_certificate_valid_spiffe(self):
+    @pytest.mark.parametrize(
+        "spiffe_id",
+        [
+            "spiffe://agents.global.proj-12345.system.id.goog/workload",
+            "spiffe://agents.global.org-12345.system.id.goog/workload",
+            "spiffe://agents-nonprod.global.proj-12345.system.id.goog/workload",
+            "spiffe://agents-nonprod.global.org-12345.system.id.goog/workload",
+        ],
+    )
+    def test__is_agent_identity_certificate_valid_spiffe(self, spiffe_id):
         mock_cert = mock.MagicMock()
         mock_ext = mock.MagicMock()
         mock_san_value = mock.MagicMock()
         mock_cert.extensions.get_extension_for_oid.return_value = mock_ext
         mock_ext.value = mock_san_value
-        mock_san_value.get_values_for_type.return_value = [
-            "spiffe://agents.global.proj-12345.system.id.goog/workload"
-        ]
+        mock_san_value.get_values_for_type.return_value = [spiffe_id]
         assert _agent_identity_utils._is_agent_identity_certificate(mock_cert)
 
     def test__is_agent_identity_certificate_non_matching_spiffe(self):

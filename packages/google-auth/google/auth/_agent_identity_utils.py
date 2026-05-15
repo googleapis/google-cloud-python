@@ -22,9 +22,7 @@ import re
 import time
 from urllib.parse import quote, urlparse
 
-from google.auth import environment_vars
-from google.auth import exceptions
-
+from google.auth import environment_vars, exceptions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +35,8 @@ CRYPTOGRAPHY_NOT_FOUND_ERROR = (
 _AGENT_IDENTITY_SPIFFE_TRUST_DOMAIN_PATTERNS = [
     r"^agents\.global\.org-\d+\.system\.id\.goog$",
     r"^agents\.global\.proj-\d+\.system\.id\.goog$",
+    r"^agents-nonprod\.global\.org-\d+\.system\.id\.goog$",
+    r"^agents-nonprod\.global\.proj-\d+\.system\.id\.goog$",
 ]
 
 _WELL_KNOWN_CERT_PATH = "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
