@@ -27,18 +27,19 @@ echo "=== Step 3: Installing Maturin ==="
 pip install --upgrade pip
 pip install maturin numpy
 
-echo "=== Step 4: Installing Sysstat (CPU monitoring utility) ==="
+echo "=== Step 4: Installing System Dependencies (Sysstat & Protobuf Compiler) ==="
 if command -v apt-get &> /dev/null; then
-    sudo apt-get update && sudo apt-get install -y sysstat || echo "Failed to install sysstat. Continuing..."
-elif command -v yum &> /dev/null; then
-    sudo yum install -y sysstat || echo "Failed to install sysstat. Continuing..."
+    sudo apt-get update && sudo apt-get install -y sysstat protobuf-compiler || echo "Failed to install system dependencies. Continuing..."
 elif command -v dnf &> /dev/null; then
-    sudo dnf install -y sysstat || echo "Failed to install sysstat. Continuing..."
+    sudo dnf install -y sysstat protobuf-compiler || echo "Failed to install system dependencies. Continuing..."
+elif command -v yum &> /dev/null; then
+    sudo yum install -y sysstat protobuf-compiler || echo "Failed to install system dependencies. Continuing..."
 elif command -v brew &> /dev/null; then
-    brew install sysstat || echo "Failed to install sysstat. Continuing..."
+    brew install sysstat protobuf || echo "Failed to install system dependencies. Continuing..."
 else
-    echo "WARNING: Package manager not found. Please install sysstat manually to run capture_cpu.sh."
+    echo "WARNING: Package manager not found. Please ensure sysstat and protobuf-compiler (protoc) are installed manually."
 fi
+
 
 echo "=== Step 5: Cloning Google APIs Protos ==="
 if [ ! -d "/tmp/googleapis" ]; then
