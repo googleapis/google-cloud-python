@@ -570,3 +570,28 @@ class TestCredentialsWithRegionalAccessBoundary(object):
 
             mock_thread_class.assert_not_called()
             assert manager._worker == mock_worker
+
+    @pytest.mark.asyncio
+    async def test_async_refresh_manager_session_closed_ignored(self):
+        credentials = mock.AsyncMock()
+        # Simulate a closed session RuntimeError when invoking the boundary lookup
+        credentials._lookup_regional_access_boundary.side_effect = RuntimeError(
+            "Session is closed"
+        )
+
+        request = mock.Mock()
+        rab_manager = mock.Mock()
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        # Trigger refresh, which starts a background task that should swallow the error
+        manager.start_refresh(credentials, request, rab_manager)
+
+        # Wait for the background worker task to terminate
+        await manager._worker_task
+
+        # Verify that the lookup was still triggered but failed open cleanly
+        credentials._lookup_regional_access_boundary.assert_called_once_with(request)
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)

@@ -395,14 +395,14 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
         self._worker_task = None
 
     def __getstate__(self):
-        """Pickle helper that serializes the _lock and _worker_task attributes."""
+        """Pickle helper that excludes the un-picklable _lock and _worker_task attributes from serialization."""
         state = self.__dict__.copy()
         state["_lock"] = None
         state["_worker_task"] = None
         return state
 
     def __setstate__(self, state):
-        """Pickle helper that deserializes the _lock and _worker_task attributes."""
+        """Pickle helper that restores state and re-initializes the _lock and _worker_task attributes."""
         self.__dict__.update(state)
         self._lock = threading.Lock()
         self._worker_task = None
