@@ -23,9 +23,10 @@ else
     echo "Rust toolchain detected: $(cargo --version)"
 fi
 
-echo "=== Step 3: Installing Maturin ==="
+echo "=== Step 3: Installing Maturin & Python Dependencies ==="
 pip install --upgrade pip
-pip install maturin numpy
+pip install maturin numpy google-cloud-spanner google-auth
+
 
 echo "=== Step 4: Installing System Dependencies (Sysstat & Protobuf Compiler) ==="
 if command -v apt-get &> /dev/null; then
