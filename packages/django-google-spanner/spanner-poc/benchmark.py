@@ -88,9 +88,13 @@ def run_benchmark(execute_fn, sql_query, thread_count, duration_s):
                 latency = (time.perf_counter() - start_time) * 1000.0  # ms
                 with latency_lock:
                     latencies.append(latency)
-            except Exception:
+            except Exception as e:
                 with error_lock:
                     error_count += 1
+                    if error_count <= 5:
+                        import traceback
+                        print(f"\n[Thread Error] {e}", file=sys.stderr)
+                        traceback.print_exc(file=sys.stderr)
 
     # Start worker threads
     threads = []
