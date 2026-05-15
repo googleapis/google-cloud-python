@@ -20,6 +20,7 @@ from .attachment import (
     Attachment,
 )
 from .attachment_service import (
+    GetAttachmentRequest,
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
@@ -45,6 +46,7 @@ from .comment import (
 )
 from .comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
@@ -55,6 +57,7 @@ from .escalation import (
 __all__ = (
     "Actor",
     "Attachment",
+    "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "Case",
@@ -72,6 +75,7 @@ __all__ = (
     "UpdateCaseRequest",
     "Comment",
     "CreateCommentRequest",
+    "GetCommentRequest",
     "ListCommentsRequest",
     "ListCommentsResponse",
     "Escalation",

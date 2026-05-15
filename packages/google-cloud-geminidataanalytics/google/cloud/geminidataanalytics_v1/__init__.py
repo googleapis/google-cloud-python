@@ -46,6 +46,7 @@ from .types.context import (
     LookerGoldenQuery,
     LookerQuery,
     MatchedQuery,
+    QueryParameter,
     QueryParameterValues,
     UserFunctions,
 )
@@ -268,6 +269,7 @@ __all__ = (
     "OAuthCredentials",
     "OperationMetadata",
     "PrivateLookerInstanceInfo",
+    "QueryParameter",
     "QueryParameterValues",
     "Schema",
     "SchemaMessage",

@@ -31,7 +31,11 @@ from .services.case_service import CaseServiceAsyncClient, CaseServiceClient
 from .services.comment_service import CommentServiceAsyncClient, CommentServiceClient
 from .types.actor import Actor
 from .types.attachment import Attachment
-from .types.attachment_service import ListAttachmentsRequest, ListAttachmentsResponse
+from .types.attachment_service import (
+    GetAttachmentRequest,
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
 from .types.case import Case, CaseClassification
 from .types.case_service import (
     CloseCaseRequest,
@@ -49,6 +53,7 @@ from .types.case_service import (
 from .types.comment import Comment
 from .types.comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
@@ -154,7 +159,9 @@ __all__ = (
     "CreateCommentRequest",
     "EscalateCaseRequest",
     "Escalation",
+    "GetAttachmentRequest",
     "GetCaseRequest",
+    "GetCommentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",
