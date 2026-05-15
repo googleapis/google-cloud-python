@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,11 @@
 #
 import logging as std_logging
 import re
+import uuid
 from collections import OrderedDict
 from typing import (
+    AsyncIterable,
+    Awaitable,
     Callable,
     Dict,
     Mapping,
@@ -350,7 +353,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.ProcessOpenLineageRunEventRequest, dict]]):
                 The request object. Request message for
-                [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+                [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
             parent (:class:`str`):
                 Required. The name of the project and
                 its location that should own the
@@ -378,7 +381,7 @@ class LineageAsyncClient:
         Returns:
             google.cloud.datacatalog_lineage_v1.types.ProcessOpenLineageRunEventResponse:
                 Response message for
-                   [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+                   [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
 
         """
         # Create or coerce a protobuf request object.
@@ -417,6 +420,9 @@ class LineageAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -473,7 +479,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.CreateProcessRequest, dict]]):
                 The request object. Request message for
-                [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
+                [CreateProcess][google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess].
             parent (:class:`str`):
                 Required. The name of the project and
                 its location that should own the
@@ -538,6 +544,9 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -592,7 +601,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.UpdateProcessRequest, dict]]):
                 The request object. Request message for
-                [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
+                [UpdateProcess][google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess].
             process (:class:`google.cloud.datacatalog_lineage_v1.types.Process`):
                 Required. The lineage process to update.
 
@@ -603,9 +612,9 @@ class LineageAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to update.
-                Currently not used. The whole message is
-                updated.
+                Optional. The list of fields to
+                update. Currently not used. The whole
+                message is updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -663,6 +672,9 @@ class LineageAsyncClient:
             ),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -717,7 +729,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.GetProcessRequest, dict]]):
                 The request object. Request message for
-                [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
+                [GetProcess][google.cloud.datacatalog.lineage.v1.Lineage.GetProcess].
             name (:class:`str`):
                 Required. The name of the process to
                 get.
@@ -830,7 +842,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest, dict]]):
                 The request object. Request message for
-                [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+                [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
             parent (:class:`str`):
                 Required. The name of the project and
                 its location that owns this collection
@@ -850,7 +862,7 @@ class LineageAsyncClient:
         Returns:
             google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListProcessesAsyncPager:
                 Response message for
-                   [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+                   [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -948,11 +960,11 @@ class LineageAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_process(request=request)
+                operation = await client.delete_process(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -960,7 +972,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.DeleteProcessRequest, dict]]):
                 The request object. Request message for
-                [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
+                [DeleteProcess][google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess].
             name (:class:`str`):
                 Required. The name of the process to
                 delete.
@@ -1094,7 +1106,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.CreateRunRequest, dict]]):
                 The request object. Request message for
-                [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
+                [CreateRun][google.cloud.datacatalog.lineage.v1.Lineage.CreateRun].
             parent (:class:`str`):
                 Required. The name of the process
                 that should own the run.
@@ -1159,6 +1171,9 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -1217,7 +1232,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.UpdateRunRequest, dict]]):
                 The request object. Request message for
-                [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
+                [UpdateRun][google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun].
             run (:class:`google.cloud.datacatalog_lineage_v1.types.Run`):
                 Required. The lineage run to update.
 
@@ -1231,9 +1246,9 @@ class LineageAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to update.
-                Currently not used. The whole message is
-                updated.
+                Optional. The list of fields to
+                update. Currently not used. The whole
+                message is updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1344,7 +1359,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.GetRunRequest, dict]]):
                 The request object. Request message for
-                [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
+                [GetRun][google.cloud.datacatalog.lineage.v1.Lineage.GetRun].
             name (:class:`str`):
                 Required. The name of the run to get.
                 This corresponds to the ``name`` field
@@ -1454,7 +1469,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.ListRunsRequest, dict]]):
                 The request object. Request message for
-                [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+                [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
             parent (:class:`str`):
                 Required. The name of process that
                 owns this collection of runs.
@@ -1473,7 +1488,7 @@ class LineageAsyncClient:
         Returns:
             google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListRunsAsyncPager:
                 Response message for
-                   [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+                   [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1571,11 +1586,11 @@ class LineageAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_run(request=request)
+                operation = await client.delete_run(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1583,7 +1598,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.DeleteRunRequest, dict]]):
                 The request object. Request message for
-                [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
+                [DeleteRun][google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun].
             name (:class:`str`):
                 Required. The name of the run to
                 delete.
@@ -1713,7 +1728,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.CreateLineageEventRequest, dict]]):
                 The request object. Request message for
-                [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
+                [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent].
             parent (:class:`str`):
                 Required. The name of the run that
                 should own the lineage event.
@@ -1782,6 +1797,9 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -1836,7 +1854,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.GetLineageEventRequest, dict]]):
                 The request object. Request message for
-                [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
+                [GetLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent].
             name (:class:`str`):
                 Required. The name of the lineage
                 event to get.
@@ -1952,7 +1970,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest, dict]]):
                 The request object. Request message for
-                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
             parent (:class:`str`):
                 Required. The name of the run that
                 owns the collection of lineage events to
@@ -1972,7 +1990,7 @@ class LineageAsyncClient:
         Returns:
             google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListLineageEventsAsyncPager:
                 Response message for
-                   [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+                   [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2075,7 +2093,7 @@ class LineageAsyncClient:
         Args:
             request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.DeleteLineageEventRequest, dict]]):
                 The request object. Request message for
-                [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
+                [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent].
             name (:class:`str`):
                 Required. The name of the lineage
                 event to delete.
@@ -2357,6 +2375,122 @@ class LineageAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def search_lineage_streaming(
+        self,
+        request: Optional[Union[lineage.SearchLineageStreamingRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Awaitable[AsyncIterable[lineage.SearchLineageStreamingResponse]]:
+        r"""Retrieves a streaming response of lineage links connected to the
+        requested assets by performing a breadth-first search in the
+        given direction. Links represent the data flow between
+        **source** (upstream) and **target** (downstream) assets in
+        transformation pipelines. Links are stored in the same project
+        as the Lineage Events that create them. This method retrieves
+        links from all valid locations provided in the request. This
+        method supports Column-Level Lineage (CLL) along with wildcard
+        support to retrieve all CLL for an Entity FQN.
+
+        Following permissions are required to retrieve links:
+
+        - ``datalineage.events.get`` permission for the project where
+          the link is stored for entity-level lineage.
+        - ``datalineage.events.getFields`` permission for the project
+          where the link is stored for column-level lineage.
+
+        This method also returns processes that created the links if
+        explicitly requested by setting
+        `max_process_per_link <google.cloud.datacatalog.lineage.v1.SearchLineageStreamingRequest.limits.max_process_per_link>`__
+        is non-zero and full process details are requested via
+        ``links.processes.process`` in the
+        `FieldMask <https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask>`__.
+
+        Permission required to retrieve processes:
+
+        - ``datalineage.processes.get`` permission for the project where
+          the process is stored.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_lineage_v1
+
+            async def sample_search_lineage_streaming():
+                # Create a client
+                client = datacatalog_lineage_v1.LineageAsyncClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_lineage_v1.SearchLineageStreamingRequest(
+                    parent="parent_value",
+                    locations=['locations_value1', 'locations_value2'],
+                    direction="UPSTREAM",
+                )
+
+                # Make the request
+                stream = await client.search_lineage_streaming(request=request)
+
+                # Handle the response
+                async for response in stream:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest, dict]]):
+                The request object. Request message for
+                [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            AsyncIterable[google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingResponse]:
+                Response message for
+                   [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, lineage.SearchLineageStreamingRequest):
+            request = lineage.SearchLineageStreamingRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_lineage_streaming
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

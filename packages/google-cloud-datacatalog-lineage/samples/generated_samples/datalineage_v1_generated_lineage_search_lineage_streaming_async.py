@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateRun
+# Snippet for SearchLineageStreaming
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-datacatalog-lineage
 
 
-# [START datalineage_v1_generated_Lineage_UpdateRun_async]
+# [START datalineage_v1_generated_Lineage_SearchLineageStreaming_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,23 +34,23 @@
 from google.cloud import datacatalog_lineage_v1
 
 
-async def sample_update_run():
+async def sample_search_lineage_streaming():
     # Create a client
     client = datacatalog_lineage_v1.LineageAsyncClient()
 
     # Initialize request argument(s)
-    run = datacatalog_lineage_v1.Run()
-    run.state = "ABORTED"
-
-    request = datacatalog_lineage_v1.UpdateRunRequest(
-        run=run,
+    request = datacatalog_lineage_v1.SearchLineageStreamingRequest(
+        parent="parent_value",
+        locations=["locations_value1", "locations_value2"],
+        direction="UPSTREAM",
     )
 
     # Make the request
-    response = await client.update_run(request=request)
+    stream = await client.search_lineage_streaming(request=request)
 
     # Handle the response
-    print(response)
+    async for response in stream:
+        print(response)
 
 
-# [END datalineage_v1_generated_Lineage_UpdateRun_async]
+# [END datalineage_v1_generated_Lineage_SearchLineageStreaming_async]
