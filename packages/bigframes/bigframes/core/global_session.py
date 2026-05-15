@@ -128,6 +128,7 @@ def execution_history(
     *,
     events: Optional[Iterable[bigframes.core.events.Event]] = None,
     job_ids: Optional[Iterable[str]] = None,
+    filter_by_cell: bool = True,
 ) -> "bigframes.session._ExecutionHistory":
     import pandas  # noqa: F401
 
@@ -137,7 +138,9 @@ def execution_history(
         bigframes.session.Session.execution_history,
         events=events,
         job_ids=job_ids,
+        filter_by_cell=filter_by_cell,
     )
+
 
 
 class _GlobalSessionContext:

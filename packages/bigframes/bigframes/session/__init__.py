@@ -448,6 +448,7 @@ class Session(
         *,
         events: Optional[Iterable[bigframes.core.events.Event]] = None,
         job_ids: Optional[Iterable[str]] = None,
+        filter_by_cell: bool = True,
     ) -> _ExecutionHistory:
         """Returns the history of executions initiated by BigFrames in the current session.
 
@@ -458,6 +459,9 @@ class Session(
                 Filter execution history to only include jobs associated with the given events.
             job_ids (Iterable[str], optional):
                 Filter execution history to only include jobs matching the given job IDs.
+            filter_by_cell (bool, optional):
+                If True and running in Colab/Jupyter, automatically filter history to only include
+                jobs executed within the current cell. Defaults to True.
         """
         jobs = [job.__dict__ for job in self._metrics.jobs]
 
@@ -484,7 +488,7 @@ class Session(
                 )
             ]
 
-        if job_ids is not None:
+        elif job_ids is not None:
             target_job_ids = set(job_ids)
             jobs = [
                 job
@@ -499,7 +503,23 @@ class Session(
                 )
             ]
 
+        elif filter_by_cell:
+            try:
+                import IPython
+
+                ipy = IPython.get_ipython()
+                if ipy is not None and hasattr(ipy, "execution_count"):
+                    current_count = ipy.execution_count
+                    jobs = [
+                        job
+                        for job in jobs
+                        if job.get("cell_execution_count") == current_count
+                    ]
+            except (ImportError, NameError):
+                pass
+
         return _ExecutionHistory(jobs)
+
 
     @property
     def _allows_ambiguity(self) -> bool:

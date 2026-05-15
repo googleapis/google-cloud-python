@@ -51,6 +51,7 @@ class JobMetadata:
     input_bytes: Optional[int] = None
     output_rows: Optional[int] = None
     source_format: Optional[str] = None
+    cell_execution_count: Optional[int] = None
 
     @classmethod
     def from_job(
@@ -65,6 +66,16 @@ class JobMetadata:
         if job_id:
             job_url = f"https://console.cloud.google.com/bigquery?project={query_job.project}&j=bq:{query_job.location}:{job_id}&page=queryresults"
 
+        cell_execution_count = None
+        try:
+            import IPython
+
+            ipy = IPython.get_ipython()
+            if ipy is not None and hasattr(ipy, "execution_count"):
+                cell_execution_count = ipy.execution_count
+        except (ImportError, NameError):
+            pass
+
         metadata = cls(
             job_id=query_job.job_id,
             location=query_job.location,
@@ -78,6 +89,7 @@ class JobMetadata:
             error_result=query_job.error_result,
             query=query_text,
             job_url=job_url,
+            cell_execution_count=cell_execution_count,
         )
         if isinstance(query_job, QueryJob):
             metadata.cached = getattr(query_job, "cache_hit", None)
@@ -121,6 +133,16 @@ class JobMetadata:
             location = getattr(row_iterator, "location", "")
             job_url = f"https://console.cloud.google.com/bigquery?project={project}&j=bq:{location}:{job_id}&page=queryresults"
 
+        cell_execution_count = None
+        try:
+            import IPython
+
+            ipy = IPython.get_ipython()
+            if ipy is not None and hasattr(ipy, "execution_count"):
+                cell_execution_count = ipy.execution_count
+        except (ImportError, NameError):
+            pass
+
         return cls(
             job_id=job_id,
             query_id=getattr(row_iterator, "query_id", None),
@@ -137,6 +159,7 @@ class JobMetadata:
             cached=getattr(row_iterator, "cache_hit", None),
             query=query_text,
             job_url=job_url,
+            cell_execution_count=cell_execution_count,
         )
 
 
@@ -249,10 +272,21 @@ class ExecutionMetrics:
                 bytes_processed = event.result.total_bytes_processed or 0
                 self.bytes_processed += bytes_processed
 
+                cell_execution_count = None
+                try:
+                    import IPython
+
+                    ipy = IPython.get_ipython()
+                    if ipy is not None and hasattr(ipy, "execution_count"):
+                        cell_execution_count = ipy.execution_count
+                except (ImportError, NameError):
+                    pass
+
                 metadata = JobMetadata(
                     job_type="polars",
                     status="DONE",
                     total_bytes_processed=bytes_processed,
+                    cell_execution_count=cell_execution_count,
                 )
                 self.jobs.append(metadata)
 
