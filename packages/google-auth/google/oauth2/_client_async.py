@@ -298,7 +298,8 @@ async def _lookup_regional_access_boundary(request, url, headers=None, fail_fast
     pools and workforce pools implementation may have Regional Access Boundaries configured.
     Args:
         request (google.auth.aio.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. The returned response must support `await response.read()`
+            (standard async transport) or `await response.content()` (legacy/custom transport).
         url (str): The Regional Access Boundary lookup url.
         headers (Optional[Mapping[str, str]]): The headers for the request.
         fail_fast (bool): Whether the lookup should fail fast (uses a short timeout and no retries).
@@ -337,7 +338,8 @@ async def _lookup_regional_access_boundary_request(
 
     Args:
         request (google.auth.aio.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. The returned response must support `await response.read()`
+            (standard async transport) or `await response.content()` (legacy/custom transport).
         url (str): The Regional Access Boundary lookup url.
         can_retry (bool): Enable or disable request retry behavior. Defaults to true.
         headers (Optional[Mapping[str, str]]): The headers for the request.
@@ -371,7 +373,8 @@ async def _lookup_regional_access_boundary_request_no_throw(
 
     Args:
         request (google.auth.aio.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. The returned response must support `await response.read()`
+            (standard async transport) or `await response.content()` (legacy/custom transport).
         url (str): The Regional Access Boundary lookup url.
         can_retry (bool): Enable or disable request retry behavior. Defaults to true.
         headers (Optional[Mapping[str, str]]): The headers for the request.
