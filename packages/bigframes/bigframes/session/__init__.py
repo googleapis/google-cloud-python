@@ -520,7 +520,6 @@ class Session(
 
         return _ExecutionHistory(jobs)
 
-
     @property
     def _allows_ambiguity(self) -> bool:
         return self._allow_ambiguity

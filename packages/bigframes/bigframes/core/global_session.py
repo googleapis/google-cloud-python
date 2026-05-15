@@ -142,7 +142,6 @@ def execution_history(
     )
 
 
-
 class _GlobalSessionContext:
     """
     Context manager for testing that sets global session.

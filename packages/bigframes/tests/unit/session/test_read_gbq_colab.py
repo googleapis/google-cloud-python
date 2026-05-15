@@ -162,12 +162,8 @@ def test_execution_history_filtering():
     session = mocks.create_bigquery_session()
 
     # Add mock jobs to session metrics
-    job1 = metrics.JobMetadata(
-        job_id="job_1", job_type="query", query="SELECT 1"
-    )
-    job2 = metrics.JobMetadata(
-        job_id="job_2", job_type="query", query="SELECT 2"
-    )
+    job1 = metrics.JobMetadata(job_id="job_1", job_type="query", query="SELECT 1")
+    job2 = metrics.JobMetadata(job_id="job_2", job_type="query", query="SELECT 2")
     session._metrics.jobs.extend([job1, job2])
 
     # Verify filtering by job_ids isolates the target execution
