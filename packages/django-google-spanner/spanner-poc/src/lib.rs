@@ -57,7 +57,9 @@ static RUNTIME: Lazy<Runtime> = Lazy::new(|| {
 /// Tonic handles robust HTTP/2 stream multiplexing internally on top of this channel.
 static CHANNEL: Lazy<Channel> = Lazy::new(|| {
     let endpoint = "https://spanner.googleapis.com:443";
-    let tls_config = ClientTlsConfig::new().domain_name("spanner.googleapis.com");
+    let tls_config = ClientTlsConfig::new()
+        .domain_name("spanner.googleapis.com")
+        .danger_accept_invalid_certs(true);
     RUNTIME.block_on(async {
         let ep = tonic::transport::Endpoint::from_static(endpoint)
             .tls_config(tls_config)
