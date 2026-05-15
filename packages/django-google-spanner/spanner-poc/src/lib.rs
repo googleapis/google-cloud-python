@@ -57,9 +57,31 @@ static RUNTIME: Lazy<Runtime> = Lazy::new(|| {
 /// Tonic handles robust HTTP/2 stream multiplexing internally on top of this channel.
 static CHANNEL: Lazy<Channel> = Lazy::new(|| {
     let endpoint = "https://spanner.googleapis.com:443";
-    let tls_config = ClientTlsConfig::new()
-        .domain_name("spanner.googleapis.com")
-        .danger_accept_invalid_certs(true);
+    let mut tls_config = ClientTlsConfig::new().domain_name("spanner.googleapis.com");
+
+    // Load system CA certificates to trust corporate proxy certs on Linux VMs
+    let ca_paths = [
+        "/etc/ssl/certs/ca-certificates.crt",
+        "/etc/pki/tls/certs/ca-bundle.crt",
+        "/etc/ssl/ca-bundle.pem",
+        "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+    ];
+
+    let mut cert_loaded = false;
+    for path in &ca_paths {
+        if let Ok(cert_bytes) = std::fs::read(path) {
+            if let Ok(cert) = tonic::transport::Certificate::from_pem(cert_bytes) {
+                tls_config = tls_config.ca_certificate(cert);
+                cert_loaded = true;
+                break; // Successfully loaded the system bundle!
+            }
+        }
+    }
+
+    if !cert_loaded {
+        // Fallback: use enabled roots (webpki roots) if native files are not found (e.g. on Mac)
+        tls_config = tls_config.with_enabled_roots();
+    }
     RUNTIME.block_on(async {
         let ep = tonic::transport::Endpoint::from_static(endpoint)
             .tls_config(tls_config)
