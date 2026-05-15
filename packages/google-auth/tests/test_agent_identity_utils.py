@@ -15,11 +15,11 @@
 import base64
 import hashlib
 import json
-import urllib.parse
 from unittest import mock
+import urllib.parse
 
-import pytest
 from cryptography import x509
+import pytest
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
 
