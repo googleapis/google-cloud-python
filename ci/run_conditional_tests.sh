@@ -80,7 +80,6 @@ set -e
 
 subdirs=(
     packages
-    preview-packages
 )
 
 RETVAL=0
