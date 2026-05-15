@@ -179,6 +179,8 @@ def main():
     _ = run_benchmark(lambda q: db.execute_sql_native(q, 1), SQL, thread_count=4, duration_s=WARMUP_S)
     _ = run_benchmark(lambda q: db.execute_sql_native(q, 4), SQL, thread_count=4, duration_s=WARMUP_S)
     _ = run_benchmark(lambda q: db.execute_sql_native(q, 8), SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 10), SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 12), SQL, thread_count=4, duration_s=WARMUP_S)
     _ = run_benchmark(lambda q: db.execute_sql_native(q, 16), SQL, thread_count=4, duration_s=WARMUP_S)
     print("Warmup complete. Starting benchmarks...")
 
@@ -197,9 +199,9 @@ def main():
             f"{threads:^8} | {'Python':^14} | {py_res['qps']:10.1f} | {py_res['p50']:10.2f} | {py_res['p95']:10.2f} | {py_res['p99']:10.2f} | {py_res['cpu_util']:8.1f}% | {py_res['active_cores']:^6} | {'-':^8}"
         )
 
-        # 2. Rust dynamic channels (1, 4, 8, 16)
+        # 2. Rust dynamic channels (1, 4, 8, 10, 12, 16)
         rust_runs = {}
-        for channels in [1, 4, 8, 16]:
+        for channels in [1, 4, 8, 10, 12, 16]:
             execute_fn = lambda q, ch=channels: db.execute_sql_native(q, ch)
             res = run_benchmark(execute_fn, SQL, thread_count=threads, duration_s=DURATION_S)
             speedup = res["qps"] / py_res["qps"] if py_res["qps"] > 0 else 0.0
