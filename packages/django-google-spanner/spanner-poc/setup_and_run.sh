@@ -59,7 +59,7 @@ cp /tmp/googleapis/google/rpc/*.proto proto/google/rpc/
 echo "Proto directory structure prepared under spanner-poc/proto/."
 
 echo "=== Step 7: Verifying Benchmark Configuration ==="
-if grep -q "your-project" benchmark.py; then
+if grep -E "^PROJECT\s*=\s*\"your-project\"" benchmark.py; then
     echo "========================================================================"
     echo "ERROR: Please configure your GCP credentials in benchmark.py first!"
     echo "Modify the following constants in benchmark.py:"
@@ -70,6 +70,7 @@ if grep -q "your-project" benchmark.py; then
     echo "========================================================================"
     exit 1
 fi
+
 
 echo "=== Step 8: Building Rust Native Extension in Release Mode ==="
 # maturin develop --release installs the compiled module into the current active venv.
