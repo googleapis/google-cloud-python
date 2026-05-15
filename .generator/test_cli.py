@@ -1439,6 +1439,38 @@ def test_process_changelog_success():
     assert result == expected_result
 
 
+def test_process_changelog_success_preview():
+    """Tests that a preview package updates its changelog correctly when the anchor has the standard package name."""
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    mock_content = """# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
+## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
+    expected_result = f"""# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
+## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})\n\n
+### Documentation\n
+* fix typo in BranchRule comment ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
+### Features\n
+* add new UpdateRepository API ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
+### Bug Fixes\n
+* some fix ([1231532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1231532e7d19c8d71709ec3b502e5d81340fb661))
+* another fix ([1241532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1241532e7d19c8d71709ec3b502e5d81340fb661))\n
+## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
+    version = "1.2.3"
+    previous_version = "1.2.2"
+    library_id = "google-cloud-language-preview"
+    tag_format = "google-cloud-language-v{version}"
+
+    result = _process_changelog(
+        mock_content,
+        _MOCK_LIBRARY_CHANGES,
+        version,
+        previous_version,
+        library_id,
+        "googleapis/google-cloud-python",
+        tag_format,
+    )
+    assert result == expected_result
+
+
 def test_process_changelog_failure():
     """Tests that value error is raised if the changelog anchor string cannot be found"""
     with pytest.raises(ValueError):
@@ -2074,7 +2106,7 @@ def test_update_changelog_for_library_preview_package(mocker):
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/google-cloud-language-preview/#history
+[1]: https://pypi.org/project/google-cloud-language/#history
 """
     mock_read = mocker.patch("cli._read_text_file", return_value=mock_content)
     mock_write = mocker.patch("cli._write_text_file")

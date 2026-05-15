@@ -1556,8 +1556,9 @@ def _process_changelog(
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
+    actual_library_id = _get_actual_library_id(library_id)
     anchor_pattern = re.compile(
-        rf"(\[1\]: https://pypi\.org/project/{library_id}/#history)",
+        rf"(\[1\]: https://pypi\.org/project/{actual_library_id}/#history)",
         re.MULTILINE,
     )
     replacement_text = f"\\g<1>\n\n{new_entry_text}"
