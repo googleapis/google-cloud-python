@@ -9237,6 +9237,13 @@ def test_create_data_agent_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -9566,6 +9573,13 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -9910,6 +9924,13 @@ def test_update_data_agent_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -10243,6 +10264,13 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [

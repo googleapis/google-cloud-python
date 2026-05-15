@@ -1814,6 +1814,7 @@ def test_bulk_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "alias_ipv6_ranges": {},
                     "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",

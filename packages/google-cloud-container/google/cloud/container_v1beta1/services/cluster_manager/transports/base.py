@@ -40,7 +40,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ClusterManagerTransport(abc.ABC):
     """Abstract transport class for ClusterManager."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/container",
+        "https://www.googleapis.com/auth/container.read-only",
+    )
 
     DEFAULT_HOST: str = "container.googleapis.com"
 
