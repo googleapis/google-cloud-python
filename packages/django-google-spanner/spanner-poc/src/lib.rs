@@ -31,6 +31,12 @@ pub mod google {
             tonic::include_proto!("google.spanner.v1");
         }
     }
+    pub mod rpc {
+        tonic::include_proto!("google.rpc");
+    }
+    pub mod api {
+        tonic::include_proto!("google.api");
+    }
 }
 
 use google::spanner::v1::spanner_client::SpannerClient;
@@ -153,17 +159,7 @@ fn execute_sql_native(
             let request = ExecuteSqlRequest {
                 session: session_clone,
                 sql: sql_clone,
-                transaction: None, // Direct single read/query
-                params: None,
-                param_types: std::collections::HashMap::new(),
-                resume_token: vec![],
-                query_mode: 0, // NORMAL
-                partition_token: vec![],
-                seqno: 0,
-                query_options: None,
-                request_options: None,
-                directed_read_options: None,
-                data_boost_enabled: false,
+                ..Default::default()
             };
 
             let response = client.execute_sql(request).await?;
