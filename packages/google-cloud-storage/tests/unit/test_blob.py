@@ -6205,118 +6205,6 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.retention.retain_until_time)
         self.assertIn("retention", blob._changes)
 
-    def test_object_contexts_payload_ctor(self):
-        from google.cloud.storage.blob import ObjectCustomContextPayload
-
-        create_time = datetime.datetime(2025, 1, 1, tzinfo=_UTC)
-        update_time = datetime.datetime(2025, 1, 2, tzinfo=_UTC)
-        payload = ObjectCustomContextPayload(
-            value="foo", create_time=create_time, update_time=update_time
-        )
-        self.assertEqual(payload.value, "foo")
-        self.assertEqual(payload.create_time, create_time)
-        self.assertEqual(payload.update_time, update_time)
-
-    def test_object_contexts_ctor(self):
-        from google.cloud.storage.blob import (
-            Blob,
-            ObjectContexts,
-            ObjectCustomContextPayload,
-        )
-
-        blob = mock.Mock(spec=Blob)
-        custom = {"key": ObjectCustomContextPayload(value="val")}
-        contexts = ObjectContexts(blob, custom=custom)
-        self.assertIs(contexts.blob, blob)
-        self.assertEqual(contexts.custom, custom)
-
-    def test_object_contexts_from_api_repr(self):
-        from google.cloud.storage.blob import Blob, ObjectContexts
-
-        blob = mock.Mock(spec=Blob)
-        resource = {
-            "custom": {
-                "key": {
-                    "value": "val",
-                    "createTime": "2025-01-01T00:00:00Z",
-                    "updateTime": "2025-01-02T00:00:00Z",
-                }
-            }
-        }
-        contexts = ObjectContexts.from_api_repr(resource, blob)
-        self.assertIs(contexts.blob, blob)
-        self.assertIn("key", contexts.custom)
-        payload = contexts.custom["key"]
-        self.assertEqual(payload.value, "val")
-        self.assertEqual(
-            payload.create_time, datetime.datetime(2025, 1, 1, tzinfo=_UTC)
-        )
-        self.assertEqual(
-            payload.update_time, datetime.datetime(2025, 1, 2, tzinfo=_UTC)
-        )
-
-    def test_object_contexts_property(self):
-        from google.cloud.storage.blob import (
-            Blob,
-            ObjectContexts,
-            ObjectCustomContextPayload,
-        )
-
-        bucket = mock.Mock()
-        bucket.name = "b"
-        bucket.__getitem__ = mock.Mock(
-            side_effect=lambda x: "b" if x in (0, -1) else None
-        )
-        blob = Blob("blob-name", bucket=bucket)
-        self.assertIsInstance(blob.contexts, ObjectContexts)
-        self.assertEqual(blob.contexts.custom, {})
-
-        custom = {"key": ObjectCustomContextPayload(value="val")}
-        blob.contexts = ObjectContexts(blob, custom=custom)
-        self.assertEqual(blob.contexts.custom, custom)
-
-        blob.contexts = None
-        self.assertIsNone(blob._properties["contexts"])
-
-    def test_patch_contexts(self):
-        from google.cloud.storage.blob import (
-            Blob,
-            ObjectContexts,
-            ObjectCustomContextPayload,
-        )
-        from google.cloud.storage.bucket import Bucket
-
-        client = self._make_client(project="p")
-        bucket = Bucket(client, name="b")
-        blob = Blob("blob-name", bucket=bucket)
-
-        custom = {"key": ObjectCustomContextPayload(value="val")}
-        blob.contexts = ObjectContexts(blob, custom=custom)
-
-        with mock.patch.object(client, "_patch_resource") as mocked:
-            blob.patch()
-            mocked.assert_called_once()
-            args, kwargs = mocked.call_args
-            sent_resource = args[1]
-            self.assertEqual(sent_resource["contexts"]["custom"]["key"]["value"], "val")
-
-    def test_patch_contexts_none(self):
-        from google.cloud.storage.blob import Blob
-        from google.cloud.storage.bucket import Bucket
-
-        client = self._make_client(project="p")
-        bucket = Bucket(client, name="b")
-        blob = Blob("blob-name", bucket=bucket)
-
-        blob.contexts = None
-
-        with mock.patch.object(client, "_patch_resource") as mocked:
-            blob.patch()
-            mocked.assert_called_once()
-            args, kwargs = mocked.call_args
-            sent_resource = args[1]
-            self.assertIsNone(sent_resource["contexts"])
-
 
 class Test__quote(unittest.TestCase):
     @staticmethod
@@ -6496,3 +6384,168 @@ class _Bucket(object):
                 retry,
             )
         )
+
+
+import unittest
+import datetime
+import mock
+from google.cloud.storage.blob import Blob, ObjectContexts, ObjectCustomContextPayload
+from google.cloud.storage._helpers import _UTC
+
+
+class TestObjectContexts(unittest.TestCase):
+    def test_payload_ctor(self):
+        create_time = datetime.datetime(2025, 1, 1, tzinfo=_UTC)
+        update_time = datetime.datetime(2025, 1, 2, tzinfo=_UTC)
+        payload = ObjectCustomContextPayload(
+            value="foo", create_time=create_time, update_time=update_time
+        )
+        self.assertEqual(payload.value, "foo")
+        self.assertEqual(payload.create_time, create_time)
+        self.assertEqual(payload.update_time, update_time)
+
+    def test_contexts_ctor(self):
+        blob = mock.Mock(spec=Blob)
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        contexts = ObjectContexts(blob, custom=custom)
+        self.assertIs(contexts.blob, blob)
+        self.assertEqual(contexts.custom, custom)
+
+    def test_contexts_from_api_repr(self):
+        blob = mock.Mock(spec=Blob)
+        resource = {
+            "custom": {
+                "key": {
+                    "value": "val",
+                    "createTime": "2025-01-01T00:00:00Z",
+                    "updateTime": "2025-01-02T00:00:00Z",
+                }
+            }
+        }
+        contexts = ObjectContexts.from_api_repr(resource, blob)
+        self.assertIs(contexts.blob, blob)
+        self.assertIn("key", contexts.custom)
+        payload = contexts.custom["key"]
+        self.assertEqual(payload.value, "val")
+        self.assertEqual(
+            payload.create_time, datetime.datetime(2025, 1, 1, tzinfo=_UTC)
+        )
+        self.assertEqual(
+            payload.update_time, datetime.datetime(2025, 1, 2, tzinfo=_UTC)
+        )
+
+    def test_blob_contexts_property(self):
+        bucket = mock.Mock()
+        bucket.name = "b"
+        bucket.__getitem__ = mock.Mock(
+            side_effect=lambda x: "b" if x in (0, -1) else None
+        )
+        blob = Blob("blob-name", bucket=bucket)
+        self.assertIsInstance(blob.contexts, ObjectContexts)
+        self.assertEqual(blob.contexts.custom, {})
+
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        blob.contexts = ObjectContexts(blob, custom=custom)
+        self.assertEqual(blob.contexts.custom, custom)
+
+        blob.contexts = None
+        self.assertIsNone(blob._properties["contexts"])
+
+
+class TestListBlobsFilter(unittest.TestCase):
+    @staticmethod
+    def _make_client(*args, **kw):
+        from google.cloud.storage.client import Client
+        import google.auth.credentials
+
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials.universe_domain = "googleapis.com"
+        kw["credentials"] = kw.get("credentials") or credentials
+        return Client(*args, **kw)
+
+    def test_client_list_blobs_filter(self):
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client(project="p")
+        bucket = Bucket(client, name="b")
+
+        with mock.patch.object(client, "_list_resource") as mocked:
+            list(client.list_blobs(bucket, filter_='contexts.custom.foo = "bar"'))
+
+            mocked.assert_called_once()
+            args, kwargs = mocked.call_args
+            extra_params = kwargs["extra_params"]
+            self.assertEqual(extra_params["filter"], 'contexts.custom.foo = "bar"')
+
+    def test_bucket_list_blobs_filter(self):
+        from google.cloud.storage.bucket import Bucket
+
+        client = mock.Mock()
+        bucket = Bucket(client, name="b")
+
+        bucket.list_blobs(filter_='contexts.custom.foo = "bar"')
+        client.list_blobs.assert_called_with(
+            bucket,
+            max_results=None,
+            page_token=None,
+            prefix=None,
+            delimiter=None,
+            start_offset=None,
+            end_offset=None,
+            include_trailing_delimiter=None,
+            versions=None,
+            projection="noAcl",
+            fields=None,
+            page_size=None,
+            timeout=mock.ANY,
+            retry=mock.ANY,
+            match_glob=None,
+            include_folders_as_prefixes=None,
+            soft_deleted=None,
+            filter_='contexts.custom.foo = "bar"',
+        )
+
+
+class TestSerialization(unittest.TestCase):
+    @staticmethod
+    def _make_client(*args, **kw):
+        from google.cloud.storage.client import Client
+        import google.auth.credentials
+
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials.universe_domain = "googleapis.com"
+        kw["credentials"] = kw.get("credentials") or credentials
+        return Client(*args, **kw)
+
+    def test_blob_patch_contexts(self):
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client(project="p")
+        bucket = Bucket(client, name="b")
+        blob = Blob("blob-name", bucket=bucket)
+
+        custom = {"key": ObjectCustomContextPayload(value="val")}
+        blob.contexts = ObjectContexts(blob, custom=custom)
+
+        with mock.patch.object(client, "_patch_resource") as mocked:
+            blob.patch()
+            mocked.assert_called_once()
+            args, kwargs = mocked.call_args
+            sent_resource = args[1]
+            self.assertEqual(sent_resource["contexts"]["custom"]["key"]["value"], "val")
+
+    def test_blob_patch_contexts_none(self):
+        from google.cloud.storage.bucket import Bucket
+
+        client = self._make_client(project="p")
+        bucket = Bucket(client, name="b")
+        blob = Blob("blob-name", bucket=bucket)
+
+        blob.contexts = None
+
+        with mock.patch.object(client, "_patch_resource") as mocked:
+            blob.patch()
+            mocked.assert_called_once()
+            args, kwargs = mocked.call_args
+            sent_resource = args[1]
+            self.assertIsNone(sent_resource["contexts"])

@@ -731,35 +731,6 @@ def test_bucket_list_blobs_w_match_glob(
         assert [blob.name for blob in blobs] == expected_names
 
 
-@_helpers.retry_failures
-def test_bucket_list_blobs_w_filter(
-    storage_client,
-    buckets_to_delete,
-    blobs_to_delete,
-):
-    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
-
-    bucket_name = _helpers.unique_name("w-filter")
-    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
-    buckets_to_delete.append(bucket)
-
-    payload = b"helloworld"
-    blob_names = ["foo", "bar", "baz"]
-    for name in blob_names:
-        blob = bucket.blob(name)
-        blob.upload_from_string(payload)
-        if name == "bar":
-            custom = {"target": ObjectCustomContextPayload(value="match")}
-            blob.contexts = ObjectContexts(blob, custom=custom)
-            blob.patch()
-        blobs_to_delete.append(blob)
-
-    # List with filter matching only 'bar'
-    blob_iter = bucket.list_blobs(filter_='contexts."target"="match"')
-    blobs = list(blob_iter)
-    assert [blob.name for blob in blobs] == ["bar"]
-
-
 def test_bucket_list_blobs_include_managed_folders(
     storage_client,
     buckets_to_delete,

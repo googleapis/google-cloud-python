@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 from google.cloud import _storage_v2
@@ -91,20 +92,43 @@ def blob_to_proto(blob):
     if contexts:
         custom_contexts = {}
         for key, payload in contexts.custom.items():
-            payload_params = {"value": payload.value}
-            if payload.create_time is not None:
-                create_time_proto = timestamp_pb2.Timestamp()
-                create_time_proto.FromDatetime(payload.create_time)
-                payload_params["create_time"] = create_time_proto
-            if payload.update_time is not None:
-                update_time_proto = timestamp_pb2.Timestamp()
-                update_time_proto.FromDatetime(payload.update_time)
-                payload_params["update_time"] = update_time_proto
-
             custom_contexts[key] = _storage_v2.ObjectCustomContextPayload(
-                **payload_params
+                value=payload.value
             )
 
         resource_params["contexts"] = _storage_v2.ObjectContexts(custom=custom_contexts)
 
     return _storage_v2.Object(**resource_params)
+
+
+def get_update_mask(blob, changes):
+    """Generates a FieldMask for gRPC update operations."""
+    # Map REST property names to GCS V2 Object proto field names.
+    property_to_proto_field = {
+        "cacheControl": "cache_control",
+        "contentDisposition": "content_disposition",
+        "contentEncoding": "content_encoding",
+        "contentLanguage": "content_language",
+        "contentType": "content_type",
+        "metadata": "metadata",
+        "eventBasedHold": "event_based_hold",
+        "temporaryHold": "temporary_hold",
+        "kmsKeyName": "kms_key",
+        "customTime": "custom_time",
+        "retention": "retention",
+    }
+    paths = []
+    for change in changes:
+        if change == "contexts":
+            contexts = getattr(blob, "contexts", None)
+            if not (contexts and contexts.custom):
+                paths.append("contexts.custom")
+            else:
+                for key in contexts.custom:
+                    paths.append(f"contexts.custom.{key}")
+        else:
+            proto_field = property_to_proto_field.get(change)
+            if proto_field:
+                paths.append(proto_field)
+
+    return field_mask_pb2.FieldMask(paths=paths)

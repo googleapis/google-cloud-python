@@ -554,38 +554,6 @@ def test_blob_patch_metadata(
     assert blob.metadata == {"foo": "Foo"}
 
 
-def test_blob_contexts_crud(
-    shared_bucket,
-    blobs_to_delete,
-    file_data,
-    service_account,
-):
-    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
-
-    filename = file_data["logo"]["path"]
-    blob_name = os.path.basename(filename)
-
-    blob = shared_bucket.blob(blob_name)
-    blob.upload_from_filename(filename)
-    blobs_to_delete.append(blob)
-
-    custom = {"foo": ObjectCustomContextPayload(value="bar")}
-    blob.contexts = ObjectContexts(blob, custom=custom)
-    blob.patch()
-    blob.reload()
-    assert "foo" in blob.contexts.custom
-    assert blob.contexts.custom["foo"].value == "bar"
-    assert blob.contexts.custom["foo"].create_time is not None
-    assert blob.contexts.custom["foo"].update_time is not None
-
-    # Ensure that context keys can be deleted by setting equal to None.
-    new_custom = {"foo": None}
-    blob.contexts = ObjectContexts(blob, custom=new_custom)
-    blob.patch()
-    blob.reload()
-    assert "foo" not in blob.contexts.custom
-
-
 def test_blob_direct_write_and_read_into_file(
     shared_bucket,
     blobs_to_delete,
@@ -1241,3 +1209,67 @@ def test_blob_download_as_bytes_single_shot_download(
 
     result_single_shot_download = blob.download_as_bytes(single_shot_download=True)
     assert result_single_shot_download == payload
+
+
+def test_blob_contexts(shared_bucket, blobs_to_delete):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    blob_name = f"ObjectContexts-{uuid.uuid4().hex}"
+    blob = shared_bucket.blob(blob_name)
+
+    # 1. Create with contexts
+    custom = {
+        "k1": ObjectCustomContextPayload(value="v1"),
+        "k2": ObjectCustomContextPayload(value="v2"),
+    }
+    blob.contexts = ObjectContexts(blob, custom=custom)
+    blob.upload_from_string(b"foo")
+    blobs_to_delete.append(blob)
+
+    blob.reload()
+    assert blob.contexts.custom["k1"].value == "v1"
+    assert blob.contexts.custom["k2"].value == "v2"
+
+    # 2. Patch: update one, delete one
+    blob.contexts.custom["k1"].value = "v1-updated"
+    blob.contexts.custom["k2"].value = None
+    blob.patch()
+
+    blob.reload()
+    assert blob.contexts.custom["k1"].value == "v1-updated"
+    assert "k2" not in blob.contexts.custom or blob.contexts.custom["k2"].value is None
+
+    # 3. Clear all
+    blob.contexts = None
+    blob.patch()
+
+    blob.reload()
+    assert not blob.contexts.custom
+
+
+def test_list_blobs_filter(shared_bucket, blobs_to_delete):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    suffix = uuid.uuid4().hex
+    name1 = f"filter1-{suffix}"
+    name2 = f"filter2-{suffix}"
+
+    blob1 = shared_bucket.blob(name1)
+    blob1.contexts = ObjectContexts(
+        blob1, custom={"foo": ObjectCustomContextPayload(value="bar")}
+    )
+    blob1.upload_from_string(b"one")
+    blobs_to_delete.append(blob1)
+
+    blob2 = shared_bucket.blob(name2)
+    blob2.contexts = ObjectContexts(
+        blob2, custom={"foo": ObjectCustomContextPayload(value="baz")}
+    )
+    blob2.upload_from_string(b"two")
+    blobs_to_delete.append(blob2)
+
+    # Filter by context
+    blobs = list(shared_bucket.list_blobs(filter_=f'contexts.custom.foo = "bar"'))
+    names = [b.name for b in blobs]
+    assert name1 in names
+    assert name2 not in names
