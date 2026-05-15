@@ -76,7 +76,8 @@ fi
 
 echo "=== Step 8: Building Rust Native Extension in Release Mode ==="
 # maturin develop --release installs the compiled module into the current active venv.
-# --release is mandatory to ensure benchmark accuracy.
+# Force clean the cargo cache to ensure feature changes compile correctly.
+cargo clean
 maturin develop --release
 
 echo "=== Step 9: Executing Performance Benchmarks ==="
