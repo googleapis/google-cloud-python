@@ -433,7 +433,6 @@ libraries:
       - google/cloud/automl_v1beta1/services/tables/__init__.py
       - google/cloud/automl_v1beta1/services/tables/gcs_client.py
       - google/cloud/automl_v1beta1/services/tables/tables_client.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: automl
