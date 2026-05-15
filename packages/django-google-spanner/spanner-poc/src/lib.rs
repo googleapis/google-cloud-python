@@ -1,0 +1,201 @@
+//! # Spanner Native PyO3 Extension — GIL-Releasing gRPC Client
+//!
+//! ## GIL Release Mechanism Explained
+//!
+//! Under Python's default Global Interpreter Lock (GIL), only one thread can execute
+//! Python bytecode at a time. When multiple threads perform high-throughput Cloud Spanner
+//! operations, they frequently contend for the GIL during Python-level Protobuf serialization
+//! and deserialization. This serializes the CPU execution time and limits overall throughput
+//! to a hard ceiling of ~1000 QPS, regardless of available CPU cores or network channels.
+//!
+//! This Rust native extension addresses the bottleneck by moving the gRPC dispatch, network
+//! transport, and Protobuf serialization and deserialization out of CPython entirely.
+//!
+//! By calling `py.allow_threads(|| { ... })`, we temporarily release the GIL during the entire
+//! network round-trip. This allows other Python threads to acquire the GIL and dispatch
+//! parallel requests concurrently. The multi-threaded Tokio runtime executes the async gRPC
+//! requests in Rust, multiplexing concurrent requests over a single shared HTTP/2 transport
+//! channel. When the network call completes, the GIL is reacquired to convert the returned
+//! Rust-deserialized `ResultSet` values back to native Python objects.
+
+use once_cell::sync::Lazy;
+use pyo3::exceptions::PyRuntimeError;
+use pyo3::prelude::*;
+use tokio::runtime::Runtime;
+use tonic::transport::{Channel, ClientTlsConfig};
+
+// Include the generated code from tonic-build (build.rs output)
+pub mod google {
+    pub mod spanner {
+        pub mod v1 {
+            tonic::include_proto!("google.spanner.v1");
+        }
+    }
+}
+
+use google::spanner::v1::spanner_client::SpannerClient;
+use google::spanner::v1::{ExecuteSqlRequest, ResultSet};
+
+/// Shared multi-threaded Tokio runtime used to drive the async tonic gRPC client.
+/// Configured with a pool of 4 dedicated threads to manage concurrent I/O.
+static RUNTIME: Lazy<Runtime> = Lazy::new(|| {
+    tokio::runtime::Builder::new_multi_thread()
+        .worker_threads(4)
+        .enable_all()
+        .build()
+        .expect("Failed to initialize multi-threaded Tokio runtime")
+});
+
+/// Static shared connection channel pointing to the Spanner production endpoint.
+/// The channel is lazily connected once on first request and reused thereafter.
+/// Tonic handles robust HTTP/2 stream multiplexing internally on top of this channel.
+static CHANNEL: Lazy<Channel> = Lazy::new(|| {
+    let endpoint = "https://spanner.googleapis.com:443";
+    let tls_config = ClientTlsConfig::new().domain_name("spanner.googleapis.com");
+    RUNTIME.block_on(async {
+        let ep = tonic::transport::Endpoint::from_static(endpoint)
+            .tls_config(tls_config)
+            .expect("Failed to build TLS configuration endpoint");
+        ep.connect()
+            .await
+            .expect("Failed to establish connection to spanner.googleapis.com")
+    })
+});
+
+/// Tonic gRPC interceptor to inject standard authentication and routing headers on every call.
+#[derive(Clone)]
+struct AuthInterceptor {
+    token: String,
+    session_name: String,
+}
+
+impl tonic::service::Interceptor for AuthInterceptor {
+    fn call(&mut self, mut request: tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status> {
+        // 1. Inject OAuth Bearer token header
+        let bearer_token = format!("Bearer {}", self.token);
+        let meta_value = tonic::metadata::MetadataValue::try_from(bearer_token)
+            .map_err(|_| tonic::Status::invalid_argument("Invalid OAuth token string"))?;
+        request.metadata_mut().insert("authorization", meta_value);
+
+        // 2. Inject google-cloud-resource-prefix header for optimal regional routing
+        // session_name format: projects/<PROJECT>/instances/<INSTANCE>/databases/<DATABASE>/sessions/<SESSION_ID>
+        if let Some(idx) = self.session_name.find("/sessions/") {
+            let db_prefix = &self.session_name[..idx];
+            if let Ok(prefix_value) = tonic::metadata::MetadataValue::try_from(db_prefix) {
+                request.metadata_mut().insert("google-cloud-resource-prefix", prefix_value);
+            }
+        } else if let Ok(prefix_value) = tonic::metadata::MetadataValue::try_from(&self.session_name) {
+            request.metadata_mut().insert("google-cloud-resource-prefix", prefix_value);
+        }
+
+        Ok(request)
+    }
+}
+
+/// Recursive helper to safely translate prost_types::Value structures into native Python objects.
+fn proto_value_to_python(py: Python<'_>, value: &prost_types::Value) -> PyObject {
+    use prost_types::value::Kind;
+    match &value.kind {
+        Some(Kind::NullValue(_)) => py.None(),
+        Some(Kind::NumberValue(n)) => n.into_py(py),
+        Some(Kind::StringValue(s)) => s.into_py(py),
+        Some(Kind::BoolValue(b)) => b.into_py(py),
+        Some(Kind::StructValue(s)) => {
+            let dict = pyo3::types::PyDict::new_bound(py);
+            for (k, v) in &s.fields {
+                let py_val = proto_value_to_python(py, v);
+                let _ = dict.set_item(k, py_val);
+            }
+            dict.to_object(py)
+        }
+        Some(Kind::ListValue(l)) => {
+            let list = pyo3::types::PyList::empty_bound(py);
+            for v in &l.values {
+                let py_val = proto_value_to_python(py, v);
+                let _ = list.append(py_val);
+            }
+            list.to_object(py)
+        }
+        None => py.None(),
+    }
+}
+
+/// Executes an SQL query natively in Rust, releasing the Python GIL during gRPC wait and serialization.
+///
+/// # Arguments
+/// * `py` - CPython engine reference.
+/// * `session_name` - Fully qualified Spanner session string.
+/// * `sql` - The SQL query to run.
+/// * `token` - Valid authorization token string.
+#[pyfunction]
+fn execute_sql_native(
+    py: Python<'_>,
+    session_name: String,
+    sql: String,
+    token: String,
+) -> PyResult<PyObject> {
+    // Clone string arguments to owned types before entering allow_threads.
+    // Once GIL is released, Rust cannot touch Python-allocated memory/pointers.
+    let session_clone = session_name.clone();
+    let sql_clone = sql.clone();
+    let token_clone = token.clone();
+
+    // Release CPython GIL and run inside Rust Tokio task
+    let result: Result<ResultSet, tonic::Status> = py.allow_threads(|| {
+        RUNTIME.block_on(async {
+            let channel = (*CHANNEL).clone();
+            let interceptor = AuthInterceptor {
+                token: token_clone,
+                session_name: session_clone.clone(),
+            };
+            let mut client = SpannerClient::with_interceptor(channel, interceptor);
+
+            let request = ExecuteSqlRequest {
+                session: session_clone,
+                sql: sql_clone,
+                transaction: None, // Direct single read/query
+                params: None,
+                param_types: std::collections::HashMap::new(),
+                resume_token: vec![],
+                query_mode: 0, // NORMAL
+                partition_token: vec![],
+                seqno: 0,
+                query_options: None,
+                request_options: None,
+                directed_read_options: None,
+                data_boost_enabled: false,
+            };
+
+            let response = client.execute_sql(request).await?;
+            Ok(response.into_inner())
+        })
+    });
+
+    // Re-acquire the GIL here. Convert the returned ResultSet to native Python Lists.
+    match result {
+        Ok(result_set) => {
+            let rows_list = pyo3::types::PyList::empty_bound(py);
+            for row in result_set.rows {
+                let row_values = pyo3::types::PyList::empty_bound(py);
+                for val in row.values {
+                    let py_val = proto_value_to_python(py, &val);
+                    row_values.append(py_val)?;
+                }
+                rows_list.append(row_values)?;
+            }
+            Ok(rows_list.to_object(py))
+        }
+        Err(status) => Err(PyRuntimeError::new_err(format!(
+            "gRPC Spanner execution failed: (status: {:?}) {}",
+            status.code(),
+            status.message()
+        ))),
+    }
+}
+
+/// Registers the PyO3 extension module functions.
+#[pymodule]
+fn spanner_poc(_py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(execute_sql_native, m)?)?;
+    Ok(())
+}
