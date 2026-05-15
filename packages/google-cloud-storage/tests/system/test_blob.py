@@ -1296,3 +1296,31 @@ def test_blob_contexts(shared_bucket, blobs_to_delete):
 
     blob.reload()
     assert not blob.contexts.custom
+
+
+def test_blob_contexts_custom_setter(shared_bucket, blobs_to_delete):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    blob_name = f"ObjectContextsCustomSetter-{uuid.uuid4().hex}"
+    blob = shared_bucket.blob(blob_name)
+    blob.upload_from_string(b"foo")
+    blobs_to_delete.append(blob)
+
+    # 1. Use custom setter to assign dictionary of payloads
+    custom = {
+        "k1": ObjectCustomContextPayload(value="v1"),
+        "k2": ObjectCustomContextPayload(value="v2"),
+    }
+    blob.contexts.custom = custom
+    blob.patch()
+
+    blob.reload()
+    assert blob.contexts.custom["k1"].value == "v1"
+    assert blob.contexts.custom["k2"].value == "v2"
+
+    # 2. Update one key.value and patch
+    blob.contexts.custom["k1"].value = "v1-updated"
+    blob.patch()
+
+    blob.reload()
+    assert blob.contexts.custom["k1"].value == "v1-updated"

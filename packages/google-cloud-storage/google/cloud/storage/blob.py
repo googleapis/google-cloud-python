@@ -4153,7 +4153,7 @@ class Blob(_PropertyMixin):
                     self.contexts = destination_contexts
                 else:
                     raise ValueError(
-                        "destination_contexts must be an ObjectContexts object or a dictionary"
+                        "destination_contexts must be an ObjectContexts object"
                     )
 
             path = f"{source.path}/rewriteTo{self.path}"
@@ -5375,6 +5375,7 @@ class ObjectCustomContextPayload(dict):
         if update_time is not None:
             data["updateTime"] = _datetime_to_rfc3339(update_time)
         super(ObjectCustomContextPayload, self).__init__(data)
+        self._contexts = None
 
     @property
     def value(self):
@@ -5388,6 +5389,8 @@ class ObjectCustomContextPayload(dict):
     @value.setter
     def value(self, value):
         self["value"] = value
+        if hasattr(self, "_contexts") and self._contexts and self._contexts.blob:
+            self._contexts.blob._patch_property("contexts", self._contexts)
 
     @property
     def create_time(self):
@@ -5425,9 +5428,21 @@ class ObjectContexts(dict):
     def __init__(self, blob, custom=None):
         data = {}
         if custom is not None:
+            if not isinstance(custom, dict):
+                raise ValueError(
+                    "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+                )
+            for payload in custom.values():
+                if not isinstance(payload, ObjectCustomContextPayload):
+                    raise ValueError(
+                        "All values in custom must be ObjectCustomContextPayload instances"
+                    )
             data["custom"] = custom
         super(ObjectContexts, self).__init__(data)
         self._blob = blob
+        if custom is not None:
+            for payload in custom.values():
+                payload._contexts = self
 
     @classmethod
     def from_api_repr(cls, resource, blob):
@@ -5442,12 +5457,15 @@ class ObjectContexts(dict):
         :rtype: :class:`ObjectContexts`
         :returns: ObjectContexts instance created from resource.
         """
+        instance = cls(blob)
         custom = {}
         for key, payload_resource in resource.get("custom", {}).items():
             payload = ObjectCustomContextPayload()
             payload.update(payload_resource)
+            payload._contexts = instance
             custom[key] = payload
-        return cls(blob, custom=custom)
+        instance["custom"] = custom
+        return instance
 
     @property
     def blob(self):
@@ -5471,5 +5489,9 @@ class ObjectContexts(dict):
 
     @custom.setter
     def custom(self, value):
+        if not isinstance(value, dict):
+            raise ValueError(
+                "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+            )
         self["custom"] = value
         self.blob._patch_property("contexts", self)
