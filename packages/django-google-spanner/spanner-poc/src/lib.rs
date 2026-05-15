@@ -82,12 +82,7 @@ static CHANNELS: Lazy<Vec<Channel>> = Lazy::new(|| {
     }
 
     let mut channels = Vec::new();
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()
-        .expect("Failed to build connection runtime");
-
-    rt.block_on(async {
+    RUNTIME.block_on(async {
         for _ in 0..4 {
             let ep = tonic::transport::Endpoint::from_static(endpoint)
                 .tls_config(tls_config.clone())
