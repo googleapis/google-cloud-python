@@ -70,11 +70,10 @@ static CHANNEL: Lazy<Channel> = Lazy::new(|| {
     let mut cert_loaded = false;
     for path in &ca_paths {
         if let Ok(cert_bytes) = std::fs::read(path) {
-            if let Ok(cert) = tonic::transport::Certificate::from_pem(cert_bytes) {
-                tls_config = tls_config.ca_certificate(cert);
-                cert_loaded = true;
-                break; // Successfully loaded the system bundle!
-            }
+            let cert = tonic::transport::Certificate::from_pem(cert_bytes);
+            tls_config = tls_config.ca_certificate(cert);
+            cert_loaded = true;
+            break; // Successfully loaded the system bundle!
         }
     }
 
