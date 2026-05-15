@@ -169,12 +169,17 @@ fn execute_sql_native(
     let sql_clone = sql.clone();
     let token_clone = token.clone();
 
-    // Release CPython GIL and run inside Rust Tokio task
     let result: Result<ResultSet, tonic::Status> = py.allow_threads(|| {
         // Force evaluation/initialization of CHANNEL outside the runtime block_on context
         let channel = (*CHANNEL).clone();
 
-        RUNTIME.block_on(async move {
+        // Build a thread-local single-threaded runtime for zero lock contention
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .map_err(|_| tonic::Status::internal("Failed to build thread-local runtime"))?;
+
+        rt.block_on(async move {
             let interceptor = AuthInterceptor {
                 token: token_clone,
                 session_name: session_clone.clone(),

@@ -37,8 +37,9 @@ class NativeSpannerDatabase:
         race conditions during high-concurrency execution.
         """
         with self._token_lock:
-            # refresh() is cheap and a no-op if the token is still valid
-            self._credentials.refresh(self._auth_request)
+            # Only refresh if the token is missing or has expired
+            if not self._credentials or not self._credentials.valid:
+                self._credentials.refresh(self._auth_request)
             return self._credentials.token
 
     def _get_session_name(self) -> str:
