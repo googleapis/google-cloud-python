@@ -135,7 +135,7 @@ def test_copy_backup_with_multiple_kms_keys(
 
 
 @pytest.mark.dependency(depends=["create_backup"])
-@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+@RetryErrors(exception=(DeadlineExceeded, TimeoutError), max_tries=2)
 def test_restore_database(capsys, instance_id, sample_database):
     backup_sample.restore_database(instance_id, RESTORE_DB_ID, BACKUP_ID)
     out, _ = capsys.readouterr()
@@ -145,7 +145,7 @@ def test_restore_database(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(depends=["create_backup_with_encryption_key"])
-@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+@RetryErrors(exception=(DeadlineExceeded, TimeoutError), max_tries=2)
 def test_restore_database_with_encryption_key(
     capsys,
     instance_id,
@@ -164,7 +164,7 @@ def test_restore_database_with_encryption_key(
 
 @pytest.mark.skip(reason="skipped since the KMS keys are not added on test project")
 @pytest.mark.dependency(depends=["create_backup_with_multiple_kms_keys"])
-@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+@RetryErrors(exception=(DeadlineExceeded, TimeoutError), max_tries=2)
 def test_restore_database_with_multiple_kms_keys(
     capsys,
     multi_region_instance_id,
@@ -243,7 +243,7 @@ def test_cancel_backup(capsys, instance_id, sample_database):
     assert cancel_success or cancel_failure
 
 
-@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+@RetryErrors(exception=(DeadlineExceeded, TimeoutError), max_tries=2)
 def test_create_database_with_retention_period(capsys, sample_instance):
     backup_sample.create_database_with_version_retention_period(
         sample_instance.instance_id,
