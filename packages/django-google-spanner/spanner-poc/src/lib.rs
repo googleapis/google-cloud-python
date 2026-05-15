@@ -148,8 +148,10 @@ fn execute_sql_native(
 
     // Release CPython GIL and run inside Rust Tokio task
     let result: Result<ResultSet, tonic::Status> = py.allow_threads(|| {
-        RUNTIME.block_on(async {
-            let channel = (*CHANNEL).clone();
+        // Force evaluation/initialization of CHANNEL outside the runtime block_on context
+        let channel = (*CHANNEL).clone();
+
+        RUNTIME.block_on(async move {
             let interceptor = AuthInterceptor {
                 token: token_clone,
                 session_name: session_clone.clone(),
