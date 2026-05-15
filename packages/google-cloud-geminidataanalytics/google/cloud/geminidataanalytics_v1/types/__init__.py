@@ -28,6 +28,7 @@ from .context import (
     LookerGoldenQuery,
     LookerQuery,
     MatchedQuery,
+    QueryParameter,
     QueryParameterValues,
     UserFunctions,
 )
@@ -121,6 +122,7 @@ __all__ = (
     "LookerGoldenQuery",
     "LookerQuery",
     "MatchedQuery",
+    "QueryParameter",
     "QueryParameterValues",
     "UserFunctions",
     "Conversation",
