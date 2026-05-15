@@ -1802,7 +1802,9 @@ class TestSession(OpenTelemetryBase):
 
         # retry once w/ timeout_secs=1
         def _time(_results=[1, 1.5]):
-            return _results.pop(0)
+            if len(_results) > 1:
+                return _results.pop(0)
+            return _results[0]
 
         with mock.patch("time.time", _time):
             with mock.patch(
