@@ -113,6 +113,18 @@ logger = logging.getLogger(__name__)
 class _ExecutionHistory:
     def __init__(self, jobs: list[dict]):
         self._df = pandas.DataFrame(jobs)
+        if self._df.empty:
+            self._df = pandas.DataFrame(
+                columns=[
+                    "job_id",
+                    "query_id",
+                    "job_type",
+                    "status",
+                    "query",
+                    "total_bytes_processed",
+                    "job_url",
+                ]
+            )
 
     def to_dataframe(self) -> pandas.DataFrame:
         """Returns the execution history as a pandas DataFrame."""
@@ -431,12 +443,63 @@ class Session(
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
 
-    def execution_history(self) -> _ExecutionHistory:
+    def execution_history(
+        self,
+        *,
+        events: Optional[Iterable[bigframes.core.events.Event]] = None,
+        job_ids: Optional[Iterable[str]] = None,
+    ) -> _ExecutionHistory:
         """Returns the history of executions initiated by BigFrames in the current session.
 
         Use `.to_dataframe()` on the result to get a pandas DataFrame.
+
+        Args:
+            events (Iterable[Event], optional):
+                Filter execution history to only include jobs associated with the given events.
+            job_ids (Iterable[str], optional):
+                Filter execution history to only include jobs matching the given job IDs.
         """
-        return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
+        jobs = [job.__dict__ for job in self._metrics.jobs]
+
+        if events is not None:
+            event_job_ids = {
+                getattr(event, "job_id", None)
+                for event in events
+                if getattr(event, "job_id", None) is not None
+            }
+            event_query_ids = {
+                getattr(event, "query_id", None)
+                for event in events
+                if getattr(event, "query_id", None) is not None
+            }
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None and job.get("job_id") in event_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in event_query_ids
+                )
+            ]
+
+        if job_ids is not None:
+            target_job_ids = set(job_ids)
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None
+                    and job.get("job_id") in target_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in target_job_ids
+                )
+            ]
+
+        return _ExecutionHistory(jobs)
 
     @property
     def _allows_ambiguity(self) -> bool:
@@ -499,7 +562,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq(
@@ -515,7 +579,8 @@ class Session(
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq(
         self,
@@ -588,7 +653,8 @@ class Session(
         callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def _read_gbq_colab(
@@ -598,7 +664,8 @@ class Session(
         callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     @log_adapter.log_name_override("read_gbq_colab")
     def _read_gbq_colab(
@@ -644,9 +711,7 @@ class Session(
                 query=query,
                 index_col=bigframes.enums.DefaultIndexKind.NULL,
                 force_total_order=False,
-                dry_run=typing.cast(
-                    Union[Literal[False], Literal[True]], dry_run
-                ),
+                dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
                 allow_large_results=allow_large_results,
             )
 
@@ -669,7 +734,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_query(
@@ -685,7 +751,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_query(
         self,
@@ -832,7 +899,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[False] = ...,
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     @overload
     def read_gbq_table(
@@ -846,7 +914,8 @@ class Session(
         use_cache: bool = ...,
         col_order: Iterable[str] = ...,
         dry_run: Literal[True] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_table(
         self,
@@ -997,7 +1066,8 @@ class Session(
         pandas_dataframe: pandas.Index,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.core.indexes.Index: ...
+    ) -> bigframes.core.indexes.Index:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -1005,7 +1075,8 @@ class Session(
         pandas_dataframe: pandas.Series,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> bigframes.series.Series: ...
+    ) -> bigframes.series.Series:
+        ...
 
     @typing.overload
     def read_pandas(
@@ -1013,7 +1084,8 @@ class Session(
         pandas_dataframe: pandas.DataFrame,
         *,
         write_engine: constants.WriteEngineType = "default",
-    ) -> dataframe.DataFrame: ...
+    ) -> dataframe.DataFrame:
+        ...
 
     def read_pandas(
         self,

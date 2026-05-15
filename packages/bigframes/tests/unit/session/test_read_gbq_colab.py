@@ -136,3 +136,48 @@ def test_read_gbq_colab_with_callback():
     _ = session._read_gbq_colab("SELECT 'my-test-query';", callback=callback)
 
     assert callback.call_count > 0
+
+
+def test_read_gbq_colab_filters_by_cell():
+    """Verify that callbacks are scoped to individual executions."""
+    session = mocks.create_bigquery_session()
+    callback1 = mock.Mock()
+    callback2 = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'cell_1_query';", callback=callback1)
+    callback1_initial_count = callback1.call_count
+
+    _ = session._read_gbq_colab("SELECT 'cell_2_query';", callback=callback2)
+
+    # Verify callback1 was automatically unsubscribed upon completion
+    # of the first query.
+    assert callback1.call_count == callback1_initial_count
+    assert callback2.call_count > 0
+
+
+def test_execution_history_filtering():
+    """Verify that execution_history can be filtered by job_ids or events."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+
+    # Add mock jobs to session metrics
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1"
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2"
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    # Verify filtering by job_ids isolates the target execution
+    history_job1 = session.execution_history(job_ids=["job_1"]).to_dataframe()
+    assert len(history_job1) == 1
+    assert history_job1.iloc[0]["job_id"] == "job_1"
+
+    # Verify filtering by events isolates the target execution
+    event2 = mock.Mock()
+    event2.job_id = "job_2"
+    history_job2 = session.execution_history(events=[event2]).to_dataframe()
+    assert len(history_job2) == 1
+    assert history_job2.iloc[0]["job_id"] == "job_2"
