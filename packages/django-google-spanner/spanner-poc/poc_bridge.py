@@ -54,8 +54,8 @@ class NativeSpannerDatabase:
             session_name = snapshot._session.name
         return session_name
 
-    def execute_sql_native(self, sql: str) -> list:
-        """Executes SQL natively using a single shared gRPC channel, releasing the GIL."""
+    def execute_sql_native(self, sql: str, channel_count: int = 1) -> list:
+        """Executes SQL natively load-balanced across a specified number of gRPC channels, releasing the GIL."""
         if spanner_poc is None:
             raise RuntimeError(
                 "Rust extension 'spanner_poc' is not compiled or installed. "
@@ -65,22 +65,8 @@ class NativeSpannerDatabase:
         session_name = self._get_session_name()
         token = self._get_fresh_token()
 
-        # Call native Rust function with use_multi_channel = False
-        return spanner_poc.execute_sql_native(session_name, sql, token, False)
-
-    def execute_sql_native_multi_channel(self, sql: str) -> list:
-        """Executes SQL natively load-balanced across 4 distinct gRPC channels, releasing the GIL."""
-        if spanner_poc is None:
-            raise RuntimeError(
-                "Rust extension 'spanner_poc' is not compiled or installed. "
-                "Please run maturin develop --release."
-            )
-
-        session_name = self._get_session_name()
-        token = self._get_fresh_token()
-
-        # Call native Rust function with use_multi_channel = True
-        return spanner_poc.execute_sql_native(session_name, sql, token, True)
+        # Call native Rust function passing the dynamic channel count
+        return spanner_poc.execute_sql_native(session_name, sql, token, channel_count)
 
     def execute_sql_python(self, sql: str) -> list:
         """Baseline execution path using the standard Python Spanner library."""

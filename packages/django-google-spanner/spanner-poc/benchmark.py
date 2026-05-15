@@ -159,16 +159,16 @@ def main():
         print("=" * 70)
         sys.exit(1)
 
-    print("=" * 115)
-    print("GOOGLE CLOUD SPANNER HIGH-THROUGHPUT NATIVE EXTENSION PERFORMANCE BENCHMARK")
-    print("=" * 115)
+    print("=" * 120)
+    print("GOOGLE CLOUD SPANNER HIGH-THROUGHPUT NATIVE EXTENSION DYNAMIC MULTI-CHANNEL BENCHMARK")
+    print("=" * 120)
     print(f"Python Version : {platform.python_version()}")
     print(f"System CPUs    : {multiprocessing.cpu_count()}")
     print(f"Platform       : {platform.platform()}")
     print(f"Target Query   : {SQL}")
     print(f"Warmup Duration: {WARMUP_S}s")
     print(f"Run Duration   : {DURATION_S}s per configuration")
-    print("-" * 115)
+    print("-" * 120)
 
     print("Connecting and initializing Spanner pools...")
     db = NativeSpannerDatabase(PROJECT, INSTANCE, DATABASE)
@@ -176,8 +176,10 @@ def main():
     # Warmup all channels
     print(f"Initiating {WARMUP_S}s warmup phase for Python & Rust paths...")
     _ = run_benchmark(db.execute_sql_python, SQL, thread_count=4, duration_s=WARMUP_S)
-    _ = run_benchmark(db.execute_sql_native, SQL, thread_count=4, duration_s=WARMUP_S)
-    _ = run_benchmark(db.execute_sql_native_multi_channel, SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 1), SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 4), SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 8), SQL, thread_count=4, duration_s=WARMUP_S)
+    _ = run_benchmark(lambda q: db.execute_sql_native(q, 16), SQL, thread_count=4, duration_s=WARMUP_S)
     print("Warmup complete. Starting benchmarks...")
 
     results = []
@@ -195,51 +197,24 @@ def main():
             f"{threads:^8} | {'Python':^14} | {py_res['qps']:10.1f} | {py_res['p50']:10.2f} | {py_res['p95']:10.2f} | {py_res['p99']:10.2f} | {py_res['cpu_util']:8.1f}% | {py_res['active_cores']:^6} | {'-':^8}"
         )
 
-        # 2. Rust Native extension (Single Channel)
-        rust_res = run_benchmark(db.execute_sql_native, SQL, thread_count=threads, duration_s=DURATION_S)
-        speedup = rust_res["qps"] / py_res["qps"] if py_res["qps"] > 0 else 0.0
-        print(
-            f"{threads:^8} | {'Rust (1 Ch)':^14} | {rust_res['qps']:10.1f} | {rust_res['p50']:10.2f} | {rust_res['p95']:10.2f} | {rust_res['p99']:10.2f} | {rust_res['cpu_util']:8.1f}% | {rust_res['active_cores']:^6} | {speedup:7.2f}x"
-        )
-
-        # 3. Rust Native extension (Multi-Channel 4 Connections)
-        rust_multi_res = run_benchmark(db.execute_sql_native_multi_channel, SQL, thread_count=threads, duration_s=DURATION_S)
-        speedup_multi = rust_multi_res["qps"] / py_res["qps"] if py_res["qps"] > 0 else 0.0
-        print(
-            f"{threads:^8} | {'Rust (4 Ch)':^14} | {rust_multi_res['qps']:10.1f} | {rust_multi_res['p50']:10.2f} | {rust_multi_res['p95']:10.2f} | {rust_multi_res['p99']:10.2f} | {rust_multi_res['cpu_util']:8.1f}% | {rust_multi_res['active_cores']:^6} | {speedup_multi:7.2f}x"
-        )
+        # 2. Rust dynamic channels (1, 4, 8, 16)
+        rust_runs = {}
+        for channels in [1, 4, 8, 16]:
+            execute_fn = lambda q, ch=channels: db.execute_sql_native(q, ch)
+            res = run_benchmark(execute_fn, SQL, thread_count=threads, duration_s=DURATION_S)
+            speedup = res["qps"] / py_res["qps"] if py_res["qps"] > 0 else 0.0
+            print(
+                f"{threads:^8} | {f'Rust ({channels} Ch)':^14} | {res['qps']:10.1f} | {res['p50']:10.2f} | {res['p95']:10.2f} | {res['p99']:10.2f} | {res['cpu_util']:8.1f}% | {res['active_cores']:^6} | {speedup:7.2f}x"
+            )
+            rust_runs[f"rust_{channels}ch"] = res
+            rust_runs[f"speedup_{channels}ch"] = speedup
         print("-" * 120)
 
         results.append({
             "threads": threads,
             "python": py_res,
-            "rust_single": rust_res,
-            "rust_multi": rust_multi_res,
-            "speedup_single": speedup,
-            "speedup_multi": speedup_multi,
+            **rust_runs
         })
-
-    # Analyze & Summarize
-    py_peak = max(r["python"]["qps"] for r in results)
-    py_peak_threads = next(r["threads"] for r in results if r["python"]["qps"] == py_peak)
-
-    rust_single_peak = max(r["rust_single"]["qps"] for r in results)
-    rust_single_peak_threads = next(r["threads"] for r in results if r["rust_single"]["qps"] == rust_single_peak)
-
-    rust_multi_peak = max(r["rust_multi"]["qps"] for r in results)
-    rust_multi_peak_threads = next(r["threads"] for r in results if r["rust_multi"]["qps"] == rust_multi_peak)
-
-    peak_speedup = max(r["speedup_multi"] for r in results)
-    peak_speedup_threads = next(r["threads"] for r in results if r["speedup_multi"] == peak_speedup)
-
-    print("\n" + "=" * 95)
-    print("BENCHMARK RESULTS SUMMARY")
-    print("=" * 95)
-    print(f"Python Peak Throughput        : {py_peak:.1f} QPS (at {py_peak_threads} threads)")
-    print(f"Rust (Single Ch) Peak QPS     : {rust_single_peak:.1f} QPS (at {rust_single_peak_threads} threads)")
-    print(f"Rust (Multi-Channel) Peak QPS : {rust_multi_peak:.1f} QPS (at {rust_multi_peak_threads} threads)")
-    print(f"Peak Speedup Achieved         : {peak_speedup:.2f}x (at {peak_speedup_threads} threads)")
-    print("=" * 95)
 
     # Write results to file
     with open("benchmark_results.json", "w") as f:

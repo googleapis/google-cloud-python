@@ -83,7 +83,7 @@ static CHANNELS: Lazy<Vec<Channel>> = Lazy::new(|| {
 
     let mut channels = Vec::new();
     RUNTIME.block_on(async {
-        for _ in 0..4 {
+        for _ in 0..16 {
             let ep = tonic::transport::Endpoint::from_static(endpoint)
                 .tls_config(tls_config.clone())
                 .expect("Failed to build TLS configuration endpoint");
@@ -164,14 +164,14 @@ static REQUEST_COUNTER: AtomicUsize = AtomicUsize::new(0);
 /// * `session_name` - Fully qualified Spanner session string.
 /// * `sql` - The SQL query to run.
 /// * `token` - Valid authorization token string.
-/// * `use_multi_channel` - If true, load-balances across 4 distinct connections.
+/// * `channel_count` - Number of distinct connections to load-balance across.
 #[pyfunction]
 fn execute_sql_native(
     py: Python<'_>,
     session_name: String,
     sql: String,
     token: String,
-    use_multi_channel: bool,
+    channel_count: i32,
 ) -> PyResult<PyObject> {
     // Clone string arguments to owned types before entering allow_threads.
     // Once GIL is released, Rust cannot touch Python-allocated memory/pointers.
@@ -180,13 +180,10 @@ fn execute_sql_native(
     let token_clone = token.clone();
 
     let result: Result<ResultSet, tonic::Status> = py.allow_threads(|| {
-        // Select the appropriate connection channel based on the flag
-        let channel = if use_multi_channel {
-            let idx = REQUEST_COUNTER.fetch_add(1, Ordering::Relaxed) % CHANNELS.len();
-            CHANNELS[idx].clone()
-        } else {
-            CHANNELS[0].clone()
-        };
+        // Select the appropriate connection channel dynamically based on the count
+        let count = channel_count.max(1) as usize;
+        let idx = REQUEST_COUNTER.fetch_add(1, Ordering::Relaxed) % count.min(CHANNELS.len());
+        let channel = CHANNELS[idx].clone();
 
         // Build a thread-local single-threaded runtime for zero lock contention
         let rt = tokio::runtime::Builder::new_current_thread()
