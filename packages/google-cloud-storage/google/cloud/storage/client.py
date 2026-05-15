@@ -44,6 +44,7 @@ from google.cloud.storage._helpers import (
     _get_storage_emulator_override,
     _virtual_hosted_style_base_url,
 )
+from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._http import Connection
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import (
@@ -289,6 +290,20 @@ class Client(ClientWithProject):
         connection.extra_headers = extra_headers
         self._connection = connection
         self._batch_stack = _LocalStack()
+        self._bucket_metadata_cache = BucketMetadataCache(self)
+
+    def close(self):
+        """Close the client and clear any cached metadata or active connections."""
+        if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+            self._bucket_metadata_cache.clear()
+        if hasattr(self._http, "close"):
+            self._http.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     @classmethod
     def create_anonymous_client(cls):

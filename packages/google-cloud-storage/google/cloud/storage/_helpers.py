@@ -33,6 +33,9 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
 )
+from google.cloud.storage._opentelemetry_tracing import (
+    create_trace_span as _base_create_trace_span,
+)
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"  # Despite name, includes scheme.
 """Environment variable defining host for Storage emulator."""
@@ -184,6 +187,52 @@ class _PropertyMixin(object):
         if client is None:
             client = self.client
         return client
+
+    def _get_aco_attributes(self):
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.bucket import Bucket
+
+        if isinstance(self, Bucket):
+            cache = getattr(self.client, "_bucket_metadata_cache", None)
+            bucket_name = self.name
+        elif isinstance(self, Blob):
+            bucket = getattr(self, "bucket", None)
+            cache = (
+                getattr(bucket.client, "_bucket_metadata_cache", None)
+                if bucket and hasattr(bucket, "client")
+                else None
+            )
+            bucket_name = getattr(bucket, "name", None) if bucket else None
+        else:
+            raise TypeError(
+                f"Unexpected type for ACO attribute retrieval: {type(self)}"
+            )
+
+        if callable(bucket_name):
+            try:
+                bucket_name = bucket_name()
+            except Exception:
+                pass
+
+        if cache and bucket_name and isinstance(bucket_name, str):
+            try:
+                cached = cache.get_or_queue_fetch(bucket_name)
+                if cached and isinstance(cached, tuple) and len(cached) == 2:
+                    dest_id, loc = cached
+                    return {
+                        "gcp.resource.destination.id": dest_id,
+                        "gcp.resource.destination.location": loc,
+                    }
+            except Exception:
+                pass
+        return {}
+
+    def _create_trace_span(self, name, attributes=None, **kwargs):
+        aco_attrs = self._get_aco_attributes()
+        if attributes is None:
+            attributes = {}
+        attributes.update(aco_attrs)
+        return _base_create_trace_span(name, attributes=attributes, **kwargs)
 
     def _encryption_headers(self):
         """Return any encryption headers needed to fetch the object.
