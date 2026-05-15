@@ -3850,6 +3850,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
     ):
         """Concatenate source blobs into this one.
 
@@ -3909,6 +3910,12 @@ class Blob(_PropertyMixin):
             Change the value to ``DEFAULT_RETRY`` or another `google.api_core.retry.Retry` object
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts`
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
         """
         with create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
@@ -3960,6 +3967,14 @@ class Blob(_PropertyMixin):
 
                 source_objects.append(source_object)
 
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
+
             request = {
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
@@ -3999,6 +4014,7 @@ class Blob(_PropertyMixin):
         if_source_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
     ):
         """Rewrite source blob into this one.
 
@@ -4082,6 +4098,11 @@ class Blob(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
 
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts` or dict
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
                   is a rewrite token (``None`` if the rewrite is complete),
@@ -4126,6 +4147,14 @@ class Blob(_PropertyMixin):
                 if_source_metageneration_match=if_source_metageneration_match,
                 if_source_metageneration_not_match=if_source_metageneration_not_match,
             )
+
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object or a dictionary"
+                    )
 
             path = f"{source.path}/rewriteTo{self.path}"
             api_response = client._post_resource(

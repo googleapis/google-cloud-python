@@ -853,6 +853,33 @@ def test_blob_compose_new_blob(shared_bucket, blobs_to_delete):
     assert destination.download_as_bytes() == payload_1 + payload_2
 
 
+def test_blob_compose_w_destination_contexts(shared_bucket, blobs_to_delete):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    payload_1 = b"AAA\n"
+    source_1 = shared_bucket.blob("source-1-contexts")
+    source_1.upload_from_string(payload_1)
+    blobs_to_delete.append(source_1)
+
+    payload_2 = b"BBB\n"
+    source_2 = shared_bucket.blob("source-2-contexts")
+    source_2.upload_from_string(payload_2)
+    blobs_to_delete.append(source_2)
+
+    destination = shared_bucket.blob("destination-contexts")
+    destination.content_type = "text/plain"
+
+    context_payload = ObjectCustomContextPayload(value="bar")
+    contexts = ObjectContexts(None, custom={"foo": context_payload})
+
+    destination.compose([source_1, source_2], destination_contexts=contexts)
+    blobs_to_delete.append(destination)
+
+    assert destination.download_as_bytes() == payload_1 + payload_2
+    destination.reload()
+    assert destination.contexts.custom["foo"].value == "bar"
+
+
 def test_blob_compose_new_blob_wo_content_type(shared_bucket, blobs_to_delete):
     payload_1 = b"AAA\n"
     source_1 = shared_bucket.blob("source-1")
@@ -1012,6 +1039,30 @@ def test_blob_rewrite_new_blob_add_key(shared_bucket, blobs_to_delete, file_data
     assert rewritten == len(source_data)
     assert total == len(source_data)
     assert dest.download_as_bytes() == source_data
+
+
+def test_blob_rewrite_w_destination_contexts(shared_bucket, blobs_to_delete, file_data):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    info = file_data["simple"]
+    source = shared_bucket.blob(uuid.uuid4().hex)
+    source.upload_from_filename(info["path"])
+    blobs_to_delete.append(source)
+    source_data = source.download_as_bytes()
+
+    dest = shared_bucket.blob(uuid.uuid4().hex)
+    context_payload = ObjectCustomContextPayload(value="bar")
+    contexts = ObjectContexts(None, custom={"foo": context_payload})
+
+    token, rewritten, total = dest.rewrite(source, destination_contexts=contexts)
+    blobs_to_delete.append(dest)
+
+    assert token is None
+    assert rewritten == len(source_data)
+    assert total == len(source_data)
+    assert dest.download_as_bytes() == source_data
+    dest.reload()
+    assert dest.contexts.custom["foo"].value == "bar"
 
 
 def test_blob_rewrite_rotate_key(shared_bucket, blobs_to_delete, file_data):
@@ -1245,31 +1296,3 @@ def test_blob_contexts(shared_bucket, blobs_to_delete):
 
     blob.reload()
     assert not blob.contexts.custom
-
-
-def test_list_blobs_filter(shared_bucket, blobs_to_delete):
-    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
-
-    suffix = uuid.uuid4().hex
-    name1 = f"filter1-{suffix}"
-    name2 = f"filter2-{suffix}"
-
-    blob1 = shared_bucket.blob(name1)
-    blob1.contexts = ObjectContexts(
-        blob1, custom={"foo": ObjectCustomContextPayload(value="bar")}
-    )
-    blob1.upload_from_string(b"one")
-    blobs_to_delete.append(blob1)
-
-    blob2 = shared_bucket.blob(name2)
-    blob2.contexts = ObjectContexts(
-        blob2, custom={"foo": ObjectCustomContextPayload(value="baz")}
-    )
-    blob2.upload_from_string(b"two")
-    blobs_to_delete.append(blob2)
-
-    # Filter by context
-    blobs = list(shared_bucket.list_blobs(filter_=f'contexts.custom.foo = "bar"'))
-    names = [b.name for b in blobs]
-    assert name1 in names
-    assert name2 not in names

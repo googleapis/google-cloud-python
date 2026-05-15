@@ -1402,7 +1402,8 @@ class Client(ClientWithProject):
                 https://cloud.google.com/storage/docs/soft-delete
 
             filter_ (str):
-                (Optional) Filter string used to filter objects.
+                (Optional) Filter string used to filter objects. See:
+                https://docs.cloud.google.com/storage/docs/listing-objects#filter-by-object-contexts-syntax
 
         Returns:
             Iterator of all :class:`~google.cloud.storage.blob.Blob`
