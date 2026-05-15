@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2026 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -365,11 +365,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.create_dataset(request=request)
+                operation = client.create_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -869,11 +869,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.delete_dataset(request=request)
+                operation = client.delete_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1016,11 +1016,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.import_data(request=request)
+                operation = client.import_data(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1168,11 +1168,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.export_data(request=request)
+                operation = client.export_data(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1424,11 +1424,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.create_model(request=request)
+                operation = client.create_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -1796,11 +1796,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.delete_model(request=request)
+                operation = client.delete_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2064,11 +2064,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.deploy_model(request=request)
+                operation = client.deploy_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2205,11 +2205,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.undeploy_model(request=request)
+                operation = client.undeploy_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
@@ -2350,11 +2350,11 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                operation = await client.export_model(request=request)
+                operation = client.export_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = await operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
