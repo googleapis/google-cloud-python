@@ -52,10 +52,9 @@ static RUNTIME: Lazy<Runtime> = Lazy::new(|| {
         .expect("Failed to initialize multi-threaded Tokio runtime")
 });
 
-/// Static shared connection channel pointing to the Spanner production endpoint.
-/// The channel is lazily connected once on first request and reused thereafter.
-/// Tonic handles robust HTTP/2 stream multiplexing internally on top of this channel.
-static CHANNEL: Lazy<Channel> = Lazy::new(|| {
+/// Static shared connection channels pointing to the Spanner production endpoint.
+/// We establish 4 distinct TCP/TLS connections to maximize concurrent I/O multiplexing.
+static CHANNELS: Lazy<Vec<Channel>> = Lazy::new(|| {
     let endpoint = "https://spanner.googleapis.com:443";
     let mut tls_config = ClientTlsConfig::new().domain_name("spanner.googleapis.com");
 
@@ -81,14 +80,25 @@ static CHANNEL: Lazy<Channel> = Lazy::new(|| {
         // Fallback: use enabled roots (webpki roots) if native files are not found (e.g. on Mac)
         tls_config = tls_config.with_enabled_roots();
     }
-    RUNTIME.block_on(async {
-        let ep = tonic::transport::Endpoint::from_static(endpoint)
-            .tls_config(tls_config)
-            .expect("Failed to build TLS configuration endpoint");
-        ep.connect()
-            .await
-            .expect("Failed to establish connection to spanner.googleapis.com")
-    })
+
+    let mut channels = Vec::new();
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .expect("Failed to build connection runtime");
+
+    rt.block_on(async {
+        for _ in 0..4 {
+            let ep = tonic::transport::Endpoint::from_static(endpoint)
+                .tls_config(tls_config.clone())
+                .expect("Failed to build TLS configuration endpoint");
+            let channel = ep.connect()
+                .await
+                .expect("Failed to establish connection to spanner.googleapis.com");
+            channels.push(channel);
+        }
+    });
+    channels
 });
 
 /// Tonic gRPC interceptor to inject standard authentication and routing headers on every call.
@@ -149,6 +159,9 @@ fn proto_value_to_python(py: Python<'_>, value: &prost_types::Value) -> PyObject
     }
 }
 
+use std::sync::atomic::{AtomicUsize, Ordering};
+static REQUEST_COUNTER: AtomicUsize = AtomicUsize::new(0);
+
 /// Executes an SQL query natively in Rust, releasing the Python GIL during gRPC wait and serialization.
 ///
 /// # Arguments
@@ -156,12 +169,14 @@ fn proto_value_to_python(py: Python<'_>, value: &prost_types::Value) -> PyObject
 /// * `session_name` - Fully qualified Spanner session string.
 /// * `sql` - The SQL query to run.
 /// * `token` - Valid authorization token string.
+/// * `use_multi_channel` - If true, load-balances across 4 distinct connections.
 #[pyfunction]
 fn execute_sql_native(
     py: Python<'_>,
     session_name: String,
     sql: String,
     token: String,
+    use_multi_channel: bool,
 ) -> PyResult<PyObject> {
     // Clone string arguments to owned types before entering allow_threads.
     // Once GIL is released, Rust cannot touch Python-allocated memory/pointers.
@@ -170,8 +185,13 @@ fn execute_sql_native(
     let token_clone = token.clone();
 
     let result: Result<ResultSet, tonic::Status> = py.allow_threads(|| {
-        // Force evaluation/initialization of CHANNEL outside the runtime block_on context
-        let channel = (*CHANNEL).clone();
+        // Select the appropriate connection channel based on the flag
+        let channel = if use_multi_channel {
+            let idx = REQUEST_COUNTER.fetch_add(1, Ordering::Relaxed) % CHANNELS.len();
+            CHANNELS[idx].clone()
+        } else {
+            CHANNELS[0].clone()
+        };
 
         // Build a thread-local single-threaded runtime for zero lock contention
         let rt = tokio::runtime::Builder::new_current_thread()

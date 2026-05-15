@@ -24,8 +24,7 @@ else
 fi
 
 echo "=== Step 3: Installing Maturin & Python Dependencies ==="
-pip install --upgrade pip
-pip install maturin numpy google-cloud-spanner google-auth
+pip install maturin numpy google-cloud-spanner google-auth psutil
 
 
 echo "=== Step 4: Installing System Dependencies (Sysstat & Protobuf Compiler) ==="
