@@ -1,6 +1,6 @@
 SELECT
   AI.CLASSIFY(
-    input => (`string_col`),
+    input => `string_col`,
     categories => ['greeting', 'rejection'],
     output_mode => 'multi'
   ) AS `result`

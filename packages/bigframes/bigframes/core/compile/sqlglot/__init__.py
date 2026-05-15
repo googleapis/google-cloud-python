@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-import bigframes.core.compile.sqlglot.expressions.ai_ops  # noqa: F401
+
 import bigframes.core.compile.sqlglot.expressions.array_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.blob_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.bool_ops  # noqa: F401
