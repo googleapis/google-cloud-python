@@ -54,6 +54,8 @@ def create_job_configs_labels(
 ) -> Dict[str, str]:
     if job_configs_labels is None:
         job_configs_labels = {}
+    else:
+        job_configs_labels = dict(job_configs_labels)
 
     if api_methods and "bigframes-api" not in job_configs_labels:
         job_configs_labels["bigframes-api"] = api_methods[0]
