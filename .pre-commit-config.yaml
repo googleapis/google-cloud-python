@@ -21,11 +21,10 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
--   repo: https://github.com/psf/black
-    rev: 22.3.0
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.14
     hooks:
-    - id: black
--   repo: https://github.com/pycqa/flake8
-    rev: 3.9.2 # version-scanner: ignore
-    hooks:
-    - id: flake8
+    -   id: ruff
+        args: [--select, I, --fix, --line-length=88, --target-version=py310]
+    -   id: ruff-format
+        args: [--line-length=88, --target-version=py310]
