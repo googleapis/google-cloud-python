@@ -630,7 +630,7 @@ class RouteMatrixElement(proto.Message):
             Independent of status.
         distance_meters (int):
             The travel distance of the route, in meters.
-        duration (google.protobuf.duration_pb2.Duration):
+        duration (datetime.timedelta):
             The length of time needed to navigate the route. If you set
             the
             [routing_preference][google.maps.routing.v2.ComputeRouteMatrixRequest.routing_preference]
@@ -639,7 +639,7 @@ class RouteMatrixElement(proto.Message):
             to either ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``,
             then this value is calculated taking traffic conditions into
             account.
-        static_duration (google.protobuf.duration_pb2.Duration):
+        static_duration (datetime.timedelta):
             The duration of traveling through the route
             without taking traffic conditions into
             consideration.
