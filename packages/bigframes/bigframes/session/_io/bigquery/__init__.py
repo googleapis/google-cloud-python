@@ -304,9 +304,7 @@ def start_query_with_job(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = (
-        third_party_gcb_retry.DEFAULT_JOB_RETRY
-    ),  # noqa: E501
+    job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
@@ -356,9 +354,7 @@ def start_query_job_optional(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = (
-        third_party_gcb_retry.DEFAULT_JOB_RETRY
-    ),  # noqa: E501
+    job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> google.cloud.bigquery.table.RowIterator:
@@ -551,9 +547,7 @@ def to_query(
 
     time_travel_clause = ""
     if time_travel_timestamp is not None:
-        time_travel_literal = sg_sql.to_sql(
-            sg_sql.literal(time_travel_timestamp)
-        )  # noqa: E501
+        time_travel_literal = sg_sql.to_sql(sg_sql.literal(time_travel_timestamp))  # noqa: E501
         time_travel_clause = f" FOR SYSTEM_TIME AS OF {time_travel_literal}"
 
     limit_clause = ""
@@ -590,8 +584,7 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
     # layer represents "and" logic.
     filters_list: list = list(filters)
     if isinstance(filters_list[0], tuple) and (
-        len(filters_list[0]) == 0
-        or not isinstance(list(filters_list[0])[0], tuple)  # noqa: E501
+        len(filters_list[0]) == 0 or not isinstance(list(filters_list[0])[0], tuple)  # noqa: E501
     ):
         filter_items = [filters_list]
     else:
