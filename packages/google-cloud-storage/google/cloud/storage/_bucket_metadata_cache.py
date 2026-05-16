@@ -35,6 +35,7 @@ class BucketMetadataCache:
         self._cache = LRUCache(max_size)
         self._lock = threading.Lock()
         self._inflight_fetches = set()
+        self._inflight_checks = set()
 
     def get_or_queue_fetch(self, bucket_name):
         """Retrieve bucket metadata or queue a background fetch on cache miss.
@@ -56,6 +57,33 @@ class BucketMetadataCache:
                     target=self._fetch_background, args=(bucket_name,), daemon=True
                 ).start()
                 return None
+
+    def check_and_evict(self, bucket_name):
+        """Asynchronously verify if a bucket exists on 404 and evict if deleted."""
+        with self._lock:
+            if bucket_name not in self._cache:
+                return
+            if bucket_name in self._inflight_checks:
+                return
+            self._inflight_checks.add(bucket_name)
+            threading.Thread(
+                target=self._verify_existence_background,
+                args=(bucket_name,),
+                daemon=True,
+            ).start()
+
+    def _verify_existence_background(self, bucket_name):
+        try:
+            bucket = self._client.bucket(bucket_name)
+            if not bucket.exists():
+                self.evict(bucket_name)
+        except Exception as e:
+            logger.debug(
+                f"Background verification for bucket existence failed for {bucket_name}: {e}"
+            )
+        finally:
+            with self._lock:
+                self._inflight_checks.discard(bucket_name)
 
     def _fetch_background(self, bucket_name):
         """Asynchronously fetch bucket metadata and update the cache."""
@@ -113,3 +141,4 @@ class BucketMetadataCache:
         with self._lock:
             self._cache.clear()
             self._inflight_fetches.clear()
+            self._inflight_checks.clear()

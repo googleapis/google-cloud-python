@@ -157,3 +157,48 @@ class TestBucketMetadataCache(unittest.TestCase):
         cache.update_cache("b2", "dest2", "loc2")
         cache.clear()
         self.assertNotIn("b2", cache._cache)
+
+    @mock.patch("threading.Thread")
+    def test_check_and_evict_queue(self, mock_thread):
+        client = mock.Mock()
+        cache = BucketMetadataCache(client)
+        cache.update_cache("b1", "dest1", "loc1")
+
+        cache.check_and_evict("b1")
+        mock_thread.assert_called_once()
+        self.assertIn("b1", cache._inflight_checks)
+
+        # Second immediate check -> singleflight
+        mock_thread.reset_mock()
+        cache.check_and_evict("b1")
+        mock_thread.assert_not_called()
+
+    def test_verify_existence_background_exists(self):
+        client = mock.Mock()
+        b1 = mock.Mock()
+        b1.exists.return_value = True
+        client.bucket.return_value = b1
+
+        cache = BucketMetadataCache(client)
+        cache.update_cache("b1", "dest1", "loc1")
+        cache._inflight_checks.add("b1")
+
+        cache._verify_existence_background("b1")
+
+        self.assertIn("b1", cache._cache)
+        self.assertNotIn("b1", cache._inflight_checks)
+
+    def test_verify_existence_background_deleted(self):
+        client = mock.Mock()
+        b1 = mock.Mock()
+        b1.exists.return_value = False
+        client.bucket.return_value = b1
+
+        cache = BucketMetadataCache(client)
+        cache.update_cache("b1", "dest1", "loc1")
+        cache._inflight_checks.add("b1")
+
+        cache._verify_existence_background("b1")
+
+        self.assertNotIn("b1", cache._cache)
+        self.assertNotIn("b1", cache._inflight_checks)

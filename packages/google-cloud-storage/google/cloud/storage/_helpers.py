@@ -19,12 +19,17 @@ These are *not* part of the API.
 
 import base64
 import datetime
+import logging
 import os
 import secrets
 import sys
+from contextlib import contextmanager
 from hashlib import md5
 from urllib.parse import urlsplit, urlunsplit
 from uuid import uuid4
+
+from google.api_core import exceptions as api_exceptions
+from google.cloud.exceptions import NotFound
 
 from google.auth import environment_vars
 
@@ -36,6 +41,8 @@ from google.cloud.storage.retry import (
 from google.cloud.storage._opentelemetry_tracing import (
     create_trace_span as _base_create_trace_span,
 )
+
+_logger = logging.getLogger(__name__)
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"  # Despite name, includes scheme.
 """Environment variable defining host for Storage emulator."""
@@ -211,8 +218,10 @@ class _PropertyMixin(object):
         if callable(bucket_name):
             try:
                 bucket_name = bucket_name()
-            except Exception:
-                pass
+            except Exception as e:
+                _logger.debug(
+                    f"Failed callable bucket_name resolution in _get_aco_attributes: {e}"
+                )
 
         if cache and bucket_name and isinstance(bucket_name, str):
             try:
@@ -223,16 +232,58 @@ class _PropertyMixin(object):
                         "gcp.resource.destination.id": dest_id,
                         "gcp.resource.destination.location": loc,
                     }
-            except Exception:
-                pass
+            except Exception as e:
+                _logger.debug(
+                    f"Failed cache.get_or_queue_fetch in _get_aco_attributes: {e}"
+                )
         return {}
 
+    @contextmanager
     def _create_trace_span(self, name, attributes=None, **kwargs):
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.bucket import Bucket
+
         aco_attrs = self._get_aco_attributes()
         if attributes is None:
             attributes = {}
         attributes.update(aco_attrs)
-        return _base_create_trace_span(name, attributes=attributes, **kwargs)
+        with _base_create_trace_span(name, attributes=attributes, **kwargs) as span:
+            try:
+                yield span
+            except (NotFound, api_exceptions.NotFound):
+                if isinstance(self, Bucket):
+                    cache = getattr(self.client, "_bucket_metadata_cache", None)
+                    bucket_name = self.name
+                elif isinstance(self, Blob):
+                    bucket = getattr(self, "bucket", None)
+                    cache = (
+                        getattr(bucket.client, "_bucket_metadata_cache", None)
+                        if bucket and hasattr(bucket, "client")
+                        else None
+                    )
+                    bucket_name = (
+                        getattr(bucket, "name", None) if bucket else None
+                    )
+                else:
+                    cache = None
+                    bucket_name = None
+
+                if callable(bucket_name):
+                    try:
+                        bucket_name = bucket_name()
+                    except Exception as e:
+                        _logger.debug(
+                            f"Failed callable bucket_name resolution on 404 in _create_trace_span: {e}"
+                        )
+
+                if cache and bucket_name and isinstance(bucket_name, str):
+                    try:
+                        cache.check_and_evict(bucket_name)
+                    except Exception as e:
+                        _logger.debug(
+                            f"Failed cache.check_and_evict on 404 in _create_trace_span: {e}"
+                        )
+                raise
 
     def _encryption_headers(self):
         """Return any encryption headers needed to fetch the object.
