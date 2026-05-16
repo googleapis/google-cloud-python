@@ -128,7 +128,7 @@ class Event:
 @dataclasses.dataclass(frozen=True)
 class EventEnvelope:
     event: Event
-    progress_bar: ProgressBarType = None
+    progress_bar: ProgressBarType = _DEFAULT
 
 
 @dataclasses.dataclass(frozen=True)

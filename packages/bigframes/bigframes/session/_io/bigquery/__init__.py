@@ -25,12 +25,10 @@ import typing
 from typing import (
     Dict,
     Iterable,
-    Literal,
     Mapping,
     Optional,
     Tuple,
     Union,
-    overload,
 )
 
 import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
@@ -149,9 +147,8 @@ def create_temp_table(
     if cluster_columns:
         destination.clustering_fields = cluster_columns
     if kms_key:
-        destination.encryption_configuration = bigquery.EncryptionConfiguration(
-            kms_key_name=kms_key
-        )
+        enc_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key)
+        destination.encryption_configuration = enc_config
     # Ok if already exists, since this will only happen from retries
     # internal to this method
     # as the requested table id has a random UUID4 component.
@@ -246,7 +243,9 @@ def format_option(key: str, value: Union[bool, str]) -> str:
 
 
 def add_and_trim_labels(
-    job_config, session=None, extra_query_labels: Optional[Mapping[str, str]] = None
+    job_config,
+    session=None,
+    extra_query_labels: Optional[Mapping[str, str]] = None,
 ):
     """
     Add additional labels to the job configuration and trim the total
@@ -263,10 +262,6 @@ def add_and_trim_labels(
 
 
 def create_bq_event_callback(publisher):
-    import bigframes._config
-
-    progress_bar = bigframes._config.options.display.progress_bar
-
     event_map = {
         google.cloud.bigquery._job_helpers.QueryFinishedEvent: (
             bigframes.core.events.BigQueryFinishedEvent
@@ -289,7 +284,7 @@ def create_bq_event_callback(publisher):
                 bf_event = bf_type.from_bqclient(event)  # type: ignore
                 break
         envelope = bigframes.core.events.EventEnvelope(
-            event=bf_event, progress_bar=progress_bar
+            event=bf_event, progress_bar=bigframes.core.events._DEFAULT
         )
         publisher.publish(envelope)
 
@@ -309,7 +304,9 @@ def start_query_with_job(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),
+    job_retry: google.api_core.retry.Retry = (
+        third_party_gcb_retry.DEFAULT_JOB_RETRY
+    ),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
@@ -359,14 +356,17 @@ def start_query_job_optional(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
+    job_retry: google.api_core.retry.Retry = (
+        third_party_gcb_retry.DEFAULT_JOB_RETRY
+    ),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> google.cloud.bigquery.table.RowIterator:
     """
     Run a bigquery query, with job optional.
 
-    See: https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
+    See:
+    https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
     """
     add_and_trim_labels(job_config, session=session)
     try:
@@ -551,7 +551,9 @@ def to_query(
 
     time_travel_clause = ""
     if time_travel_timestamp is not None:
-        time_travel_literal = sg_sql.to_sql(sg_sql.literal(time_travel_timestamp))
+        time_travel_literal = sg_sql.to_sql(
+            sg_sql.literal(time_travel_timestamp)
+        )  # noqa: E501
         time_travel_clause = f" FOR SYSTEM_TIME AS OF {time_travel_literal}"
 
     limit_clause = ""
@@ -588,7 +590,8 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
     # layer represents "and" logic.
     filters_list: list = list(filters)
     if isinstance(filters_list[0], tuple) and (
-        len(filters_list[0]) == 0 or not isinstance(list(filters_list[0])[0], tuple)
+        len(filters_list[0]) == 0
+        or not isinstance(list(filters_list[0])[0], tuple)  # noqa: E501
     ):
         filter_items = [filters_list]
     else:
