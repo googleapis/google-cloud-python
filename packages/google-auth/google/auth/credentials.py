@@ -434,6 +434,29 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         self._rab_manager.enable_blocking_lookup()
         return self
 
+    def _is_regional_endpoint(self, url):
+        """Checks if the request URL is for a regional endpoint.
+
+        Args:
+            url (str): The URL of the request.
+
+        Returns:
+            bool: True if the URL is a regional endpoint, False otherwise.
+        """
+        try:
+            # Do not perform a lookup if the request is for a regional endpoint.
+            hostname = urlparse(url).hostname
+            if hostname and (
+                hostname.endswith(".rep.googleapis.com")
+                or hostname.endswith(".rep.sandbox.googleapis.com")
+            ):
+                return True
+        except (ValueError, TypeError, AttributeError):
+            # If the URL is malformed, proceed with the default lookup behavior.
+            pass
+
+        return False
+
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """
         Starts a background thread to refresh the Regional Access Boundary if needed.
@@ -447,23 +470,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
                 HTTP requests.
             url (str): The URL of the request.
         """
-        try:
-            # Do not perform a lookup if the request is for a regional endpoint.
-            hostname = urlparse(url).hostname
-            if hostname and (
-                hostname.endswith(".rep.googleapis.com")
-                or hostname.endswith(".rep.sandbox.googleapis.com")
-            ):
-                return
-        except (ValueError, TypeError):
-            # If the URL is malformed, proceed with the default lookup behavior.
-            pass
+        # Do not perform a lookup if the request is for a regional endpoint.
+        if self._is_regional_endpoint(url):
+            return
 
         # A refresh is only needed if the feature is enabled.
         if not self._is_regional_access_boundary_lookup_required():
             return
 
-        # Start the background refresh if needed.
+        # Trigger background or blocking refresh if needed
         self._rab_manager.maybe_start_refresh(self, request)
 
     def _is_regional_access_boundary_lookup_required(self):
@@ -475,11 +490,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         Returns:
             bool: True if a Regional Access Boundary lookup is required, False otherwise.
         """
-        # 1. Check if the feature is enabled.
+        # Check if the feature is enabled.
         if not _regional_access_boundary_utils.is_regional_access_boundary_enabled():
             return False
 
-        # 2. Skip for non-default universe domains.
+        # Skip for non-default universe domains.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
             return False
 
@@ -526,7 +541,6 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
 
         headers: Dict[str, str] = {}
         self._apply(headers)
-        self._rab_manager.apply_headers(headers)
         return _client._lookup_regional_access_boundary(
             request, url, headers=headers, fail_fast=fail_fast
         )

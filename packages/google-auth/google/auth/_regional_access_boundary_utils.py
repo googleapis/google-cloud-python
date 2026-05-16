@@ -171,12 +171,11 @@ class _RegionalAccessBoundaryManager(object):
         else:
             headers.pop(_REGIONAL_ACCESS_BOUNDARY_HEADER, None)
 
-    def maybe_start_refresh(self, credentials, request):
-        """Starts a background thread to refresh the Regional Access Boundary if needed.
+    def _should_refresh(self):
+        """Checks if the Regional Access Boundary data needs a refresh and is not in cooldown.
 
-        Args:
-            credentials (google.auth.credentials.Credentials): The credentials to refresh.
-            request (google.auth.transport.Request): The object used to make HTTP requests.
+        Returns:
+            bool: True if a refresh is required, False otherwise.
         """
         rab_data = self._data
 
@@ -187,15 +186,43 @@ class _RegionalAccessBoundaryManager(object):
             and _helpers.utcnow()
             < (rab_data.expiry - REGIONAL_ACCESS_BOUNDARY_REFRESH_THRESHOLD)
         ):
-            return
+            return False
 
         # Don't start a new refresh if the cooldown is still in effect.
         if rab_data.cooldown_expiry and _helpers.utcnow() < rab_data.cooldown_expiry:
+            return False
+
+        return True
+
+    def maybe_start_refresh(self, credentials, request):
+        """Starts a background thread to refresh the Regional Access Boundary if needed.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
             return
 
         # If all checks pass, start the background refresh.
         if self._use_blocking_regional_access_boundary_lookup:
             self.start_blocking_refresh(credentials, request)
+        else:
+            self.refresh_manager.start_refresh(credentials, request, self)
+
+    async def maybe_start_refresh_async(self, credentials, request):
+        """Starts a background refresh or performs a blocking refresh asynchronously.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
+            return
+
+        # If all checks pass, start the refresh.
+        if self._use_blocking_regional_access_boundary_lookup:
+            await self.start_blocking_refresh_async(credentials, request)
         else:
             self.refresh_manager.start_refresh(credentials, request, self)
 
@@ -221,6 +248,37 @@ class _RegionalAccessBoundaryManager(object):
             if _helpers.is_logging_enabled(_LOGGER):
                 _LOGGER.warning(
                     "Blocking Regional Access Boundary lookup raised an exception: %s",
+                    e,
+                    exc_info=True,
+                )
+            regional_access_boundary_info = None
+
+        self.process_regional_access_boundary_info(regional_access_boundary_info)
+
+    async def start_blocking_refresh_async(self, credentials, request):
+        """Initiates a blocking lookup of the Regional Access Boundary asynchronously.
+
+        If the lookup raises an exception, it is caught and logged as a warning,
+        and the lookup is treated as a failure (entering cooldown). Exceptions
+        are not propagated to the caller.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        try:
+            # The fail_fast parameter is set to True to ensure we don't block the calling
+            # thread for too long. This will do two things: 1) set a timeout to 3s
+            # instead of the default 120s and 2) ensure we do not retry at all
+            regional_access_boundary_info = (
+                await credentials._lookup_regional_access_boundary(
+                    request, fail_fast=True
+                )
+            )
+        except Exception as e:
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.warning(
+                    "Regional Access Boundary lookup raised an exception: %s",
                     e,
                     exc_info=True,
                 )

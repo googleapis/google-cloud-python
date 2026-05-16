@@ -91,7 +91,9 @@ def decode(token, certs=None, verify=True, audience=None):
 
 
 class Credentials(
-    jwt.Credentials, _credentials_async.Signing, _credentials_async.Credentials
+    jwt.Credentials,
+    _credentials_async.Signing,
+    _credentials_async.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials that use a JWT as the bearer token.
 
@@ -141,6 +143,15 @@ class Credentials(
             'https://pubsub.googleapis.com/google.pubsub.v1.Subscriber')
         new_credentials = credentials.with_claims(audience=new_audience)
     """
+
+    def __setstate__(self, state):
+        """Restores the credential state and ensures the async refresh manager is attached."""
+        super().__setstate__(state)
+        from google.auth import _regional_access_boundary_utils
+
+        self._rab_manager.refresh_manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
 
 
 class OnDemandCredentials(

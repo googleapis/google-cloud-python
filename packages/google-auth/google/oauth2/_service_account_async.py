@@ -24,13 +24,14 @@ credentials file google.oauth2.service_account
 
 from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
-from google.auth import _regional_access_boundary_utils
 from google.oauth2 import _client_async
 from google.oauth2 import service_account
 
 
 class Credentials(
-    service_account.Credentials, credentials_async.Scoped, credentials_async.Credentials
+    service_account.Credentials,
+    credentials_async.Scoped,
+    credentials_async.CredentialsWithRegionalAccessBoundary,
 ):
     """Service account credentials
 
@@ -67,15 +68,11 @@ class Credentials(
         credentials = credentials.with_quota_project('myproject-123')
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._rab_manager.refresh_manager = (
-            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
-        )
-
     def __setstate__(self, state):
         """Restores the credential state and ensures the async refresh manager is attached."""
         super().__setstate__(state)
+        from google.auth import _regional_access_boundary_utils
+
         self._rab_manager.refresh_manager = (
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
         )
@@ -88,29 +85,6 @@ class Credentials(
         )
         self.token = access_token
         self.expiry = expiry
-
-    async def _lookup_regional_access_boundary(self, request, fail_fast=False):
-        """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
-
-        Args:
-            request (google.auth.aio.transport.Request): The object used to make
-                HTTP requests.
-            fail_fast (bool): Whether the lookup should fail fast.
-
-        Returns:
-            Optional[Dict[str, str]]: The Regional Access Boundary information.
-        """
-        url = self._build_regional_access_boundary_lookup_url(request=request)
-        if not url:
-            return None
-
-        headers = {}
-        self._apply(headers)
-        self._rab_manager.apply_headers(headers)
-
-        return await _client_async._lookup_regional_access_boundary(
-            request, url, headers=headers, fail_fast=fail_fast
-        )
 
 
 class IDTokenCredentials(
