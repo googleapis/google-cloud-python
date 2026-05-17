@@ -40,6 +40,8 @@ from google.cloud.storage.retry import (
 )
 from google.cloud.storage._opentelemetry_tracing import (
     create_trace_span as _base_create_trace_span,
+    enable_otel_traces,
+    HAS_OPENTELEMETRY,
 )
 
 _logger = logging.getLogger(__name__)
@@ -196,6 +198,8 @@ class _PropertyMixin(object):
         return client
 
     def _get_aco_attributes(self):
+        if not HAS_OPENTELEMETRY or not enable_otel_traces:
+            return {}
         from google.cloud.storage.blob import Blob
         from google.cloud.storage.bucket import Bucket
 
@@ -249,6 +253,8 @@ class _PropertyMixin(object):
             try:
                 yield span
             except (NotFound, api_exceptions.NotFound):
+                if not HAS_OPENTELEMETRY or not enable_otel_traces:
+                    raise
                 if isinstance(self, Bucket):
                     cache = getattr(self.client, "_bucket_metadata_cache", None)
                     bucket_name = self.name

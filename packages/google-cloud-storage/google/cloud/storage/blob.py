@@ -1883,7 +1883,7 @@ class Blob(_PropertyMixin):
                 client._connection.user_agent, content_type, command=command
             ),
             **_get_encryption_headers(self._encryption_key),
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
         object_metadata = self._get_writable_metadata()
         return headers, object_metadata, content_type
@@ -4649,7 +4649,7 @@ class Blob(_PropertyMixin):
         headers = {
             **_get_default_headers(client._connection.user_agent, command=command),
             **headers,
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
 
         transport = client._http
