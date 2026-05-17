@@ -185,13 +185,7 @@ fn execute_sql_native(
         let idx = REQUEST_COUNTER.fetch_add(1, Ordering::Relaxed) % count.min(CHANNELS.len());
         let channel = CHANNELS[idx].clone();
 
-        // Build a thread-local single-threaded runtime for zero lock contention
-        let rt = tokio::runtime::Builder::new_current_thread()
-            .enable_all()
-            .build()
-            .map_err(|_| tonic::Status::internal("Failed to build thread-local runtime"))?;
-
-        rt.block_on(async move {
+        RUNTIME.block_on(async move {
             let interceptor = AuthInterceptor {
                 token: token_clone,
                 session_name: session_clone.clone(),
