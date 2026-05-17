@@ -82,7 +82,12 @@ class Connection(_http.JSONConnection):
             "gccl-invocation-id": invocation_id,
         }
         client = self._client
-        if HAS_OPENTELEMETRY and enable_otel_traces and hasattr(client, "_bucket_metadata_cache") and client._bucket_metadata_cache:
+        if (
+            HAS_OPENTELEMETRY
+            and enable_otel_traces
+            and hasattr(client, "_bucket_metadata_cache")
+            and client._bucket_metadata_cache
+        ):
             match = re.search(r"/b/([^/?#]+)", kwargs.get("path", ""))
             if match:
                 try:
