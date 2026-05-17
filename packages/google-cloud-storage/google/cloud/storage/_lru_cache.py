@@ -15,7 +15,7 @@
 """A Least Recently Used (LRU) cache implementation."""
 
 from collections import OrderedDict
-from typing import Any, Generic, Optional, TypeVar
+from typing import Generic, Optional, TypeVar
 
 K = TypeVar("K")
 V = TypeVar("V")

@@ -90,9 +90,7 @@ class Connection(_http.JSONConnection):
                         span_attributes["gcp.resource.destination.id"] = dest_id
                         span_attributes["gcp.resource.destination.location"] = loc
                 except Exception as e:
-                    logger.debug(
-                        f"Failed cache.get_or_queue_fetch in api_request: {e}"
-                    )
+                    logger.debug(f"Failed cache.get_or_queue_fetch in api_request: {e}")
 
         call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
         with create_trace_span(

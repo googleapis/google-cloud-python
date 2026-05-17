@@ -243,11 +243,9 @@ class _PropertyMixin(object):
         from google.cloud.storage.blob import Blob
         from google.cloud.storage.bucket import Bucket
 
-        aco_attrs = self._get_aco_attributes()
-        if attributes is None:
-            attributes = {}
-        attributes.update(aco_attrs)
-        with _base_create_trace_span(name, attributes=attributes, **kwargs) as span:
+        span_attrs = dict(attributes) if attributes else {}
+        span_attrs.update(self._get_aco_attributes())
+        with _base_create_trace_span(name, attributes=span_attrs, **kwargs) as span:
             try:
                 yield span
             except (NotFound, api_exceptions.NotFound):
@@ -261,9 +259,7 @@ class _PropertyMixin(object):
                         if bucket and hasattr(bucket, "client")
                         else None
                     )
-                    bucket_name = (
-                        getattr(bucket, "name", None) if bucket else None
-                    )
+                    bucket_name = getattr(bucket, "name", None) if bucket else None
                 else:
                     cache = None
                     bucket_name = None

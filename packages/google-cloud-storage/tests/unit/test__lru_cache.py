@@ -48,13 +48,13 @@ def test_lru_cache_eviction():
     cache = LRUCache(capacity=2)
     cache.put("a", 1)
     cache.put("b", 2)
-    
+
     # Access "a" so "b" becomes least recently used
     assert cache.get("a") == 1
-    
+
     # Put "c" should evict "b"
     cache.put("c", 3)
-    
+
     assert "b" not in cache
     assert cache.get("b") is None
     assert cache.get("a") == 1
@@ -66,13 +66,13 @@ def test_lru_cache_update():
     cache = LRUCache(capacity=2)
     cache.put("a", 1)
     cache.put("b", 2)
-    
+
     # Update "a", so it becomes most recently used
     cache.put("a", 10)
-    
+
     # Put "c" should evict "b"
     cache.put("c", 3)
-    
+
     assert "b" not in cache
     assert cache.get("a") == 10
     assert cache.get("c") == 3
@@ -82,7 +82,7 @@ def test_lru_cache_clear():
     cache = LRUCache(capacity=2)
     cache.put("a", 1)
     cache.put("b", 2)
-    
+
     cache.clear()
     assert len(cache) == 0
     assert "a" not in cache
@@ -93,7 +93,7 @@ def test_lru_cache_delete():
     cache = LRUCache(capacity=2)
     cache.put("a", 1)
     cache.put("b", 2)
-    
+
     cache.delete("a")
     assert len(cache) == 1
     assert "a" not in cache
