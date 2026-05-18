@@ -1,215 +1,130 @@
 urn: extension:google:bq_scalar_functions
 scalar_functions:
   - name: "aead.decrypt_bytes"
-    description: "GoogleSQL scalar function aead.decrypt_bytes"
+    description: "Uses the matching key from keyset to decrypt ciphertext and verifies the integrity of the data using additional_data. Returns an error if decryption or verification fails."
     impls:
       # Signature: aead.decrypt_bytes:vbin_vbin_vbin
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "ciphertext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: binary
             optional: false
             keyword_only: false
         return: binary
       # Signature: aead.decrypt_bytes:struct_vbin_vbin
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: struct
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "ciphertext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: binary
             optional: false
             keyword_only: false
         return: binary
   - name: "aead.decrypt_string"
-    description: "GoogleSQL scalar function aead.decrypt_string"
+    description: "Like AEAD.DECRYPT_BYTES, but where additional_data is of type STRING."
     impls:
       # Signature: aead.decrypt_string:vbin_vbin_str
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "ciphertext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: string
             optional: false
             keyword_only: false
         return: string
       # Signature: aead.decrypt_string:struct_vbin_str
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: struct
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "ciphertext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: string
             optional: false
             keyword_only: false
         return: string
   - name: "aead.encrypt"
-    description: "GoogleSQL scalar function aead.encrypt"
+    description: "Encrypts plaintext using the primary cryptographic key in keyset. The algorithm of the primary key must be AEAD_AES_GCM_256. Binds the ciphertext to the context defined by additional_data. Returns NULL if any input is NULL."
     impls:
       # Signature: aead.encrypt:vbin_str_str
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "plaintext"
             value: string
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: string
             optional: false
             keyword_only: false
         return: binary
       # Signature: aead.encrypt:vbin_vbin_vbin
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "plaintext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: binary
             optional: false
             keyword_only: false
         return: binary
       # Signature: aead.encrypt:struct_str_str
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: struct
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "plaintext"
             value: string
             optional: false
             keyword_only: false
-          - name: "arg2"
+          - name: "additional_data"
             value: string
             optional: false
             keyword_only: false
         return: binary
       # Signature: aead.encrypt:struct_vbin_vbin
       - args:
-          - name: "arg0"
+          - name: "keyset"
             value: struct
             optional: false
             keyword_only: false
-          - name: "arg1"
+          - name: "plaintext"
             value: binary
             optional: false
             keyword_only: false
-          - name: "arg2"
-            value: binary
-            optional: false
-            keyword_only: false
-        return: binary
-  - name: "aead.envelope_decrypt_bytes"
-    description: "GoogleSQL scalar function aead.envelope_decrypt_bytes"
-    impls:
-      # Signature: aead.envelope_decrypt_bytes:str_vbin_vbin_vbin
-      - args:
-          - name: "arg0"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "arg1"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg2"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg3"
-            value: binary
-            optional: false
-            keyword_only: false
-        return: binary
-  - name: "aead.envelope_decrypt_string"
-    description: "GoogleSQL scalar function aead.envelope_decrypt_string"
-    impls:
-      # Signature: aead.envelope_decrypt_string:str_vbin_vbin_str
-      - args:
-          - name: "arg0"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "arg1"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg2"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg3"
-            value: string
-            optional: false
-            keyword_only: false
-        return: string
-  - name: "aead.envelope_encrypt"
-    description: "GoogleSQL scalar function aead.envelope_encrypt"
-    impls:
-      # Signature: aead.envelope_encrypt:str_vbin_str_str
-      - args:
-          - name: "arg0"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "arg1"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg2"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "arg3"
-            value: string
-            optional: false
-            keyword_only: false
-        return: binary
-      # Signature: aead.envelope_encrypt:str_vbin_vbin_vbin
-      - args:
-          - name: "arg0"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "arg1"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg2"
-            value: binary
-            optional: false
-            keyword_only: false
-          - name: "arg3"
+          - name: "additional_data"
             value: binary
             optional: false
             keyword_only: false
