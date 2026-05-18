@@ -3851,6 +3851,7 @@ class Blob(_PropertyMixin):
         if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         destination_contexts=None,
+        delete_source_objects=None,
     ):
         """Concatenate source blobs into this one.
 
@@ -3916,6 +3917,10 @@ class Blob(_PropertyMixin):
             (Optional) New contexts to set for the destination object.
             See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
 
+        :type delete_source_objects: bool
+        :param delete_source_objects:
+            (Optional) If True, the source objects will be deleted after a
+            successful composition.
         """
         with create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
@@ -3979,6 +3984,9 @@ class Blob(_PropertyMixin):
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
             }
+
+            if delete_source_objects is not None:
+                request["deleteSourceObjects"] = delete_source_objects
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
