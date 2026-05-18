@@ -251,12 +251,17 @@ def test_on_event_with_local_execute_result():
     import bigframes.core.events
     from bigframes.session.executor import LocalExecuteResult
 
-    local_result = unittest.mock.create_autospec(LocalExecuteResult, instance=True)
+    # fmt: off
+    local_result = unittest.mock.create_autospec(
+        LocalExecuteResult, instance=True
+    )
+    # fmt: on
     local_result.total_bytes_processed = 1024
 
     event = bigframes.core.events.ExecutionFinished(result=local_result)
+    envelope = bigframes.core.events.EventEnvelope(event)
     execution_metrics = metrics.ExecutionMetrics()
-    execution_metrics.on_event(event)
+    execution_metrics.on_event(envelope)
 
     assert execution_metrics.execution_count == 1
     assert len(execution_metrics.jobs) == 1

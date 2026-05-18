@@ -22,7 +22,14 @@ import re
 import textwrap
 import types
 import typing
-from typing import Dict, Iterable, Literal, Mapping, Optional, Tuple, Union, overload
+from typing import (
+    Dict,
+    Iterable,
+    Mapping,
+    Optional,
+    Tuple,
+    Union,
+)
 
 import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
@@ -38,7 +45,10 @@ import bigframes.session.metrics
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.logging import log_adapter
 
-CHECK_DRIVE_PERMISSIONS = "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+CHECK_DRIVE_PERMISSIONS = (
+    "\nCheck https://cloud.google.com/bigquery/docs/"
+    "query-drive-data#Google_Drive_permissions."
+)
 
 
 IO_ORDERING_ID = "bqdf_row_nums"
@@ -82,7 +92,10 @@ def create_job_configs_labels(
 
 
 def create_export_data_statement(
-    table_id: str, uri: str, format: str, export_options: Dict[str, Union[bool, str]]
+    table_id: str,
+    uri: str,
+    format: str,
+    export_options: Dict[str, Union[bool, str]],
 ) -> str:
     all_options: Dict[str, Union[bool, str]] = {
         "uri": uri,
@@ -136,10 +149,10 @@ def create_temp_table(
     if cluster_columns:
         destination.clustering_fields = cluster_columns
     if kms_key:
-        destination.encryption_configuration = bigquery.EncryptionConfiguration(
-            kms_key_name=kms_key
-        )
-    # Ok if already exists, since this will only happen from retries internal to this method
+        enc_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key)
+        destination.encryption_configuration = enc_config
+    # Ok if already exists, since this will only happen from retries
+    # internal to this method
     # as the requested table id has a random UUID4 component.
     bqclient.create_table(destination, exists_ok=True)
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
@@ -162,7 +175,8 @@ def create_temp_view(
     destination.expires = expiration
     destination.view_query = sql
 
-    # Ok if already exists, since this will only happen from retries internal to this method
+    # Ok if already exists, since this will only happen from retries
+    # internal to this method
     # as the requested table id has a random UUID4 component.
     bqclient.create_table(destination, exists_ok=True)
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
@@ -196,7 +210,10 @@ def bq_field_to_type_sql(field: bigquery.SchemaField):
     if field.mode == "REPEATED":
         nested_type = bq_field_to_type_sql(
             bigquery.SchemaField(
-                field.name, field.field_type, mode="NULLABLE", fields=field.fields
+                field.name,
+                field.field_type,
+                mode="NULLABLE",
+                fields=field.fields,
             )
         )
         return f"ARRAY<{nested_type}>"
@@ -228,11 +245,14 @@ def format_option(key: str, value: Union[bool, str]) -> str:
 
 
 def add_and_trim_labels(
-    job_config, session=None, extra_query_labels: Optional[Mapping[str, str]] = None
+    job_config,
+    session=None,
+    extra_query_labels: Optional[Mapping[str, str]] = None,
 ):
     """
-    Add additional labels to the job configuration and trim the total number of labels
-    to ensure they do not exceed MAX_LABELS_COUNT labels per job.
+    Add additional labels to the job configuration and trim the total
+    number of labels to ensure they do not exceed MAX_LABELS_COUNT labels
+    per job.
     """
     api_methods = log_adapter.get_and_reset_api_methods(
         dry_run=job_config.dry_run, session=session
@@ -244,19 +264,31 @@ def add_and_trim_labels(
 
 
 def create_bq_event_callback(publisher):
-    def publish_bq_event(event):
-        if isinstance(event, google.cloud.bigquery._job_helpers.QueryFinishedEvent):
-            bf_event = bigframes.core.events.BigQueryFinishedEvent.from_bqclient(event)
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QueryReceivedEvent):
-            bf_event = bigframes.core.events.BigQueryReceivedEvent.from_bqclient(event)
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QueryRetryEvent):
-            bf_event = bigframes.core.events.BigQueryRetryEvent.from_bqclient(event)
-        elif isinstance(event, google.cloud.bigquery._job_helpers.QuerySentEvent):
-            bf_event = bigframes.core.events.BigQuerySentEvent.from_bqclient(event)
-        else:
-            bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
+    event_map = {
+        google.cloud.bigquery._job_helpers.QueryFinishedEvent: (
+            bigframes.core.events.BigQueryFinishedEvent
+        ),
+        google.cloud.bigquery._job_helpers.QueryReceivedEvent: (
+            bigframes.core.events.BigQueryReceivedEvent
+        ),
+        google.cloud.bigquery._job_helpers.QueryRetryEvent: (
+            bigframes.core.events.BigQueryRetryEvent
+        ),
+        google.cloud.bigquery._job_helpers.QuerySentEvent: (
+            bigframes.core.events.BigQuerySentEvent
+        ),
+    }
 
-        publisher.publish(bf_event)
+    def publish_bq_event(event):
+        bf_event = bigframes.core.events.BigQueryUnknownEvent(event)
+        for bq_type, bf_type in event_map.items():
+            if isinstance(event, bq_type):
+                bf_event = bf_type.from_bqclient(event)  # type: ignore
+                break
+        envelope = bigframes.core.events.EventEnvelope(
+            event=bf_event, progress_bar=bigframes.core.events._DEFAULT
+        )
+        publisher.publish(envelope)
 
     return publish_bq_event
 
@@ -274,7 +306,7 @@ def start_query_with_job(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
+    job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
@@ -324,14 +356,15 @@ def start_query_job_optional(
     # google-cloud-bigquery version with
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
-    job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
+    job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
 ) -> google.cloud.bigquery.table.RowIterator:
     """
     Run a bigquery query, with job optional.
 
-    See: https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
+    See:
+    https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
     """
     add_and_trim_labels(job_config, session=session)
     try:
@@ -391,7 +424,9 @@ def _publish_events(
 
 
 def delete_tables_matching_session_id(
-    client: bigquery.Client, dataset: bigquery.DatasetReference, session_id: str
+    client: bigquery.Client,
+    dataset: bigquery.DatasetReference,
+    session_id: str,
 ) -> None:
     """Searches within the dataset for tables conforming to the
     expected session_id form, and instructs bigquery to delete them.
@@ -445,7 +480,8 @@ def create_bq_dataset_reference(
             The project id of the project to create the dataset in.
 
     Returns:
-        bigquery.DatasetReference: The constructed reference to the anonymous dataset.
+        bigquery.DatasetReference: The constructed reference to the
+        anonymous dataset.
     """
     job_config = google.cloud.bigquery.QueryJobConfig()
 
@@ -478,7 +514,8 @@ def is_query(query_or_table: str) -> bool:
 
 
 def is_table_with_wildcard_suffix(query_or_table: str) -> bool:
-    """Determine if `query_or_table` is a table and contains a wildcard suffix."""
+    """Determine if `query_or_table` is a table and contains a wildcard
+    suffix."""
     return not is_query(query_or_table) and query_or_table.endswith("*")
 
 
@@ -494,7 +531,8 @@ def to_query(
         from_item = f"({query_or_table})"
     else:
         # Table ID can have 1, 2, 3, or 4 parts. Quoting all parts to be safe.
-        # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
+        # See:
+        # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#identifiers
         parts = query_or_table.split(".")
         from_item = ".".join(f"`{part}`" for part in parts)
 
@@ -511,7 +549,7 @@ def to_query(
 
     time_travel_clause = ""
     if time_travel_timestamp is not None:
-        time_travel_literal = sg_sql.to_sql(sg_sql.literal(time_travel_timestamp))
+        time_travel_literal = sg_sql.to_sql(sg_sql.literal(time_travel_timestamp))  # noqa: E501
         time_travel_clause = f" FOR SYSTEM_TIME AS OF {time_travel_literal}"
 
     limit_clause = ""
@@ -544,10 +582,11 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
         "!=": "!=",
     }
 
-    # If single layer filter, add another pseudo layer. So the single layer represents "and" logic.
+    # If single layer filter, add another pseudo layer. So the single
+    # layer represents "and" logic.
     filters_list: list = list(filters)
     if isinstance(filters_list[0], tuple) and (
-        len(filters_list[0]) == 0 or not isinstance(list(filters_list[0])[0], tuple)
+        len(filters_list[0]) == 0 or not isinstance(list(filters_list[0])[0], tuple)  # noqa: E501
     ):
         filter_items = [filters_list]
     else:
@@ -561,14 +600,16 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
         for filter_item in group:
             if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
                 raise ValueError(
-                    f"Elements of filters must be tuples of length 3, but got {repr(filter_item)}.",
+                    f"Elements of filters must be tuples of length 3, "
+                    f"but got {repr(filter_item)}.",
                 )
 
             column, operator, value = filter_item
 
             if not isinstance(column, str):
                 raise ValueError(
-                    f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
+                    f"Column name should be a string, but received "
+                    f"'{column}' of type {type(column).__name__}."
                 )
 
             if operator not in valid_operators:
