@@ -300,7 +300,7 @@ def _try_read_gbq_colab_sessionless_dry_run(
 def _read_gbq_colab(  # type: ignore[overload-overlap]
     query_or_table: str,
     *,
-    callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
+    callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
     pyformat_args: Optional[Dict[str, Any]] = ...,
     dry_run: Literal[False] = ...,
 ) -> bigframes.dataframe.DataFrame: ...
@@ -310,7 +310,7 @@ def _read_gbq_colab(  # type: ignore[overload-overlap]
 def _read_gbq_colab(
     query_or_table: str,
     *,
-    callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
+    callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
     pyformat_args: Optional[Dict[str, Any]] = ...,
     dry_run: Literal[True] = ...,
 ) -> pandas.Series: ...
@@ -319,7 +319,7 @@ def _read_gbq_colab(
 def _read_gbq_colab(
     query_or_table: str,
     *,
-    callback: Optional[Callable[[bigframes.core.events.Event], None]] = None,
+    callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = None,
     pyformat_args: Optional[Dict[str, Any]] = None,
     dry_run: bool = False,
 ) -> bigframes.dataframe.DataFrame | pandas.Series:
@@ -331,7 +331,7 @@ def _read_gbq_colab(
     Args:
         query_or_table (str):
             SQL query or table ID (table ID not yet supported).
-        callback (Optional[Callable[[bigframes.core.events.Event], None]]):
+        callback (Optional[Callable[[bigframes.core.events.EventEnvelope], None]]):
             Callback to receive query execution events.
         pyformat_args (Optional[Dict[str, Any]]):
             Parameters to format into the query string.

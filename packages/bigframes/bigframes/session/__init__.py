@@ -667,7 +667,7 @@ class Session(
         self,
         query: str,
         *,
-        callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
     ) -> dataframe.DataFrame: ...
@@ -677,7 +677,7 @@ class Session(
         self,
         query: str,
         *,
-        callback: Optional[Callable[[bigframes.core.events.Event], None]] = ...,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
     ) -> pandas.Series: ...
@@ -687,7 +687,9 @@ class Session(
         self,
         query: str,
         *,
-        callback: Optional[Callable[[bigframes.core.events.Event], None]] = None,
+        callback: Optional[
+            Callable[[bigframes.core.events.EventEnvelope], None]
+        ] = None,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: bool = False,
     ) -> Union[dataframe.DataFrame, pandas.Series]:
@@ -700,7 +702,7 @@ class Session(
             query (str):
                 A SQL query string to execute. Results (if any) are turned into
                 a DataFrame.
-            callback (Optional[Callable[[bigframes.core.events.Event], None]]):
+            callback (Optional[Callable[[bigframes.core.events.EventEnvelope], None]]):
                 Callback to receive query execution events.
             pyformat_args (dict):
                 A dictionary of potential variables to replace in ``query``.
