@@ -186,17 +186,18 @@ def main():
 
     results = []
 
-    print("\n" + "=" * 120)
+    print("\n" + "=" * 130)
     print(
-        f"{'Threads':^8} | {'Method':^14} | {'QPS':^10} | {'p50 (ms)':^10} | {'p95 (ms)':^10} | {'p99 (ms)':^10} | {'CPU Util':^10} | {'Cores':^6} | {'Speedup':^8}"
+        f"{'Threads':^8} | {'Method':^14} | {'QPS / p95':^16} | {'p50 (ms)':^10} | {'p99 (ms)':^10} | {'CPU Util':^10} | {'Cores':^6} | {'Speedup':^8} | {'Lat Imp':^9}"
     )
-    print("=" * 120)
+    print("=" * 130)
 
     for threads in THREAD_COUNTS:
         # 1. Python Baseline
         py_res = run_benchmark(db.execute_sql_python, SQL, thread_count=threads, duration_s=DURATION_S)
+        py_qps_p95 = f"{py_res['qps']:.1f} / {py_res['p95']:.1f}"
         print(
-            f"{threads:^8} | {'Python':^14} | {py_res['qps']:10.1f} | {py_res['p50']:10.2f} | {py_res['p95']:10.2f} | {py_res['p99']:10.2f} | {py_res['cpu_util']:8.1f}% | {py_res['active_cores']:^6} | {'-':^8}"
+            f"{threads:^8} | {'Python':^14} | {py_qps_p95:^16} | {py_res['p50']:10.1f} | {py_res['p99']:10.1f} | {py_res['cpu_util']:8.1f}% | {py_res['active_cores']:^6} | {'-':^8} | {'-':^9}"
         )
 
         # 2. Rust dynamic channels (1, 4, 8, 10, 12, 16)
@@ -205,12 +206,16 @@ def main():
             execute_fn = lambda q, ch=channels: db.execute_sql_native(q, ch)
             res = run_benchmark(execute_fn, SQL, thread_count=threads, duration_s=DURATION_S)
             speedup = res["qps"] / py_res["qps"] if py_res["qps"] > 0 else 0.0
+            lat_imp = ((py_res["p95"] - res["p95"]) / py_res["p95"]) * 100.0 if py_res["p95"] > 0 else 0.0
+            
+            rust_qps_p95 = f"{res['qps']:.1f} / {res['p95']:.1f}"
             print(
-                f"{threads:^8} | {f'Rust ({channels} Ch)':^14} | {res['qps']:10.1f} | {res['p50']:10.2f} | {res['p95']:10.2f} | {res['p99']:10.2f} | {res['cpu_util']:8.1f}% | {res['active_cores']:^6} | {speedup:7.2f}x"
+                f"{threads:^8} | {f'Rust ({channels} Ch)':^14} | {rust_qps_p95:^16} | {res['p50']:10.1f} | {res['p99']:10.1f} | {res['cpu_util']:8.1f}% | {res['active_cores']:^6} | {speedup:7.2f}x | {lat_imp:6.1f}%"
             )
             rust_runs[f"rust_{channels}ch"] = res
             rust_runs[f"speedup_{channels}ch"] = speedup
-        print("-" * 120)
+            rust_runs[f"lat_imp_{channels}ch"] = lat_imp
+        print("-" * 130)
 
         results.append({
             "threads": threads,
