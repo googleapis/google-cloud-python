@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast, Any
+from typing import Any, cast
 
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
