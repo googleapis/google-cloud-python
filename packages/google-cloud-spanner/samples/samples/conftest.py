@@ -79,14 +79,14 @@ def scrub_instance_ignore_not_found(to_scrub):
                 pass
 
         retry_cleanup(to_scrub.delete)()
-    except exceptions.NotFound:
+    except exceptions.GoogleAPICallError:
         pass
 
 
 @pytest.fixture(scope="session")
 def cleanup_old_instances(spanner_client):
-    """Delete instances, created by samples, that are older than an hour."""
-    cutoff = int(time.time()) - 1 * 60 * 60
+    """Delete instances, created by samples, that are older than 4 hours."""
+    cutoff = int(time.time()) - 4 * 60 * 60
     instance_filter = "labels.cloud_spanner_samples:true"
 
     for instance_pb in spanner_client.list_instances(filter_=instance_filter):
