@@ -208,8 +208,9 @@ class BigQueryCachingExecutor(executor.Executor):
             execution_spec,
         )
         await self._publisher.publish_async(
-            bigframes.core.events.ExecutionFinished(
-                result=result,
+            bigframes.core.events.EventEnvelope(
+                event=bigframes.core.events.ExecutionFinished(result=result),
+                cell_execution_count=execution_spec.cell_execution_count,
             )
         )
         return result
@@ -224,8 +225,11 @@ class BigQueryCachingExecutor(executor.Executor):
             maybe_result = await exec.execute(plan, execution_spec)
             if maybe_result:
                 await self._publisher.publish_async(
-                    bigframes.core.events.ExecutionFinished(
-                        result=maybe_result,
+                    bigframes.core.events.EventEnvelope(
+                        event=bigframes.core.events.ExecutionFinished(
+                            result=maybe_result,
+                        ),
+                        cell_execution_count=execution_spec.cell_execution_count,
                     )
                 )
                 return maybe_result

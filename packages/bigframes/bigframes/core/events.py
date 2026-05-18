@@ -20,7 +20,7 @@ import dataclasses
 import datetime
 import threading
 import uuid
-from typing import Any, Callable, Literal, Set
+from typing import Any, Callable, Literal, Optional, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
@@ -129,6 +129,7 @@ class Event:
 class EventEnvelope:
     event: Event
     progress_bar: ProgressBarType = _DEFAULT
+    cell_execution_count: Optional[int] = None
 
 
 @dataclasses.dataclass(frozen=True)
