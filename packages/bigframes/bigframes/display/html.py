@@ -189,7 +189,6 @@ def create_html_representation(
     pandas_df: pd.DataFrame,
     total_rows: int,
     total_columns: int,
-    blob_cols: list[str],
 ) -> str:
     """Create an HTML representation of the DataFrame or Series."""
     from bigframes.series import Series
@@ -197,12 +196,8 @@ def create_html_representation(
     opts = options.display
     with display_options.pandas_repr(opts):
         if isinstance(obj, Series):
-            # Some pandas objects may not have a _repr_html_ method, or it might
-            # fail in certain environments. We fall back to a pre-formatted
-            # string representation to ensure something is always displayed.
             pd_series = pandas_df.iloc[:, 0]
             try:
-                # TODO(b/464053870): Support rich display for blob Series.
                 html_string = pd_series._repr_html_()
             except AttributeError:
                 html_string = f"<pre>{pd_series.to_string()}</pre>"
@@ -212,26 +207,8 @@ def create_html_representation(
                 html_string += f"<p>[{total_rows} rows]</p>"
             return html_string
         else:
-            # It's a DataFrame
-            # TODO(shuowei, b/464053870): Escaping HTML would be useful, but
-            # `escape=False` is needed to show images. We may need to implement
-            # a full-fledged repr module to better support types not in pandas.
-            if options.display.blob_display and blob_cols:
-                formatters = {blob_col: _obj_ref_rt_to_html for blob_col in blob_cols}
-
-                # set max_colwidth so not to truncate the image url
-                with pandas.option_context("display.max_colwidth", None):
-                    html_string = pandas_df.to_html(
-                        escape=False,
-                        notebook=True,
-                        max_rows=pandas.get_option("display.max_rows"),
-                        max_cols=pandas.get_option("display.max_columns"),
-                        show_dimensions=pandas.get_option("display.show_dimensions"),
-                        formatters=formatters,  # type: ignore
-                    )
-            else:
-                # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
-                html_string = pandas_df._repr_html_()  # type:ignore
+            # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
+            html_string = pandas_df._repr_html_()  # type:ignore
 
             html_string += f"[{total_rows} rows x {total_columns} columns in total]"
             return html_string
@@ -265,7 +242,7 @@ def get_anywidget_bundle(
     if isinstance(obj, Series):
         df = obj.to_frame()
     else:
-        df, blob_cols = obj._get_display_df_and_blob_cols()
+        df, _ = obj._get_display_df_and_blob_cols()
 
     widget = display.TableWidget(df)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
@@ -288,7 +265,6 @@ def get_anywidget_bundle(
         cached_pd,
         total_rows,
         total_columns,
-        blob_cols if "blob_cols" in locals() else [],
     )
     is_series, has_index = _get_obj_metadata(obj)
     widget_repr["text/plain"] = plaintext.create_text_representation(
@@ -317,14 +293,12 @@ def repr_mimebundle_head(
     from bigframes.series import Series
 
     opts = options.display
-    blob_cols: list[str]
     if isinstance(obj, Series):
         pandas_df, row_count, query_job = obj._block.retrieve_repr_request_results(
             opts.max_rows
         )
-        blob_cols = []
     else:
-        df, blob_cols = obj._get_display_df_and_blob_cols()
+        df, _ = obj._get_display_df_and_blob_cols()
         pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
             opts.max_rows
         )
@@ -332,9 +306,7 @@ def repr_mimebundle_head(
     obj._set_internal_query_job(query_job)
     column_count = len(pandas_df.columns)
 
-    html_string = create_html_representation(
-        obj, pandas_df, row_count, column_count, blob_cols
-    )
+    html_string = create_html_representation(obj, pandas_df, row_count, column_count)
 
     is_series, has_index = _get_obj_metadata(obj)
     text_representation = plaintext.create_text_representation(

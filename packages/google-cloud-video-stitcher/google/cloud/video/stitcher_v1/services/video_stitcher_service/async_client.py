@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -393,11 +393,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cdn_key(request=request)
+                operation = await client.create_cdn_key(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -792,11 +792,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cdn_key(request=request)
+                operation = await client.delete_cdn_key(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -929,11 +929,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_cdn_key(request=request)
+                operation = await client.update_cdn_key(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2061,11 +2061,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_slate(request=request)
+                operation = await client.create_slate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2448,11 +2448,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_slate(request=request)
+                operation = await client.update_slate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2588,11 +2588,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_slate(request=request)
+                operation = await client.delete_slate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2978,11 +2978,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_live_config(request=request)
+                operation = await client.create_live_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3370,11 +3370,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_live_config(request=request)
+                operation = await client.delete_live_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3512,11 +3512,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_live_config(request=request)
+                operation = await client.update_live_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3662,11 +3662,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_vod_config(request=request)
+                operation = await client.create_vod_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4054,11 +4054,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_vod_config(request=request)
+                operation = await client.delete_vod_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4196,11 +4196,11 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_vod_config(request=request)
+                operation = await client.update_vod_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

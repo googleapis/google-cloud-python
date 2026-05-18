@@ -861,7 +861,7 @@ def test_mrd_concurrent_download_cancellation(
     Tests that downloading gracefully manages memory and internal references
     when tasks are canceled during active multiplexing, without breaking remaining downloads.
     """
-    object_size = 5 * 1024 * 1024  # 5MB
+    object_size = 20 * 1024 * 1024  # 20MB
     object_name = f"test_mrd_cancel-{uuid.uuid4()}"
 
     async def _run():
@@ -878,7 +878,7 @@ def test_mrd_concurrent_download_cancellation(
             grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             tasks = []
-            num_chunks = 100
+            num_chunks = 40
             chunk_size = object_size // num_chunks
             buffers = [BytesIO() for _ in range(num_chunks)]
 
@@ -890,8 +890,8 @@ def test_mrd_concurrent_download_cancellation(
                     )
                 )
 
-            # Let the loop start sending Bidi requests
-            await asyncio.sleep(0.01)
+            # Yield control to event loop so tasks send Bidi requests, but do not wait for server responses
+            await asyncio.sleep(0)
 
             # Cancel a subset of evenly distributed tasks
             for i in range(0, num_chunks, 2):

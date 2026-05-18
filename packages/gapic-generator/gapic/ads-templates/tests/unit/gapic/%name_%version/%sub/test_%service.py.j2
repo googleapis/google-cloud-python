@@ -4,7 +4,7 @@
 {% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import re
 {% endif %}
 from unittest import mock
@@ -692,7 +692,7 @@ def test_{{ method_name }}_empty_call():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert re.fullmatch(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -730,7 +730,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert re.fullmatch(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}

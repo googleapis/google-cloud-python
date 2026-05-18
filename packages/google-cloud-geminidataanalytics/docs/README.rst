@@ -3,7 +3,9 @@ Python Client for Data Analytics API with Gemini
 
 |preview| |pypi| |versions|
 
-`Data Analytics API with Gemini`_: Developers can use the Conversational Analytics API, accessed through geminidataanalytics.googleapis.com, to build an artificial intelligence (AI)-powered chat interface, or data agent, that answers questions about structured data in BigQuery, Looker, and Looker Studio using natural language.
+`Data Analytics API with Gemini`_: The Gemini Data Analytics API enables developers to build intelligent data
+analytics applications. Leverage AI-powered chat interfaces to allow users
+to interact with and analyze structured data using natural language.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -82,6 +82,10 @@ class GeneratorEvaluationsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GeneratorEvaluationsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GeneratorEvaluationsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(GeneratorEvaluationsClient.app_path)
+    parse_app_path = staticmethod(GeneratorEvaluationsClient.parse_app_path)
+    ces_tool_path = staticmethod(GeneratorEvaluationsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(GeneratorEvaluationsClient.parse_ces_tool_path)
     generator_path = staticmethod(GeneratorEvaluationsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorEvaluationsClient.parse_generator_path)
     generator_evaluation_path = staticmethod(
@@ -92,6 +96,8 @@ class GeneratorEvaluationsAsyncClient:
     )
     tool_path = staticmethod(GeneratorEvaluationsClient.tool_path)
     parse_tool_path = staticmethod(GeneratorEvaluationsClient.parse_tool_path)
+    toolset_path = staticmethod(GeneratorEvaluationsClient.toolset_path)
+    parse_toolset_path = staticmethod(GeneratorEvaluationsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         GeneratorEvaluationsClient.common_billing_account_path
     )
@@ -359,11 +365,11 @@ class GeneratorEvaluationsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_generator_evaluation(request=request)
+                operation = await client.create_generator_evaluation(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

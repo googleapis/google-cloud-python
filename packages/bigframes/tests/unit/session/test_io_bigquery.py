@@ -66,18 +66,6 @@ def test_create_job_configs_labels_always_includes_bigframes_api():
     }
 
 
-def test_create_job_configs_labels_includes_extra_query_labels():
-    user_labels = {"my-label-1": "my-value-1", "my-label-2": "my-value-2"}
-
-    with bigframes.option_context("compute.extra_query_labels", user_labels):
-        labels = io_bq.create_job_configs_labels(None, [])
-        assert labels == {
-            "my-label-1": "my-value-1",
-            "my-label-2": "my-value-2",
-            "bigframes-api": "unknown",
-        }
-
-
 def test_create_job_configs_labels_length_limit_not_met():
     cur_labels = {
         "source": "bigquery-dataframes-temp",
@@ -197,7 +185,7 @@ def test_add_and_trim_labels_length_limit_met():
     ("timeout", "api_name"),
     [(None, None), (30.0, "test_api")],
 )
-def test_start_query_with_client_labels_length_limit_met(
+def test_start_query_with_job_labels_length_limit_met(
     mock_bq_client: bigquery.Client, timeout: Optional[float], api_name
 ):
     sql = "select * from abc"
@@ -221,7 +209,7 @@ def test_start_query_with_client_labels_length_limit_met(
     for _ in range(52):
         df.head()
 
-    io_bq.start_query_with_client(
+    io_bq.start_query_with_job(
         mock_bq_client,
         sql,
         job_config=job_config,
@@ -229,7 +217,6 @@ def test_start_query_with_client_labels_length_limit_met(
         project=None,
         timeout=timeout,
         metrics=None,
-        query_with_job=True,
         publisher=bigframes.core.events.Publisher(),
     )
 

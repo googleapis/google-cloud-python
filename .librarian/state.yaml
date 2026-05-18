@@ -14,7 +14,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
-    version: 2.39.0
+    version: 2.40.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -74,7 +74,7 @@ libraries:
       - packages/django-google-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.31.0
+    version: 1.32.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -387,7 +387,7 @@ libraries:
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.52.0
+    version: 2.53.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -2812,6 +2812,7 @@ libraries:
         service_config: geminidataanalytics_v1beta.yaml
       - path: google/cloud/geminidataanalytics/v1alpha
         service_config: geminidataanalytics_v1alpha.yaml
+      - path: google/cloud/geminidataanalytics/v1
     source_roots:
       - packages/google-cloud-geminidataanalytics
     preserve_regex:
@@ -5509,6 +5510,22 @@ libraries:
       - packages/google-maps-geocode/tests/
       - packages/google-maps-geocode/README.rst
       - packages/google-maps-geocode/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-maps-mapmanagement
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/maps/mapmanagement/v2beta
+    source_roots:
+      - packages/google-maps-mapmanagement
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-maps-mapmanagement/.repo-metadata.json
+      - packages/google-maps-mapmanagement/noxfile.py
+      - packages/google-maps-mapmanagement/tests/
+      - packages/google-maps-mapmanagement/README.rst
+      - packages/google-maps-mapmanagement/docs/
     tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
     version: 0.7.0

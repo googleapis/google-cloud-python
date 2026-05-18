@@ -104,6 +104,23 @@ def test_progress_bar_load_jobs(
     assert_loading_msg_exist(capsys.readouterr().out, pattern="Load")
 
 
+def test_progress_bar_uniqueness_check(session: bf.Session, capsys):
+    # Ensure strictly_ordered is True (default) to trigger uniqueness check
+    assert session._strictly_ordered
+
+    capsys.readouterr()  # clear output
+
+    with bf.option_context("display.progress_bar", "terminal"):
+        # Read a table and specify a non-unique index_col to trigger the check.
+        # We use a public table to make it a "real" test.
+        session.read_gbq_table(
+            "bigquery-public-data.ml_datasets.penguins",
+            index_col="island",
+        )
+
+    assert_loading_msg_exist(capsys.readouterr().out)
+
+
 def assert_loading_msg_exist(capstdout: str, pattern=job_load_message_regex):
     num_loading_msg = 0
     lines = capstdout.split("\n")

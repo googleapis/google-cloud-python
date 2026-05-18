@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.agents import AgentsAsyncClient, AgentsClient
 from .services.answer_records import AnswerRecordsAsyncClient, AnswerRecordsClient
@@ -105,6 +99,8 @@ from .types.audio_config import (
     TelephonyDtmfEvents,
     VoiceSelectionParams,
 )
+from .types.ces_app import CesAppSpec
+from .types.ces_tool import CesToolSpec
 from .types.context import (
     Context,
     CreateContextRequest,
@@ -136,6 +132,7 @@ from .types.conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
     SearchKnowledgeAnswer,
+    SearchKnowledgeDebugInfo,
     SearchKnowledgeRequest,
     SearchKnowledgeResponse,
     SuggestConversationSummaryRequest,
@@ -290,15 +287,18 @@ from .types.participant import (
     CompileSuggestionRequest,
     CompileSuggestionResponse,
     CreateParticipantRequest,
+    DatastoreResponseReason,
     DialogflowAssistAnswer,
     DtmfParameters,
     FaqAnswer,
     GenerateSuggestionsResponse,
     GetParticipantRequest,
+    IngestedContextReferenceDebugInfo,
     InputTextConfig,
     IntentInput,
     IntentSuggestion,
     KnowledgeAssistAnswer,
+    KnowledgeAssistDebugInfo,
     ListParticipantsRequest,
     ListParticipantsResponse,
     ListSuggestionsRequest,
@@ -308,6 +308,7 @@ from .types.participant import (
     OutputAudio,
     Participant,
     ResponseMessage,
+    ServiceLatency,
     SmartReplyAnswer,
     StreamingAnalyzeContentRequest,
     StreamingAnalyzeContentResponse,
@@ -380,6 +381,7 @@ from .types.tool import (
     UpdateToolRequest,
 )
 from .types.tool_call import ToolCall, ToolCallResult
+from .types.toolset import ToolsetTool
 from .types.validation_result import ValidationError, ValidationResult
 from .types.version import (
     CreateVersionRequest,
@@ -401,28 +403,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.dialogflow_v2beta1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -541,6 +532,8 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "BidiStreamingAnalyzeContentRequest",
     "BidiStreamingAnalyzeContentResponse",
+    "CesAppSpec",
+    "CesToolSpec",
     "ClearSuggestionFeatureConfigOperationMetadata",
     "ClearSuggestionFeatureConfigRequest",
     "CloudConversationDebuggingInfo",
@@ -574,6 +567,7 @@ __all__ = (
     "CreateToolRequest",
     "CreateVersionRequest",
     "CustomPronunciationParams",
+    "DatastoreResponseReason",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
@@ -662,6 +656,7 @@ __all__ = (
     "InferenceParameter",
     "IngestContextReferencesRequest",
     "IngestContextReferencesResponse",
+    "IngestedContextReferenceDebugInfo",
     "InitializeEncryptionSpecMetadata",
     "InitializeEncryptionSpecRequest",
     "InitializeEncryptionSpecResponse",
@@ -675,6 +670,7 @@ __all__ = (
     "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeAssistAnswer",
+    "KnowledgeAssistDebugInfo",
     "KnowledgeBase",
     "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
@@ -739,11 +735,13 @@ __all__ = (
     "SearchAgentsRequest",
     "SearchAgentsResponse",
     "SearchKnowledgeAnswer",
+    "SearchKnowledgeDebugInfo",
     "SearchKnowledgeRequest",
     "SearchKnowledgeResponse",
     "Sentiment",
     "SentimentAnalysisRequestConfig",
     "SentimentAnalysisResult",
+    "ServiceLatency",
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionsClient",
@@ -794,6 +792,7 @@ __all__ = (
     "ToolCall",
     "ToolCallResult",
     "ToolsClient",
+    "ToolsetTool",
     "TrainAgentRequest",
     "TriggerEvent",
     "UndeletePhoneNumberRequest",

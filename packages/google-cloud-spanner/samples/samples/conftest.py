@@ -29,6 +29,9 @@ INSTANCE_CREATION_TIMEOUT = 560  # seconds
 OPERATION_TIMEOUT_SECONDS = 120  # seconds
 
 retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
+retry_cleanup = retry.RetryErrors(
+    (exceptions.ResourceExhausted, exceptions.FailedPrecondition), max_tries=6, delay=15
+)
 
 
 @pytest.fixture(scope="module")
@@ -60,12 +63,22 @@ def spanner_client():
 
 
 def scrub_instance_ignore_not_found(to_scrub):
-    """Helper for func:`cleanup_old_instances`"""
+    """Robustly delete an instance, its databases, and backups."""
     try:
-        for backup_pb in to_scrub.list_backups():
-            backup.Backup.from_pb(backup_pb, to_scrub).delete()
+        for database_pb in to_scrub.list_databases():
+            try:
+                database.Database.from_pb(database_pb, to_scrub).drop()
+            except exceptions.GoogleAPICallError:
+                pass
 
-        retry_429(to_scrub.delete)()
+        for backup_pb in to_scrub.list_backups():
+            try:
+                b = backup.Backup.from_pb(backup_pb, to_scrub)
+                retry_cleanup(b.delete)()
+            except exceptions.GoogleAPICallError:
+                pass
+
+        retry_cleanup(to_scrub.delete)()
     except exceptions.NotFound:
         pass
 
@@ -154,13 +167,7 @@ def sample_instance(
 
     yield sample_instance
 
-    for database_pb in sample_instance.list_databases():
-        database.Database.from_pb(database_pb, sample_instance).drop()
-
-    for backup_pb in sample_instance.list_backups():
-        backup.Backup.from_pb(backup_pb, sample_instance).delete()
-
-    sample_instance.delete()
+    scrub_instance_ignore_not_found(sample_instance)
 
 
 @pytest.fixture(scope="module")
@@ -189,13 +196,7 @@ def multi_region_instance(
 
     yield multi_region_instance
 
-    for database_pb in multi_region_instance.list_databases():
-        database.Database.from_pb(database_pb, multi_region_instance).drop()
-
-    for backup_pb in multi_region_instance.list_backups():
-        backup.Backup.from_pb(backup_pb, multi_region_instance).delete()
-
-    multi_region_instance.delete()
+    scrub_instance_ignore_not_found(multi_region_instance)
 
 
 @pytest.fixture(scope="module")

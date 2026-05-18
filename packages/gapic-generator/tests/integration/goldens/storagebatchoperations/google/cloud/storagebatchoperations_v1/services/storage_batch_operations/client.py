@@ -20,6 +20,7 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+import uuid
 import warnings
 
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
@@ -1004,6 +1005,9 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             )),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1107,6 +1111,9 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             )),
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1205,6 +1212,9 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
                 ("name", request.name),
             )),
         )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._validate_universe_domain()

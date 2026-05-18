@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1230,7 +1224,7 @@ def test_add_peering_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_peering_rest_unset_required_fields():
@@ -1436,7 +1430,7 @@ def test_add_peering_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_peering_unary_rest_unset_required_fields():
@@ -1639,7 +1633,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteNetworkRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -1835,7 +1829,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteNetworkReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -2025,7 +2019,7 @@ def test_get_rest_required_fields(request_type=compute.GetNetworkRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -2224,7 +2218,7 @@ def test_get_effective_firewalls_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_effective_firewalls_rest_unset_required_fields():
@@ -2417,7 +2411,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertNetworkRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -2609,7 +2603,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertNetworkReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -2804,7 +2798,7 @@ def test_list_rest_required_fields(request_type=compute.ListNetworksRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -3074,7 +3068,7 @@ def test_list_peering_routes_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_peering_routes_rest_unset_required_fields():
@@ -3345,7 +3339,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchNetworkRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -3545,7 +3539,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchNetworkReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -3747,7 +3741,7 @@ def test_remove_peering_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_peering_rest_unset_required_fields():
@@ -3953,7 +3947,7 @@ def test_remove_peering_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_peering_unary_rest_unset_required_fields():
@@ -4164,7 +4158,7 @@ def test_request_remove_peering_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_request_remove_peering_rest_unset_required_fields():
@@ -4375,7 +4369,7 @@ def test_request_remove_peering_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_request_remove_peering_unary_rest_unset_required_fields():
@@ -4585,7 +4579,7 @@ def test_switch_to_custom_mode_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_switch_to_custom_mode_rest_unset_required_fields():
@@ -4788,7 +4782,7 @@ def test_switch_to_custom_mode_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_switch_to_custom_mode_unary_rest_unset_required_fields():
@@ -4987,7 +4981,7 @@ def test_update_peering_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_peering_rest_unset_required_fields():
@@ -5193,7 +5187,7 @@ def test_update_peering_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_peering_unary_rest_unset_required_fields():

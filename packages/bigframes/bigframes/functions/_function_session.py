@@ -20,18 +20,18 @@ import functools
 import inspect
 import sys
 import threading
+import warnings
 from typing import (
+    TYPE_CHECKING,
     Any,
-    cast,
     Dict,
     Literal,
     Mapping,
     Optional,
     Sequence,
-    TYPE_CHECKING,
     Union,
+    cast,
 )
-import warnings
 
 import google.api_core.exceptions
 from google.cloud import (
@@ -41,9 +41,9 @@ from google.cloud import (
     resourcemanager_v3,
 )
 
-from bigframes import clients
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
+from bigframes import clients
 from bigframes.functions import function as bq_functions
 from bigframes.functions import udf_def
 
@@ -824,7 +824,7 @@ class FunctionSession:
                 bq_connection_manager,
                 session=session,  # type: ignore
             )
-            code_def = udf_def.CodeDef.from_func(func)
+            code_def = udf_def.CodeDef.from_func(func, package_requirements=packages)
             config = udf_def.ManagedFunctionConfig(
                 code=code_def,
                 signature=udf_sig,

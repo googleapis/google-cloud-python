@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -340,11 +340,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_recognizer(request=request)
+                operation = await client.create_recognizer(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -733,11 +733,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_recognizer(request=request)
+                operation = await client.update_recognizer(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -876,11 +876,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_recognizer(request=request)
+                operation = await client.delete_recognizer(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1004,11 +1004,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undelete_recognizer(request=request)
+                operation = await client.undelete_recognizer(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1507,11 +1507,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_recognize(request=request)
+                operation = await client.batch_recognize(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1929,11 +1929,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_custom_class(request=request)
+                operation = await client.create_custom_class(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2324,11 +2324,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_custom_class(request=request)
+                operation = await client.update_custom_class(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2467,11 +2467,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_custom_class(request=request)
+                operation = await client.delete_custom_class(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2595,11 +2595,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undelete_custom_class(request=request)
+                operation = await client.undelete_custom_class(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2726,11 +2726,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_phrase_set(request=request)
+                operation = await client.create_phrase_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3119,11 +3119,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_phrase_set(request=request)
+                operation = await client.update_phrase_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3261,11 +3261,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_phrase_set(request=request)
+                operation = await client.delete_phrase_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3388,11 +3388,11 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undelete_phrase_set(request=request)
+                operation = await client.undelete_phrase_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
