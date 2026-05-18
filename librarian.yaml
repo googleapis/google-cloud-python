@@ -852,7 +852,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/datacatalog/lineage/v1
-    skip_generate: true
     python:
       metadata_name_override: lineage
       default_version: v1
