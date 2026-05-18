@@ -1,0 +1,62 @@
+# Code generation for bigframes.bigquery
+
+This document describes code generation for the `bigframes.bigquery` modules.
+For detailed specifications on input and output types, refer to
+[Contributing to bigframes.bigquery](./bigframes-bigquery-contributing.md).
+
+## Overview
+
+The script at `packages/bigframes/scripts/generate_bigframes_bigquery.py`
+generates python submodules for the `bigframes.bigquery` module. When run
+without any arguments, it iterates through all yaml files at
+`packages/bigframes/scripts/data/sql-functions/**/*.yaml` to generate the code.
+
+The script at `packages/bigframes/scripts/check_bigframes_bigquery.py` iterates
+through all the same yaml files and checks that the functions have been included
+in the `bigframes.bigquery` module, as the `__init__.py` file requires manual
+updates.
+
+## Generated code organization
+
+The `generate_bigframes_bigquery.py` script generates submodules of
+`bigframes.bigquery._operations`, with the full path reflecting the organization
+of the YAML files. For example, a YAML file at
+`packages/bigframes/scripts/data/sql-functions/aead.yaml` corresponds to a
+generated Python module at `bigframes.bigquery._operations.aead`. Likewise,
+`packages/bigframes/scripts/data/sql-functions/builtins/bit.yaml` corresponds
+to the `bigframes.bigquery._operations.builtins.bit` submodule.
+
+## Generated module implementation
+
+Each generated module has all functions defined in the YAML file converted to
+the equivalent Python definition, including keyword arguments and docstrings.
+
+### Handling optional arguments
+
+When the user calls a Python function without specifying the optional
+argument, that argument is omitted from the SQL text. To allow for explicit
+NULL values to be passed in (None in Python), the default value is specified
+to be a default sentinel value enum `bigframes.core.sentinels.DEFAULT`. For
+example:
+
+```python
+import bigframes.core.sentinels
+
+def current_date(
+    time_zone_expression: str | bigframes.core.sentinels.Default = bigframes.core.sentinels.DEFAULT,
+):
+    ...
+```
+
+### Input and output types
+
+Refer to the table in
+[Contributing to bigframes.bigquery](./bigframes-bigquery-contributing.md).
+
+### Internal bigframes operator
+
+Scalar functions should generate an expression using the `GoogleSqlScalarOp`.
+This keeps the implementation as scalar SQL functions consistent.
+
+Aggregate, analytic, and table-valued functions currently require custom ops. As
+such, those functions are currently out of scope for this generator.
