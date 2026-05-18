@@ -16,9 +16,10 @@ import datetime
 import os
 import unittest.mock
 
-import bigframes.session.metrics as metrics
 import google.cloud.bigquery as bigquery
 import pytest
+
+import bigframes.session.metrics as metrics
 
 NOW = datetime.datetime.now(datetime.timezone.utc)
 
