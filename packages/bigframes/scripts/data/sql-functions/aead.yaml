@@ -1,0 +1,216 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "aead.decrypt_bytes"
+    description: "GoogleSQL scalar function aead.decrypt_bytes"
+    impls:
+      # Signature: aead.decrypt_bytes:vbin_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.decrypt_bytes:struct_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+  - name: "aead.decrypt_string"
+    description: "GoogleSQL scalar function aead.decrypt_string"
+    impls:
+      # Signature: aead.decrypt_string:vbin_vbin_str
+      - args:
+          - name: "arg0"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string
+      # Signature: aead.decrypt_string:struct_vbin_str
+      - args:
+          - name: "arg0"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string
+  - name: "aead.encrypt"
+    description: "GoogleSQL scalar function aead.encrypt"
+    impls:
+      # Signature: aead.encrypt:vbin_str_str
+      - args:
+          - name: "arg0"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: string
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:vbin_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:struct_str_str
+      - args:
+          - name: "arg0"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: string
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:struct_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+  - name: "aead.envelope_decrypt_bytes"
+    description: "GoogleSQL scalar function aead.envelope_decrypt_bytes"
+    impls:
+      # Signature: aead.envelope_decrypt_bytes:str_vbin_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg3"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+  - name: "aead.envelope_decrypt_string"
+    description: "GoogleSQL scalar function aead.envelope_decrypt_string"
+    impls:
+      # Signature: aead.envelope_decrypt_string:str_vbin_vbin_str
+      - args:
+          - name: "arg0"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg3"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string
+  - name: "aead.envelope_encrypt"
+    description: "GoogleSQL scalar function aead.envelope_encrypt"
+    impls:
+      # Signature: aead.envelope_encrypt:str_vbin_str_str
+      - args:
+          - name: "arg0"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg3"
+            value: string
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.envelope_encrypt:str_vbin_vbin_vbin
+      - args:
+          - name: "arg0"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "arg1"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg2"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "arg3"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
