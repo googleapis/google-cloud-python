@@ -1430,7 +1430,6 @@ libraries:
     version: 2.30.0
     apis:
       - path: google/monitoring/v3
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
