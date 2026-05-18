@@ -1299,7 +1299,7 @@ def test_blob_contexts(shared_bucket, blobs_to_delete):
 
 
 def test_blob_contexts_custom_setter(shared_bucket, blobs_to_delete):
-    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+    from google.cloud.storage.blob import ObjectCustomContextPayload
 
     blob_name = f"ObjectContextsCustomSetter-{uuid.uuid4().hex}"
     blob = shared_bucket.blob(blob_name)
