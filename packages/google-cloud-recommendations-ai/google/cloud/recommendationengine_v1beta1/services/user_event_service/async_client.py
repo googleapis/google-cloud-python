@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -849,11 +849,11 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.purge_user_events(request=request)
+                operation = await client.purge_user_events(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1024,11 +1024,11 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_user_events(request=request)
+                operation = await client.import_user_events(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

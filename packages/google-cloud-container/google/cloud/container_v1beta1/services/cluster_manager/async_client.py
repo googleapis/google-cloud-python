@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -5138,7 +5138,7 @@ class ClusterManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cluster_service.NodePoolUpgradeInfo:
-        r"""Fetch upgrade information of a specific nodepool.
+        r"""Fetch upgrade information of a specific node pool.
 
         .. code-block:: python
 
@@ -5170,12 +5170,12 @@ class ClusterManagerAsyncClient:
             request (Optional[Union[google.cloud.container_v1beta1.types.FetchNodePoolUpgradeInfoRequest, dict]]):
                 The request object. FetchNodePoolUpgradeInfoRequest
                 fetches the upgrade information of a
-                nodepool.
+                node pool.
             name (:class:`str`):
-                Required. The name (project, location, cluster,
-                nodepool) of the nodepool to get. Specified in the
-                format ``projects/*/locations/*/clusters/*/nodePools/*``
-                or ``projects/*/zones/*/clusters/*/nodePools/*``.
+                Required. The name (project, location, cluster, node
+                pool) of the node pool to get. Specified in the format
+                ``projects/*/locations/*/clusters/*/nodePools/*`` or
+                ``projects/*/zones/*/clusters/*/nodePools/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5191,7 +5191,7 @@ class ClusterManagerAsyncClient:
         Returns:
             google.cloud.container_v1beta1.types.NodePoolUpgradeInfo:
                 NodePoolUpgradeInfo contains the
-                upgrade information of a nodepool.
+                upgrade information of a node pool.
 
         """
         # Create or coerce a protobuf request object.

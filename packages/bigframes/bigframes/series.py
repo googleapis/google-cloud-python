@@ -68,7 +68,6 @@ import bigframes.formatting_helpers as formatter
 import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.operations.blob as blob
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
@@ -319,18 +318,6 @@ class Series:
     @property
     def list(self) -> lists.ListAccessor:
         return lists.ListAccessor(self)
-
-    @property
-    def blob(self) -> blob.BlobAccessor:
-        """
-        Accessor for Blob operations.
-        """
-        warnings.warn(
-            "The blob accessor is deprecated and will be removed in a future release. Use bigframes.bigquery.obj functions instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        return blob.BlobAccessor(self)
 
     @property
     @validations.requires_ordering()
@@ -1559,7 +1546,7 @@ class Series:
         """ "Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition)
             # When it's a plain Python function.
             else:
@@ -2050,7 +2037,7 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if isinstance(func, bigframes.functions.Udf):
             # We are working with bigquery function at this point
             if args:
                 result_series = self._apply_nary_op(
@@ -2111,7 +2098,7 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if isinstance(func, bigframes.functions.Udf):
             result_series = self._apply_binary_op(
                 other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
             )

@@ -54,7 +54,9 @@ class JobMetadata:
 
     @classmethod
     def from_job(
-        cls, query_job: Union[QueryJob, LoadJob], exec_seconds: Optional[float] = None
+        cls,
+        query_job: Union[QueryJob, LoadJob],
+        exec_seconds: Optional[float] = None,
     ) -> "JobMetadata":
         query_text = getattr(query_job, "query", None)
         if query_text and len(query_text) > 1024:
@@ -63,7 +65,11 @@ class JobMetadata:
         job_id = getattr(query_job, "job_id", None)
         job_url = None
         if job_id:
-            job_url = f"https://console.cloud.google.com/bigquery?project={query_job.project}&j=bq:{query_job.location}:{job_id}&page=queryresults"
+            job_url = (
+                f"https://console.cloud.google.com/bigquery?"
+                f"project={query_job.project}&j=bq:{query_job.location}:"
+                f"{job_id}&page=queryresults"
+            )
 
         metadata = cls(
             job_id=query_job.job_id,
@@ -108,7 +114,9 @@ class JobMetadata:
 
     @classmethod
     def from_row_iterator(
-        cls, row_iterator: bq_table.RowIterator, exec_seconds: Optional[float] = None
+        cls,
+        row_iterator: bq_table.RowIterator,
+        exec_seconds: Optional[float] = None,
     ) -> "JobMetadata":
         query_text = getattr(row_iterator, "query", None)
         if query_text and len(query_text) > 1024:
@@ -119,8 +127,12 @@ class JobMetadata:
         if job_id:
             project = getattr(row_iterator, "project", "")
             location = getattr(row_iterator, "location", "")
-            job_url = f"https://console.cloud.google.com/bigquery?project={project}&j=bq:{location}:{job_id}&page=queryresults"
+            job_url = (
+                f"https://console.cloud.google.com/bigquery?"
+                f"project={project}&j=bq:{location}:{job_id}&page=queryresults"
+            )
 
+        # fmt: off
         return cls(
             job_id=job_id,
             query_id=getattr(row_iterator, "query_id", None),
@@ -131,13 +143,16 @@ class JobMetadata:
             end_time=getattr(row_iterator, "ended", None),
             duration_seconds=exec_seconds,
             status="DONE",
-            total_bytes_processed=getattr(row_iterator, "total_bytes_processed", None),
+            total_bytes_processed=getattr(
+                row_iterator, "total_bytes_processed", None
+            ),
             total_slot_ms=getattr(row_iterator, "slot_millis", None),
             job_type="query",
             cached=getattr(row_iterator, "cache_hit", None),
             query=query_text,
             job_url=job_url,
         )
+        # fmt: on
 
 
 @dataclasses.dataclass
@@ -149,6 +164,7 @@ class ExecutionMetrics:
     query_char_count: int = 0
     jobs: list[JobMetadata] = dataclasses.field(default_factory=list)
 
+    # fmt: off
     def count_job_stats(
         self,
         query_job: Optional[Union[QueryJob, LoadJob]] = None,
@@ -157,8 +173,11 @@ class ExecutionMetrics:
         if query_job is None:
             assert row_iterator is not None
 
-            # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
-            bytes_processed = getattr(row_iterator, "total_bytes_processed", 0) or 0
+            # TODO(tswast): Pass None after making benchmark publishing robust
+            # to missing data.
+            bytes_processed = (
+                getattr(row_iterator, "total_bytes_processed", 0) or 0
+            )
             query_char_count = len(getattr(row_iterator, "query", "") or "")
             slot_millis = getattr(row_iterator, "slot_millis", 0) or 0
             created = getattr(row_iterator, "created", None)
@@ -174,27 +193,40 @@ class ExecutionMetrics:
             self.execution_secs += exec_seconds
 
             self.jobs.append(
-                JobMetadata.from_row_iterator(row_iterator, exec_seconds=exec_seconds)
+                JobMetadata.from_row_iterator(
+                    row_iterator, exec_seconds=exec_seconds
+                )
             )
 
-        elif isinstance(query_job, QueryJob) and query_job.configuration.dry_run:
+        elif (
+            isinstance(query_job, QueryJob)
+            and query_job.configuration.dry_run
+        ):
             query_char_count = len(getattr(query_job, "query", ""))
 
-            # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
+            # TODO(tswast): Pass None after making benchmark publishing robust
+            # to missing data.
             bytes_processed = 0
             slot_millis = 0
             exec_seconds = 0.0
 
         elif isinstance(query_job, bigquery.QueryJob):
             if (stats := get_performance_stats(query_job)) is not None:
-                query_char_count, bytes_processed, slot_millis, exec_seconds = stats
+                (
+                    query_char_count,
+                    bytes_processed,
+                    slot_millis,
+                    exec_seconds,
+                ) = stats
                 self.execution_count += 1
                 self.query_char_count += query_char_count or 0
                 self.bytes_processed += bytes_processed or 0
                 self.slot_millis += slot_millis or 0
                 self.execution_secs += exec_seconds or 0
 
-                metadata = JobMetadata.from_job(query_job, exec_seconds=exec_seconds)
+                metadata = JobMetadata.from_job(
+                    query_job, exec_seconds=exec_seconds
+                )
                 self.jobs.append(metadata)
 
         else:
@@ -204,7 +236,9 @@ class ExecutionMetrics:
                 if query_job.ended and query_job.created
                 else None
             )
-            self.jobs.append(JobMetadata.from_job(query_job, exec_seconds=duration))
+            self.jobs.append(
+                JobMetadata.from_job(query_job, exec_seconds=duration)
+            )
 
         # For pytest runs only, log information about the query job
         # to a file in order to create a performance report.
@@ -221,7 +255,9 @@ class ExecutionMetrics:
                     exec_seconds=stats[3],
                 )
         elif row_iterator is not None:
-            bytes_processed = getattr(row_iterator, "total_bytes_processed", 0) or 0
+            bytes_processed = (
+                getattr(row_iterator, "total_bytes_processed", 0) or 0
+            )
             query_char_count = len(getattr(row_iterator, "query", "") or "")
             slot_millis = getattr(row_iterator, "slot_millis", 0) or 0
             created = getattr(row_iterator, "created", None)
@@ -235,13 +271,19 @@ class ExecutionMetrics:
                 slot_millis=slot_millis,
                 exec_seconds=exec_seconds,
             )
+    # fmt: on
 
-    def on_event(self, event: Any):
+    def on_event(self, envelope: Any):
         try:
             import bigframes.core.events
             from bigframes.session.executor import LocalExecuteResult
         except ImportError:
             return
+
+        # Publisher.publish automatically wraps raw Event objects in an
+        # EventEnvelope, ensuring subscribers receive a consistent contract.
+        assert isinstance(envelope, bigframes.core.events.EventEnvelope)
+        event = envelope.event
 
         if isinstance(event, bigframes.core.events.ExecutionFinished):
             if event.result and isinstance(event.result, LocalExecuteResult):

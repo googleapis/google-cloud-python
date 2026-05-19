@@ -382,7 +382,7 @@ replacements:
       - "packages/google-cloud-pubsub/setup.py"
     before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
     after: |-
-      \g<1>\g<2>\g<1>"grpcio-status >= 1.33.2",
+      \g<1>\g<2>\g<1>"grpcio-status >= 1.51.3",
       \g<1>"opentelemetry-api >= 1.27.0",
       \g<1>"opentelemetry-sdk >= 1.27.0",
       ]
@@ -511,3 +511,27 @@ replacements:
       \g<1>"pubsub_v1/**",
       \g<1>"_build",
     count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpc-google-iam-v1==0\.14\.0\n(?!grpcio-status)'
+    after: |-
+      grpc-google-iam-v1==0.14.0
+      grpcio-status==1.51.3
+      opentelemetry-api==1.27.0
+      opentelemetry-sdk==1.27.0
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpcio==1.44.0'
+    after: 'grpcio==1.51.3'
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '"grpcio-status >= 1\.44\.0",'
+    after: '"grpcio-status >= 1.51.3",'
+    count: 1
+
+

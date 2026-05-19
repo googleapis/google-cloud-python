@@ -142,9 +142,20 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
+    session.install(RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # Check formatting
     session.run(
         "ruff",
         "format",
@@ -709,6 +720,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
+        "notebooks/generative_ai/ai_movie_poster.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",  # Needs BUCKET_URI.
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",  # Needs BUCKET_URI.
@@ -725,6 +737,8 @@ def notebook(session: nox.Session):
         # This anywidget notebook uses deferred execution, so it won't
         # produce metrics for the performance benchmark script.
         "notebooks/dataframes/anywidget_mode.ipynb",
+        # Needs a connection
+        "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension,
@@ -1034,7 +1048,7 @@ def mypy(session):
     # Editable mode is not compatible with mypy when there are multiple
     # package directories. See:
     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-    session.install(".")
+    session.install("--no-cache-dir", ".")
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.

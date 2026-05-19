@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -653,11 +653,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_private_cloud(request=request)
+                operation = await client.create_private_cloud(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -823,11 +823,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_private_cloud(request=request)
+                operation = await client.update_private_cloud(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -980,11 +980,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_private_cloud(request=request)
+                operation = await client.delete_private_cloud(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1114,11 +1114,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.undelete_private_cloud(request=request)
+                operation = await client.undelete_private_cloud(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1493,11 +1493,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cluster(request=request)
+                operation = await client.create_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1658,11 +1658,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_cluster(request=request)
+                operation = await client.update_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1802,11 +1802,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cluster(request=request)
+                operation = await client.delete_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2572,11 +2572,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_external_address(request=request)
+                operation = await client.create_external_address(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2738,11 +2738,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_external_address(request=request)
+                operation = await client.update_external_address(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2884,11 +2884,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_external_address(request=request)
+                operation = await client.delete_external_address(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3272,11 +3272,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_subnet(request=request)
+                operation = await client.update_subnet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3669,11 +3669,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_external_access_rule(request=request)
+                operation = await client.create_external_access_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3833,11 +3833,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_external_access_rule(request=request)
+                operation = await client.update_external_access_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3976,11 +3976,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_external_access_rule(request=request)
+                operation = await client.delete_external_access_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4370,11 +4370,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_logging_server(request=request)
+                operation = await client.create_logging_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4537,11 +4537,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_logging_server(request=request)
+                operation = await client.update_logging_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4677,11 +4677,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_logging_server(request=request)
+                operation = await client.delete_logging_server(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5288,11 +5288,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reset_nsx_credentials(request=request)
+                operation = await client.reset_nsx_credentials(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5422,11 +5422,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reset_vcenter_credentials(request=request)
+                operation = await client.reset_vcenter_credentials(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5679,11 +5679,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_dns_forwarding(request=request)
+                operation = await client.update_dns_forwarding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6082,11 +6082,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_network_peering(request=request)
+                operation = await client.create_network_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6245,11 +6245,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_network_peering(request=request)
+                operation = await client.delete_network_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6391,11 +6391,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_network_peering(request=request)
+                operation = await client.update_network_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6671,11 +6671,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_hcx_activation_key(request=request)
+                operation = await client.create_hcx_activation_key(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7354,11 +7354,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_network_policy(request=request)
+                operation = await client.create_network_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7534,11 +7534,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_network_policy(request=request)
+                operation = await client.update_network_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7681,11 +7681,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_network_policy(request=request)
+                operation = await client.delete_network_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8094,11 +8094,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_management_dns_zone_binding(request=request)
+                operation = await client.create_management_dns_zone_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8271,11 +8271,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_management_dns_zone_binding(request=request)
+                operation = await client.update_management_dns_zone_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8427,11 +8427,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_management_dns_zone_binding(request=request)
+                operation = await client.delete_management_dns_zone_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8567,11 +8567,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.repair_management_dns_zone_binding(request=request)
+                operation = await client.repair_management_dns_zone_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8713,11 +8713,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_vmware_engine_network(request=request)
+                operation = await client.create_vmware_engine_network(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8887,11 +8887,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_vmware_engine_network(request=request)
+                operation = await client.update_vmware_engine_network(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -9034,11 +9034,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_vmware_engine_network(request=request)
+                operation = await client.delete_vmware_engine_network(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -9437,11 +9437,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_private_connection(request=request)
+                operation = await client.create_private_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -9855,11 +9855,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_private_connection(request=request)
+                operation = await client.update_private_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -10000,11 +10000,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_private_connection(request=request)
+                operation = await client.delete_private_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -10283,11 +10283,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.grant_dns_bind_permission(request=request)
+                operation = await client.grant_dns_bind_permission(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -10561,11 +10561,11 @@ class VmwareEngineAsyncClient:
                 )
 
                 # Make the request
-                operation = client.revoke_dns_bind_permission(request=request)
+                operation = await client.revoke_dns_bind_permission(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -16,10 +16,6 @@ try:
         InMemorySpanExporter,
     )
     from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
-    from opentelemetry.semconv.attributes.otel_attributes import (
-        OTEL_SCOPE_NAME,
-        OTEL_SCOPE_VERSION,
-    )
     from opentelemetry.trace.status import StatusCode
 
     trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))
@@ -66,8 +62,8 @@ def enrich_with_otel_scope(attrs):
     for the purpose of avoiding cumbersome duplicated imports.
     """
     if HAS_OPENTELEMETRY_INSTALLED:
-        attrs[OTEL_SCOPE_NAME] = "cloud.google.com/python/spanner"
-        attrs[OTEL_SCOPE_VERSION] = LIB_VERSION
+        attrs["otel.scope.name"] = "cloud.google.com/python/spanner"
+        attrs["otel.scope.version"] = LIB_VERSION
 
     return attrs
 

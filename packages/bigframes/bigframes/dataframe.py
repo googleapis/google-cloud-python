@@ -820,21 +820,8 @@ class DataFrame:
         )
 
     def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
-        df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        """Process ObjectRef columns for display. (Deprecated)"""
+        return self, []
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -2851,7 +2838,7 @@ class DataFrame:
         """Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition, axis=1)
 
             # When it's a plain Python function.
@@ -4685,7 +4672,7 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if not isinstance(func, bigframes.functions.Udf):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
@@ -4709,18 +4696,12 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(
-                func,
-                (
-                    bigframes.functions.BigqueryCallableRoutine,
-                    bigframes.functions.BigqueryCallableRowRoutine,
-                ),
-            ):
+            if not isinstance(func, bigframes.functions.Udf):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            if func.is_row_processor:
+            if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4849,7 +4830,7 @@ class DataFrame:
 
         # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_bigquery_function"):
+        if isinstance(func, bigframes.functions.Udf):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support BigFrames "

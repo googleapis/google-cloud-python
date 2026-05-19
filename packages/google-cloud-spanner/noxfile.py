@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 ALL_PYTHON: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -71,7 +70,6 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -220,8 +218,6 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
         "3.12",

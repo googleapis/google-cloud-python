@@ -4,13 +4,16 @@
 
 import collections.abc
 import datetime
-from typing import Any, Optional, Tuple
 import warnings
+from typing import Any, Optional, Tuple
 
-import db_dtypes
-from google.cloud.bigquery import schema
+# db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+# Remove this comment and the ignore pragma upon completing:
+# https://github.com/googleapis/google-cloud-python/issues/17045
+import db_dtypes  # type: ignore[import-untyped]
 import pandas
 import pyarrow
+from google.cloud.bigquery import schema
 
 import pandas_gbq.core.pandas
 import pandas_gbq.schema.bigquery
@@ -209,7 +212,7 @@ def value_to_bigquery_field(
     # Set the SchemaField datatype to the given default_type if the value
     # being assessed is None.
     if value is None:
-        return schema.SchemaField(name, default_type)
+        return schema.SchemaField(name, default_type or "STRING")
 
     # Map from Python types to BigQuery types. This isn't super exhaustive
     # because we rely more on pyarrow, which can check more than one value to

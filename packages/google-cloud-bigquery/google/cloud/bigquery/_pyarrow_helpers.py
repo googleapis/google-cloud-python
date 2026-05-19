@@ -26,7 +26,7 @@ from typing import Any
 try:
     import pyarrow  # type: ignore
 except ImportError:
-    pyarrow = None
+    pyarrow = None  # type: ignore[assignment]
 
 try:
     import db_dtypes  # type: ignore

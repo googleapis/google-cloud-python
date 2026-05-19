@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -406,7 +406,7 @@ class ChatServiceAsyncClient:
         (``text``), cards (``cardsV2``), and accessory widgets
         (``accessoryWidgets``).
 
-        |Message sent with app authentication async|
+        |Message sent with app authentication|
 
         The following image shows how Chat attributes a message when you
         use user authentication. Chat displays the user as the message
@@ -414,7 +414,7 @@ class ChatServiceAsyncClient:
         its name. The content of message can only contain text
         (``text``).
 
-        |Message sent with user authentication async|
+        |Message sent with user authentication|
 
         The maximum message size, including the message contents, is
         32,000 bytes.
@@ -425,8 +425,8 @@ class ChatServiceAsyncClient:
         response only populates the ``name`` and ``thread.name`` fields
         in addition to the information that was in the request.
 
-        .. |Message sent with app authentication async| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
-        .. |Message sent with user authentication async| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
+        .. |Message sent with app authentication| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         .. code-block:: python
 

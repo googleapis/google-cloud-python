@@ -128,19 +128,14 @@ def test_engines_unary_variance_aggregates(
 def test_sql_engines_median_op_aggregates(
     scalars_array_value: array_value.ArrayValue,
     bigquery_client: bigquery.Client,
+    bq_engine,
+    sqlglot_engine,
 ):
     node = apply_agg_to_all_valid(
         scalars_array_value,
         agg_ops.MedianOp(),
     ).node
-    publisher = events.Publisher()
-    left_engine = direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, publisher=publisher
-    )
-    right_engine = direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="sqlglot", publisher=publisher
-    )
-    assert_equivalence_execution(node, left_engine, right_engine)
+    assert_equivalence_execution(node, bq_engine, sqlglot_engine)
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)

@@ -13,86 +13,181 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Literal, Optional, Tuple
+import asyncio
+from typing import Callable, Literal, Mapping, Optional, Tuple
 
+import google.api_core.exceptions
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
+import google.cloud.bigquery_storage_v1
 from google.cloud import bigquery
 
+import bigframes
+import bigframes.core.compile
 import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
 import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 import bigframes.core.events
+import bigframes.core.schema as schemata
 import bigframes.session._io.bigquery as bq_io
-from bigframes.core import compile, nodes
-from bigframes.session import executor, semi_executor
+import bigframes.session.metrics
+from bigframes import exceptions as bfe
+from bigframes.core import bq_data, compile, nodes
+from bigframes.core.compile.configs import CompileRequest, CompileResult
+from bigframes.session import execution_spec, executor, semi_executor
+
+_WRITE_DISPOSITIONS = {
+    "fail": bigquery.WriteDisposition.WRITE_EMPTY,
+    "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
+    "append": bigquery.WriteDisposition.WRITE_APPEND,
+}
 
 
-# used only in testing right now, BigQueryCachingExecutor is the fully featured engine
-# simplified, doesnt not do large >10 gb result queries, error handling, respect global config
-# or record metrics. Also avoids caching, and most pre-compile rewrites, to better serve as a
-# reference for validating more complex executors.
 class DirectGbqExecutor(semi_executor.SemiExecutor):
     def __init__(
         self,
         bqclient: bigquery.Client,
-        compiler: Literal["ibis", "sqlglot"] = "ibis",
+        bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         *,
         publisher: bigframes.core.events.Publisher,
+        compiler: Literal["ibis", "sqlglot"] = "sqlglot",
+        metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
+        labels: Mapping[str, str] = {},
     ):
         self.bqclient = bqclient
-        self._compile_fn = (
-            ibis_compiler.compile_sql
-            if compiler == "ibis"
-            else sqlglot_compiler.compile_sql
-        )
+        self._compiler_name = compiler
+        self._bqstoragereadclient = bqstoragereadclient
         self._publisher = publisher
+        self._metrics = metrics
+        self._labels = labels
 
-    def execute(
+    async def execute(
         self,
         plan: nodes.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        spec: execution_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
-        # TODO(swast): plumb through the api_name of the user-facing api that
-        # caused this query.
-
-        compiled = self._compile_fn(
-            compile.CompileRequest(plan, sort_rows=ordered, peek_count=peek)
+        compiled = compile.compile_sql(
+            CompileRequest(
+                plan,
+                sort_rows=spec.ordered,
+                peek_count=spec.peek,
+            ),
+            compiler_name=self._compiler_name,
         )
+        job_config = bigquery.QueryJobConfig()
+        dest_spec = spec.destination_spec
+        cluster_cols = None
+        can_skip_job = True
+        if isinstance(dest_spec, execution_spec.TableOutputSpec):
+            job_config.destination = dest_spec.table
+            job_config.write_disposition = _WRITE_DISPOSITIONS[dest_spec.if_exists]
+            cluster_cols = dest_spec.cluster_cols if dest_spec.cluster_cols else None
+            job_config.clustering_fields = cluster_cols
+            can_skip_job = False
+        elif isinstance(dest_spec, execution_spec.EphemeralTableSpec):
+            # Need destination table, but jobless execution might not create a destination table
+            can_skip_job = False
+        elif dest_spec is not None:
+            raise ValueError(
+                f"Direct GBQ Executor does not support destination: {dest_spec}"
+            )
 
-        iterator, query_job = self._run_execute_query(
+        job_config.labels["bigframes-dtypes"] = compiled.encoded_type_refs
+        if self._labels:
+            job_config.labels.update(self._labels)
+        if spec.bigquery_config is not None:
+            if spec.bigquery_config.extra_query_labels:
+                job_config.labels.update(spec.bigquery_config.extra_query_labels)
+            if spec.bigquery_config.maximum_bytes_billed is not None:
+                job_config.maximum_bytes_billed = (
+                    spec.bigquery_config.maximum_bytes_billed
+                )
+
+        iterator, query_job = await asyncio.to_thread(
+            self._run_execute_query,
             sql=compiled.sql,
+            job_config=job_config,
+            query_with_job=(not can_skip_job),
             session=plan.session,
         )
+        result_bq_data = None
+        if query_job and query_job.destination:
+            dst = query_job.destination
+            result_bq_data = bq_data.BigqueryDataSource(
+                table=bq_data.GbqNativeTable.from_ref_and_schema(
+                    dst,
+                    tuple(compiled.sql_schema),
+                    cluster_cols=cluster_cols or (),
+                    location=iterator.location or self.bqclient.location,
+                    table_type="TABLE",
+                ),
+                schema=plan.schema,
+                ordering=compiled.row_order,
+                n_rows=iterator.total_rows,
+            )
 
-        # just immediately downlaod everything for simplicity
-        return executor.LocalExecuteResult(
-            data=iterator.to_arrow(),
-            bf_schema=plan.schema,
-            execution_metadata=executor.ExecutionMetadata.from_iterator_and_job(
-                iterator, query_job
-            ),
+        execution_metadata = executor.ExecutionMetadata.from_iterator_and_job(
+            iterator, query_job
         )
+        result_mostly_cached = (
+            hasattr(iterator, "_is_almost_completely_cached")
+            and iterator._is_almost_completely_cached()
+        )
+
+        if (isinstance(dest_spec, execution_spec.EphemeralTableSpec)) or (
+            (result_bq_data is not None) and not result_mostly_cached
+        ):
+            assert result_bq_data is not None, "expected result table but none exists"
+            return executor.BQTableExecuteResult(
+                data=result_bq_data,
+                project_id=self.bqclient.project,
+                storage_client=self._bqstoragereadclient,
+                execution_metadata=execution_metadata,
+                selected_fields=tuple((col, col) for col in plan.schema.names),
+            )
+        else:
+            return executor.LocalExecuteResult(
+                data=iterator.to_arrow().select(plan.schema.names),
+                bf_schema=plan.schema,
+                execution_metadata=execution_metadata,
+            )
 
     def _run_execute_query(
         self,
         sql: str,
-        job_config: Optional[bq_job.QueryJobConfig] = None,
-        session=None,
+        job_config: bq_job.QueryJobConfig,
+        query_with_job: bool,
+        session,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
         """
-        return bq_io.start_query_with_client(
-            self.bqclient,
-            sql,
-            job_config=job_config or bq_job.QueryJobConfig(),
-            project=None,
-            location=None,
-            timeout=None,
-            metrics=None,
-            query_with_job=False,
-            publisher=self._publisher,
-            session=session,
-        )
+        try:
+            if query_with_job:
+                return bq_io.start_query_with_job(
+                    self.bqclient,
+                    sql,
+                    job_config=job_config,
+                    metrics=self._metrics,
+                    publisher=self._publisher,
+                    session=session,
+                )
+            else:
+                return (
+                    bq_io.start_query_job_optional(
+                        self.bqclient,
+                        sql,
+                        job_config=job_config,
+                        metrics=self._metrics,
+                        publisher=self._publisher,
+                        session=session,
+                    ),
+                    None,
+                )
+        except google.api_core.exceptions.BadRequest as e:
+            # Unfortunately, this error type does not have a separate error code or exception type
+            if "Resources exceeded during query execution" in e.message:
+                new_message = "Computation is too complex to execute as a single query. Try using DataFrame.cache() on intermediate results, or setting bigframes.options.compute.enable_multi_query_execution."
+                raise bfe.QueryComplexityError(new_message) from e
+            else:
+                raise

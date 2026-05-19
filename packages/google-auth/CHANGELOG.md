@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.52.0...google-auth-v2.53.0) (2026-05-15)
+
+
+### Bug Fixes
+
+* allowlist agents-nonprod trust domains for agent identity (#17155) ([44c93d2e3012d7c7850dacda587dcb34819738ed](https://github.com/googleapis/google-cloud-python/commit/44c93d2e3012d7c7850dacda587dcb34819738ed))
+* fail-fast on invalid or non-workload certificate configs in agent identity discovery (#17116) ([f27a546127cbbae3459fda8417f86a302fa0bbae](https://github.com/googleapis/google-cloud-python/commit/f27a546127cbbae3459fda8417f86a302fa0bbae))
+
 ## [2.52.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.51.0...google-auth-v2.52.0) (2026-05-07)
 
 
