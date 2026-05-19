@@ -101,180 +101,197 @@ def to_snake_case(name):
     return name
 
 
-def main():
+def load_templates():
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    template = env.get_template("operation.py.j2")
-    test_template = env.get_template("test_operation.py.j2")
+    return env.get_template("operation.py.j2"), env.get_template("test_operation.py.j2")
+
+
+def parse_scalar_functions(data, module_name):
+    ops_list = []
+    functions_list = []
+
+    if "scalar_functions" not in data:
+        return ops_list, functions_list
+
+    for func_data in data["scalar_functions"]:
+        sql_name = func_data["name"]
+        python_name = to_snake_case(sql_name)
+        if python_name.startswith(module_name + "_"):
+            python_name = python_name[len(module_name) + 1 :]
+
+        internal_op_name = f"_{python_name.upper()}_OP"
+
+        # Aggregate args across impls
+        args_by_name = {}
+        arg_order = []
+        for impl in func_data["impls"]:
+            for arg in impl["args"]:
+                name = arg["name"]
+                if name not in args_by_name:
+                    args_by_name[name] = {
+                        "types": set(),
+                        "optional": arg["optional"],
+                        "keyword_only": arg["keyword_only"],
+                    }
+                    arg_order.append(name)
+                args_by_name[name]["types"].add(arg["value"])
+
+        # Build ArgSpecs
+        arg_specs = []
+        for name in arg_order:
+            arg_info = args_by_name[name]
+            spec = "googlesql.ArgSpec("
+            if arg_info["keyword_only"]:
+                spec += f'arg_name="{name}", '
+            if arg_info["optional"]:
+                spec += "optional=True, "
+            spec = spec.rstrip(", ") + ")"
+            arg_specs.append(spec)
+
+        # Determine return dtype
+        return_types = {impl["return"] for impl in func_data["impls"]}
+        if len(return_types) == 1:
+            ret_type = list(return_types)[0]
+            signature = f"lambda *args: {DTYPE_MAP.get(ret_type, 'None')}"
+        else:
+            # Fallback to Any/None if ambiguous
+            signature = "lambda *args: None"
+
+        ops_list.append(
+            {
+                "internal_name": internal_op_name,
+                "sql_name": sql_name.upper(),
+                "arg_specs": ", ".join(arg_specs),
+                "signature": signature,
+            }
+        )
+
+        # Function args
+        func_args = []
+        for name in arg_order:
+            arg_info = args_by_name[name]
+            types = [PY_TYPE_MAP.get(t, "Any") for t in arg_info["types"]] + [
+                "Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"
+            ]
+            type_hint = (
+                "Union[" + ", ".join(sorted(set(types))) + "]"
+                if len(types) > 1
+                else types[0]
+            )
+            default = (
+                "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg_info["optional"] else ""
+            )
+            func_args.append(
+                {
+                    "name": name,
+                    "type_hint": type_hint,
+                    "default": default,
+                }
+            )
+
+        # Clean up default values for mandatory args
+        # In Python, mandatory args come first.
+        for arg in func_args:
+            if not arg.get("default"):
+                arg.pop("default", None)
+
+        # Test args
+        test_args = []
+        for name in arg_order:
+            arg_info = args_by_name[name]
+            some_type = list(arg_info["types"])[0]
+            col_name = YAML_TYPE_TO_COL.get(some_type, "string_col")
+            test_args.append({"col_name": col_name})
+
+        functions_list.append(
+            {
+                "name": python_name,
+                "op_name": internal_op_name,
+                "description": func_data["description"],
+                "args": func_args,
+                "test_args": test_args,
+            }
+        )
+
+    return ops_list, functions_list
+
+
+def run_ruff(path: pathlib.Path):
+    subprocess.run(
+        RUFF_ARGS
+        + [
+            str(path),
+        ],
+        check=True,
+    )
+
+
+def process_yaml_file(yaml_file, template, test_template):
+    print(f"Processing {yaml_file}...")
+    with open(yaml_file, "r") as f:
+        data = yaml.safe_load(f)
+
+    rel_path = yaml_file.relative_to(DATA_DIR)
+    module_path = rel_path.with_suffix("")
+    module_name = module_path.name
+    output_file = OUTPUT_DIR.joinpath(module_path).with_suffix(".py")
+
+    ops_list, functions_list = parse_scalar_functions(data, module_name)
+
+    # Render and write
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    content = template.render(
+        yaml_path=str(yaml_file),
+        script_path="scripts/generate_bigframes_bigquery.py",
+        ops=ops_list,
+        functions=functions_list,
+    )
+    with open(output_file, "w") as f:
+        f.write(content)
+
+    run_ruff(output_file)
+    print(f"  Generated {output_file}")
+
+    # Render and write test
+    import_path = "bigframes.bigquery._operations." + ".".join(module_path.parts)
+    test_output_file = TEST_OUTPUT_DIR.joinpath(
+        module_path.with_name(f"test_{module_path.name}")
+    ).with_suffix(".py")
+
+    test_output_file.parent.mkdir(parents=True, exist_ok=True)
+    test_content = test_template.render(
+        yaml_path=str(yaml_file),
+        script_path="scripts/generate_bigframes_bigquery.py",
+        import_path=import_path,
+        short_name=module_path.name,
+        functions=functions_list,
+    )
+    with open(test_output_file, "w") as f:
+        f.write(test_content)
+
+    run_ruff(test_output_file)
+    print(f"  Generated {test_output_file}")
+
+    print(f"  Updating snapshots for {test_output_file}...")
+    subprocess.run(
+        [
+            "pytest",
+            str(test_output_file),
+            "--snapshot-update",
+        ],
+        check=False,
+    )
+
+
+def main():
+    template, test_template = load_templates()
 
     for yaml_file in DATA_DIR.glob("**/*.yaml"):
-        print(f"Processing {yaml_file}...")
-        with open(yaml_file, "r") as f:
-            data = yaml.safe_load(f)
-
-        rel_path = yaml_file.relative_to(DATA_DIR)
-        module_path = rel_path.with_suffix("")
-        module_name = module_path.name
-        output_file = OUTPUT_DIR.joinpath(module_path).with_suffix(".py")
-
-        ops_list = []
-        functions_list = []
-
-        if "scalar_functions" in data:
-            for func_data in data["scalar_functions"]:
-                sql_name = func_data["name"]
-                python_name = to_snake_case(sql_name)
-                if python_name.startswith(module_name + "_"):
-                    python_name = python_name[len(module_name) + 1 :]
-
-                internal_op_name = f"_{python_name.upper()}_OP"
-
-                # Aggregate args across impls
-                args_by_name = {}
-                arg_order = []
-                for impl in func_data["impls"]:
-                    for arg in impl["args"]:
-                        name = arg["name"]
-                        if name not in args_by_name:
-                            args_by_name[name] = {
-                                "types": set(),
-                                "optional": arg["optional"],
-                                "keyword_only": arg["keyword_only"],
-                            }
-                            arg_order.append(name)
-                        args_by_name[name]["types"].add(arg["value"])
-
-                # Build ArgSpecs
-                arg_specs = []
-                for name in arg_order:
-                    arg_info = args_by_name[name]
-                    spec = "googlesql.ArgSpec("
-                    if arg_info["keyword_only"]:
-                        spec += f'arg_name="{name}", '
-                    if arg_info["optional"]:
-                        spec += "optional=True, "
-                    spec = spec.rstrip(", ") + ")"
-                    arg_specs.append(spec)
-
-                # Determine return dtype
-                return_types = {impl["return"] for impl in func_data["impls"]}
-                if len(return_types) == 1:
-                    ret_type = list(return_types)[0]
-                    signature = f"lambda *args: {DTYPE_MAP.get(ret_type, 'None')}"
-                else:
-                    # Fallback to Any/None if ambiguous
-                    signature = "lambda *args: None"
-
-                ops_list.append(
-                    {
-                        "internal_name": internal_op_name,
-                        "sql_name": sql_name.upper(),
-                        "arg_specs": ", ".join(arg_specs),
-                        "signature": signature,
-                    }
-                )
-
-                # Function args
-                func_args = []
-                for name in arg_order:
-                    arg_info = args_by_name[name]
-                    types = [PY_TYPE_MAP.get(t, "Any") for t in arg_info["types"]] + ["Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"]
-                    type_hint = (
-                        "Union[" + ", ".join(sorted(set(types))) + "]"
-                        if len(types) > 1
-                        else types[0]
-                    )
-                    default = "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg_info["optional"] else ""
-                    func_args.append(
-                        {
-                            "name": name,
-                            "type_hint": type_hint,
-                            "default": default,
-                        }
-                    )
-
-                # Clean up default values for mandatory args
-                # In Python, mandatory args come first.
-                for arg in func_args:
-                    if not arg["default"]:
-                        del arg["default"]
-
-                # Test args
-                test_args = []
-                for name in arg_order:
-                    arg_info = args_by_name[name]
-                    some_type = list(arg_info["types"])[0]
-                    col_name = YAML_TYPE_TO_COL.get(some_type, "string_col")
-                    test_args.append({"col_name": col_name})
-
-                functions_list.append(
-                    {
-                        "name": python_name,
-                        "op_name": internal_op_name,
-                        "description": func_data["description"],
-                        "args": func_args,
-                        "test_args": test_args,
-                    }
-                )
-
-        # Render and write
-        output_file.parent.mkdir(parents=True, exist_ok=True)
-        content = template.render(
-            yaml_path=str(yaml_file),
-            script_path="scripts/generate_bigframes_bigquery.py",
-            ops=ops_list,
-            functions=functions_list,
-        )
-        with open(output_file, "w") as f:
-            f.write(content)
-
-        subprocess.run(
-            RUFF_ARGS
-            + [
-                str(output_file),
-            ],
-            check=True,
-        )
-        print(f"  Generated {output_file}")
-
-        # Render and write test
-        import_path = "bigframes.bigquery._operations." + ".".join(module_path.parts)
-        test_output_file = TEST_OUTPUT_DIR.joinpath(
-            module_path.with_name(f"test_{module_path.name}")
-        ).with_suffix(".py")
-
-        test_output_file.parent.mkdir(parents=True, exist_ok=True)
-        test_content = test_template.render(
-            yaml_path=str(yaml_file),
-            script_path="scripts/generate_bigframes_bigquery.py",
-            import_path=import_path,
-            short_name=module_path.name,
-            functions=functions_list,
-        )
-        with open(test_output_file, "w") as f:
-            f.write(test_content)
-
-        subprocess.run(
-            RUFF_ARGS
-            + [
-                str(test_output_file),
-            ],
-            check=True,
-        )
-        print(f"  Generated {test_output_file}")
-
-        print(f"  Updating snapshots for {test_output_file}...")
-        subprocess.run(
-            [
-                "pytest",
-                str(test_output_file),
-                "--snapshot-update",
-            ],
-            check=False,
-        )
+        process_yaml_file(yaml_file, template, test_template)
 
 
 if __name__ == "__main__":
