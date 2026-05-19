@@ -182,9 +182,9 @@ def test_page_size_change_resets_sort(mock_df):
 
 
 def test_json_column_converted_to_string_for_display():
-    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE
-    from bigframes.dataframe import DataFrame
     from bigframes.core.blocks import Block
+    from bigframes.dataframe import DataFrame
+    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE
     from bigframes.operations import SqlScalarOp
 
     mock_block = mock.Mock(spec=Block)
@@ -213,9 +213,9 @@ def test_json_column_converted_to_string_for_display():
 
 
 def test_struct_column_with_nested_json_converted_to_string_for_display():
-    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
-    from bigframes.dataframe import DataFrame
     from bigframes.core.blocks import Block
+    from bigframes.dataframe import DataFrame
+    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
     from bigframes.operations import SqlScalarOp
 
     nested_struct_dtype = struct_type(
