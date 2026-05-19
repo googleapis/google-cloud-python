@@ -33,6 +33,8 @@ import yaml
 DATA_DIR = pathlib.Path("scripts/data/sql-functions")
 # Directory where the generated Python files will be placed
 OUTPUT_DIR = pathlib.Path("bigframes/bigquery/_operations")
+# Directory where the generated test files will be placed
+TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/_operations")
 
 LICENSE_HEADER = """# Copyright 2026 Google LLC
 #
@@ -96,6 +98,35 @@ def {{ func.name }}(
 {% endfor %}
 """
 
+TEST_TEMPLATE = """{{ license_header }}
+#
+# DO NOT MODIFY THIS FILE DIRECTLY.
+# This file was generated from: {{ yaml_path }}
+# by the script: {{ script_path }}
+
+from typing import cast
+
+import pytest
+
+import bigframes.pandas as bpd
+import {{ import_path }} as {{ short_name }}
+
+pytest.importorskip("pytest_snapshot")
+
+
+{% for func in functions %}
+def test_{{ func.name }}(scalar_types_df: bpd.DataFrame, snapshot):
+    result = {{ short_name }}.{{ func.name }}(
+{% for arg in func.test_args %}
+        cast(bpd.Series, scalar_types_df["{{ arg.col_name }}"]),
+{% endfor %}
+    ).to_frame()
+    snapshot.assert_match(result.sql, "out.sql")
+
+
+{% endfor %}
+"""
+
 DTYPE_MAP = {
     "binary": "dtypes.BYTES_DTYPE",
     "string": "dtypes.STRING_DTYPE",
@@ -125,6 +156,19 @@ PY_TYPE_MAP = {
     "struct": "dict",
 }
 
+YAML_TYPE_TO_COL = {
+    "binary": "bytes_col",
+    "string": "string_col",
+    "int64": "int64_col",
+    "float64": "float64_col",
+    "bool": "bool_col",
+    "geography": "geography_col",
+    "date": "date_col",
+    "time": "time_col",
+    "datetime": "datetime_col",
+    "timestamp": "timestamp_col",
+}
+
 
 def to_snake_case(name):
     # Replace dots with underscores
@@ -139,6 +183,7 @@ def to_snake_case(name):
 def main():
     env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True)
     template = env.from_string(TEMPLATE)
+    test_template = env.from_string(TEST_TEMPLATE)
 
     for yaml_file in DATA_DIR.glob("**/*.yaml"):
         print(f"Processing {yaml_file}...")
@@ -232,12 +277,21 @@ def main():
                     if not arg["default"]:
                         del arg["default"]
 
+                # Test args
+                test_args = []
+                for name in arg_order:
+                    arg_info = args_by_name[name]
+                    some_type = list(arg_info["types"])[0]
+                    col_name = YAML_TYPE_TO_COL.get(some_type, "string_col")
+                    test_args.append({"col_name": col_name})
+
                 functions_list.append(
                     {
                         "name": python_name,
                         "op_name": internal_op_name,
                         "description": func_data["description"],
                         "args": func_args,
+                        "test_args": test_args,
                     }
                 )
 
@@ -263,6 +317,45 @@ def main():
             check=True,
         )
         print(f"  Generated {output_file}")
+
+        # Render and write test
+        import_path = "bigframes.bigquery._operations." + ".".join(module_path.parts)
+        test_output_file = TEST_OUTPUT_DIR.joinpath(
+            module_path.with_name(f"test_{module_path.name}")
+        ).with_suffix(".py")
+
+        test_output_file.parent.mkdir(parents=True, exist_ok=True)
+        test_content = test_template.render(
+            license_header=LICENSE_HEADER,
+            yaml_path=str(yaml_file),
+            script_path="scripts/generate_bigframes_bigquery.py",
+            import_path=import_path,
+            short_name=module_path.name,
+            functions=functions_list,
+        )
+        with open(test_output_file, "w") as f:
+            f.write(test_content)
+
+        subprocess.run(
+            [
+                "autoflake",
+                "--in-place",
+                "--remove-all-unused-imports",
+                str(test_output_file),
+            ],
+            check=True,
+        )
+        print(f"  Generated {test_output_file}")
+
+        print(f"  Updating snapshots for {test_output_file}...")
+        subprocess.run(
+            [
+                "pytest",
+                str(test_output_file),
+                "--snapshot-update",
+            ],
+            check=False,
+        )
 
 
 if __name__ == "__main__":

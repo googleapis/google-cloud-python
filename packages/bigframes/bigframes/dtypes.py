@@ -39,7 +39,6 @@ Dtype = Union[
     pd.Float64Dtype,
     pd.Int64Dtype,
     pd.StringDtype,
-    pd.StringDtype[Literal["pyarrow"]],
     pd.ArrowDtype,
     gpd.array.GeometryDtype,
 ]
