@@ -110,6 +110,87 @@ def load_templates():
     return env.get_template("operation.py.j2"), env.get_template("test_operation.py.j2")
 
 
+def _collect_args(impls):
+    args_by_name = {}
+    arg_order = []
+    for impl in impls:
+        for arg in impl["args"]:
+            name = arg["name"]
+            if name not in args_by_name:
+                args_by_name[name] = {
+                    "types": set(),
+                    "optional": arg["optional"],
+                    "keyword_only": arg["keyword_only"],
+                }
+                arg_order.append(name)
+            args_by_name[name]["types"].add(arg["value"])
+    return args_by_name, arg_order
+
+
+def _build_arg_specs(args_by_name, arg_order):
+    arg_specs = []
+    for name in arg_order:
+        arg_info = args_by_name[name]
+        spec = "googlesql.ArgSpec("
+        if arg_info["keyword_only"]:
+            spec += f'arg_name="{name}", '
+        if arg_info["optional"]:
+            spec += "optional=True, "
+        spec = spec.rstrip(", ") + ")"
+        arg_specs.append(spec)
+    return arg_specs
+
+
+def _get_return_signature(impls):
+    return_types = {impl["return"] for impl in impls}
+    if len(return_types) == 1:
+        ret_type = sorted(return_types)[0]
+        return f"lambda *args: {DTYPE_MAP.get(ret_type, 'None')}"
+    else:
+        # Fallback to Any/None if ambiguous
+        return "lambda *args: None"
+
+
+def _get_func_args(args_by_name, arg_order):
+    func_args = []
+    for name in arg_order:
+        arg_info = args_by_name[name]
+        types = [PY_TYPE_MAP.get(t, "Any") for t in sorted(arg_info["types"])] + [
+            "Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"
+        ]
+        type_hint = (
+            "Union[" + ", ".join(sorted(set(types))) + "]"
+            if len(types) > 1
+            else types[0]
+        )
+        default = "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg_info["optional"] else ""
+        func_args.append(
+            {
+                "name": name,
+                "type_hint": type_hint,
+                "default": default,
+            }
+        )
+
+    # Clean up default values for mandatory args
+    # In Python, mandatory args come first.
+    for arg in func_args:
+        if not arg.get("default"):
+            arg.pop("default", None)
+
+    return func_args
+
+
+def _get_test_args(args_by_name, arg_order):
+    test_args = []
+    for name in arg_order:
+        arg_info = args_by_name[name]
+        some_type = sorted(arg_info["types"])[0]
+        col_name = YAML_TYPE_TO_COL.get(some_type, "string_col")
+        test_args.append({"col_name": col_name})
+    return test_args
+
+
 def parse_scalar_functions(data, module_name):
     ops_list = []
     functions_list = []
@@ -126,40 +207,13 @@ def parse_scalar_functions(data, module_name):
         internal_op_name = f"_{python_name.upper()}_OP"
 
         # Aggregate args across impls
-        args_by_name = {}
-        arg_order = []
-        for impl in func_data["impls"]:
-            for arg in impl["args"]:
-                name = arg["name"]
-                if name not in args_by_name:
-                    args_by_name[name] = {
-                        "types": set(),
-                        "optional": arg["optional"],
-                        "keyword_only": arg["keyword_only"],
-                    }
-                    arg_order.append(name)
-                args_by_name[name]["types"].add(arg["value"])
+        args_by_name, arg_order = _collect_args(func_data["impls"])
 
         # Build ArgSpecs
-        arg_specs = []
-        for name in arg_order:
-            arg_info = args_by_name[name]
-            spec = "googlesql.ArgSpec("
-            if arg_info["keyword_only"]:
-                spec += f'arg_name="{name}", '
-            if arg_info["optional"]:
-                spec += "optional=True, "
-            spec = spec.rstrip(", ") + ")"
-            arg_specs.append(spec)
+        arg_specs = _build_arg_specs(args_by_name, arg_order)
 
         # Determine return dtype
-        return_types = {impl["return"] for impl in func_data["impls"]}
-        if len(return_types) == 1:
-            ret_type = list(return_types)[0]
-            signature = f"lambda *args: {DTYPE_MAP.get(ret_type, 'None')}"
-        else:
-            # Fallback to Any/None if ambiguous
-            signature = "lambda *args: None"
+        signature = _get_return_signature(func_data["impls"])
 
         ops_list.append(
             {
@@ -171,41 +225,10 @@ def parse_scalar_functions(data, module_name):
         )
 
         # Function args
-        func_args = []
-        for name in arg_order:
-            arg_info = args_by_name[name]
-            types = [PY_TYPE_MAP.get(t, "Any") for t in arg_info["types"]] + [
-                "Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"
-            ]
-            type_hint = (
-                "Union[" + ", ".join(sorted(set(types))) + "]"
-                if len(types) > 1
-                else types[0]
-            )
-            default = (
-                "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg_info["optional"] else ""
-            )
-            func_args.append(
-                {
-                    "name": name,
-                    "type_hint": type_hint,
-                    "default": default,
-                }
-            )
-
-        # Clean up default values for mandatory args
-        # In Python, mandatory args come first.
-        for arg in func_args:
-            if not arg.get("default"):
-                arg.pop("default", None)
+        func_args = _get_func_args(args_by_name, arg_order)
 
         # Test args
-        test_args = []
-        for name in arg_order:
-            arg_info = args_by_name[name]
-            some_type = list(arg_info["types"])[0]
-            col_name = YAML_TYPE_TO_COL.get(some_type, "string_col")
-            test_args.append({"col_name": col_name})
+        test_args = _get_test_args(args_by_name, arg_order)
 
         functions_list.append(
             {
@@ -290,7 +313,7 @@ def process_yaml_file(yaml_file, template, test_template):
 def main():
     template, test_template = load_templates()
 
-    for yaml_file in DATA_DIR.glob("**/*.yaml"):
+    for yaml_file in sorted(DATA_DIR.glob("**/*.yaml")):
         process_yaml_file(yaml_file, template, test_template)
 
 
