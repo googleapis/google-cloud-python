@@ -24,4 +24,4 @@ opentelemetry-api==1.16.0
 opentelemetry-sdk==1.16.0
 opentelemetry-instrumentation==0.37b0
 proto-plus==1.22.3
-protobuf==3.20.2
+protobuf==4.25.8
