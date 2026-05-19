@@ -80,12 +80,6 @@ CREATE OR REPLACE PROPERTY GRAPH FinGraph
                     LABEL Transfers)
 """
 
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "snippets"
-
-
 @pytest.fixture(scope="module")
 def database_dialect():
     """Spanner dialect to be used for this sample.

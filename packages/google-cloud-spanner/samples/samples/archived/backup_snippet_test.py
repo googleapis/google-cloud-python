@@ -18,12 +18,6 @@ import pytest
 from google.api_core.exceptions import DeadlineExceeded
 from test_utils.retry import RetryErrors
 
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "backup"
-
-
 def unique_database_id():
     """Creates a unique id for the database."""
     return f"test-db-{uuid.uuid4().hex[:10]}"
