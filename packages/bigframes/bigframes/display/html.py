@@ -239,10 +239,7 @@ def get_anywidget_bundle(
     from bigframes import display
     from bigframes.series import Series
 
-    if isinstance(obj, Series):
-        df = obj.to_frame()
-    else:
-        df = obj
+    df = obj.to_frame() if isinstance(obj, Series) else obj
 
     df, _ = df._get_display_df_and_blob_cols()
 
@@ -295,10 +292,7 @@ def repr_mimebundle_head(
     from bigframes.series import Series
 
     opts = options.display
-    if isinstance(obj, Series):
-        df = obj.to_frame()
-    else:
-        df = obj
+    df = obj.to_frame() if isinstance(obj, Series) else obj
 
     df, _ = df._get_display_df_and_blob_cols()
     pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
