@@ -391,7 +391,6 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
