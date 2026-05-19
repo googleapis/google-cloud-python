@@ -27,16 +27,60 @@ from typing import Dict, List, Tuple
 import yaml
 
 class ConfigManager:
-    """Handles loading and interpolation of regex configurations."""
+    """
+    Handles loading, validation, and interpolation of the regex configuration rules.
+    
+    Uses template-based regex configurations from a YAML file and interpolates them
+    with dependency properties and computed version segments (e.g., major, minor) to 
+    generate active regex search patterns dynamically.
+    """
     
     def __init__(self, config_path: str, dependency: str, version: str):
+        """
+        Initializes the configuration manager.
+        
+        Args:
+            config_path: Path to the YAML configuration file containing regex templates.
+            dependency: Name of the dependency to search for (e.g., "python", "protobuf").
+            version: Specific target version string to search for (e.g., "3.7", "4.25.8").
+        """
         self.config_path = config_path
         self.dependency = dependency
         self.version = version
         self.variables = self._compute_variables()
         
     def _compute_variables(self) -> Dict[str, str]:
-        """Compute variables for interpolation from version string."""
+        """
+        Parses the version string and computes variables for template interpolation.
+        
+        Splits the version string by '.' and generates segments like major, minor,
+        patch, minor+1, and minor-1. These variables are used in regex templates
+        (e.g., `{minor_plus_one}` to search for Python 3.8 when EOLing 3.7).
+        
+        Examples:
+            If version is "3.7" and dependency is "python":
+                vars = {
+                    "name": "python",
+                    "version": "3.7",
+                    "major": "3",
+                    "minor": "7",
+                    "minor_plus_one": "8",
+                    "minor_minus_one": "6"
+                }
+            If version is "4.25.8" and dependency is "protobuf":
+                vars = {
+                    "name": "protobuf",
+                    "version": "4.25.8",
+                    "major": "4",
+                    "minor": "25",
+                    "patch": "8",
+                    "minor_plus_one": "26",
+                    "minor_minus_one": "24"
+                }
+                
+        Returns:
+            A dictionary mapping variable placeholder names to their resolved string values.
+        """
         vars = {
             "name": self.dependency,
             "version": self.version,
@@ -148,7 +192,22 @@ def format_match_for_csv(
     branch: str = "main"
 ) -> Dict[str, str]:
     """
-    Format a match result for CSV output, adding GitHub links if requested.
+    Formats a raw match dictionary for clean CSV presentation and imports.
+    
+    Cleans long context lines by truncating them around the match location to prevent
+    extreme cell overflow in spreadsheets. Optionally transforms line numbers into 
+    clickable `=HYPERLINK(...)` formulas linking directly to the exact file and line
+    number in GitHub.
+    
+    Args:
+        match: A match dictionary containing 'file_path', 'repo_path', 'rule_name', 
+               'line_number', 'matched_string', and 'context_line'.
+        github_repo: Optional GitHub repository base URL (e.g., "https://github.com/user/repo").
+                     If provided, triggers the hyperlink generation.
+        branch: Optional branch name to build the GitHub blob URL (defaults to "main").
+        
+    Returns:
+        A copy of the match dictionary with formatted/truncated values, suitable for CSV writing.
     """
     formatted = match.copy()
     
@@ -368,16 +427,26 @@ def scan_repository(
     version_string: str = None
 ) -> List[Dict[str, str]]:
     """
-    Scan repository for matching patterns.
+    Scans the repository directory tree applying resolved regex patterns to files.
+    
+    Walks the directory structure starting at the root path, checking filenames and
+    file contents line-by-line against compiled patterns. Supports case-insensitive
+    directory/file ignore patterns, dynamic package filter checks for layout-agnostic
+    subfolders, and filename-based version string matching.
     
     Args:
-        root_path: Path to the repository root.
-        rules: A list of dictionaries containing 'name' and 'pattern'.
-        target_packages: A list of package paths to include (e.g., ['packages/pkg_a']).
-                         If None or empty, all packages are scanned.
+        root_path: Absolute or relative path to the directory tree root to scan.
+        rules: A list of dictionaries containing 'name' (rule name) and 'pattern' 
+               (regex search pattern string).
+        target_packages: Optional list of specific subdirectory paths to restrict scanning
+                         (e.g., ['packages/pkg_a', 'generated/pkg_b']). If None or empty,
+                         performs a full recursive scan of the repository.
+        ignore_dirs: Optional list of directory names or glob-like files to ignore (case-insensitive).
+        version_string: Optional target version string (e.g. "3.7") to scan for in filenames.
         
     Returns:
-        A list of match details.
+        A list of dictionaries detailing each match: 'file_path', 'repo_path',
+        'package_name', 'rule_name', 'line_number', 'matched_string', 'context_line'.
     """
     ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
@@ -408,17 +477,21 @@ def scan_repository(
         rel_root = os.path.relpath(root, root_path)
         parts = rel_root.split(os.sep)
         
-        # Monorepo filtering
-        if target_packages and parts[0] == "packages":
-            if len(parts) >= 2:
-                current_package_path = os.path.join(parts[0], parts[1])
-                if current_package_path not in target_packages:
-                    # Skip this directory and all subdirectories
-                    dirs[:] = []
-                    continue
-            else:
-                # We are in the "packages" directory itself. Continue to walk.
-                pass
+        # Layout-agnostic generic subdirectory filtering
+        if target_packages:
+            norm_targets = {os.path.normpath(tp) for tp in target_packages}
+            is_valid_path = False
+            for target in norm_targets:
+                if (rel_root == "." or 
+                    rel_root == target or 
+                    rel_root.startswith(target + os.sep) or 
+                    target.startswith(rel_root + os.sep)):
+                    is_valid_path = True
+                    break
+            if not is_valid_path:
+                # Skip searching this directory and all its descendants
+                dirs[:] = []
+                continue
                 
         for file in files:
             file_path = os.path.join(root, file)
@@ -438,7 +511,9 @@ def scan_repository(
             
             package_name = ""
             path_parts = rel_file_path.split(os.sep)
-            if len(path_parts) >= 2 and path_parts[0] == "packages":
+            # Assume package name is the folder directly under standard package root directories
+            package_roots = {"packages", "generated", "handwritten", "third_party"}
+            if len(path_parts) >= 2 and path_parts[0] in package_roots:
                 package_name = path_parts[1]
                 
             root_parts = os.path.abspath(root_path).split(os.sep)
@@ -531,7 +606,11 @@ def main():
     # Resolve target packages if filtering is requested
     target_packages = []
     if args.package:
-        target_packages.append(os.path.join("packages", args.package))
+        # If the folder exists under root path as-is, use it. Otherwise fallback to packages/ prefix.
+        if os.path.exists(os.path.join(args.path, args.package)):
+            target_packages.append(args.package)
+        else:
+            target_packages.append(os.path.join("packages", args.package))
     elif args.package_file:
         target_packages = read_package_file(args.package_file)
         

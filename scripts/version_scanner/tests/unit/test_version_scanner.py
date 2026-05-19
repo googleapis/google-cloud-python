@@ -478,3 +478,50 @@ def test_regex_examples_from_config():
                     matched = True
                     break
             assert matched, f"Example '{example}' in group '{name}' did not match any pattern."
+
+
+def test_scan_repository_layout_agnostic(tmp_path):
+    # Create directories under different roots
+    p1 = tmp_path / "generated" / "pkg_gen"
+    p1.mkdir(parents=True)
+    (p1 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    p2 = tmp_path / "handwritten" / "pkg_hand"
+    p2.mkdir(parents=True)
+    (p2 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    
+    # Scan only handwritten package
+    results = scan_repository(
+        str(tmp_path), 
+        rules, 
+        target_packages=["handwritten/pkg_hand"]
+    )
+    
+    assert len(results) == 1
+    assert results[0]["package_name"] == "pkg_hand"
+    assert "handwritten/pkg_hand/setup.py" in results[0]["file_path"]
+
+
+def test_scan_repository_package_name_roots(tmp_path):
+    # Create directories under various package roots
+    p1 = tmp_path / "third_party" / "pkg_third"
+    p1.mkdir(parents=True)
+    (p1 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    
+    results = scan_repository(str(tmp_path), rules)
+    
+    assert len(results) == 1
+    assert results[0]["package_name"] == "pkg_third"
+    assert "third_party/pkg_third/setup.py" in results[0]["file_path"]
