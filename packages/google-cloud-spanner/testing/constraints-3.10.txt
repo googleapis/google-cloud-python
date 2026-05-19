@@ -6,8 +6,8 @@
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.17.1
 google-auth==2.14.1
-grpcio==1.51.3
-grpcio-status==1.51.3
+grpcio==1.49.1
+grpcio-status==1.49.1
 proto-plus==1.22.3
 protobuf==4.25.8
 google-cloud-core==2.0.0
@@ -21,3 +21,4 @@ opentelemetry-resourcedetector-gcp==1.8.0a0
 google-cloud-monitoring==2.16.0
 mmh3==4.1.0
 libcst==0.2.5
+googleapis-common-protos==1.60.0
