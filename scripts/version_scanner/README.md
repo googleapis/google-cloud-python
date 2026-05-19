@@ -59,7 +59,7 @@ You can create a `.scannerignore` file in the directory you are scanning (usuall
 ### Context & Overview
 
 #### Overview
-This plan outlines the approach to update Python packages to drop support for end-of-life Python runtimes (3.7, 3.8, 3.9) OR for deprecated dependencies, and ensure the packages are configured for modern Python.
+This prompt is provided as an example and outlines the approach to update Python packages to drop support for end-of-life Python runtimes (3.7, 3.8, 3.9) OR for deprecated dependencies, and ensure the packages are configured for modern Python. This may help speed up your ability to resolve version mismatches. This prompt is provided with no guarantees, your mileage may vary. LLMs may make mistakes, always double check the LLM's work and test thoroughly.
 
 #### High-Level Strategy
 - **One Branch Per Package**: To keep PRs manageable and isolated, we suggest a dedicated worktree and branch for each package (e.g., `feat/drop-<dependency>-<version>-<package-name>` i.e. `feat/drop-protobuf-4.25.8-google-cloud-bigquery`).
