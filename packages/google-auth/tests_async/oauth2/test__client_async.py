@@ -24,9 +24,9 @@ import pytest  # type: ignore
 from google.auth import _helpers
 from google.auth import _jwt_async as jwt
 from google.auth import exceptions
+from google.auth.aio import transport as aio_transport
 from google.oauth2 import _client as sync_client
 from google.oauth2 import _client_async as _client
-from google.auth.aio import transport as aio_transport
 from tests.oauth2 import test__client as test_client
 
 
@@ -509,7 +509,9 @@ async def test__token_endpoint_request_no_throw_with_retry(can_retry):
 
 @pytest.mark.asyncio
 async def test__lookup_regional_access_boundary_success():
-    request = make_aio_request({"encodedLocations": "0xA30", "locations": ["us-central1"]})
+    request = make_aio_request(
+        {"encodedLocations": "0xA30", "locations": ["us-central1"]}
+    )
     result = await _client._lookup_regional_access_boundary(
         request, "http://example.com"
     )
@@ -522,7 +524,9 @@ async def test__lookup_regional_access_boundary_legacy_transport():
     response = mock.AsyncMock(spec=["transport.Response"])
     response.status = http_client.OK
 
-    data = json.dumps({"encodedLocations": "0xA30", "locations": ["us-central1"]}).encode("utf-8")
+    data = json.dumps(
+        {"encodedLocations": "0xA30", "locations": ["us-central1"]}
+    ).encode("utf-8")
     response.content = mock.AsyncMock(return_value=data)
 
     request = mock.AsyncMock(spec=["transport.Request"])
@@ -624,6 +628,3 @@ async def test__lookup_regional_access_boundary_request_no_throw_transport_error
     assert success is False
     assert data == {}
     assert retryable is False
-
-
-

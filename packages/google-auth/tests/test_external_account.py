@@ -403,29 +403,22 @@ class TestCredentials(object):
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
-        with mock.patch.object(
-            external_account.Credentials, "__init__", return_value=None
-        ) as mock_init:
-            credentials.with_scopes(["email"], ["default2"])
+        cloned = credentials.with_scopes(["email"], ["default2"])
 
-        # Confirm with_scopes initialized the credential with the expected
-        # parameters and scopes.
-        mock_init.assert_called_once_with(
-            audience=self.AUDIENCE,
-            subject_token_type=self.SUBJECT_TOKEN_TYPE,
-            token_url=self.TOKEN_URL,
-            token_info_url=self.TOKEN_INFO_URL,
-            credential_source=self.CREDENTIAL_SOURCE,
-            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
-            service_account_impersonation_options={"token_lifetime_seconds": 2800},
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            quota_project_id=self.QUOTA_PROJECT_ID,
-            scopes=["email"],
-            default_scopes=["default2"],
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
+        assert cloned.scopes == ["email"]
+        assert cloned.default_scopes == ["default2"]
+        assert cloned.quota_project_id == self.QUOTA_PROJECT_ID
+        assert cloned._client_id == CLIENT_ID
+        assert cloned._client_secret == CLIENT_SECRET
+        assert cloned._token_info_url == self.TOKEN_INFO_URL
+        assert (
+            cloned._service_account_impersonation_url
+            == self.SERVICE_ACCOUNT_IMPERSONATION_URL
         )
+        assert cloned._service_account_impersonation_options == {
+            "token_lifetime_seconds": 2800
+        }
+        assert cloned.universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()
@@ -492,33 +485,21 @@ class TestCredentials(object):
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
-        with mock.patch.object(
-            external_account.Credentials, "__init__", return_value=None
-        ) as mock_init:
-            new_cred = credentials.with_quota_project("project-foo")
+        new_cred = credentials.with_quota_project("project-foo")
 
-            # Confirm with_quota_project initialized the credential with the
-            # expected parameters.
-            mock_init.assert_called_once_with(
-                audience=self.AUDIENCE,
-                subject_token_type=self.SUBJECT_TOKEN_TYPE,
-                token_url=self.TOKEN_URL,
-                token_info_url=self.TOKEN_INFO_URL,
-                credential_source=self.CREDENTIAL_SOURCE,
-                service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
-                service_account_impersonation_options={"token_lifetime_seconds": 2800},
-                client_id=CLIENT_ID,
-                client_secret=CLIENT_SECRET,
-                quota_project_id=self.QUOTA_PROJECT_ID,
-                scopes=self.SCOPES,
-                default_scopes=["default1"],
-                universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-                trust_boundary=None,
-            )
-
-            # Confirm with_quota_project sets the correct quota project after
-            # initialization.
-            assert new_cred.quota_project_id == "project-foo"
+        assert new_cred.quota_project_id == "project-foo"
+        assert new_cred.scopes == self.SCOPES
+        assert new_cred.default_scopes == ["default1"]
+        assert new_cred._client_id == CLIENT_ID
+        assert new_cred._client_secret == CLIENT_SECRET
+        assert new_cred._token_info_url == self.TOKEN_INFO_URL
+        assert (
+            new_cred._service_account_impersonation_url
+            == self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+        assert new_cred._service_account_impersonation_options == {
+            "token_lifetime_seconds": 2800
+        }
 
     def test_info(self):
         credentials = self.make_credentials(universe_domain="dummy_universe.com")

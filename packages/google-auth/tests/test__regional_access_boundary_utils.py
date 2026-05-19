@@ -1,4 +1,4 @@
-# Copyright 2026 Google Inc.
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
+from google.auth import _credentials_async
 from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
@@ -570,6 +571,88 @@ class TestCredentialsWithRegionalAccessBoundary(object):
 
             mock_thread_class.assert_not_called()
             assert manager._worker == mock_worker
+
+
+class AsyncCredentialsImpl(_credentials_async.CredentialsWithRegionalAccessBoundary):
+    def __init__(self, universe_domain=None):
+        super().__init__()
+        if universe_domain:
+            self._universe_domain = universe_domain
+
+    async def _perform_refresh_token(self, request):
+        self.token = "refreshed-token"
+        self.expiry = (
+            _helpers.utcnow()
+            + _helpers.REFRESH_THRESHOLD
+            + datetime.timedelta(seconds=5)
+        )
+
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError()
+
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        # Using self.token here to make the URL dynamic for testing purposes
+        return "http://mock.url/lookup_for_{}".format(self.token)
+
+    def _make_copy(self):
+        new_credentials = self.__class__()
+        self._copy_regional_access_boundary_manager(new_credentials)
+        return new_credentials
+
+
+class TestAsyncCredentialsWithRegionalAccessBoundary(object):
+    @pytest.mark.asyncio
+    async def test_maybe_start_refresh_async_blocking(self):
+        creds = AsyncCredentialsImpl()
+        creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
+        request = mock.Mock()
+
+        with mock.patch.dict(
+            os.environ,
+            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
+        ):
+            with mock.patch.object(
+                creds._rab_manager,
+                "start_blocking_refresh_async",
+                new_callable=mock.AsyncMock,
+            ) as mock_start_blocking:
+                await creds._maybe_start_regional_access_boundary_refresh_async(
+                    request, "http://example.com"
+                )
+                mock_start_blocking.assert_called_once_with(creds, request)
+
+    @pytest.mark.asyncio
+    async def test_start_blocking_refresh_async_success(self):
+        creds = AsyncCredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+            return_value={"encodedLocations": "0xABC"},
+        ) as mock_lookup:
+            await creds._rab_manager.start_blocking_refresh_async(creds, request)
+
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert creds._rab_manager._data.encoded_locations == "0xABC"
+
+    @pytest.mark.asyncio
+    async def test_start_blocking_refresh_async_failure(self):
+        creds = AsyncCredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+            side_effect=Exception("error"),
+        ) as mock_lookup:
+            await creds._rab_manager.start_blocking_refresh_async(creds, request)
+
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert creds._rab_manager._data.encoded_locations is None
+            assert creds._rab_manager._data.cooldown_expiry is not None
 
     @pytest.mark.asyncio
     async def test_async_refresh_manager_session_closed_ignored(self):

@@ -439,3 +439,17 @@ def test_before_request_triggers_rab_refresh():
             lookup.assert_called_once()
             args, kwargs = lookup.call_args
             assert args[1] == "http://mock.url/lookup_for_refreshed-token"
+
+
+def test_maybe_start_regional_access_boundary_refresh_invalid_url():
+    credentials_instance = CredentialsImpl()
+    request = mock.Mock()
+
+    # Verifies that passing invalid/non-string URLs synchronously fails safe without crashing.
+    credentials_instance._maybe_start_regional_access_boundary_refresh(
+        request, url=None
+    )
+    credentials_instance._maybe_start_regional_access_boundary_refresh(request, url=123)
+    credentials_instance._maybe_start_regional_access_boundary_refresh(
+        request, url=object()
+    )

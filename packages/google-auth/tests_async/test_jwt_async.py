@@ -143,6 +143,23 @@ class TestCredentials(object):
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == quota_project_id
 
+    def test_unpickle_old_credentials_without_rab(self):
+        from google.auth import _regional_access_boundary_utils
+
+        credentials = self.credentials
+        old_state = credentials.__dict__.copy()
+        if "_rab_manager" in old_state:
+            del old_state["_rab_manager"]
+
+        new_instance = type(credentials).__new__(type(credentials))
+        new_instance.__setstate__(old_state)
+
+        assert hasattr(new_instance, "_rab_manager")
+        assert isinstance(
+            new_instance._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
     def test_sign_bytes(self):
         to_sign = b"123"
         signature = self.credentials.sign_bytes(to_sign)
