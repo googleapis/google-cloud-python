@@ -29,3 +29,4 @@ repos:
     rev: 6.1.0 # version-scanner: ignore
     hooks:
     - id: flake8
+      args: [--config, packages/google-cloud-alloydb/.flake8]

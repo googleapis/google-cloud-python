@@ -14,13 +14,13 @@
 
 """Mappings for Pandas dtypes supported by BigQuery DataFrames package"""
 
+from dataclasses import dataclass
 import datetime
 import decimal
 import textwrap
 import typing
-import warnings
-from dataclasses import dataclass
 from typing import Any, Dict, List, Literal, Sequence, Union
+import warnings
 
 import bigframes_vendored.constants as constants
 import db_dtypes  # type: ignore
@@ -39,6 +39,7 @@ Dtype = Union[
     pd.Float64Dtype,
     pd.Int64Dtype,
     pd.StringDtype,
+    pd.StringDtype[Literal["pyarrow"]],
     pd.ArrowDtype,
     gpd.array.GeometryDtype,
 ]

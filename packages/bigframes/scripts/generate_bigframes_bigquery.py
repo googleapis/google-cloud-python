@@ -23,8 +23,9 @@
 
 import pathlib
 import re
-import yaml
+
 import jinja2
+import yaml
 
 # Directory containing the YAML files
 DATA_DIR = pathlib.Path("scripts/data/sql-functions")
@@ -64,6 +65,7 @@ import bigframes.operations as ops
 import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql
+import bigframes.bigquery._googlesql
 
 T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 
@@ -75,60 +77,14 @@ T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 )
 {% endfor %}
 
-def _apply_googlesql_op(
-    op: googlesql.GoogleSqlScalarOp,
-    *args: Any,
-) -> Union[series.Series, bigframes.core.col.Expression]:
-    \"\"\"Applies a GoogleSQL scalar operator to the given arguments.
-
-    Handles a mix of Series, Expression, and literal inputs.
-    \"\"\"
-    # Find the first Series to use for alignment
-    first_series = None
-    for arg in args:
-        if isinstance(arg, series.Series):
-            first_series = arg
-            break
-
-    if first_series is not None:
-        processed_args = []
-        block = first_series._block
-        for arg in args:
-            if isinstance(arg, bigframes.core.col.Expression):
-                # Project expression onto the block
-                block, col_id = block.project_expr(arg._expr)
-                processed_args.append(series.Series(block.select_column(col_id)))
-            elif arg is sentinels.DEFAULT:
-                # OmittedArg is handled by GoogleSqlScalarOp in compiler
-                processed_args.append(bigframes.core.col.Expression(ex.OmittedArg()))
-            else:
-                processed_args.append(arg)
-
-        # Apply the n-ary op. _apply_nary_op handles alignment of Series and literals.
-        result = first_series._apply_nary_op(op, processed_args, ignore_self=True)
-        result.name = None
-        return result
-
-    # No Series, return an Expression
-    expr_args = []
-    for arg in args:
-        if isinstance(arg, bigframes.core.col.Expression):
-            expr_args.append(arg._expr)
-        elif arg is sentinels.DEFAULT:
-            expr_args.append(ex.OmittedArg())
-        else:
-            expr_args.append(ex.const(arg))
-
-    return bigframes.core.col.Expression(ex.OpExpression(op, tuple(expr_args)))
-
 {% for func in functions %}
 def {{ func.name }}(
 {% for arg in func.args %}
-    {{ arg.name }}: Union[T, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
+    {{ arg.name }}: Union[T, bigframes.core.col.Expression, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
 {% endfor %}
 ) -> T:
     \"\"\"{{ func.description }}\"\"\"
-    return _apply_googlesql_op(
+    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         {{ func.op_name }},
 {% for arg in func.args %}
         {{ arg.name }},
