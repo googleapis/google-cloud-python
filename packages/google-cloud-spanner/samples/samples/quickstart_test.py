@@ -17,11 +17,6 @@ import pytest
 import quickstart
 
 
-@pytest.fixture(scope="module")
-def sample_name():
-    return "quickstart"
-
-
 def test_quickstart(capsys, instance_id, sample_database):
     quickstart.run_quickstart(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()

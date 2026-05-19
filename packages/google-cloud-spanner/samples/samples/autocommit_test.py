@@ -11,11 +11,6 @@ from test_utils.retry import RetryErrors
 import autocommit
 
 
-@pytest.fixture(scope="module")
-def sample_name():
-    return "autocommit"
-
-
 @RetryErrors(exception=Aborted, max_tries=2)
 def test_enable_autocommit_mode(capsys, instance_id, sample_database):
     # Delete table if it exists for retry attempts.
