@@ -227,6 +227,16 @@ def _get_obj_metadata(
     return is_series, has_index
 
 
+def _to_display_df(
+    obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
+) -> bigframes.dataframe.DataFrame:
+    from bigframes.series import Series
+
+    df = obj.to_frame() if isinstance(obj, Series) else obj
+    df, _ = df._get_display_df_and_blob_cols()
+    return df
+
+
 def get_anywidget_bundle(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
     include=None,
@@ -237,11 +247,8 @@ def get_anywidget_bundle(
     This function encapsulates the logic for anywidget display.
     """
     from bigframes import display
-    from bigframes.series import Series
 
-    df = obj.to_frame() if isinstance(obj, Series) else obj
-
-    df, _ = df._get_display_df_and_blob_cols()
+    df = _to_display_df(obj)
 
     widget = display.TableWidget(df)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
@@ -289,12 +296,8 @@ def repr_mimebundle_deferred(
 def repr_mimebundle_head(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> dict[str, str]:
-    from bigframes.series import Series
-
     opts = options.display
-    df = obj.to_frame() if isinstance(obj, Series) else obj
-
-    df, _ = df._get_display_df_and_blob_cols()
+    df = _to_display_df(obj)
     pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
         opts.max_rows
     )
