@@ -232,6 +232,18 @@ class TestJSONArrayMethods(base.BaseMethodsTests):
     def test_sort_values_frame(self, data_for_sorting):
         super().test_sort_values_frame(data_for_sorting)
 
+    @pytest.mark.skip(reason="BigQuery does not allow sort by a JSON-type column.")
+    def test_rank(self, data_for_sorting, ascending):
+        super().test_rank(data_for_sorting, ascending)
+
+    @pytest.mark.skip(reason="BigQuery does not allow sort by a JSON-type column.")
+    def test_rank_method(self, data_for_sorting, method):
+        super().test_rank_method(data_for_sorting, method)
+
+    @pytest.mark.skip(reason="BigQuery does not allow sort by a JSON-type column.")
+    def test_rank_missing(self, data_missing_for_sorting, na_option):
+        super().test_rank_missing(data_missing_for_sorting, na_option)
+
     def test_argmax_argmin_no_skipna_notimplemented(self, data_missing_for_sorting):
         # This test was failing compliance checks because it attempted to match
         # a pytest regex match using an empty string (""), which pytest version
