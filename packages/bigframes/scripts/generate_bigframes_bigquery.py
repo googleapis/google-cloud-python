@@ -37,13 +37,13 @@ OUTPUT_DIR = pathlib.Path("bigframes/bigquery/_operations")
 TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/_operations")
 
 RUFF_ARGS = [
-                "ruff",
-                "check",
-                "--select",
-                "I",
-                "--fix",
-                "--target-version=py310",
-                "--line-length=88",
+    "ruff",
+    "check",
+    "--select",
+    "I",
+    "--fix",
+    "--target-version=py310",
+    "--line-length=88",
 ]
 
 LICENSE_HEADER = """# Copyright 2026 Google LLC
@@ -318,7 +318,8 @@ def main():
             f.write(content)
 
         subprocess.run(
-            RUFF_ARGS + [
+            RUFF_ARGS
+            + [
                 str(output_file),
             ],
             check=True,
@@ -344,7 +345,8 @@ def main():
             f.write(test_content)
 
         subprocess.run(
-            RUFF_ARGS + [
+            RUFF_ARGS
+            + [
                 str(test_output_file),
             ],
             check=True,
