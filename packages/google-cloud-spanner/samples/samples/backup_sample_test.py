@@ -13,7 +13,7 @@
 # limitations under the License.
 import uuid
 
-from google.api_core.exceptions import DeadlineExceeded
+from google.api_core.exceptions import AlreadyExists, DeadlineExceeded
 import pytest
 from test_utils.retry import RetryErrors
 
@@ -33,6 +33,49 @@ def unique_database_id():
 def unique_backup_id():
     """Creates a unique id for the backup."""
     return f"test-backup-{uuid.uuid4().hex[:10]}"
+
+
+def _verify_restored_database(
+    spanner_client,
+    instance_id,
+    database_id,
+    backup_id,
+    kms_key_name=None,
+    kms_key_names=None,
+):
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
+    import time
+
+    database_admin_api = spanner_client.database_admin_api
+    db_path = database_admin_api.database_path(
+        spanner_client.project, instance_id, database_id
+    )
+    db = database_admin_api.get_database(name=db_path)
+
+    # Verify it was restored from the correct backup
+    restore_info = db.restore_info
+    assert restore_info is not None
+    assert backup_id in restore_info.backup_info.backup
+
+    if kms_key_name:
+        assert kms_key_name in db.encryption_config.kms_key_name
+    if kms_key_names:
+        assert kms_key_names[0] in db.encryption_config.kms_key_names[0]
+
+    # Verify/Wait until the state is either READY or READY_OPTIMIZING
+    for _ in range(40):  # Wait up to 20 minutes
+        if db.state in (
+            spanner_database_admin.Database.State.READY,
+            spanner_database_admin.Database.State.READY_OPTIMIZING,
+        ):
+            break
+        time.sleep(30)
+        db = database_admin_api.get_database(name=db_path)
+
+    assert db.state in (
+        spanner_database_admin.Database.State.READY,
+        spanner_database_admin.Database.State.READY_OPTIMIZING,
+    )
 
 
 RESTORE_DB_ID = unique_database_id()
@@ -136,12 +179,15 @@ def test_copy_backup_with_multiple_kms_keys(
 
 @pytest.mark.dependency(depends=["create_backup"])
 @RetryErrors(exception=(DeadlineExceeded, TimeoutError), max_tries=2)
-def test_restore_database(capsys, instance_id, sample_database):
-    backup_sample.restore_database(instance_id, RESTORE_DB_ID, BACKUP_ID)
-    out, _ = capsys.readouterr()
-    assert (sample_database.database_id + " restored to ") in out
-    assert (RESTORE_DB_ID + " from backup ") in out
-    assert BACKUP_ID in out
+def test_restore_database(capsys, instance_id, sample_database, spanner_client):
+    try:
+        backup_sample.restore_database(instance_id, RESTORE_DB_ID, BACKUP_ID)
+        out, _ = capsys.readouterr()
+        assert (sample_database.database_id + " restored to ") in out
+        assert (RESTORE_DB_ID + " from backup ") in out
+        assert BACKUP_ID in out
+    except AlreadyExists:
+        _verify_restored_database(spanner_client, instance_id, RESTORE_DB_ID, BACKUP_ID)
 
 
 @pytest.mark.dependency(depends=["create_backup_with_encryption_key"])
@@ -151,15 +197,25 @@ def test_restore_database_with_encryption_key(
     instance_id,
     sample_database,
     kms_key_name,
+    spanner_client,
 ):
-    backup_sample.restore_database_with_encryption_key(
-        instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name
-    )
-    out, _ = capsys.readouterr()
-    assert (sample_database.database_id + " restored to ") in out
-    assert (CMEK_RESTORE_DB_ID + " from backup ") in out
-    assert CMEK_BACKUP_ID in out
-    assert kms_key_name in out
+    try:
+        backup_sample.restore_database_with_encryption_key(
+            instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name
+        )
+        out, _ = capsys.readouterr()
+        assert (sample_database.database_id + " restored to ") in out
+        assert (CMEK_RESTORE_DB_ID + " from backup ") in out
+        assert CMEK_BACKUP_ID in out
+        assert kms_key_name in out
+    except AlreadyExists:
+        _verify_restored_database(
+            spanner_client,
+            instance_id,
+            CMEK_RESTORE_DB_ID,
+            CMEK_BACKUP_ID,
+            kms_key_name=kms_key_name,
+        )
 
 
 @pytest.mark.skip(reason="skipped since the KMS keys are not added on test project")
@@ -170,17 +226,27 @@ def test_restore_database_with_multiple_kms_keys(
     multi_region_instance_id,
     sample_multi_region_database,
     kms_key_names,
+    spanner_client,
 ):
-    backup_sample.restore_database_with_multiple_kms_keys(
-        multi_region_instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_names
-    )
-    out, _ = capsys.readouterr()
-    assert (sample_multi_region_database.database_id + " restored to ") in out
-    assert (CMEK_RESTORE_DB_ID + " from backup ") in out
-    assert CMEK_BACKUP_ID in out
-    assert kms_key_names[0] in out
-    assert kms_key_names[1] in out
-    assert kms_key_names[2] in out
+    try:
+        backup_sample.restore_database_with_multiple_kms_keys(
+            multi_region_instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_names
+        )
+        out, _ = capsys.readouterr()
+        assert (sample_multi_region_database.database_id + " restored to ") in out
+        assert (CMEK_RESTORE_DB_ID + " from backup ") in out
+        assert CMEK_BACKUP_ID in out
+        assert kms_key_names[0] in out
+        assert kms_key_names[1] in out
+        assert kms_key_names[2] in out
+    except AlreadyExists:
+        _verify_restored_database(
+            spanner_client,
+            multi_region_instance_id,
+            CMEK_RESTORE_DB_ID,
+            CMEK_BACKUP_ID,
+            kms_key_names=kms_key_names,
+        )
 
 
 @pytest.mark.dependency(depends=["create_backup", "copy_backup"])
