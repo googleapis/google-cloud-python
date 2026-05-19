@@ -23,7 +23,7 @@ import time
 
 import nox
 
-MYPY_VERSION = "mypy==1.6.1"
+MYPY_VERSION = "mypy<1.16.0"
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.10.1"
 BLACK_PATHS = (
@@ -36,7 +36,8 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
@@ -175,7 +176,7 @@ def unit(session, test_type):
     default(session, install_extras=install_extras)
 
 
-@nox.session(python="3.10")
+@nox.session(python=ALL_PYTHON)
 @_calculate_duration
 def mypy(session):
     """Run type checks with mypy."""
