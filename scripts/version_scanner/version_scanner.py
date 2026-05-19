@@ -25,8 +25,6 @@ import re
 import sys
 from typing import Dict, List, Tuple
 import yaml
-import google.auth
-from googleapiclient.discovery import build
 
 class ConfigManager:
     """Handles loading and interpolation of regex configurations."""
@@ -273,6 +271,13 @@ def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: s
     Upload matches to a Google Sheet in Drive.
     """
     print("\nUploading to Google Drive...")
+    try:
+        import google.auth
+        from googleapiclient.discovery import build
+    except ImportError:
+        print("Error: Google API client packages are missing. Please run 'pip install -r requirements.txt' to enable upload functionality.", file=sys.stderr)
+        return ""
+        
     try:
         credentials, project = google.auth.default(
             scopes=['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']

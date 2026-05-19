@@ -385,7 +385,7 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     assert "scripts/version_scanner" in path
 
 
-@mock.patch('version_scanner.build')
+@mock.patch('googleapiclient.discovery.build')
 @mock.patch('google.auth.default')
 def test_upload_to_drive(mock_auth, mock_build):
     from unittest import mock
