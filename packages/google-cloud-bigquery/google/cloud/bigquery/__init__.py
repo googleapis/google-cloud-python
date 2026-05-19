@@ -27,6 +27,7 @@ The main concepts with this API are:
 - :class:`~google.cloud.bigquery.table.Table` represents a single "relation".
 """
 
+import sys
 import warnings
 
 from google.cloud.bigquery import version as bigquery_version
@@ -116,19 +117,16 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
-from google.cloud.bigquery import _versions_helpers
 
 try:
     import bigquery_magics  # type: ignore
 except ImportError:
     bigquery_magics = None
 
-sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
-
-if sys_major == 3 and sys_minor in (7, 8, 9):
+if sys.version_info < (3, 10):
     warnings.warn(
-        "The python-bigquery library no longer supports Python 3.7, 3.8, and 3.9. "
-        f"Your Python version is {sys_major}.{sys_minor}.{sys_micro}. We "
+        "The python-bigquery library no longer supports Python <= 3.9. "
+        f"Your Python version is {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}. We "
         "recommend that you update soon to ensure ongoing support. For "
         "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",
         FutureWarning,

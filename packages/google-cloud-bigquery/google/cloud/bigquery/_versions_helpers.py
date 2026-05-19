@@ -11,10 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Shared helper functions for verifying versions of installed modules."""
 
-import sys
 from typing import Any
 
 import packaging.version
@@ -249,16 +247,3 @@ SUPPORTS_RANGE_PYARROW = (
     and PYARROW_VERSIONS.try_import() is not None
     and PYARROW_VERSIONS.installed_version >= _MIN_PYARROW_VERSION_RANGE
 )
-
-
-def extract_runtime_version():
-    # Retrieve the version information
-    version_info = sys.version_info
-
-    # Extract the major, minor, and micro components
-    major = version_info.major
-    minor = version_info.minor
-    micro = version_info.micro
-
-    # Display the version number in a clear format
-    return major, minor, micro
