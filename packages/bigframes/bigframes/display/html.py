@@ -242,7 +242,9 @@ def get_anywidget_bundle(
     if isinstance(obj, Series):
         df = obj.to_frame()
     else:
-        df, _ = obj._get_display_df_and_blob_cols()
+        df = obj
+
+    df, _ = df._get_display_df_and_blob_cols()
 
     widget = display.TableWidget(df)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
@@ -294,14 +296,14 @@ def repr_mimebundle_head(
 
     opts = options.display
     if isinstance(obj, Series):
-        pandas_df, row_count, query_job = obj._block.retrieve_repr_request_results(
-            opts.max_rows
-        )
+        df = obj.to_frame()
     else:
-        df, _ = obj._get_display_df_and_blob_cols()
-        pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
-            opts.max_rows
-        )
+        df = obj
+
+    df, _ = df._get_display_df_and_blob_cols()
+    pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
+        opts.max_rows
+    )
 
     obj._set_internal_query_job(query_job)
     column_count = len(pandas_df.columns)

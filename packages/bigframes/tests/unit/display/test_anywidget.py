@@ -179,3 +179,69 @@ def test_page_size_change_resets_sort(mock_df):
 
     # to_pandas_batches called again (reset)
     assert mock_df.to_pandas_batches.call_count >= 2
+
+
+def test_json_column_converted_to_string_for_display():
+    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE
+    from bigframes.dataframe import DataFrame
+    from bigframes.core.blocks import Block
+    from bigframes.operations import SqlScalarOp
+
+    mock_block = mock.Mock(spec=Block)
+    mock_block.column_labels = pd.Index(["col_json"])
+    mock_block.value_columns = ["col_json"]
+
+    df = DataFrame(mock_block)
+    df._block = mock_block
+
+    mock_series = mock.Mock()
+    mock_series.dtype = JSON_DTYPE
+
+    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
+        with mock.patch.object(DataFrame, "assign") as mock_assign:
+            df._get_display_df_and_blob_cols()
+
+            mock_assign.assert_called_once()
+            _, kwargs = mock_assign.call_args
+            assert "col_json" in kwargs
+
+            mock_series._apply_unary_op.assert_called_once()
+            call_arg = mock_series._apply_unary_op.call_args[0][0]
+            assert isinstance(call_arg, SqlScalarOp)
+            assert call_arg._output_type == STRING_DTYPE
+            assert call_arg.sql_template == "TO_JSON_STRING({0})"
+
+
+def test_struct_column_with_nested_json_converted_to_string_for_display():
+    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
+    from bigframes.dataframe import DataFrame
+    from bigframes.core.blocks import Block
+    from bigframes.operations import SqlScalarOp
+
+    nested_struct_dtype = struct_type(
+        [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
+    )
+
+    mock_block = mock.Mock(spec=Block)
+    mock_block.column_labels = pd.Index(["col_struct"])
+    mock_block.value_columns = ["col_struct"]
+
+    df = DataFrame(mock_block)
+    df._block = mock_block
+
+    mock_series = mock.Mock()
+    mock_series.dtype = nested_struct_dtype
+
+    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
+        with mock.patch.object(DataFrame, "assign") as mock_assign:
+            df._get_display_df_and_blob_cols()
+
+            mock_assign.assert_called_once()
+            _, kwargs = mock_assign.call_args
+            assert "col_struct" in kwargs
+
+            mock_series._apply_unary_op.assert_called_once()
+            call_arg = mock_series._apply_unary_op.call_args[0][0]
+            assert isinstance(call_arg, SqlScalarOp)
+            assert call_arg._output_type == STRING_DTYPE
+            assert call_arg.sql_template == "TO_JSON_STRING({0})"
