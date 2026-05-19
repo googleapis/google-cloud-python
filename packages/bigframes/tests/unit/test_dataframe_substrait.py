@@ -1219,7 +1219,6 @@ def test_df_fillna(scalars_dfs, col, fill_value):
     pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
-@pytest.mark.skip("b/436316698 unit test failed for python 3.12")
 def test_df_ffill(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df[["int64_col", "float64_col"]].ffill(limit=1).to_pandas()
@@ -3369,6 +3368,8 @@ def test_dataframe_aggregates(scalars_dfs, op, bf_dtype):
     pd_result = op(scalars_pandas_df_index[col_names])
 
     # Check dtype separately
+    print("PD_RESULT:\n", pd_result)
+    print("BF_RESULT:\n", bf_result.to_pandas())
     assert bf_result.dtype == bf_dtype
 
     # Pandas may produce narrower numeric types, but bigframes always produces Float64
@@ -4490,3 +4491,31 @@ def test_recursion_limit_unit(scalars_df_index):
     for i in range(250):
         scalars_df_index = scalars_df_index + 4
     scalars_df_index.to_pandas()
+
+
+def test_dataframe_popvar(scalars_dfs):
+    scalars_df_index, scalars_pandas_df_index = scalars_dfs
+    col_names = ["int64_too", "float64_col", "int64_col"]
+    from bigframes.operations import aggregations as agg_ops
+    from bigframes.core import agg_expressions
+    import bigframes.core.expression as ex
+    
+    col_ids = [scalars_df_index._block.resolve_label_exact(col) for col in col_names]
+    aggs = [agg_expressions.UnaryAggregation(agg_ops.PopVarOp(), ex.deref(col)) for col in col_ids]
+    
+    agg_block = scalars_df_index._block.aggregate(aggs, column_labels=pandas.Index(col_names))
+    
+    import bigframes.dataframe as bfd
+    bf_result = bfd.DataFrame(agg_block).to_pandas()
+    bf_result = bf_result.iloc[0]
+    
+    pd_result = scalars_pandas_df_index[col_names].var(ddof=0)
+    pd_result.index = pd_result.index.astype("string[pyarrow]")
+    
+    pandas.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+        check_dtype=False,
+        check_index_type=False,
+        check_names=False,
+    )
