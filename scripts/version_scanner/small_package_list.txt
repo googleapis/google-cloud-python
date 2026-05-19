@@ -1,3 +1,4 @@
+# Example package list for filtering scanning targets via the --package-file option.
 packages/google-cloud-access-context-manager
 packages/google-cloud-bigtable
 packages/google-cloud-biglake-hive

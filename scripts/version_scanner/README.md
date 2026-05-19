@@ -16,11 +16,30 @@ python3 scripts/version_scanner/version_scanner.py -d <dependency> -v <version> 
 *   `-v`, `--version`: Specific version to search for (e.g., 3.7, 4.25.8)
 *   `-p`, `--path`: Root directory to scan (defaults to current directory)
 *   `--package`: Specific subdirectory filter (useful for monorepos)
-*   `--package-file`: Path to a file containing a list of package directories to scan
+*   `--package-file`: Path to a file containing a list of package directories to scan (e.g., `scripts/version_scanner/small_package_list.txt`)
 *   `--config`: Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)
 *   `-o`, `--output`: Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)
 *   `--github-repo`: GitHub repository URL base (defaults to https://github.com/googleapis/google-cloud-python)
 *   `--branch`: GitHub branch for links (defaults to main)
+
+## Installation & Setup
+
+By default, the core scanner only depends on Python's standard library and **`pyyaml`** to read the configuration file.
+
+If you want to use the Google Drive upload feature (`--upload`), you must install the optional Google API client dependencies:
+```bash
+pip install -r scripts/version_scanner/requirements.txt
+```
+
+## Scope: Handwritten vs. Generated Code
+
+> [!NOTE]
+> **This scanner is primarily intended for auditing handwritten code, configuration files, CI scripts, and documentation.**
+> You do **not** need to scan or manually edit auto-generated GAPIC libraries. Any dependency updates for generated code are handled upstream by editing the generator templates in the `gapic-generator-python` repository. When the templates are updated, the changes naturally trickle downstream to correct all generated client libraries upon the next regeneration.
+
+## Limitations
+
+*   **Single-Line Matching Only**: The scanner processes files line-by-line to ensure high performance and simplicity. Consequently, version declarations or dependency lists that span across multiple lines (such as multiline lists in a `setup.py` file) will not be caught by the regex patterns.
 
 ## Configuration
 
