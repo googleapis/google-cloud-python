@@ -29,7 +29,7 @@ pytest.importorskip("pytest_snapshot")
 
 def test_decrypt_bytes(scalar_types_df: bpd.DataFrame, snapshot):
     result = aead.decrypt_bytes(
-        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
     ).to_frame()
@@ -38,7 +38,7 @@ def test_decrypt_bytes(scalar_types_df: bpd.DataFrame, snapshot):
 
 def test_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
     result = aead.decrypt_string(
-        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -47,7 +47,7 @@ def test_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
 
 def test_encrypt(scalar_types_df: bpd.DataFrame, snapshot):
     result = aead.encrypt(
-        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
     ).to_frame()

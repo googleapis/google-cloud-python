@@ -19,10 +19,14 @@
 
 from __future__ import annotations
 
-from typing import TypeVar, Union
+import datetime
+from typing import Any, Optional, TypeVar, Union
 
 import bigframes.bigquery._googlesql
 import bigframes.core.col
+import bigframes.core.expression as ex
+import bigframes.core.sentinels as sentinels
+import bigframes.operations as ops
 import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql

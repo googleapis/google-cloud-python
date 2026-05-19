@@ -2,9 +2,9 @@
 #
 # /// script
 # dependencies = [
-#   "autoflake",
 #   "jinja2",
 #   "pyyaml",
+#   "ruff==0.14.14",
 # ]
 # ///
 #
@@ -35,6 +35,16 @@ DATA_DIR = pathlib.Path("scripts/data/sql-functions")
 OUTPUT_DIR = pathlib.Path("bigframes/bigquery/_operations")
 # Directory where the generated test files will be placed
 TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/_operations")
+
+RUFF_ARGS = [
+                "ruff",
+                "check",
+                "--select",
+                "I",
+                "--fix",
+                "--target-version=py310",
+                "--line-length=88",
+]
 
 LICENSE_HEADER = """# Copyright 2026 Google LLC
 #
@@ -308,10 +318,7 @@ def main():
             f.write(content)
 
         subprocess.run(
-            [
-                "autoflake",
-                "--in-place",
-                "--remove-all-unused-imports",
+            RUFF_ARGS + [
                 str(output_file),
             ],
             check=True,
@@ -337,10 +344,7 @@ def main():
             f.write(test_content)
 
         subprocess.run(
-            [
-                "autoflake",
-                "--in-place",
-                "--remove-all-unused-imports",
+            RUFF_ARGS + [
                 str(test_output_file),
             ],
             check=True,
