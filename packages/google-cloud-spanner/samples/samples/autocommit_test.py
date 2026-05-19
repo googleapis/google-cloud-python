@@ -5,7 +5,6 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from google.api_core.exceptions import Aborted
-import pytest
 from test_utils.retry import RetryErrors
 
 import autocommit
