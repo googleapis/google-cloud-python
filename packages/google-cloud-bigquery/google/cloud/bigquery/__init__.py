@@ -125,10 +125,9 @@ except ImportError:
 
 sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
 
-if sys_major == 3 and sys_minor in (7, 8):
+if sys_major == 3 and sys_minor in (7, 8, 9):
     warnings.warn(
-        "The python-bigquery library no longer supports Python 3.7 "
-        "and Python 3.8. "
+        "The python-bigquery library no longer supports Python 3.7, 3.8, and 3.9. "
         f"Your Python version is {sys_major}.{sys_minor}.{sys_micro}. We "
         "recommend that you update soon to ensure ongoing support. For "
         "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",

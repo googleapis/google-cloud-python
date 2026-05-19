@@ -36,7 +36,7 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
@@ -170,12 +170,12 @@ def unit(session, test_type):
         # so that it continues to be an optional dependency.
         # https://github.com/googleapis/google-cloud-python/issues/1877
         if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
-            session.install("pyarrow==4.0.0", "numpy==1.20.2")
+            session.install("pyarrow==6.0.0", "numpy==1.22.0")
 
     default(session, install_extras=install_extras)
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.10")
 @_calculate_duration
 def mypy(session):
     """Run type checks with mypy."""
