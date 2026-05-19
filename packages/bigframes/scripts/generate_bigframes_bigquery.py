@@ -108,7 +108,7 @@ def {{ func.name }}(
 {% endfor %}
 """
 
-TEST_TEMPLATE = """{{ license_header }}
+TEST_TEMPLATE = r"""{{ license_header }}
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: {{ yaml_path }}
@@ -131,7 +131,7 @@ def test_{{ func.name }}(scalar_types_df: bpd.DataFrame, snapshot):
         cast(bpd.Series, scalar_types_df["{{ arg.col_name }}"]),
 {% endfor %}
     ).to_frame()
-    snapshot.assert_match(result.sql, "out.sql")
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
 {% endfor %}
