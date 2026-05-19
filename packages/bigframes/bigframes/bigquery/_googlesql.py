@@ -52,7 +52,7 @@ def apply_googlesql_scalar_op(
             break
 
     if first_series is not None:
-        processed_args = []
+        processed_args: list[Union[bigframes.core.col.Expression, series.Series]] = []
         block = first_series._block
         for arg in args:
             if isinstance(arg, bigframes.core.col.Expression):
