@@ -2,6 +2,7 @@
 #
 # /// script
 # dependencies = [
+#   "autoflake",
 #   "jinja2",
 #   "pyyaml",
 # ]
@@ -23,6 +24,7 @@
 
 import pathlib
 import re
+import subprocess
 
 import jinja2
 import yaml
@@ -58,14 +60,14 @@ from __future__ import annotations
 import datetime
 from typing import Any, Optional, TypeVar, Union
 
+from bigframes import dtypes
+import bigframes.bigquery._googlesql
 import bigframes.core.col
 import bigframes.core.expression as ex
 import bigframes.core.sentinels as sentinels
+from bigframes.operations import googlesql
 import bigframes.operations as ops
 import bigframes.series as series
-from bigframes import dtypes
-from bigframes.operations import googlesql
-import bigframes.bigquery._googlesql
 
 T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 
@@ -76,8 +78,9 @@ T = TypeVar("T", series.Series, bigframes.core.col.Expression)
     signature={{ op.signature }},
 )
 {% endfor %}
-
 {% for func in functions %}
+
+
 def {{ func.name }}(
 {% for arg in func.args %}
     {{ arg.name }}: Union[T, bigframes.core.col.Expression, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
@@ -90,7 +93,6 @@ def {{ func.name }}(
         {{ arg.name }},
 {% endfor %}
     )  # type: ignore
-
 {% endfor %}
 """
 
@@ -250,6 +252,16 @@ def main():
         )
         with open(output_file, "w") as f:
             f.write(content)
+
+        subprocess.run(
+            [
+                "autoflake",
+                "--in-place",
+                "--remove-all-unused-imports",
+                str(output_file),
+            ],
+            check=True,
+        )
         print(f"  Generated {output_file}")
 
 
