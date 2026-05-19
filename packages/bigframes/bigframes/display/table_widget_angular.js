@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 // dist/table-widget-angular/browser/main.js
 var tl = Object.defineProperty;
 var nl = Object.defineProperties;
@@ -5140,7 +5141,7 @@ var ir = class e5 {
   };
   static \u0275cmp = mi({ type: e5, selectors: [["app-root"]], decls: 8, vars: 2, consts: [[1, "angular-widget"], [3, "innerHTML"]], template: function(n, r) {
     n & 1 && (Oe(0, "div", 0)(1, "h3"), Pt(2, "Angular Hybrid Widget"), ye(), Oe(3, "p"), Pt(4, "Status: Infrastructure Loaded"), ye(), Oe(5, "p"), Pt(6), ye(), Qn(7, "div", 1), ye()), n & 2 && (Wn(6), Kn("Message from Python: ", r.message()), Wn(), Yn("innerHTML", r.sanitizedHtml(), ui));
-  }, styles: [".angular-widget[_ngcontent-%COMP%]{padding:10px;border:1px solid #ccc;border-radius:4px;background-color:#f9f9f9}"] });
+  }, styles: [".angular-widget[_ngcontent-%COMP%]{background-color:#f9f9f9;border:1px solid #ccc;border-radius:4px;padding:10px}"] });
 };
 function Fp({ model: e6, el: t }) {
   let n = document.createElement("app-root");
