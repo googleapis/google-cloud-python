@@ -33,6 +33,7 @@ retry_cleanup = retry.RetryErrors(
     (exceptions.ResourceExhausted, exceptions.FailedPrecondition), max_tries=6, delay=15
 )
 
+
 @pytest.fixture(scope="module")
 def database_dialect():
     """Database dialect to be used for this sample.
