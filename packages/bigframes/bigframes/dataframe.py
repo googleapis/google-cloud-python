@@ -820,8 +820,20 @@ class DataFrame:
         )
 
     def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display. (Deprecated)"""
-        return self, []
+        """Process ObjectRef and JSON/nested JSON columns for display."""
+        df = self
+        # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
+        # columns. Pre-serialize them to string format to bypass this limit.
+        # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
+        # types correctly.
+        for col in df.columns:
+            if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype):
+                op = ops.SqlScalarOp(
+                    _output_type=bigframes.dtypes.STRING_DTYPE,
+                    sql_template="TO_JSON_STRING({0})",
+                )
+                df = df.assign(**{col: df[col]._apply_unary_op(op)})
+        return df, []
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -1598,7 +1610,8 @@ class DataFrame:
         ordered: bool = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.DataFrame: ...
+    ) -> pandas.DataFrame:
+        ...
 
     @overload
     def to_pandas(
@@ -1610,7 +1623,8 @@ class DataFrame:
         ordered: bool = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series: ...
+    ) -> pandas.Series:
+        ...
 
     def to_pandas(
         self,
@@ -1924,7 +1938,8 @@ class DataFrame:
         columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
         inplace: Literal[False] = False,
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def drop(
@@ -1936,7 +1951,8 @@ class DataFrame:
         columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
         inplace: Literal[True],
-    ) -> None: ...
+    ) -> None:
+        ...
 
     def drop(
         self,
@@ -2080,17 +2096,20 @@ class DataFrame:
         return self._block.index.resolve_level(level)
 
     @overload
-    def rename(self, *, columns: Mapping[blocks.Label, blocks.Label]) -> DataFrame: ...
+    def rename(self, *, columns: Mapping[blocks.Label, blocks.Label]) -> DataFrame:
+        ...
 
     @overload
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[False]
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[True]
-    ) -> None: ...
+    ) -> None:
+        ...
 
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: bool = False
@@ -2107,7 +2126,8 @@ class DataFrame:
     def rename_axis(
         self,
         mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def rename_axis(
@@ -2116,7 +2136,8 @@ class DataFrame:
         *,
         inplace: Literal[False],
         **kwargs,
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def rename_axis(
@@ -2125,7 +2146,8 @@ class DataFrame:
         *,
         inplace: Literal[True],
         **kwargs,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     def rename_axis(
         self,
@@ -2321,7 +2343,8 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def reset_index(
@@ -2333,7 +2356,8 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     @overload
     def reset_index(
@@ -2345,7 +2369,8 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> Optional[DataFrame]: ...
+    ) -> Optional[DataFrame]:
+        ...
 
     def reset_index(
         self,
@@ -2409,7 +2434,8 @@ class DataFrame:
         inplace: Literal[False] = ...,
         kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def sort_index(
@@ -2419,7 +2445,8 @@ class DataFrame:
         inplace: Literal[True] = ...,
         kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     def sort_index(
         self,
@@ -2469,7 +2496,8 @@ class DataFrame:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> DataFrame: ...
+    ) -> DataFrame:
+        ...
 
     @overload
     def sort_values(
@@ -2480,7 +2508,8 @@ class DataFrame:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     def sort_values(
         self,
