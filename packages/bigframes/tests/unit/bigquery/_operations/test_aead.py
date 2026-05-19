@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/aead.yaml
@@ -48,7 +47,7 @@ def test_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
 def test_encrypt(scalar_types_df: bpd.DataFrame, snapshot):
     result = aead.encrypt(
         cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["string_col"]),
-        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["bytes_col"]),
+        cast(bpd.Series, scalar_types_df["bytes_col"]),
     ).to_frame()
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")

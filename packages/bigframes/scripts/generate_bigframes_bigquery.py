@@ -35,6 +35,8 @@ DATA_DIR = pathlib.Path("scripts/data/sql-functions")
 OUTPUT_DIR = pathlib.Path("bigframes/bigquery/_operations")
 # Directory where the generated test files will be placed
 TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/_operations")
+# Directory containing the Jinja2 templates
+TEMPLATE_DIR = pathlib.Path("scripts/templates")
 
 RUFF_ARGS = [
     "ruff",
@@ -45,97 +47,6 @@ RUFF_ARGS = [
     "--target-version=py310",
     "--line-length=88",
 ]
-
-LICENSE_HEADER = """# Copyright 2026 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""
-
-TEMPLATE = """{{ license_header }}
-#
-# DO NOT MODIFY THIS FILE DIRECTLY.
-# This file was generated from: {{ yaml_path }}
-# by the script: {{ script_path }}
-
-from __future__ import annotations
-
-import datetime
-from typing import Any, Optional, TypeVar, Union
-
-from bigframes import dtypes
-import bigframes.bigquery._googlesql
-import bigframes.core.col
-import bigframes.core.expression as ex
-import bigframes.core.sentinels as sentinels
-from bigframes.operations import googlesql
-import bigframes.operations as ops
-import bigframes.series as series
-
-T = TypeVar("T", series.Series, bigframes.core.col.Expression)
-
-{% for op in ops %}
-{{ op.internal_name }} = googlesql.GoogleSqlScalarOp(
-    "{{ op.sql_name }}",
-    args=({{ op.arg_specs }}),
-    signature={{ op.signature }},
-)
-{% endfor %}
-{% for func in functions %}
-
-
-def {{ func.name }}(
-{% for arg in func.args %}
-    {{ arg.name }}: Union[T, bigframes.core.col.Expression, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
-{% endfor %}
-) -> T:
-    \"\"\"{{ func.description }}\"\"\"
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        {{ func.op_name }},
-{% for arg in func.args %}
-        {{ arg.name }},
-{% endfor %}
-    )  # type: ignore
-{% endfor %}
-"""
-
-TEST_TEMPLATE = r"""{{ license_header }}
-#
-# DO NOT MODIFY THIS FILE DIRECTLY.
-# This file was generated from: {{ yaml_path }}
-# by the script: {{ script_path }}
-
-from typing import cast
-
-import pytest
-
-import bigframes.pandas as bpd
-import {{ import_path }} as {{ short_name }}
-
-pytest.importorskip("pytest_snapshot")
-
-
-{% for func in functions %}
-def test_{{ func.name }}(scalar_types_df: bpd.DataFrame, snapshot):
-    result = {{ short_name }}.{{ func.name }}(
-{% for arg in func.test_args %}
-        cast(bpd.Series, scalar_types_df["{{ arg.col_name }}"]),
-{% endfor %}
-    ).to_frame()
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-{% endfor %}
-"""
 
 DTYPE_MAP = {
     "binary": "dtypes.BYTES_DTYPE",
@@ -191,9 +102,13 @@ def to_snake_case(name):
 
 
 def main():
-    env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True)
-    template = env.from_string(TEMPLATE)
-    test_template = env.from_string(TEST_TEMPLATE)
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    template = env.get_template("operation.py.j2")
+    test_template = env.get_template("test_operation.py.j2")
 
     for yaml_file in DATA_DIR.glob("**/*.yaml"):
         print(f"Processing {yaml_file}...")
@@ -266,13 +181,13 @@ def main():
                 func_args = []
                 for name in arg_order:
                     arg_info = args_by_name[name]
-                    types = [PY_TYPE_MAP.get(t, "Any") for t in arg_info["types"]]
+                    types = [PY_TYPE_MAP.get(t, "Any") for t in arg_info["types"]] + ["Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]"]
                     type_hint = (
                         "Union[" + ", ".join(sorted(set(types))) + "]"
                         if len(types) > 1
                         else types[0]
                     )
-                    default = "sentinels.DEFAULT" if arg_info["optional"] else ""
+                    default = "sentinels.Sentinel.ARGUMENT_DEFAULT" if arg_info["optional"] else ""
                     func_args.append(
                         {
                             "name": name,
@@ -308,7 +223,6 @@ def main():
         # Render and write
         output_file.parent.mkdir(parents=True, exist_ok=True)
         content = template.render(
-            license_header=LICENSE_HEADER,
             yaml_path=str(yaml_file),
             script_path="scripts/generate_bigframes_bigquery.py",
             ops=ops_list,
@@ -334,7 +248,6 @@ def main():
 
         test_output_file.parent.mkdir(parents=True, exist_ok=True)
         test_content = test_template.render(
-            license_header=LICENSE_HEADER,
             yaml_path=str(yaml_file),
             script_path="scripts/generate_bigframes_bigquery.py",
             import_path=import_path,

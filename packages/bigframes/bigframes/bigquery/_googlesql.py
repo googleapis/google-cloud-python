@@ -58,7 +58,7 @@ def apply_googlesql_scalar_op(
             if isinstance(arg, bigframes.core.col.Expression):
                 block, col_id = block.project_expr(bigframes.core.col._as_bf_expr(arg))
                 processed_args.append(series.Series(block.select_column(col_id)))
-            elif arg is sentinels.DEFAULT:
+            elif arg is sentinels.Sentinel.ARGUMENT_DEFAULT:
                 processed_args.append(bigframes.core.col.Expression(ex.OmittedArg()))
             else:
                 processed_args.append(arg)
@@ -73,7 +73,7 @@ def apply_googlesql_scalar_op(
     for arg in args:
         if isinstance(arg, bigframes.core.col.Expression):
             expr_args.append(bigframes.core.col._as_bf_expr(arg))
-        elif arg is sentinels.DEFAULT:
+        elif arg is sentinels.Sentinel.ARGUMENT_DEFAULT:
             expr_args.append(ex.OmittedArg())
         else:
             expr_args.append(ex.const(arg))

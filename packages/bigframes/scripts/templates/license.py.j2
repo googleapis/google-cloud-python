@@ -11,21 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""Sentinel values used throughout BigFrames."""
-
-from __future__ import annotations
-
-import enum
-
-
-class Sentinel(enum.Enum):
-    """Default values used throughout BigFrames."""
-
-    """Default value for an optional argument.
-
-    When a parameter is set to this, that parameter is explicitly omitted
-    from the SQL text. This allows for NULL (None in Python) to be explicitly
-    passed in to optional parameters.
-    """
-    ARGUMENT_DEFAULT = enum.auto()

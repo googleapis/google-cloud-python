@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 #
 # DO NOT MODIFY THIS FILE DIRECTLY.
 # This file was generated from: scripts/data/sql-functions/aead.yaml
@@ -20,7 +19,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Any, Optional, TypeVar, Union
+from typing import Any, Literal, Optional, TypeVar, Union
 
 import bigframes.bigquery._googlesql
 import bigframes.core.col
@@ -51,9 +50,9 @@ _ENCRYPT_OP = googlesql.GoogleSqlScalarOp(
 
 
 def decrypt_bytes(
-    keyset: Union[T, bigframes.core.col.Expression, Union[bytes, dict]],
-    ciphertext: Union[T, bigframes.core.col.Expression, bytes],
-    additional_data: Union[T, bigframes.core.col.Expression, bytes],
+    keyset: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    ciphertext: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
+    additional_data: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
 ) -> T:
     """Uses the matching key from keyset to decrypt ciphertext and verifies the integrity of the data using additional_data. Returns an error if decryption or verification fails."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
@@ -65,9 +64,9 @@ def decrypt_bytes(
 
 
 def decrypt_string(
-    keyset: Union[T, bigframes.core.col.Expression, Union[bytes, dict]],
-    ciphertext: Union[T, bigframes.core.col.Expression, bytes],
-    additional_data: Union[T, bigframes.core.col.Expression, str],
+    keyset: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    ciphertext: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
+    additional_data: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str]],
 ) -> T:
     """Like AEAD.DECRYPT_BYTES, but where additional_data is of type STRING."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
@@ -79,9 +78,9 @@ def decrypt_string(
 
 
 def encrypt(
-    keyset: Union[T, bigframes.core.col.Expression, Union[bytes, dict]],
-    plaintext: Union[T, bigframes.core.col.Expression, Union[bytes, str]],
-    additional_data: Union[T, bigframes.core.col.Expression, Union[bytes, str]],
+    keyset: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    plaintext: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str]],
+    additional_data: Union[T, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str]],
 ) -> T:
     """Encrypts plaintext using the primary cryptographic key in keyset. The algorithm of the primary key must be AEAD_AES_GCM_256. Binds the ciphertext to the context defined by additional_data. Returns NULL if any input is NULL."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
