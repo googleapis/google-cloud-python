@@ -19,7 +19,6 @@ from contextlib import contextmanager
 from datetime import datetime
 
 from opentelemetry import trace
-
 from opentelemetry.trace.status import Status, StatusCode
 
 from google.cloud.spanner_v1._helpers import (

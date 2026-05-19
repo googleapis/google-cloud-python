@@ -16,7 +16,6 @@ try:
         InMemorySpanExporter,
     )
     from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
-
     from opentelemetry.trace.status import StatusCode
 
     trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))
