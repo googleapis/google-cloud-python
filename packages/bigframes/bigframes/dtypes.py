@@ -14,13 +14,13 @@
 
 """Mappings for Pandas dtypes supported by BigQuery DataFrames package"""
 
-from dataclasses import dataclass
 import datetime
 import decimal
 import textwrap
 import typing
-from typing import Any, Dict, List, Literal, Sequence, Union
 import warnings
+from dataclasses import dataclass
+from typing import Any, Dict, List, Literal, Sequence, Union
 
 import bigframes_vendored.constants as constants
 import db_dtypes  # type: ignore

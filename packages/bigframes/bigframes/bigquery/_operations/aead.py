@@ -21,11 +21,11 @@ from __future__ import annotations
 
 from typing import TypeVar, Union
 
-from bigframes import dtypes
 import bigframes.bigquery._googlesql
 import bigframes.core.col
-from bigframes.operations import googlesql
 import bigframes.series as series
+from bigframes import dtypes
+from bigframes.operations import googlesql
 
 T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 

@@ -21,12 +21,10 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
--   repo: https://github.com/psf/black
-    rev: 23.7.0
-    hooks:
-    - id: black
--   repo: https://github.com/pycqa/flake8
-    rev: 6.1.0 # version-scanner: ignore
-    hooks:
-    - id: flake8
-      args: [--config, packages/google-cloud-alloydb/.flake8]
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.14.14
+  hooks:
+    # Run the linter.
+    - id: ruff-check
+      args: [ --select, I, --fix, --target-version=py310, --line-length=88 ]

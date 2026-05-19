@@ -19,10 +19,9 @@
 
 from typing import cast
 
-import pytest
-
-import bigframes.pandas as bpd
 import bigframes.bigquery._operations.aead as aead
+import bigframes.pandas as bpd
+import pytest
 
 pytest.importorskip("pytest_snapshot")
 

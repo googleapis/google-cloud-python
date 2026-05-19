@@ -21,8 +21,8 @@ from typing import Any, Union
 import bigframes.core.col
 import bigframes.core.expression as ex
 import bigframes.core.sentinels as sentinels
-from bigframes.operations import googlesql
 import bigframes.series as series
+from bigframes.operations import googlesql
 
 
 def apply_googlesql_scalar_op(
