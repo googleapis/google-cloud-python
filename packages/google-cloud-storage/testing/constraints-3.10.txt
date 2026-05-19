@@ -1,14 +1,20 @@
-# -*- coding: utf-8 -*-
-# This constraints file is required for unit tests.
-# List all library dependencies and extras in this file.
-google-auth
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List all library dependencies and extras in this file,
+# pinning their versions to their lower bounds.
+# For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+# then this file should have google-cloud-foo==1.14.0
+google-auth==2.26.1
 # cryptography is a direct dependency of google-auth
-cryptography
-google-api-core
-google-cloud-core
-google-resumable-media
-grpcio
-requests
-google-crc32c
-protobuf
-opentelemetry-api
+cryptography==38.0.0
+google-api-core==2.27.0
+google-cloud-core==2.4.2
+google-resumable-media==2.7.2
+grpcio==1.44.0
+grpcio-status==1.76.0
+proto-plus==1.22.3
+protobuf==4.25.8
+grpc-google-iam-v1==0.14.0
+opentelemetry-api==1.1.0
+requests==2.22.0
+google-crc32c==1.6.0
