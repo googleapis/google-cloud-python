@@ -47,7 +47,7 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-referenc
 
 import sys
 
-from bigframes.bigquery import ai, ml, obj
+from bigframes.bigquery import aead, ai, ml, obj
 from bigframes.bigquery._operations.approx_agg import approx_top_count
 from bigframes.bigquery._operations.array import (
     array_agg,
@@ -208,6 +208,7 @@ __all__ = [
     # io ops
     "load_data",
     # Modules / SQL namespaces
+    "aead",
     "ai",
     "ml",
     "obj",
