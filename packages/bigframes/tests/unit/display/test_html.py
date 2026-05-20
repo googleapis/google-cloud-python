@@ -192,7 +192,6 @@ def test_repr_mimebundle_head():
     mock_df = Mock()
     mock_df.columns = ["col1"]
 
-    # Mock the call inside _to_display_df
     mock_df._get_display_df.return_value = mock_df
 
     # Mock the call to retrieve_repr_request_results
