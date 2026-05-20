@@ -30,6 +30,7 @@ import bigframes
 import bigframes.formatting_helpers as formatter
 from bigframes._config import display_options, options
 from bigframes.display import plaintext
+from bigframes.series import Series
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -191,8 +192,6 @@ def create_html_representation(
     total_columns: int,
 ) -> str:
     """Create an HTML representation of the DataFrame or Series."""
-    from bigframes.series import Series
-
     opts = options.display
     with display_options.pandas_repr(opts):
         if isinstance(obj, Series):
@@ -217,8 +216,6 @@ def create_html_representation(
 def _get_obj_metadata(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> tuple[bool, bool]:
-    from bigframes.series import Series
-
     is_series = isinstance(obj, Series)
     if is_series:
         has_index = len(obj._block.index_columns) > 0
@@ -230,11 +227,7 @@ def _get_obj_metadata(
 def _to_display_df(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> bigframes.dataframe.DataFrame:
-    from bigframes.series import Series
-
-    df = obj.to_frame() if isinstance(obj, Series) else obj
-    df, _ = df._get_display_df_and_blob_cols()
-    return df
+    return obj._get_display_df()
 
 
 def get_anywidget_bundle(

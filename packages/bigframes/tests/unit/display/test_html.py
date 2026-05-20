@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+from unittest.mock import Mock, patch
 
 import pandas as pd
 import pyarrow as pa
@@ -188,13 +189,11 @@ def test_render_html_max_columns_truncation():
 
 
 def test_repr_mimebundle_head():
-    from unittest.mock import Mock, patch
-
     mock_df = Mock()
     mock_df.columns = ["col1"]
 
     # Mock the call inside _to_display_df
-    mock_df._get_display_df_and_blob_cols.return_value = (mock_df, [])
+    mock_df._get_display_df.return_value = mock_df
 
     # Mock the call to retrieve_repr_request_results
     pandas_df = pd.DataFrame({"col1": [1, 2, 3]})
@@ -217,7 +216,7 @@ def test_repr_mimebundle_head():
                 bundle = bf_html.repr_mimebundle_head(mock_df)
 
                 assert bundle == {"text/html": "<html>", "text/plain": "text"}
-                mock_df._get_display_df_and_blob_cols.assert_called_once()
+                mock_df._get_display_df.assert_called_once()
                 mock_df._block.retrieve_repr_request_results.assert_called_once()
                 mock_create_html.assert_called_once()
                 mock_create_text.assert_called_once()
