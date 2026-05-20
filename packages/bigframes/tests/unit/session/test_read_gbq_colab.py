@@ -176,12 +176,29 @@ def test_execution_history_filtering():
     assert history_job2.iloc[0]["job_id"] == "job_2"
 
 
-def test_execution_history_cell_filtering():
-    """Verify cell-based filtering on execution history with all_cells flag."""
+def test_execution_history_returns_all_executions_by_default():
+    """Verify that execution_history returns all executions by default."""
     from bigframes.session import metrics
 
     session = mocks.create_bigquery_session()
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
 
+    history = session.execution_history().to_dataframe()
+
+    assert len(history) == 2
+
+
+def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
+    """Verify that execution_history filters to the current cell when all_cells is False."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
     job1 = metrics.JobMetadata(
         job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
     )
@@ -192,13 +209,11 @@ def test_execution_history_cell_filtering():
 
     mock_ipy = mock.Mock()
     mock_ipy.execution_count = 20
+    mock_ipython = mock.MagicMock()
+    mock_ipython.get_ipython.return_value = mock_ipy
 
-    with mock.patch("IPython.get_ipython", return_value=mock_ipy):
-        # By default all_cells=True, it returns all cells' executions
-        history_default = session.execution_history().to_dataframe()
-        assert len(history_default) == 2
+    with mock.patch.dict("sys.modules", {"IPython": mock_ipython}):
+        history = session.execution_history(all_cells=False).to_dataframe()
 
-        # When all_cells=False, it should filter to the current cell count (20)
-        history_filtered = session.execution_history(all_cells=False).to_dataframe()
-        assert len(history_filtered) == 1
-        assert history_filtered.iloc[0]["job_id"] == "job_2"
+    assert len(history) == 1
+    assert history.iloc[0]["job_id"] == "job_2"
