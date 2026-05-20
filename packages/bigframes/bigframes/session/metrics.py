@@ -74,14 +74,9 @@ class JobMetadata:
             )
 
         if cell_execution_count is None:
-            try:
-                import IPython
+            from bigframes.core.utils import get_ipython_execution_count
 
-                ipy = IPython.get_ipython()
-                if ipy is not None and hasattr(ipy, "execution_count"):
-                    cell_execution_count = ipy.execution_count
-            except (ImportError, NameError):
-                pass
+            cell_execution_count = get_ipython_execution_count()
 
         metadata = cls(
             job_id=query_job.job_id,
@@ -147,14 +142,9 @@ class JobMetadata:
             )
 
         if cell_execution_count is None:
-            try:
-                import IPython
+            from bigframes.core.utils import get_ipython_execution_count
 
-                ipy = IPython.get_ipython()
-                if ipy is not None and hasattr(ipy, "execution_count"):
-                    cell_execution_count = ipy.execution_count
-            except (ImportError, NameError):
-                pass
+            cell_execution_count = get_ipython_execution_count()
 
         # fmt: off
         return cls(
@@ -328,14 +318,9 @@ class ExecutionMetrics:
                 self.bytes_processed += bytes_processed
 
                 if cell_execution_count is None:
-                    try:
-                        import IPython
+                    from bigframes.core.utils import get_ipython_execution_count
 
-                        ipy = IPython.get_ipython()
-                        if ipy is not None and hasattr(ipy, "execution_count"):
-                            cell_execution_count = ipy.execution_count
-                    except (ImportError, NameError):
-                        pass
+                    cell_execution_count = get_ipython_execution_count()
 
                 metadata = JobMetadata(
                     job_type="polars",

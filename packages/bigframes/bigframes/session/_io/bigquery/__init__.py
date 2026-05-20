@@ -317,14 +317,9 @@ def start_query_with_job(
     Starts query job and waits for results.
     """
     if cell_execution_count is None:
-        try:
-            import IPython
+        from bigframes.core.utils import get_ipython_execution_count
 
-            ipy = IPython.get_ipython()
-            if ipy is not None and hasattr(ipy, "execution_count"):
-                cell_execution_count = ipy.execution_count
-        except (ImportError, NameError):
-            pass
+        cell_execution_count = get_ipython_execution_count()
 
     # Note: Ensure no additional labels are added to job_config after this
     # point, as `add_and_trim_labels` ensures the label count does not
@@ -382,14 +377,9 @@ def start_query_job_optional(
     https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
     """
     if cell_execution_count is None:
-        try:
-            import IPython
+        from bigframes.core.utils import get_ipython_execution_count
 
-            ipy = IPython.get_ipython()
-            if ipy is not None and hasattr(ipy, "execution_count"):
-                cell_execution_count = ipy.execution_count
-        except (ImportError, NameError):
-            pass
+        cell_execution_count = get_ipython_execution_count()
 
     add_and_trim_labels(job_config, session=session)
     try:

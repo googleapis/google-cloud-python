@@ -92,15 +92,9 @@ class TableWidget(_WIDGET_BASE):
 
         self._dataframe = dataframe
 
-        self._cell_execution_count = None
-        try:
-            import IPython
+        from bigframes.core.utils import get_ipython_execution_count
 
-            ipy = IPython.get_ipython()
-            if ipy is not None and hasattr(ipy, "execution_count"):
-                self._cell_execution_count = ipy.execution_count
-        except (ImportError, NameError):
-            pass
+        self._cell_execution_count = get_ipython_execution_count()
 
         super().__init__()
 
