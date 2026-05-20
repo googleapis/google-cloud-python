@@ -510,12 +510,87 @@ class BigQueryCachingExecutor(executor.Executor):
         plan = plan.top_down(rewrite.fold_row_counts)
         return plan
 
+    async def _deploy_undeployed_udfs(self, plan: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        import dataclasses
+        import bigframes.core.expression as expression
+        import bigframes.functions.udf_def as udf_def
+        import bigframes.operations as ops
+
+        undeployed_udfs: list[udf_def.PythonUdf] = []
+        for node in plan.unique_nodes():
+            for expr in node._node_expressions:
+                for sub_expr in expr.walk():
+                    if isinstance(sub_expr, expression.OpExpression):
+                        op = sub_expr.op
+                        if isinstance(
+                            op,
+                            (
+                                ops.RemoteFunctionOp,
+                                ops.BinaryRemoteFunctionOp,
+                                ops.NaryRemoteFunctionOp,
+                            ),
+                        ):
+                            func_def = op.function_def
+                            if isinstance(func_def, udf_def.PythonUdf):
+                                undeployed_udfs.append(func_def)
+
+        if not undeployed_udfs:
+            return plan
+
+        # Deduplicate while preserving order
+        seen = set()
+        unique_undeployed_udfs = []
+        for udf in undeployed_udfs:
+            if udf not in seen:
+                seen.add(udf)
+                unique_undeployed_udfs.append(udf)
+
+        session = self.loader._session
+        deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf] = {}
+        for udf in unique_undeployed_udfs:
+            deployed_udf = await asyncio.to_thread(
+                session._function_session.deploy_undeployed_udf,
+                session,
+                udf,
+            )
+            deployed_mapping[udf] = deployed_udf
+
+        # Now rewrite the plan using bottom_up to substitute the UDF definitions!
+        def replace_in_expr(expr: expression.Expression) -> expression.Expression:
+            def replace_step(e: expression.Expression) -> expression.Expression:
+                if isinstance(e, expression.OpExpression):
+                    op = e.op
+                    if isinstance(
+                        op,
+                        (
+                            ops.RemoteFunctionOp,
+                            ops.BinaryRemoteFunctionOp,
+                            ops.NaryRemoteFunctionOp,
+                        ),
+                    ):
+                        func_def = op.function_def
+                        if func_def in deployed_mapping:
+                            new_func_def = deployed_mapping[func_def]
+                            new_op = dataclasses.replace(op, function_def=new_func_def)
+                            return dataclasses.replace(e, op=new_op)
+                return e
+
+            return expr.bottom_up(replace_step)
+
+        def replace_in_node(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+            if hasattr(node, "transform_exprs"):
+                return node.transform_exprs(replace_in_expr)
+            return node
+
+        return plan.bottom_up(replace_in_node)
+
     async def _prepare_plan_bq_execution(
         self,
         plan: nodes.BigFrameNode,
         compute_options: Optional[ex_spec.BqComputeOptions] = None,
     ) -> nodes.BigFrameNode:
         """Prepare the plan for BigQuery execution by caching subtrees and uploading large local sources."""
+        plan = await self._deploy_undeployed_udfs(plan)
         if compute_options is not None and compute_options.enable_multi_query_execution:
             await self._simplify_with_caching(plan, compute_options=compute_options)
         plan = self._prepare_plan_simplify(plan)

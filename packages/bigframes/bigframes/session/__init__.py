@@ -1958,7 +1958,7 @@ class Session(
         output_type: Optional[type] = None,
         dataset: str,
         bigquery_connection: Optional[str] = None,
-        name: str,
+        name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,

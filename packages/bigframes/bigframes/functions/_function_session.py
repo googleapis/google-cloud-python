@@ -64,6 +64,9 @@ class FunctionSession:
         # Lock to synchronize the update of the session artifacts
         self._artifacts_lock = threading.Lock()
 
+        self._deployed_routines: set[bytes] = set()
+        self._deploying_routines: set[bytes] = set()
+
     def _resolve_session(self, session: Optional[Session]) -> Session:
         """Resolves the BigFrames session."""
         import bigframes.pandas as bpd
@@ -190,6 +193,83 @@ class FunctionSession:
         """Update function artifacts in the current session."""
         with self._artifacts_lock:
             self._temp_artifacts[bqrf_routine] = gcf_path
+
+    def deploy_undeployed_udf(
+        self,
+        session: Session,
+        bq_udf: udf_def.PythonUdf,
+    ) -> udf_def.BigqueryUdf:
+        """Deploys a UDF to BigQuery if not already deployed."""
+        udf_hash = bq_udf.stable_hash()
+        import time
+
+        bigquery_client = self._resolve_bigquery_client(session, None)
+        bq_connection_manager = session.bqconnectionmanager
+        dataset_ref = self._resolve_dataset_reference(session, bigquery_client, None)
+        bq_location, _ = _utils.get_remote_function_locations(
+            bigquery_client.location
+        )
+
+        managed_function_client = _function_client.FunctionClient(
+            dataset_ref.project,
+            bq_location,
+            dataset_ref.dataset_id,
+            bigquery_client,
+            bq_connection_manager,
+            session=session,
+        )
+
+        config = bq_udf.to_managed_function_config()
+        bq_function_name = _function_client.get_managed_function_name(
+            config, session.session_id
+        )
+        full_rf_name = (
+            managed_function_client.get_remote_function_fully_qualilfied_name(
+                bq_function_name
+            )
+        )
+        routine_ref = bigquery.RoutineReference.from_string(full_rf_name)
+
+        with self._artifacts_lock:
+            if udf_hash in self._deployed_routines:
+                return udf_def.BigqueryUdf(
+                    routine_ref=routine_ref,
+                    signature=bq_udf.signature,
+                )
+
+        while True:
+            with self._artifacts_lock:
+                if udf_hash in self._deployed_routines:
+                    return udf_def.BigqueryUdf(
+                        routine_ref=routine_ref,
+                        signature=bq_udf.signature,
+                    )
+
+                if udf_hash not in self._deploying_routines:
+                    self._deploying_routines.add(udf_hash)
+                    break
+
+            time.sleep(0.2)
+
+        try:
+            managed_function_client.provision_bq_managed_function(
+                name=bq_function_name,
+                config=config,
+            )
+        except Exception:
+            with self._artifacts_lock:
+                self._deploying_routines.discard(udf_hash)
+            raise
+
+        with self._artifacts_lock:
+            self._deploying_routines.discard(udf_hash)
+            self._deployed_routines.add(udf_hash)
+            self._temp_artifacts[full_rf_name] = ""
+
+        return udf_def.BigqueryUdf(
+            routine_ref=routine_ref,
+            signature=bq_udf.signature,
+        )
 
     def clean_up(
         self,
@@ -679,6 +759,8 @@ class FunctionSession:
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,
         container_memory: Optional[str] = None,
+        *,
+        _force_deploy: bool = False,
     ):
         """Decorator to turn a Python user defined function (udf) into a
         BigQuery managed function.
@@ -835,27 +917,42 @@ class FunctionSession:
                 capture_references=False,
             )
 
-            bq_function_name = managed_function_client.provision_bq_managed_function(
-                name=name,
-                config=config,
-            )
-            full_rf_name = (
-                managed_function_client.get_remote_function_fully_qualilfied_name(
-                    bq_function_name
-                )
+            requirements = udf_def.RuntimeRequirements(
+                container_cpu=container_cpu,
+                container_memory=container_memory,
+                bq_connection_id=bq_connection_id,
+                max_batching_rows=max_batching_rows,
+                packages=tuple(packages) if packages else (),
             )
 
-            udf_definition = udf_def.BigqueryUdf(
-                routine_ref=bigquery.RoutineReference.from_string(full_rf_name),
-                signature=udf_sig,
-            )
+            if not name and not _force_deploy:  # session-owned resource - deferred deployment
+                udf_definition = udf_def.PythonUdf(
+                    signature=udf_sig,
+                    code=code_def,
+                    requirements=requirements,
+                )
+            else:
+                bq_function_name = managed_function_client.provision_bq_managed_function(
+                    name=name,
+                    config=config,
+                )
+                full_rf_name = (
+                    managed_function_client.get_remote_function_fully_qualilfied_name(
+                        bq_function_name
+                    )
+                )
+                udf_definition = udf_def.BigqueryUdf(
+                    routine_ref=bigquery.RoutineReference.from_string(full_rf_name),
+                    signature=udf_sig,
+                )
 
             if udf_sig.is_row_processor:
                 msg = bfe.format_message("input_types=Series is in preview.")
                 warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
             if not name:  # session-owned resource - will be cleaned up automatically
-                self._update_temp_artifacts(full_rf_name, "")
+                if _force_deploy:
+                    self._update_temp_artifacts(full_rf_name, "")
                 return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
 
             # user-managed permanent resource - will not be cleaned up automatically
@@ -888,9 +985,7 @@ class FunctionSession:
             A wrapped Python user defined function, usable in
             :meth:`~bigframes.series.Series.apply`.
         """
-        # TODO(tswast): If we update udf to defer deployment, update this method
-        # to deploy immediately.
-        return self.udf(**kwargs)(func)
+        return self.udf(_force_deploy=True, **kwargs)(func)
 
 
 def _resolve_signature(

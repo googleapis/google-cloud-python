@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-from typing import TYPE_CHECKING, Callable, Optional, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Callable, Optional, Protocol, runtime_checkable, Union
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -162,7 +162,7 @@ class Udf(Protocol):
     """
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf: ...
+    def udf_def(self) -> Union[udf_def.BigqueryUdf, udf_def.PythonUdf]: ...
 
 
 class BigqueryCallableRoutine:
@@ -242,11 +242,11 @@ class UdfRoutine:
     func: Callable
     # Try not to depend on this, bq managed function creation will be deferred later
     # And this ref will be replaced with requirements rather to support lazy creation
-    _udf_def: udf_def.BigqueryUdf
+    _udf_def: Union[udf_def.BigqueryUdf, udf_def.PythonUdf]
 
     def __call__(self, *args, **kwargs):
         return self.func(*args, **kwargs)
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf:
+    def udf_def(self) -> Union[udf_def.BigqueryUdf, udf_def.PythonUdf]:
         return self._udf_def
