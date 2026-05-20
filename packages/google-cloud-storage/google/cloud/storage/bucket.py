@@ -41,8 +41,7 @@ from google.cloud.storage._helpers import (
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL, DefaultObjectACL
-from google.cloud.storage.blob import Blob, _quote
-from google.cloud.storage.blob import ObjectContexts
+from google.cloud.storage.blob import Blob, ObjectContexts, _quote
 from google.cloud.storage.constants import (
     _DEFAULT_TIMEOUT,
     ARCHIVE_STORAGE_CLASS,

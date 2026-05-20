@@ -18,13 +18,13 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     AsyncAppendableObjectWriter,
 )
-from google.cloud.storage.blob import (
-    ObjectContexts,
-    ObjectCustomContextPayload,
-)
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
+)
+from google.cloud.storage.blob import (
+    ObjectContexts,
+    ObjectCustomContextPayload,
 )
 
 pytestmark = pytest.mark.skipif(
