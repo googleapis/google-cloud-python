@@ -4997,6 +4997,8 @@ def test_create_user_list_rest_call_success(request_type):
         "size_info": {
             "display_network_members_count": 3121,
             "search_network_members_count": 2993,
+            "youtube_members_count": 2271,
+            "gmail_members_count": 2012,
         },
         "target_network_info": {
             "eligible_for_display": True,
@@ -5260,6 +5262,8 @@ def test_update_user_list_rest_call_success(request_type):
         "size_info": {
             "display_network_members_count": 3121,
             "search_network_members_count": 2993,
+            "youtube_members_count": 2271,
+            "gmail_members_count": 2012,
         },
         "target_network_info": {
             "eligible_for_display": True,

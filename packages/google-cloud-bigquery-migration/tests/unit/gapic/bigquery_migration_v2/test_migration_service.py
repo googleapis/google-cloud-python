@@ -61,6 +61,7 @@ from google.cloud.bigquery_migration_v2.services.migration_service import (
     transports,
 )
 from google.cloud.bigquery_migration_v2.types import (
+    assessment_task,
     migration_entities,
     migration_error_details,
     migration_metrics,

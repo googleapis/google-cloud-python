@@ -26,6 +26,7 @@ from .audience import (
 from .cart_data import (
     CartData,
     Item,
+    ItemCustomVariable,
 )
 from .consent import (
     Consent,
@@ -51,6 +52,7 @@ from .event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -184,6 +186,7 @@ __all__ = (
     "UserIdData",
     "CartData",
     "Item",
+    "ItemCustomVariable",
     "Consent",
     "ConsentStatus",
     "Destination",
@@ -197,6 +200,7 @@ __all__ = (
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",
