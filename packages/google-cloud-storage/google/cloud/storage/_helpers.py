@@ -161,7 +161,12 @@ def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwarg
         and client._bucket_metadata_cache
     ):
         try:
-            if name in ("Storage.Client.getBucket", "Storage.Client.lookupBucket"):
+            if name in (
+                "Storage.Client.getBucket",
+                "Storage.Client.lookupBucket",
+                "Storage.Bucket.reload",
+                "Storage.Bucket.exists",
+            ):
                 cached = client._bucket_metadata_cache.get(bucket_name)
             else:
                 cached = client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
