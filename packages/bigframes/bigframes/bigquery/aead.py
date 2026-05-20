@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[pytype]
-python_version = 3.10
-inputs =
-    google/cloud/
-exclude =
-    tests/
-    google/cloud/bigquery_v2/  # Legacy proto-based types.
-output = .pytype/
-disable =
-    # There's some issue with finding some pyi files, thus disabling.
-    # The issue https://github.com/google/pytype/issues/150 is closed, but the
-    # error still occurs for some reason.
-    pyi-error
+"""AEAD encryption functions"""
+
+from __future__ import annotations
+
+from bigframes.bigquery._operations.aead import decrypt_bytes, decrypt_string, encrypt
+
+__all__ = [
+    "decrypt_bytes",
+    "decrypt_string",
+    "encrypt",
+]
