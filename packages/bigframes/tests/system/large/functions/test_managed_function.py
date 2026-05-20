@@ -1153,9 +1153,14 @@ def test_deferred_unnamed_udf_execution(session, dataset_id, scalars_dfs):
 
     # 3. Verify that the deployed routine name matches our stable hash and exists in BigQuery
     import bigframes.functions._function_client as bff_client
+
     config = unnamed_multiplier.udf_def.to_managed_function_config()
-    expected_routine_name = bff_client.get_managed_function_name(config, session.session_id)
-    routine = session.bqclient.get_routine(f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}")
+    expected_routine_name = bff_client.get_managed_function_name(
+        config, session.session_id
+    )
+    routine = session.bqclient.get_routine(
+        f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}"
+    )
     assert routine is not None
 
 
@@ -1185,9 +1190,14 @@ def test_deferred_udf_with_runtime_requirements(session, dataset_id, scalars_dfs
 
     # Verify it was deployed with the correct runtime options
     import bigframes.functions._function_client as bff_client
+
     config = heavy_unnamed_udf.udf_def.to_managed_function_config()
-    expected_routine_name = bff_client.get_managed_function_name(config, session.session_id)
-    routine = session.bqclient.get_routine(f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}")
+    expected_routine_name = bff_client.get_managed_function_name(
+        config, session.session_id
+    )
+    routine = session.bqclient.get_routine(
+        f"{session._anonymous_dataset.project}.{session._anonymous_dataset.dataset_id}.{expected_routine_name}"
+    )
     assert routine._properties["externalRuntimeOptions"]["containerCpu"] == 1
     assert routine._properties["externalRuntimeOptions"]["containerMemory"] == "2Gi"
     assert routine._properties["externalRuntimeOptions"]["maxBatchingRows"] == "25"

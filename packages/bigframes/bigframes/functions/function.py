@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-from typing import TYPE_CHECKING, Callable, Optional, Protocol, runtime_checkable, Union
+from typing import TYPE_CHECKING, Callable, Optional, Protocol, Union, runtime_checkable
 
 import google.api_core.exceptions
 from google.cloud import bigquery

@@ -206,9 +206,7 @@ class FunctionSession:
         bigquery_client = self._resolve_bigquery_client(session, None)
         bq_connection_manager = session.bqconnectionmanager
         dataset_ref = self._resolve_dataset_reference(session, bigquery_client, None)
-        bq_location, _ = _utils.get_remote_function_locations(
-            bigquery_client.location
-        )
+        bq_location, _ = _utils.get_remote_function_locations(bigquery_client.location)
 
         managed_function_client = _function_client.FunctionClient(
             dataset_ref.project,
@@ -925,16 +923,20 @@ class FunctionSession:
                 packages=tuple(packages) if packages else (),
             )
 
-            if not name and not _force_deploy:  # session-owned resource - deferred deployment
+            if (
+                not name and not _force_deploy
+            ):  # session-owned resource - deferred deployment
                 udf_definition = udf_def.PythonUdf(
                     signature=udf_sig,
                     code=code_def,
                     requirements=requirements,
                 )
             else:
-                bq_function_name = managed_function_client.provision_bq_managed_function(
-                    name=name,
-                    config=config,
+                bq_function_name = (
+                    managed_function_client.provision_bq_managed_function(
+                        name=name,
+                        config=config,
+                    )
                 )
                 full_rf_name = (
                     managed_function_client.get_remote_function_fully_qualilfied_name(

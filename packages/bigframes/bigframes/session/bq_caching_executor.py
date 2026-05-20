@@ -510,8 +510,11 @@ class BigQueryCachingExecutor(executor.Executor):
         plan = plan.top_down(rewrite.fold_row_counts)
         return plan
 
-    async def _deploy_undeployed_udfs(self, plan: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    async def _deploy_undeployed_udfs(
+        self, plan: nodes.BigFrameNode
+    ) -> nodes.BigFrameNode:
         import dataclasses
+
         import bigframes.core.expression as expression
         import bigframes.functions.udf_def as udf_def
         import bigframes.operations as ops

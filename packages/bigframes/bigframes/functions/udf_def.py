@@ -400,6 +400,7 @@ class BigqueryUdf:
     """
     Represents the information needed to call a BigQuery remote function - not a full spec.
     """
+
     routine_ref: bigquery.RoutineReference = dataclasses.field()
     signature: UdfSignature
 
@@ -426,6 +427,7 @@ class PythonUdf:
     """
     Represents user-requested Python UDF semantics, including the code and runtime requirements.
     """
+
     signature: UdfSignature
     code: CodeDef
     requirements: RuntimeRequirements = dataclasses.field(
@@ -449,7 +451,6 @@ class PythonUdf:
             bq_connection_id=self.requirements.bq_connection_id,
             capture_references=False,
         )
-
 
 
 @dataclasses.dataclass(frozen=True)

@@ -78,10 +78,12 @@ def test_deploy_udf_with_name():
 
 
 def test_deferred_udf_execution():
-    import bigframes.functions.udf_def as udf_def
     import google.cloud.bigquery
 
+    import bigframes.functions.udf_def as udf_def
+
     session = mocks.create_bigquery_session()
+
     @session._function_session.udf(session=session)
     def my_unnamed_udf(x: int) -> int:
         return x * 2
@@ -94,12 +96,14 @@ def test_deferred_udf_execution():
     assert isinstance(my_unnamed_udf.udf_def, udf_def.PythonUdf)
 
     # 3. Verify that when calling the UDF via a query, it triggers the UDF deployment query!
-    import bigframes.core.nodes as nodes
     import bigframes.core.expression as ex
+    import bigframes.core.nodes as nodes
     import bigframes.operations as ops
 
     # Let's construct an expression using our UDF
-    udf_op = ops.RemoteFunctionOp(function_def=my_unnamed_udf.udf_def, apply_on_null=False)
+    udf_op = ops.RemoteFunctionOp(
+        function_def=my_unnamed_udf.udf_def, apply_on_null=False
+    )
     expr = ex.OpExpression(op=udf_op, inputs=(ex.const(5),))
 
     class MockNode:
@@ -119,8 +123,11 @@ def test_deferred_udf_execution():
     mock_node = MockNode([expr])
 
     import asyncio
+
     # Deploy and replace definition in the plan
-    new_plan = asyncio.run(session._executor._ibis_executor._deploy_undeployed_udfs(mock_node))
+    new_plan = asyncio.run(
+        session._executor._ibis_executor._deploy_undeployed_udfs(mock_node)
+    )
 
     # Verify that the DDL to create the function was executed!
     assert len(session._queries) > 0
@@ -134,7 +141,8 @@ def test_deferred_udf_execution():
 
     # 5. Verify memoization: Deploying the new plan again executes ZERO additional DDL queries!
     session._queries.clear()
-    new_plan_2 = asyncio.run(session._executor._ibis_executor._deploy_undeployed_udfs(new_plan))
+    new_plan_2 = asyncio.run(
+        session._executor._ibis_executor._deploy_undeployed_udfs(new_plan)
+    )
     assert len(session._queries) == 0
     assert new_plan_2 == new_plan
-
