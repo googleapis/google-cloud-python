@@ -174,3 +174,31 @@ def test_execution_history_filtering():
     history_job2 = session.execution_history(events=[event2]).to_dataframe()
     assert len(history_job2) == 1
     assert history_job2.iloc[0]["job_id"] == "job_2"
+
+
+def test_execution_history_cell_filtering():
+    """Verify cell-based filtering on execution history with all_cells flag."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    mock_ipy = mock.Mock()
+    mock_ipy.execution_count = 20
+
+    with mock.patch("IPython.get_ipython", return_value=mock_ipy):
+        # By default all_cells=True, it returns all cells' executions
+        history_default = session.execution_history().to_dataframe()
+        assert len(history_default) == 2
+
+        # When all_cells=False, it should filter to the current cell count (20)
+        history_filtered = session.execution_history(all_cells=False).to_dataframe()
+        assert len(history_filtered) == 1
+        assert history_filtered.iloc[0]["job_id"] == "job_2"
