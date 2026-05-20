@@ -42,6 +42,7 @@ from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL, DefaultObjectACL
 from google.cloud.storage.blob import Blob, _quote
+from google.cloud.storage.blob import ObjectContexts
 from google.cloud.storage.constants import (
     _DEFAULT_TIMEOUT,
     ARCHIVE_STORAGE_CLASS,
@@ -1423,6 +1424,7 @@ class Bucket(_PropertyMixin):
         include_folders_as_prefixes=None,
         soft_deleted=None,
         page_size=None,
+        filter_=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1516,6 +1518,11 @@ class Bucket(_PropertyMixin):
             Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
             https://cloud.google.com/storage/docs/soft-delete
 
+        :type filter_: str or None
+        :param filter_:
+            (Optional) Filter string used to filter objects. See:
+            https://docs.cloud.google.com/storage/docs/listing-objects#filter-by-object-contexts-syntax
+
         :type page_size: int
         :param page_size:
             (Optional) Maximum number of blobs to return in each page.
@@ -1545,6 +1552,7 @@ class Bucket(_PropertyMixin):
                 match_glob=match_glob,
                 include_folders_as_prefixes=include_folders_as_prefixes,
                 soft_deleted=soft_deleted,
+                filter_=filter_,
             )
 
     def list_notifications(
@@ -1972,6 +1980,7 @@ class Bucket(_PropertyMixin):
         if_source_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
     ):
         """Copy the given blob to the given bucket, optionally with a new name.
 
@@ -2065,6 +2074,10 @@ class Bucket(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
 
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts` or dict
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
@@ -2094,10 +2107,22 @@ class Bucket(_PropertyMixin):
                 new_name = blob.name
 
             new_blob = Blob(bucket=destination_bucket, name=new_name)
+
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    new_blob.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
+                request_body = new_blob._properties.copy()
+            else:
+                request_body = None
+
             api_path = blob.path + "/copyTo" + new_blob.path
             copy_result = client._post_resource(
                 api_path,
-                None,
+                request_body,
                 query_params=query_params,
                 timeout=timeout,
                 retry=retry,

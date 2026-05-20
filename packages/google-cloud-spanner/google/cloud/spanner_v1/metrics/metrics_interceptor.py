@@ -67,25 +67,6 @@ class MetricsInterceptor(ClientInterceptor):
         resources = MetricsInterceptor._parse_resource_path(path)
         return resources
 
-    @staticmethod
-    def _remove_prefix(s: str, prefix: str) -> str:
-        """
-        This function removes the prefix from the given string.
-
-        Args:
-            s (str): The string from which the prefix is to be removed.
-            prefix (str): The prefix to be removed from the string.
-
-        Returns:
-            str: The string with the prefix removed.
-
-        Note:
-            This function is used because the `removeprefix` method does not exist in Python 3.8.
-        """
-        if s.startswith(prefix):
-            return s[len(prefix) :]
-        return s
-
     def _set_metrics_tracer_attributes(self, resources: Dict[str, str]) -> None:
         """
         Sets the metric tracer attributes based on the provided resources.
@@ -134,9 +115,9 @@ class MetricsInterceptor(ClientInterceptor):
             self._set_metrics_tracer_attributes(resources)
 
         ## Format method to be be spanner.<method name>
-        method_name = self._remove_prefix(
-            call_details.method, SPANNER_METHOD_PREFIX
-        ).replace("/", ".")
+        method_name = call_details.method.removeprefix(SPANNER_METHOD_PREFIX).replace(
+            "/", "."
+        )
 
         tracer.set_method(method_name)
         tracer.record_attempt_start()
