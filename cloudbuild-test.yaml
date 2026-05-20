@@ -31,6 +31,8 @@ steps:
       - '--cache=true'
       # Sets a time-to-live for cache layers
       - '--cache-ttl=24h'
+      # Disable pushing, this is a build test
+      - '--no-push'
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
