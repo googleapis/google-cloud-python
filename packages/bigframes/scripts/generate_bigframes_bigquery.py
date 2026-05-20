@@ -211,6 +211,9 @@ def parse_scalar_functions(data, module_name):
 
         # Build ArgSpecs
         arg_specs = _build_arg_specs(args_by_name, arg_order)
+        arg_specs_str = ", ".join(arg_specs)
+        if len(arg_specs) == 1:
+            arg_specs_str += ","
 
         # Determine return dtype
         signature = _get_return_signature(func_data["impls"])
@@ -219,7 +222,7 @@ def parse_scalar_functions(data, module_name):
             {
                 "internal_name": internal_op_name,
                 "sql_name": sql_name.upper(),
-                "arg_specs": ", ".join(arg_specs),
+                "arg_specs": arg_specs_str,
                 "signature": signature,
             }
         )

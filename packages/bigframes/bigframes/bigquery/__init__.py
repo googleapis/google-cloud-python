@@ -49,11 +49,7 @@ import sys
 
 from bigframes.bigquery import aead, ai, ml, obj
 from bigframes.bigquery._operations.approx_agg import approx_top_count
-from bigframes.bigquery._operations.array import (
-    array_agg,
-    array_length,
-    array_to_string,
-)
+from bigframes.bigquery._operations.array import array_agg
 from bigframes.bigquery._operations.datetime import (
     unix_micros,
     unix_millis,
@@ -71,6 +67,46 @@ from bigframes.bigquery._operations.geo import (
     st_length,
     st_regionstats,
     st_simplify,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    concat as array_concat,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    first as array_first,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    first_n as array_first_n,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    flatten,
+    generate_array,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    includes as array_includes,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    includes_all as array_includes_all,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    includes_any as array_includes_any,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    is_distinct as array_is_distinct,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    last as array_last,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    length as array_length,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    reverse as array_reverse,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    slice as array_slice,
+)
+from bigframes.bigquery._operations.global_namespace.array import (
+    to_string as array_to_string,
 )
 from bigframes.bigquery._operations.io import load_data
 from bigframes.bigquery._operations.json import (
@@ -103,8 +139,20 @@ _functions = [
     approx_top_count,
     # array ops
     array_agg,
+    array_concat,
+    array_first,
+    array_first_n,
+    array_includes,
+    array_includes_all,
+    array_includes_any,
+    array_is_distinct,
+    array_last,
     array_length,
+    array_reverse,
+    array_slice,
     array_to_string,
+    flatten,
+    generate_array,
     # datetime ops
     unix_micros,
     unix_millis,
@@ -161,8 +209,20 @@ __all__ = [
     "approx_top_count",
     # array ops
     "array_agg",
+    "array_concat",
+    "array_first",
+    "array_first_n",
+    "array_includes",
+    "array_includes_all",
+    "array_includes_any",
+    "array_is_distinct",
+    "array_last",
     "array_length",
+    "array_reverse",
+    "array_slice",
     "array_to_string",
+    "flatten",
+    "generate_array",
     # datetime ops
     "unix_micros",
     "unix_millis",

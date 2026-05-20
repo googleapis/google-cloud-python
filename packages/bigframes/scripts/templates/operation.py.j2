@@ -36,7 +36,7 @@ def {{ func.name }}(
     {{ arg.name }}: Union[T, bigframes.core.col.Expression, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
 {% endfor %}
 ) -> T:
-    """{{ func.description }}"""
+    """{{ func.description | indent(4) }}"""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         {{ func.op_name }},
 {% for arg in func.args %}
