@@ -72,7 +72,7 @@ def decrypt_bytes(
         keyset,
         ciphertext,
         additional_data,
-    )
+    )  # type: ignore
 
 
 def decrypt_string(
@@ -98,7 +98,7 @@ def decrypt_string(
         keyset,
         ciphertext,
         additional_data,
-    )
+    )  # type: ignore
 
 
 def encrypt(
@@ -124,4 +124,4 @@ def encrypt(
         keyset,
         plaintext,
         additional_data,
-    )
+    )  # type: ignore

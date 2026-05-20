@@ -121,7 +121,7 @@ def array_concat(
         _ARRAY_CONCAT_OP,
         array_expression_1,
         array_expression_2,
-    )
+    )  # type: ignore
 
 
 def array_first(
@@ -135,7 +135,7 @@ def array_first(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_FIRST_OP,
         array_expression,
-    )
+    )  # type: ignore
 
 
 def array_first_n(
@@ -155,7 +155,7 @@ def array_first_n(
         _ARRAY_FIRST_N_OP,
         input_array,
         n,
-    )
+    )  # type: ignore
 
 
 def array_includes(
@@ -175,7 +175,7 @@ def array_includes(
         _ARRAY_INCLUDES_OP,
         array_to_search,
         search_value,
-    )
+    )  # type: ignore
 
 
 def array_includes_all(
@@ -195,7 +195,7 @@ def array_includes_all(
         _ARRAY_INCLUDES_ALL_OP,
         array_to_search,
         search_values,
-    )
+    )  # type: ignore
 
 
 def array_includes_any(
@@ -215,7 +215,7 @@ def array_includes_any(
         _ARRAY_INCLUDES_ANY_OP,
         array_to_search,
         search_values,
-    )
+    )  # type: ignore
 
 
 def array_is_distinct(
@@ -229,7 +229,7 @@ def array_is_distinct(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_IS_DISTINCT_OP,
         array_expression,
-    )
+    )  # type: ignore
 
 
 def array_last(
@@ -243,7 +243,7 @@ def array_last(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_LAST_OP,
         array_expression,
-    )
+    )  # type: ignore
 
 
 def array_length(
@@ -285,7 +285,7 @@ def array_length(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_LENGTH_OP,
         series,
-    )
+    )  # type: ignore
 
 
 def array_reverse(
@@ -299,7 +299,7 @@ def array_reverse(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_REVERSE_OP,
         value,
-    )
+    )  # type: ignore
 
 
 def array_slice(
@@ -325,7 +325,7 @@ def array_slice(
         array_to_slice,
         start_offset,
         end_offset,
-    )
+    )  # type: ignore
 
 
 def array_to_string(
@@ -374,7 +374,7 @@ def array_to_string(
         series,
         delimiter,
         null_text,
-    )
+    )  # type: ignore
 
 
 def flatten(
@@ -394,7 +394,7 @@ def flatten(
         _FLATTEN_OP,
         array_to_flatten,
         depth,
-    )
+    )  # type: ignore
 
 
 def generate_array(
@@ -420,4 +420,4 @@ def generate_array(
         start_expression,
         end_expression,
         step_expression,
-    )
+    )  # type: ignore
