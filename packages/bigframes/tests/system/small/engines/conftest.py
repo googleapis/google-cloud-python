@@ -26,6 +26,7 @@ from bigframes.session import (
     local_scan_executor,
     polars_executor,
     semi_executor,
+    substrait_executor,
 )
 
 CURRENT_DIR = pathlib.Path(__file__).parent
@@ -80,9 +81,17 @@ def sqlglot_engine(
     )
 
 
-@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
+@pytest.fixture(scope="session")
+def substrait_datafusion_engine(
+) -> semi_executor.SemiExecutor:
+    return substrait_executor.SubstraitExecutor(
+        consumer = substrait_executor.DataFusionSubstraitConsumer()
+    )
+
+
+@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot", "substrait-datafusion"])
 def engine(
-    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine
+    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine, substrait_datafusion_engine
 ) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return pyarrow_engine
@@ -92,6 +101,8 @@ def engine(
         return bq_engine
     if request.param == "bq-sqlglot":
         return sqlglot_engine
+    if request.param == "substrait-datafusion":
+        return substrait_datafusion_engine
     raise ValueError(f"Unrecognized param: {request.param}")
 
 

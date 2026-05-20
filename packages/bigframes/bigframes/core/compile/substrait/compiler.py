@@ -39,29 +39,12 @@ class SubstraitCompiler:
     """
     Compiles BigFrameNode plans to Substrait schema (JSON representation).
     """
-
-    def _print_node_tree(self, node: bigframe_node.BigFrameNode, indent: int = 0):
-        import sys
-        try:
-            ids = list(node.ids)
-        except Exception as e:
-            ids = f"<error: {e}>"
-        sys.stderr.write("  " * indent + f"- {type(node).__name__}: ids={ids}\n")
-        sys.stderr.flush()
-        for child in node.child_nodes:
-             self._print_node_tree(child, indent + 1)
-
     def compile(self, plan: bigframe_node.BigFrameNode) -> Optional[bytes]:
         """
         Compiles a BigFrameNode to Substrait bytes (JSON encoded via protobuf).
         """
         if not self.can_compile(plan):
             return None
-
-        import sys
-        sys.stderr.write("DEBUG TREE:\n")
-        sys.stderr.flush()
-        self._print_node_tree(plan)
 
         pb_rel = self._compile_node(plan)
         
@@ -84,7 +67,6 @@ class SubstraitCompiler:
     def can_compile(self, plan: bigframe_node.BigFrameNode) -> bool:
         """
         Checks if the plan can be compiled to Substrait.
-        For the skeleton, we support ReadLocalNode, SelectionNode, and FilterNode.
         """
         supported_nodes = (
             nodes.ReadLocalNode,
@@ -95,7 +77,6 @@ class SubstraitCompiler:
             nodes.JoinNode,
             nodes.AggregateNode,
             nodes.OrderByNode,
-            nodes.PromoteOffsetsNode,
             nodes.WindowOpNode,
             nodes.ConcatNode,
         )
@@ -123,8 +104,6 @@ class SubstraitCompiler:
              return self._compile_orderby(node)
         elif isinstance(node, nodes.SliceNode):
              return self._compile_slice(node)
-        elif isinstance(node, nodes.PromoteOffsetsNode):
-             return self._compile_promote_offsets(node)
         elif isinstance(node, nodes.WindowOpNode):
              return self._compile_window(node)
         elif isinstance(node, nodes.ConcatNode):
@@ -177,22 +156,6 @@ class SubstraitCompiler:
              num_exprs += 1
              
         project_rel.common.emit.output_mapping.extend([len(child_ids) + i for i in range(num_exprs)])
-        
-        return rel
-
-    def _compile_promote_offsets(self, node: nodes.PromoteOffsetsNode) -> algebra_pb2.Rel:
-        input_rel = self._compile_node(node.child)
-        
-        rel = algebra_pb2.Rel()
-        project_rel = rel.project
-        project_rel.input.CopyFrom(input_rel)
-        
-        # Add a dummy literal i64 = 0 for the offsets column
-        expr = project_rel.expressions.add()
-        expr.literal.i64 = 0
-        
-        child_ids = list(node.child.ids)
-        project_rel.common.emit.output_mapping.extend(range(len(child_ids) + 1))
         
         return rel
 
@@ -684,6 +647,10 @@ class SubstraitCompiler:
                   func_ref = self._EXTENSIONS["product"]
              elif isinstance(agg.op, agg_ops.MedianOp):
                   func_ref = self._EXTENSIONS["median"]
+             elif isinstance(agg.op, agg_ops.CovOp):
+                  func_ref = self._EXTENSIONS["cov"]
+             elif isinstance(agg.op, agg_ops.CorrOp):
+                  func_ref = self._EXTENSIONS["corr"]
              else:
                   raise NotImplementedError(f"Aggregation {type(agg.op)} not supported in Substrait compiler yet")
                   
@@ -846,6 +813,9 @@ class SubstraitCompiler:
         "lead": 66,
         "struct": 67,
         "get_field": 68,
+        "pow": 69,
+        "cov": 70,
+        "corr": 71,
     }
 
     _OP_TO_EXTENSION = {
@@ -854,6 +824,8 @@ class SubstraitCompiler:
         numeric_ops.MulOp: "multiply",
         numeric_ops.DivOp: "divide",
         numeric_ops.ModOp: "mod",
+        numeric_ops.PowOp: "pow",
+        numeric_ops.UnsafePowOp: "pow",
         comparison_ops.EqOp: "equal",
         comparison_ops.NeOp: "not_equal",
         comparison_ops.LtOp: "lt",
@@ -1156,6 +1128,8 @@ class SubstraitCompiler:
     @_compile_op.register(numeric_ops.AddOp)
     @_compile_op.register(numeric_ops.SubOp)
     @_compile_op.register(numeric_ops.MulOp)
+    @_compile_op.register(numeric_ops.PowOp)
+    @_compile_op.register(numeric_ops.UnsafePowOp)
     @_compile_op.register(comparison_ops.EqOp)
     @_compile_op.register(comparison_ops.NeOp)
     @_compile_op.register(comparison_ops.LtOp)
