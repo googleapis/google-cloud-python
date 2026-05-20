@@ -26,8 +26,8 @@ import bigframes.pandas as bpd
 pytest.importorskip("pytest_snapshot")
 
 
-def test_concat(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.concat(
+def test_array_concat(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_concat(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -35,25 +35,16 @@ def test_concat(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_first(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.first(
+def test_array_first(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_first(
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_first_n(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.first_n(
-        cast(bpd.Series, scalar_types_df["string_col"]),
-        cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
-
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-def test_includes(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.includes(
+def test_array_first_n(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_first_n(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -61,8 +52,8 @@ def test_includes(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_includes_all(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.includes_all(
+def test_array_includes(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_includes(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -70,8 +61,8 @@ def test_includes_all(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_includes_any(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.includes_any(
+def test_array_includes_all(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_includes_all(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -79,41 +70,8 @@ def test_includes_any(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_is_distinct(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.is_distinct(
-        cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
-
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-def test_last(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.last(
-        cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
-
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-def test_length(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.length(
-        cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
-
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-def test_reverse(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.reverse(
-        cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
-
-    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
-
-
-def test_slice(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.slice(
-        cast(bpd.Series, scalar_types_df["string_col"]),
+def test_array_includes_any(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_includes_any(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
@@ -121,8 +79,50 @@ def test_slice(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
-def test_to_string(scalar_types_df: bpd.DataFrame, snapshot):
-    result = array.to_string(
+def test_array_is_distinct(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_is_distinct(
+        cast(bpd.Series, scalar_types_df["string_col"]),
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+def test_array_last(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_last(
+        cast(bpd.Series, scalar_types_df["string_col"]),
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+def test_array_length(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_length(
+        cast(bpd.Series, scalar_types_df["string_col"]),
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+def test_array_reverse(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_reverse(
+        cast(bpd.Series, scalar_types_df["string_col"]),
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+def test_array_slice(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_slice(
+        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["string_col"]),
+        cast(bpd.Series, scalar_types_df["string_col"]),
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+def test_array_to_string(scalar_types_df: bpd.DataFrame, snapshot):
+    result = array.array_to_string(
         cast(bpd.Series, scalar_types_df["string_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),

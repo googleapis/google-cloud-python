@@ -32,62 +32,62 @@ from bigframes.operations import googlesql
 
 T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 
-_CONCAT_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_CONCAT_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_CONCAT",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_FIRST_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_FIRST_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_FIRST",
-    args=(googlesql.ArgSpec()),
+    args=(googlesql.ArgSpec(),),
     signature=lambda *args: None,
 )
-_FIRST_N_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_FIRST_N_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_FIRST_N",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_INCLUDES_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_INCLUDES_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_INCLUDES_ALL_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_INCLUDES_ALL_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES_ALL",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_INCLUDES_ANY_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_INCLUDES_ANY_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES_ANY",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_IS_DISTINCT_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_IS_DISTINCT_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_IS_DISTINCT",
-    args=(googlesql.ArgSpec()),
+    args=(googlesql.ArgSpec(),),
     signature=lambda *args: None,
 )
-_LAST_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_LAST_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_LAST",
-    args=(googlesql.ArgSpec()),
+    args=(googlesql.ArgSpec(),),
     signature=lambda *args: None,
 )
-_LENGTH_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_LENGTH_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_LENGTH",
-    args=(googlesql.ArgSpec()),
+    args=(googlesql.ArgSpec(),),
     signature=lambda *args: None,
 )
-_REVERSE_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_REVERSE_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_REVERSE",
-    args=(googlesql.ArgSpec()),
+    args=(googlesql.ArgSpec(),),
     signature=lambda *args: None,
 )
-_SLICE_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_SLICE_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_SLICE",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: None,
 )
-_TO_STRING_OP = googlesql.GoogleSqlScalarOp(
+_ARRAY_TO_STRING_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_TO_STRING",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
     signature=lambda *args: None,
@@ -104,7 +104,7 @@ _GENERATE_ARRAY_OP = googlesql.GoogleSqlScalarOp(
 )
 
 
-def concat(
+def array_concat(
     array_expression_1: Union[
         T,
         bigframes.core.col.Expression,
@@ -118,13 +118,13 @@ def concat(
 ) -> T:
     """Concatenates one or more arrays with the same element type into a single array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _CONCAT_OP,
+        _ARRAY_CONCAT_OP,
         array_expression_1,
         array_expression_2,
     )  # type: ignore
 
 
-def first(
+def array_first(
     array_expression: Union[
         T,
         bigframes.core.col.Expression,
@@ -133,12 +133,12 @@ def first(
 ) -> T:
     """Takes an array and returns the first element in the array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _FIRST_OP,
+        _ARRAY_FIRST_OP,
         array_expression,
     )  # type: ignore
 
 
-def first_n(
+def array_first_n(
     input_array: Union[
         T,
         bigframes.core.col.Expression,
@@ -152,13 +152,13 @@ def first_n(
 ) -> T:
     """Returns a prefix of `input_array` consisting of the first `n` elements."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _FIRST_N_OP,
+        _ARRAY_FIRST_N_OP,
         input_array,
         n,
     )  # type: ignore
 
 
-def includes(
+def array_includes(
     array_to_search: Union[
         T,
         bigframes.core.col.Expression,
@@ -172,13 +172,13 @@ def includes(
 ) -> T:
     """Takes an array and returns `TRUE` if there is an element in the array that is equal to the search_value."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _INCLUDES_OP,
+        _ARRAY_INCLUDES_OP,
         array_to_search,
         search_value,
     )  # type: ignore
 
 
-def includes_all(
+def array_includes_all(
     array_to_search: Union[
         T,
         bigframes.core.col.Expression,
@@ -192,13 +192,13 @@ def includes_all(
 ) -> T:
     """Takes an array to search and an array of search values. Returns `TRUE` if all search values are in the array to search, otherwise returns `FALSE`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _INCLUDES_ALL_OP,
+        _ARRAY_INCLUDES_ALL_OP,
         array_to_search,
         search_values,
     )  # type: ignore
 
 
-def includes_any(
+def array_includes_any(
     array_to_search: Union[
         T,
         bigframes.core.col.Expression,
@@ -212,13 +212,13 @@ def includes_any(
 ) -> T:
     """Takes an array to search and an array of search values. Returns `TRUE` if any search values are in the array to search, otherwise returns `FALSE`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _INCLUDES_ANY_OP,
+        _ARRAY_INCLUDES_ANY_OP,
         array_to_search,
         search_values,
     )  # type: ignore
 
 
-def is_distinct(
+def array_is_distinct(
     array_expression: Union[
         T,
         bigframes.core.col.Expression,
@@ -227,12 +227,12 @@ def is_distinct(
 ) -> T:
     """Returns `TRUE` if the array contains no repeated elements, using the same equality comparison logic as `SELECT DISTINCT`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _IS_DISTINCT_OP,
+        _ARRAY_IS_DISTINCT_OP,
         array_expression,
     )  # type: ignore
 
 
-def last(
+def array_last(
     array_expression: Union[
         T,
         bigframes.core.col.Expression,
@@ -241,12 +241,12 @@ def last(
 ) -> T:
     """Takes an array and returns the last element in the array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _LAST_OP,
+        _ARRAY_LAST_OP,
         array_expression,
     )  # type: ignore
 
 
-def length(
+def array_length(
     series: Union[
         T,
         bigframes.core.col.Expression,
@@ -283,12 +283,12 @@ def length(
             the length of each element in the Series.
     """
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _LENGTH_OP,
+        _ARRAY_LENGTH_OP,
         series,
     )  # type: ignore
 
 
-def reverse(
+def array_reverse(
     value: Union[
         T,
         bigframes.core.col.Expression,
@@ -297,12 +297,12 @@ def reverse(
 ) -> T:
     """Returns the input `ARRAY` with elements in reverse order."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _REVERSE_OP,
+        _ARRAY_REVERSE_OP,
         value,
     )  # type: ignore
 
 
-def slice(
+def array_slice(
     array_to_slice: Union[
         T,
         bigframes.core.col.Expression,
@@ -321,14 +321,14 @@ def slice(
 ) -> T:
     """Returns an array containing zero or more consecutive elements from the input array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _SLICE_OP,
+        _ARRAY_SLICE_OP,
         array_to_slice,
         start_offset,
         end_offset,
     )  # type: ignore
 
 
-def to_string(
+def array_to_string(
     series: Union[
         T,
         bigframes.core.col.Expression,
@@ -370,7 +370,7 @@ def to_string(
         bigframes.series.Series: A Series containing delimited strings.
     """
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
-        _TO_STRING_OP,
+        _ARRAY_TO_STRING_OP,
         series,
         delimiter,
         null_text,

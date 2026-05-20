@@ -191,7 +191,7 @@ def _get_test_args(args_by_name, arg_order):
     return test_args
 
 
-def parse_scalar_functions(data, module_name):
+def parse_scalar_functions(data, module_name, is_global=False):
     ops_list = []
     functions_list = []
 
@@ -201,7 +201,7 @@ def parse_scalar_functions(data, module_name):
     for func_data in data["scalar_functions"]:
         sql_name = func_data["name"]
         python_name = to_snake_case(sql_name)
-        if python_name.startswith(module_name + "_"):
+        if not is_global and python_name.startswith(module_name + "_"):
             python_name = python_name[len(module_name) + 1 :]
 
         internal_op_name = f"_{python_name.upper()}_OP"
@@ -247,8 +247,11 @@ def parse_scalar_functions(data, module_name):
 
 
 def run_ruff(path: pathlib.Path):
+    import sys
+
     subprocess.run(
-        RUFF_ARGS
+        [sys.executable, "-m", "ruff"]
+        + RUFF_ARGS[1:]
         + [
             str(path),
         ],
@@ -266,7 +269,10 @@ def process_yaml_file(yaml_file, template, test_template):
     module_name = module_path.name
     output_file = OUTPUT_DIR.joinpath(module_path).with_suffix(".py")
 
-    ops_list, functions_list = parse_scalar_functions(data, module_name)
+    is_global = "global_namespace" in module_path.parts
+    ops_list, functions_list = parse_scalar_functions(
+        data, module_name, is_global=is_global
+    )
 
     # Render and write
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -302,9 +308,12 @@ def process_yaml_file(yaml_file, template, test_template):
     run_ruff(test_output_file)
     print(f"  Generated {test_output_file}")
 
-    print(f"  Updating snapshots for {test_output_file}...")
+    import sys
+
     subprocess.run(
         [
+            sys.executable,
+            "-m",
             "pytest",
             str(test_output_file),
             "--snapshot-update",
