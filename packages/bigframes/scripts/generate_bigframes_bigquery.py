@@ -1,8 +1,7 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S uv run --active --script
 #
 # /// script
 # dependencies = [
-#   "bigframes[all]",
 #   "jinja2",
 #   "pyyaml",
 #   "ruff==0.14.14",
