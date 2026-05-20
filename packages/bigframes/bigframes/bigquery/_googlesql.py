@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import Any, TypeVar, Union, overload
 
 import bigframes.core.col
 import bigframes.core.expression as ex
@@ -24,11 +24,14 @@ import bigframes.core.sentinels as sentinels
 import bigframes.series as series
 from bigframes.operations import googlesql
 
+T = TypeVar("T", bigframes.core.col.Expression, series.Series)
+
 
 def apply_googlesql_scalar_op(
     op: googlesql.GoogleSqlScalarOp,
-    *args: Any,
-) -> Union[series.Series, bigframes.core.col.Expression]:
+    *args: Union[T, bigframes.core.col.Expression, Any],
+) -> T:
+    ...
     """Applies a GoogleSQL scalar operator to the given arguments.
 
     Handles a mix of Series, Expression, and literal inputs.
