@@ -1201,6 +1201,13 @@ class Bucket(_PropertyMixin):
                 retry=retry,
                 soft_deleted=soft_deleted,
             )
+            active_client = client or self.client
+            cache = getattr(active_client, "_bucket_metadata_cache", None)
+            if cache:
+                try:
+                    cache.update_from_bucket(self)
+                except Exception:
+                    pass
 
     def patch(
         self,
