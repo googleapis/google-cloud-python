@@ -134,3 +134,27 @@ def test_blob_to_proto_retention():
     assert int(proto.retention.retain_until_time.timestamp()) == int(
         retain_until_time.timestamp()
     )
+
+
+def test_blob_to_proto_contexts():
+    blob = mock.Mock(
+        spec=["name", "bucket", "contexts", "custom_time", "acl", "retention"]
+    )
+    blob.name = "blob-name"
+    blob.bucket.name = "bucket-name"
+
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    payload = ObjectCustomContextPayload(value="val")
+    blob.contexts = ObjectContexts(blob, custom={"key": payload})
+
+    blob.custom_time = None
+    blob.acl = None
+    blob.retention = None
+    for attr in _grpc_conversions._BLOB_ATTR_TO_PROTO_FIELD:
+        setattr(blob, attr, None)
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+
+    assert "key" in proto.contexts.custom
+    assert proto.contexts.custom["key"].value == "val"
