@@ -17,11 +17,11 @@ pytest.importorskip("pytest_snapshot")
 
 {% for func in functions %}
 def test_{{ func.name }}(scalar_types_df: bpd.DataFrame, snapshot):
-    result = {{ short_name }}.{{ func.name }}(
+    result = cast(bpd.Series, {{ short_name }}.{{ func.name }}(
 {% for arg in func.test_args %}
         cast(bpd.Series, scalar_types_df["{{ arg.col_name }}"]),
 {% endfor %}
-    ).to_frame()
+    )).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 

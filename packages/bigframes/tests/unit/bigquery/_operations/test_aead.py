@@ -27,30 +27,39 @@ pytest.importorskip("pytest_snapshot")
 
 
 def test_decrypt_bytes(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead.decrypt_bytes(
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
+    result = cast(
+        bpd.Series,
+        aead.decrypt_bytes(
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+        ),
     ).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
 def test_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead.decrypt_string(
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["string_col"]),
+    result = cast(
+        bpd.Series,
+        aead.decrypt_string(
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["string_col"]),
+        ),
     ).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
 def test_encrypt(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead.encrypt(
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
-        cast(bpd.Series, scalar_types_df["bytes_col"]),
+    result = cast(
+        bpd.Series,
+        aead.encrypt(
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+            cast(bpd.Series, scalar_types_df["bytes_col"]),
+        ),
     ).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")

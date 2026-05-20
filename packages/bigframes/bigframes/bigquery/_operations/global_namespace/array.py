@@ -30,8 +30,6 @@ import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql
 
-T = TypeVar("T", series.Series, bigframes.core.col.Expression)
-
 _ARRAY_CONCAT_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_CONCAT",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
@@ -106,153 +104,153 @@ _GENERATE_ARRAY_OP = googlesql.GoogleSqlScalarOp(
 
 def array_concat(
     array_expression_1: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     array_expression_2: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Concatenates one or more arrays with the same element type into a single array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_CONCAT_OP,
         array_expression_1,
         array_expression_2,
-    )  # type: ignore
+    )
 
 
 def array_first(
     array_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array and returns the first element in the array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_FIRST_OP,
         array_expression,
-    )  # type: ignore
+    )
 
 
 def array_first_n(
     input_array: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     n: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns a prefix of `input_array` consisting of the first `n` elements."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_FIRST_N_OP,
         input_array,
         n,
-    )  # type: ignore
+    )
 
 
 def array_includes(
     array_to_search: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     search_value: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array and returns `TRUE` if there is an element in the array that is equal to the search_value."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_INCLUDES_OP,
         array_to_search,
         search_value,
-    )  # type: ignore
+    )
 
 
 def array_includes_all(
     array_to_search: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     search_values: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array to search and an array of search values. Returns `TRUE` if all search values are in the array to search, otherwise returns `FALSE`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_INCLUDES_ALL_OP,
         array_to_search,
         search_values,
-    )  # type: ignore
+    )
 
 
 def array_includes_any(
     array_to_search: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     search_values: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array to search and an array of search values. Returns `TRUE` if any search values are in the array to search, otherwise returns `FALSE`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_INCLUDES_ANY_OP,
         array_to_search,
         search_values,
-    )  # type: ignore
+    )
 
 
 def array_is_distinct(
     array_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns `TRUE` if the array contains no repeated elements, using the same equality comparison logic as `SELECT DISTINCT`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_IS_DISTINCT_OP,
         array_expression,
-    )  # type: ignore
+    )
 
 
 def array_last(
     array_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array and returns the last element in the array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_LAST_OP,
         array_expression,
-    )  # type: ignore
+    )
 
 
 def array_length(
     series: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Compute the length of each array element in the Series.
 
     **Examples:**
@@ -285,66 +283,66 @@ def array_length(
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_LENGTH_OP,
         series,
-    )  # type: ignore
+    )
 
 
 def array_reverse(
     value: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns the input `ARRAY` with elements in reverse order."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_REVERSE_OP,
         value,
-    )  # type: ignore
+    )
 
 
 def array_slice(
     array_to_slice: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     start_offset: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     end_offset: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns an array containing zero or more consecutive elements from the input array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _ARRAY_SLICE_OP,
         array_to_slice,
         start_offset,
         end_offset,
-    )  # type: ignore
+    )
 
 
 def array_to_string(
     series: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     delimiter: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
     ],
     null_text: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Converts array elements within a Series into delimited strings.
 
     **Examples:**
@@ -374,50 +372,50 @@ def array_to_string(
         series,
         delimiter,
         null_text,
-    )  # type: ignore
+    )
 
 
 def flatten(
     array_to_flatten: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     depth: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array of nested data and flattens a specific part of it into a single, flat array with the [array elements field access operator][array-el-field-operator]. Returns `NULL` if the input value is `NULL`."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _FLATTEN_OP,
         array_to_flatten,
         depth,
-    )  # type: ignore
+    )
 
 
 def generate_array(
     start_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     end_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
     step_expression: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns an array of values. The `start_expression` and `end_expression` parameters determine the inclusive start and end of the array."""
     return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
         _GENERATE_ARRAY_OP,
         start_expression,
         end_expression,
         step_expression,
-    )  # type: ignore
+    )
