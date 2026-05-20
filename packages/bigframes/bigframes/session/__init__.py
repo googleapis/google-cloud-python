@@ -448,7 +448,7 @@ class Session(
         *,
         events: Optional[Iterable[bigframes.core.events.Event]] = None,
         job_ids: Optional[Iterable[str]] = None,
-        filter_by_cell: bool = True,
+        current_cell_only: bool = True,
     ) -> _ExecutionHistory:
         """Returns the history of executions initiated by BigFrames in the current session.
 
@@ -459,7 +459,7 @@ class Session(
                 Filter execution history to only include jobs associated with the given events.
             job_ids (Iterable[str], optional):
                 Filter execution history to only include jobs matching the given job IDs.
-            filter_by_cell (bool, optional):
+            current_cell_only (bool, optional):
                 If True and running in Colab/Jupyter, automatically filter history to only include
                 jobs executed within the current cell. Defaults to True.
         """
@@ -503,7 +503,7 @@ class Session(
                 )
             ]
 
-        elif filter_by_cell:
+        elif current_cell_only:
             try:
                 import IPython
 

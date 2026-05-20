@@ -92,6 +92,16 @@ class TableWidget(_WIDGET_BASE):
 
         self._dataframe = dataframe
 
+        self._cell_execution_count = None
+        try:
+            import IPython
+
+            ipy = IPython.get_ipython()
+            if ipy is not None and hasattr(ipy, "execution_count"):
+                self._cell_execution_count = ipy.execution_count
+        except (ImportError, NameError):
+            pass
+
         super().__init__()
 
         # Initialize attributes that might be needed by observers first
@@ -286,7 +296,10 @@ class TableWidget(_WIDGET_BASE):
     def _reset_batches_for_new_page_size(self) -> None:
         """Reset the batch iterator when page size changes."""
         with bigframes.option_context("display.progress_bar", None):
-            self._batches = self._dataframe.to_pandas_batches(page_size=self.page_size)
+            self._batches = self._dataframe.to_pandas_batches(
+                page_size=self.page_size,
+                cell_execution_count=self._cell_execution_count,
+            )
 
         self._reset_batch_cache()
 
@@ -318,7 +331,8 @@ class TableWidget(_WIDGET_BASE):
             current_sort_state = _SortState(tuple(sort_columns), tuple(sort_ascending))
             if self._last_sort_state != current_sort_state:
                 self._batches = df_to_display.to_pandas_batches(
-                    page_size=self.page_size
+                    page_size=self.page_size,
+                    cell_execution_count=self._cell_execution_count,
                 )
                 self._reset_batch_cache()
                 self._last_sort_state = current_sort_state

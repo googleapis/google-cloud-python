@@ -179,3 +179,25 @@ def test_page_size_change_resets_sort(mock_df):
 
     # to_pandas_batches called again (reset)
     assert mock_df.to_pandas_batches.call_count >= 2
+
+
+def test_cell_execution_count_propagation(mock_df):
+    """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
+    from bigframes.display.anywidget import TableWidget
+
+    # Mock IPython to return a specific execution count
+    mock_ipy = mock.Mock()
+    mock_ipy.execution_count = 42
+
+    with mock.patch("IPython.get_ipython", return_value=mock_ipy):
+        with bigframes.option_context("display.render_mode", "anywidget"):
+            widget = TableWidget(mock_df)
+
+    # Verify captured execution count
+    assert widget._cell_execution_count == 42
+
+    # to_pandas_batches should be called with cell_execution_count=42
+    mock_df.to_pandas_batches.assert_called_with(
+        page_size=widget.page_size,
+        cell_execution_count=42,
+    )
