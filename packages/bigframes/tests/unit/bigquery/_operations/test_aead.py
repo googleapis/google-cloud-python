@@ -32,6 +32,7 @@ def test_decrypt_bytes(scalar_types_df: bpd.DataFrame, snapshot):
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
     ).to_frame()
+
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
@@ -41,6 +42,7 @@ def test_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
     ).to_frame()
+
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
@@ -50,4 +52,5 @@ def test_encrypt(scalar_types_df: bpd.DataFrame, snapshot):
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
     ).to_frame()
+
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
