@@ -6340,14 +6340,8 @@ class Test_Blob(unittest.TestCase):
     def test_object_contexts_payload_ctor(self):
         from google.cloud.storage.blob import ObjectCustomContextPayload
 
-        create_time = datetime.datetime(2025, 1, 1, tzinfo=_UTC)
-        update_time = datetime.datetime(2025, 1, 2, tzinfo=_UTC)
-        payload = ObjectCustomContextPayload(
-            value="foo", create_time=create_time, update_time=update_time
-        )
+        payload = ObjectCustomContextPayload(value="foo")
         self.assertEqual(payload.value, "foo")
-        self.assertEqual(payload.create_time, create_time)
-        self.assertEqual(payload.update_time, update_time)
 
     def test_object_contexts_ctor(self):
         from google.cloud.storage.blob import (

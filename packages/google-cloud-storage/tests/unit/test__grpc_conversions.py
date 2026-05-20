@@ -145,8 +145,7 @@ def test_blob_to_proto_contexts():
 
     from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
 
-    create_time = datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
-    payload = ObjectCustomContextPayload(value="val", create_time=create_time)
+    payload = ObjectCustomContextPayload(value="val")
     blob.contexts = ObjectContexts(blob, custom={"key": payload})
 
     blob.custom_time = None

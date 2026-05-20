@@ -1308,7 +1308,7 @@ def test_blob_contexts(shared_bucket, blobs_to_delete):
 
     blob.reload()
     assert blob.contexts.custom["k1"].value == "v1-updated"
-    assert "k2" not in blob.contexts.custom or blob.contexts.custom["k2"].value is None
+    assert "k2" not in blob.contexts.custom
 
     # 3. Clear all
     blob.contexts = None
@@ -1344,3 +1344,4 @@ def test_blob_contexts_custom_setter(shared_bucket, blobs_to_delete):
 
     blob.reload()
     assert blob.contexts.custom["k1"].value == "v1-updated"
+    assert blob.contexts.custom["k2"].value == "v2"
