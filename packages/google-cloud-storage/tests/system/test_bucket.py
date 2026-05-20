@@ -775,12 +775,16 @@ def test_bucket_list_blobs_w_filter(
     buckets_to_delete.append(bucket)
 
     payload = b"helloworld"
-    blob_names = ["foo", "bar", "baz"]
+    blob_names = ["foo", "bar", "baz", "qux"]
     for name in blob_names:
         blob = bucket.blob(name)
         blob.upload_from_string(payload)
         if name == "bar":
             custom = {"target": ObjectCustomContextPayload(value="match")}
+            blob.contexts = ObjectContexts(blob, custom=custom)
+            blob.patch()
+        if name == "qux":
+            custom = {"target": ObjectCustomContextPayload(value="nomatch")}
             blob.contexts = ObjectContexts(blob, custom=custom)
             blob.patch()
         blobs_to_delete.append(blob)
@@ -789,6 +793,21 @@ def test_bucket_list_blobs_w_filter(
     blob_iter = bucket.list_blobs(filter_='contexts."target"="match"')
     blobs = list(blob_iter)
     assert [blob.name for blob in blobs] == ["bar"]
+
+    # List with filter matching bar and qux
+    blob_iter = bucket.list_blobs(filter_='contexts."target":*')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["bar", "qux"]
+
+    # List with filter matching all except 'bar'
+    blob_iter = bucket.list_blobs(filter_='-contexts."target"="match"')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["baz", "foo", "qux"]
+
+    # List with filter matching 'foo' and 'baz' (those without target context)
+    blob_iter = bucket.list_blobs(filter_='-contexts."target":*')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["baz", "foo"]
 
 
 def test_bucket_list_blobs_include_managed_folders(
