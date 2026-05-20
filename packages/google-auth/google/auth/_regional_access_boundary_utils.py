@@ -134,7 +134,7 @@ class _RegionalAccessBoundaryManager(object):
         self._use_blocking_regional_access_boundary_lookup = True
 
     def set_initial_regional_access_boundary(self, encoded_locations=None, expiry=None):
-        """Manually sets the regional access boundary to the client provided seed.
+        """Manually sets the regional access boundary to the client provided initial values.
 
         Args:
             encoded_locations (Optional[str]): The encoded locations string.

@@ -38,8 +38,9 @@ def _verify_restored_database(
     kms_key_name=None,
     kms_key_names=None,
 ):
-    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
     import time
+
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     database_admin_api = spanner_client.database_admin_api
     db_path = database_admin_api.database_path(
