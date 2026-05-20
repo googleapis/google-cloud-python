@@ -1291,6 +1291,7 @@ class Client(ClientWithProject):
         match_glob=None,
         include_folders_as_prefixes=None,
         soft_deleted=None,
+        filter_=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1400,6 +1401,10 @@ class Client(ClientWithProject):
                 Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
                 https://cloud.google.com/storage/docs/soft-delete
 
+            filter_ (str):
+                (Optional) Filter string used to filter objects. See:
+                https://docs.cloud.google.com/storage/docs/listing-objects#filter-by-object-contexts-syntax
+
         Returns:
             Iterator of all :class:`~google.cloud.storage.blob.Blob`
             in this bucket matching the arguments. The RPC call
@@ -1442,6 +1447,9 @@ class Client(ClientWithProject):
 
             if soft_deleted is not None:
                 extra_params["softDeleted"] = soft_deleted
+
+            if filter_ is not None:
+                extra_params["filter"] = filter_
 
             if bucket.user_project is not None:
                 extra_params["userProject"] = bucket.user_project

@@ -21,6 +21,7 @@ import pytest
 
 from google.cloud import _storage_v2
 from google.cloud.storage import Blob, Bucket
+from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
@@ -197,6 +198,8 @@ class TestAsyncWriteObjectStream:
             "mode": "Locked",
             "retain_until_time": retain_until_time,
         }
+        payload = ObjectCustomContextPayload(value="context-value")
+        mock_blob.contexts = ObjectContexts(mock_blob, custom={"context-key": payload})
 
         stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
         await stream.open()
@@ -225,6 +228,8 @@ class TestAsyncWriteObjectStream:
         assert int(resource.retention.retain_until_time.timestamp()) == int(
             retain_until_time.timestamp()
         )
+        assert "context-key" in resource.contexts.custom
+        assert resource.contexts.custom["context-key"].value == "context-value"
 
     @pytest.mark.asyncio
     async def test_open_already_open_raises(self, mock_client):
