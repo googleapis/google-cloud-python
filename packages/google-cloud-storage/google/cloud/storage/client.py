@@ -43,6 +43,7 @@ from google.cloud.storage._helpers import (
     _get_environ_project,
     _get_storage_emulator_override,
     _virtual_hosted_style_base_url,
+    create_trace_span_helper,
 )
 from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._http import Connection
@@ -965,7 +966,12 @@ class Client(ClientWithProject):
             google.cloud.exceptions.NotFound
                 If the bucket is not found.
         """
-        with create_trace_span(name="Storage.Client.getBucket"):
+        bucket_name = (
+            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+        )
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.getBucket"
+        ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name, generation=generation)
             bucket.reload(
                 client=self,
@@ -1013,7 +1019,9 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.storage.bucket.Bucket` or ``NoneType``
         :returns: The bucket matching the name provided or None if not found.
         """
-        with create_trace_span(name="Storage.Client.lookupBucket"):
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.lookupBucket"
+        ):
             try:
                 return self.get_bucket(
                     bucket_name,
@@ -1265,7 +1273,21 @@ class Client(ClientWithProject):
             single_shot_download (bool):
                 (Optional) If true, download the object in a single request.
         """
-        with create_trace_span(name="Storage.Client.downloadBlobToFile"):
+        bucket_name = None
+        if isinstance(blob_or_uri, Blob):
+            bucket_name = blob_or_uri.bucket.name if blob_or_uri.bucket else None
+        elif isinstance(blob_or_uri, str) and blob_or_uri.startswith("gs://"):
+            try:
+                temp_blob = Blob.from_uri(blob_or_uri)
+                bucket_name = temp_blob.bucket.name
+            except Exception:
+                pass
+
+        with create_trace_span_helper(
+            self,
+            bucket_name,
+            name="Storage.Client.downloadBlobToFile",
+        ):
             if not isinstance(blob_or_uri, Blob):
                 blob_or_uri = Blob.from_uri(blob_or_uri)
 
@@ -1423,7 +1445,12 @@ class Client(ClientWithProject):
             As part of the response, you'll also get back an iterator.prefixes entity that lists object names
             up to and including the requested delimiter. Duplicate entries are omitted from this list.
         """
-        with create_trace_span(name="Storage.Client.listBlobs"):
+        bucket_name = (
+            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+        )
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.listBlobs"
+        ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
             extra_params = {"projection": projection}

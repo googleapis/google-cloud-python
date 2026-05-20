@@ -149,6 +149,53 @@ def _validate_name(name):
     return name
 
 
+@contextmanager
+def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwargs):
+    span_attrs = dict(attributes) if attributes else {}
+
+    if (
+        bucket_name
+        and isinstance(bucket_name, str)
+        and client
+        and hasattr(client, "_bucket_metadata_cache")
+        and client._bucket_metadata_cache
+    ):
+        try:
+            cached = client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
+            if cached and isinstance(cached, tuple) and len(cached) == 2:
+                dest_id, loc = cached
+                span_attrs.update(
+                    {
+                        "gcp.resource.destination.id": dest_id,
+                        "gcp.resource.destination.location": loc,
+                    }
+                )
+        except Exception as e:
+            _logger.debug(f"Failed cache lookup in create_trace_span_helper: {e}")
+
+    if "client" not in kwargs and client:
+        kwargs["client"] = client
+
+    with _base_create_trace_span(name, attributes=span_attrs, **kwargs) as span:
+        try:
+            yield span
+        except (NotFound, api_exceptions.NotFound):
+            if (
+                bucket_name
+                and isinstance(bucket_name, str)
+                and client
+                and hasattr(client, "_bucket_metadata_cache")
+                and client._bucket_metadata_cache
+            ):
+                try:
+                    client._bucket_metadata_cache.check_and_evict(bucket_name)
+                except Exception as e:
+                    _logger.debug(
+                        f"Failed cache eviction on 404 in create_trace_span_helper: {e}"
+                    )
+            raise
+
+
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated properties.
 
@@ -247,45 +294,36 @@ class _PropertyMixin(object):
         from google.cloud.storage.blob import Blob
         from google.cloud.storage.bucket import Bucket
 
-        span_attrs = dict(attributes) if attributes else {}
-        span_attrs.update(self._get_aco_attributes())
-        with _base_create_trace_span(name, attributes=span_attrs, **kwargs) as span:
+        if isinstance(self, Bucket):
+            client = self.client
+            bucket_name = self.name
+        elif isinstance(self, Blob):
+            bucket = getattr(self, "bucket", None)
+            client = (
+                getattr(bucket, "client", None)
+                if bucket and hasattr(bucket, "client")
+                else None
+            )
+            bucket_name = getattr(bucket, "name", None) if bucket else None
+        else:
+            client = None
+            bucket_name = None
+
+        if callable(bucket_name):
             try:
-                yield span
-            except (NotFound, api_exceptions.NotFound):
-                if not HAS_OPENTELEMETRY or not enable_otel_traces:
-                    raise
-                if isinstance(self, Bucket):
-                    cache = getattr(self.client, "_bucket_metadata_cache", None)
-                    bucket_name = self.name
-                elif isinstance(self, Blob):
-                    bucket = getattr(self, "bucket", None)
-                    cache = (
-                        getattr(bucket.client, "_bucket_metadata_cache", None)
-                        if bucket and hasattr(bucket, "client")
-                        else None
-                    )
-                    bucket_name = getattr(bucket, "name", None) if bucket else None
-                else:
-                    cache = None
-                    bucket_name = None
+                bucket_name = bucket_name()
+            except Exception as e:
+                _logger.debug(
+                    f"Failed callable bucket_name resolution in _create_trace_span: {e}"
+                )
 
-                if callable(bucket_name):
-                    try:
-                        bucket_name = bucket_name()
-                    except Exception as e:
-                        _logger.debug(
-                            f"Failed callable bucket_name resolution on 404 in _create_trace_span: {e}"
-                        )
+        client_override = kwargs.pop("client", None)
+        active_client = client_override or client
 
-                if cache and bucket_name and isinstance(bucket_name, str):
-                    try:
-                        cache.check_and_evict(bucket_name)
-                    except Exception as e:
-                        _logger.debug(
-                            f"Failed cache.check_and_evict on 404 in _create_trace_span: {e}"
-                        )
-                raise
+        with create_trace_span_helper(
+            active_client, bucket_name, name, attributes=attributes, **kwargs
+        ) as span:
+            yield span
 
     def _encryption_headers(self):
         """Return any encryption headers needed to fetch the object.
