@@ -73,7 +73,7 @@ def test_array_length(input_data, expected):
         dtype=bigframes.dtypes.INT_DTYPE,
     )
     pd.testing.assert_series_equal(
-        bbq.array_length(series).to_pandas(),
+        cast(bpd.Series, bbq.array_length(series)).to_pandas(),
         expected,
         check_index_type=False,
     )
