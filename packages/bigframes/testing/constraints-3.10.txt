@@ -73,7 +73,7 @@ googleapis-common-protos==1.72.0
 grpc-google-iam-v1==0.14.2
 grpcio==1.74.0
 grpcio-status==1.62.3
-idna==3.11
+idna==3.15
 iniconfig2.3.0
 ipython==8.21.0
 ipython-genutils==0.2.0
