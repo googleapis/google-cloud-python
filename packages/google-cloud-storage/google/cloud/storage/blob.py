@@ -5368,20 +5368,10 @@ class ObjectCustomContextPayload(dict):
 
     :type value: str or ``NoneType``
     :param value: (Optional) The value of the custom context.
-
-    :type create_time: :class:`datetime.datetime` or ``NoneType``
-    :param create_time: (Optional) Creation time of the custom context.
-
-    :type update_time: :class:`datetime.datetime` or ``NoneType``
-    :param update_time: (Optional) Last update time of the custom context.
     """
 
-    def __init__(self, value=None, create_time=None, update_time=None):
+    def __init__(self, value=None):
         data = {"value": value}
-        if create_time is not None:
-            data["createTime"] = _datetime_to_rfc3339(create_time)
-        if update_time is not None:
-            data["updateTime"] = _datetime_to_rfc3339(update_time)
         super(ObjectCustomContextPayload, self).__init__(data)
         self._contexts = None
 
@@ -5426,6 +5416,8 @@ class ObjectCustomContextPayload(dict):
 class ObjectContexts(dict):
     """Container for an object's contexts.
 
+    See: https://docs.cloud.google.com/storage/docs/object-contexts
+
     :type blob: :class:`Blob`
     :param blob: blob for which these contexts apply to.
 
@@ -5445,12 +5437,10 @@ class ObjectContexts(dict):
                     raise ValueError(
                         "All values in custom must be ObjectCustomContextPayload instances"
                     )
+                payload._contexts = self
             data["custom"] = custom
         super(ObjectContexts, self).__init__(data)
         self._blob = blob
-        if custom is not None:
-            for payload in custom.values():
-                payload._contexts = self
 
     @classmethod
     def from_api_repr(cls, resource, blob):
@@ -5497,9 +5487,14 @@ class ObjectContexts(dict):
 
     @custom.setter
     def custom(self, value):
+        if value is None:
+            value = {}
         if not isinstance(value, dict):
             raise ValueError(
                 "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
             )
+        for payload in value.values():
+            if isinstance(payload, ObjectCustomContextPayload):
+                payload._contexts = self
         self["custom"] = value
         self.blob._patch_property("contexts", self)

@@ -1518,7 +1518,7 @@ class Bucket(_PropertyMixin):
             Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
             https://cloud.google.com/storage/docs/soft-delete
 
-        :type filter_: str
+        :type filter_: str or None
         :param filter_:
             (Optional) Filter string used to filter objects. See:
             https://docs.cloud.google.com/storage/docs/listing-objects#filter-by-object-contexts-syntax
