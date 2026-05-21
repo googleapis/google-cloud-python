@@ -1487,6 +1487,27 @@ class Test_Bucket(unittest.TestCase):
             _target_object=None,
         )
 
+    def test_delete_hit_evicts_from_cache(self):
+        name = "bucket-to-delete"
+        client = mock.Mock(spec=["_delete_resource", "_bucket_metadata_cache"])
+        cache = mock.Mock()
+        client._bucket_metadata_cache = cache
+        client._delete_resource.return_value = None
+        bucket = self._make_one(client=client, name=name)
+
+        result = bucket.delete()
+
+        self.assertIsNone(result)
+        cache.evict.assert_called_once_with(name)
+
+        client._delete_resource.assert_called_once_with(
+            bucket.path,
+            query_params={},
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=None,
+        )
+
     def test_delete_hit_w_force_w_user_project_w_explicit_timeout_retry(self):
         name = "name"
         user_project = "user-project-123"

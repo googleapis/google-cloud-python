@@ -1735,6 +1735,12 @@ class Bucket(_PropertyMixin):
                 retry=retry,
                 _target_object=None,
             )
+            cache = getattr(client, "_bucket_metadata_cache", None)
+            if cache:
+                try:
+                    cache.evict(self.name)
+                except Exception:
+                    pass
 
     def delete_blob(
         self,
