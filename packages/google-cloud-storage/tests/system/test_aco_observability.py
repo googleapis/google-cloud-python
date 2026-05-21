@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import concurrent.futures
-import importlib
 import threading
 import time
 
@@ -21,40 +20,6 @@ import pytest
 from google.api_core import exceptions
 
 from . import _helpers
-
-
-@pytest.fixture(scope="function")
-def exporter():
-    """Setup OTel packages and tracer provider for this test function context."""
-    try:
-        from opentelemetry import trace as trace_api
-        from opentelemetry.sdk.trace import TracerProvider, export
-        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
-            InMemorySpanExporter,
-        )
-    except ImportError:
-        pytest.skip("OpenTelemetry is not installed.")
-
-    # Create a dedicated tracer provider for this test function
-    tracer_provider = TracerProvider()
-    memory_exporter = InMemorySpanExporter()
-    span_processor = export.SimpleSpanProcessor(memory_exporter)
-    tracer_provider.add_span_processor(span_processor)
-
-    # Save original tracer provider to restore later
-    original_provider = trace_api.get_tracer_provider()
-    trace_api.set_tracer_provider(tracer_provider)
-
-    # Force reload GCS tracing module to hook into our provider
-    from google.cloud.storage import _opentelemetry_tracing
-
-    importlib.reload(_opentelemetry_tracing)
-
-    yield memory_exporter
-
-    # Restore original provider
-    trace_api.set_tracer_provider(original_provider)
-    importlib.reload(_opentelemetry_tracing)
 
 
 def test_sequential_cache_priming(storage_client, exporter, buckets_to_delete):
@@ -203,7 +168,9 @@ def test_cache_eviction_scenarios(storage_client, buckets_to_delete):
     query_params = {}
     if bucket.user_project is not None:
         query_params["userProject"] = bucket.user_project
-    storage_client._connection._delete_resource(bucket.path, query_params=query_params)
+    blob.delete()
+    storage_client._delete_resource(bucket.path, query_params=query_params)
+    buckets_to_delete.remove(bucket)
 
     # Attempt to load blob (raises 404 NotFound bucket error)
     with pytest.raises(exceptions.NotFound):
@@ -269,7 +236,7 @@ def test_404_on_blob_bucket_deleted(storage_client):
     query_params = {}
     if bucket.user_project is not None:
         query_params["userProject"] = bucket.user_project
-    storage_client._connection._delete_resource(bucket.path, query_params=query_params)
+    storage_client._delete_resource(bucket.path, query_params=query_params)
 
     # Make 404 request to a blob (raises 404 NotFound because bucket is deleted)
     non_existent_blob = bucket.blob("non_existent.txt")

@@ -37,6 +37,11 @@ class BucketMetadataCache:
         self._inflight_fetches = set()
         self._inflight_checks = set()
 
+    def get(self, bucket_name):
+        """Thread-safely retrieve cached metadata without queueing fetch."""
+        with self._lock:
+            return self._cache.get(bucket_name)
+
     def get_or_queue_fetch(self, bucket_name):
         """Retrieve bucket metadata or queue a background fetch on cache miss.
 

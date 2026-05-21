@@ -15,6 +15,23 @@
 import contextlib
 import os
 
+os.environ["ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"] = "true"
+
+# Initialize global OpenTelemetry TracerProvider at the very start
+try:
+    from opentelemetry import trace as trace_api
+    from opentelemetry.sdk.trace import TracerProvider, export
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+        InMemorySpanExporter,
+    )
+
+    _global_exporter = InMemorySpanExporter()
+    _provider = TracerProvider()
+    _provider.add_span_processor(export.SimpleSpanProcessor(_global_exporter))
+    trace_api.set_tracer_provider(_provider)
+except ImportError:
+    _global_exporter = None
+
 import pytest
 from google.api_core import exceptions
 
@@ -415,3 +432,11 @@ def universe_domain_iam_client(
     )
 
     return iam_client
+
+
+@pytest.fixture(scope="function")
+def exporter():
+    if _global_exporter is None:
+        pytest.skip("OpenTelemetry is not installed.")
+    _global_exporter.clear()
+    return _global_exporter
