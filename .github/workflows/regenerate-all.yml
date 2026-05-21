@@ -75,7 +75,7 @@ jobs:
 
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           PATH=$PATH:/tmp/pandoc/bin
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -all -v
+          go run "github.com/googleapis/librarian/cmd/librarian@v0.13.0" generate -all -v
 
       - name: Create issue on diff
         env:
