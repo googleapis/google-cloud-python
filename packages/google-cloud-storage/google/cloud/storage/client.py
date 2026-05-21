@@ -24,7 +24,7 @@ import os
 import warnings
 
 import google.api_core.client_options
-from google.api_core import page_iterator
+from google.api_core import exceptions as api_exceptions, page_iterator
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
@@ -973,14 +973,28 @@ class Client(ClientWithProject):
             self, bucket_name, name="Storage.Client.getBucket"
         ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name, generation=generation)
-            bucket.reload(
-                client=self,
-                timeout=timeout,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                retry=retry,
-                soft_deleted=soft_deleted,
-            )
+            try:
+                bucket.reload(
+                    client=self,
+                    timeout=timeout,
+                    if_metageneration_match=if_metageneration_match,
+                    if_metageneration_not_match=if_metageneration_not_match,
+                    retry=retry,
+                    soft_deleted=soft_deleted,
+                )
+            except api_exceptions.Forbidden:
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_cache(
+                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
+
             if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
                 try:
                     self._bucket_metadata_cache.update_from_bucket(bucket)
@@ -1044,6 +1058,18 @@ class Client(ClientWithProject):
                     except Exception:
                         pass
                 return bucket
+            except api_exceptions.Forbidden:
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_cache(
+                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
             except NotFound:
                 return None
 
