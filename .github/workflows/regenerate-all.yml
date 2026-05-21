@@ -70,6 +70,9 @@ jobs:
 
       - name: Regenerate
         run: |
+          # 1. Clean the cache that synthtool uses
+          rm -rf $HOME/.cache/synthtool
+
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           PATH=$PATH:/tmp/pandoc/bin
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -all -v
