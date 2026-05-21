@@ -49,7 +49,7 @@ from .services.user_list_service import (
 )
 from .types.age_range import AgeRange
 from .types.audience import AudienceMember, MobileData, PairData, PpidData, UserIdData
-from .types.cart_data import CartData, Item
+from .types.cart_data import CartData, Item, ItemCustomVariable
 from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
@@ -59,6 +59,7 @@ from .types.event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -274,6 +275,7 @@ __all__ = (
     "ErrorInfo",
     "ErrorReason",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",
@@ -289,6 +291,7 @@ __all__ = (
     "IngestedUserListInfo",
     "IngestionServiceClient",
     "Item",
+    "ItemCustomVariable",
     "ItemParameter",
     "ListUserListDirectLicensesRequest",
     "ListUserListDirectLicensesResponse",

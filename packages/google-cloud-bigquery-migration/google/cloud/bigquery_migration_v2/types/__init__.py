@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .assessment_task import (
+    AssessmentFeatureHandle,
+    AssessmentTaskDetails,
+)
 from .migration_entities import (
     MigrationSubtask,
     MigrationTask,
@@ -73,6 +77,8 @@ from .translation_details import (
     SourceEnvironment,
     SourceSpec,
     SourceTargetMapping,
+    SuggestionConfig,
+    SuggestionStep,
     TargetSpec,
     TranslationDetails,
 )
@@ -84,6 +90,8 @@ from .translation_usability import (
 )
 
 __all__ = (
+    "AssessmentFeatureHandle",
+    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
     "MigrationTaskResult",
@@ -133,6 +141,8 @@ __all__ = (
     "SourceEnvironment",
     "SourceSpec",
     "SourceTargetMapping",
+    "SuggestionConfig",
+    "SuggestionStep",
     "TargetSpec",
     "TranslationDetails",
     "TranslationReportRecord",

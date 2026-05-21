@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
     manifest={
         "CartData",
         "Item",
+        "ItemCustomVariable",
     },
 )
 
@@ -50,6 +51,15 @@ class CartData(proto.Message):
         items (MutableSequence[google.ads.datamanager_v1.types.Item]):
             Optional. The list of items associated with
             the event.
+        coupon_codes (MutableSequence[str]):
+            Optional. The list of coupon codes that were
+            applied to the cart. Cart-level and item-level
+            coupon codes are independent.
+
+            If the event is for a Google Analytics
+            destination, only provide a single coupon code.
+            Google Analytics ignores additional coupon
+            codes.
     """
 
     merchant_id: str = proto.Field(
@@ -73,10 +83,16 @@ class CartData(proto.Message):
         number=5,
         message="Item",
     )
+    coupon_codes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class Item(proto.Message):
     r"""Represents an item in the cart associated with the event.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         merchant_product_id (str):
@@ -96,6 +112,34 @@ class Item(proto.Message):
             item <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
             to be included within the event that were not already
             specified using other structured fields.
+        merchant_id (str):
+            Optional. The Merchant Center ID associated
+            with the item. For Store Sales events this will
+            override the value set at the cart level.  This
+            field is ignored for other events.
+        merchant_feed_label (str):
+            Optional. The feed label of the Merchant
+            Center feed. If countries are still being used,
+            the 2-letter country code in ISO-3166-1 alpha-2
+            can be used instead. For Store Sales events this
+            will override the value set at the cart level.
+            This field is ignored for other events.
+        merchant_feed_language_code (str):
+            Optional. The language code in ISO 639-1
+            associated with the Merchant Center feed where
+            your items are uploaded.
+        conversion_value (float):
+            Optional. The conversion value associated
+            with this item within the event, for cases where
+            the conversion value is different for each item.
+
+            This field is a member of `oneof`_ ``_conversion_value``.
+        custom_variables (MutableSequence[google.ads.datamanager_v1.types.ItemCustomVariable]):
+            Optional. Additional key/value pair
+            information to send to the conversion containers
+            (conversion action or Floodlight activity), when
+            tracking per-item
+             conversions.
     """
 
     merchant_product_id: str = proto.Field(
@@ -120,6 +164,61 @@ class Item(proto.Message):
             number=5,
             message=item_parameter.ItemParameter,
         )
+    )
+    merchant_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    merchant_feed_label: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    merchant_feed_language_code: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    conversion_value: float = proto.Field(
+        proto.DOUBLE,
+        number=9,
+        optional=True,
+    )
+    custom_variables: MutableSequence["ItemCustomVariable"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="ItemCustomVariable",
+    )
+
+
+class ItemCustomVariable(proto.Message):
+    r"""Item-level custom variable for ads conversions.
+
+    Attributes:
+        variable (str):
+            Optional. The name of the custom variable to
+            set. If the variable is not found for the given
+            destination, it will be ignored.
+        value (str):
+            Optional. The value to store for the custom
+            variable.
+        destination_references (MutableSequence[str]):
+            Optional. Reference string used to determine which of the
+            [Event.destination_references][google.ads.datamanager.v1.Event.destination_references]
+            the custom variable should be sent to. If empty, the
+            [Event.destination_references][google.ads.datamanager.v1.Event.destination_references]
+            will be used.
+    """
+
+    variable: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    destination_references: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

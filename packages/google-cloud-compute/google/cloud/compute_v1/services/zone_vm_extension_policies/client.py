@@ -729,7 +729,8 @@ class ZoneVmExtensionPoliciesClient(metaclass=ZoneVmExtensionPoliciesClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Deletes a specified zone VM extension policy.
+        r"""Deletes a specified zone VM extension policy within a
+        project.
 
         .. code-block:: python
 
@@ -864,7 +865,8 @@ class ZoneVmExtensionPoliciesClient(metaclass=ZoneVmExtensionPoliciesClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Deletes a specified zone VM extension policy.
+        r"""Deletes a specified zone VM extension policy within a
+        project.
 
         .. code-block:: python
 
@@ -1023,7 +1025,7 @@ class ZoneVmExtensionPoliciesClient(metaclass=ZoneVmExtensionPoliciesClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.VmExtensionPolicy:
         r"""Retrieves details of a specific zone VM extension
-        policy.
+        policy within a project.
 
         .. code-block:: python
 
@@ -1583,7 +1585,8 @@ class ZoneVmExtensionPoliciesClient(metaclass=ZoneVmExtensionPoliciesClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Modifies an existing zone VM extension policy.
+        r"""Modifies an existing zone VM extension policy within
+        a project.
 
         .. code-block:: python
 
@@ -1731,7 +1734,8 @@ class ZoneVmExtensionPoliciesClient(metaclass=ZoneVmExtensionPoliciesClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Modifies an existing zone VM extension policy.
+        r"""Modifies an existing zone VM extension policy within
+        a project.
 
         .. code-block:: python
 

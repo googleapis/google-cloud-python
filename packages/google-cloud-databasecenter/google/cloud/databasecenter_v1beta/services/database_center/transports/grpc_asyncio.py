@@ -455,6 +455,36 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
         return self._stubs["aggregate_issue_stats"]
 
     @property
+    def aggregate_query_stats(
+        self,
+    ) -> Callable[
+        [service.AggregateQueryStatsRequest],
+        Awaitable[service.AggregateQueryStatsResponse],
+    ]:
+        r"""Return a callable for the aggregate query stats method over gRPC.
+
+        AggregateQueryStats provides database resource query
+        execution statistics.
+
+        Returns:
+            Callable[[~.AggregateQueryStatsRequest],
+                    Awaitable[~.AggregateQueryStatsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "aggregate_query_stats" not in self._stubs:
+            self._stubs["aggregate_query_stats"] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateQueryStats",
+                request_serializer=service.AggregateQueryStatsRequest.serialize,
+                response_deserializer=service.AggregateQueryStatsResponse.deserialize,
+            )
+        return self._stubs["aggregate_query_stats"]
+
+    @property
     def query_issues(
         self,
     ) -> Callable[[service.QueryIssuesRequest], Awaitable[service.QueryIssuesResponse]]:
@@ -502,6 +532,11 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             ),
             self.aggregate_issue_stats: self._wrap_method(
                 self.aggregate_issue_stats,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.aggregate_query_stats: self._wrap_method(
+                self.aggregate_query_stats,
                 default_timeout=None,
                 client_info=client_info,
             ),
