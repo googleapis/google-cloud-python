@@ -59,22 +59,29 @@ DTYPE_MAP = {
     "binary": "dtypes.BYTES_DTYPE",
     "string": "dtypes.STRING_DTYPE",
     "int64": "dtypes.INT_DTYPE",
+    "i64": "dtypes.INT_DTYPE",
     "float64": "dtypes.FLOAT_DTYPE",
+    "fp64": "dtypes.FLOAT_DTYPE",
     "bool": "dtypes.BOOL_DTYPE",
+    "boolean": "dtypes.BOOL_DTYPE",
     "geography": "dtypes.GEO_DTYPE",
     "json": "dtypes.JSON_DTYPE",
     "date": "dtypes.DATE_DTYPE",
     "time": "dtypes.TIME_DTYPE",
     "datetime": "dtypes.DATETIME_DTYPE",
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
+    "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
 }
 
 PY_TYPE_MAP = {
     "binary": "bytes",
     "string": "str",
     "int64": "int",
+    "i64": "int",
     "float64": "float",
+    "fp64": "float",
     "bool": "bool",
+    "boolean": "bool",
     "geography": "Any",
     "json": "Any",
     "date": "datetime.date",
@@ -82,19 +89,24 @@ PY_TYPE_MAP = {
     "datetime": "datetime.datetime",
     "timestamp": "datetime.datetime",
     "struct": "dict",
+    "decimal<38,9>": "decimal.Decimal",
 }
 
 YAML_TYPE_TO_COL = {
     "binary": "bytes_col",
     "string": "string_col",
     "int64": "int64_col",
+    "i64": "int64_col",
     "float64": "float64_col",
+    "fp64": "float64_col",
     "bool": "bool_col",
+    "boolean": "bool_col",
     "geography": "geography_col",
     "date": "date_col",
     "time": "time_col",
     "datetime": "datetime_col",
     "timestamp": "timestamp_col",
+    "decimal<38,9>": "numeric_col",
 }
 
 
@@ -152,14 +164,139 @@ def _build_arg_specs(args_by_name, arg_order):
     return arg_specs
 
 
-def _get_return_signature(impls):
-    return_types = {impl["return"] for impl in impls}
-    if len(return_types) == 1:
-        ret_type = sorted(return_types)[0]
-        return f"lambda *args: {DTYPE_MAP.get(ret_type, 'None')}"
+def _is_concrete_type(yaml_type):
+    if yaml_type in DTYPE_MAP:
+        return True
+    if yaml_type.startswith("list<") and yaml_type.endswith(">"):
+        inner = yaml_type[5:-1]
+        return inner in DTYPE_MAP
+    return False
+
+
+def _get_concrete_type_expr(yaml_type):
+    if yaml_type in DTYPE_MAP:
+        return DTYPE_MAP[yaml_type]
+    if yaml_type.startswith("list<") and yaml_type.endswith(">"):
+        inner = yaml_type[5:-1]
+        return f"dtypes.list_type({DTYPE_MAP[inner]})"
+    raise ValueError(f"Not a concrete type: {yaml_type}")
+
+
+def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
+    lines = []
+    lines.append(f"    # Try matching impl {impl_idx}")
+    lines.append("    any1_val = None")
+    lines.append("    match_ok = True")
+
+    for idx, arg in enumerate(impl["args"]):
+        arg_val = arg["value"]
+        arg_var = f"args[{idx}]"
+
+        lines.append(f"    if match_ok and {arg_var} is not None:")
+
+        if arg_val == "any1":
+            lines.append(f"        if any1_val is not None:")
+            lines.append("            try:")
+            lines.append(f"                any1_val = dtypes.coerce_to_common(any1_val, {arg_var})")
+            lines.append("            except TypeError:")
+            lines.append("                match_ok = False")
+            lines.append("        else:")
+            lines.append(f"            any1_val = {arg_var}")
+
+        elif arg_val.startswith("list<") and arg_val.endswith(">"):
+            inner_type = arg_val[5:-1]
+            lines.append(f"        if not dtypes.is_array_like({arg_var}):")
+            lines.append("            match_ok = False")
+            lines.append("        else:")
+            lines.append(f"            inner = dtypes.get_array_inner_type({arg_var})")
+
+            if inner_type == "any1":
+                lines.append("            if any1_val is not None:")
+                lines.append("                try:")
+                lines.append("                    any1_val = dtypes.coerce_to_common(any1_val, inner)")
+                lines.append("                except TypeError:")
+                lines.append("                    match_ok = False")
+                lines.append("            else:")
+                lines.append("                any1_val = inner")
+            else:
+                dtype_expr = DTYPE_MAP.get(inner_type)
+                if not dtype_expr:
+                     raise ValueError(f"Unsupported inner type: {inner_type}")
+                lines.append("            try:")
+                lines.append(f"                if dtypes.coerce_to_common(inner, {dtype_expr}) != {dtype_expr}:")
+                lines.append("                    match_ok = False")
+                lines.append("            except TypeError:")
+                lines.append("                match_ok = False")
+
+        elif arg_val == "struct":
+            lines.append(f"        if not dtypes.is_struct_like({arg_var}):")
+            lines.append("            match_ok = False")
+
+        else:
+            dtype_expr = DTYPE_MAP.get(arg_val)
+            if not dtype_expr:
+                raise ValueError(f"Unsupported type: {arg_val}")
+            lines.append("        try:")
+            lines.append(f"            if dtypes.coerce_to_common({arg_var}, {dtype_expr}) != {dtype_expr}:")
+            lines.append("                match_ok = False")
+            lines.append("        except TypeError:")
+            lines.append("            match_ok = False")
+
+    # If match_ok is still True, we resolved the inputs!
+    lines.append("    if match_ok:")
+
+    if return_type_yaml == "any1":
+        lines.append("        return any1_val")
+    elif return_type_yaml.startswith("list<") and return_type_yaml.endswith(">"):
+        inner_type = return_type_yaml[5:-1]
+        if inner_type == "any1":
+            lines.append("        if any1_val is not None:")
+            lines.append("            return dtypes.list_type(any1_val)")
+            lines.append("        else:")
+            lines.append("            return None")
+        else:
+            dtype_expr = DTYPE_MAP.get(inner_type)
+            if not dtype_expr:
+                raise ValueError(f"Unsupported inner type: {inner_type}")
+            lines.append(f"        return dtypes.list_type({dtype_expr})")
     else:
-        # Fallback to Any/None if ambiguous
-        return "lambda *args: None"
+        dtype_expr = DTYPE_MAP.get(return_type_yaml)
+        if not dtype_expr:
+            raise ValueError(f"Unsupported type: {return_type_yaml}")
+        lines.append(f"        return {dtype_expr}")
+
+    return "\n".join(lines)
+
+
+def _generate_signature_def(python_name, impls, sql_name):
+    return_types = {impl["return"] for impl in impls}
+
+    # Optimization: if all impls return the same concrete type,
+    # we can skip type checking and just return that type.
+    if len(return_types) == 1:
+        ret_type = next(iter(return_types))
+        if _is_concrete_type(ret_type):
+            sig_expr = f"lambda *args: {_get_concrete_type_expr(ret_type)}"
+            return sig_expr, None
+
+    func_name = f"_{python_name.upper()}_SIG"
+
+    lines = []
+    lines.append(f"def {func_name}(*args):")
+
+    max_args = max(len(impl["args"]) for impl in impls)
+
+    lines.append(f"    # Pad args with None to match max expected args")
+    lines.append(f"    args = args + (None,) * ({max_args} - len(args))")
+
+    for idx, impl in enumerate(impls):
+        block = _gen_impl_match_block(impl, idx, impl["return"])
+        lines.append(block)
+        lines.append("")
+
+    lines.append(f"    raise TypeError(f\"Could not find matching signature for {sql_name} with argument types: {{[str(t) for t in args]}}\")")
+
+    return func_name, "\n".join(lines)
 
 
 def _get_func_args(args_by_name, arg_order):
@@ -227,14 +364,15 @@ def parse_scalar_functions(data, module_name, is_global=False):
             arg_specs_str += ","
 
         # Determine return dtype
-        signature = _get_return_signature(func_data["impls"])
+        sig_name, sig_def = _generate_signature_def(python_name, func_data["impls"], sql_name)
 
         ops_list.append(
             {
                 "internal_name": internal_op_name,
                 "sql_name": sql_name.upper(),
                 "arg_specs": arg_specs_str,
-                "signature": signature,
+                "signature": sig_name,
+                "signature_definition": sig_def,
             }
         )
 

@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import datetime
+import decimal
 from typing import Any, Literal, Optional, TypeVar, Union
 
 import bigframes.core.col
@@ -30,75 +31,505 @@ import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql
 
+
+def _ARRAY_CONCAT_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (2 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok and args[1] is not None:
+        if not dtypes.is_array_like(args[1]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[1])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok:
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+
+    raise TypeError(
+        f"Could not find matching signature for array_concat with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_CONCAT_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_CONCAT",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=_ARRAY_CONCAT_SIG,
 )
+
+
+def _ARRAY_FIRST_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (1 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok:
+        return any1_val
+
+    raise TypeError(
+        f"Could not find matching signature for array_first with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_FIRST_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_FIRST",
     args=(googlesql.ArgSpec(),),
-    signature=lambda *args: None,
+    signature=_ARRAY_FIRST_SIG,
 )
+
+
+def _ARRAY_FIRST_N_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (2 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok and args[1] is not None:
+        try:
+            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+
+    raise TypeError(
+        f"Could not find matching signature for array_first_n with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_FIRST_N_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_FIRST_N",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=_ARRAY_FIRST_N_SIG,
 )
 _ARRAY_INCLUDES_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=lambda *args: dtypes.BOOL_DTYPE,
 )
 _ARRAY_INCLUDES_ALL_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES_ALL",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=lambda *args: dtypes.BOOL_DTYPE,
 )
 _ARRAY_INCLUDES_ANY_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_INCLUDES_ANY",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=lambda *args: dtypes.BOOL_DTYPE,
 )
 _ARRAY_IS_DISTINCT_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_IS_DISTINCT",
     args=(googlesql.ArgSpec(),),
-    signature=lambda *args: None,
+    signature=lambda *args: dtypes.BOOL_DTYPE,
 )
+
+
+def _ARRAY_LAST_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (1 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok:
+        return any1_val
+
+    raise TypeError(
+        f"Could not find matching signature for array_last with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_LAST_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_LAST",
     args=(googlesql.ArgSpec(),),
-    signature=lambda *args: None,
+    signature=_ARRAY_LAST_SIG,
 )
 _ARRAY_LENGTH_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_LENGTH",
     args=(googlesql.ArgSpec(),),
-    signature=lambda *args: None,
+    signature=lambda *args: dtypes.INT_DTYPE,
 )
+
+
+def _ARRAY_REVERSE_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (1 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok:
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+
+    raise TypeError(
+        f"Could not find matching signature for array_reverse with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_REVERSE_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_REVERSE",
     args=(googlesql.ArgSpec(),),
-    signature=lambda *args: None,
+    signature=_ARRAY_REVERSE_SIG,
 )
+
+
+def _ARRAY_SLICE_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (3 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok and args[1] is not None:
+        try:
+            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if dtypes.coerce_to_common(args[2], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+
+    raise TypeError(
+        f"Could not find matching signature for array_slice with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_SLICE_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_SLICE",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=lambda *args: None,
+    signature=_ARRAY_SLICE_SIG,
 )
+
+
+def _ARRAY_TO_STRING_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (3 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            try:
+                if (
+                    dtypes.coerce_to_common(inner, dtypes.STRING_DTYPE)
+                    != dtypes.STRING_DTYPE
+                ):
+                    match_ok = False
+            except TypeError:
+                match_ok = False
+    if match_ok and args[1] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[1], dtypes.STRING_DTYPE)
+                != dtypes.STRING_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[2], dtypes.STRING_DTYPE)
+                != dtypes.STRING_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        return dtypes.STRING_DTYPE
+
+    # Try matching impl 1
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            try:
+                if (
+                    dtypes.coerce_to_common(inner, dtypes.BYTES_DTYPE)
+                    != dtypes.BYTES_DTYPE
+                ):
+                    match_ok = False
+            except TypeError:
+                match_ok = False
+    if match_ok and args[1] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[1], dtypes.BYTES_DTYPE)
+                != dtypes.BYTES_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[2], dtypes.BYTES_DTYPE)
+                != dtypes.BYTES_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        return dtypes.BYTES_DTYPE
+
+    raise TypeError(
+        f"Could not find matching signature for array_to_string with argument types: {[str(t) for t in args]}"
+    )
+
+
 _ARRAY_TO_STRING_OP = googlesql.GoogleSqlScalarOp(
     "ARRAY_TO_STRING",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
-    signature=lambda *args: None,
+    signature=_ARRAY_TO_STRING_SIG,
 )
+
+
+def _FLATTEN_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (2 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        if not dtypes.is_array_like(args[0]):
+            match_ok = False
+        else:
+            inner = dtypes.get_array_inner_type(args[0])
+            if any1_val is not None:
+                try:
+                    any1_val = dtypes.coerce_to_common(any1_val, inner)
+                except TypeError:
+                    match_ok = False
+            else:
+                any1_val = inner
+    if match_ok and args[1] is not None:
+        try:
+            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        if any1_val is not None:
+            return dtypes.list_type(any1_val)
+        else:
+            return None
+
+    raise TypeError(
+        f"Could not find matching signature for flatten with argument types: {[str(t) for t in args]}"
+    )
+
+
 _FLATTEN_OP = googlesql.GoogleSqlScalarOp(
     "FLATTEN",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(arg_name="depth", optional=True)),
-    signature=lambda *args: None,
+    signature=_FLATTEN_SIG,
 )
+
+
+def _GENERATE_ARRAY_SIG(*args):
+    # Pad args with None to match max expected args
+    args = args + (None,) * (3 - len(args))
+    # Try matching impl 0
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        try:
+            if dtypes.coerce_to_common(args[0], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[1] is not None:
+        try:
+            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if dtypes.coerce_to_common(args[2], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        return dtypes.list_type(dtypes.INT_DTYPE)
+
+    # Try matching impl 1
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[0], dtypes.NUMERIC_DTYPE)
+                != dtypes.NUMERIC_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[1] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[1], dtypes.NUMERIC_DTYPE)
+                != dtypes.NUMERIC_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[2], dtypes.NUMERIC_DTYPE)
+                != dtypes.NUMERIC_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        return dtypes.list_type(dtypes.NUMERIC_DTYPE)
+
+    # Try matching impl 2
+    any1_val = None
+    match_ok = True
+    if match_ok and args[0] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[0], dtypes.FLOAT_DTYPE)
+                != dtypes.FLOAT_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[1] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[1], dtypes.FLOAT_DTYPE)
+                != dtypes.FLOAT_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok and args[2] is not None:
+        try:
+            if (
+                dtypes.coerce_to_common(args[2], dtypes.FLOAT_DTYPE)
+                != dtypes.FLOAT_DTYPE
+            ):
+                match_ok = False
+        except TypeError:
+            match_ok = False
+    if match_ok:
+        return dtypes.list_type(dtypes.FLOAT_DTYPE)
+
+    raise TypeError(
+        f"Could not find matching signature for generate_array with argument types: {[str(t) for t in args]}"
+    )
+
+
 _GENERATE_ARRAY_OP = googlesql.GoogleSqlScalarOp(
     "GENERATE_ARRAY",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
-    signature=lambda *args: None,
+    signature=_GENERATE_ARRAY_SIG,
 )
 
 
@@ -145,7 +576,7 @@ def array_first_n(
     n: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
     ],
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns a prefix of `input_array` consisting of the first `n` elements."""
@@ -309,12 +740,12 @@ def array_slice(
     start_offset: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
     ],
     end_offset: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
     ],
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns an array containing zero or more consecutive elements from the input array."""
@@ -384,7 +815,7 @@ def flatten(
     depth: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Takes an array of nested data and flattens a specific part of it into a single, flat array with the [array elements field access operator][array-el-field-operator]. Returns `NULL` if the input value is `NULL`."""
@@ -399,17 +830,23 @@ def generate_array(
     start_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[
+            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], decimal.Decimal, float, int
+        ],
     ],
     end_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[
+            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], decimal.Decimal, float, int
+        ],
     ],
     step_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        Union[
+            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], decimal.Decimal, float, int
+        ],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Returns an array of values. The `start_expression` and `end_expression` parameters determine the inclusive start and end of the array."""
