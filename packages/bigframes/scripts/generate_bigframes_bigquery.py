@@ -126,11 +126,12 @@ def load_templates():
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    return (
-        env.get_template("operation.py.j2"),
-        env.get_template("test_operation.py.j2"),
-        env.get_template("license.py.j2"),
-    )
+    return {
+        "operation": env.get_template("operation.py.j2"),
+        "test_operation": env.get_template("test_operation.py.j2"),
+        "license": env.get_template("license.py.j2"),
+        "signature_def": env.get_template("signature_def.py.j2"),
+    }
 
 
 def _collect_args(impls):
@@ -182,101 +183,35 @@ def _get_concrete_type_expr(yaml_type):
     raise ValueError(f"Not a concrete type: {yaml_type}")
 
 
-def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
-    lines = []
-    lines.append(f"    # Try matching impl {impl_idx}")
-    lines.append("    any1_val = None")
-    lines.append("    match_ok = True")
+def _validate_types(impls):
+    for impl in impls:
+        for arg in impl["args"]:
+            val = arg["value"]
+            if val == "any1":
+                continue
+            if val.startswith("list<") and val.endswith(">"):
+                inner = val[5:-1]
+                if inner != "any1" and inner not in DTYPE_MAP:
+                    raise ValueError(f"Unsupported inner type: {inner}")
+                continue
+            if val == "struct":
+                continue
+            if val not in DTYPE_MAP:
+                raise ValueError(f"Unsupported type: {val}")
 
-    for idx, arg in enumerate(impl["args"]):
-        arg_val = arg["value"]
-        arg_var = f"args[{idx}]"
-
-        lines.append(f"    if match_ok and {arg_var} is not None:")
-
-        if arg_val == "any1":
-            lines.append(f"        if any1_val is not None:")
-            lines.append("            try:")
-            lines.append(
-                f"                any1_val = dtypes.coerce_to_common(any1_val, {arg_var})"
-            )
-            lines.append("            except TypeError:")
-            lines.append("                match_ok = False")
-            lines.append("        else:")
-            lines.append(f"            any1_val = {arg_var}")
-
-        elif arg_val.startswith("list<") and arg_val.endswith(">"):
-            inner_type = arg_val[5:-1]
-            lines.append(f"        if not dtypes.is_array_like({arg_var}):")
-            lines.append("            match_ok = False")
-            lines.append("        else:")
-            lines.append(f"            inner = dtypes.get_array_inner_type({arg_var})")
-
-            if inner_type == "any1":
-                lines.append("            if any1_val is not None:")
-                lines.append("                try:")
-                lines.append(
-                    "                    any1_val = dtypes.coerce_to_common(any1_val, inner)"
-                )
-                lines.append("                except TypeError:")
-                lines.append("                    match_ok = False")
-                lines.append("            else:")
-                lines.append("                any1_val = inner")
-            else:
-                dtype_expr = DTYPE_MAP.get(inner_type)
-                if not dtype_expr:
-                    raise ValueError(f"Unsupported inner type: {inner_type}")
-                lines.append("            try:")
-                lines.append(
-                    f"                if dtypes.coerce_to_common(inner, {dtype_expr}) != {dtype_expr}:"
-                )
-                lines.append("                    match_ok = False")
-                lines.append("            except TypeError:")
-                lines.append("                match_ok = False")
-
-        elif arg_val == "struct":
-            lines.append(f"        if not dtypes.is_struct_like({arg_var}):")
-            lines.append("            match_ok = False")
-
-        else:
-            dtype_expr = DTYPE_MAP.get(arg_val)
-            if not dtype_expr:
-                raise ValueError(f"Unsupported type: {arg_val}")
-            lines.append("        try:")
-            lines.append(
-                f"            if dtypes.coerce_to_common({arg_var}, {dtype_expr}) != {dtype_expr}:"
-            )
-            lines.append("                match_ok = False")
-            lines.append("        except TypeError:")
-            lines.append("            match_ok = False")
-
-    # If match_ok is still True, we resolved the inputs!
-    lines.append("    if match_ok:")
-
-    if return_type_yaml == "any1":
-        lines.append("        return any1_val")
-    elif return_type_yaml.startswith("list<") and return_type_yaml.endswith(">"):
-        inner_type = return_type_yaml[5:-1]
-        if inner_type == "any1":
-            lines.append("        if any1_val is not None:")
-            lines.append("            return dtypes.list_type(any1_val)")
-            lines.append("        else:")
-            lines.append("            return None")
-        else:
-            dtype_expr = DTYPE_MAP.get(inner_type)
-            if not dtype_expr:
-                raise ValueError(f"Unsupported inner type: {inner_type}")
-            lines.append(f"        return dtypes.list_type({dtype_expr})")
-    else:
-        dtype_expr = DTYPE_MAP.get(return_type_yaml)
-        if not dtype_expr:
-            raise ValueError(f"Unsupported type: {return_type_yaml}")
-        lines.append(f"        return {dtype_expr}")
-
-    return "\n".join(lines)
+        ret = impl["return"]
+        if ret == "any1":
+            continue
+        if ret.startswith("list<") and ret.endswith(">"):
+            inner = ret[5:-1]
+            if inner != "any1" and inner not in DTYPE_MAP:
+                raise ValueError(f"Unsupported inner type: {inner}")
+            continue
+        if ret not in DTYPE_MAP:
+            raise ValueError(f"Unsupported type: {ret}")
 
 
-def _generate_signature_def(python_name, impls, sql_name):
+def _generate_signature_def(python_name, impls, sql_name, template):
     return_types = {impl["return"] for impl in impls}
 
     # Optimization: if all impls return the same concrete type,
@@ -287,26 +222,20 @@ def _generate_signature_def(python_name, impls, sql_name):
             sig_expr = f"lambda *args: {_get_concrete_type_expr(ret_type)}"
             return sig_expr, None
 
+    _validate_types(impls)
+
     func_name = f"_{python_name.upper()}_SIG"
-
-    lines = []
-    lines.append(f"def {func_name}(*args):")
-
     max_args = max(len(impl["args"]) for impl in impls)
 
-    lines.append(f"    # Pad args with None to match max expected args")
-    lines.append(f"    args = args + (None,) * ({max_args} - len(args))")
-
-    for idx, impl in enumerate(impls):
-        block = _gen_impl_match_block(impl, idx, impl["return"])
-        lines.append(block)
-        lines.append("")
-
-    lines.append(
-        f'    raise TypeError(f"Could not find matching signature for {sql_name} with argument types: {{[str(t) for t in args]}}")'
+    rendered = template.render(
+        func_name=func_name,
+        max_args=max_args,
+        impls=impls,
+        sql_name=sql_name,
+        dtype_map=DTYPE_MAP,
     )
 
-    return func_name, "\n".join(lines)
+    return func_name, rendered
 
 
 def _get_func_args(args_by_name, arg_order):
@@ -349,7 +278,9 @@ def _get_test_args(args_by_name, arg_order):
     return test_args
 
 
-def parse_scalar_functions(data, module_name, is_global=False):
+def parse_scalar_functions(
+    data, module_name, signature_def_template, is_global=False
+):
     ops_list = []
     functions_list = []
 
@@ -375,7 +306,10 @@ def parse_scalar_functions(data, module_name, is_global=False):
 
         # Determine return dtype
         sig_name, sig_def = _generate_signature_def(
-            python_name, func_data["impls"], sql_name
+            python_name,
+            func_data["impls"],
+            sql_name,
+            signature_def_template,
         )
 
         ops_list.append(
@@ -443,7 +377,7 @@ def ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path, license_tem
         curr = curr.parent
 
 
-def process_yaml_file(yaml_file, template, test_template, license_template):
+def process_yaml_file(yaml_file, templates):
     print(f"Processing {yaml_file}...")
     with open(yaml_file, "r") as f:
         data = yaml.safe_load(f)
@@ -455,13 +389,16 @@ def process_yaml_file(yaml_file, template, test_template, license_template):
 
     is_global = "global_namespace" in module_path.parts
     ops_list, functions_list = parse_scalar_functions(
-        data, module_name, is_global=is_global
+        data,
+        module_name,
+        templates["signature_def"],
+        is_global=is_global,
     )
 
     # Render and write
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    ensure_init_py(output_file.parent, OUTPUT_DIR.parent, license_template)
-    content = template.render(
+    ensure_init_py(output_file.parent, OUTPUT_DIR.parent, templates["license"])
+    content = templates["operation"].render(
         yaml_path=str(yaml_file),
         script_path="scripts/generate_bigframes_bigquery.py",
         ops=ops_list,
@@ -480,8 +417,10 @@ def process_yaml_file(yaml_file, template, test_template, license_template):
     ).with_suffix(".py")
 
     test_output_file.parent.mkdir(parents=True, exist_ok=True)
-    ensure_init_py(test_output_file.parent, TEST_OUTPUT_DIR.parent, license_template)
-    test_content = test_template.render(
+    ensure_init_py(
+        test_output_file.parent, TEST_OUTPUT_DIR.parent, templates["license"]
+    )
+    test_content = templates["test_operation"].render(
         yaml_path=str(yaml_file),
         script_path="scripts/generate_bigframes_bigquery.py",
         import_path=import_path,
@@ -497,10 +436,10 @@ def process_yaml_file(yaml_file, template, test_template, license_template):
 
 
 def main():
-    template, test_template, license_template = load_templates()
+    templates = load_templates()
 
     for yaml_file in sorted(DATA_DIR.glob("**/*.yaml")):
-        process_yaml_file(yaml_file, template, test_template, license_template)
+        process_yaml_file(yaml_file, templates)
 
 
 if __name__ == "__main__":
