@@ -1659,7 +1659,7 @@ libraries:
     version: 2.38.0
     apis:
       - path: google/pubsub/v1
-    skip_generate: true
+
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:

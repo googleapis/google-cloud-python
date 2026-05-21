@@ -528,10 +528,32 @@ replacements:
     after: 'grpcio==1.51.3'
     count: 1
 
+
   - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '"grpcio-status >= 1\.44\.0",'
-    after: '"grpcio-status >= 1.51.3",'
+      - "packages/google-cloud-pubsub/google/cloud/pubsub_v1/subscriber/_protocol/leaser.py"
+    before: "try:\\s*\\n\\s*from collections\\.abc import KeysView[\\s\\S]*?from typing import KeysView"
+    after: "from collections.abc import KeysView"
     count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/CONTRIBUTING.rst"
+    before: "- The feature must work fully on the following CPython versions:\n  3.9, 3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows."
+    after: "- The feature must work fully on the following CPython versions:\n  3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows."
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/CONTRIBUTING.rst"
+    before: "We support:\n\n-  `Python 3.9`_\n-  `Python 3.10`_\n-  `Python 3.11`_\n-  `Python 3.12`_\n-  `Python 3.13`_\n-  `Python 3.14`_\n\n.. _Python 3.9: https://docs.python.org/3.9/\n.. _Python 3.10: https://docs.python.org/3.10/"
+    after: "We support:\n\n-  `Python 3.10`_\n-  `Python 3.11`_\n-  `Python 3.12`_\n-  `Python 3.13`_\n-  `Python 3.14`_\n\n.. _Python 3.10: https://docs.python.org/3.10/"
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/CONTRIBUTING.rst"
+    before: "We also explicitly decided to support Python 3 beginning with version 3.7."
+    after: "We also explicitly decided to support Python 3 beginning with version 3.10."
+    count: 1
+
+
+
 
 
