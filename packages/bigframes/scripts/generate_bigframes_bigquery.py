@@ -278,9 +278,7 @@ def _get_test_args(args_by_name, arg_order):
     return test_args
 
 
-def parse_scalar_functions(
-    data, module_name, signature_def_template, is_global=False
-):
+def parse_scalar_functions(data, module_name, signature_def_template, is_global=False):
     ops_list = []
     functions_list = []
 
