@@ -41,6 +41,20 @@ jobs:
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
 
+      - name: Debug Git State
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Git status:"
+          git status
+          echo "Git branch output:"
+          git branch
+          echo "HEAD reference:"
+          git rev-parse HEAD
+          echo "Current branch:"
+          git branch --show-current
+          echo "Is this a shallow clone?"
+          [ -f .git/shallow ] && echo "Yes, it is shallow" || echo "No, it is not shallow"
+
       - name: Regenerate
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
