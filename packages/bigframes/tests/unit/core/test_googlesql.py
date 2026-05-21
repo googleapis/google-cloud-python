@@ -169,3 +169,100 @@ def test_apply_googlesql_scalar_op_mixed_args(monkeypatch):
     assert processed_args[2] == 42
 
     assert isinstance(result, series.Series)
+
+
+def test_apply_googlesql_scalar_op_pandas_series_with_bf_dataframe(monkeypatch):
+    # Setup mock session 2 (associated with bf_dataframe)
+    bf_session = mocks.create_bigquery_session(session_id="bf_session")
+
+    # Create a bf_dataframe associated with bf_session
+    bf_dataframe = mocks.create_dataframe(
+        monkeypatch, session=bf_session, data={"col": [1, 2, 3]}
+    )
+    bf_series = bf_dataframe["col"]
+
+    # Setup mock session 1 (global) AFTER creating the dataframe
+    global_session = mocks.create_bigquery_session(session_id="global")
+    monkeypatch.setattr(
+        bigframes.core.global_session, "_global_session", global_session
+    )
+    bigframes.options.bigquery._session_started = True
+
+    assert bf_dataframe._session == bf_session
+
+    # Mock read_pandas on both sessions
+    mock_global_read_pandas = mock.MagicMock()
+    global_session.read_pandas = mock_global_read_pandas
+
+    mock_bf_read_pandas = mock.MagicMock(return_value=bf_series)
+    bf_session.read_pandas = mock_bf_read_pandas
+
+    # Mock _apply_nary_op
+    mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
+    monkeypatch.setattr(series.Series, "_apply_nary_op", mock_apply_nary_op)
+
+    pd_series = pd.Series([1, 2, 3])
+
+    # Call with pandas Series and BigFrames DataFrame
+    result = core_googlesql.apply_googlesql_scalar_op(_TEST_OP, pd_series, bf_dataframe)
+
+    # Verify read_pandas was called on bf_session, NOT global_session
+    mock_bf_read_pandas.assert_called_once_with(pd_series)
+    mock_global_read_pandas.assert_not_called()
+
+    # Verify _apply_nary_op was called
+    mock_apply_nary_op.assert_called_once()
+    processed_args = mock_apply_nary_op.call_args[0][1]
+    assert processed_args[0] is bf_series
+    assert processed_args[1] is bf_dataframe
+
+    assert isinstance(result, series.Series)
+
+
+def test_apply_googlesql_scalar_op_pandas_series_with_bf_index(monkeypatch):
+    # Setup mock session 2 (associated with bf_index)
+    bf_session = mocks.create_bigquery_session(session_id="bf_session")
+
+    # Create a bf_dataframe associated with bf_session to get an index
+    bf_dataframe = mocks.create_dataframe(
+        monkeypatch, session=bf_session, data={"col": [1, 2, 3]}
+    )
+    bf_index = bf_dataframe.index
+    bf_series = bf_dataframe["col"]
+
+    # Setup mock session 1 (global) AFTER creating the dataframe
+    global_session = mocks.create_bigquery_session(session_id="global")
+    monkeypatch.setattr(
+        bigframes.core.global_session, "_global_session", global_session
+    )
+    bigframes.options.bigquery._session_started = True
+
+    assert bf_index._session == bf_session
+
+    # Mock read_pandas on both sessions
+    mock_global_read_pandas = mock.MagicMock()
+    global_session.read_pandas = mock_global_read_pandas
+
+    mock_bf_read_pandas = mock.MagicMock(return_value=bf_series)
+    bf_session.read_pandas = mock_bf_read_pandas
+
+    # Mock _apply_nary_op
+    mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
+    monkeypatch.setattr(series.Series, "_apply_nary_op", mock_apply_nary_op)
+
+    pd_series = pd.Series([1, 2, 3])
+
+    # Call with pandas Series and BigFrames Index
+    result = core_googlesql.apply_googlesql_scalar_op(_TEST_OP, pd_series, bf_index)
+
+    # Verify read_pandas was called on bf_session, NOT global_session
+    mock_bf_read_pandas.assert_called_once_with(pd_series)
+    mock_global_read_pandas.assert_not_called()
+
+    # Verify _apply_nary_op was called
+    mock_apply_nary_op.assert_called_once()
+    processed_args = mock_apply_nary_op.call_args[0][1]
+    assert processed_args[0] is bf_series
+    assert processed_args[1] is bf_index
+
+    assert isinstance(result, series.Series)

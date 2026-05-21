@@ -36,8 +36,11 @@ def _is_pandas_series(arg: Any) -> bool:
 
 
 def _find_session(*args: Any) -> Optional[bigframes.session.Session]:
+    import bigframes.core.indexes as indexes
+    import bigframes.dataframe as dataframe
+
     for arg in args:
-        if isinstance(arg, series.Series):
+        if isinstance(arg, (series.Series, dataframe.DataFrame, indexes.Index)):
             return arg._session
     return None
 
