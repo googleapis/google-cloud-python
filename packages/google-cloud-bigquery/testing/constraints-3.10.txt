@@ -4,7 +4,7 @@ google-cloud-core==2.4.1
 google-resumable-media==2.0.0
 packaging==24.2.0
 python-dateutil==2.8.2
-requests==2.21.0
+requests==2.33.0
 google-cloud-bigquery-storage==2.18.0
 grpcio==1.47.0
 grpcio-status==1.47.0
