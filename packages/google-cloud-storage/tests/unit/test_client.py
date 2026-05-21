@@ -1102,6 +1102,29 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(target, Bucket)
         self.assertEqual(target.name, bucket_name)
 
+    def test_get_bucket_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock()
+        client._get_resource.side_effect = Forbidden("forbidden")
+        bucket_name = "forbidden-bucket"
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            client.get_bucket(bucket_name)
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(bucket_name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(loc, "global")
+
     def test_get_bucket_hit_w_string_w_timeout(self):
         from google.cloud.storage.bucket import Bucket
 
@@ -1316,6 +1339,28 @@ class TestClient(unittest.TestCase):
         target = client._get_resource.call_args[1]["_target_object"]
         self.assertIsInstance(target, Bucket)
         self.assertEqual(target.name, bucket_name)
+
+    def test_lookup_bucket_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(side_effect=Forbidden("forbidden"))
+        bucket_name = "forbidden-bucket"
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            client.lookup_bucket(bucket_name)
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(bucket_name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(loc, "global")
 
     def test_lookup_bucket_hit_w_timeout(self):
         from google.cloud.storage.bucket import Bucket

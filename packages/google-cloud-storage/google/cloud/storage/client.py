@@ -24,7 +24,7 @@ import os
 import warnings
 
 import google.api_core.client_options
-from google.api_core import page_iterator
+from google.api_core import exceptions as api_exceptions, page_iterator
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
@@ -43,7 +43,9 @@ from google.cloud.storage._helpers import (
     _get_environ_project,
     _get_storage_emulator_override,
     _virtual_hosted_style_base_url,
+    create_trace_span_helper,
 )
+from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._http import Connection
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import (
@@ -289,6 +291,20 @@ class Client(ClientWithProject):
         connection.extra_headers = extra_headers
         self._connection = connection
         self._batch_stack = _LocalStack()
+        self._bucket_metadata_cache = BucketMetadataCache(self)
+
+    def close(self):
+        """Close the client and clear any cached metadata or active connections."""
+        if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+            self._bucket_metadata_cache.clear()
+        if hasattr(self._http, "close"):
+            self._http.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     @classmethod
     def create_anonymous_client(cls):
@@ -950,16 +966,40 @@ class Client(ClientWithProject):
             google.cloud.exceptions.NotFound
                 If the bucket is not found.
         """
-        with create_trace_span(name="Storage.Client.getBucket"):
+        bucket_name = (
+            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+        )
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.getBucket"
+        ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name, generation=generation)
-            bucket.reload(
-                client=self,
-                timeout=timeout,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                retry=retry,
-                soft_deleted=soft_deleted,
-            )
+            try:
+                bucket.reload(
+                    client=self,
+                    timeout=timeout,
+                    if_metageneration_match=if_metageneration_match,
+                    if_metageneration_not_match=if_metageneration_not_match,
+                    retry=retry,
+                    soft_deleted=soft_deleted,
+                )
+            except api_exceptions.Forbidden:
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_cache(
+                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
+
+            if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+                try:
+                    self._bucket_metadata_cache.update_from_bucket(bucket)
+                except Exception:
+                    pass
             return bucket
 
     def lookup_bucket(
@@ -998,15 +1038,38 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.storage.bucket.Bucket` or ``NoneType``
         :returns: The bucket matching the name provided or None if not found.
         """
-        with create_trace_span(name="Storage.Client.lookupBucket"):
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.lookupBucket"
+        ):
             try:
-                return self.get_bucket(
+                bucket = self.get_bucket(
                     bucket_name,
                     timeout=timeout,
                     if_metageneration_match=if_metageneration_match,
                     if_metageneration_not_match=if_metageneration_not_match,
                     retry=retry,
                 )
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_from_bucket(bucket)
+                    except Exception:
+                        pass
+                return bucket
+            except api_exceptions.Forbidden:
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_cache(
+                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
             except NotFound:
                 return None
 
@@ -1154,6 +1217,11 @@ class Client(ClientWithProject):
             )
 
             bucket._set_properties(api_response)
+            if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+                try:
+                    self._bucket_metadata_cache.update_from_bucket(bucket)
+                except Exception:
+                    pass
             return bucket
 
     def download_blob_to_file(
@@ -1250,7 +1318,21 @@ class Client(ClientWithProject):
             single_shot_download (bool):
                 (Optional) If true, download the object in a single request.
         """
-        with create_trace_span(name="Storage.Client.downloadBlobToFile"):
+        bucket_name = None
+        if isinstance(blob_or_uri, Blob):
+            bucket_name = blob_or_uri.bucket.name if blob_or_uri.bucket else None
+        elif isinstance(blob_or_uri, str) and blob_or_uri.startswith("gs://"):
+            try:
+                temp_blob = Blob.from_uri(blob_or_uri)
+                bucket_name = temp_blob.bucket.name
+            except Exception:
+                pass
+
+        with create_trace_span_helper(
+            self,
+            bucket_name,
+            name="Storage.Client.downloadBlobToFile",
+        ):
             if not isinstance(blob_or_uri, Blob):
                 blob_or_uri = Blob.from_uri(blob_or_uri)
 
@@ -1408,7 +1490,12 @@ class Client(ClientWithProject):
             As part of the response, you'll also get back an iterator.prefixes entity that lists object names
             up to and including the requested delimiter. Duplicate entries are omitted from this list.
         """
-        with create_trace_span(name="Storage.Client.listBlobs"):
+        bucket_name = (
+            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+        )
+        with create_trace_span_helper(
+            self, bucket_name, name="Storage.Client.listBlobs"
+        ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
             extra_params = {"projection": projection}
