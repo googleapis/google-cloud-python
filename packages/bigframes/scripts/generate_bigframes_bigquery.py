@@ -197,7 +197,9 @@ def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
         if arg_val == "any1":
             lines.append(f"        if any1_val is not None:")
             lines.append("            try:")
-            lines.append(f"                any1_val = dtypes.coerce_to_common(any1_val, {arg_var})")
+            lines.append(
+                f"                any1_val = dtypes.coerce_to_common(any1_val, {arg_var})"
+            )
             lines.append("            except TypeError:")
             lines.append("                match_ok = False")
             lines.append("        else:")
@@ -213,7 +215,9 @@ def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
             if inner_type == "any1":
                 lines.append("            if any1_val is not None:")
                 lines.append("                try:")
-                lines.append("                    any1_val = dtypes.coerce_to_common(any1_val, inner)")
+                lines.append(
+                    "                    any1_val = dtypes.coerce_to_common(any1_val, inner)"
+                )
                 lines.append("                except TypeError:")
                 lines.append("                    match_ok = False")
                 lines.append("            else:")
@@ -221,9 +225,11 @@ def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
             else:
                 dtype_expr = DTYPE_MAP.get(inner_type)
                 if not dtype_expr:
-                     raise ValueError(f"Unsupported inner type: {inner_type}")
+                    raise ValueError(f"Unsupported inner type: {inner_type}")
                 lines.append("            try:")
-                lines.append(f"                if dtypes.coerce_to_common(inner, {dtype_expr}) != {dtype_expr}:")
+                lines.append(
+                    f"                if dtypes.coerce_to_common(inner, {dtype_expr}) != {dtype_expr}:"
+                )
                 lines.append("                    match_ok = False")
                 lines.append("            except TypeError:")
                 lines.append("                match_ok = False")
@@ -237,7 +243,9 @@ def _gen_impl_match_block(impl, impl_idx, return_type_yaml):
             if not dtype_expr:
                 raise ValueError(f"Unsupported type: {arg_val}")
             lines.append("        try:")
-            lines.append(f"            if dtypes.coerce_to_common({arg_var}, {dtype_expr}) != {dtype_expr}:")
+            lines.append(
+                f"            if dtypes.coerce_to_common({arg_var}, {dtype_expr}) != {dtype_expr}:"
+            )
             lines.append("                match_ok = False")
             lines.append("        except TypeError:")
             lines.append("            match_ok = False")
@@ -294,7 +302,9 @@ def _generate_signature_def(python_name, impls, sql_name):
         lines.append(block)
         lines.append("")
 
-    lines.append(f"    raise TypeError(f\"Could not find matching signature for {sql_name} with argument types: {{[str(t) for t in args]}}\")")
+    lines.append(
+        f'    raise TypeError(f"Could not find matching signature for {sql_name} with argument types: {{[str(t) for t in args]}}")'
+    )
 
     return func_name, "\n".join(lines)
 
@@ -364,7 +374,9 @@ def parse_scalar_functions(data, module_name, is_global=False):
             arg_specs_str += ","
 
         # Determine return dtype
-        sig_name, sig_def = _generate_signature_def(python_name, func_data["impls"], sql_name)
+        sig_name, sig_def = _generate_signature_def(
+            python_name, func_data["impls"], sql_name
+        )
 
         ops_list.append(
             {
