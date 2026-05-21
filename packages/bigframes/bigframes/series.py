@@ -2711,7 +2711,7 @@ class Series:
         assert isinstance(right, ex.DerefOp)
         return block.get_binary_stat(left.id.name, right.id.name, stat)
 
-    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp]
+    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
 
     @typing.overload
     def _align(
@@ -2776,7 +2776,9 @@ class Series:
         blocks.Block,
     ]:
         if ignore_self:
-            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]] = []
+            value_ids: List[
+                Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
+            ] = []
         else:
             value_ids = [ex.deref(self._value_column)]
 
