@@ -15,31 +15,35 @@
 import contextlib
 import os
 
+# MUST set env var before any google-cloud-storage imports occur
 os.environ["ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"] = "true"
 
-# Initialize global OpenTelemetry TracerProvider at the very start
+# Import OpenTelemetry modules safely at top
 try:
     from opentelemetry import trace as trace_api
     from opentelemetry.sdk.trace import TracerProvider, export
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
+except ImportError:
+    trace_api = None
 
+import pytest  # noqa: E402
+from google.api_core import exceptions  # noqa: E402
+
+from google.cloud import kms  # noqa: E402
+from google.cloud.storage._helpers import _base64_md5hash  # noqa: E402
+from google.cloud.storage.retry import DEFAULT_RETRY  # noqa: E402
+
+from . import _helpers  # noqa: E402
+
+if trace_api is not None:
     _global_exporter = InMemorySpanExporter()
     _provider = TracerProvider()
     _provider.add_span_processor(export.SimpleSpanProcessor(_global_exporter))
     trace_api.set_tracer_provider(_provider)
-except ImportError:
+else:
     _global_exporter = None
-
-import pytest
-from google.api_core import exceptions
-
-from google.cloud import kms
-from google.cloud.storage._helpers import _base64_md5hash
-from google.cloud.storage.retry import DEFAULT_RETRY
-
-from . import _helpers
 
 dirname = os.path.realpath(os.path.dirname(__file__))
 data_dirname = os.path.abspath(os.path.join(dirname, "..", "data"))
