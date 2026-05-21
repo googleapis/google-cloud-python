@@ -43,6 +43,7 @@ if trace_api is not None:
     _provider.add_span_processor(export.SimpleSpanProcessor(_global_exporter))
 
     # Option to also export telemetry to Google Cloud Trace Console
+    # (for testing in GCE VM)
     if os.environ.get("ENABLE_GCP_TRACE_EXPORTER", "").lower() in (
         "1",
         "true",
@@ -50,7 +51,7 @@ if trace_api is not None:
         "on",
     ):
         try:
-            from opentelemetry.exporter.gcp_trace import CloudTraceSpanExporter
+            from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 
             _provider.add_span_processor(
                 export.BatchSpanProcessor(CloudTraceSpanExporter())
@@ -60,7 +61,7 @@ if trace_api is not None:
 
             warnings.warn(
                 "ENABLE_GCP_TRACE_EXPORTER is enabled, but "
-                "opentelemetry-exporter-gcp-trace is not installed.",
+                "opentelemetry-exporter-cloud-trace is not installed.",
                 UserWarning,
             )
 
