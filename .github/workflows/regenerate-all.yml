@@ -56,6 +56,18 @@ jobs:
           echo "Is this a shallow clone?"
           [ -f .git/shallow ] && echo "Yes, it is shallow" || echo "No, it is not shallow"
 
+      - name: Force Git Environment
+        run: |
+          # The runner image likely updated and is now stricter about git state.
+          # We force a valid git state so that synthtool doesn't panic.
+          git config --global user.email "ci@example.com"
+          git config --global user.name "CI Bot"
+          git config --global init.defaultBranch main
+          # Ensure current directory is a safe directory for git
+          git config --global --add safe.directory /home/runner/work/google-cloud-python/google-cloud-python
+          # Ensure a local branch exists
+          git checkout -B main
+
       - name: Regenerate
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
