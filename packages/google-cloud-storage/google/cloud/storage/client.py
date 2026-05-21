@@ -981,6 +981,11 @@ class Client(ClientWithProject):
                 retry=retry,
                 soft_deleted=soft_deleted,
             )
+            if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+                try:
+                    self._bucket_metadata_cache.update_from_bucket(bucket)
+                except Exception:
+                    pass
             return bucket
 
     def lookup_bucket(
@@ -1023,13 +1028,22 @@ class Client(ClientWithProject):
             self, bucket_name, name="Storage.Client.lookupBucket"
         ):
             try:
-                return self.get_bucket(
+                bucket = self.get_bucket(
                     bucket_name,
                     timeout=timeout,
                     if_metageneration_match=if_metageneration_match,
                     if_metageneration_not_match=if_metageneration_not_match,
                     retry=retry,
                 )
+                if (
+                    hasattr(self, "_bucket_metadata_cache")
+                    and self._bucket_metadata_cache
+                ):
+                    try:
+                        self._bucket_metadata_cache.update_from_bucket(bucket)
+                    except Exception:
+                        pass
+                return bucket
             except NotFound:
                 return None
 
@@ -1177,6 +1191,11 @@ class Client(ClientWithProject):
             )
 
             bucket._set_properties(api_response)
+            if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
+                try:
+                    self._bucket_metadata_cache.update_from_bucket(bucket)
+                except Exception:
+                    pass
             return bucket
 
     def download_blob_to_file(
