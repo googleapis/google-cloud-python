@@ -302,6 +302,46 @@ class ErrorReason(proto.Enum):
             The customer contains non-exempt campaigns
             without the EU political advertising
             declaration.
+        ACCOUNT_INELIGIBLE_FOR_STORE_SALES (102):
+            Account is not eligible for Store Sales.
+        INVALID_MERCHANT_FEED_LANGUAGE_CODE (103):
+            The merchant feed language code is not valid.
+        INVALID_REGION_CODE (104):
+            The region code is not valid.
+        INVALID_SUBDIVISION_CODE (107):
+            The subdivision code is not valid.
+        INVALID_SUBCONTINENT_CODE (108):
+            The subcontinent code is not valid.
+        INVALID_CONTINENT_CODE (109):
+            The continent code is not valid.
+        INVALID_DEVICE_CATEGORY (110):
+            The device category is not valid.
+        BOTH_CLIENT_ID_AND_APP_INSTANCE_ID_NOT_ALLOWED (111):
+            Both app_instance_id and client_id are set.
+        GOOGLE_ANALYTICS_SUBPROPERTY_OR_ROLLUP_PROPERTY_NOT_ALLOWED (112):
+            The Google Analytics property is a
+            subproperty or rollup property.
+        THIRD_PARTY_USER_DATA_NOT_ALLOWED (113):
+            Third party user data can only be set by data
+            partners.
+        INVALID_COUPON_CODE (114):
+            The coupon code is not valid.
+        EVENT_SOURCE_AND_DESTINATION_MISMATCH (115):
+            The event source type does not match the
+            destination type.
+        DESTINATION_ACCOUNT_TYPE_MISMATCH (116):
+            The destination account type does not match
+            the specified account id.
+        CUSTOM_VARIABLE_VALUE_CONTAINS_PII (117):
+            The custom variable value contains personally
+            identifiable information (PII).
+        CUSTOM_VARIABLE_NOT_ENABLED (118):
+            The custom variable is not enabled.
+        INVALID_CUSTOM_VARIABLE_VALUE (119):
+            The custom variable's value is invalid.
+        CUSTOM_VARIABLE_NOT_FOUND (120):
+            The destination does not have a custom variable with a name
+            that matches the specified ``variable``.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -406,6 +446,23 @@ class ErrorReason(proto.Enum):
     MEMBERSHIP_DURATION_TOO_LONG = 99
     INVALID_MERCHANT_ID = 100
     EU_POLITICAL_ADVERTISING_DECLARATION_REQUIRED = 101
+    ACCOUNT_INELIGIBLE_FOR_STORE_SALES = 102
+    INVALID_MERCHANT_FEED_LANGUAGE_CODE = 103
+    INVALID_REGION_CODE = 104
+    INVALID_SUBDIVISION_CODE = 107
+    INVALID_SUBCONTINENT_CODE = 108
+    INVALID_CONTINENT_CODE = 109
+    INVALID_DEVICE_CATEGORY = 110
+    BOTH_CLIENT_ID_AND_APP_INSTANCE_ID_NOT_ALLOWED = 111
+    GOOGLE_ANALYTICS_SUBPROPERTY_OR_ROLLUP_PROPERTY_NOT_ALLOWED = 112
+    THIRD_PARTY_USER_DATA_NOT_ALLOWED = 113
+    INVALID_COUPON_CODE = 114
+    EVENT_SOURCE_AND_DESTINATION_MISMATCH = 115
+    DESTINATION_ACCOUNT_TYPE_MISMATCH = 116
+    CUSTOM_VARIABLE_VALUE_CONTAINS_PII = 117
+    CUSTOM_VARIABLE_NOT_ENABLED = 118
+    INVALID_CUSTOM_VARIABLE_VALUE = 119
+    CUSTOM_VARIABLE_NOT_FOUND = 120
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

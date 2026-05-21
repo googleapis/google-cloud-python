@@ -572,6 +572,9 @@ class Series:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
 
+    def _get_display_df(self) -> bigframes.dataframe.DataFrame:
+        return self.to_frame()._get_display_df()
+
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
         Custom display method for IPython/Jupyter environments.
