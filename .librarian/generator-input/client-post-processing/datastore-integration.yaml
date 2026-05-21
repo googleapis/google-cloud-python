@@ -240,3 +240,39 @@ replacements:
                   *session.posargs,
               )
     count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "- The feature must work fully on the following CPython versions:\n  3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows."
+    after: "- The feature must work fully on the following CPython versions:\n  3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows."
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "We support:\n\n-  `Python 3.7`_\n-  `Python 3.8`_\n-  `Python 3.9`_\n-  `Python 3.10`_\n-  `Python 3.11`_\n-  `Python 3.12`_\n-  `Python 3.13`_\n-  `Python 3.14`_\n\n.. _Python 3.7: https://docs.python.org/3.7/\n.. _Python 3.8: https://docs.python.org/3.8/\n.. _Python 3.9: https://docs.python.org/3.9/\n.. _Python 3.10: https://docs.python.org/3.10/"
+    after: "We support:\n\n-  `Python 3.10`_\n-  `Python 3.11`_\n-  `Python 3.12`_\n-  `Python 3.13`_\n-  `Python 3.14`_\n\n.. _Python 3.10: https://docs.python.org/3.10/"
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "We also explicitly decided to support Python 3 beginning with version 3.7."
+    after: "We also explicitly decided to support Python 3 beginning with version 3.10."
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "system-3.8"
+    after: "system-3.10"
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "System tests are only configured to run under Python 3.8."
+    after: "System tests are only configured to run under Python 3.10."
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/CONTRIBUTING.rst"
+    ]
+    before: "py-3.8"
+    after: "py-3.10"
+    count: 2
