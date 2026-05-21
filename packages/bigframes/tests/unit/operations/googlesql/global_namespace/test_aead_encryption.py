@@ -20,37 +20,37 @@ from typing import cast
 
 import pytest
 
-import bigframes.bigquery._operations.global_namespace.aead_encryption as aead_encryption
+import bigframes.operations.googlesql.global_namespace.aead_encryption as aead_encryption
 import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 
 
 def test_deterministic_decrypt_bytes(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead_encryption.deterministic_decrypt_bytes(
+    result = cast(bpd.Series, aead_encryption.deterministic_decrypt_bytes(
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
-    ).to_frame()
+    )).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
 def test_deterministic_decrypt_string(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead_encryption.deterministic_decrypt_string(
+    result = cast(bpd.Series, aead_encryption.deterministic_decrypt_string(
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["string_col"]),
-    ).to_frame()
+    )).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
 
 
 def test_deterministic_encrypt(scalar_types_df: bpd.DataFrame, snapshot):
-    result = aead_encryption.deterministic_encrypt(
+    result = cast(bpd.Series, aead_encryption.deterministic_encrypt(
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
         cast(bpd.Series, scalar_types_df["bytes_col"]),
-    ).to_frame()
+    )).to_frame()
 
     snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")

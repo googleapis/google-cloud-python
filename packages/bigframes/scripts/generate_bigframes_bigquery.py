@@ -32,9 +32,9 @@ import yaml
 # Directory containing the YAML files
 DATA_DIR = pathlib.Path("scripts/data/sql-functions")
 # Directory where the generated Python files will be placed
-OUTPUT_DIR = pathlib.Path("bigframes/bigquery/_operations")
+OUTPUT_DIR = pathlib.Path("bigframes/operations/googlesql")
 # Directory where the generated test files will be placed
-TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/_operations")
+TEST_OUTPUT_DIR = pathlib.Path("tests/unit/operations/googlesql")
 # Directory containing the Jinja2 templates
 TEMPLATE_DIR = pathlib.Path("scripts/templates")
 
@@ -289,7 +289,7 @@ def process_yaml_file(yaml_file, template, test_template):
     print(f"  Generated {output_file}")
 
     # Render and write test
-    import_path = "bigframes.bigquery._operations." + ".".join(module_path.parts)
+    import_path = "bigframes.operations.googlesql." + ".".join(module_path.parts)
     test_output_file = TEST_OUTPUT_DIR.joinpath(
         module_path.with_name(f"test_{module_path.name}")
     ).with_suffix(".py")

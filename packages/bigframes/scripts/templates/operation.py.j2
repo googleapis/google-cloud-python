@@ -11,9 +11,9 @@ import datetime
 from typing import Any, Literal, Optional, TypeVar, Union
 
 from bigframes import dtypes
-import bigframes.bigquery._googlesql
 import bigframes.core.col
 import bigframes.core.expression as ex
+import bigframes.core.googlesql
 import bigframes.core.sentinels as sentinels
 from bigframes.operations import googlesql
 import bigframes.operations as ops
@@ -35,7 +35,7 @@ def {{ func.name }}(
 {% endfor %}
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """{{ func.description | indent(4) }}"""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         {{ func.op_name }},
 {% for arg in func.args %}
         {{ arg.name }},

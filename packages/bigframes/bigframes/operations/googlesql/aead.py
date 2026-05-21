@@ -21,9 +21,9 @@ from __future__ import annotations
 import datetime
 from typing import Any, Literal, Optional, TypeVar, Union
 
-import bigframes.bigquery._googlesql
 import bigframes.core.col
 import bigframes.core.expression as ex
+import bigframes.core.googlesql
 import bigframes.core.sentinels as sentinels
 import bigframes.operations as ops
 import bigframes.series as series
@@ -48,24 +48,12 @@ _ENCRYPT_OP = googlesql.GoogleSqlScalarOp(
 
 
 def decrypt_bytes(
-    keyset: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
-    ],
-    ciphertext: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
-    ],
-    additional_data: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
-    ],
+    keyset: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    ciphertext: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
+    additional_data: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Uses the matching key from keyset to decrypt ciphertext and verifies the integrity of the data using additional_data. Returns an error if decryption or verification fails."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DECRYPT_BYTES_OP,
         keyset,
         ciphertext,
@@ -74,24 +62,12 @@ def decrypt_bytes(
 
 
 def decrypt_string(
-    keyset: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
-    ],
-    ciphertext: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
-    ],
-    additional_data: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
-    ],
+    keyset: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    ciphertext: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes]],
+    additional_data: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str]],
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Like AEAD.DECRYPT_BYTES, but where additional_data is of type STRING."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DECRYPT_STRING_OP,
         keyset,
         ciphertext,
@@ -100,24 +76,12 @@ def decrypt_string(
 
 
 def encrypt(
-    keyset: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
-    ],
-    plaintext: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
-    ],
-    additional_data: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
-    ],
+    keyset: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict]],
+    plaintext: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str]],
+    additional_data: Union[series.Series, bigframes.core.col.Expression, Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str]],
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Encrypts plaintext using the primary cryptographic key in keyset. The algorithm of the primary key must be AEAD_AES_GCM_256. Binds the ciphertext to the context defined by additional_data. Returns NULL if any input is NULL."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _ENCRYPT_OP,
         keyset,
         plaintext,
