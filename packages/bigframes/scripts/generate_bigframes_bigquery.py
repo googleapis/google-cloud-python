@@ -263,9 +263,7 @@ def run_ruff(path: pathlib.Path):
     )
 
 
-def ensure_init_py(
-    directory: pathlib.Path, limit_dir: pathlib.Path, license_template
-):
+def ensure_init_py(directory: pathlib.Path, limit_dir: pathlib.Path, license_template):
     """Ensures __init__.py exists in the directory and its parents up to limit_dir."""
     curr = directory
     while curr != limit_dir and curr != curr.parent:
