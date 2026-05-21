@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PANDOC_VERSION: 3.8.2
+      CACHE_VERSION: v2
 
     steps:
       - name: Checkout
