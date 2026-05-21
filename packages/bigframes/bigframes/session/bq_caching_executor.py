@@ -513,34 +513,10 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _deploy_undeployed_udfs(
         self, plan: nodes.BigFrameNode
     ) -> nodes.BigFrameNode:
-        import dataclasses
-
-        import bigframes.core.expression as expression
-        import bigframes.functions.udf_def as udf_def
-        import bigframes.operations as ops
-
-        undeployed_udfs: list[udf_def.PythonUdf] = []
-        for node in plan.unique_nodes():
-            for expr in node._node_expressions:
-                for sub_expr in expr.walk():
-                    if isinstance(sub_expr, expression.OpExpression):
-                        op = sub_expr.op
-                        if isinstance(
-                            op,
-                            (
-                                ops.RemoteFunctionOp,
-                                ops.BinaryRemoteFunctionOp,
-                                ops.NaryRemoteFunctionOp,
-                            ),
-                        ):
-                            func_def = op.function_def
-                            if isinstance(func_def, udf_def.PythonUdf):
-                                undeployed_udfs.append(func_def)
-
+        undeployed_udfs = self._collect_udf_defs(plan)
         if not undeployed_udfs:
             return plan
 
-        # Deduplicate while preserving order
         seen = set()
         unique_undeployed_udfs = []
         for udf in undeployed_udfs:
@@ -552,30 +528,49 @@ class BigQueryCachingExecutor(executor.Executor):
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf] = {}
         for udf in unique_undeployed_udfs:
             deployed_udf = await asyncio.to_thread(
-                session._function_session.deploy_undeployed_udf,
+                session._function_session._deploy_udf,
                 session,
                 udf,
             )
             deployed_mapping[udf] = deployed_udf
 
+        return self._subsitute_temporary_functions(plan, deployed_mapping)
+
+    def _collect_udf_defs(self, plan: nodes.BigFrameNode) -> list[udf_def.PythonUdf]:
+        udf_defs: list[udf_def.PythonUdf] = []
+        for node in plan.unique_nodes():
+            for expr in node._node_expressions:
+                for sub_expr in expr.walk():
+                    if isinstance(sub_expr, expression.OpExpression):
+                        op = sub_expr.op
+                        if isinstance(
+                            op,
+                            (ops.PythonUdfOp,),
+                        ):
+                            func_def = op.function_def
+                            if isinstance(func_def, udf_def.PythonUdf):
+                                udf_defs.append(func_def)
+        return udf_defs
+
+    def _subsitute_temporary_functions(
+        self,
+        plan: nodes.BigFrameNode,
+        deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf],
+    ) -> nodes.BigFrameNode:
         # Now rewrite the plan using bottom_up to substitute the UDF definitions!
         def replace_in_expr(expr: expression.Expression) -> expression.Expression:
             def replace_step(e: expression.Expression) -> expression.Expression:
                 if isinstance(e, expression.OpExpression):
                     op = e.op
-                    if isinstance(
-                        op,
-                        (
-                            ops.RemoteFunctionOp,
-                            ops.BinaryRemoteFunctionOp,
-                            ops.NaryRemoteFunctionOp,
-                        ),
-                    ):
+                    if isinstance(op, ops.PythonUdfOp):
                         func_def = op.function_def
                         if func_def in deployed_mapping:
                             new_func_def = deployed_mapping[func_def]
                             new_op = dataclasses.replace(op, function_def=new_func_def)
                             return dataclasses.replace(e, op=new_op)
+                        raise ValueError(
+                            f"UDF definition {func_def} not found in deployed mapping"
+                        )
                 return e
 
             return expr.bottom_up(replace_step)

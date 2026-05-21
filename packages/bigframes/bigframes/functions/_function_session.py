@@ -20,6 +20,7 @@ import functools
 import inspect
 import sys
 import threading
+import time
 import warnings
 from typing import (
     TYPE_CHECKING,
@@ -194,14 +195,13 @@ class FunctionSession:
         with self._artifacts_lock:
             self._temp_artifacts[bqrf_routine] = gcf_path
 
-    def deploy_undeployed_udf(
+    def _deploy_udf(
         self,
         session: Session,
         bq_udf: udf_def.PythonUdf,
     ) -> udf_def.BigqueryUdf:
         """Deploys a UDF to BigQuery if not already deployed."""
         udf_hash = bq_udf.stable_hash()
-        import time
 
         bigquery_client = self._resolve_bigquery_client(session, None)
         bq_connection_manager = session.bqconnectionmanager

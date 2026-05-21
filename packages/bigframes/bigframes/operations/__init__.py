@@ -183,9 +183,9 @@ from bigframes.operations.numeric_ops import (
 )
 from bigframes.operations.numpy_op_maps import NUMPY_TO_BINOP, NUMPY_TO_OP
 from bigframes.operations.remote_function_ops import (
-    BinaryRemoteFunctionOp,
-    NaryRemoteFunctionOp,
+    PythonUdfOp,
     RemoteFunctionOp,
+    func_to_op,
 )
 from bigframes.operations.string_ops import (
     EndsWithOp,
@@ -375,9 +375,8 @@ __all__ = [
     "StructFieldOp",
     "StructOp",
     # Remote Functions ops
-    "BinaryRemoteFunctionOp",
-    "NaryRemoteFunctionOp",
     "RemoteFunctionOp",
+    "PythonUdfOp",
     # Frequency ops
     "DatetimeToIntegerLabelOp",
     "FloorDtOp",
@@ -437,6 +436,8 @@ __all__ = [
     "AIIf",
     "AIScore",
     "AISimilarity",
+    # Helper functions
+    "func_to_op",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
