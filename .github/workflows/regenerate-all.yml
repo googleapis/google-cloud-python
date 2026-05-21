@@ -40,7 +40,7 @@ jobs:
       - name: Install Python packages for Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
+          go run "github.com/googleapis/librarian/cmd/librarian@v0.13.0" install
 
       - name: Debug Git State
         run: |
