@@ -441,6 +441,6 @@ def universe_domain_iam_client(
 @pytest.fixture(scope="function")
 def exporter():
     if _global_exporter is None:
-        pytest.skip("OpenTelemetry is not installed.")
+        pytest.fail("OpenTelemetry is not installed or failed to initialize.")
     _global_exporter.clear()
     return _global_exporter

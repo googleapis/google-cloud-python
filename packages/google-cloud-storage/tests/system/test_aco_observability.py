@@ -14,7 +14,6 @@
 
 import concurrent.futures
 import threading
-import time
 
 import pytest
 from google.api_core import exceptions
@@ -23,57 +22,83 @@ from . import _helpers
 
 
 def test_sequential_cache_priming(storage_client, exporter, buckets_to_delete):
-    """Verifies that a cache miss returns immediately and warms the cache, and the subsequent request successfully contains the ACO destination annotations."""
+    """Verifies that a cache miss returns immediately and warms the cache
+    in a background thread, so a subsequent request successfully contains
+    ACO destination attributes."""
     bucket_name = _helpers.unique_name("aco-priming")
     bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
     buckets_to_delete.append(bucket)
 
-    # Clear cache to force a cache miss
-    storage_client._bucket_metadata_cache.clear()
-
     blob_name = "test_blob.txt"
     blob = bucket.blob(blob_name)
     blob.upload_from_string("hello")
 
-    # Clear cache and OTel exporter logs
-    storage_client._bucket_metadata_cache.clear()
-    exporter.clear()
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    update_cache_event = threading.Event()
 
-    # 1. First download (must be a cache miss)
-    blob.download_as_bytes()
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
 
-    spans = exporter.get_finished_spans()
-    dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
-    assert len(dl_spans) == 1
-    attrs = dl_spans[0].attributes
-    assert "gcp.resource.destination.id" not in attrs
-    assert "gcp.resource.destination.location" not in attrs
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
 
-    # Wait for background fetch thread to populate cache
-    time.sleep(1.5)
+    try:
+        # Clear cache and OTel exporter logs
+        storage_client._bucket_metadata_cache.clear()
+        exporter.clear()
 
-    # 2. Second download (must be a cache hit)
-    exporter.clear()
-    blob.download_as_bytes()
+        # 1. First download (must be a cache miss)
+        blob.download_as_bytes()
 
-    spans = exporter.get_finished_spans()
-    dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
-    assert len(dl_spans) == 1
-    attrs = dl_spans[0].attributes
-    assert "gcp.resource.destination.id" in attrs
-    assert "gcp.resource.destination.location" in attrs
-    assert bucket_name in attrs["gcp.resource.destination.id"]
+        spans = exporter.get_finished_spans()
+        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        assert len(dl_spans) == 1
+        attrs = dl_spans[0].attributes
+        assert "gcp.resource.destination.id" not in attrs
+        assert "gcp.resource.destination.location" not in attrs
+
+        # Wait deterministically for background fetch thread to populate cache
+        assert update_cache_event.wait(timeout=10.0)
+
+        # 2. Second download (must be a cache hit)
+        # Clear exporter so spans we capture correspond to the second download
+        # (ACO attributes should now be present)
+        exporter.clear()
+        blob.download_as_bytes()
+
+        spans = exporter.get_finished_spans()
+        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        assert len(dl_spans) == 1
+        attrs = dl_spans[0].attributes
+        assert "gcp.resource.destination.id" in attrs
+        assert "gcp.resource.destination.location" in attrs
+        assert bucket_name in attrs["gcp.resource.destination.id"]
+    finally:
+        storage_client._bucket_metadata_cache.update_cache = original_update
 
 
 def test_403_permission_cache_fallback(storage_client, buckets_to_delete):
-    """Verifies that if the client does not have permission to reload the bucket (403 Forbidden), the cache safely stores fallback annotations to prevent subsequent API call retry storms."""
+    """Verifies that if the client does not have permission for bucket metadata
+    (403 Forbidden), the cache safely stores fallback annotations to prevent
+    repetitive API calls on cache misses."""
     bucket_name = _helpers.unique_name("aco-403")
     bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
     buckets_to_delete.append(bucket)
 
     storage_client._bucket_metadata_cache.clear()
+
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    update_cache_event = threading.Event()
+
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
+
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
 
     original_get_bucket = storage_client.get_bucket
     forbidden_triggered = threading.Event()
@@ -92,7 +117,9 @@ def test_403_permission_cache_fallback(storage_client, buckets_to_delete):
 
         # Wait for background fetch to execute and catch the Forbidden error
         assert forbidden_triggered.wait(timeout=3.0)
-        time.sleep(0.5)  # allow time to store fallback
+
+        # Wait deterministically for fallback to get populated in cache
+        assert update_cache_event.wait(timeout=10.0)
 
         # Retrieve from cache
         cached = storage_client._bucket_metadata_cache.get(bucket_name)
@@ -102,6 +129,7 @@ def test_403_permission_cache_fallback(storage_client, buckets_to_delete):
         assert loc == "global"
     finally:
         storage_client.get_bucket = original_get_bucket
+        storage_client._bucket_metadata_cache.update_cache = original_update
 
 
 def test_cache_stampede_protection(storage_client, buckets_to_delete):
@@ -124,7 +152,6 @@ def test_cache_stampede_protection(storage_client, buckets_to_delete):
         nonlocal fetch_count
         with count_lock:
             fetch_count += 1
-        time.sleep(0.5)  # simulate some GCS network latency
         return original_get_bucket(*args, **kwargs)
 
     storage_client.get_bucket = monitored_get_bucket
@@ -137,18 +164,15 @@ def test_cache_stampede_protection(storage_client, buckets_to_delete):
             ]
             concurrent.futures.wait(futures)
 
-        # Wait for background fetch thread to update cache
-        time.sleep(1.0)
-
         # Exactly 1 background GCS get_bucket fetch call must have been triggered
         assert fetch_count == 1
     finally:
         storage_client.get_bucket = original_get_bucket
 
 
-def test_cache_eviction_scenarios(storage_client, buckets_to_delete):
-    """Verifies that if a GCS bucket is deleted out-of-band, any operations triggering a 404 NotFound will asynchronously verify the deletion and evict the bucket from the cache; and direct Bucket.delete() calls synchronously evict the cache."""
-    bucket_name = _helpers.unique_name("aco-eviction")
+def test_cache_eviction_on_bucket_404(storage_client, buckets_to_delete):
+    """Verifies that if a GCS bucket is deleted out-of-band, any operations triggering a 404 NotFound will asynchronously verify the deletion and evict the bucket from the cache."""
+    bucket_name = _helpers.unique_name("aco-eviction-404")
     bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
     buckets_to_delete.append(bucket)
@@ -156,102 +180,202 @@ def test_cache_eviction_scenarios(storage_client, buckets_to_delete):
     blob = bucket.blob("test.txt")
     blob.upload_from_string("data")
 
-    # Clear and warm cache
-    storage_client._bucket_metadata_cache.clear()
-    storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
-    time.sleep(1.0)
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    original_verify = storage_client._bucket_metadata_cache._verify_existence_background
 
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+    update_cache_event = threading.Event()
+    verify_event = threading.Event()
 
-    # --- 4a. 404 on Bucket (Asynchronous Eviction) ---
-    # Delete GCS bucket directly via HTTP connection to bypass client.delete synchronous eviction
-    query_params = {}
-    if bucket.user_project is not None:
-        query_params["userProject"] = bucket.user_project
-    blob.delete()
-    storage_client._delete_resource(bucket.path, query_params=query_params)
-    buckets_to_delete.remove(bucket)
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
 
-    # Attempt to load blob (raises 404 NotFound bucket error)
-    with pytest.raises(exceptions.NotFound):
-        blob.download_as_bytes()
+    def monitored_verify(b_name):
+        try:
+            original_verify(b_name)
+        finally:
+            verify_event.set()
 
-    # Wait for background check_and_evict thread
-    time.sleep(1.5)
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
+    storage_client._bucket_metadata_cache._verify_existence_background = (
+        monitored_verify
+    )
 
-    # Cache must be evicted
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is None
+    try:
+        # Clear and warm cache
+        storage_client._bucket_metadata_cache.clear()
+        storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
 
-    # --- 4b. Synchronous Delete Eviction ---
-    # Re-create bucket, warm cache
+        # Wait deterministically for cache warming to complete
+        assert update_cache_event.wait(timeout=10.0)
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+
+        # --- 4a. 404 on Bucket (Asynchronous Eviction) ---
+        # Delete GCS bucket directly via HTTP connection to bypass client.delete synchronous eviction
+        query_params = {}
+        if bucket.user_project is not None:
+            query_params["userProject"] = bucket.user_project
+        blob.delete()
+        storage_client._delete_resource(bucket.path, query_params=query_params)
+        buckets_to_delete.remove(bucket)
+
+        # Attempt to load blob (raises 404 NotFound bucket error)
+        with pytest.raises(exceptions.NotFound):
+            blob.download_as_bytes()
+
+        # Wait deterministically for background check_and_evict thread to complete
+        assert verify_event.wait(timeout=10.0)
+
+        # Cache must be evicted
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is None
+    finally:
+        storage_client._bucket_metadata_cache.update_cache = original_update
+        storage_client._bucket_metadata_cache._verify_existence_background = (
+            original_verify
+        )
+
+
+def test_cache_eviction_on_bucket_delete(storage_client, buckets_to_delete):
+    """Verifies that direct Bucket.delete() calls synchronously evict the cache."""
+    bucket_name = _helpers.unique_name("aco-eviction-delete")
+    bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
-    storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
-    time.sleep(1.0)
+    buckets_to_delete.append(bucket)
+
+    # Warm cache directly via GCS creation warming
     assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
 
     # Synchronously delete bucket via SDK client
     bucket.delete()
+    buckets_to_delete.remove(bucket)
+
     # Cache MUST be evicted immediately without waiting
     assert storage_client._bucket_metadata_cache.get(bucket_name) is None
 
 
-def test_404_on_blob_bucket_exists(storage_client, buckets_to_delete):
-    """Verifies that a 404 NotFound on a missing blob inside an existing bucket triggers background check_and_evict which retains the bucket in the cache."""
+def test_404_on_blob_but_bucket_exists(storage_client, buckets_to_delete):
+    """Verifies that a 404 `NotFound` on a missing blob inside an
+    existing bucket; triggers background `check_and_evict` which retains
+    the bucket in the cache."""
     bucket_name = _helpers.unique_name("aco-blob-404")
     bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
     buckets_to_delete.append(bucket)
 
-    # Warm cache
-    storage_client._bucket_metadata_cache.clear()
-    storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
-    time.sleep(1.0)
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    original_verify = storage_client._bucket_metadata_cache._verify_existence_background
 
-    # Make a 404 request to a non-existent blob inside this bucket
-    non_existent_blob = bucket.blob("non_existent.txt")
-    with pytest.raises(exceptions.NotFound):
-        non_existent_blob.download_as_bytes()
+    update_cache_event = threading.Event()
+    verify_event = threading.Event()
 
-    # Wait for background check_and_evict thread
-    time.sleep(1.5)
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
 
-    # Bucket must STILL be retained in the cache!
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+    def monitored_verify(b_name):
+        try:
+            original_verify(b_name)
+        finally:
+            verify_event.set()
+
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
+    storage_client._bucket_metadata_cache._verify_existence_background = (
+        monitored_verify
+    )
+
+    try:
+        # Warm cache
+        storage_client._bucket_metadata_cache.clear()
+        storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
+
+        # Wait deterministically for cache priming to complete
+        assert update_cache_event.wait(timeout=10.0)
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+
+        # Make a 404 request to a non-existent blob inside this bucket
+        non_existent_blob = bucket.blob("non_existent.txt")
+        with pytest.raises(exceptions.NotFound):
+            non_existent_blob.download_as_bytes()
+
+        # Wait deterministically for background check_and_evict thread to complete
+        assert verify_event.wait(timeout=10.0)
+
+        # Bucket must STILL be retained in the cache!
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+    finally:
+        # Clean up and restore original methods
+        storage_client._bucket_metadata_cache.update_cache = original_update
+        storage_client._bucket_metadata_cache._verify_existence_background = (
+            original_verify
+        )
 
 
 def test_404_on_blob_bucket_deleted(storage_client):
-    """Verifies that a 404 NotFound on a missing blob when the bucket is deleted triggers background check_and_evict which evicts the bucket from the cache."""
+    """Verifies that a 404 NotFound on a missing blob when the bucket is deleted
+    triggers background check_and_evict which evicts the bucket from the cache."""
     bucket_name = _helpers.unique_name("aco-blob-bucket-404")
     bucket = storage_client.bucket(bucket_name)
     storage_client.create_bucket(bucket)
 
-    # Warm cache
-    storage_client._bucket_metadata_cache.clear()
-    storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
-    time.sleep(1.0)
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    original_verify = storage_client._bucket_metadata_cache._verify_existence_background
 
-    # Delete bucket directly via GCS connection (bypassing client synchronous eviction)
-    query_params = {}
-    if bucket.user_project is not None:
-        query_params["userProject"] = bucket.user_project
-    storage_client._delete_resource(bucket.path, query_params=query_params)
+    update_cache_event = threading.Event()
+    verify_event = threading.Event()
 
-    # Make 404 request to a blob (raises 404 NotFound because bucket is deleted)
-    non_existent_blob = bucket.blob("non_existent.txt")
-    with pytest.raises(exceptions.NotFound):
-        non_existent_blob.download_as_bytes()
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
 
-    # Wait for background check_and_evict thread
-    time.sleep(1.5)
+    def monitored_verify(b_name):
+        try:
+            original_verify(b_name)
+        finally:
+            verify_event.set()
 
-    # Bucket must be evicted from the cache!
-    assert storage_client._bucket_metadata_cache.get(bucket_name) is None
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
+    storage_client._bucket_metadata_cache._verify_existence_background = (
+        monitored_verify
+    )
+
+    try:
+        # Warm cache
+        storage_client._bucket_metadata_cache.clear()
+        storage_client._bucket_metadata_cache.get_or_queue_fetch(bucket_name)
+
+        # Wait deterministically for cache priming to complete
+        assert update_cache_event.wait(timeout=10.0)
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+
+        # Delete bucket directly via GCS connection (bypassing client synchronous eviction)
+        query_params = {}
+        if bucket.user_project is not None:
+            query_params["userProject"] = bucket.user_project
+        storage_client._delete_resource(bucket.path, query_params=query_params)
+
+        # Make 404 request to a blob (raises 404 NotFound because bucket is deleted)
+        non_existent_blob = bucket.blob("non_existent.txt")
+        with pytest.raises(exceptions.NotFound):
+            non_existent_blob.download_as_bytes()
+
+        # Wait deterministically for background check_and_evict thread to complete
+        assert verify_event.wait(timeout=10.0)
+
+        # Bucket must be evicted from the cache!
+        assert storage_client._bucket_metadata_cache.get(bucket_name) is None
+    finally:
+        storage_client._bucket_metadata_cache.update_cache = original_update
+        storage_client._bucket_metadata_cache._verify_existence_background = (
+            original_verify
+        )
 
 
 def test_lru_bounded_capacity_eviction(storage_client):
-    """Verifies that the cache respects the configured size bounds and correctly evicts the least-recently-used elements to avoid memory leaks."""
+    """Verifies that the cache respects the configured size bounds and correctly
+    evicts the least-recently-used elements to avoid memory leaks."""
     from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 
     cache = BucketMetadataCache(storage_client, max_size=5)
