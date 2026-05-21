@@ -2772,11 +2772,11 @@ class Series:
         ignore_self=False,
         cast_scalars: bool = False,
     ) -> tuple[
-        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp]],
+        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]],
         blocks.Block,
     ]:
         if ignore_self:
-            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp]] = []
+            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]] = []
         else:
             value_ids = [ex.deref(self._value_column)]
 
@@ -2803,6 +2803,7 @@ class Series:
                 ]
             elif isinstance(other, bigframes.core.col.Expression):
                 if isinstance(other._value, ex.OmittedArg):
+                    value_ids = [*value_ids, other._value]
                     continue
 
                 label_to_col_ref = {
