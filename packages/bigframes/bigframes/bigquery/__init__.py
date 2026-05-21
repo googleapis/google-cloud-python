@@ -68,27 +68,6 @@ from bigframes.bigquery._operations.geo import (
     st_regionstats,
     st_simplify,
 )
-from bigframes.bigquery._operations.global_namespace.aead_encryption import (
-    deterministic_decrypt_bytes,
-    deterministic_decrypt_string,
-    deterministic_encrypt,
-)
-from bigframes.bigquery._operations.global_namespace.array import (
-    array_concat,
-    array_first,
-    array_first_n,
-    array_includes,
-    array_includes_all,
-    array_includes_any,
-    array_is_distinct,
-    array_last,
-    array_length,
-    array_reverse,
-    array_slice,
-    array_to_string,
-    flatten,
-    generate_array,
-)
 from bigframes.bigquery._operations.io import load_data
 from bigframes.bigquery._operations.json import (
     json_extract,
@@ -114,6 +93,27 @@ from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
 from bigframes.bigquery._operations.table import create_external_table
 from bigframes.core.logging import log_adapter
+from bigframes.operations.googlesql.global_namespace.aead_encryption import (
+    deterministic_decrypt_bytes,
+    deterministic_decrypt_string,
+    deterministic_encrypt,
+)
+from bigframes.operations.googlesql.global_namespace.array import (
+    array_concat,
+    array_first,
+    array_first_n,
+    array_includes,
+    array_includes_all,
+    array_includes_any,
+    array_is_distinct,
+    array_last,
+    array_length,
+    array_reverse,
+    array_slice,
+    array_to_string,
+    flatten,
+    generate_array,
+)
 
 _functions = [
     # approximate aggregate ops
