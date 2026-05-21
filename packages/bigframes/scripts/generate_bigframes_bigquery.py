@@ -38,15 +38,22 @@ TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/generated")
 # Directory containing the Jinja2 templates
 TEMPLATE_DIR = pathlib.Path("scripts/templates")
 
-RUFF_ARGS = [
+RUFF_COMMON_ARGS = [
+    "--target-version=py310",
+    "--line-length=88",
+]
+RUFF_CHECK_ARGS = [
     "ruff",
     "check",
     "--select",
     "I",
     "--fix",
-    "--target-version=py310",
-    "--line-length=88",
-]
+] + RUFF_COMMON_ARGS
+RUFF_FORMAT_ARGS = [
+    "ruff",
+    "format",
+] + RUFF_COMMON_ARGS
+
 
 DTYPE_MAP = {
     "binary": "dtypes.BYTES_DTYPE",
@@ -255,7 +262,16 @@ def run_ruff(path: pathlib.Path):
 
     subprocess.run(
         [sys.executable, "-m", "ruff"]
-        + RUFF_ARGS[1:]
+        + RUFF_CHECK_ARGS[1:]
+        + [
+            str(path),
+        ],
+        check=True,
+    )
+
+    subprocess.run(
+        [sys.executable, "-m", "ruff"]
+        + RUFF_FORMAT_ARGS[1:]
         + [
             str(path),
         ],
