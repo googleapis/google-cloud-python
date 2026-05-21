@@ -1,7 +1,7 @@
 name: Regenerate all packages after merging to main
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
