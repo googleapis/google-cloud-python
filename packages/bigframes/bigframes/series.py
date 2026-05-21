@@ -2765,7 +2765,9 @@ class Series:
 
     def _align_n(
         self,
-        others: typing.Sequence[typing.Union[Series, bigframes.core.col.Expression,scalars.Scalar]],
+        others: typing.Sequence[
+            typing.Union[Series, bigframes.core.col.Expression, scalars.Scalar]
+        ],
         how="outer",
         ignore_self=False,
         cast_scalars: bool = False,
@@ -2804,14 +2806,11 @@ class Series:
                     continue
 
                 label_to_col_ref = {
-                        label: ex.deref(id) for id, label in block.col_id_to_label.items()
+                    label: ex.deref(id) for id, label in block.col_id_to_label.items()
                 }
                 resolved_expr = other._value.bind_variables(label_to_col_ref)
                 block = block.project_block_exprs([resolved_expr], labels=[None])
-                value_ids = [
-                    *value_ids,
-                        ex.deref(block.value_columns[-1])
-                ]
+                value_ids = [*value_ids, ex.deref(block.value_columns[-1])]
             else:
                 # Will throw if can't interpret as scalar.
                 dtype = typing.cast(bigframes.dtypes.Dtype, self._dtype)
