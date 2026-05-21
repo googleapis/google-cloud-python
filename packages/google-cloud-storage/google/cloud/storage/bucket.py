@@ -21,7 +21,7 @@ import json
 import warnings
 from urllib.parse import urlsplit
 
-from google.api_core import datetime_helpers
+from google.api_core import datetime_helpers, exceptions as api_exceptions
 from google.api_core.iam import Policy
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
@@ -1190,17 +1190,30 @@ class Bucket(_PropertyMixin):
             See: https://cloud.google.com/storage/docs/soft-delete
         """
         with self._create_trace_span(name="Storage.Bucket.reload"):
-            super(Bucket, self).reload(
-                client=client,
-                projection=projection,
-                timeout=timeout,
-                if_etag_match=if_etag_match,
-                if_etag_not_match=if_etag_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                retry=retry,
-                soft_deleted=soft_deleted,
-            )
+            try:
+                super(Bucket, self).reload(
+                    client=client,
+                    projection=projection,
+                    timeout=timeout,
+                    if_etag_match=if_etag_match,
+                    if_etag_not_match=if_etag_not_match,
+                    if_metageneration_match=if_metageneration_match,
+                    if_metageneration_not_match=if_metageneration_not_match,
+                    retry=retry,
+                    soft_deleted=soft_deleted,
+                )
+            except api_exceptions.Forbidden:
+                active_client = client or self.client
+                cache = getattr(active_client, "_bucket_metadata_cache", None)
+                if cache:
+                    try:
+                        cache.update_cache(
+                            self.name, f"projects/_/buckets/{self.name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
+
             active_client = client or self.client
             cache = getattr(active_client, "_bucket_metadata_cache", None)
             if cache:

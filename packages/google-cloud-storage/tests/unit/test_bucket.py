@@ -2026,6 +2026,29 @@ class Test_Bucket(unittest.TestCase):
             _target_object=bucket,
         )
 
+    def test_reload_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+        from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
+
+        name = "forbidden-bucket"
+        client = mock.Mock(spec=["_get_resource", "_bucket_metadata_cache"])
+        client._bucket_metadata_cache = BucketMetadataCache(client)
+        client._get_resource.side_effect = Forbidden("forbidden")
+        bucket = self._make_one(client, name=name)
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            bucket.reload()
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{name}")
+        self.assertEqual(loc, "global")
+
     def test_reload_w_metageneration_match(self):
         name = "name"
         metageneration_number = 9
