@@ -34,7 +34,7 @@ DATA_DIR = pathlib.Path("scripts/data/sql-functions")
 # Directory where the generated Python files will be placed
 OUTPUT_DIR = pathlib.Path("bigframes/operations/googlesql")
 # Directory where the generated test files will be placed
-TEST_OUTPUT_DIR = pathlib.Path("tests/unit/operations/googlesql")
+TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/generated")
 # Directory containing the Jinja2 templates
 TEMPLATE_DIR = pathlib.Path("scripts/templates")
 
@@ -107,7 +107,11 @@ def load_templates():
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    return env.get_template("operation.py.j2"), env.get_template("test_operation.py.j2")
+    return (
+        env.get_template("operation.py.j2"),
+        env.get_template("test_operation.py.j2"),
+        env.get_template("license.py.j2"),
+    )
 
 
 def _collect_args(impls):
@@ -259,7 +263,23 @@ def run_ruff(path: pathlib.Path):
     )
 
 
-def process_yaml_file(yaml_file, template, test_template):
+def ensure_init_py(
+    directory: pathlib.Path, limit_dir: pathlib.Path, license_template
+):
+    """Ensures __init__.py exists in the directory and its parents up to limit_dir."""
+    curr = directory
+    while curr != limit_dir and curr != curr.parent:
+        init_file = curr / "__init__.py"
+        if not init_file.exists():
+            print(f"  Creating {init_file}")
+            content = license_template.render()
+            with open(init_file, "w") as f:
+                f.write(content)
+            run_ruff(init_file)
+        curr = curr.parent
+
+
+def process_yaml_file(yaml_file, template, test_template, license_template):
     print(f"Processing {yaml_file}...")
     with open(yaml_file, "r") as f:
         data = yaml.safe_load(f)
@@ -276,6 +296,7 @@ def process_yaml_file(yaml_file, template, test_template):
 
     # Render and write
     output_file.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py(output_file.parent, OUTPUT_DIR.parent, license_template)
     content = template.render(
         yaml_path=str(yaml_file),
         script_path="scripts/generate_bigframes_bigquery.py",
@@ -295,11 +316,13 @@ def process_yaml_file(yaml_file, template, test_template):
     ).with_suffix(".py")
 
     test_output_file.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py(test_output_file.parent, TEST_OUTPUT_DIR.parent, license_template)
     test_content = test_template.render(
         yaml_path=str(yaml_file),
         script_path="scripts/generate_bigframes_bigquery.py",
         import_path=import_path,
         short_name=module_path.name,
+        is_global=is_global,
         functions=functions_list,
     )
     with open(test_output_file, "w") as f:
@@ -308,25 +331,12 @@ def process_yaml_file(yaml_file, template, test_template):
     run_ruff(test_output_file)
     print(f"  Generated {test_output_file}")
 
-    import sys
-
-    subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "pytest",
-            str(test_output_file),
-            "--snapshot-update",
-        ],
-        check=False,
-    )
-
 
 def main():
-    template, test_template = load_templates()
+    template, test_template, license_template = load_templates()
 
     for yaml_file in sorted(DATA_DIR.glob("**/*.yaml")):
-        process_yaml_file(yaml_file, template, test_template)
+        process_yaml_file(yaml_file, template, test_template, license_template)
 
 
 if __name__ == "__main__":
