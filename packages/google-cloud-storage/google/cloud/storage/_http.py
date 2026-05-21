@@ -91,9 +91,7 @@ class Connection(_http.JSONConnection):
             match = re.search(r"/b/([^/?#]+)", kwargs.get("path", ""))
             if match:
                 try:
-                    cached = client._bucket_metadata_cache.get_or_queue_fetch(
-                        match.group(1)
-                    )
+                    cached = client._bucket_metadata_cache.get(match.group(1))
                     if cached and isinstance(cached, tuple) and len(cached) == 2:
                         dest_id, loc = cached
                         span_attributes["gcp.resource.destination.id"] = dest_id

@@ -14,6 +14,7 @@
 
 import concurrent.futures
 import threading
+import time
 
 import pytest
 from google.api_core import exceptions
@@ -399,3 +400,91 @@ def test_lru_bounded_capacity_eviction(storage_client):
     assert cache.get("b1") == ("dest1", "loc1")
     # Assert b6 is present
     assert cache.get("b6") == ("dest6", "loc6")
+
+
+def test_create_bucket_synchronous_cache_warming(storage_client, buckets_to_delete):
+    """Verifies that calling client.create_bucket() synchronously warms the cache immediately upon bucket creation and does not trigger any background fetch threads."""
+    # Wait for any previous inflight background fetches to complete
+    start_time = time.time()
+    while time.time() - start_time < 5.0:
+        with storage_client._bucket_metadata_cache._lock:
+            if not storage_client._bucket_metadata_cache._inflight_fetches:
+                break
+        time.sleep(0.1)
+
+    bucket_name = _helpers.unique_name("aco-sync-create")
+    bucket = storage_client.bucket(bucket_name)
+
+    # Ensure cache is clear
+    storage_client._bucket_metadata_cache.clear()
+
+    # Setup background fetch monitoring hook
+    original_fetch = storage_client._bucket_metadata_cache._fetch_background
+    fetch_triggered = False
+
+    def monitored_fetch(*args, **kwargs):
+        nonlocal fetch_triggered
+        fetch_triggered = True
+        return original_fetch(*args, **kwargs)
+
+    storage_client._bucket_metadata_cache._fetch_background = monitored_fetch
+
+    try:
+        storage_client.create_bucket(bucket)
+        buckets_to_delete.append(bucket)
+
+        # Assert cache is populated instantly (synchronously)
+        cached = storage_client._bucket_metadata_cache.get(bucket_name)
+        assert cached is not None
+        dest_id, loc = cached
+        assert bucket_name in dest_id
+
+        # Verify that no background fetch thread was ever triggered!
+        assert not fetch_triggered
+    finally:
+        storage_client._bucket_metadata_cache._fetch_background = original_fetch
+
+
+def test_get_bucket_synchronous_cache_warming(storage_client, buckets_to_delete):
+    """Verifies that calling client.get_bucket() for the first time (cache miss) synchronously warms the cache immediately without triggering any background fetch threads."""
+    # Wait for any previous inflight background fetches to complete
+    start_time = time.time()
+    while time.time() - start_time < 5.0:
+        with storage_client._bucket_metadata_cache._lock:
+            if not storage_client._bucket_metadata_cache._inflight_fetches:
+                break
+        time.sleep(0.1)
+
+    bucket_name = _helpers.unique_name("aco-sync-get")
+    bucket = storage_client.bucket(bucket_name)
+    storage_client.create_bucket(bucket)
+    buckets_to_delete.append(bucket)
+
+    # Ensure cache is clear
+    storage_client._bucket_metadata_cache.clear()
+
+    # Setup background fetch monitoring hook
+    original_fetch = storage_client._bucket_metadata_cache._fetch_background
+    fetch_triggered = False
+
+    def monitored_fetch(*args, **kwargs):
+        nonlocal fetch_triggered
+        fetch_triggered = True
+        return original_fetch(*args, **kwargs)
+
+    storage_client._bucket_metadata_cache._fetch_background = monitored_fetch
+
+    try:
+        # Call client.get_bucket()
+        storage_client.get_bucket(bucket_name)
+
+        # Assert cache is populated instantly (synchronously) without background delay
+        cached = storage_client._bucket_metadata_cache.get(bucket_name)
+        assert cached is not None
+        dest_id, loc = cached
+        assert bucket_name in dest_id
+
+        # Verify that no background fetch thread was ever triggered!
+        assert not fetch_triggered
+    finally:
+        storage_client._bucket_metadata_cache._fetch_background = original_fetch
