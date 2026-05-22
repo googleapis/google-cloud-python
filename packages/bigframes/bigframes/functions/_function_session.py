@@ -947,7 +947,7 @@ class FunctionSession:
                         bq_function_name
                     )
                 )
-                udf_definition = udf_def.BigqueryUdf(
+                rf_def = udf_def.BigqueryUdf(
                     routine_ref=bigquery.RoutineReference.from_string(full_rf_name),
                     signature=udf_sig,
                 )
@@ -957,7 +957,7 @@ class FunctionSession:
                     self._update_temp_artifacts(full_rf_name, "")
 
                 return bq_functions.BigqueryCallableRoutine(
-                    udf_definition, session, local_func=func, is_managed=True
+                    rf_def, session, local_func=func, is_managed=True
                 )
 
         return wrapper

@@ -338,6 +338,7 @@ class Session(
             enable_polars_execution=context.enable_polars_execution,
             publisher=self._publisher,
             labels=tuple(labels.items()),
+            function_manager=self._function_session,
         )
 
     def __del__(self):
