@@ -77,8 +77,18 @@ class TableWidget(_WIDGET_BASE):
     _error_message = traitlets.Unicode(allow_none=True, default_value=None).tag(
         sync=True
     )
+    start_execution = traitlets.Bool(False).tag(sync=True)
+    is_deferred_mode = traitlets.Bool(False).tag(sync=True)
+    dry_run_info = traitlets.Unicode("").tag(sync=True)
 
-    def __init__(self, dataframe: bigframes.dataframe.DataFrame):
+    def __init__(
+        self,
+        dataframe: (
+            bigframes.dataframe.DataFrame
+            | bigframes.session.deferred.DeferredBigQueryDataFrame
+        ),
+        dry_run_info: Optional[str] = None,
+    ):
         """Initialize the TableWidget.
 
         Args:
@@ -90,9 +100,27 @@ class TableWidget(_WIDGET_BASE):
                 "`pip install 'bigframes[anywidget]'` to use TableWidget."
             )
 
-        self._dataframe = dataframe
+        from bigframes.session import deferred
+
+        if isinstance(dataframe, deferred.DeferredBigQueryDataFrame):
+            self.is_deferred_mode = True
+            self._deferred_dataframe: Optional[
+                deferred.DeferredBigQueryDataFrame
+            ] = dataframe
+            self._dataframe: Optional[bigframes.dataframe.DataFrame] = None
+        elif bigframes.options.display.repr_mode == "deferred":
+            self.is_deferred_mode = True
+            self._deferred_dataframe = None
+            self._dataframe = dataframe  # type: ignore
+        else:
+            self.is_deferred_mode = False
+            self._deferred_dataframe = None
+            self._dataframe = dataframe  # type: ignore
 
         super().__init__()
+
+        if dry_run_info:
+            self.dry_run_info = dry_run_info
 
         # Initialize attributes that might be needed by observers first
         self._table_id = str(uuid.uuid4())
@@ -107,18 +135,55 @@ class TableWidget(_WIDGET_BASE):
         initial_page_size = bigframes.options.display.max_rows
         initial_max_columns = bigframes.options.display.max_columns
 
-        # set traitlets properties that trigger observers
-        # TODO(b/462525985): Investigate and improve TableWidget UX for DataFrames with a large number of columns.
         self.page_size = initial_page_size
         self.max_columns = initial_max_columns
 
-        self.orderable_columns = self._get_orderable_columns(dataframe)
-
-        self._initial_load()
+        if not self.is_deferred_mode:
+            self._initialize_from_dataframe()
 
         # Signals to the frontend that the initial data load is complete.
         # Also used as a guard to prevent observers from firing during initialization.
         self._initial_load_complete = True
+
+    @traitlets.observe("start_execution")
+    def _on_start_execution(self, change: dict[str, Any]):
+        if change["new"]:
+            try:
+                if self.is_deferred_mode:
+                    self.is_deferred_mode = False
+                    if self._deferred_dataframe:
+                        result = self._deferred_dataframe.execute()
+                        if isinstance(result, bigframes.series.Series):
+                            self._dataframe = result.to_frame()
+                        elif isinstance(result, bigframes.dataframe.DataFrame):
+                            self._dataframe = result
+                        else:
+                            self._dataframe = result  # type: ignore
+                        self._initialize_from_dataframe()
+                    elif self._dataframe:
+                        self._initialize_from_dataframe()
+
+                    try:
+                        import IPython.display as ipy_display
+
+                        ipy_display.display(self)
+                    except ImportError:
+                        pass
+                elif not self.is_deferred_mode and self._dataframe:
+                    self._initial_load()
+            except Exception as e:
+                self._error_message = str(e)
+            finally:
+                self.is_deferred_mode = False
+
+    def _initialize_from_dataframe(self):
+        if self._dataframe is None:
+            return
+
+        self.orderable_columns = self._get_orderable_columns(self._dataframe)
+
+        self._initial_load()
+
 
     def _get_orderable_columns(
         self, dataframe: bigframes.dataframe.DataFrame
@@ -274,7 +339,9 @@ class TableWidget(_WIDGET_BASE):
     def _cached_data(self) -> pd.DataFrame:
         """Combine all cached batches into a single DataFrame."""
         if not self._cached_batches:
-            return pd.DataFrame(columns=self._dataframe.columns)
+            if self._dataframe is not None:
+                return pd.DataFrame(columns=self._dataframe.columns)
+            return pd.DataFrame()
         return pd.concat(self._cached_batches)
 
     def _reset_batch_cache(self) -> None:
@@ -285,6 +352,8 @@ class TableWidget(_WIDGET_BASE):
 
     def _reset_batches_for_new_page_size(self) -> None:
         """Reset the batch iterator when page size changes."""
+        if self._dataframe is None:
+            return
         with bigframes.option_context("display.progress_bar", None):
             self._batches = self._dataframe.to_pandas_batches(page_size=self.page_size)
 
@@ -292,6 +361,9 @@ class TableWidget(_WIDGET_BASE):
 
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
+        if self.is_deferred_mode:
+            return
+
         new_page = None
         with (
             self._setting_html_lock,
@@ -301,6 +373,10 @@ class TableWidget(_WIDGET_BASE):
                 self.table_html = (
                     f"<div class='bigframes-error-message'>{self._error_message}</div>"
                 )
+                return
+
+            if self._dataframe is None:
+                self.table_html = "<div class='bigframes-error-message'>Internal Error: DataFrame is missing.</div>"
                 return
 
             # Apply sorting if a column is selected

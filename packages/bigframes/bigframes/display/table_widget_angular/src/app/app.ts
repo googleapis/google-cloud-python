@@ -28,41 +28,59 @@ import { WidgetStateService } from './widget-state.service';
         <div class="bigframes-error-message">{{ errorMessage() }}</div>
       }
 
-      <div #tableContainer
-           class="table-container"
-           [innerHTML]="sanitizedHtml()"
-           (click)="handleTableClick($event)">
-      </div>
-
-      <footer class="footer">
-        <span class="row-count">{{ rowCountText() }}</span>
-
-        <div class="pagination">
-          <button [disabled]="prevPageDisabled()" (click)="handlePageChange(-1)">&lt;</button>
-          <span class="page-indicator">{{ pageIndicatorText() }}</span>
-          <button [disabled]="nextPageDisabled()" (click)="handlePageChange(1)">&gt;</button>
-        </div>
-
-        <div class="settings">
-          <div class="max-columns">
-            <label for="max-cols-select">Max columns:</label>
-            <select id="max-cols-select" [value]="maxColumns()" (change)="handleMaxColumnsChange($event)">
-              @for (cols of maxColumnOptions; track cols) {
-                <option [value]="cols">{{ cols === 0 ? 'All' : cols }}</option>
+      @if (isDeferredMode()) {
+        <div class="deferred-container">
+          <div class="deferred-card">
+            <div class="deferred-title">SQL Query Execution Deferred</div>
+            <p class="deferred-estimate">{{ dryRunInfo() }}</p>
+            <button class="run-query-button"
+                    [disabled]="isLoading()"
+                    (click)="handleRunQuery()">
+              @if (isLoading()) {
+                <span class="spinner"></span> Running...
+              } @else {
+                Run Query
               }
-            </select>
-          </div>
-
-          <div class="page-size">
-            <label for="page-size-select">Page size:</label>
-            <select id="page-size-select" [value]="pageSize()" (change)="handlePageSizeChange($event)">
-              @for (size of pageSizeOptions; track size) {
-                <option [value]="size">{{ size }}</option>
-              }
-            </select>
+            </button>
           </div>
         </div>
-      </footer>
+      } @else {
+        <div #tableContainer
+             class="table-container"
+             [innerHTML]="sanitizedHtml()"
+             (click)="handleTableClick($event)">
+        </div>
+
+        <footer class="footer">
+          <span class="row-count">{{ rowCountText() }}</span>
+
+          <div class="pagination">
+            <button [disabled]="prevPageDisabled()" (click)="handlePageChange(-1)">&lt;</button>
+            <span class="page-indicator">{{ pageIndicatorText() }}</span>
+            <button [disabled]="nextPageDisabled()" (click)="handlePageChange(1)">&gt;</button>
+          </div>
+
+          <div class="settings">
+            <div class="max-columns">
+              <label for="max-cols-select">Max columns:</label>
+              <select id="max-cols-select" [value]="maxColumns()" (change)="handleMaxColumnsChange($event)">
+                @for (cols of maxColumnOptions; track cols) {
+                  <option [value]="cols">{{ cols === 0 ? 'All' : cols }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="page-size">
+              <label for="page-size-select">Page size:</label>
+              <select id="page-size-select" [value]="pageSize()" (change)="handlePageSizeChange($event)">
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </footer>
+      }
     </div>
   `,
   styles: [`
@@ -292,6 +310,101 @@ import { WidgetStateService } from './widget-state.service';
     .bigframes-widget ::ng-deep .debug-info {
       border-top: 1px solid var(--bf-border-color);
     }
+
+    .bigframes-widget .deferred-container {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      min-height: 220px;
+      padding: 24px;
+      width: 100%;
+    }
+
+    .bigframes-widget .deferred-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 500px;
+      padding: 32px;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .bigframes-widget.bigframes-dark-mode .deferred-card {
+      background: linear-gradient(135deg, rgba(32, 33, 36, 0.6), rgba(32, 33, 36, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .bigframes-widget .deferred-card {
+        background: linear-gradient(135deg, rgba(32, 33, 36, 0.6), rgba(32, 33, 36, 0.3));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .bigframes-widget .deferred-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .bigframes-widget .deferred-estimate {
+      color: var(--bf-null-fg);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .bigframes-widget .run-query-button {
+      align-items: center;
+      background: linear-gradient(135deg, #34a853, #1a73e8);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 14px;
+      font-weight: 600;
+      gap: 8px;
+      justify-content: center;
+      padding: 10px 20px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .bigframes-widget .run-query-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .bigframes-widget .run-query-button:active {
+      transform: translateY(0);
+    }
+
+    .bigframes-widget .run-query-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .bigframes-widget .spinner {
+      animation: spin 1s linear infinite;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      display: inline-block;
+      height: 12px;
+      width: 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   `]
 })
 export class App {
@@ -307,6 +420,9 @@ export class App {
   protected readonly pageSize = this.state.pageSize;
   protected readonly page = this.state.page;
   protected readonly rowCount = this.state.rowCount;
+  protected readonly isDeferredMode = this.state.isDeferredMode;
+  protected readonly dryRunInfo = this.state.dryRunInfo;
+  protected readonly isLoading = signal(false);
 
   // Computed properties for formatting and display states
   protected readonly sanitizedHtml = computed(() =>
@@ -382,6 +498,11 @@ export class App {
 
   ngOnDestroy() {
     this.themeObserver?.disconnect();
+  }
+
+  protected handleRunQuery() {
+    this.isLoading.set(true);
+    this.state.setStartExecution(true);
   }
 
   protected handlePageChange(direction: number) {
