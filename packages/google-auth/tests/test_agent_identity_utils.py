@@ -21,9 +21,7 @@ import urllib.parse
 from cryptography import x509
 import pytest
 
-from google.auth import _agent_identity_utils
-from google.auth import environment_vars
-from google.auth import exceptions
+from google.auth import _agent_identity_utils, environment_vars, exceptions
 
 # A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
 NON_AGENT_IDENTITY_CERT_BYTES = (
@@ -60,15 +58,22 @@ class TestAgentIdentityUtils:
         cert = _agent_identity_utils.parse_certificate(NON_AGENT_IDENTITY_CERT_BYTES)
         assert not _agent_identity_utils._is_agent_identity_certificate(cert)
 
-    def test__is_agent_identity_certificate_valid_spiffe(self):
+    @pytest.mark.parametrize(
+        "spiffe_id",
+        [
+            "spiffe://agents.global.proj-12345.system.id.goog/workload",
+            "spiffe://agents.global.org-12345.system.id.goog/workload",
+            "spiffe://agents-nonprod.global.proj-12345.system.id.goog/workload",
+            "spiffe://agents-nonprod.global.org-12345.system.id.goog/workload",
+        ],
+    )
+    def test__is_agent_identity_certificate_valid_spiffe(self, spiffe_id):
         mock_cert = mock.MagicMock()
         mock_ext = mock.MagicMock()
         mock_san_value = mock.MagicMock()
         mock_cert.extensions.get_extension_for_oid.return_value = mock_ext
         mock_ext.value = mock_san_value
-        mock_san_value.get_values_for_type.return_value = [
-            "spiffe://agents.global.proj-12345.system.id.goog/workload"
-        ]
+        mock_san_value.get_values_for_type.return_value = [spiffe_id]
         assert _agent_identity_utils._is_agent_identity_certificate(mock_cert)
 
     def test__is_agent_identity_certificate_non_matching_spiffe(self):
@@ -172,7 +177,7 @@ class TestAgentIdentityUtils:
         with pytest.raises(exceptions.RefreshError):
             _agent_identity_utils.get_agent_identity_certificate_path()
 
-        assert mock_sleep.call_count == 100
+        assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
     @mock.patch("time.sleep")
     def test_get_agent_identity_certificate_path_failure(
@@ -191,7 +196,7 @@ class TestAgentIdentityUtils:
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
             in str(excinfo.value)
         )
-        assert mock_sleep.call_count == 100
+        assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
     @mock.patch("time.sleep")
     @mock.patch("os.path.exists")
@@ -215,7 +220,149 @@ class TestAgentIdentityUtils:
         with pytest.raises(exceptions.RefreshError):
             _agent_identity_utils.get_agent_identity_certificate_path()
 
-        assert mock_sleep.call_count == 100
+        assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
+
+    @mock.patch("time.sleep")
+    def test_get_agent_identity_certificate_path_non_workload_config(
+        self, mock_sleep, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("config.json")
+        config_path.write(
+            json.dumps({"cert_configs": {"pkcs11": {"module": "some_module"}}})
+        )
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should return None immediately without polling
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    def test_get_agent_identity_certificate_path_invalid_json(
+        self, mock_sleep, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("config.json")
+        config_path.write("{invalid_json: true}")  # Invalid JSON missing quotes
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should return None immediately without polling/sleeping
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    def test_get_agent_identity_certificate_path_non_dict_json(
+        self, mock_sleep, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("config.json")
+        config_path.write(json.dumps(["not", "a", "dict"]))  # Valid JSON list
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should fail fast immediately and return None without polling
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    def test_get_agent_identity_certificate_path_workload_config_missing_cert_path(
+        self, mock_sleep, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("config.json")
+        config_path.write(json.dumps({"cert_configs": {"workload": {}}}))
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should return None immediately without polling
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    def test_get_agent_identity_certificate_path_no_config_but_has_well_known_dir(
+        self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+
+        # Simulate that the well-known workload mount directory exists, and the cert is ready
+        mock_exists.return_value = True
+        mock_is_ready.return_value = True
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should return the well-known path immediately
+        assert result == _agent_identity_utils._WELL_KNOWN_CERT_PATH
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    @mock.patch("os.path.exists")
+    def test_get_agent_identity_certificate_path_no_config_no_well_known_dir(
+        self, mock_exists, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+
+        # Simulate that the well-known mount directory does NOT exist
+        mock_exists.return_value = False
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        # Should return None immediately without polling
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    def test_get_agent_identity_certificate_path_no_config_well_known_polling_success(
+        self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+
+        # Simulate that the directory exists, file appears on 2nd try
+        mock_exists.return_value = True
+        mock_is_ready.side_effect = [False, True]
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert result == _agent_identity_utils._WELL_KNOWN_CERT_PATH
+        assert mock_sleep.call_count == 1
+
+    @mock.patch("time.sleep")
+    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    def test_get_agent_identity_certificate_path_no_config_well_known_polling_timeout(
+        self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+
+        # Simulate that the directory exists, but file never appears
+        mock_exists.return_value = True
+        mock_is_ready.return_value = False
+
+        with pytest.raises(exceptions.RefreshError):
+            _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_and_parse_agent_identity_certificate_opted_out(
@@ -260,27 +407,6 @@ class TestAgentIdentityUtils:
         mock_open.assert_called_once_with("/fake/cert.pem", "rb")
         mock_parse_certificate.assert_called_once_with(b"cert_bytes")
         assert result == mock_parse_certificate.return_value
-
-    @mock.patch("time.sleep", return_value=None)
-    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
-    def test_get_agent_identity_certificate_path_fallback_to_well_known_path(
-        self, mock_is_ready, mock_sleep, monkeypatch
-    ):
-        # Set a dummy config path that won't be found.
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, "/dummy/config.json"
-        )
-
-        # First, the primary path from the (mocked) config is not ready.
-        # Then, the fallback well-known path is ready.
-        mock_is_ready.side_effect = [False, True]
-
-        result = _agent_identity_utils.get_agent_identity_certificate_path()
-
-        assert result == _agent_identity_utils._WELL_KNOWN_CERT_PATH
-        # The sleep should have been called once before the fallback is checked.
-        mock_sleep.assert_called_once()
-        assert mock_is_ready.call_count == 2
 
     def test_get_cached_cert_fingerprint_no_cert(self):
         with pytest.raises(ValueError, match="mTLS connection is not configured."):

@@ -104,6 +104,7 @@ _WRITABLE_FIELDS = (
     "name",
     "retention",
     "storageClass",
+    "contexts",
 )
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
@@ -3848,6 +3849,8 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
+        delete_source_objects=None,
     ):
         """Concatenate source blobs into this one.
 
@@ -3907,6 +3910,16 @@ class Blob(_PropertyMixin):
             Change the value to ``DEFAULT_RETRY`` or another `google.api_core.retry.Retry` object
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts`
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
+        :type delete_source_objects: bool
+        :param delete_source_objects:
+            (Optional) If True, the source objects will be deleted after a
+            successful composition.
         """
         with self._create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
@@ -3958,10 +3971,21 @@ class Blob(_PropertyMixin):
 
                 source_objects.append(source_object)
 
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
+
             request = {
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
             }
+
+            if delete_source_objects is not None:
+                request["deleteSourceObjects"] = delete_source_objects
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3997,6 +4021,7 @@ class Blob(_PropertyMixin):
         if_source_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
     ):
         """Rewrite source blob into this one.
 
@@ -4080,6 +4105,11 @@ class Blob(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
 
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts` or dict
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
                   is a rewrite token (``None`` if the rewrite is complete),
@@ -4124,6 +4154,14 @@ class Blob(_PropertyMixin):
                 if_source_metageneration_match=if_source_metageneration_match,
                 if_source_metageneration_not_match=if_source_metageneration_not_match,
             )
+
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
 
             path = f"{source.path}/rewriteTo{self.path}"
             api_response = client._post_resource(
@@ -5008,6 +5046,29 @@ class Blob(_PropertyMixin):
         return Retention.from_api_repr(info, self)
 
     @property
+    def contexts(self):
+        """Retrieve the contexts for this object.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: an instance for managing the object's contexts.
+        """
+        info = self._properties.get("contexts", {})
+        return ObjectContexts.from_api_repr(info, self)
+
+    @contexts.setter
+    def contexts(self, value):
+        """Update the contexts for this object.
+
+        :type value: :class:`ObjectContexts` or dict or None
+        :param value: the new contexts for the object.
+        """
+        if value is None:
+            self._properties["contexts"] = None
+        else:
+            self._properties["contexts"] = value
+        self._patch_property("contexts", value)
+
+    @property
     def soft_delete_time(self):
         """If this object has been soft-deleted, returns the time at which it became soft-deleted.
 
@@ -5299,3 +5360,140 @@ class Retention(dict):
         retention_expiration_time = self.get("retentionExpirationTime")
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
+
+
+class ObjectCustomContextPayload(dict):
+    """Payload for a custom context.
+
+    :type value: str or ``NoneType``
+    :param value: (Optional) The value of the custom context.
+    """
+
+    def __init__(self, value=None):
+        data = {"value": value}
+        super(ObjectCustomContextPayload, self).__init__(data)
+        self._contexts = None
+
+    @property
+    def value(self):
+        """The value of the custom context.
+
+        :rtype: str or ``NoneType``
+        :returns: The value of the custom context.
+        """
+        return self.get("value")
+
+    @value.setter
+    def value(self, value):
+        self["value"] = value
+        if hasattr(self, "_contexts") and self._contexts and self._contexts.blob:
+            self._contexts.blob._patch_property("contexts", self._contexts)
+
+    @property
+    def create_time(self):
+        """Creation time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        create_time = self.get("createTime")
+        if create_time is not None:
+            return _rfc3339_nanos_to_datetime(create_time)
+
+    @property
+    def update_time(self):
+        """Last update time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        update_time = self.get("updateTime")
+        if update_time is not None:
+            return _rfc3339_nanos_to_datetime(update_time)
+
+
+class ObjectContexts(dict):
+    """Container for an object's contexts.
+
+    See: https://docs.cloud.google.com/storage/docs/object-contexts
+
+    :type blob: :class:`Blob`
+    :param blob: blob for which these contexts apply to.
+
+    :type custom: dict or ``NoneType``
+    :param custom: (Optional) Custom contexts mapping.
+    """
+
+    def __init__(self, blob, custom=None):
+        data = {}
+        if custom is not None:
+            if not isinstance(custom, dict):
+                raise ValueError(
+                    "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+                )
+            for payload in custom.values():
+                if not isinstance(payload, ObjectCustomContextPayload):
+                    raise ValueError(
+                        "All values in custom must be ObjectCustomContextPayload instances"
+                    )
+                payload._contexts = self
+            data["custom"] = custom
+        super(ObjectContexts, self).__init__(data)
+        self._blob = blob
+
+    @classmethod
+    def from_api_repr(cls, resource, blob):
+        """Factory: construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :type blob: :class:`Blob`
+        :param blob: Blob for which these contexts apply to.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: ObjectContexts instance created from resource.
+        """
+        instance = cls(blob)
+        custom = {}
+        for key, payload_resource in resource.get("custom", {}).items():
+            payload = ObjectCustomContextPayload()
+            payload.update(payload_resource)
+            payload._contexts = instance
+            custom[key] = payload
+        instance["custom"] = custom
+        return instance
+
+    @property
+    def blob(self):
+        """Blob for which these contexts apply to.
+
+        :rtype: :class:`Blob`
+        :returns: the instance's blob.
+        """
+        return self._blob
+
+    @property
+    def custom(self):
+        """Custom contexts mapping.
+
+        :rtype: dict
+        :returns: Mapping of keys to :class:`ObjectCustomContextPayload` instances.
+        """
+        if "custom" not in self:
+            self["custom"] = {}
+        return self["custom"]
+
+    @custom.setter
+    def custom(self, value):
+        if value is None:
+            value = {}
+        if not isinstance(value, dict):
+            raise ValueError(
+                "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+            )
+        for payload in value.values():
+            if isinstance(payload, ObjectCustomContextPayload):
+                payload._contexts = self
+        self["custom"] = value
+        self.blob._patch_property("contexts", self)

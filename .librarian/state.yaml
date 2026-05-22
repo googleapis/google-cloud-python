@@ -74,7 +74,7 @@ libraries:
       - packages/django-google-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.32.0
+    version: 1.33.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -387,7 +387,7 @@ libraries:
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.52.0
+    version: 2.53.0
     last_generated_commit: ""
     apis: []
     source_roots:

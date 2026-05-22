@@ -35,6 +35,7 @@ from google.cloud.support_v2.services.comment_service.client import CommentServi
 from google.cloud.support_v2.types.actor import Actor
 from google.cloud.support_v2.types.attachment import Attachment
 from google.cloud.support_v2.types.attachment_service import (
+    GetAttachmentRequest,
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
@@ -55,6 +56,7 @@ from google.cloud.support_v2.types.case_service import (
 from google.cloud.support_v2.types.comment import Comment
 from google.cloud.support_v2.types.comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
@@ -69,6 +71,7 @@ __all__ = (
     "CommentServiceAsyncClient",
     "Actor",
     "Attachment",
+    "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "Case",
@@ -86,6 +89,7 @@ __all__ = (
     "UpdateCaseRequest",
     "Comment",
     "CreateCommentRequest",
+    "GetCommentRequest",
     "ListCommentsRequest",
     "ListCommentsResponse",
     "Escalation",

@@ -40,7 +40,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class PartnerLinkServiceTransport(abc.ABC):
     """Abstract transport class for PartnerLinkService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/datamanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/datamanager",
+        "https://www.googleapis.com/auth/datamanager.partnerlink",
+    )
 
     DEFAULT_HOST: str = "datamanager.googleapis.com"
 

@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.13.0
+version: v0.14.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 392c8aa259daf4570073220faa9e842cf1e2e173
-    sha256: 2b3be6d9749cdf2a337f2c76aa08857096671ebd4b17007d09ee3752b7b10fe9
+    commit: 43731d5d22f8e3526ba7aa708da9d5de26043d0f
+    sha256: d146cfa257ffa00fc298ec7b6f73f9c7395a5a5ba050dcc553cfd78d6705bc3b
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -67,7 +67,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.32.0
+    version: 1.33.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -220,7 +220,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.52.0
+    version: 2.53.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -391,7 +391,6 @@ libraries:
       - path: google/cloud/asset/v1p5beta1
       - path: google/cloud/asset/v1p2beta1
       - path: google/cloud/asset/v1p1beta1
-    skip_generate: true
     python:
       opt_args_by_api:
         google/cloud/asset/v1:
@@ -433,7 +432,6 @@ libraries:
       - google/cloud/automl_v1beta1/services/tables/__init__.py
       - google/cloud/automl_v1beta1/services/tables/gcs_client.py
       - google/cloud/automl_v1beta1/services/tables/tables_client.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: automl
@@ -512,7 +510,6 @@ libraries:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.41.0
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -853,7 +850,6 @@ libraries:
     version: 0.6.0
     apis:
       - path: google/cloud/datacatalog/lineage/v1
-    skip_generate: true
     python:
       metadata_name_override: lineage
       default_version: v1
@@ -1431,7 +1427,6 @@ libraries:
     version: 2.30.0
     apis:
       - path: google/monitoring/v3
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1911,7 +1906,6 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1940,8 +1934,6 @@ libraries:
     version: 3.10.1
     apis:
       - path: google/storage/v2
-    skip_generate: true
-    skip_release: true
     python:
       library_type: GAPIC_MANUAL
       opt_args_by_api:

@@ -35,16 +35,6 @@ retry_cleanup = retry.RetryErrors(
 
 
 @pytest.fixture(scope="module")
-def sample_name():
-    """Sample testcase modules must define this fixture.
-
-    The name is used to label the instance created by the sample, to
-    aid in debugging leaked instances.
-    """
-    raise NotImplementedError("Define 'sample_name' fixture in sample test driver")
-
-
-@pytest.fixture(scope="module")
 def database_dialect():
     """Database dialect to be used for this sample.
 
@@ -79,14 +69,14 @@ def scrub_instance_ignore_not_found(to_scrub):
                 pass
 
         retry_cleanup(to_scrub.delete)()
-    except exceptions.NotFound:
+    except exceptions.GoogleAPICallError:
         pass
 
 
 @pytest.fixture(scope="session")
 def cleanup_old_instances(spanner_client):
-    """Delete instances, created by samples, that are older than an hour."""
-    cutoff = int(time.time()) - 1 * 60 * 60
+    """Delete instances, created by samples, that are older than 4 hours."""
+    cutoff = int(time.time()) - 4 * 60 * 60
     instance_filter = "labels.cloud_spanner_samples:true"
 
     for instance_pb in spanner_client.list_instances(filter_=instance_filter):
@@ -99,31 +89,31 @@ def cleanup_old_instances(spanner_client):
                 scrub_instance_ignore_not_found(inst)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def instance_id():
     """Unique id for the instance used in samples."""
     return f"test-instance-{uuid.uuid4().hex[:10]}"
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance_id():
     """Unique id for the multi-region instance used in samples."""
     return f"multi-instance-{uuid.uuid4().hex[:10]}"
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(
         spanner_client.project_name, "regional-us-central1"
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(spanner_client.project_name, "nam3")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def proto_descriptor_file():
     import os
 
@@ -134,13 +124,12 @@ def proto_descriptor_file():
     file.close()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def sample_instance(
     spanner_client,
     cleanup_old_instances,
     instance_id,
     instance_config,
-    sample_name,
 ):
     operation = spanner_client.instance_admin_api.create_instance(
         parent=spanner_client.project_name,
@@ -151,7 +140,7 @@ def sample_instance(
             node_count=1,
             labels={
                 "cloud_spanner_samples": "true",
-                "sample_name": sample_name,
+                "sample_name": "shared-samples",
                 "created": str(int(time.time())),
             },
             edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,  # Optional
@@ -170,20 +159,19 @@ def sample_instance(
     scrub_instance_ignore_not_found(sample_instance)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance(
     spanner_client,
     cleanup_old_instances,
     multi_region_instance_id,
     multi_region_instance_config,
-    sample_name,
 ):
     multi_region_instance = spanner_client.instance(
         multi_region_instance_id,
         multi_region_instance_config,
         labels={
             "cloud_spanner_samples": "true",
-            "sample_name": sample_name,
+            "sample_name": "shared-samples",
             "created": str(int(time.time())),
         },
     )
@@ -205,7 +193,7 @@ def database_id():
 
     Sample testcase modules can override as needed.
     """
-    return "my-database-id"
+    return f"my-db-{uuid.uuid4().hex[:10]}"
 
 
 @pytest.fixture(scope="module")
