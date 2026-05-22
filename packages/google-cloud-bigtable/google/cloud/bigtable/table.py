@@ -1236,7 +1236,7 @@ def _create_row_request(
              ``end_key`` is not greater than ``start_key``
     """
     if (start_key is not None or end_key is not None) and row_set is not None:
-        raise ValueError("Row range and row set cannot be " "set simultaneously")
+        raise ValueError("Row range and row set cannot be set simultaneously")
 
     query = ReadRowsQuery(
         limit=limit,

@@ -156,12 +156,12 @@ class Instance(object):
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
             raise ValueError(
-                "Instance protobuf name was not in the " "expected format.",
+                "Instance protobuf name was not in the expected format.",
                 instance_pb.name,
             )
         if match.group("project") != client.project:
             raise ValueError(
-                "Project ID on instance does not match the " "project ID on the client"
+                "Project ID on instance does not match the project ID on the client"
             )
         instance_id = match.group("instance_id")
 

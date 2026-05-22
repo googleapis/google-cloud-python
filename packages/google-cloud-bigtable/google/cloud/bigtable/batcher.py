@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """User friendly container for Google Cloud Bigtable MutationBatcher."""
+
 import queue
 import atexit
 

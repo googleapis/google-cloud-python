@@ -27,6 +27,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
+
 import copy
 import os
 import warnings
@@ -167,7 +168,7 @@ class Client(ClientWithProject):
             )
         if read_only and admin:
             raise ValueError(
-                "A read-only client cannot also perform" "administrative actions."
+                "A read-only client cannot also performadministrative actions."
             )
 
         # NOTE: We set the scopes **before** calling the parent constructor.

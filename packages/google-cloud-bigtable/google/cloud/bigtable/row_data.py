@@ -14,7 +14,6 @@
 
 """Container for Google Cloud Bigtable Cells and Streaming Row Contents."""
 
-
 from google.api_core import exceptions
 from google.api_core import retry
 

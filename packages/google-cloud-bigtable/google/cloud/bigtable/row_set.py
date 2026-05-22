@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User-friendly container for Google Cloud Bigtable RowSet """
-
+"""User-friendly container for Google Cloud Bigtable RowSet"""
 
 from google.cloud.bigtable.data.read_rows_query import (
     RowRange as BaseRowRange,

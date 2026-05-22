@@ -14,7 +14,6 @@
 
 """User friendly container for Google Cloud Bigtable Column Family."""
 
-
 from google.cloud import _helpers
 from google.cloud.bigtable.admin.types import table as table_v2_pb2
 from google.cloud.bigtable.admin.types import (

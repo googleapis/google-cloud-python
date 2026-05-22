@@ -23,7 +23,7 @@ from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _retry_exception_factory,
-    _rst_stream_aware_predicate
+    _rst_stream_aware_predicate,
 )
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
