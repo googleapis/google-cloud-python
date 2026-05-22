@@ -757,8 +757,6 @@ class FunctionSession:
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,
         container_memory: Optional[str] = None,
-        *,
-        _force_deploy: bool = False,
     ):
         """Decorator to turn a Python user defined function (udf) into a
         BigQuery managed function.
@@ -922,6 +920,9 @@ class FunctionSession:
                 max_batching_rows=max_batching_rows,
                 packages=tuple(packages) if packages else (),
             )
+            if udf_sig.is_row_processor:
+                msg = bfe.format_message("input_types=Series is in preview.")
+                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
             if (
                 not name and not _force_deploy
@@ -931,7 +932,8 @@ class FunctionSession:
                     code=code_def,
                     requirements=requirements,
                 )
-            else:
+                return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
+            else:  # deploy immediately
                 bq_function_name = (
                     managed_function_client.provision_bq_managed_function(
                         name=name,
@@ -947,21 +949,17 @@ class FunctionSession:
                     routine_ref=bigquery.RoutineReference.from_string(full_rf_name),
                     signature=udf_sig,
                 )
-
-            if udf_sig.is_row_processor:
-                msg = bfe.format_message("input_types=Series is in preview.")
-                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-
-            if not name:  # session-owned resource - will be cleaned up automatically
-                if _force_deploy:
+                if name is None:
+                    # Null name means anonymous, session-owned resource with force deploy.
+                    # Unnamed resources are owned by the session and will be cleaned up automatically.
                     self._update_temp_artifacts(full_rf_name, "")
-                return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
-
-            # user-managed permanent resource - will not be cleaned up automatically
-            else:
-                return bq_functions.BigqueryCallableRoutine(
-                    udf_definition, session, local_func=func, is_managed=True
-                )
+                    return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
+                else:
+                    # user-managed permanent resource - will not be cleaned up automatically
+                    # provide richer handle for backwards compatibility
+                    return bq_functions.BigqueryCallableRoutine(
+                        udf_definition, session, local_func=func, is_managed=True
+                    )
 
         return wrapper
 

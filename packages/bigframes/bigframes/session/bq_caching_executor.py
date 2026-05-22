@@ -53,6 +53,7 @@ from bigframes.core import (
 )
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.functions import udf_def
 from bigframes.session import (
     direct_gbq_execution,
     executor,
@@ -522,20 +523,10 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _deploy_undeployed_udfs(
         self, plan: nodes.BigFrameNode
     ) -> nodes.BigFrameNode:
-        undeployed_udfs = self._collect_udf_defs(plan)
-        if not undeployed_udfs:
-            return plan
-
-        seen = set()
-        unique_undeployed_udfs = []
-        for udf in undeployed_udfs:
-            if udf not in seen:
-                seen.add(udf)
-                unique_undeployed_udfs.append(udf)
-
+        referenced_udfs = self._collect_udf_defs(plan)
         session = self.loader._session
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf] = {}
-        for udf in unique_undeployed_udfs:
+        for udf in set(referenced_udfs):
             deployed_udf = await asyncio.to_thread(
                 session._function_session._deploy_udf,
                 session,
@@ -552,10 +543,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 for sub_expr in expr.walk():
                     if isinstance(sub_expr, expression.OpExpression):
                         op = sub_expr.op
-                        if isinstance(
-                            op,
-                            (ops.PythonUdfOp,),
-                        ):
+                        if isinstance(op, ops.PythonUdfOp):
                             func_def = op.function_def
                             if isinstance(func_def, udf_def.PythonUdf):
                                 udf_defs.append(func_def)
@@ -566,7 +554,6 @@ class BigQueryCachingExecutor(executor.Executor):
         plan: nodes.BigFrameNode,
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf],
     ) -> nodes.BigFrameNode:
-        # Now rewrite the plan using bottom_up to substitute the UDF definitions!
         def replace_in_expr(expr: expression.Expression) -> expression.Expression:
             def replace_step(e: expression.Expression) -> expression.Expression:
                 if isinstance(e, expression.OpExpression):
@@ -574,9 +561,9 @@ class BigQueryCachingExecutor(executor.Executor):
                     if isinstance(op, ops.PythonUdfOp):
                         func_def = op.function_def
                         if func_def in deployed_mapping:
-                            new_func_def = deployed_mapping[func_def]
-                            new_op = dataclasses.replace(op, function_def=new_func_def)
-                            return dataclasses.replace(e, op=new_op)
+                            deployed_func = deployed_mapping[func_def]
+                            rf_op = ops.RemoteFunctionOp(function_def=deployed_func)
+                            return dataclasses.replace(e, op=rf_op)
                         raise ValueError(
                             f"UDF definition {func_def} not found in deployed mapping"
                         )

@@ -1098,7 +1098,7 @@ class Block:
             expr = op.as_expr(ex.free_var(input_varname))
         else:
             input_varnames = op.free_variables
-            assert len(input_varnames) == 1
+            assert len(set(input_varnames)) == 1
             expr = op
             input_varname = input_varnames[0]
 

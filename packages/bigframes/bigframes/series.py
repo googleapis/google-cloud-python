@@ -2096,7 +2096,11 @@ class Series:
             )
 
         if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_binary_op(other, ops.func_to_op(func))
+            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+            if hasattr(other, "name") and other.name != self._name:  # type: ignore
+                result_series.name = None
+            else:
+                result_series.name = self.name
             return result_series
 
         bf_op = python_ops.python_callable_to_op(func)

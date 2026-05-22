@@ -4694,10 +4694,14 @@ class DataFrame:
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        op = ops.func_to_op(func)
+        expr = ops.func_to_op(func).as_expr(ex.free_var("input"))
+        if na_action == "ignore":
+            # True case, predicate, False case
+            expr = ops.where_op.as_expr(
+                expr, ops.notnull_op.as_expr(ex.free_var("input")), ex.const(None)
+            )
 
-        # TODO(shobs): Support **kwargs
-        return self._apply_unary_op(op)
+        return DataFrame(self._block.multi_apply_unary_op(expr))
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
         # In Bigframes BigQuery function, DataFrame '.apply' method is specifically
