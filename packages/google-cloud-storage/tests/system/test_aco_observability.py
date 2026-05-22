@@ -490,7 +490,9 @@ def test_get_bucket_synchronous_cache_warming(storage_client, buckets_to_delete)
         storage_client._bucket_metadata_cache._fetch_background = original_fetch
 
 
-def test_sequential_cache_priming_multi_region(storage_client, exporter, buckets_to_delete):
+def test_sequential_cache_priming_multi_region(
+    storage_client, exporter, buckets_to_delete
+):
     """Verifies that a cache miss returns immediately and warms the cache
     in a background thread for a multi-region bucket, and the resolved location
     is 'global'."""
@@ -522,7 +524,9 @@ def test_sequential_cache_priming_multi_region(storage_client, exporter, buckets
         blob.download_as_bytes()
 
         spans = exporter.get_finished_spans()
-        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        dl_spans = [
+            s for s in spans if s.name == "Storage.Blob.downloadAsBytes"
+        ]
         assert len(dl_spans) == 1
         attrs = dl_spans[0].attributes
         assert "gcp.resource.destination.id" not in attrs
@@ -536,7 +540,9 @@ def test_sequential_cache_priming_multi_region(storage_client, exporter, buckets
         blob.download_as_bytes()
 
         spans = exporter.get_finished_spans()
-        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        dl_spans = [
+            s for s in spans if s.name == "Storage.Blob.downloadAsBytes"
+        ]
         assert len(dl_spans) == 1
         attrs = dl_spans[0].attributes
         assert "gcp.resource.destination.id" in attrs
@@ -546,4 +552,3 @@ def test_sequential_cache_priming_multi_region(storage_client, exporter, buckets
         assert attrs["gcp.resource.destination.location"] == "global"
     finally:
         storage_client._bucket_metadata_cache.update_cache = original_update
-
