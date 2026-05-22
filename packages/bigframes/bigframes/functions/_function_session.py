@@ -955,13 +955,10 @@ class FunctionSession:
                     # Null name means anonymous, session-owned resource with force deploy.
                     # Unnamed resources are owned by the session and will be cleaned up automatically.
                     self._update_temp_artifacts(full_rf_name, "")
-                    return bq_functions.UdfRoutine(func=func, _udf_def=udf_definition)
-                else:
-                    # user-managed permanent resource - will not be cleaned up automatically
-                    # provide richer handle for backwards compatibility
-                    return bq_functions.BigqueryCallableRoutine(
-                        udf_definition, session, local_func=func, is_managed=True
-                    )
+
+                return bq_functions.BigqueryCallableRoutine(
+                    udf_definition, session, local_func=func, is_managed=True
+                )
 
         return wrapper
 
