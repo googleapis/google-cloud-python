@@ -51,9 +51,10 @@ class BucketMetadataCache:
             if bucket_name in self._cache:
                 return self._cache.get(bucket_name)
             elif bucket_name in self._inflight_fetches:
-                # this would be the case of thundering herd, where 'n' threads
-                # all of them faced "cache miss" and 1 is in progress to fetch metadata.
-                # hence we don't want rest `n - 1` threads to make the same req
+                # This handles a thundering herd where 'n' threads
+                # simultaneously experience a cache miss while 1 is already
+                # fetching metadata. The remaining n - 1 threads should
+                # bypass starting duplicate fetches.
                 return None
             else:
                 # fire a background thread and get bucket metadata.

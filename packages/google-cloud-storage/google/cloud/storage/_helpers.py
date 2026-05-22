@@ -40,8 +40,6 @@ from google.cloud.storage.retry import (
 )
 from google.cloud.storage._opentelemetry_tracing import (
     create_trace_span as _base_create_trace_span,
-    enable_otel_traces,
-    HAS_OPENTELEMETRY,
 )
 
 _logger = logging.getLogger(__name__)
@@ -252,51 +250,6 @@ class _PropertyMixin(object):
         if client is None:
             client = self.client
         return client
-
-    def _get_aco_attributes(self):
-        if not HAS_OPENTELEMETRY or not enable_otel_traces:
-            return {}
-        from google.cloud.storage.blob import Blob
-        from google.cloud.storage.bucket import Bucket
-
-        if isinstance(self, Bucket):
-            cache = getattr(self.client, "_bucket_metadata_cache", None)
-            bucket_name = self.name
-        elif isinstance(self, Blob):
-            bucket = getattr(self, "bucket", None)
-            cache = (
-                getattr(bucket.client, "_bucket_metadata_cache", None)
-                if bucket and hasattr(bucket, "client")
-                else None
-            )
-            bucket_name = getattr(bucket, "name", None) if bucket else None
-        else:
-            raise TypeError(
-                f"Unexpected type for ACO attribute retrieval: {type(self)}"
-            )
-
-        if callable(bucket_name):
-            try:
-                bucket_name = bucket_name()
-            except Exception as e:
-                _logger.debug(
-                    f"Failed callable bucket_name resolution in _get_aco_attributes: {e}"
-                )
-
-        if cache and bucket_name and isinstance(bucket_name, str):
-            try:
-                cached = cache.get_or_queue_fetch(bucket_name)
-                if cached and isinstance(cached, tuple) and len(cached) == 2:
-                    dest_id, loc = cached
-                    return {
-                        "gcp.resource.destination.id": dest_id,
-                        "gcp.resource.destination.location": loc,
-                    }
-            except Exception as e:
-                _logger.debug(
-                    f"Failed cache.get_or_queue_fetch in _get_aco_attributes: {e}"
-                )
-        return {}
 
     @contextmanager
     def _create_trace_span(self, name, attributes=None, **kwargs):
