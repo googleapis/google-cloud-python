@@ -120,14 +120,15 @@ class DualCompilerProxyExecutor(executor.Executor):
             return self._ibis_executor.execute(array_value, execution_spec)
         elif compiler_option == "experimental":
             return self._sqlglot_executor.execute(
-                array_value, execution_spec.add_labels({_COMPILER_LABEL_KEY: "sqlglot"})
+                array_value,
+                execution_spec.with_bq_labels({_COMPILER_LABEL_KEY: "sqlglot"}),
             )
         else:  # stable
             correlation_id = f"{uuid.uuid1().hex[:12]}"
             try:
                 return self._sqlglot_executor.execute(
                     array_value,
-                    execution_spec.add_labels(
+                    execution_spec.with_bq_labels(
                         {_COMPILER_LABEL_KEY: f"sqlglot-{correlation_id}"}
                     ),
                 )
@@ -139,7 +140,7 @@ class DualCompilerProxyExecutor(executor.Executor):
                 warnings.warn(msg, category=UserWarning)
                 return self._ibis_executor.execute(
                     array_value,
-                    execution_spec.add_labels(
+                    execution_spec.with_bq_labels(
                         {_COMPILER_LABEL_KEY: f"ibis-{correlation_id}"}
                     ),
                 )

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -961,11 +961,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_membership(request=request)
+                operation = await client.create_membership(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1115,11 +1115,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_feature(request=request)
+                operation = await client.create_feature(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1260,11 +1260,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_membership(request=request)
+                operation = await client.delete_membership(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1391,11 +1391,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_feature(request=request)
+                operation = await client.delete_feature(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1525,11 +1525,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_membership(request=request)
+                operation = await client.update_membership(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1674,11 +1674,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_feature(request=request)
+                operation = await client.update_feature(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1913,11 +1913,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_fleet(request=request)
+                operation = await client.create_fleet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2156,11 +2156,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_fleet(request=request)
+                operation = await client.update_fleet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2293,11 +2293,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_fleet(request=request)
+                operation = await client.delete_fleet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2669,11 +2669,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_scope_namespace(request=request)
+                operation = await client.create_scope_namespace(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2827,11 +2827,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_scope_namespace(request=request)
+                operation = await client.update_scope_namespace(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2963,11 +2963,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_scope_namespace(request=request)
+                operation = await client.delete_scope_namespace(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3342,11 +3342,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_scope_rbac_role_binding(request=request)
+                operation = await client.create_scope_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3503,11 +3503,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_scope_rbac_role_binding(request=request)
+                operation = await client.update_scope_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3643,11 +3643,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_scope_rbac_role_binding(request=request)
+                operation = await client.delete_scope_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4015,11 +4015,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_scope(request=request)
+                operation = await client.create_scope(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4157,11 +4157,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_scope(request=request)
+                operation = await client.update_scope(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4293,11 +4293,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_scope(request=request)
+                operation = await client.delete_scope(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4798,11 +4798,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_membership_binding(request=request)
+                operation = await client.create_membership_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4947,11 +4947,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_membership_binding(request=request)
+                operation = await client.update_membership_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5082,11 +5082,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_membership_binding(request=request)
+                operation = await client.delete_membership_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5464,11 +5464,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_membership_rbac_role_binding(request=request)
+                operation = await client.create_membership_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5625,11 +5625,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_membership_rbac_role_binding(request=request)
+                operation = await client.update_membership_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5765,11 +5765,11 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_membership_rbac_role_binding(request=request)
+                operation = await client.delete_membership_rbac_role_binding(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

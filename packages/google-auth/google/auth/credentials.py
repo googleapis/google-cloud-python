@@ -371,11 +371,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         new_manager._data = self._rab_manager._data
         target._rab_manager = new_manager
 
-    def _set_regional_access_boundary(self, seed):
-        """Applies the regional_access_boundary provided via the seed on these
-        credentials. This is intended for internal use only as invalid
-        seeds would produce unexpected results until automatic recovery is supported.
-        Currently this is used by the gcloud CLI and therefore changes to the
+    def _set_regional_access_boundary(self, initial_boundary):
+        """Applies the regional_access_boundary provided via the initial_boundary on these
+        credentials. This is intended for internal use only as an invalid
+        initial_boundary would produce unexpected results until automatic recovery
+        is supported. Currently this is used by the gcloud CLI and therefore changes to the
         contract MUST be backwards compatible (e.g. the method signature must be
         unchanged and the credentials with the RAB set must be returned).
 
@@ -384,8 +384,8 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             google.auth.credentials.Credentials: The credentials instance.
         """
         self._rab_manager.set_initial_regional_access_boundary(
-            encoded_locations=seed.get("encodedLocations", None),
-            expiry=seed.get("expiry", None),
+            encoded_locations=initial_boundary.get("encodedLocations", None),
+            expiry=initial_boundary.get("expiry", None),
         )
         return self
 

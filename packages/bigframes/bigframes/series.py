@@ -68,7 +68,6 @@ import bigframes.formatting_helpers as formatter
 import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.operations.blob as blob
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
@@ -319,18 +318,6 @@ class Series:
     @property
     def list(self) -> lists.ListAccessor:
         return lists.ListAccessor(self)
-
-    @property
-    def blob(self) -> blob.BlobAccessor:
-        """
-        Accessor for Blob operations.
-        """
-        warnings.warn(
-            "The blob accessor is deprecated and will be removed in a future release. Use bigframes.bigquery.obj functions instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        return blob.BlobAccessor(self)
 
     @property
     @validations.requires_ordering()
@@ -584,6 +571,9 @@ class Series:
             if name:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
+
+    def _get_display_df(self) -> bigframes.dataframe.DataFrame:
+        return self.to_frame()._get_display_df()
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """

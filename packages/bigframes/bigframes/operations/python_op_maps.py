@@ -71,11 +71,11 @@ PYTHON_TO_BIGFRAMES = {
     abs: numeric_ops.abs_op,
     pow: numeric_ops.pow_op,
     ### builtins -- iterable
-    all: array_ops.ArrayReduceOp(aggregations.all_op),
-    any: array_ops.ArrayReduceOp(aggregations.any_op),
-    sum: array_ops.ArrayReduceOp(aggregations.sum_op),
-    min: array_ops.ArrayReduceOp(aggregations.min_op),
-    max: array_ops.ArrayReduceOp(aggregations.max_op),
+    all: array_ops.ArrayReduceOp(aggregations.all_op),  # type: ignore
+    any: array_ops.ArrayReduceOp(aggregations.any_op),  # type: ignore
+    sum: array_ops.ArrayReduceOp(aggregations.sum_op),  # type: ignore
+    min: array_ops.ArrayReduceOp(aggregations.min_op),  # type: ignore
+    max: array_ops.ArrayReduceOp(aggregations.max_op),  # type: ignore
 }
 
 

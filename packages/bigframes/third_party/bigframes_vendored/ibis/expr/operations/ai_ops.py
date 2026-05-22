@@ -158,6 +158,7 @@ class AIClassify(Value):
     examples: Optional[Value]
     connection_id: Optional[Value[dt.String]]
     endpoint: Optional[Value[dt.String]]
+    output_mode: Optional[Value[dt.String]]
     optimization_mode: Optional[Value[dt.String]]
     max_error_ratio: Optional[Value[dt.Float64]]
 
@@ -165,6 +166,8 @@ class AIClassify(Value):
 
     @attribute
     def dtype(self) -> dt.DataType:
+        if self.output_mode is not None:
+            return dt.Array(dt.string)
         return dt.string
 
 

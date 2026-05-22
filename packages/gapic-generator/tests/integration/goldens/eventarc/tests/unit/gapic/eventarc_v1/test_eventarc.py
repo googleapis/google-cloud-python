@@ -986,8 +986,10 @@ def test_eventarc_client_create_channel_credentials_file(client_class, transport
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetTriggerRequest,
-  dict,
+  eventarc.GetTriggerRequest({
+  }),
+  {
+  },
 ])
 def test_get_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -997,7 +999,7 @@ def test_get_trigger(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1127,7 +1129,11 @@ async def test_get_trigger_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetTriggerRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetTriggerRequest({  }),
+  {  },
+])
+async def test_get_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1135,7 +1141,7 @@ async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=e
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1168,11 +1174,6 @@ async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=e
     assert response.event_data_content_type == 'event_data_content_type_value'
     assert response.satisfies_pzs is True
     assert response.etag == 'etag_value'
-
-
-@pytest.mark.asyncio
-async def test_get_trigger_async_from_dict():
-    await test_get_trigger_async(request_type=dict)
 
 def test_get_trigger_field_headers():
     client = EventarcClient(
@@ -1320,8 +1321,10 @@ async def test_get_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListTriggersRequest,
-  dict,
+  eventarc.ListTriggersRequest({
+  }),
+  {
+  },
 ])
 def test_list_triggers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1331,7 +1334,7 @@ def test_list_triggers(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1457,7 +1460,11 @@ async def test_list_triggers_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListTriggersRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListTriggersRequest({  }),
+  {  },
+])
+async def test_list_triggers_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1465,7 +1472,7 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1488,11 +1495,6 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
     assert isinstance(response, pagers.ListTriggersAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_triggers_async_from_dict():
-    await test_list_triggers_async(request_type=dict)
 
 def test_list_triggers_field_headers():
     client = EventarcClient(
@@ -1834,8 +1836,10 @@ async def test_list_triggers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateTriggerRequest,
-  dict,
+  eventarc.CreateTriggerRequest({
+  }),
+  {
+  },
 ])
 def test_create_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1845,7 +1849,7 @@ def test_create_trigger(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1972,7 +1976,11 @@ async def test_create_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateTriggerRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateTriggerRequest({  }),
+  {  },
+])
+async def test_create_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1980,7 +1988,7 @@ async def test_create_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2000,11 +2008,6 @@ async def test_create_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_trigger_async_from_dict():
-    await test_create_trigger_async(request_type=dict)
 
 def test_create_trigger_field_headers():
     client = EventarcClient(
@@ -2174,8 +2177,10 @@ async def test_create_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateTriggerRequest,
-  dict,
+  eventarc.UpdateTriggerRequest({
+  }),
+  {
+  },
 ])
 def test_update_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2185,7 +2190,7 @@ def test_update_trigger(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2308,7 +2313,11 @@ async def test_update_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateTriggerRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateTriggerRequest({  }),
+  {  },
+])
+async def test_update_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2316,7 +2325,7 @@ async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2336,11 +2345,6 @@ async def test_update_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_trigger_async_from_dict():
-    await test_update_trigger_async(request_type=dict)
 
 def test_update_trigger_field_headers():
     client = EventarcClient(
@@ -2510,8 +2514,10 @@ async def test_update_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteTriggerRequest,
-  dict,
+  eventarc.DeleteTriggerRequest({
+  }),
+  {
+  },
 ])
 def test_delete_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2521,7 +2527,7 @@ def test_delete_trigger(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2648,7 +2654,11 @@ async def test_delete_trigger_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteTriggerRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteTriggerRequest({  }),
+  {  },
+])
+async def test_delete_trigger_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2656,7 +2666,7 @@ async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2676,11 +2686,6 @@ async def test_delete_trigger_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_trigger_async_from_dict():
-    await test_delete_trigger_async(request_type=dict)
 
 def test_delete_trigger_field_headers():
     client = EventarcClient(
@@ -2840,8 +2845,10 @@ async def test_delete_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelRequest,
-  dict,
+  eventarc.GetChannelRequest({
+  }),
+  {
+  },
 ])
 def test_get_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2851,7 +2858,7 @@ def test_get_channel(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2982,7 +2989,11 @@ async def test_get_channel_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetChannelRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelRequest({  }),
+  {  },
+])
+async def test_get_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2990,7 +3001,7 @@ async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=e
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3023,11 +3034,6 @@ async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=e
     assert response.activation_token == 'activation_token_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_get_channel_async_from_dict():
-    await test_get_channel_async(request_type=dict)
 
 def test_get_channel_field_headers():
     client = EventarcClient(
@@ -3175,8 +3181,10 @@ async def test_get_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelsRequest,
-  dict,
+  eventarc.ListChannelsRequest({
+  }),
+  {
+  },
 ])
 def test_list_channels(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3186,7 +3194,7 @@ def test_list_channels(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3310,7 +3318,11 @@ async def test_list_channels_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListChannelsRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListChannelsRequest({  }),
+  {  },
+])
+async def test_list_channels_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3318,7 +3330,7 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3341,11 +3353,6 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
     assert isinstance(response, pagers.ListChannelsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_channels_async_from_dict():
-    await test_list_channels_async(request_type=dict)
 
 def test_list_channels_field_headers():
     client = EventarcClient(
@@ -3687,8 +3694,10 @@ async def test_list_channels_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelRequest,
-  dict,
+  eventarc.CreateChannelRequest({
+  }),
+  {
+  },
 ])
 def test_create_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3698,7 +3707,7 @@ def test_create_channel(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3825,7 +3834,11 @@ async def test_create_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateChannelRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateChannelRequest({  }),
+  {  },
+])
+async def test_create_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3833,7 +3846,7 @@ async def test_create_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3853,11 +3866,6 @@ async def test_create_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_channel_async_from_dict():
-    await test_create_channel_async(request_type=dict)
 
 def test_create_channel_field_headers():
     client = EventarcClient(
@@ -4027,8 +4035,10 @@ async def test_create_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateChannelRequest,
-  dict,
+  eventarc.UpdateChannelRequest({
+  }),
+  {
+  },
 ])
 def test_update_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4038,7 +4048,7 @@ def test_update_channel(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4161,7 +4171,11 @@ async def test_update_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateChannelRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateChannelRequest({  }),
+  {  },
+])
+async def test_update_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4169,7 +4183,7 @@ async def test_update_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4189,11 +4203,6 @@ async def test_update_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_channel_async_from_dict():
-    await test_update_channel_async(request_type=dict)
 
 def test_update_channel_field_headers():
     client = EventarcClient(
@@ -4353,8 +4362,10 @@ async def test_update_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelRequest,
-  dict,
+  eventarc.DeleteChannelRequest({
+  }),
+  {
+  },
 ])
 def test_delete_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4364,7 +4375,7 @@ def test_delete_channel(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4489,7 +4500,11 @@ async def test_delete_channel_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_channel_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteChannelRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteChannelRequest({  }),
+  {  },
+])
+async def test_delete_channel_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4497,7 +4512,7 @@ async def test_delete_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4517,11 +4532,6 @@ async def test_delete_channel_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_channel_async_from_dict():
-    await test_delete_channel_async(request_type=dict)
 
 def test_delete_channel_field_headers():
     client = EventarcClient(
@@ -4671,8 +4681,10 @@ async def test_delete_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetProviderRequest,
-  dict,
+  eventarc.GetProviderRequest({
+  }),
+  {
+  },
 ])
 def test_get_provider(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4682,7 +4694,7 @@ def test_get_provider(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4802,7 +4814,11 @@ async def test_get_provider_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetProviderRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetProviderRequest({  }),
+  {  },
+])
+async def test_get_provider_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4810,7 +4826,7 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4833,11 +4849,6 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
     assert isinstance(response, discovery.Provider)
     assert response.name == 'name_value'
     assert response.display_name == 'display_name_value'
-
-
-@pytest.mark.asyncio
-async def test_get_provider_async_from_dict():
-    await test_get_provider_async(request_type=dict)
 
 def test_get_provider_field_headers():
     client = EventarcClient(
@@ -4985,8 +4996,10 @@ async def test_get_provider_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListProvidersRequest,
-  dict,
+  eventarc.ListProvidersRequest({
+  }),
+  {
+  },
 ])
 def test_list_providers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4996,7 +5009,7 @@ def test_list_providers(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5122,7 +5135,11 @@ async def test_list_providers_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_providers_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListProvidersRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListProvidersRequest({  }),
+  {  },
+])
+async def test_list_providers_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5130,7 +5147,7 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5153,11 +5170,6 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
     assert isinstance(response, pagers.ListProvidersAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_providers_async_from_dict():
-    await test_list_providers_async(request_type=dict)
 
 def test_list_providers_field_headers():
     client = EventarcClient(
@@ -5499,8 +5511,10 @@ async def test_list_providers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelConnectionRequest,
-  dict,
+  eventarc.GetChannelConnectionRequest({
+  }),
+  {
+  },
 ])
 def test_get_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5510,7 +5524,7 @@ def test_get_channel_connection(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5634,7 +5648,11 @@ async def test_get_channel_connection_async_use_cached_wrapped_rpc(transport: st
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetChannelConnectionRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetChannelConnectionRequest({  }),
+  {  },
+])
+async def test_get_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5642,7 +5660,7 @@ async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', req
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5669,11 +5687,6 @@ async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', req
     assert response.uid == 'uid_value'
     assert response.channel == 'channel_value'
     assert response.activation_token == 'activation_token_value'
-
-
-@pytest.mark.asyncio
-async def test_get_channel_connection_async_from_dict():
-    await test_get_channel_connection_async(request_type=dict)
 
 def test_get_channel_connection_field_headers():
     client = EventarcClient(
@@ -5821,8 +5834,10 @@ async def test_get_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelConnectionsRequest,
-  dict,
+  eventarc.ListChannelConnectionsRequest({
+  }),
+  {
+  },
 ])
 def test_list_channel_connections(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5832,7 +5847,7 @@ def test_list_channel_connections(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5954,7 +5969,11 @@ async def test_list_channel_connections_async_use_cached_wrapped_rpc(transport: 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListChannelConnectionsRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListChannelConnectionsRequest({  }),
+  {  },
+])
+async def test_list_channel_connections_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5962,7 +5981,7 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5985,11 +6004,6 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
     assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_channel_connections_async_from_dict():
-    await test_list_channel_connections_async(request_type=dict)
 
 def test_list_channel_connections_field_headers():
     client = EventarcClient(
@@ -6331,8 +6345,10 @@ async def test_list_channel_connections_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelConnectionRequest,
-  dict,
+  eventarc.CreateChannelConnectionRequest({
+  }),
+  {
+  },
 ])
 def test_create_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6342,7 +6358,7 @@ def test_create_channel_connection(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6469,7 +6485,11 @@ async def test_create_channel_connection_async_use_cached_wrapped_rpc(transport:
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateChannelConnectionRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateChannelConnectionRequest({  }),
+  {  },
+])
+async def test_create_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6477,7 +6497,7 @@ async def test_create_channel_connection_async(transport: str = 'grpc_asyncio', 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6497,11 +6517,6 @@ async def test_create_channel_connection_async(transport: str = 'grpc_asyncio', 
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_channel_connection_async_from_dict():
-    await test_create_channel_connection_async(request_type=dict)
 
 def test_create_channel_connection_field_headers():
     client = EventarcClient(
@@ -6671,8 +6686,10 @@ async def test_create_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelConnectionRequest,
-  dict,
+  eventarc.DeleteChannelConnectionRequest({
+  }),
+  {
+  },
 ])
 def test_delete_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6682,7 +6699,7 @@ def test_delete_channel_connection(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6807,7 +6824,11 @@ async def test_delete_channel_connection_async_use_cached_wrapped_rpc(transport:
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_channel_connection_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteChannelConnectionRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteChannelConnectionRequest({  }),
+  {  },
+])
+async def test_delete_channel_connection_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6815,7 +6836,7 @@ async def test_delete_channel_connection_async(transport: str = 'grpc_asyncio', 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6835,11 +6856,6 @@ async def test_delete_channel_connection_async(transport: str = 'grpc_asyncio', 
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_channel_connection_async_from_dict():
-    await test_delete_channel_connection_async(request_type=dict)
 
 def test_delete_channel_connection_field_headers():
     client = EventarcClient(
@@ -6989,8 +7005,10 @@ async def test_delete_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleChannelConfigRequest,
-  dict,
+  eventarc.GetGoogleChannelConfigRequest({
+  }),
+  {
+  },
 ])
 def test_get_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7000,7 +7018,7 @@ def test_get_google_channel_config(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7120,7 +7138,11 @@ async def test_get_google_channel_config_async_use_cached_wrapped_rpc(transport:
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetGoogleChannelConfigRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetGoogleChannelConfigRequest({  }),
+  {  },
+])
+async def test_get_google_channel_config_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7128,7 +7150,7 @@ async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7151,11 +7173,6 @@ async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', 
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
-
-
-@pytest.mark.asyncio
-async def test_get_google_channel_config_async_from_dict():
-    await test_get_google_channel_config_async(request_type=dict)
 
 def test_get_google_channel_config_field_headers():
     client = EventarcClient(
@@ -7303,8 +7320,10 @@ async def test_get_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleChannelConfigRequest,
-  dict,
+  eventarc.UpdateGoogleChannelConfigRequest({
+  }),
+  {
+  },
 ])
 def test_update_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7314,7 +7333,7 @@ def test_update_google_channel_config(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7432,7 +7451,11 @@ async def test_update_google_channel_config_async_use_cached_wrapped_rpc(transpo
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateGoogleChannelConfigRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateGoogleChannelConfigRequest({  }),
+  {  },
+])
+async def test_update_google_channel_config_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7440,7 +7463,7 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7463,11 +7486,6 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
     assert response.name == 'name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
-
-
-@pytest.mark.asyncio
-async def test_update_google_channel_config_async_from_dict():
-    await test_update_google_channel_config_async(request_type=dict)
 
 def test_update_google_channel_config_field_headers():
     client = EventarcClient(
@@ -7625,8 +7643,10 @@ async def test_update_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetMessageBusRequest,
-  dict,
+  eventarc.GetMessageBusRequest({
+  }),
+  {
+  },
 ])
 def test_get_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7636,7 +7656,7 @@ def test_get_message_bus(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7762,7 +7782,11 @@ async def test_get_message_bus_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_message_bus_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetMessageBusRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetMessageBusRequest({  }),
+  {  },
+])
+async def test_get_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7770,7 +7794,7 @@ async def test_get_message_bus_async(transport: str = 'grpc_asyncio', request_ty
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7799,11 +7823,6 @@ async def test_get_message_bus_async(transport: str = 'grpc_asyncio', request_ty
     assert response.etag == 'etag_value'
     assert response.display_name == 'display_name_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
-
-
-@pytest.mark.asyncio
-async def test_get_message_bus_async_from_dict():
-    await test_get_message_bus_async(request_type=dict)
 
 def test_get_message_bus_field_headers():
     client = EventarcClient(
@@ -7951,8 +7970,10 @@ async def test_get_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusesRequest,
-  dict,
+  eventarc.ListMessageBusesRequest({
+  }),
+  {
+  },
 ])
 def test_list_message_buses(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7962,7 +7983,7 @@ def test_list_message_buses(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8088,7 +8109,11 @@ async def test_list_message_buses_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_message_buses_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListMessageBusesRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListMessageBusesRequest({  }),
+  {  },
+])
+async def test_list_message_buses_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8096,7 +8121,7 @@ async def test_list_message_buses_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8119,11 +8144,6 @@ async def test_list_message_buses_async(transport: str = 'grpc_asyncio', request
     assert isinstance(response, pagers.ListMessageBusesAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_message_buses_async_from_dict():
-    await test_list_message_buses_async(request_type=dict)
 
 def test_list_message_buses_field_headers():
     client = EventarcClient(
@@ -8465,8 +8485,10 @@ async def test_list_message_buses_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusEnrollmentsRequest,
-  dict,
+  eventarc.ListMessageBusEnrollmentsRequest({
+  }),
+  {
+  },
 ])
 def test_list_message_bus_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -8476,7 +8498,7 @@ def test_list_message_bus_enrollments(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8600,7 +8622,11 @@ async def test_list_message_bus_enrollments_async_use_cached_wrapped_rpc(transpo
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_message_bus_enrollments_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListMessageBusEnrollmentsRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListMessageBusEnrollmentsRequest({  }),
+  {  },
+])
+async def test_list_message_bus_enrollments_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8608,7 +8634,7 @@ async def test_list_message_bus_enrollments_async(transport: str = 'grpc_asyncio
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8633,11 +8659,6 @@ async def test_list_message_bus_enrollments_async(transport: str = 'grpc_asyncio
     assert response.enrollments == ['enrollments_value']
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_message_bus_enrollments_async_from_dict():
-    await test_list_message_bus_enrollments_async(request_type=dict)
 
 def test_list_message_bus_enrollments_field_headers():
     client = EventarcClient(
@@ -8979,8 +9000,10 @@ async def test_list_message_bus_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateMessageBusRequest,
-  dict,
+  eventarc.CreateMessageBusRequest({
+  }),
+  {
+  },
 ])
 def test_create_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -8990,7 +9013,7 @@ def test_create_message_bus(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9117,7 +9140,11 @@ async def test_create_message_bus_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_message_bus_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateMessageBusRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateMessageBusRequest({  }),
+  {  },
+])
+async def test_create_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9125,7 +9152,7 @@ async def test_create_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9145,11 +9172,6 @@ async def test_create_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_message_bus_async_from_dict():
-    await test_create_message_bus_async(request_type=dict)
 
 def test_create_message_bus_field_headers():
     client = EventarcClient(
@@ -9319,8 +9341,10 @@ async def test_create_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateMessageBusRequest,
-  dict,
+  eventarc.UpdateMessageBusRequest({
+  }),
+  {
+  },
 ])
 def test_update_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9330,7 +9354,7 @@ def test_update_message_bus(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9453,7 +9477,11 @@ async def test_update_message_bus_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_message_bus_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateMessageBusRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateMessageBusRequest({  }),
+  {  },
+])
+async def test_update_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9461,7 +9489,7 @@ async def test_update_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9481,11 +9509,6 @@ async def test_update_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_message_bus_async_from_dict():
-    await test_update_message_bus_async(request_type=dict)
 
 def test_update_message_bus_field_headers():
     client = EventarcClient(
@@ -9645,8 +9668,10 @@ async def test_update_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteMessageBusRequest,
-  dict,
+  eventarc.DeleteMessageBusRequest({
+  }),
+  {
+  },
 ])
 def test_delete_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9656,7 +9681,7 @@ def test_delete_message_bus(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9783,7 +9808,11 @@ async def test_delete_message_bus_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_message_bus_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteMessageBusRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteMessageBusRequest({  }),
+  {  },
+])
+async def test_delete_message_bus_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9791,7 +9820,7 @@ async def test_delete_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9811,11 +9840,6 @@ async def test_delete_message_bus_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_message_bus_async_from_dict():
-    await test_delete_message_bus_async(request_type=dict)
 
 def test_delete_message_bus_field_headers():
     client = EventarcClient(
@@ -9975,8 +9999,10 @@ async def test_delete_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetEnrollmentRequest,
-  dict,
+  eventarc.GetEnrollmentRequest({
+  }),
+  {
+  },
 ])
 def test_get_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9986,7 +10012,7 @@ def test_get_enrollment(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10116,7 +10142,11 @@ async def test_get_enrollment_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_enrollment_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetEnrollmentRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetEnrollmentRequest({  }),
+  {  },
+])
+async def test_get_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10124,7 +10154,7 @@ async def test_get_enrollment_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10157,11 +10187,6 @@ async def test_get_enrollment_async(transport: str = 'grpc_asyncio', request_typ
     assert response.cel_match == 'cel_match_value'
     assert response.message_bus == 'message_bus_value'
     assert response.destination == 'destination_value'
-
-
-@pytest.mark.asyncio
-async def test_get_enrollment_async_from_dict():
-    await test_get_enrollment_async(request_type=dict)
 
 def test_get_enrollment_field_headers():
     client = EventarcClient(
@@ -10309,8 +10334,10 @@ async def test_get_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListEnrollmentsRequest,
-  dict,
+  eventarc.ListEnrollmentsRequest({
+  }),
+  {
+  },
 ])
 def test_list_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10320,7 +10347,7 @@ def test_list_enrollments(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10446,7 +10473,11 @@ async def test_list_enrollments_async_use_cached_wrapped_rpc(transport: str = "g
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_enrollments_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListEnrollmentsRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListEnrollmentsRequest({  }),
+  {  },
+])
+async def test_list_enrollments_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10454,7 +10485,7 @@ async def test_list_enrollments_async(transport: str = 'grpc_asyncio', request_t
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10477,11 +10508,6 @@ async def test_list_enrollments_async(transport: str = 'grpc_asyncio', request_t
     assert isinstance(response, pagers.ListEnrollmentsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_enrollments_async_from_dict():
-    await test_list_enrollments_async(request_type=dict)
 
 def test_list_enrollments_field_headers():
     client = EventarcClient(
@@ -10823,8 +10849,10 @@ async def test_list_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateEnrollmentRequest,
-  dict,
+  eventarc.CreateEnrollmentRequest({
+  }),
+  {
+  },
 ])
 def test_create_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10834,7 +10862,7 @@ def test_create_enrollment(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10961,7 +10989,11 @@ async def test_create_enrollment_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_enrollment_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateEnrollmentRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateEnrollmentRequest({  }),
+  {  },
+])
+async def test_create_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10969,7 +11001,7 @@ async def test_create_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10989,11 +11021,6 @@ async def test_create_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_enrollment_async_from_dict():
-    await test_create_enrollment_async(request_type=dict)
 
 def test_create_enrollment_field_headers():
     client = EventarcClient(
@@ -11163,8 +11190,10 @@ async def test_create_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateEnrollmentRequest,
-  dict,
+  eventarc.UpdateEnrollmentRequest({
+  }),
+  {
+  },
 ])
 def test_update_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11174,7 +11203,7 @@ def test_update_enrollment(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11297,7 +11326,11 @@ async def test_update_enrollment_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_enrollment_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateEnrollmentRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateEnrollmentRequest({  }),
+  {  },
+])
+async def test_update_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11305,7 +11338,7 @@ async def test_update_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11325,11 +11358,6 @@ async def test_update_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_enrollment_async_from_dict():
-    await test_update_enrollment_async(request_type=dict)
 
 def test_update_enrollment_field_headers():
     client = EventarcClient(
@@ -11489,8 +11517,10 @@ async def test_update_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteEnrollmentRequest,
-  dict,
+  eventarc.DeleteEnrollmentRequest({
+  }),
+  {
+  },
 ])
 def test_delete_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11500,7 +11530,7 @@ def test_delete_enrollment(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11627,7 +11657,11 @@ async def test_delete_enrollment_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_enrollment_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteEnrollmentRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteEnrollmentRequest({  }),
+  {  },
+])
+async def test_delete_enrollment_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11635,7 +11669,7 @@ async def test_delete_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11655,11 +11689,6 @@ async def test_delete_enrollment_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_enrollment_async_from_dict():
-    await test_delete_enrollment_async(request_type=dict)
 
 def test_delete_enrollment_field_headers():
     client = EventarcClient(
@@ -11819,8 +11848,10 @@ async def test_delete_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetPipelineRequest,
-  dict,
+  eventarc.GetPipelineRequest({
+  }),
+  {
+  },
 ])
 def test_get_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11830,7 +11861,7 @@ def test_get_pipeline(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11958,7 +11989,11 @@ async def test_get_pipeline_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_pipeline_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetPipelineRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetPipelineRequest({  }),
+  {  },
+])
+async def test_get_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11966,7 +12001,7 @@ async def test_get_pipeline_async(transport: str = 'grpc_asyncio', request_type=
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11997,11 +12032,6 @@ async def test_get_pipeline_async(transport: str = 'grpc_asyncio', request_type=
     assert response.crypto_key_name == 'crypto_key_name_value'
     assert response.etag == 'etag_value'
     assert response.satisfies_pzs is True
-
-
-@pytest.mark.asyncio
-async def test_get_pipeline_async_from_dict():
-    await test_get_pipeline_async(request_type=dict)
 
 def test_get_pipeline_field_headers():
     client = EventarcClient(
@@ -12149,8 +12179,10 @@ async def test_get_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListPipelinesRequest,
-  dict,
+  eventarc.ListPipelinesRequest({
+  }),
+  {
+  },
 ])
 def test_list_pipelines(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12160,7 +12192,7 @@ def test_list_pipelines(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12286,7 +12318,11 @@ async def test_list_pipelines_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_pipelines_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListPipelinesRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListPipelinesRequest({  }),
+  {  },
+])
+async def test_list_pipelines_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12294,7 +12330,7 @@ async def test_list_pipelines_async(transport: str = 'grpc_asyncio', request_typ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12317,11 +12353,6 @@ async def test_list_pipelines_async(transport: str = 'grpc_asyncio', request_typ
     assert isinstance(response, pagers.ListPipelinesAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_pipelines_async_from_dict():
-    await test_list_pipelines_async(request_type=dict)
 
 def test_list_pipelines_field_headers():
     client = EventarcClient(
@@ -12663,8 +12694,10 @@ async def test_list_pipelines_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreatePipelineRequest,
-  dict,
+  eventarc.CreatePipelineRequest({
+  }),
+  {
+  },
 ])
 def test_create_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12674,7 +12707,7 @@ def test_create_pipeline(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12801,7 +12834,11 @@ async def test_create_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_pipeline_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreatePipelineRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreatePipelineRequest({  }),
+  {  },
+])
+async def test_create_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12809,7 +12846,7 @@ async def test_create_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12829,11 +12866,6 @@ async def test_create_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_pipeline_async_from_dict():
-    await test_create_pipeline_async(request_type=dict)
 
 def test_create_pipeline_field_headers():
     client = EventarcClient(
@@ -13003,8 +13035,10 @@ async def test_create_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdatePipelineRequest,
-  dict,
+  eventarc.UpdatePipelineRequest({
+  }),
+  {
+  },
 ])
 def test_update_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13014,7 +13048,7 @@ def test_update_pipeline(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13137,7 +13171,11 @@ async def test_update_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_pipeline_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdatePipelineRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdatePipelineRequest({  }),
+  {  },
+])
+async def test_update_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13145,7 +13183,7 @@ async def test_update_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13165,11 +13203,6 @@ async def test_update_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_pipeline_async_from_dict():
-    await test_update_pipeline_async(request_type=dict)
 
 def test_update_pipeline_field_headers():
     client = EventarcClient(
@@ -13329,8 +13362,10 @@ async def test_update_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeletePipelineRequest,
-  dict,
+  eventarc.DeletePipelineRequest({
+  }),
+  {
+  },
 ])
 def test_delete_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13340,7 +13375,7 @@ def test_delete_pipeline(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13467,7 +13502,11 @@ async def test_delete_pipeline_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_pipeline_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeletePipelineRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeletePipelineRequest({  }),
+  {  },
+])
+async def test_delete_pipeline_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13475,7 +13514,7 @@ async def test_delete_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13495,11 +13534,6 @@ async def test_delete_pipeline_async(transport: str = 'grpc_asyncio', request_ty
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_pipeline_async_from_dict():
-    await test_delete_pipeline_async(request_type=dict)
 
 def test_delete_pipeline_field_headers():
     client = EventarcClient(
@@ -13659,8 +13693,10 @@ async def test_delete_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleApiSourceRequest,
-  dict,
+  eventarc.GetGoogleApiSourceRequest({
+  }),
+  {
+  },
 ])
 def test_get_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13670,7 +13706,7 @@ def test_get_google_api_source(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13798,7 +13834,11 @@ async def test_get_google_api_source_async_use_cached_wrapped_rpc(transport: str
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_google_api_source_async(transport: str = 'grpc_asyncio', request_type=eventarc.GetGoogleApiSourceRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.GetGoogleApiSourceRequest({  }),
+  {  },
+])
+async def test_get_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13806,7 +13846,7 @@ async def test_get_google_api_source_async(transport: str = 'grpc_asyncio', requ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13837,11 +13877,6 @@ async def test_get_google_api_source_async(transport: str = 'grpc_asyncio', requ
     assert response.display_name == 'display_name_value'
     assert response.destination == 'destination_value'
     assert response.crypto_key_name == 'crypto_key_name_value'
-
-
-@pytest.mark.asyncio
-async def test_get_google_api_source_async_from_dict():
-    await test_get_google_api_source_async(request_type=dict)
 
 def test_get_google_api_source_field_headers():
     client = EventarcClient(
@@ -13989,8 +14024,10 @@ async def test_get_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListGoogleApiSourcesRequest,
-  dict,
+  eventarc.ListGoogleApiSourcesRequest({
+  }),
+  {
+  },
 ])
 def test_list_google_api_sources(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14000,7 +14037,7 @@ def test_list_google_api_sources(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14126,7 +14163,11 @@ async def test_list_google_api_sources_async_use_cached_wrapped_rpc(transport: s
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_google_api_sources_async(transport: str = 'grpc_asyncio', request_type=eventarc.ListGoogleApiSourcesRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.ListGoogleApiSourcesRequest({  }),
+  {  },
+])
+async def test_list_google_api_sources_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14134,7 +14175,7 @@ async def test_list_google_api_sources_async(transport: str = 'grpc_asyncio', re
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14157,11 +14198,6 @@ async def test_list_google_api_sources_async(transport: str = 'grpc_asyncio', re
     assert isinstance(response, pagers.ListGoogleApiSourcesAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_google_api_sources_async_from_dict():
-    await test_list_google_api_sources_async(request_type=dict)
 
 def test_list_google_api_sources_field_headers():
     client = EventarcClient(
@@ -14503,8 +14539,10 @@ async def test_list_google_api_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateGoogleApiSourceRequest,
-  dict,
+  eventarc.CreateGoogleApiSourceRequest({
+  }),
+  {
+  },
 ])
 def test_create_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14514,7 +14552,7 @@ def test_create_google_api_source(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14641,7 +14679,11 @@ async def test_create_google_api_source_async_use_cached_wrapped_rpc(transport: 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_google_api_source_async(transport: str = 'grpc_asyncio', request_type=eventarc.CreateGoogleApiSourceRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.CreateGoogleApiSourceRequest({  }),
+  {  },
+])
+async def test_create_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14649,7 +14691,7 @@ async def test_create_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14669,11 +14711,6 @@ async def test_create_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_google_api_source_async_from_dict():
-    await test_create_google_api_source_async(request_type=dict)
 
 def test_create_google_api_source_field_headers():
     client = EventarcClient(
@@ -14843,8 +14880,10 @@ async def test_create_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleApiSourceRequest,
-  dict,
+  eventarc.UpdateGoogleApiSourceRequest({
+  }),
+  {
+  },
 ])
 def test_update_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14854,7 +14893,7 @@ def test_update_google_api_source(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14977,7 +15016,11 @@ async def test_update_google_api_source_async_use_cached_wrapped_rpc(transport: 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_google_api_source_async(transport: str = 'grpc_asyncio', request_type=eventarc.UpdateGoogleApiSourceRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.UpdateGoogleApiSourceRequest({  }),
+  {  },
+])
+async def test_update_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14985,7 +15028,7 @@ async def test_update_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15005,11 +15048,6 @@ async def test_update_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_google_api_source_async_from_dict():
-    await test_update_google_api_source_async(request_type=dict)
 
 def test_update_google_api_source_field_headers():
     client = EventarcClient(
@@ -15169,8 +15207,10 @@ async def test_update_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteGoogleApiSourceRequest,
-  dict,
+  eventarc.DeleteGoogleApiSourceRequest({
+  }),
+  {
+  },
 ])
 def test_delete_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -15180,7 +15220,7 @@ def test_delete_google_api_source(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15307,7 +15347,11 @@ async def test_delete_google_api_source_async_use_cached_wrapped_rpc(transport: 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_google_api_source_async(transport: str = 'grpc_asyncio', request_type=eventarc.DeleteGoogleApiSourceRequest):
+@pytest.mark.parametrize("request_type", [
+  eventarc.DeleteGoogleApiSourceRequest({  }),
+  {  },
+])
+async def test_delete_google_api_source_async(request_type, transport: str = 'grpc_asyncio'):
     client = EventarcAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15315,7 +15359,7 @@ async def test_delete_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15335,11 +15379,6 @@ async def test_delete_google_api_source_async(transport: str = 'grpc_asyncio', r
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_google_api_source_async_from_dict():
-    await test_delete_google_api_source_async(request_type=dict)
 
 def test_delete_google_api_source_field_headers():
     client = EventarcClient(

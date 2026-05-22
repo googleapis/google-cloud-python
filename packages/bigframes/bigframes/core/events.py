@@ -14,11 +14,13 @@
 
 from __future__ import annotations
 
+import asyncio
+import concurrent.futures
 import dataclasses
 import datetime
 import threading
 import uuid
-from typing import Any, Callable, Optional, Set
+from typing import Any, Callable, Literal, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
@@ -26,9 +28,19 @@ import google.cloud.bigquery.table
 
 import bigframes.session.executor
 
+_DEFAULT: Literal["default"] = "default"
+
+ProgressBarType = Literal["default", "auto", "notebook", "terminal"] | None
+QueryPlanType = list[google.cloud.bigquery.job.query.QueryPlanEntry] | None
+
 
 class Subscriber:
-    def __init__(self, callback: Callable[[Event], None], *, publisher: Publisher):
+    def __init__(
+        self,
+        callback: Callable[[EventEnvelope], None],
+        *,
+        publisher: Publisher,
+    ):
         self._publisher = publisher
         self._callback = callback
         self._subscriber_id = uuid.uuid4()
@@ -55,10 +67,12 @@ class Subscriber:
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_value is not None:
             self(
-                UnknownErrorEvent(
-                    exc_type=exc_type,
-                    exc_value=exc_value,
-                    traceback=traceback,
+                EventEnvelope(
+                    UnknownErrorEvent(
+                        exc_type=exc_type,
+                        exc_value=exc_value,
+                        traceback=traceback,
+                    )
                 )
             )
         self.close()
@@ -68,8 +82,14 @@ class Publisher:
     def __init__(self):
         self._subscribers_lock = threading.Lock()
         self._subscribers: Set[Subscriber] = set()
+        self._executor: concurrent.futures.Executor = (
+            concurrent.futures.ThreadPoolExecutor()
+        )
 
-    def subscribe(self, callback: Callable[[Event], None]) -> Subscriber:
+    def subscribe(
+        self,
+        callback: Callable[[EventEnvelope], None],
+    ) -> Subscriber:
         # TODO(b/448176657): figure out how to handle subscribers/publishers in
         # a background thread. Maybe subscribers should be thread-local?
         subscriber = Subscriber(callback, publisher=self)
@@ -81,14 +101,34 @@ class Publisher:
         with self._subscribers_lock:
             self._subscribers.remove(subscriber)
 
-    def publish(self, event: Event):
+    def publish(self, envelope: EventEnvelope | Event):
+        if not isinstance(envelope, EventEnvelope):
+            envelope = EventEnvelope(event=envelope)
         with self._subscribers_lock:
             for subscriber in self._subscribers:
-                subscriber(event)
+                subscriber(envelope)
+
+    async def publish_async(self, envelope: EventEnvelope | Event):
+        if not isinstance(envelope, EventEnvelope):
+            envelope = EventEnvelope(event=envelope)
+        with self._subscribers_lock:
+            subscribers_snapshot = list(self._subscribers)
+        loop = asyncio.get_running_loop()
+        tasks = [
+            loop.run_in_executor(self._executor, subscriber, envelope)
+            for subscriber in subscribers_snapshot
+        ]
+        return await asyncio.gather(*tasks, return_exceptions=True)
 
 
 class Event:
     pass
+
+
+@dataclasses.dataclass(frozen=True)
+class EventEnvelope:
+    event: Event
+    progress_bar: ProgressBarType = _DEFAULT
 
 
 @dataclasses.dataclass(frozen=True)
@@ -106,7 +146,7 @@ class ExecutionRunning(Event):
 
 @dataclasses.dataclass(frozen=True)
 class ExecutionFinished(Event):
-    result: Optional[bigframes.session.executor.ExecuteResult] = None
+    result: bigframes.session.executor.ExecuteResult | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -121,13 +161,16 @@ class BigQuerySentEvent(ExecutionRunning):
     """Query sent to BigQuery."""
 
     query: str
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    request_id: Optional[str] = None
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    request_id: str | None = None
 
     @classmethod
-    def from_bqclient(cls, event: google.cloud.bigquery._job_helpers.QuerySentEvent):
+    def from_bqclient(
+        cls,
+        event: google.cloud.bigquery._job_helpers.QuerySentEvent,
+    ):
         return cls(
             query=event.query,
             billing_project=event.billing_project,
@@ -142,13 +185,16 @@ class BigQueryRetryEvent(ExecutionRunning):
     """Query sent another time because the previous attempt failed."""
 
     query: str
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    request_id: Optional[str] = None
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    request_id: str | None = None
 
     @classmethod
-    def from_bqclient(cls, event: google.cloud.bigquery._job_helpers.QueryRetryEvent):
+    def from_bqclient(
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryRetryEvent,
+    ):
         return cls(
             query=event.query,
             billing_project=event.billing_project,
@@ -162,19 +208,20 @@ class BigQueryRetryEvent(ExecutionRunning):
 class BigQueryReceivedEvent(ExecutionRunning):
     """Query received and acknowledged by the BigQuery API."""
 
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    job_id: Optional[str] = None
-    statement_type: Optional[str] = None
-    state: Optional[str] = None
-    query_plan: Optional[list[google.cloud.bigquery.job.query.QueryPlanEntry]] = None
-    created: Optional[datetime.datetime] = None
-    started: Optional[datetime.datetime] = None
-    ended: Optional[datetime.datetime] = None
+    billing_project: str | None = None
+    location: str | None = None
+    job_id: str | None = None
+    statement_type: str | None = None
+    state: str | None = None
+    query_plan: QueryPlanType = None
+    created: datetime.datetime | None = None
+    started: datetime.datetime | None = None
+    ended: datetime.datetime | None = None
 
     @classmethod
     def from_bqclient(
-        cls, event: google.cloud.bigquery._job_helpers.QueryReceivedEvent
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryReceivedEvent,
     ):
         return cls(
             billing_project=event.billing_project,
@@ -193,21 +240,22 @@ class BigQueryReceivedEvent(ExecutionRunning):
 class BigQueryFinishedEvent(ExecutionRunning):
     """Query finished successfully."""
 
-    billing_project: Optional[str] = None
-    location: Optional[str] = None
-    query_id: Optional[str] = None
-    job_id: Optional[str] = None
-    destination: Optional[google.cloud.bigquery.table.TableReference] = None
-    total_rows: Optional[int] = None
-    total_bytes_processed: Optional[int] = None
-    slot_millis: Optional[int] = None
-    created: Optional[datetime.datetime] = None
-    started: Optional[datetime.datetime] = None
-    ended: Optional[datetime.datetime] = None
+    billing_project: str | None = None
+    location: str | None = None
+    query_id: str | None = None
+    job_id: str | None = None
+    destination: google.cloud.bigquery.table.TableReference | None = None
+    total_rows: int | None = None
+    total_bytes_processed: int | None = None
+    slot_millis: int | None = None
+    created: datetime.datetime | None = None
+    started: datetime.datetime | None = None
+    ended: datetime.datetime | None = None
 
     @classmethod
     def from_bqclient(
-        cls, event: google.cloud.bigquery._job_helpers.QueryFinishedEvent
+        cls,
+        event: google.cloud.bigquery._job_helpers.QueryFinishedEvent,
     ):
         return cls(
             billing_project=event.billing_project,

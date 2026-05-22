@@ -20,6 +20,7 @@ import bigframes.core.col
 import bigframes.core.expression
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.operations import googlesql
 
 
 def rand() -> bigframes.core.col.Expression:
@@ -47,12 +48,9 @@ def rand() -> bigframes.core.col.Expression:
             :func:`~bigframes.pandas.DataFrame.assign` and other methods.  See
             :func:`bigframes.pandas.col`.
     """
-    op = ops.SqlScalarOp(
-        _output_type=dtypes.FLOAT_DTYPE,
-        sql_template="RAND()",
-        is_deterministic=False,
+    return bigframes.core.col.Expression(
+        bigframes.core.expression.OpExpression(googlesql.RAND, ())
     )
-    return bigframes.core.col.Expression(bigframes.core.expression.OpExpression(op, ()))
 
 
 def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:

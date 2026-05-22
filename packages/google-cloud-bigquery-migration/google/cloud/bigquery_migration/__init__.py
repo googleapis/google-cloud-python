@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,10 @@ from google.cloud.bigquery_migration_v2.services.migration_service.async_client 
 )
 from google.cloud.bigquery_migration_v2.services.migration_service.client import (
     MigrationServiceClient,
+)
+from google.cloud.bigquery_migration_v2.types.assessment_task import (
+    AssessmentFeatureHandle,
+    AssessmentTaskDetails,
 )
 from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationSubtask,
@@ -84,6 +88,8 @@ from google.cloud.bigquery_migration_v2.types.translation_details import (
     SourceEnvironment,
     SourceSpec,
     SourceTargetMapping,
+    SuggestionConfig,
+    SuggestionStep,
     TargetSpec,
     TranslationDetails,
 )
@@ -97,6 +103,8 @@ from google.cloud.bigquery_migration_v2.types.translation_usability import (
 __all__ = (
     "MigrationServiceClient",
     "MigrationServiceAsyncClient",
+    "AssessmentFeatureHandle",
+    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
     "MigrationTaskResult",
@@ -146,6 +154,8 @@ __all__ = (
     "SourceEnvironment",
     "SourceSpec",
     "SourceTargetMapping",
+    "SuggestionConfig",
+    "SuggestionStep",
     "TargetSpec",
     "TranslationDetails",
     "TranslationReportRecord",

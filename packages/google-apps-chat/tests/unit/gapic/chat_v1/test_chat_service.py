@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1375,6 +1369,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.create_message(request)
@@ -1393,6 +1388,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -1531,6 +1527,7 @@ async def test_create_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -1550,6 +1547,7 @@ async def test_create_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -2230,11 +2228,7 @@ async def test_list_messages_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_messages(request={})
-        ).pages:
+        async for page_ in (await client.list_messages(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2753,11 +2747,7 @@ async def test_list_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_memberships(request={})
-        ).pages:
+        async for page_ in (await client.list_memberships(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3121,6 +3111,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.get_message(request)
@@ -3139,6 +3130,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3271,6 +3263,7 @@ async def test_get_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3290,6 +3283,7 @@ async def test_get_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3464,6 +3458,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.update_message(request)
@@ -3482,6 +3477,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3610,6 +3606,7 @@ async def test_update_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3629,6 +3626,7 @@ async def test_update_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -5052,11 +5050,7 @@ async def test_list_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_spaces(request={})
-        ).pages:
+        async for page_ in (await client.list_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5431,11 +5425,7 @@ async def test_search_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_spaces(request={})
-        ).pages:
+        async for page_ in (await client.search_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7912,11 +7902,7 @@ async def test_find_group_chats_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.find_group_chats(request={})
-        ).pages:
+        async for page_ in (await client.find_group_chats(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9823,11 +9809,7 @@ async def test_list_reactions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_reactions(request={})
-        ).pages:
+        async for page_ in (await client.list_reactions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11146,11 +11128,7 @@ async def test_list_custom_emojis_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_custom_emojis(request={})
-        ).pages:
+        async for page_ in (await client.list_custom_emojis(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13391,11 +13369,7 @@ async def test_list_space_events_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_space_events(request={})
-        ).pages:
+        async for page_ in (await client.list_space_events(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15646,11 +15620,7 @@ async def test_list_sections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sections(request={})
-        ).pages:
+        async for page_ in (await client.list_sections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16430,11 +16400,7 @@ async def test_list_section_items_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_section_items(request={})
-        ).pages:
+        async for page_ in (await client.list_section_items(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16851,6 +16817,7 @@ def test_create_message_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "create_message_notification_options",
             "message_id",
             "message_reply_option",
             "request_id",
@@ -16903,7 +16870,7 @@ def test_create_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_message_rest_unset_required_fields():
@@ -16915,6 +16882,7 @@ def test_create_message_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "createMessageNotificationOptions",
                 "messageId",
                 "messageReplyOption",
                 "requestId",
@@ -17106,7 +17074,7 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_messages_rest_unset_required_fields():
@@ -17367,7 +17335,7 @@ def test_list_memberships_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_memberships_rest_unset_required_fields():
@@ -17620,7 +17588,7 @@ def test_get_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_membership_rest_unset_required_fields():
@@ -17794,7 +17762,7 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_message_rest_unset_required_fields():
@@ -17973,7 +17941,7 @@ def test_update_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_message_rest_unset_required_fields():
@@ -18161,7 +18129,7 @@ def test_delete_message_rest_required_fields(request_type=message.DeleteMessageR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_message_rest_unset_required_fields():
@@ -18335,7 +18303,7 @@ def test_get_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_attachment_rest_unset_required_fields():
@@ -18519,7 +18487,7 @@ def test_upload_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upload_attachment_rest_unset_required_fields():
@@ -18761,7 +18729,7 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_spaces_rest_unset_required_fields():
@@ -18953,7 +18921,7 @@ def test_get_space_rest_required_fields(request_type=space.GetSpaceRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_rest_unset_required_fields():
@@ -19125,7 +19093,7 @@ def test_create_space_rest_required_fields(request_type=gc_space.CreateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_space_rest_unset_required_fields():
@@ -19293,7 +19261,7 @@ def test_set_up_space_rest_required_fields(request_type=space_setup.SetUpSpaceRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_up_space_rest_unset_required_fields():
@@ -19414,7 +19382,7 @@ def test_update_space_rest_required_fields(request_type=gc_space.UpdateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_rest_unset_required_fields():
@@ -19602,7 +19570,7 @@ def test_delete_space_rest_required_fields(request_type=space.DeleteSpaceRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_space_rest_unset_required_fields():
@@ -19782,7 +19750,7 @@ def test_complete_import_space_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_complete_import_space_rest_unset_required_fields():
@@ -19917,7 +19885,7 @@ def test_find_direct_message_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_find_direct_message_rest_unset_required_fields():
@@ -20141,7 +20109,7 @@ def test_create_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_membership_rest_unset_required_fields():
@@ -20332,7 +20300,7 @@ def test_update_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_membership_rest_unset_required_fields():
@@ -20528,7 +20496,7 @@ def test_delete_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_membership_rest_unset_required_fields():
@@ -20705,7 +20673,7 @@ def test_create_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_reaction_rest_unset_required_fields():
@@ -20900,7 +20868,7 @@ def test_list_reactions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_reactions_rest_unset_required_fields():
@@ -21144,7 +21112,7 @@ def test_delete_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_reaction_rest_unset_required_fields():
@@ -21319,7 +21287,7 @@ def test_create_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_custom_emoji_rest_unset_required_fields():
@@ -21497,7 +21465,7 @@ def test_get_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_custom_emoji_rest_unset_required_fields():
@@ -21775,7 +21743,7 @@ def test_delete_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_custom_emoji_rest_unset_required_fields():
@@ -21953,7 +21921,7 @@ def test_get_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_read_state_rest_unset_required_fields():
@@ -22133,7 +22101,7 @@ def test_update_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_read_state_rest_unset_required_fields():
@@ -22328,7 +22296,7 @@ def test_get_thread_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_thread_read_state_rest_unset_required_fields():
@@ -22508,7 +22476,7 @@ def test_get_space_event_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_event_rest_unset_required_fields():
@@ -22707,7 +22675,7 @@ def test_list_space_events_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_space_events_rest_unset_required_fields():
@@ -22969,7 +22937,7 @@ def test_get_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_notification_setting_rest_unset_required_fields():
@@ -23158,7 +23126,7 @@ def test_update_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_notification_setting_rest_unset_required_fields():
@@ -23361,7 +23329,7 @@ def test_create_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_section_rest_unset_required_fields():
@@ -23542,7 +23510,7 @@ def test_delete_section_rest_required_fields(request_type=section.DeleteSectionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_section_rest_unset_required_fields():
@@ -23714,7 +23682,7 @@ def test_update_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_section_rest_unset_required_fields():
@@ -23905,7 +23873,7 @@ def test_list_sections_rest_required_fields(request_type=section.ListSectionsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sections_rest_unset_required_fields():
@@ -24153,7 +24121,7 @@ def test_position_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_position_section_rest_unset_required_fields():
@@ -24285,7 +24253,7 @@ def test_list_section_items_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_section_items_rest_unset_required_fields():
@@ -24538,7 +24506,7 @@ def test_move_section_item_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_section_item_rest_unset_required_fields():
@@ -25696,6 +25664,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25812,6 +25781,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25845,6 +25815,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -27452,6 +27423,7 @@ def test_create_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -27559,6 +27531,7 @@ def test_create_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -27582,6 +27555,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28091,6 +28065,7 @@ def test_get_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28114,6 +28089,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28670,6 +28646,7 @@ def test_update_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -28777,6 +28754,7 @@ def test_update_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28800,6 +28778,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
