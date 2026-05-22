@@ -35,6 +35,7 @@ import bigframes.core.ordering
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
+import bigframes.functions._function_session as bff_session
 import bigframes.operations as ops
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.execution_cache as execution_cache
@@ -62,8 +63,6 @@ from bigframes.session import (
     read_api_execution,
     semi_executor,
 )
-import bigframes.functions._function_session as bff_session
-
 
 # Max complexity that should be executed as a single query
 QUERY_COMPLEXITY_LIMIT = 1e7

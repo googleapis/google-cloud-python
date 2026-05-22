@@ -22,6 +22,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
 
 import bigframes.core
+import bigframes.functions._function_session as bff_session
 from bigframes import exceptions as bfe
 from bigframes.session import (
     bq_caching_executor,
@@ -31,8 +32,6 @@ from bigframes.session import (
     loader,
     temporary_storage,
 )
-import bigframes.functions._function_session as bff_session
-
 
 _COMPILER_LABEL_KEY = "bigframes-compiler"
 
@@ -53,7 +52,6 @@ class DualCompilerProxyExecutor(executor.Executor):
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
         function_manager: bff_session.FunctionSession,
-
         labels: tuple[tuple[str, str], ...] = (),
     ):
         self._enable_polars_execution = enable_polars_execution
