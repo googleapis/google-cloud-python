@@ -88,7 +88,8 @@ class Connection(_http.JSONConnection):
             and hasattr(client, "_bucket_metadata_cache")
             and client._bucket_metadata_cache
         ):
-            match = re.search(r"/b/([^/?#]+)", kwargs.get("path") or "")
+            path = kwargs.get("path") or ""
+            match = re.search(r"/b/([^/?#]+)", path)
             if match:
                 try:
                     cached = client._bucket_metadata_cache.get(match.group(1))
@@ -124,9 +125,8 @@ class Connection(_http.JSONConnection):
                     and hasattr(client, "_bucket_metadata_cache")
                     and client._bucket_metadata_cache
                 ):
-                    match = re.search(
-                        r"/b/([^/?#]+)", kwargs.get("path") or ""
-                    )
+                    path = kwargs.get("path") or ""
+                    match = re.search(r"/b/([^/?#]+)", path)
                     if match:
                         try:
                             client._bucket_metadata_cache.check_and_evict(
