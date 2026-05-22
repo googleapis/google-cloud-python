@@ -1,0 +1,81 @@
+name: CI Timeout Stress Test (Core Deps)
+on:
+  pull_request:
+    branches: [ main, preview ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # ==========================================
+  # 1. DISCOVERY & BUCKETING
+  # ==========================================
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      buckets: ${{ steps.generate-matrix.outputs.buckets }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect Changed Packages
+        id: changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: packages/**
+          dir_names: true               
+          dir_names_max_depth: 2        
+          matrix: false
+
+      - name: Generate Balanced Buckets
+        id: generate-matrix
+        env:
+          CHANGED_DIRS: ${{ steps.changes.outputs.all_changed_files }}
+        # We use a multiplier of 1 because we are only running a single Python version
+        run: python .github/scripts/gha_matrix_balancer.py --matrix-multiplier 1 --max-vms 20
+
+  # ==========================================
+  # 2. CORE DEPS TEST (Py 3.14)
+  # ==========================================
+  test-core-deps:
+    needs: discover
+    if: ${{ needs.discover.outputs.buckets != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 60
+      matrix:
+        chunk: ${{ fromJSON(needs.discover.outputs.buckets) }}
+
+    name: core-deps (${{ matrix.chunk.id }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install standard Nox
+        run: python -m pip install nox
+
+      - name: Execute Chunk
+        run: |
+          FAILED=0
+          SESSION="core_deps_from_source-3.14"
+          
+          for pkg in ${{ matrix.chunk.packages }}; do
+            echo "=========================================================="
+            echo "🚀 TESTING CORE DEPS: $pkg"
+            echo "=========================================================="
+            cd "$pkg"
+            
+            # Run unconditionally. If it doesn't exist, Nox will throw an error.
+            python -m nox -s "${SESSION}" || FAILED=1
+            
+            cd "$GITHUB_WORKSPACE"
+          done
+          exit $FAILED

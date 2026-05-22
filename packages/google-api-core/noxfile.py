@@ -160,8 +160,10 @@ def install_core_deps_dependencies(session, constraints_path):
             f"{CURRENT_DIRECTORY}/../proto-plus",
         ]
 
+        # Natively adapt the overwrite flag based on the active resolver
+        force_overwrite_flag = "--reinstall" if os.environ.get("NOX_DEFAULT_VENV_BACKEND") == "uv" else "--ignore-installed"
         for dep in core_dependencies_from_source:
-            session.install(dep, "--no-deps", "--ignore-installed")
+            session.install(dep, "--no-deps", force_overwrite_flag)
             print(f"Installed {dep}")
 
         # Remaining dependencies

@@ -174,8 +174,10 @@ def core_deps_from_source(session, implementation):
         "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
     ]
 
+    # Natively adapt the overwrite flag based on the active resolver
+    force_overwrite_flag = "--reinstall" if os.environ.get("NOX_DEFAULT_VENV_BACKEND") == "uv" else "--ignore-installed"
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
+        session.install(dep, "--no-deps", force_overwrite_flag)
         print(f"Installed {dep}")
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15115): Install protobuf from source at HEAD
