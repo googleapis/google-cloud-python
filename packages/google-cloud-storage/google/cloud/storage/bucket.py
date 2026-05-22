@@ -21,7 +21,8 @@ import json
 import warnings
 from urllib.parse import urlsplit
 
-from google.api_core import datetime_helpers, exceptions as api_exceptions
+from google.api_core import datetime_helpers
+from google.api_core import exceptions as api_exceptions
 from google.api_core.iam import Policy
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
