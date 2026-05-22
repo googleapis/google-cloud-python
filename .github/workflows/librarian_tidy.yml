@@ -1,4 +1,4 @@
-name: Check that librarian.yaml is tidy
+name: librarian tidy
 
 on:
   pull_request:
