@@ -23,33 +23,45 @@ from google.cloud.redis_v1.services.cloud_redis.async_client import CloudRedisAs
 
 from google.cloud.redis_v1.types.cloud_redis import CreateInstanceRequest
 from google.cloud.redis_v1.types.cloud_redis import DeleteInstanceRequest
+from google.cloud.redis_v1.types.cloud_redis import GcsDestination
+from google.cloud.redis_v1.types.cloud_redis import GcsSource
 from google.cloud.redis_v1.types.cloud_redis import GetInstanceRequest
+from google.cloud.redis_v1.types.cloud_redis import InputConfig
 from google.cloud.redis_v1.types.cloud_redis import Instance
 from google.cloud.redis_v1.types.cloud_redis import ListInstancesRequest
 from google.cloud.redis_v1.types.cloud_redis import ListInstancesResponse
+from google.cloud.redis_v1.types.cloud_redis import LocationMetadata
 from google.cloud.redis_v1.types.cloud_redis import MaintenancePolicy
 from google.cloud.redis_v1.types.cloud_redis import MaintenanceSchedule
 from google.cloud.redis_v1.types.cloud_redis import NodeInfo
 from google.cloud.redis_v1.types.cloud_redis import OperationMetadata
+from google.cloud.redis_v1.types.cloud_redis import OutputConfig
 from google.cloud.redis_v1.types.cloud_redis import PersistenceConfig
 from google.cloud.redis_v1.types.cloud_redis import TlsCertificate
 from google.cloud.redis_v1.types.cloud_redis import UpdateInstanceRequest
 from google.cloud.redis_v1.types.cloud_redis import WeeklyMaintenanceWindow
+from google.cloud.redis_v1.types.cloud_redis import ZoneMetadata
 
 __all__ = ('CloudRedisClient',
     'CloudRedisAsyncClient',
     'CreateInstanceRequest',
     'DeleteInstanceRequest',
+    'GcsDestination',
+    'GcsSource',
     'GetInstanceRequest',
+    'InputConfig',
     'Instance',
     'ListInstancesRequest',
     'ListInstancesResponse',
+    'LocationMetadata',
     'MaintenancePolicy',
     'MaintenanceSchedule',
     'NodeInfo',
     'OperationMetadata',
+    'OutputConfig',
     'PersistenceConfig',
     'TlsCertificate',
     'UpdateInstanceRequest',
     'WeeklyMaintenanceWindow',
+    'ZoneMetadata',
 )

@@ -4,7 +4,7 @@ google-cloud-core==2.4.1
 google-resumable-media==2.0.0
 packaging==24.2.0
 python-dateutil==2.8.2
-requests==2.21.0
+requests==2.33.0
 google-cloud-bigquery-storage==2.18.0
 grpcio==1.47.0
 grpcio-status==1.47.0
@@ -19,7 +19,7 @@ Shapely==1.8.4
 ipython==7.23.1
 bigquery-magics==0.6.0
 matplotlib==3.10.3
-tqdm==4.23.4
+tqdm==4.66.3
 opentelemetry-api==1.16.0
 opentelemetry-sdk==1.16.0
 opentelemetry-instrumentation==0.41b0
