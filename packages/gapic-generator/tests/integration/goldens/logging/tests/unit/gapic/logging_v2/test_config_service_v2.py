@@ -1004,10 +1004,11 @@ def test_list_buckets_non_empty_request_with_auto_populated_field():
         client.list_buckets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.ListBucketsRequest(
+        request_msg = logging_config.ListBucketsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_buckets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1521,9 +1522,10 @@ def test_get_bucket_non_empty_request_with_auto_populated_field():
         client.get_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetBucketRequest(
+        request_msg = logging_config.GetBucketRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1759,10 +1761,11 @@ def test_create_bucket_async_non_empty_request_with_auto_populated_field():
         client.create_bucket_async(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateBucketRequest(
+        request_msg = logging_config.CreateBucketRequest(
             parent='parent_value',
             bucket_id='bucket_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1994,9 +1997,10 @@ def test_update_bucket_async_non_empty_request_with_auto_populated_field():
         client.update_bucket_async(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateBucketRequest(
+        request_msg = logging_config.UpdateBucketRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2244,10 +2248,11 @@ def test_create_bucket_non_empty_request_with_auto_populated_field():
         client.create_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateBucketRequest(
+        request_msg = logging_config.CreateBucketRequest(
             parent='parent_value',
             bucket_id='bucket_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2497,9 +2502,10 @@ def test_update_bucket_non_empty_request_with_auto_populated_field():
         client.update_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateBucketRequest(
+        request_msg = logging_config.UpdateBucketRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2734,9 +2740,10 @@ def test_delete_bucket_non_empty_request_with_auto_populated_field():
         client.delete_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.DeleteBucketRequest(
+        request_msg = logging_config.DeleteBucketRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2956,9 +2963,10 @@ def test_undelete_bucket_non_empty_request_with_auto_populated_field():
         client.undelete_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UndeleteBucketRequest(
+        request_msg = logging_config.UndeleteBucketRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_undelete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3182,10 +3190,11 @@ def test_list_views_non_empty_request_with_auto_populated_field():
         client.list_views(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.ListViewsRequest(
+        request_msg = logging_config.ListViewsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_views_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3691,9 +3700,10 @@ def test_get_view_non_empty_request_with_auto_populated_field():
         client.get_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetViewRequest(
+        request_msg = logging_config.GetViewRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3928,10 +3938,11 @@ def test_create_view_non_empty_request_with_auto_populated_field():
         client.create_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateViewRequest(
+        request_msg = logging_config.CreateViewRequest(
             parent='parent_value',
             view_id='view_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4165,9 +4176,10 @@ def test_update_view_non_empty_request_with_auto_populated_field():
         client.update_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateViewRequest(
+        request_msg = logging_config.UpdateViewRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4394,9 +4406,10 @@ def test_delete_view_non_empty_request_with_auto_populated_field():
         client.delete_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.DeleteViewRequest(
+        request_msg = logging_config.DeleteViewRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4620,10 +4633,11 @@ def test_list_sinks_non_empty_request_with_auto_populated_field():
         client.list_sinks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.ListSinksRequest(
+        request_msg = logging_config.ListSinksRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_sinks_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5139,9 +5153,10 @@ def test_get_sink_non_empty_request_with_auto_populated_field():
         client.get_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetSinkRequest(
+        request_msg = logging_config.GetSinkRequest(
             sink_name='sink_name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5477,9 +5492,10 @@ def test_create_sink_non_empty_request_with_auto_populated_field():
         client.create_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateSinkRequest(
+        request_msg = logging_config.CreateSinkRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_create_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5825,9 +5841,10 @@ def test_update_sink_non_empty_request_with_auto_populated_field():
         client.update_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateSinkRequest(
+        request_msg = logging_config.UpdateSinkRequest(
             sink_name='sink_name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6166,9 +6183,10 @@ def test_delete_sink_non_empty_request_with_auto_populated_field():
         client.delete_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.DeleteSinkRequest(
+        request_msg = logging_config.DeleteSinkRequest(
             sink_name='sink_name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6471,10 +6489,11 @@ def test_create_link_non_empty_request_with_auto_populated_field():
         client.create_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateLinkRequest(
+        request_msg = logging_config.CreateLinkRequest(
             parent='parent_value',
             link_id='link_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6810,9 +6829,10 @@ def test_delete_link_non_empty_request_with_auto_populated_field():
         client.delete_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.DeleteLinkRequest(
+        request_msg = logging_config.DeleteLinkRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7132,10 +7152,11 @@ def test_list_links_non_empty_request_with_auto_populated_field():
         client.list_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.ListLinksRequest(
+        request_msg = logging_config.ListLinksRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_links_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7641,9 +7662,10 @@ def test_get_link_non_empty_request_with_auto_populated_field():
         client.get_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetLinkRequest(
+        request_msg = logging_config.GetLinkRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7956,10 +7978,11 @@ def test_list_exclusions_non_empty_request_with_auto_populated_field():
         client.list_exclusions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.ListExclusionsRequest(
+        request_msg = logging_config.ListExclusionsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_exclusions_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8467,9 +8490,10 @@ def test_get_exclusion_non_empty_request_with_auto_populated_field():
         client.get_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetExclusionRequest(
+        request_msg = logging_config.GetExclusionRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8789,9 +8813,10 @@ def test_create_exclusion_non_empty_request_with_auto_populated_field():
         client.create_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CreateExclusionRequest(
+        request_msg = logging_config.CreateExclusionRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test_create_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9121,9 +9146,10 @@ def test_update_exclusion_non_empty_request_with_auto_populated_field():
         client.update_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateExclusionRequest(
+        request_msg = logging_config.UpdateExclusionRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9454,9 +9480,10 @@ def test_delete_exclusion_non_empty_request_with_auto_populated_field():
         client.delete_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.DeleteExclusionRequest(
+        request_msg = logging_config.DeleteExclusionRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9767,9 +9794,10 @@ def test_get_cmek_settings_non_empty_request_with_auto_populated_field():
         client.get_cmek_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetCmekSettingsRequest(
+        request_msg = logging_config.GetCmekSettingsRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10007,9 +10035,10 @@ def test_update_cmek_settings_non_empty_request_with_auto_populated_field():
         client.update_cmek_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateCmekSettingsRequest(
+        request_msg = logging_config.UpdateCmekSettingsRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10249,9 +10278,10 @@ def test_get_settings_non_empty_request_with_auto_populated_field():
         client.get_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.GetSettingsRequest(
+        request_msg = logging_config.GetSettingsRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10575,9 +10605,10 @@ def test_update_settings_non_empty_request_with_auto_populated_field():
         client.update_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.UpdateSettingsRequest(
+        request_msg = logging_config.UpdateSettingsRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_update_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10902,11 +10933,12 @@ def test_copy_log_entries_non_empty_request_with_auto_populated_field():
         client.copy_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_config.CopyLogEntriesRequest(
+        request_msg = logging_config.CopyLogEntriesRequest(
             name='name_value',
             filter='filter_value',
             destination='destination_value',
         )
+        assert args[0] == request_msg
 
 def test_copy_log_entries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11139,7 +11171,6 @@ def test_list_buckets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListBucketsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11162,7 +11193,6 @@ def test_get_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11185,7 +11215,6 @@ def test_create_bucket_async_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11208,7 +11237,6 @@ def test_update_bucket_async_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11231,7 +11259,6 @@ def test_create_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11254,7 +11281,6 @@ def test_update_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11277,7 +11303,6 @@ def test_delete_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11300,7 +11325,6 @@ def test_undelete_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UndeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11323,7 +11347,6 @@ def test_list_views_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11346,7 +11369,6 @@ def test_get_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -11369,7 +11391,6 @@ def test_create_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -11392,7 +11413,6 @@ def test_update_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -11415,7 +11435,6 @@ def test_delete_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -11438,7 +11457,6 @@ def test_list_sinks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListSinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11461,7 +11479,6 @@ def test_get_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11484,7 +11501,6 @@ def test_create_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11507,7 +11523,6 @@ def test_update_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11530,7 +11545,6 @@ def test_delete_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11553,7 +11567,6 @@ def test_create_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11576,7 +11589,6 @@ def test_delete_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11599,7 +11611,6 @@ def test_list_links_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11622,7 +11633,6 @@ def test_get_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11645,7 +11655,6 @@ def test_list_exclusions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListExclusionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11668,7 +11677,6 @@ def test_get_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11691,7 +11699,6 @@ def test_create_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11714,7 +11721,6 @@ def test_update_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11737,7 +11743,6 @@ def test_delete_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11760,7 +11765,6 @@ def test_get_cmek_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetCmekSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11783,7 +11787,6 @@ def test_update_cmek_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateCmekSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11806,7 +11809,6 @@ def test_get_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11829,7 +11831,6 @@ def test_update_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11852,7 +11853,6 @@ def test_copy_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CopyLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11894,7 +11894,6 @@ async def test_list_buckets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListBucketsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11927,7 +11926,6 @@ async def test_get_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11954,7 +11952,6 @@ async def test_create_bucket_async_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -11981,7 +11978,6 @@ async def test_update_bucket_async_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -12014,7 +12010,6 @@ async def test_create_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -12047,7 +12042,6 @@ async def test_update_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -12072,7 +12066,6 @@ async def test_delete_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -12097,7 +12090,6 @@ async def test_undelete_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UndeleteBucketRequest()
-
         assert args[0] == request_msg
 
 
@@ -12124,7 +12116,6 @@ async def test_list_views_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListViewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12153,7 +12144,6 @@ async def test_get_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -12182,7 +12172,6 @@ async def test_create_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -12211,7 +12200,6 @@ async def test_update_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -12236,7 +12224,6 @@ async def test_delete_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteViewRequest()
-
         assert args[0] == request_msg
 
 
@@ -12263,7 +12250,6 @@ async def test_list_sinks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListSinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12297,7 +12283,6 @@ async def test_get_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12331,7 +12316,6 @@ async def test_create_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12365,7 +12349,6 @@ async def test_update_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12390,7 +12373,6 @@ async def test_delete_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteSinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12417,7 +12399,6 @@ async def test_create_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12444,7 +12425,6 @@ async def test_delete_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12471,7 +12451,6 @@ async def test_list_links_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12500,7 +12479,6 @@ async def test_get_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12527,7 +12505,6 @@ async def test_list_exclusions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListExclusionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12557,7 +12534,6 @@ async def test_get_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12587,7 +12563,6 @@ async def test_create_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12617,7 +12592,6 @@ async def test_update_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12642,7 +12616,6 @@ async def test_delete_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteExclusionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12672,7 +12645,6 @@ async def test_get_cmek_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetCmekSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12702,7 +12674,6 @@ async def test_update_cmek_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateCmekSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12733,7 +12704,6 @@ async def test_get_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12764,7 +12734,6 @@ async def test_update_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12791,7 +12760,6 @@ async def test_copy_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CopyLogEntriesRequest()
-
         assert args[0] == request_msg
 
 

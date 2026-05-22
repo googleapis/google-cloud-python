@@ -1002,9 +1002,10 @@ def test_delete_log_non_empty_request_with_auto_populated_field():
         client.delete_log(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.DeleteLogRequest(
+        request_msg = logging.DeleteLogRequest(
             log_name='log_name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_log_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1307,9 +1308,10 @@ def test_write_log_entries_non_empty_request_with_auto_populated_field():
         client.write_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.WriteLogEntriesRequest(
+        request_msg = logging.WriteLogEntriesRequest(
             log_name='log_name_value',
         )
+        assert args[0] == request_msg
 
 def test_write_log_entries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1585,11 +1587,12 @@ def test_list_log_entries_non_empty_request_with_auto_populated_field():
         client.list_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListLogEntriesRequest(
+        request_msg = logging.ListLogEntriesRequest(
             filter='filter_value',
             order_by='order_by_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_log_entries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2044,9 +2047,10 @@ def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populat
         client.list_monitored_resource_descriptors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListMonitoredResourceDescriptorsRequest(
+        request_msg = logging.ListMonitoredResourceDescriptorsRequest(
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_monitored_resource_descriptors_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2402,10 +2406,11 @@ def test_list_logs_non_empty_request_with_auto_populated_field():
         client.list_logs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListLogsRequest(
+        request_msg = logging.ListLogsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_logs_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3104,7 +3109,6 @@ def test_delete_log_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.DeleteLogRequest()
-
         assert args[0] == request_msg
 
 
@@ -3127,7 +3131,6 @@ def test_write_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.WriteLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3150,7 +3153,6 @@ def test_list_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3173,7 +3175,6 @@ def test_list_monitored_resource_descriptors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3196,7 +3197,6 @@ def test_list_logs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3236,7 +3236,6 @@ async def test_delete_log_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.DeleteLogRequest()
-
         assert args[0] == request_msg
 
 
@@ -3262,7 +3261,6 @@ async def test_write_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.WriteLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3289,7 +3287,6 @@ async def test_list_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3316,7 +3313,6 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3344,7 +3340,6 @@ async def test_list_logs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogsRequest()
-
         assert args[0] == request_msg
 
 

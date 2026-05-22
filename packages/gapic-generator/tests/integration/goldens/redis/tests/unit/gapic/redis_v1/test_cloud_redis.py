@@ -1035,10 +1035,11 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest(
+        request_msg = cloud_redis.ListInstancesRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test_list_instances_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1594,9 +1595,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest(
+        request_msg = cloud_redis.GetInstanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1956,9 +1958,10 @@ def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
         client.get_instance_auth_string(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest(
+        request_msg = cloud_redis.GetInstanceAuthStringRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_instance_auth_string_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2264,10 +2267,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest(
+        request_msg = cloud_redis.CreateInstanceRequest(
             parent='parent_value',
             instance_id='instance_id_value',
         )
+        assert args[0] == request_msg
 
 def test_create_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2602,8 +2606,9 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest(
+        request_msg = cloud_redis.UpdateInstanceRequest(
         )
+        assert args[0] == request_msg
 
 def test_update_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2930,10 +2935,11 @@ def test_upgrade_instance_non_empty_request_with_auto_populated_field():
         client.upgrade_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest(
+        request_msg = cloud_redis.UpgradeInstanceRequest(
             name='name_value',
             redis_version='redis_version_value',
         )
+        assert args[0] == request_msg
 
 def test_upgrade_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3259,9 +3265,10 @@ def test_import_instance_non_empty_request_with_auto_populated_field():
         client.import_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest(
+        request_msg = cloud_redis.ImportInstanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_import_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3587,9 +3594,10 @@ def test_export_instance_non_empty_request_with_auto_populated_field():
         client.export_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest(
+        request_msg = cloud_redis.ExportInstanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_export_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3915,9 +3923,10 @@ def test_failover_instance_non_empty_request_with_auto_populated_field():
         client.failover_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest(
+        request_msg = cloud_redis.FailoverInstanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_failover_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4243,9 +4252,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest(
+        request_msg = cloud_redis.DeleteInstanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_delete_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4561,9 +4571,10 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
         client.reschedule_maintenance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest(
+        request_msg = cloud_redis.RescheduleMaintenanceRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_reschedule_maintenance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6880,7 +6891,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6903,7 +6913,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6926,7 +6935,6 @@ def test_get_instance_auth_string_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -6949,7 +6957,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6972,7 +6979,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6995,7 +7001,6 @@ def test_upgrade_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpgradeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7018,7 +7023,6 @@ def test_import_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ImportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7041,7 +7045,6 @@ def test_export_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ExportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7064,7 +7067,6 @@ def test_failover_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7087,7 +7089,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7110,7 +7111,6 @@ def test_reschedule_maintenance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7153,7 +7153,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7206,7 +7205,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7233,7 +7231,6 @@ async def test_get_instance_auth_string_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -7260,7 +7257,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7287,7 +7283,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7314,7 +7309,6 @@ async def test_upgrade_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpgradeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7341,7 +7335,6 @@ async def test_import_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ImportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7368,7 +7361,6 @@ async def test_export_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ExportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7395,7 +7387,6 @@ async def test_failover_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7422,7 +7413,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -7449,7 +7439,6 @@ async def test_reschedule_maintenance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9164,7 +9153,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9186,7 +9174,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9208,7 +9195,6 @@ def test_get_instance_auth_string_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -9230,7 +9216,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9252,7 +9237,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9274,7 +9258,6 @@ def test_upgrade_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpgradeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9296,7 +9279,6 @@ def test_import_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ImportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9318,7 +9300,6 @@ def test_export_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ExportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9340,7 +9321,6 @@ def test_failover_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9362,7 +9342,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9384,7 +9363,6 @@ def test_reschedule_maintenance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11221,7 +11199,6 @@ async def test_list_instances_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11246,7 +11223,6 @@ async def test_get_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11271,7 +11247,6 @@ async def test_get_instance_auth_string_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceAuthStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -11296,7 +11271,6 @@ async def test_create_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11321,7 +11295,6 @@ async def test_update_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11346,7 +11319,6 @@ async def test_upgrade_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpgradeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11371,7 +11343,6 @@ async def test_import_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ImportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11396,7 +11367,6 @@ async def test_export_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ExportInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11421,7 +11391,6 @@ async def test_failover_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11446,7 +11415,6 @@ async def test_delete_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11471,7 +11439,6 @@ async def test_reschedule_maintenance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
