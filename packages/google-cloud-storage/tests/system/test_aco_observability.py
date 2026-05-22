@@ -488,3 +488,62 @@ def test_get_bucket_synchronous_cache_warming(storage_client, buckets_to_delete)
         assert not fetch_triggered
     finally:
         storage_client._bucket_metadata_cache._fetch_background = original_fetch
+
+
+def test_sequential_cache_priming_multi_region(storage_client, exporter, buckets_to_delete):
+    """Verifies that a cache miss returns immediately and warms the cache
+    in a background thread for a multi-region bucket, and the resolved location
+    is 'global'."""
+    bucket_name = _helpers.unique_name("aco-priming-multi")
+    bucket = storage_client.bucket(bucket_name)
+    storage_client.create_bucket(bucket, location="us")
+    buckets_to_delete.append(bucket)
+
+    blob_name = "test_blob.txt"
+    blob = bucket.blob(blob_name)
+    blob.upload_from_string("hello")
+
+    # Set up deterministic event-driven synchronization hooks
+    original_update = storage_client._bucket_metadata_cache.update_cache
+    update_cache_event = threading.Event()
+
+    def monitored_update(*args, **kwargs):
+        original_update(*args, **kwargs)
+        update_cache_event.set()
+
+    storage_client._bucket_metadata_cache.update_cache = monitored_update
+
+    try:
+        # Clear cache and OTel exporter logs
+        storage_client._bucket_metadata_cache.clear()
+        exporter.clear()
+
+        # 1. First download (must be a cache miss)
+        blob.download_as_bytes()
+
+        spans = exporter.get_finished_spans()
+        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        assert len(dl_spans) == 1
+        attrs = dl_spans[0].attributes
+        assert "gcp.resource.destination.id" not in attrs
+        assert "gcp.resource.destination.location" not in attrs
+
+        # Wait deterministically for background fetch thread to populate cache
+        assert update_cache_event.wait(timeout=10.0)
+
+        # 2. Second download (must be a cache hit)
+        exporter.clear()
+        blob.download_as_bytes()
+
+        spans = exporter.get_finished_spans()
+        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+        assert len(dl_spans) == 1
+        attrs = dl_spans[0].attributes
+        assert "gcp.resource.destination.id" in attrs
+        assert "gcp.resource.destination.location" in attrs
+        assert bucket_name in attrs["gcp.resource.destination.id"]
+        # Multi-region location must be 'global'
+        assert attrs["gcp.resource.destination.location"] == "global"
+    finally:
+        storage_client._bucket_metadata_cache.update_cache = original_update
+
