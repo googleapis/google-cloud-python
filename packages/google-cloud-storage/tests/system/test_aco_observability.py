@@ -503,6 +503,7 @@ def test_sequential_cache_priming_multi_region(
 
     blob_name = "test_blob.txt"
     blob = bucket.blob(blob_name)
+    op_name = "Storage.Blob.downloadAsBytes"
     blob.upload_from_string("hello")
 
     # Set up deterministic event-driven synchronization hooks
@@ -524,9 +525,7 @@ def test_sequential_cache_priming_multi_region(
         blob.download_as_bytes()
 
         spans = exporter.get_finished_spans()
-        dl_spans = [
-            s for s in spans if s.name == "Storage.Blob.downloadAsBytes"
-        ]
+        dl_spans = [s for s in spans if s.name == op_name]
         assert len(dl_spans) == 1
         attrs = dl_spans[0].attributes
         assert "gcp.resource.destination.id" not in attrs
@@ -540,9 +539,7 @@ def test_sequential_cache_priming_multi_region(
         blob.download_as_bytes()
 
         spans = exporter.get_finished_spans()
-        dl_spans = [
-            s for s in spans if s.name == "Storage.Blob.downloadAsBytes"
-        ]
+        dl_spans = [s for s in spans if s.name == op_name]
         assert len(dl_spans) == 1
         attrs = dl_spans[0].attributes
         assert "gcp.resource.destination.id" in attrs
