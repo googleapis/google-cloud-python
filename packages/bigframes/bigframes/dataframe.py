@@ -819,7 +819,7 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
+    def _process_display_df(self) -> tuple[DataFrame, list[str]]:
         """Process ObjectRef and JSON/nested JSON columns for display."""
         df = self
         # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
