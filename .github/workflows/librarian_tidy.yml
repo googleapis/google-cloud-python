@@ -22,18 +22,7 @@ jobs:
 
       - name: Run librarian tidy
         run: |
-          # go run can flake if the downloads fail, so run it several times until it succeeds.
-          go run github.com/googleapis/librarian/cmd/librarian@latest version || \
-          go run github.com/googleapis/librarian/cmd/librarian@latest version || \
-          go run github.com/googleapis/librarian/cmd/librarian@latest version
-
           V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
-
-          # This is a different download, so it can flake even after the first one succeeds.
-          go run github.com/googleapis/librarian/cmd/librarian@${V} version || \
-          go run github.com/googleapis/librarian/cmd/librarian@${V} version || \
-          go run github.com/googleapis/librarian/cmd/librarian@${V} version
-
           go run github.com/googleapis/librarian/cmd/librarian@${V} tidy
           git diff
 
