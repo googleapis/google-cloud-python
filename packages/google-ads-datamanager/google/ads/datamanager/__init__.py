@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ from google.ads.datamanager_v1.types.audience import (
     PpidData,
     UserIdData,
 )
-from google.ads.datamanager_v1.types.cart_data import CartData, Item
+from google.ads.datamanager_v1.types.cart_data import CartData, Item, ItemCustomVariable
 from google.ads.datamanager_v1.types.consent import Consent, ConsentStatus
 from google.ads.datamanager_v1.types.destination import (
     Destination,
@@ -80,6 +80,7 @@ from google.ads.datamanager_v1.types.event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -217,6 +218,7 @@ __all__ = (
     "UserIdData",
     "CartData",
     "Item",
+    "ItemCustomVariable",
     "Consent",
     "ConsentStatus",
     "Destination",
@@ -230,6 +232,7 @@ __all__ = (
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",

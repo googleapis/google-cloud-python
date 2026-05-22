@@ -183,7 +183,9 @@ class Session(
         # Publisher needs to be created before the other objects, especially
         # the executors, because they access it.
         self._publisher = bigframes.core.events.Publisher()
-        self._publisher.subscribe(bigframes.formatting_helpers.progress_callback)
+        self._publisher.subscribe(
+            bigframes.formatting_helpers.create_progress_callback()
+        )
 
         if context is None:
             context = bigquery_options.BigQueryOptions()
@@ -2310,7 +2312,7 @@ class Session(
         # so we must reset any encryption set in the job config
         # https://cloud.google.com/bigquery/docs/customer-managed-encryption#encrypt-model
         job_config.destination_encryption_configuration = None
-        iterator, query_job = bf_io_bigquery.start_query_with_client(
+        iterator, query_job = bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=job_config,
@@ -2318,12 +2320,24 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             job_retry=third_party_gcb_retry.DEFAULT_ML_JOB_RETRY,
             publisher=self._publisher,
             session=self,
         )
         return iterator, query_job
+
+    def _from_glob_path(
+        self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
+    ) -> dataframe.DataFrame:
+        """Create a BigFrames DataFrame that contains a BigFrames ObjectRef column from a global wildcard path."""
+        import bigframes.bigquery as bq
+
+        connection = self._create_bq_connection(connection=connection)
+        table = self._create_object_table(path, connection)
+        s = bq.obj.make_ref(
+            self._loader.read_gbq_table(table)["uri"], authorizer=connection
+        )
+        return s.rename(name).to_frame()
 
     def _create_object_table(self, path: str, connection: str) -> str:
         """Create a random id Object Table from the input path and connection."""
@@ -2340,7 +2354,7 @@ class Session(
                 uris = ['{path}']);
             """
         )
-        bf_io_bigquery.start_query_with_client(
+        bf_io_bigquery.start_query_with_job(
             self.bqclient,
             sql,
             job_config=bigquery.QueryJobConfig(),
@@ -2348,7 +2362,6 @@ class Session(
             location=None,
             project=None,
             timeout=None,
-            query_with_job=True,
             publisher=self._publisher,
             session=self,
         )
@@ -2366,40 +2379,6 @@ class Session(
         return self._temp_storage_manager.create_temp_table(
             schema=schema, cluster_cols=cluster_cols
         )
-
-    def from_glob_path(
-        self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
-    ) -> dataframe.DataFrame:
-        r"""Create a BigFrames DataFrame that contains a BigFrames `ObjectRef column <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ from a global wildcard path.
-        This operation creates a temporary BQ Object Table under the hood and requires bigquery.connections.delegate permission or BigQuery Connection Admin role.
-        If you have an existing BQ Object Table, use read_gbq_object_table().
-
-        .. note::
-            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).
-
-        Args:
-            path (str):
-                The wildcard global path, such as "gs://<bucket>/<folder>/\*".
-            connection (str or None, default None):
-                Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-                If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
-                permission if the connection isn't fully set up.
-            name (str):
-                The column name of the ObjectRef column.
-        Returns:
-            bigframes.pandas.DataFrame:
-                Result BigFrames DataFrame.
-        """
-        # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
-        connection = self._create_bq_connection(connection=connection)
-
-        table = self._create_object_table(path, connection)
-
-        s = self._loader.read_gbq_table(table)["uri"].str.to_blob(connection)
-        return s.rename(name).to_frame()
 
     def _create_bq_connection(
         self,
@@ -2427,38 +2406,6 @@ class Session(
         )
 
         return connection
-
-    def read_gbq_object_table(
-        self, object_table: str, *, name: Optional[str] = None
-    ) -> dataframe.DataFrame:
-        """Read an existing object table to create a BigFrames `ObjectRef <https://docs.cloud.google.com/bigquery/docs/objectref-columns>`_ DataFrame. Use the connection of the object table for the connection of the ObjectRef.
-        This function dosen't retrieve the object table data. If you want to read the data, use read_gbq() instead.
-
-        .. note::
-            BigFrames ObjectRef is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).
-
-        Args:
-            object_table (str): name of the object table of form <PROJECT_ID>.<DATASET_ID>.<TABLE_ID>.
-            name (str or None): the returned ObjectRef column name.
-
-        Returns:
-            bigframes.pandas.DataFrame:
-                Result BigFrames DataFrame.
-        """
-        warnings.warn(
-            "read_gbq_object_table is deprecated and will be removed in a future release. Use read_gbq with 'ref' column instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
-        table = self.bqclient.get_table(object_table)
-        connection = table._properties["externalDataConfiguration"]["connectionId"]
-
-        s = self._loader.read_gbq_table(object_table)["uri"].str.to_blob(connection)
-        return s.rename(name).to_frame()
 
     # =========================================================================
     # bigframes.pandas attributes

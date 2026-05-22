@@ -23,6 +23,7 @@ Services for Google Cloud Compute v1 API
     global_operations
     global_organization_operations
     global_public_delegated_prefixes
+    global_vm_extension_policies
     health_checks
     image_family_views
     images
@@ -97,6 +98,8 @@ Services for Google Cloud Compute v1 API
     reservation_slots
     reservation_sub_blocks
     resource_policies
+    rollout_plans
+    rollouts
     routers
     routes
     security_policies

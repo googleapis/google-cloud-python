@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,9 +61,9 @@ class QueryUsageHistoriesRequest(proto.Message):
             location for the time series values to return.
             The format is:
 
-            projects/{project}/locations/{location} or
+                projects/{project}/locations/{location} or
             organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            or     folders/{folder}/locations/{location}
         location_level (google.cloud.capacityplanner_v1beta.types.TimeSeries.LocationType):
             Optional. The location level of the
             reservations usage timeseries.
@@ -1010,9 +1010,9 @@ class ExportUsageHistoriesRequest(proto.Message):
             location for the time series values to return.
             The format is:
 
-            projects/{project}/locations/{location} or
+               projects/{project}/locations/{location} or
             organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            or    folders/{folder}/locations/{location}
         is_spot (bool):
             Optional. Set true to export usage for spot
             resources.
@@ -1122,9 +1122,9 @@ class ExportForecastsRequest(proto.Message):
             location for the time series values to return.
             The format is:
 
-            projects/{project}/locations/{location} or
+               projects/{project}/locations/{location} or
             organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            or    folders/{folder}/locations/{location}
         machine_family (str):
             Optional. The machine family to use to select the
             ``Forecast`` values to return. Possible values include "n1",
@@ -1252,11 +1252,12 @@ class ExportReservationsUsageRequest(proto.Message):
             This field is a member of `oneof`_ ``resource``.
         parent (str):
             Required. The compute engine resource and
-            location of the reservationsusage. The format is:
+            location of the reservationsusage. The format
+            is:
 
-            projects/{project}/locations/{location} or
+               projects/{project}/locations/{location} or
             organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            or    folders/{folder}/locations/{location}
         location_level (google.cloud.capacityplanner_v1beta.types.TimeSeries.LocationType):
             Optional. The location level of the
             reservations usage timeseries.

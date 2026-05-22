@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -150,6 +150,16 @@ class AdviceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.capacity: gapic_v1.method.wrap_method(
+                self.capacity,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.capacity_history: gapic_v1.method.wrap_method(
+                self.capacity_history,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -169,6 +179,28 @@ class AdviceTransport(abc.ABC):
         Union[
             compute.CalendarModeAdviceResponse,
             Awaitable[compute.CalendarModeAdviceResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def capacity(
+        self,
+    ) -> Callable[
+        [compute.CapacityAdviceRpcRequest],
+        Union[
+            compute.CapacityAdviceResponse, Awaitable[compute.CapacityAdviceResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def capacity_history(
+        self,
+    ) -> Callable[
+        [compute.CapacityHistoryAdviceRequest],
+        Union[
+            compute.CapacityHistoryResponse, Awaitable[compute.CapacityHistoryResponse]
         ],
     ]:
         raise NotImplementedError()

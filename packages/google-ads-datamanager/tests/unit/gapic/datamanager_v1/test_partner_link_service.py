@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1344,7 +1338,10 @@ def test_partner_link_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/datamanager",
+                "https://www.googleapis.com/auth/datamanager.partnerlink",
+            ),
             scopes=None,
             default_host="datamanager.googleapis.com",
             ssl_credentials=None,
@@ -2579,11 +2576,7 @@ async def test_search_partner_links_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_partner_links(request={})
-        ).pages:
+        async for page_ in (await client.search_partner_links(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2702,7 +2695,7 @@ def test_create_partner_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_partner_link_rest_unset_required_fields():
@@ -2891,7 +2884,7 @@ def test_delete_partner_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_partner_link_rest_unset_required_fields():
@@ -3083,7 +3076,7 @@ def test_search_partner_links_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_partner_links_rest_unset_required_fields():
@@ -4114,7 +4107,10 @@ def test_partner_link_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/datamanager",
+                "https://www.googleapis.com/auth/datamanager.partnerlink",
+            ),
             quota_project_id="octopus",
         )
 
@@ -4140,7 +4136,10 @@ def test_partner_link_service_auth_adc():
         PartnerLinkServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/datamanager",
+                "https://www.googleapis.com/auth/datamanager.partnerlink",
+            ),
             quota_project_id=None,
         )
 
@@ -4160,7 +4159,10 @@ def test_partner_link_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/datamanager",
+                "https://www.googleapis.com/auth/datamanager.partnerlink",
+            ),
             quota_project_id="octopus",
         )
 
@@ -4213,7 +4215,10 @@ def test_partner_link_service_transport_create_channel(transport_class, grpc_hel
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/datamanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/datamanager",
+                "https://www.googleapis.com/auth/datamanager.partnerlink",
+            ),
             scopes=["1", "2"],
             default_host="datamanager.googleapis.com",
             ssl_credentials=None,

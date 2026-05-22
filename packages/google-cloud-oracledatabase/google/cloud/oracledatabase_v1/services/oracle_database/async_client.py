@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -711,11 +711,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cloud_exadata_infrastructure(request=request)
+                operation = await client.create_cloud_exadata_infrastructure(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -866,11 +866,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cloud_exadata_infrastructure(request=request)
+                operation = await client.delete_cloud_exadata_infrastructure(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1251,11 +1251,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cloud_vm_cluster(request=request)
+                operation = await client.create_cloud_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1397,11 +1397,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cloud_vm_cluster(request=request)
+                operation = await client.delete_cloud_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2538,11 +2538,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_autonomous_database(request=request)
+                operation = await client.create_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2689,11 +2689,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_autonomous_database(request=request)
+                operation = await client.update_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2828,11 +2828,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_autonomous_database(request=request)
+                operation = await client.delete_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2964,11 +2964,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_autonomous_database(request=request)
+                operation = await client.restore_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3638,11 +3638,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.stop_autonomous_database(request=request)
+                operation = await client.stop_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3765,11 +3765,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.start_autonomous_database(request=request)
+                operation = await client.start_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3892,11 +3892,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restart_autonomous_database(request=request)
+                operation = await client.restart_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4022,11 +4022,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.switchover_autonomous_database(request=request)
+                operation = await client.switchover_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4162,11 +4162,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.failover_autonomous_database(request=request)
+                operation = await client.failover_autonomous_database(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4540,11 +4540,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_odb_network(request=request)
+                operation = await client.create_odb_network(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4687,11 +4687,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_odb_network(request=request)
+                operation = await client.delete_odb_network(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5062,11 +5062,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_odb_subnet(request=request)
+                operation = await client.create_odb_subnet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5209,11 +5209,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_odb_subnet(request=request)
+                operation = await client.delete_odb_subnet(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5602,11 +5602,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_exadb_vm_cluster(request=request)
+                operation = await client.create_exadb_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5749,11 +5749,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_exadb_vm_cluster(request=request)
+                operation = await client.delete_exadb_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5900,11 +5900,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_exadb_vm_cluster(request=request)
+                operation = await client.update_exadb_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6046,11 +6046,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_virtual_machine_exadb_vm_cluster(request=request)
+                operation = await client.remove_virtual_machine_exadb_vm_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6449,11 +6449,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_exascale_db_storage_vault(request=request)
+                operation = await client.create_exascale_db_storage_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6604,11 +6604,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_exascale_db_storage_vault(request=request)
+                operation = await client.delete_exascale_db_storage_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7607,11 +7607,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_db_system(request=request)
+                operation = await client.create_db_system(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7751,11 +7751,11 @@ class OracleDatabaseAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_db_system(request=request)
+                operation = await client.delete_db_system(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

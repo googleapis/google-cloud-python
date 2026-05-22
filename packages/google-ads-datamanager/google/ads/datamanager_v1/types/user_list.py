@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -291,6 +291,12 @@ class SizeInfo(proto.Message):
             this user list in the google.com domain. These
             are the members available for targeting in
             Search campaigns.
+        youtube_members_count (int):
+            Output only. Estimated number of members in
+            this user list on YouTube.
+        gmail_members_count (int):
+            Output only. Estimated number of members in
+            this user list on Gmail.
     """
 
     display_network_members_count: int = proto.Field(
@@ -300,6 +306,14 @@ class SizeInfo(proto.Message):
     search_network_members_count: int = proto.Field(
         proto.INT64,
         number=2,
+    )
+    youtube_members_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    gmail_members_count: int = proto.Field(
+        proto.INT64,
+        number=4,
     )
 
 

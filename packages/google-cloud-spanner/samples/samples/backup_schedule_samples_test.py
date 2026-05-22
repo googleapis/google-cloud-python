@@ -23,11 +23,6 @@ __INCREMENTAL_BACKUP_SCHEDULE_ID = "incremental-backup-schedule"
 
 
 @pytest.fixture(scope="module")
-def sample_name():
-    return "backup_schedule"
-
-
-@pytest.fixture(scope="module")
 def database_id():
     return f"test-db-{uuid.uuid4().hex[:10]}"
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,15 +20,18 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.lineage.v1",
     manifest={
+        "DependencyType",
         "Process",
         "Run",
         "LineageEvent",
         "EventLink",
+        "DependencyInfo",
         "EntityReference",
         "OperationMetadata",
         "ProcessOpenLineageRunEventRequest",
@@ -51,6 +54,7 @@ __protobuf__ = proto.module(
         "ListLineageEventsResponse",
         "DeleteLineageEventRequest",
         "SearchLinksRequest",
+        "MultipleEntityReference",
         "SearchLinksResponse",
         "Link",
         "BatchSearchLinkProcessesRequest",
@@ -58,8 +62,29 @@ __protobuf__ = proto.module(
         "ProcessLinks",
         "ProcessLinkInfo",
         "Origin",
+        "LineageLink",
+        "SearchLineageStreamingRequest",
+        "SearchLineageStreamingResponse",
     },
 )
+
+
+class DependencyType(proto.Enum):
+    r"""Type of dependency between entities.
+
+    Values:
+        DEPENDENCY_TYPE_UNSPECIFIED (0):
+            Dependency type unspecified.
+        EXACT_COPY (1):
+            Exact data copy without any change.
+        OTHER (3):
+            Other types of dependencies like filtering or
+            grouping.
+    """
+
+    DEPENDENCY_TYPE_UNSPECIFIED = 0
+    EXACT_COPY = 1
+    OTHER = 3
 
 
 class Process(proto.Message):
@@ -124,7 +149,7 @@ class Run(proto.Message):
             ``a-zA-Z0-9_-:.``
         display_name (str):
             Optional. A human-readable name you can set to display in a
-            user interface. Must be not longer than 1024 characters and
+            user interface. Must be not longer than 200 characters and
             only contain UTF-8 letters or numbers, spaces or characters
             like ``_-:&.``
         attributes (MutableMapping[str, google.protobuf.struct_pb2.Value]):
@@ -256,6 +281,9 @@ class EventLink(proto.Message):
             Required. Reference to the source entity
         target (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Required. Reference to the target entity
+        dependency_info (google.cloud.datacatalog_lineage_v1.types.DependencyInfo):
+            Optional. Describes how the target depends on
+            the source.
     """
 
     source: "EntityReference" = proto.Field(
@@ -268,6 +296,26 @@ class EventLink(proto.Message):
         number=2,
         message="EntityReference",
     )
+    dependency_info: "DependencyInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DependencyInfo",
+    )
+
+
+class DependencyInfo(proto.Message):
+    r"""Dependency info describes how one entity depends on another.
+
+    Attributes:
+        dependency_type (google.cloud.datacatalog_lineage_v1.types.DependencyType):
+            Required. Type of dependency.
+    """
+
+    dependency_type: "DependencyType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="DependencyType",
+    )
 
 
 class EntityReference(proto.Message):
@@ -277,13 +325,29 @@ class EntityReference(proto.Message):
     Attributes:
         fully_qualified_name (str):
             Required. `Fully Qualified Name
-            (FQN) <https://cloud.google.com/data-catalog/docs/fully-qualified-names>`__
+            (FQN) <https://cloud.google.com/dataplex/docs/fully-qualified-names>`__
             of the entity.
+        field (MutableSequence[str]):
+            Optional. Field path within the entity. Each nesting level
+            should be a separate value in the repeated field. The order
+            matters. Must be empty for asset level lineage
+
+            For example to address "salary.net" subfield where "salary"
+            is a column and "net" is a proto field two values in the
+            ``field`` should be reported, the first is "salary" and the
+            second is "net".
+
+            Each field length is limited to 500 characters. Maximum
+            supported nesting level is 20.
     """
 
     fully_qualified_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    field: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -385,7 +449,7 @@ class OperationMetadata(proto.Message):
 
 class ProcessOpenLineageRunEventRequest(proto.Message):
     r"""Request message for
-    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
 
     Attributes:
         parent (str):
@@ -397,9 +461,9 @@ class ProcessOpenLineageRunEventRequest(proto.Message):
             OpenLineage format:
             https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json
         request_id (str):
-            A unique identifier for this request. Restricted to 36 ASCII
-            characters. A random UUID is recommended. This request is
-            idempotent only if a ``request_id`` is provided.
+            Optional. A unique identifier for this request. Restricted
+            to 36 ASCII characters. A random UUID is recommended. This
+            request is idempotent only if a ``request_id`` is provided.
     """
 
     parent: str = proto.Field(
@@ -419,7 +483,7 @@ class ProcessOpenLineageRunEventRequest(proto.Message):
 
 class ProcessOpenLineageRunEventResponse(proto.Message):
     r"""Response message for
-    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
 
     Attributes:
         process (str):
@@ -449,7 +513,7 @@ class ProcessOpenLineageRunEventResponse(proto.Message):
 
 class CreateProcessRequest(proto.Message):
     r"""Request message for
-    [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
+    [CreateProcess][google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess].
 
     Attributes:
         parent (str):
@@ -458,9 +522,9 @@ class CreateProcessRequest(proto.Message):
         process (google.cloud.datacatalog_lineage_v1.types.Process):
             Required. The process to create.
         request_id (str):
-            A unique identifier for this request. Restricted to 36 ASCII
-            characters. A random UUID is recommended. This request is
-            idempotent only if a ``request_id`` is provided.
+            Optional. A unique identifier for this request. Restricted
+            to 36 ASCII characters. A random UUID is recommended. This
+            request is idempotent only if a ``request_id`` is provided.
     """
 
     parent: str = proto.Field(
@@ -480,7 +544,7 @@ class CreateProcessRequest(proto.Message):
 
 class UpdateProcessRequest(proto.Message):
     r"""Request message for
-    [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
+    [UpdateProcess][google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess].
 
     Attributes:
         process (google.cloud.datacatalog_lineage_v1.types.Process):
@@ -489,11 +553,16 @@ class UpdateProcessRequest(proto.Message):
             The process's ``name`` field is used to identify the process
             to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update. Currently not
-            used. The whole message is updated.
+            Optional. The list of fields to update.
+            Currently not used. The whole message is
+            updated.
         allow_missing (bool):
-            If set to true and the process is not found,
-            the request inserts it.
+            Optional. If set to true and the process is
+            not found, the request inserts it.
+        request_id (str):
+            Optional. A unique identifier for this request. Restricted
+            to 36 ASCII characters. A random UUID is recommended. This
+            request is idempotent only if a ``request_id`` is provided.
     """
 
     process: "Process" = proto.Field(
@@ -510,11 +579,15 @@ class UpdateProcessRequest(proto.Message):
         proto.BOOL,
         number=3,
     )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GetProcessRequest(proto.Message):
     r"""Request message for
-    [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
+    [GetProcess][google.cloud.datacatalog.lineage.v1.Lineage.GetProcess].
 
     Attributes:
         name (str):
@@ -529,21 +602,21 @@ class GetProcessRequest(proto.Message):
 
 class ListProcessesRequest(proto.Message):
     r"""Request message for
-    [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+    [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
 
     Attributes:
         parent (str):
             Required. The name of the project and its
             location that owns this collection of processes.
         page_size (int):
-            The maximum number of processes to return.
-            The service may return fewer than this value. If
-            unspecified, at most 50 processes are returned.
-            The maximum value is 100; values greater than
-            100 are cut to 100.
+            Optional. The maximum number of processes to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 processes are
+            returned. The maximum value is 100; values
+            greater than 100 are cut to 100.
         page_token (str):
-            The page token received from a previous ``ListProcesses``
-            call. Specify it to get the next page.
+            Optional. The page token received from a previous
+            ``ListProcesses`` call. Specify it to get the next page.
 
             When paginating, all other parameters specified in this call
             must match the parameters of the call that provided the page
@@ -566,7 +639,7 @@ class ListProcessesRequest(proto.Message):
 
 class ListProcessesResponse(proto.Message):
     r"""Response message for
-    [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+    [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
 
     Attributes:
         processes (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Process]):
@@ -595,15 +668,15 @@ class ListProcessesResponse(proto.Message):
 
 class DeleteProcessRequest(proto.Message):
     r"""Request message for
-    [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
+    [DeleteProcess][google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess].
 
     Attributes:
         name (str):
             Required. The name of the process to delete.
         allow_missing (bool):
-            If set to true and the process is not found,
-            the request succeeds but the server doesn't
-            perform any actions.
+            Optional. If set to true and the process is
+            not found, the request succeeds but the server
+            doesn't perform any actions.
     """
 
     name: str = proto.Field(
@@ -618,7 +691,7 @@ class DeleteProcessRequest(proto.Message):
 
 class CreateRunRequest(proto.Message):
     r"""Request message for
-    [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
+    [CreateRun][google.cloud.datacatalog.lineage.v1.Lineage.CreateRun].
 
     Attributes:
         parent (str):
@@ -627,9 +700,9 @@ class CreateRunRequest(proto.Message):
         run (google.cloud.datacatalog_lineage_v1.types.Run):
             Required. The run to create.
         request_id (str):
-            A unique identifier for this request. Restricted to 36 ASCII
-            characters. A random UUID is recommended. This request is
-            idempotent only if a ``request_id`` is provided.
+            Optional. A unique identifier for this request. Restricted
+            to 36 ASCII characters. A random UUID is recommended. This
+            request is idempotent only if a ``request_id`` is provided.
     """
 
     parent: str = proto.Field(
@@ -649,7 +722,7 @@ class CreateRunRequest(proto.Message):
 
 class UpdateRunRequest(proto.Message):
     r"""Request message for
-    [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
+    [UpdateRun][google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun].
 
     Attributes:
         run (google.cloud.datacatalog_lineage_v1.types.Run):
@@ -661,11 +734,12 @@ class UpdateRunRequest(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/processes/{process}/runs/{run}``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update. Currently not
-            used. The whole message is updated.
+            Optional. The list of fields to update.
+            Currently not used. The whole message is
+            updated.
         allow_missing (bool):
-            If set to true and the run is not found, the
-            request creates it.
+            Optional. If set to true and the run is not
+            found, the request creates it.
     """
 
     run: "Run" = proto.Field(
@@ -686,7 +760,7 @@ class UpdateRunRequest(proto.Message):
 
 class GetRunRequest(proto.Message):
     r"""Request message for
-    [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
+    [GetRun][google.cloud.datacatalog.lineage.v1.Lineage.GetRun].
 
     Attributes:
         name (str):
@@ -701,21 +775,21 @@ class GetRunRequest(proto.Message):
 
 class ListRunsRequest(proto.Message):
     r"""Request message for
-    [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+    [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
 
     Attributes:
         parent (str):
             Required. The name of process that owns this
             collection of runs.
         page_size (int):
-            The maximum number of runs to return. The
-            service may return fewer than this value. If
-            unspecified, at most 50 runs are returned. The
-            maximum value is 100; values greater than 100
-            are cut to 100.
+            Optional. The maximum number of runs to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 runs are
+            returned. The maximum value is 100; values
+            greater than 100 are cut to 100.
         page_token (str):
-            The page token received from a previous ``ListRuns`` call.
-            Specify it to get the next page.
+            Optional. The page token received from a previous
+            ``ListRuns`` call. Specify it to get the next page.
 
             When paginating, all other parameters specified in this call
             must match the parameters of the call that provided the page
@@ -738,7 +812,7 @@ class ListRunsRequest(proto.Message):
 
 class ListRunsResponse(proto.Message):
     r"""Response message for
-    [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+    [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
 
     Attributes:
         runs (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Run]):
@@ -767,15 +841,15 @@ class ListRunsResponse(proto.Message):
 
 class DeleteRunRequest(proto.Message):
     r"""Request message for
-    [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
+    [DeleteRun][google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun].
 
     Attributes:
         name (str):
             Required. The name of the run to delete.
         allow_missing (bool):
-            If set to true and the run is not found, the
-            request succeeds but the server doesn't perform
-            any actions.
+            Optional. If set to true and the run is not
+            found, the request succeeds but the server
+            doesn't perform any actions.
     """
 
     name: str = proto.Field(
@@ -790,7 +864,7 @@ class DeleteRunRequest(proto.Message):
 
 class CreateLineageEventRequest(proto.Message):
     r"""Request message for
-    [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
+    [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent].
 
     Attributes:
         parent (str):
@@ -799,9 +873,9 @@ class CreateLineageEventRequest(proto.Message):
         lineage_event (google.cloud.datacatalog_lineage_v1.types.LineageEvent):
             Required. The lineage event to create.
         request_id (str):
-            A unique identifier for this request. Restricted to 36 ASCII
-            characters. A random UUID is recommended. This request is
-            idempotent only if a ``request_id`` is provided.
+            Optional. A unique identifier for this request. Restricted
+            to 36 ASCII characters. A random UUID is recommended. This
+            request is idempotent only if a ``request_id`` is provided.
     """
 
     parent: str = proto.Field(
@@ -821,7 +895,7 @@ class CreateLineageEventRequest(proto.Message):
 
 class GetLineageEventRequest(proto.Message):
     r"""Request message for
-    [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
+    [GetLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent].
 
     Attributes:
         name (str):
@@ -837,21 +911,21 @@ class GetLineageEventRequest(proto.Message):
 
 class ListLineageEventsRequest(proto.Message):
     r"""Request message for
-    [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+    [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
 
     Attributes:
         parent (str):
             Required. The name of the run that owns the
             collection of lineage events to get.
         page_size (int):
-            The maximum number of lineage events to
-            return.
+            Optional. The maximum number of lineage
+            events to return.
             The service may return fewer events than this
             value. If unspecified, at most 50 events are
             returned. The maximum value is 100; values
             greater than 100 are cut to 100.
         page_token (str):
-            The page token received from a previous
+            Optional. The page token received from a previous
             ``ListLineageEvents`` call. Specify it to get the next page.
 
             When paginating, all other parameters specified in this call
@@ -875,7 +949,7 @@ class ListLineageEventsRequest(proto.Message):
 
 class ListLineageEventsResponse(proto.Message):
     r"""Response message for
-    [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+    [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
 
     Attributes:
         lineage_events (MutableSequence[google.cloud.datacatalog_lineage_v1.types.LineageEvent]):
@@ -904,16 +978,16 @@ class ListLineageEventsResponse(proto.Message):
 
 class DeleteLineageEventRequest(proto.Message):
     r"""Request message for
-    [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
+    [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent].
 
     Attributes:
         name (str):
             Required. The name of the lineage event to
             delete.
         allow_missing (bool):
-            If set to true and the lineage event is not
-            found, the request succeeds but the server
-            doesn't perform any actions.
+            Optional. If set to true and the lineage
+            event is not found, the request succeeds but the
+            server doesn't perform any actions.
     """
 
     name: str = proto.Field(
@@ -953,6 +1027,28 @@ class SearchLinksRequest(proto.Message):
             specified asset.
 
             This field is a member of `oneof`_ ``criteria``.
+        sources (google.cloud.datacatalog_lineage_v1.types.MultipleEntityReference):
+            Optional. Send a list of asset information in the
+            **sources** field to retrieve all links that lead from the
+            specified assets to downstream assets. This field is similar
+            to the ``source``
+            [source][google.cloud.datacatalog.lineage.v1.SearchLinksRequest.source]
+            field but allows providing multiple entities. All entities
+            within the ``MultipleEntityReference`` must have the same
+            ``fully_qualified_name``.
+
+            This field is a member of `oneof`_ ``criteria``.
+        targets (google.cloud.datacatalog_lineage_v1.types.MultipleEntityReference):
+            Optional. Send a list of asset information in the
+            **targets** field to retrieve all links that lead from
+            upstream assets to the specified assets. This field is
+            similar to the ``target``
+            [target][google.cloud.datacatalog.lineage.v1.SearchLinksRequest.target]
+            field but allows providing multiple entities. All entities
+            within the ``MultipleEntityReference`` must have the same
+            ``fully_qualified_name``.
+
+            This field is a member of `oneof`_ ``criteria``.
         page_size (int):
             Optional. The maximum number of links to
             return in a single page of the response. A page
@@ -986,6 +1082,18 @@ class SearchLinksRequest(proto.Message):
         oneof="criteria",
         message="EntityReference",
     )
+    sources: "MultipleEntityReference" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="criteria",
+        message="MultipleEntityReference",
+    )
+    targets: "MultipleEntityReference" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="criteria",
+        message="MultipleEntityReference",
+    )
     page_size: int = proto.Field(
         proto.INT32,
         number=2,
@@ -993,6 +1101,22 @@ class SearchLinksRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class MultipleEntityReference(proto.Message):
+    r"""Multiple entity reference for SearchLinksRequest.
+
+    Attributes:
+        entities (MutableSequence[google.cloud.datacatalog_lineage_v1.types.EntityReference]):
+            Optional. The list of entities to search for
+            links. The maximum number of entities is 20.
+    """
+
+    entities: MutableSequence["EntityReference"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="EntityReference",
     )
 
 
@@ -1049,7 +1173,24 @@ class Link(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The end of the last event establishing this
             link.
+        dependency_info (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Link.DependencyInfo]):
+            Optional. The dependency info of the link
+            (applies only to column level links).
     """
+
+    class DependencyInfo(proto.Message):
+        r"""Dependency info describes how one entity depends on another.
+
+        Attributes:
+            dependency_type (google.cloud.datacatalog_lineage_v1.types.DependencyType):
+                The type of dependency.
+        """
+
+        dependency_type: "DependencyType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DependencyType",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -1075,6 +1216,11 @@ class Link(proto.Message):
         number=5,
         message=timestamp_pb2.Timestamp,
     )
+    dependency_info: MutableSequence[DependencyInfo] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=DependencyInfo,
+    )
 
 
 class BatchSearchLinkProcessesRequest(proto.Message):
@@ -1096,11 +1242,11 @@ class BatchSearchLinkProcessesRequest(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/links/{link}``.
         page_size (int):
-            The maximum number of processes to return in
-            a single page of the response. A page may
-            contain fewer results than this value.
+            Optional. The maximum number of processes to
+            return in a single page of the response. A page
+            may contain fewer results than this value.
         page_token (str):
-            The page token received from a previous
+            Optional. The page token received from a previous
             ``BatchSearchLinkProcesses`` call. Use it to get the next
             page.
 
@@ -1223,14 +1369,16 @@ class Origin(proto.Message):
             Type of the source.
 
             Use of a source_type other than ``CUSTOM`` for process
-            creation or updating is highly discouraged, and may be
-            restricted in the future without notice.
+            creation or updating is highly discouraged. It might be
+            restricted in the future without notice. There will be
+            increase in cost if you use any of the source types other
+            than ``CUSTOM``.
         name (str):
             If the source_type isn't CUSTOM, the value of this field
-            should be a GCP resource name of the system, which reports
-            lineage. The project and location parts of the resource name
-            must match the project and location of the lineage resource
-            being created. Examples:
+            should be a Google Cloud resource name of the system, which
+            reports lineage. The project and location parts of the
+            resource name must match the project and location of the
+            lineage resource being created. Examples:
 
             - ``{source_type: COMPOSER, name: "projects/foo/locations/us/environments/bar"}``
             - ``{source_type: BIGQUERY, name: "projects/foo/locations/eu"}``
@@ -1255,6 +1403,12 @@ class Origin(proto.Message):
                 Looker Studio
             DATAPROC (6):
                 Dataproc
+            VERTEX_AI (7):
+                Vertex AI
+            DATAFLOW (8):
+                Dataflow
+            LOOKER_CORE (9):
+                Looker Core
         """
 
         SOURCE_TYPE_UNSPECIFIED = 0
@@ -1264,6 +1418,9 @@ class Origin(proto.Message):
         COMPOSER = 4
         LOOKER_STUDIO = 5
         DATAPROC = 6
+        VERTEX_AI = 7
+        DATAFLOW = 8
+        LOOKER_CORE = 9
 
     source_type: SourceType = proto.Field(
         proto.ENUM,
@@ -1271,6 +1428,287 @@ class Origin(proto.Message):
         enum=SourceType,
     )
     name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class LineageLink(proto.Message):
+    r"""Lineage link between two entities.
+
+    Attributes:
+        source (google.cloud.datacatalog_lineage_v1.types.EntityReference):
+            The entity that is the **source** of this link.
+        target (google.cloud.datacatalog_lineage_v1.types.EntityReference):
+            The entity that is the **target** of this link.
+        processes (MutableSequence[google.cloud.datacatalog_lineage_v1.types.LineageLink.LineageProcess]):
+            Processes metadata associated with the link.
+        dependency_info (MutableSequence[google.cloud.datacatalog_lineage_v1.types.LineageLink.DependencyInfo]):
+            Describes how the target entity is dependent
+            on the source entity.
+        depth (int):
+            Depth of the current link in the graph
+            starting from 1.
+        location (str):
+            The location where the LineageEvent that
+            created the link is stored.
+    """
+
+    class LineageProcess(proto.Message):
+        r"""Process metadata for the link.
+
+        Attributes:
+            process (google.cloud.datacatalog_lineage_v1.types.Process):
+                Process that created the link.
+        """
+
+        process: "Process" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Process",
+        )
+
+    class DependencyInfo(proto.Message):
+        r"""Dependency info describes how one entity is dependent on
+        another.
+
+        Attributes:
+            dependency_type (google.cloud.datacatalog_lineage_v1.types.DependencyType):
+                The type of dependency.
+        """
+
+        dependency_type: "DependencyType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DependencyType",
+        )
+
+    source: "EntityReference" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EntityReference",
+    )
+    target: "EntityReference" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="EntityReference",
+    )
+    processes: MutableSequence[LineageProcess] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=LineageProcess,
+    )
+    dependency_info: MutableSequence[DependencyInfo] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=DependencyInfo,
+    )
+    depth: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
+class SearchLineageStreamingRequest(proto.Message):
+    r"""Request message for
+    [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+
+    Attributes:
+        parent (str):
+            Required. The project and location to
+            initiate the search from.
+        locations (MutableSequence[str]):
+            Required. The locations to search in.
+        root_criteria (google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest.RootCriteria):
+            Required. Criteria for the root of the
+            search.
+        direction (google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest.SearchDirection):
+            Required. Direction of the search.
+        filters (google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest.SearchFilters):
+            Optional. Filters for the search.
+        limits (google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest.SearchLimits):
+            Optional. Limits for the search.
+    """
+
+    class SearchDirection(proto.Enum):
+        r"""Direction of the search.
+
+        Values:
+            SEARCH_DIRECTION_UNSPECIFIED (0):
+                Direction is unspecified.
+            DOWNSTREAM (1):
+                Retrieve links that lead from the specified
+                asset to downstream assets.
+            UPSTREAM (2):
+                Retrieve links that lead from upstream assets
+                to the specified asset.
+        """
+
+        SEARCH_DIRECTION_UNSPECIFIED = 0
+        DOWNSTREAM = 1
+        UPSTREAM = 2
+
+    class EntitySet(proto.Enum):
+        r"""Entity set restriction.
+
+        Values:
+            ENTITY_SET_UNSPECIFIED (0):
+                The entity set is unspecified. Returns all
+                the data.
+            ENTITIES (1):
+                Returns entities with only FQN specified. For example,
+                entities with the ``field`` field set are not returned.
+        """
+
+        ENTITY_SET_UNSPECIFIED = 0
+        ENTITIES = 1
+
+    class SearchFilters(proto.Message):
+        r"""Filters for the search.
+
+        Attributes:
+            dependency_types (MutableSequence[google.cloud.datacatalog_lineage_v1.types.DependencyType]):
+                Optional. Types of dependencies between
+                entities to retrieve. If unspecified, all
+                dependency types are returned.
+            entity_set (google.cloud.datacatalog_lineage_v1.types.SearchLineageStreamingRequest.EntitySet):
+                Optional. Entity set restriction. If
+                unspecified, the method returns all entities.
+            time_range (google.type.interval_pb2.Interval):
+                Optional. Time interval to search for lineage. If
+                unspecified, all lineage is returned. Currently, at most one
+                of ``start_time`` and ``end_time`` can be set.
+        """
+
+        dependency_types: MutableSequence["DependencyType"] = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="DependencyType",
+        )
+        entity_set: "SearchLineageStreamingRequest.EntitySet" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="SearchLineageStreamingRequest.EntitySet",
+        )
+        time_range: interval_pb2.Interval = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=interval_pb2.Interval,
+        )
+
+    class SearchLimits(proto.Message):
+        r"""Limits for the search results.
+
+        Attributes:
+            max_depth (int):
+                Optional. The maximum depth of the search.
+                The default value is 5 and maximum value is 100.
+            max_results (int):
+                Optional. The maximum number of links to return in the
+                response. The default value is 1_000 and the maximum value
+                is 10_000.
+            max_process_per_link (int):
+                Optional. The maximum number of processes to return per
+                link. The default value is 0 and the maximum value is 100.
+                If this value is non-zero, the response will contain process
+                names for the links. To retrieve full process details in the
+                response, include ``links.processes.process`` in the
+                `FieldMask <https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask>`__.
+        """
+
+        max_depth: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        max_results: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        max_process_per_link: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+
+    class RootCriteria(proto.Message):
+        r"""Criteria for the root of the search.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            entities (google.cloud.datacatalog_lineage_v1.types.MultipleEntityReference):
+                Optional. The entities to initiate the search from. Entities
+                can be specified by FQN only, or by FQN and field. To search
+                by FQN and all available fields for that FQN, use the
+                wildcard ``*`` as the field value.
+
+                This field is a member of `oneof`_ ``criteria``.
+        """
+
+        entities: "MultipleEntityReference" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="criteria",
+            message="MultipleEntityReference",
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    root_criteria: RootCriteria = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=RootCriteria,
+    )
+    direction: SearchDirection = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=SearchDirection,
+    )
+    filters: SearchFilters = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=SearchFilters,
+    )
+    limits: SearchLimits = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=SearchLimits,
+    )
+
+
+class SearchLineageStreamingResponse(proto.Message):
+    r"""Response message for
+    [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+
+    Attributes:
+        links (MutableSequence[google.cloud.datacatalog_lineage_v1.types.LineageLink]):
+            Output only. The lineage links that match the
+            search criteria. Can be empty if no links match.
+        unreachable (MutableSequence[str]):
+            Unordered list. Unreachable resources. If non-empty, the
+            result set might be incomplete.
+
+            Currently, only locations are supported.
+
+            Format: ``projects/[PROJECT_NUMBER]/locations/[LOCATION]``
+            Example: projects/123456789/locations/us-east1
+    """
+
+    links: MutableSequence["LineageLink"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LineageLink",
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

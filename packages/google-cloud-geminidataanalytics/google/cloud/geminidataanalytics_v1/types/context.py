@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "BigQueryRoutine",
         "BigQueryRoutineReference",
         "ExampleQuery",
+        "QueryParameter",
         "MatchedQuery",
         "QueryParameterValues",
         "LookerGoldenQuery",
@@ -324,6 +325,10 @@ class ExampleQuery(proto.Message):
             Optional. A natural language question that a
             user might ask. For example: "How many orders
             were placed last month?".
+        parameters (MutableSequence[google.cloud.geminidataanalytics_v1.types.QueryParameter]):
+            Optional. The list of query parameters. Example: The
+            parameterized SQL query "SELECT \* FROM my_table WHERE id =
+            @id" can be matched with any value of id.
     """
 
     sql_query: str = proto.Field(
@@ -334,6 +339,45 @@ class ExampleQuery(proto.Message):
     natural_language_question: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    parameters: MutableSequence["QueryParameter"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="QueryParameter",
+    )
+
+
+class QueryParameter(proto.Message):
+    r"""A query parameter message represents a parameter that can be
+    used to parameterize a SQL query.
+
+    Attributes:
+        name (str):
+            Required. The name of the parameter reference
+            in the SQL query.
+        description (str):
+            Optional. The description of the parameter
+            that can be used by LLM to extract the parameter
+            value from the user question.
+        data_type (str):
+            Required. The data type of the parameter, e.g. "STRING",
+            "INT64", "DATE", etc. For valid values, see the `BigQuery
+            documentation <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>`__.
+            This will be used to populate
+            google.cloud.bigquery.v2.QueryParameterType.type.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    data_type: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

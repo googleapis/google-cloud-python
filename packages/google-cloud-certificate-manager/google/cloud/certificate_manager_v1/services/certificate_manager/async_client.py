@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -649,11 +649,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_certificate(request=request)
+                operation = await client.create_certificate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -794,11 +794,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_certificate(request=request)
+                operation = await client.update_certificate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -933,11 +933,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_certificate(request=request)
+                operation = await client.delete_certificate(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1312,11 +1312,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_certificate_map(request=request)
+                operation = await client.create_certificate_map(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1457,11 +1457,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_certificate_map(request=request)
+                operation = await client.update_certificate_map(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1599,11 +1599,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_certificate_map(request=request)
+                operation = await client.delete_certificate_map(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1984,11 +1984,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_certificate_map_entry(request=request)
+                operation = await client.create_certificate_map_entry(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2136,11 +2136,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_certificate_map_entry(request=request)
+                operation = await client.update_certificate_map_entry(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2278,11 +2278,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_certificate_map_entry(request=request)
+                operation = await client.delete_certificate_map_entry(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2665,11 +2665,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_dns_authorization(request=request)
+                operation = await client.create_dns_authorization(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2813,11 +2813,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_dns_authorization(request=request)
+                operation = await client.update_dns_authorization(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2951,11 +2951,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_dns_authorization(request=request)
+                operation = await client.delete_dns_authorization(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3353,11 +3353,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_certificate_issuance_config(request=request)
+                operation = await client.create_certificate_issuance_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3514,11 +3514,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_certificate_issuance_config(request=request)
+                operation = await client.delete_certificate_issuance_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3893,11 +3893,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_trust_config(request=request)
+                operation = await client.create_trust_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4038,11 +4038,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_trust_config(request=request)
+                operation = await client.update_trust_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4175,11 +4175,11 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_trust_config(request=request)
+                operation = await client.delete_trust_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

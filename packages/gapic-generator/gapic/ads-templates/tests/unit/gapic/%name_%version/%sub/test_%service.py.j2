@@ -4,7 +4,7 @@
 {% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import re
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}

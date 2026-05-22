@@ -335,6 +335,82 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
 
+def test__setup_request_id():
+    class MockRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    class MockProtoRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def HasField(self, key):
+            return hasattr(self, key)
+
+    # Test with proto3 optional field not in request
+    request = MockRequest()
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
+
+    # Test with proto3 optional field already in request
+    request = MockRequest(request_id="already_set")
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with non-proto3 optional field empty
+    request = MockRequest(request_id="")
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
+
+    # Test with non-proto3 optional field already set
+    request = MockRequest(request_id="already_set")
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
+    assert request.request_id == "already_set"
+
+    # Test with proto3 optional field not in request (MockProtoRequest)
+    request = MockProtoRequest()
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
+
+    # Test with proto3 optional field already in request (MockProtoRequest)
+    request = MockProtoRequest(request_id="already_set")
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with ValueError
+    class MockValueErrorRequest:
+        def HasField(self, key):
+            raise ValueError("Mismatched field")
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    request = MockValueErrorRequest()
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request.request_id)
+
+    # Test with dict and proto3 optional field not in request
+    request = {}
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
+
+    # Test with dict and proto3 optional field already in request
+    request = {"request_id": "already_set"}
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", True)
+    assert request["request_id"] == "already_set"
+
+    # Test with dict and non-proto3 optional field empty
+    request = {"request_id": ""}
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
+    assert re.match(r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}", request["request_id"])
+
+    # Test with dict and non-proto3 optional field already set
+    request = {"request_id": "already_set"}
+    StorageBatchOperationsClient._setup_request_id(request, "request_id", False)
+    assert request["request_id"] == "already_set"
+
 @pytest.mark.parametrize("client_class,transport_name", [
     (StorageBatchOperationsClient, "grpc"),
     (StorageBatchOperationsAsyncClient, "grpc_asyncio"),
@@ -965,8 +1041,10 @@ def test_storage_batch_operations_client_create_channel_credentials_file(client_
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListJobsRequest,
-  dict,
+  storage_batch_operations.ListJobsRequest({
+  }),
+  {
+  },
 ])
 def test_list_jobs(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -976,7 +1054,7 @@ def test_list_jobs(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1027,12 +1105,13 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
         client.list_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_batch_operations.ListJobsRequest(
+        request_msg = storage_batch_operations.ListJobsRequest(
             parent='parent_value',
             filter='filter_value',
             page_token='page_token_value',
             order_by='order_by_value',
         )
+        assert args[0] == request_msg
 
 def test_list_jobs_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1101,7 +1180,11 @@ async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_jobs_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.ListJobsRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.ListJobsRequest({  }),
+  {  },
+])
+async def test_list_jobs_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1109,7 +1192,7 @@ async def test_list_jobs_async(transport: str = 'grpc_asyncio', request_type=sto
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1132,11 +1215,6 @@ async def test_list_jobs_async(transport: str = 'grpc_asyncio', request_type=sto
     assert isinstance(response, pagers.ListJobsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_jobs_async_from_dict():
-    await test_list_jobs_async(request_type=dict)
 
 def test_list_jobs_field_headers():
     client = StorageBatchOperationsClient(
@@ -1478,8 +1556,10 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetJobRequest,
-  dict,
+  storage_batch_operations.GetJobRequest({
+  }),
+  {
+  },
 ])
 def test_get_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1489,7 +1569,7 @@ def test_get_job(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1543,9 +1623,10 @@ def test_get_job_non_empty_request_with_auto_populated_field():
         client.get_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_batch_operations.GetJobRequest(
+        request_msg = storage_batch_operations.GetJobRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_job_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1614,7 +1695,11 @@ async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_job_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.GetJobRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.GetJobRequest({  }),
+  {  },
+])
+async def test_get_job_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1622,7 +1707,7 @@ async def test_get_job_async(transport: str = 'grpc_asyncio', request_type=stora
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1651,11 +1736,6 @@ async def test_get_job_async(transport: str = 'grpc_asyncio', request_type=stora
     assert response.state == storage_batch_operations_types.Job.State.RUNNING
     assert response.dry_run is True
     assert response.is_multi_bucket_job is True
-
-
-@pytest.mark.asyncio
-async def test_get_job_async_from_dict():
-    await test_get_job_async(request_type=dict)
 
 def test_get_job_field_headers():
     client = StorageBatchOperationsClient(
@@ -1803,8 +1883,12 @@ async def test_get_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CreateJobRequest,
-  dict,
+  storage_batch_operations.CreateJobRequest({
+    "request_id": "explicit value for autopopulate-able field",
+  }),
+  {
+    "request_id": "explicit value for autopopulate-able field",
+  },
 ])
 def test_create_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1814,11 +1898,7 @@ def test_create_job(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1863,14 +1943,14 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         client.create_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_batch_operations.CreateJobRequest(
+        request_msg = storage_batch_operations.CreateJobRequest(
             parent='parent_value',
             job_id='job_id_value',
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 def test_create_job_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1949,7 +2029,11 @@ async def test_create_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_job_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.CreateJobRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.CreateJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  {    "request_id": "explicit value for autopopulate-able field",  },
+])
+async def test_create_job_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1957,11 +2041,7 @@ async def test_create_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1982,11 +2062,6 @@ async def test_create_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_job_async_from_dict():
-    await test_create_job_async(request_type=dict)
 
 def test_create_job_field_headers():
     client = StorageBatchOperationsClient(
@@ -2156,8 +2231,12 @@ async def test_create_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.DeleteJobRequest,
-  dict,
+  storage_batch_operations.DeleteJobRequest({
+    "request_id": "explicit value for autopopulate-able field",
+  }),
+  {
+    "request_id": "explicit value for autopopulate-able field",
+  },
 ])
 def test_delete_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -2167,11 +2246,7 @@ def test_delete_job(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2215,13 +2290,13 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         client.delete_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_batch_operations.DeleteJobRequest(
+        request_msg = storage_batch_operations.DeleteJobRequest(
             name='name_value',
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 def test_delete_job_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2290,7 +2365,11 @@ async def test_delete_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_job_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.DeleteJobRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.DeleteJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  {    "request_id": "explicit value for autopopulate-able field",  },
+])
+async def test_delete_job_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2298,11 +2377,7 @@ async def test_delete_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2321,11 +2396,6 @@ async def test_delete_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_job_async_from_dict():
-    await test_delete_job_async(request_type=dict)
 
 def test_delete_job_field_headers():
     client = StorageBatchOperationsClient(
@@ -2473,8 +2543,12 @@ async def test_delete_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CancelJobRequest,
-  dict,
+  storage_batch_operations.CancelJobRequest({
+    "request_id": "explicit value for autopopulate-able field",
+  }),
+  {
+    "request_id": "explicit value for autopopulate-able field",
+  },
 ])
 def test_cancel_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -2484,11 +2558,7 @@ def test_cancel_job(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2533,13 +2603,13 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         client.cancel_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_batch_operations.CancelJobRequest(
+        request_msg = storage_batch_operations.CancelJobRequest(
             name='name_value',
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 def test_cancel_job_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2608,7 +2678,11 @@ async def test_cancel_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_cancel_job_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.CancelJobRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.CancelJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  {    "request_id": "explicit value for autopopulate-able field",  },
+])
+async def test_cancel_job_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2616,11 +2690,7 @@ async def test_cancel_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request['request_id'] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2640,11 +2710,6 @@ async def test_cancel_job_async(transport: str = 'grpc_asyncio', request_type=st
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage_batch_operations.CancelJobResponse)
-
-
-@pytest.mark.asyncio
-async def test_cancel_job_async_from_dict():
-    await test_cancel_job_async(request_type=dict)
 
 def test_cancel_job_field_headers():
     client = StorageBatchOperationsClient(
@@ -2792,8 +2857,10 @@ async def test_cancel_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListBucketOperationsRequest,
-  dict,
+  storage_batch_operations.ListBucketOperationsRequest({
+  }),
+  {
+  },
 ])
 def test_list_bucket_operations(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -2803,7 +2870,7 @@ def test_list_bucket_operations(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2854,12 +2921,13 @@ def test_list_bucket_operations_non_empty_request_with_auto_populated_field():
         client.list_bucket_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_batch_operations.ListBucketOperationsRequest(
+        request_msg = storage_batch_operations.ListBucketOperationsRequest(
             parent='parent_value',
             filter='filter_value',
             page_token='page_token_value',
             order_by='order_by_value',
         )
+        assert args[0] == request_msg
 
 def test_list_bucket_operations_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2928,7 +2996,11 @@ async def test_list_bucket_operations_async_use_cached_wrapped_rpc(transport: st
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_bucket_operations_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.ListBucketOperationsRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.ListBucketOperationsRequest({  }),
+  {  },
+])
+async def test_list_bucket_operations_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2936,7 +3008,7 @@ async def test_list_bucket_operations_async(transport: str = 'grpc_asyncio', req
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2959,11 +3031,6 @@ async def test_list_bucket_operations_async(transport: str = 'grpc_asyncio', req
     assert isinstance(response, pagers.ListBucketOperationsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
-
-
-@pytest.mark.asyncio
-async def test_list_bucket_operations_async_from_dict():
-    await test_list_bucket_operations_async(request_type=dict)
 
 def test_list_bucket_operations_field_headers():
     client = StorageBatchOperationsClient(
@@ -3305,8 +3372,10 @@ async def test_list_bucket_operations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetBucketOperationRequest,
-  dict,
+  storage_batch_operations.GetBucketOperationRequest({
+  }),
+  {
+  },
 ])
 def test_get_bucket_operation(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -3316,7 +3385,7 @@ def test_get_bucket_operation(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3366,9 +3435,10 @@ def test_get_bucket_operation_non_empty_request_with_auto_populated_field():
         client.get_bucket_operation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_batch_operations.GetBucketOperationRequest(
+        request_msg = storage_batch_operations.GetBucketOperationRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_get_bucket_operation_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3437,7 +3507,11 @@ async def test_get_bucket_operation_async_use_cached_wrapped_rpc(transport: str 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_bucket_operation_async(transport: str = 'grpc_asyncio', request_type=storage_batch_operations.GetBucketOperationRequest):
+@pytest.mark.parametrize("request_type", [
+  storage_batch_operations.GetBucketOperationRequest({  }),
+  {  },
+])
+async def test_get_bucket_operation_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3445,7 +3519,7 @@ async def test_get_bucket_operation_async(transport: str = 'grpc_asyncio', reque
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3470,11 +3544,6 @@ async def test_get_bucket_operation_async(transport: str = 'grpc_asyncio', reque
     assert response.name == 'name_value'
     assert response.bucket_name == 'bucket_name_value'
     assert response.state == storage_batch_operations_types.BucketOperation.State.QUEUED
-
-
-@pytest.mark.asyncio
-async def test_get_bucket_operation_async_from_dict():
-    await test_get_bucket_operation_async(request_type=dict)
 
 def test_get_bucket_operation_field_headers():
     client = StorageBatchOperationsClient(
@@ -5080,7 +5149,6 @@ def test_list_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5103,7 +5171,6 @@ def test_get_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5125,12 +5192,10 @@ def test_create_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5152,12 +5217,10 @@ def test_delete_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5179,12 +5242,10 @@ def test_cancel_job_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5207,7 +5268,6 @@ def test_list_bucket_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListBucketOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5230,7 +5290,6 @@ def test_get_bucket_operation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetBucketOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5273,7 +5332,6 @@ async def test_list_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5304,7 +5362,6 @@ async def test_get_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5330,12 +5387,10 @@ async def test_create_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5359,12 +5414,10 @@ async def test_delete_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5389,12 +5442,10 @@ async def test_cancel_job_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -5422,7 +5473,6 @@ async def test_list_bucket_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListBucketOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5451,7 +5501,6 @@ async def test_get_bucket_operation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetBucketOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -6604,7 +6653,6 @@ def test_list_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6626,7 +6674,6 @@ def test_get_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6647,12 +6694,10 @@ def test_create_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CreateJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -6673,12 +6718,10 @@ def test_delete_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.DeleteJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -6699,12 +6742,10 @@ def test_cancel_job_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert _UUID4_RE.match(args[0].request_id)
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_batch_operations.CancelJobRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -6726,7 +6767,6 @@ def test_list_bucket_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.ListBucketOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6748,7 +6788,6 @@ def test_get_bucket_operation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_batch_operations.GetBucketOperationRequest()
-
         assert args[0] == request_msg
 
 

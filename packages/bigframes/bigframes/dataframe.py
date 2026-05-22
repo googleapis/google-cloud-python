@@ -819,22 +819,25 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
+    def _get_display_df(self) -> DataFrame:
+        """Process ObjectRef and JSON/nested JSON columns for display."""
         df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
+        # columns. Pre-serialize them to string format to bypass this limit.
+        # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
+        # types correctly.
+        json_cols = [
+            col
+            for col in df.columns
+            if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
+        ]
+        if json_cols:
+            op = ops.SqlScalarOp(
+                _output_type=bigframes.dtypes.STRING_DTYPE,
+                sql_template="TO_JSON_STRING({0})",
+            )
+            df = df.assign(**{col: df[col]._apply_unary_op(op) for col in json_cols})
+        return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
