@@ -73,7 +73,6 @@ from google.iam.v1 import policy_pb2  # type: ignore
 
 
 
-
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
@@ -2488,6 +2487,5 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
-
 
 {% endblock %}
