@@ -79,7 +79,6 @@ def test_max_age_gc_rule___ne__same_value():
 
 def test_max_age_gc_rule_to_pb():
     import datetime
-
     from google.protobuf import duration_pb2
 
     max_age = datetime.timedelta(seconds=1)
@@ -124,10 +123,9 @@ def test_gc_rule_union___ne__same_value():
 
 def test_gc_rule_union_to_pb():
     import datetime
-
     from google.protobuf import duration_pb2
-
-    from google.cloud.bigtable.column_family import MaxAgeGCRule, MaxVersionsGCRule
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     max_num_versions = 42
     rule1 = MaxVersionsGCRule(max_num_versions)
@@ -146,10 +144,9 @@ def test_gc_rule_union_to_pb():
 
 def test_gc_rule_union_to_pb_nested():
     import datetime
-
     from google.protobuf import duration_pb2
-
-    from google.cloud.bigtable.column_family import MaxAgeGCRule, MaxVersionsGCRule
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     max_num_versions1 = 42
     rule1 = MaxVersionsGCRule(max_num_versions1)
@@ -208,10 +205,9 @@ def test_gc_rule_intersection___ne__same_value():
 
 def test_gc_rule_intersection_to_pb():
     import datetime
-
     from google.protobuf import duration_pb2
-
-    from google.cloud.bigtable.column_family import MaxAgeGCRule, MaxVersionsGCRule
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     max_num_versions = 42
     rule1 = MaxVersionsGCRule(max_num_versions)
@@ -230,10 +226,9 @@ def test_gc_rule_intersection_to_pb():
 
 def test_gc_rule_intersection_to_pb_nested():
     import datetime
-
     from google.protobuf import duration_pb2
-
-    from google.cloud.bigtable.column_family import MaxAgeGCRule, MaxVersionsGCRule
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     max_num_versions1 = 42
     rule1 = MaxVersionsGCRule(max_num_versions1)
@@ -338,14 +333,13 @@ def test_column_family_to_pb_with_rule():
 
 
 def _create_test_helper(gc_rule=None):
-    from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BaseBigtableTableAdminClient,
-    )
-    from google.cloud.bigtable_admin_v2.types import (
+    from google.cloud.bigtable.admin.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
-
     from ._testing import _FakeStub
+    from google.cloud.bigtable.admin.overlay.services.bigtable_table_admin import (
+        BigtableTableAdminClient,
+    )
 
     project_id = "project-id"
     zone = "zone"
@@ -363,7 +357,7 @@ def _create_test_helper(gc_rule=None):
         + table_id
     )
 
-    api = mock.create_autospec(BaseBigtableTableAdminClient)
+    api = mock.create_autospec(BigtableTableAdminClient)
 
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
@@ -410,14 +404,13 @@ def test_column_family_create_with_gc_rule():
 
 
 def _update_test_helper(gc_rule=None):
-    from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BaseBigtableTableAdminClient,
-    )
-    from google.cloud.bigtable_admin_v2.types import (
+    from ._testing import _FakeStub
+    from google.cloud.bigtable.admin.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
-
-    from ._testing import _FakeStub
+    from google.cloud.bigtable.admin.overlay.services.bigtable_table_admin import (
+        BigtableTableAdminClient,
+    )
 
     project_id = "project-id"
     zone = "zone"
@@ -435,7 +428,7 @@ def _update_test_helper(gc_rule=None):
         + table_id
     )
 
-    api = mock.create_autospec(BaseBigtableTableAdminClient)
+    api = mock.create_autospec(BigtableTableAdminClient)
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
     table = _Table(table_name, client=client)
@@ -482,15 +475,13 @@ def test_column_family_update_with_gc_rule():
 
 def test_column_family_delete():
     from google.protobuf import empty_pb2
-
-    from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BaseBigtableTableAdminClient,
-    )
-    from google.cloud.bigtable_admin_v2.types import (
+    from google.cloud.bigtable.admin.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
-
     from ._testing import _FakeStub
+    from google.cloud.bigtable.admin.overlay.services.bigtable_table_admin import (
+        BigtableTableAdminClient,
+    )
 
     project_id = "project-id"
     zone = "zone"
@@ -508,7 +499,7 @@ def test_column_family_delete():
         + table_id
     )
 
-    api = mock.create_autospec(BaseBigtableTableAdminClient)
+    api = mock.create_autospec(BigtableTableAdminClient)
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
     table = _Table(table_name, client=client)
@@ -546,7 +537,8 @@ def test__gc_rule_from_pb_empty():
 
 
 def test__gc_rule_from_pb_max_num_versions():
-    from google.cloud.bigtable.column_family import MaxVersionsGCRule, _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     orig_rule = MaxVersionsGCRule(1)
     gc_rule_pb = orig_rule.to_pb()
@@ -557,8 +549,8 @@ def test__gc_rule_from_pb_max_num_versions():
 
 def test__gc_rule_from_pb_max_age():
     import datetime
-
-    from google.cloud.bigtable.column_family import MaxAgeGCRule, _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
 
     orig_rule = MaxAgeGCRule(datetime.timedelta(seconds=1))
     gc_rule_pb = orig_rule.to_pb()
@@ -569,13 +561,10 @@ def test__gc_rule_from_pb_max_age():
 
 def test__gc_rule_from_pb_union():
     import datetime
-
-    from google.cloud.bigtable.column_family import (
-        GCRuleUnion,
-        MaxAgeGCRule,
-        MaxVersionsGCRule,
-        _gc_rule_from_pb,
-    )
+    from google.cloud.bigtable.column_family import _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import GCRuleUnion
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     rule1 = MaxVersionsGCRule(1)
     rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
@@ -588,13 +577,10 @@ def test__gc_rule_from_pb_union():
 
 def test__gc_rule_from_pb_intersection():
     import datetime
-
-    from google.cloud.bigtable.column_family import (
-        GCRuleIntersection,
-        MaxAgeGCRule,
-        MaxVersionsGCRule,
-        _gc_rule_from_pb,
-    )
+    from google.cloud.bigtable.column_family import _gc_rule_from_pb
+    from google.cloud.bigtable.column_family import GCRuleIntersection
+    from google.cloud.bigtable.column_family import MaxAgeGCRule
+    from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
     rule1 = MaxVersionsGCRule(1)
     rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
@@ -629,25 +615,25 @@ def test__gc_rule_from_pb_unknown_field_name():
 
 
 def _GcRulePB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
+    from google.cloud.bigtable.admin.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
+    from google.cloud.bigtable.admin.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
+    from google.cloud.bigtable.admin.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
+    from google.cloud.bigtable.admin.types import table as table_v2_pb2
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
 

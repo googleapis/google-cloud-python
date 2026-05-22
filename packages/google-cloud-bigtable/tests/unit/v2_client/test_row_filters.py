@@ -15,18 +15,21 @@
 
 import pytest
 
+from google.cloud.bigtable.row_filters import (
+    _BoolFilter as _BaseBoolFilter,
+    _RegexFilter as _BaseRegexFilter,
+    _CellCountFilter as _BaseCellCountFilter,
+    _FilterCombination as _BaseFilterCombination,
+)
+
 
 def test_bool_filter_constructor():
-    from google.cloud.bigtable.row_filters import _BoolFilter
-
     flag = object()
     row_filter = _BoolFilter(flag)
     assert row_filter.flag is flag
 
 
 def test_bool_filter___eq__type_differ():
-    from google.cloud.bigtable.row_filters import _BoolFilter
-
     flag = object()
     row_filter1 = _BoolFilter(flag)
     row_filter2 = object()
@@ -34,8 +37,6 @@ def test_bool_filter___eq__type_differ():
 
 
 def test_bool_filter___eq__same_value():
-    from google.cloud.bigtable.row_filters import _BoolFilter
-
     flag = object()
     row_filter1 = _BoolFilter(flag)
     row_filter2 = _BoolFilter(flag)
@@ -43,8 +44,6 @@ def test_bool_filter___eq__same_value():
 
 
 def test_bool_filter___ne__same_value():
-    from google.cloud.bigtable.row_filters import _BoolFilter
-
     flag = object()
     row_filter1 = _BoolFilter(flag)
     row_filter2 = _BoolFilter(flag)
@@ -56,7 +55,7 @@ def test_sink_filter_to_pb():
 
     flag = True
     row_filter = SinkFilter(flag)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(sink=flag)
     assert pb_val == expected_pb
 
@@ -66,7 +65,7 @@ def test_pass_all_filter_to_pb():
 
     flag = True
     row_filter = PassAllFilter(flag)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(pass_all_filter=flag)
     assert pb_val == expected_pb
 
@@ -76,30 +75,24 @@ def test_block_all_filter_to_pb():
 
     flag = True
     row_filter = BlockAllFilter(flag)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(block_all_filter=flag)
     assert pb_val == expected_pb
 
 
 def test_regex_filterconstructor():
-    from google.cloud.bigtable.row_filters import _RegexFilter
-
     regex = b"abc"
     row_filter = _RegexFilter(regex)
     assert row_filter.regex is regex
 
 
 def test_regex_filterconstructor_non_bytes():
-    from google.cloud.bigtable.row_filters import _RegexFilter
-
     regex = "abc"
     row_filter = _RegexFilter(regex)
     assert row_filter.regex == b"abc"
 
 
 def test_regex_filter__eq__type_differ():
-    from google.cloud.bigtable.row_filters import _RegexFilter
-
     regex = b"def-rgx"
     row_filter1 = _RegexFilter(regex)
     row_filter2 = object()
@@ -107,8 +100,6 @@ def test_regex_filter__eq__type_differ():
 
 
 def test_regex_filter__eq__same_value():
-    from google.cloud.bigtable.row_filters import _RegexFilter
-
     regex = b"trex-regex"
     row_filter1 = _RegexFilter(regex)
     row_filter2 = _RegexFilter(regex)
@@ -116,8 +107,6 @@ def test_regex_filter__eq__same_value():
 
 
 def test_regex_filter__ne__same_value():
-    from google.cloud.bigtable.row_filters import _RegexFilter
-
     regex = b"abc"
     row_filter1 = _RegexFilter(regex)
     row_filter2 = _RegexFilter(regex)
@@ -129,7 +118,7 @@ def test_row_key_regex_filter_to_pb():
 
     regex = b"row-key-regex"
     row_filter = RowKeyRegexFilter(regex)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(row_key_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -175,7 +164,7 @@ def test_row_sample_filter_to_pb():
 
     sample = 0.25
     row_filter = RowSampleFilter(sample)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(row_sample_filter=sample)
     assert pb_val == expected_pb
 
@@ -185,7 +174,7 @@ def test_family_name_regex_filter_to_pb():
 
     regex = "family-regex"
     row_filter = FamilyNameRegexFilter(regex)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(family_name_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -195,7 +184,7 @@ def test_column_qualifier_regext_filter_to_pb():
 
     regex = b"column-regex"
     row_filter = ColumnQualifierRegexFilter(regex)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(column_qualifier_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -242,9 +231,7 @@ def test_timestamp_range___ne__same_value():
 
 def _timestamp_range_to_pb_helper(pb_kwargs, start=None, end=None):
     import datetime
-
     from google.cloud._helpers import _EPOCH
-
     from google.cloud.bigtable.row_filters import TimestampRange
 
     if start is not None:
@@ -253,7 +240,7 @@ def _timestamp_range_to_pb_helper(pb_kwargs, start=None, end=None):
         end = _EPOCH + datetime.timedelta(microseconds=end)
     time_range = TimestampRange(start=start, end=end)
     expected_pb = _TimestampRangePB(**pb_kwargs)
-    time_pb = time_range.to_pb()
+    time_pb = time_range._to_pb()
     assert time_pb.start_timestamp_micros == expected_pb.start_timestamp_micros
     assert time_pb.end_timestamp_micros == expected_pb.end_timestamp_micros
     assert time_pb == expected_pb
@@ -329,11 +316,12 @@ def test_timestamp_range_filter___ne__():
 
 
 def test_timestamp_range_filter_to_pb():
-    from google.cloud.bigtable.row_filters import TimestampRange, TimestampRangeFilter
+    from google.cloud.bigtable.row_filters import TimestampRangeFilter
+    from google.cloud.bigtable.row_filters import TimestampRange
 
     range_ = TimestampRange()
     row_filter = TimestampRangeFilter(range_)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(timestamp_range_filter=_TimestampRangePB())
     assert pb_val == expected_pb
 
@@ -455,7 +443,7 @@ def test_column_range_filter_to_pb():
     row_filter = ColumnRangeFilter(column_family_id)
     col_range_pb = _ColumnRangePB(family_name=column_family_id)
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_column_range_filter_to_pb_inclusive_start():
@@ -468,7 +456,7 @@ def test_column_range_filter_to_pb_inclusive_start():
         family_name=column_family_id, start_qualifier_closed=column
     )
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_column_range_filter_to_pb_exclusive_start():
@@ -483,7 +471,7 @@ def test_column_range_filter_to_pb_exclusive_start():
         family_name=column_family_id, start_qualifier_open=column
     )
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_column_range_filter_to_pb_inclusive_end():
@@ -496,7 +484,7 @@ def test_column_range_filter_to_pb_inclusive_end():
         family_name=column_family_id, end_qualifier_closed=column
     )
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_column_range_filter_to_pb_exclusive_end():
@@ -511,7 +499,7 @@ def test_column_range_filter_to_pb_exclusive_end():
         family_name=column_family_id, end_qualifier_open=column
     )
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_value_regex_filter_to_pb_w_bytes():
@@ -519,7 +507,7 @@ def test_value_regex_filter_to_pb_w_bytes():
 
     value = regex = b"value-regex"
     row_filter = ValueRegexFilter(value)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -530,29 +518,8 @@ def test_value_regex_filter_to_pb_w_str():
     value = "value-regex"
     regex = value.encode("ascii")
     row_filter = ValueRegexFilter(value)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_regex_filter=regex)
-    assert pb_val == expected_pb
-
-
-def test_value_bitmask_filter_to_pb_w_bytes():
-    from google.cloud.bigtable.row_filters import ValueBitmaskFilter
-
-    mask = b"value-mask"
-    row_filter = ValueBitmaskFilter(mask)
-    pb_val = row_filter.to_pb()
-    expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask))
-    assert pb_val == expected_pb
-
-
-def test_value_bitmask_filter_to_pb_w_str():
-    from google.cloud.bigtable.row_filters import ValueBitmaskFilter
-
-    mask = "value-mask"
-    mask_bytes = mask.encode("ascii")
-    row_filter = ValueBitmaskFilter(mask)
-    pb_val = row_filter.to_pb()
-    expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask_bytes))
     assert pb_val == expected_pb
 
 
@@ -561,7 +528,7 @@ def test_exact_value_filter_to_pb_w_bytes():
 
     value = regex = b"value-regex"
     row_filter = ExactValueFilter(value)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -572,20 +539,19 @@ def test_exact_value_filter_to_pb_w_str():
     value = "value-regex"
     regex = value.encode("ascii")
     row_filter = ExactValueFilter(value)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_regex_filter=regex)
     assert pb_val == expected_pb
 
 
 def test_exact_value_filter_to_pb_w_int():
     import struct
-
     from google.cloud.bigtable.row_filters import ExactValueFilter
 
     value = 1
     regex = struct.Struct(">q").pack(value)
     row_filter = ExactValueFilter(value)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_regex_filter=regex)
     assert pb_val == expected_pb
 
@@ -623,9 +589,8 @@ def test_value_range_filter_constructor_explicit():
 
 
 def test_value_range_filter_constructor_w_int_values():
-    import struct
-
     from google.cloud.bigtable.row_filters import ValueRangeFilter
+    import struct
 
     start_value = 1
     end_value = 10
@@ -713,7 +678,7 @@ def test_value_range_filter_to_pb():
 
     row_filter = ValueRangeFilter()
     expected_pb = _RowFilterPB(value_range_filter=_ValueRangePB())
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_value_range_filter_to_pb_inclusive_start():
@@ -723,7 +688,7 @@ def test_value_range_filter_to_pb_inclusive_start():
     row_filter = ValueRangeFilter(start_value=value)
     val_range_pb = _ValueRangePB(start_value_closed=value)
     expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_value_range_filter_to_pb_exclusive_start():
@@ -733,7 +698,7 @@ def test_value_range_filter_to_pb_exclusive_start():
     row_filter = ValueRangeFilter(start_value=value, inclusive_start=False)
     val_range_pb = _ValueRangePB(start_value_open=value)
     expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_value_range_filter_to_pb_inclusive_end():
@@ -743,7 +708,7 @@ def test_value_range_filter_to_pb_inclusive_end():
     row_filter = ValueRangeFilter(end_value=value)
     val_range_pb = _ValueRangePB(end_value_closed=value)
     expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_value_range_filter_to_pb_exclusive_end():
@@ -753,20 +718,16 @@ def test_value_range_filter_to_pb_exclusive_end():
     row_filter = ValueRangeFilter(end_value=value, inclusive_end=False)
     val_range_pb = _ValueRangePB(end_value_open=value)
     expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
-    assert row_filter.to_pb() == expected_pb
+    assert row_filter._to_pb() == expected_pb
 
 
 def test_cell_count_constructor():
-    from google.cloud.bigtable.row_filters import _CellCountFilter
-
     num_cells = object()
     row_filter = _CellCountFilter(num_cells)
     assert row_filter.num_cells is num_cells
 
 
 def test_cell_count___eq__type_differ():
-    from google.cloud.bigtable.row_filters import _CellCountFilter
-
     num_cells = object()
     row_filter1 = _CellCountFilter(num_cells)
     row_filter2 = object()
@@ -774,8 +735,6 @@ def test_cell_count___eq__type_differ():
 
 
 def test_cell_count___eq__same_value():
-    from google.cloud.bigtable.row_filters import _CellCountFilter
-
     num_cells = object()
     row_filter1 = _CellCountFilter(num_cells)
     row_filter2 = _CellCountFilter(num_cells)
@@ -783,8 +742,6 @@ def test_cell_count___eq__same_value():
 
 
 def test_cell_count___ne__same_value():
-    from google.cloud.bigtable.row_filters import _CellCountFilter
-
     num_cells = object()
     row_filter1 = _CellCountFilter(num_cells)
     row_filter2 = _CellCountFilter(num_cells)
@@ -796,7 +753,7 @@ def test_cells_row_offset_filter_to_pb():
 
     num_cells = 76
     row_filter = CellsRowOffsetFilter(num_cells)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(cells_per_row_offset_filter=num_cells)
     assert pb_val == expected_pb
 
@@ -806,7 +763,7 @@ def test_cells_row_limit_filter_to_pb():
 
     num_cells = 189
     row_filter = CellsRowLimitFilter(num_cells)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(cells_per_row_limit_filter=num_cells)
     assert pb_val == expected_pb
 
@@ -816,7 +773,7 @@ def test_cells_column_limit_filter_to_pb():
 
     num_cells = 10
     row_filter = CellsColumnLimitFilter(num_cells)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(cells_per_column_limit_filter=num_cells)
     assert pb_val == expected_pb
 
@@ -826,7 +783,7 @@ def test_strip_value_transformer_filter_to_pb():
 
     flag = True
     row_filter = StripValueTransformerFilter(flag)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(strip_value_transformer=flag)
     assert pb_val == expected_pb
 
@@ -872,29 +829,23 @@ def test_apply_label_filter_to_pb():
 
     label = "label"
     row_filter = ApplyLabelFilter(label)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(apply_label_transformer=label)
     assert pb_val == expected_pb
 
 
 def test_filter_combination_constructor_defaults():
-    from google.cloud.bigtable.row_filters import _FilterCombination
-
     row_filter = _FilterCombination()
     assert row_filter.filters == []
 
 
 def test_filter_combination_constructor_explicit():
-    from google.cloud.bigtable.row_filters import _FilterCombination
-
     filters = object()
     row_filter = _FilterCombination(filters=filters)
     assert row_filter.filters is filters
 
 
 def test_filter_combination___eq__():
-    from google.cloud.bigtable.row_filters import _FilterCombination
-
     filters = object()
     row_filter1 = _FilterCombination(filters=filters)
     row_filter2 = _FilterCombination(filters=filters)
@@ -902,8 +853,6 @@ def test_filter_combination___eq__():
 
 
 def test_filter_combination___eq__type_differ():
-    from google.cloud.bigtable.row_filters import _FilterCombination
-
     filters = object()
     row_filter1 = _FilterCombination(filters=filters)
     row_filter2 = object()
@@ -911,8 +860,6 @@ def test_filter_combination___eq__type_differ():
 
 
 def test_filter_combination___ne__():
-    from google.cloud.bigtable.row_filters import _FilterCombination
-
     filters = object()
     other_filters = object()
     row_filter1 = _FilterCombination(filters=filters)
@@ -921,20 +868,18 @@ def test_filter_combination___ne__():
 
 
 def test_row_filter_chain_to_pb():
-    from google.cloud.bigtable.row_filters import (
-        RowFilterChain,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import RowFilterChain
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
-    row_filter1_pb = row_filter1.to_pb()
+    row_filter1_pb = row_filter1._to_pb()
 
     row_filter2 = RowSampleFilter(0.25)
-    row_filter2_pb = row_filter2.to_pb()
+    row_filter2_pb = row_filter2._to_pb()
 
     row_filter3 = RowFilterChain(filters=[row_filter1, row_filter2])
-    filter_pb = row_filter3.to_pb()
+    filter_pb = row_filter3._to_pb()
 
     expected_pb = _RowFilterPB(
         chain=_RowFilterChainPB(filters=[row_filter1_pb, row_filter2_pb])
@@ -943,24 +888,22 @@ def test_row_filter_chain_to_pb():
 
 
 def test_row_filter_chain_to_pb_nested():
-    from google.cloud.bigtable.row_filters import (
-        CellsRowLimitFilter,
-        RowFilterChain,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import CellsRowLimitFilter
+    from google.cloud.bigtable.row_filters import RowFilterChain
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
 
     row_filter3 = RowFilterChain(filters=[row_filter1, row_filter2])
-    row_filter3_pb = row_filter3.to_pb()
+    row_filter3_pb = row_filter3._to_pb()
 
     row_filter4 = CellsRowLimitFilter(11)
-    row_filter4_pb = row_filter4.to_pb()
+    row_filter4_pb = row_filter4._to_pb()
 
     row_filter5 = RowFilterChain(filters=[row_filter3, row_filter4])
-    filter_pb = row_filter5.to_pb()
+    filter_pb = row_filter5._to_pb()
 
     expected_pb = _RowFilterPB(
         chain=_RowFilterChainPB(filters=[row_filter3_pb, row_filter4_pb])
@@ -969,20 +912,18 @@ def test_row_filter_chain_to_pb_nested():
 
 
 def test_row_filter_union_to_pb():
-    from google.cloud.bigtable.row_filters import (
-        RowFilterUnion,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import RowFilterUnion
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
-    row_filter1_pb = row_filter1.to_pb()
+    row_filter1_pb = row_filter1._to_pb()
 
     row_filter2 = RowSampleFilter(0.25)
-    row_filter2_pb = row_filter2.to_pb()
+    row_filter2_pb = row_filter2._to_pb()
 
     row_filter3 = RowFilterUnion(filters=[row_filter1, row_filter2])
-    filter_pb = row_filter3.to_pb()
+    filter_pb = row_filter3._to_pb()
 
     expected_pb = _RowFilterPB(
         interleave=_RowFilterInterleavePB(filters=[row_filter1_pb, row_filter2_pb])
@@ -991,24 +932,22 @@ def test_row_filter_union_to_pb():
 
 
 def test_row_filter_union_to_pb_nested():
-    from google.cloud.bigtable.row_filters import (
-        CellsRowLimitFilter,
-        RowFilterUnion,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import CellsRowLimitFilter
+    from google.cloud.bigtable.row_filters import RowFilterUnion
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
 
     row_filter3 = RowFilterUnion(filters=[row_filter1, row_filter2])
-    row_filter3_pb = row_filter3.to_pb()
+    row_filter3_pb = row_filter3._to_pb()
 
     row_filter4 = CellsRowLimitFilter(11)
-    row_filter4_pb = row_filter4.to_pb()
+    row_filter4_pb = row_filter4._to_pb()
 
     row_filter5 = RowFilterUnion(filters=[row_filter3, row_filter4])
-    filter_pb = row_filter5.to_pb()
+    filter_pb = row_filter5._to_pb()
 
     expected_pb = _RowFilterPB(
         interleave=_RowFilterInterleavePB(filters=[row_filter3_pb, row_filter4_pb])
@@ -1075,26 +1014,24 @@ def test_conditional_row_filter___ne__():
 
 
 def test_conditional_row_filter_to_pb():
-    from google.cloud.bigtable.row_filters import (
-        CellsRowOffsetFilter,
-        ConditionalRowFilter,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import ConditionalRowFilter
+    from google.cloud.bigtable.row_filters import CellsRowOffsetFilter
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
-    row_filter1_pb = row_filter1.to_pb()
+    row_filter1_pb = row_filter1._to_pb()
 
     row_filter2 = RowSampleFilter(0.25)
-    row_filter2_pb = row_filter2.to_pb()
+    row_filter2_pb = row_filter2._to_pb()
 
     row_filter3 = CellsRowOffsetFilter(11)
-    row_filter3_pb = row_filter3.to_pb()
+    row_filter3_pb = row_filter3._to_pb()
 
     row_filter4 = ConditionalRowFilter(
         row_filter1, true_filter=row_filter2, false_filter=row_filter3
     )
-    filter_pb = row_filter4.to_pb()
+    filter_pb = row_filter4._to_pb()
 
     expected_pb = _RowFilterPB(
         condition=_RowFilterConditionPB(
@@ -1107,20 +1044,18 @@ def test_conditional_row_filter_to_pb():
 
 
 def test_conditional_row_filter_to_pb_true_only():
-    from google.cloud.bigtable.row_filters import (
-        ConditionalRowFilter,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import ConditionalRowFilter
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
-    row_filter1_pb = row_filter1.to_pb()
+    row_filter1_pb = row_filter1._to_pb()
 
     row_filter2 = RowSampleFilter(0.25)
-    row_filter2_pb = row_filter2.to_pb()
+    row_filter2_pb = row_filter2._to_pb()
 
     row_filter3 = ConditionalRowFilter(row_filter1, true_filter=row_filter2)
-    filter_pb = row_filter3.to_pb()
+    filter_pb = row_filter3._to_pb()
 
     expected_pb = _RowFilterPB(
         condition=_RowFilterConditionPB(
@@ -1131,20 +1066,18 @@ def test_conditional_row_filter_to_pb_true_only():
 
 
 def test_conditional_row_filter_to_pb_false_only():
-    from google.cloud.bigtable.row_filters import (
-        ConditionalRowFilter,
-        RowSampleFilter,
-        StripValueTransformerFilter,
-    )
+    from google.cloud.bigtable.row_filters import ConditionalRowFilter
+    from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
 
     row_filter1 = StripValueTransformerFilter(True)
-    row_filter1_pb = row_filter1.to_pb()
+    row_filter1_pb = row_filter1._to_pb()
 
     row_filter2 = RowSampleFilter(0.25)
-    row_filter2_pb = row_filter2.to_pb()
+    row_filter2_pb = row_filter2._to_pb()
 
     row_filter3 = ConditionalRowFilter(row_filter1, false_filter=row_filter2)
-    filter_pb = row_filter3.to_pb()
+    filter_pb = row_filter3._to_pb()
 
     expected_pb = _RowFilterPB(
         condition=_RowFilterConditionPB(
@@ -1152,6 +1085,26 @@ def test_conditional_row_filter_to_pb_false_only():
         )
     )
     assert filter_pb == expected_pb
+
+
+class _BoolFilter(_BaseBoolFilter):
+    def _to_dict(self):
+        pass
+
+
+class _RegexFilter(_BaseRegexFilter):
+    def _to_dict(self):
+        pass
+
+
+class _CellCountFilter(_BaseCellCountFilter):
+    def _to_dict(self):
+        pass
+
+
+class _FilterCombination(_BaseFilterCombination):
+    def _to_dict(self):
+        pass
 
 
 def _ColumnRangePB(*args, **kw):
@@ -1194,9 +1147,3 @@ def _ValueRangePB(*args, **kw):
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.ValueRange(*args, **kw)
-
-
-def _ValueBitmaskPB(*args, **kw):
-    from google.cloud.bigtable_v2.types import data as data_v2_pb2
-
-    return data_v2_pb2.ValueBitmask(*args, **kw)

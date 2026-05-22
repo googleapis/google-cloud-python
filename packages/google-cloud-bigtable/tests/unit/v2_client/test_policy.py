@@ -89,7 +89,6 @@ def test_policy_bigtable_viewers():
 
 def test_policy_from_pb_w_empty():
     from google.iam.v1 import policy_pb2
-
     from google.cloud.bigtable.policy import Policy
 
     empty = frozenset()
@@ -107,8 +106,8 @@ def test_policy_from_pb_w_empty():
 
 def test_policy_from_pb_w_non_empty():
     from google.iam.v1 import policy_pb2
-
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+    from google.cloud.bigtable.policy import Policy
 
     ETAG = b"ETAG"
     VERSION = 1
@@ -132,10 +131,10 @@ def test_policy_from_pb_w_non_empty():
 
 def test_policy_from_pb_w_condition():
     import pytest
-    from google.api_core.iam import _DICT_ACCESS_MSG, InvalidOperationException
     from google.iam.v1 import policy_pb2
-
-    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE, Policy
+    from google.api_core.iam import InvalidOperationException, _DICT_ACCESS_MSG
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+    from google.cloud.bigtable.policy import Policy
 
     ETAG = b"ETAG"
     VERSION = 3
@@ -185,7 +184,6 @@ def test_policy_to_pb_empty():
 
 def test_policy_to_pb_explicit():
     from google.iam.v1 import policy_pb2
-
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
     VERSION = 1
@@ -206,7 +204,6 @@ def test_policy_to_pb_explicit():
 
 def test_policy_to_pb_w_condition():
     from google.iam.v1 import policy_pb2
-
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
     VERSION = 3
@@ -255,7 +252,6 @@ def test_policy_from_api_repr_wo_etag():
 
 def test_policy_from_api_repr_w_etag():
     import base64
-
     from google.cloud.bigtable.policy import Policy
 
     ETAG = b"ETAG"
