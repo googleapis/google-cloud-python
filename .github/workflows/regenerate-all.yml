@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PANDOC_VERSION: 3.8.2
+      SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
 
     steps:
       - name: Checkout
@@ -42,10 +43,9 @@ jobs:
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
 
-      - name: Pre-populate Synthtool Cache
+      - name: Clone Synthtool Templates
         run: |
-          mkdir -p ~/.cache/synthtool
-          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git ~/.cache/synthtool/synthtool
+          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
 
       - name: Regenerate
         run: |
