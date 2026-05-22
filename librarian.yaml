@@ -14,10 +14,14 @@
 language: python
 version: v0.14.0
 repo: googleapis/google-cloud-python
+
+
 sources:
   googleapis:
     commit: 43731d5d22f8e3526ba7aa708da9d5de26043d0f
     sha256: d146cfa257ffa00fc298ec7b6f73f9c7395a5a5ba050dcc553cfd78d6705bc3b
+
+    
 default:
   output: packages
   tag_format: '{name}-v{version}'
