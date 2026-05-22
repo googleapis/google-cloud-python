@@ -47,7 +47,7 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-referenc
 
 import sys
 
-from bigframes.bigquery import ai, ml, obj
+from bigframes.bigquery import aead, ai, ml, obj
 from bigframes.bigquery._operations.approx_agg import approx_top_count
 from bigframes.bigquery._operations.array import (
     array_agg,
@@ -71,6 +71,11 @@ from bigframes.bigquery._operations.geo import (
     st_length,
     st_regionstats,
     st_simplify,
+)
+from bigframes.bigquery._operations.global_namespace.aead_encryption import (
+    deterministic_decrypt_bytes,
+    deterministic_decrypt_string,
+    deterministic_encrypt,
 )
 from bigframes.bigquery._operations.io import load_data
 from bigframes.bigquery._operations.json import (
@@ -121,6 +126,10 @@ _functions = [
     st_length,
     st_regionstats,
     st_simplify,
+    # deterministic encryption ops
+    deterministic_decrypt_bytes,
+    deterministic_decrypt_string,
+    deterministic_encrypt,
     # json ops
     json_extract,
     json_extract_array,
@@ -179,6 +188,10 @@ __all__ = [
     "st_length",
     "st_regionstats",
     "st_simplify",
+    # deterministic encryption ops
+    "deterministic_decrypt_bytes",
+    "deterministic_decrypt_string",
+    "deterministic_encrypt",
     # json ops
     "json_extract",
     "json_extract_array",
@@ -208,6 +221,7 @@ __all__ = [
     # io ops
     "load_data",
     # Modules / SQL namespaces
+    "aead",
     "ai",
     "ml",
     "obj",

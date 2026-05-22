@@ -46,11 +46,24 @@ class RequestStatusPerDestination(proto.Message):
         request_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RequestStatus):
             The request status of the destination.
         error_info (google.ads.datamanager_v1.types.ErrorInfo):
-            An error info error containing the error
-            reason and error counts related to the upload.
+            An error info error containing the error reason and error
+            counts related to the upload. Only populated if the
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            is
+            [``FAILED``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.FAILED]
+            or
+            [``PARTIAL_SUCCESS``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PARTIAL_SUCCESS].
+            This field isn't populated while the request has
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            of
+            [``PROCESSING``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PROCESSING].
         warning_info (google.ads.datamanager_v1.types.WarningInfo):
-            A warning info containing the warning reason
-            and warning counts related to the upload.
+            A warning info containing the warning reason and warning
+            counts related to the upload. This field isn't populated
+            while the request has
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            of
+            [``PROCESSING``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PROCESSING].
         audience_members_ingestion_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.IngestAudienceMembersStatus):
             The status of the ingest audience members
             request.
@@ -74,13 +87,25 @@ class RequestStatusPerDestination(proto.Message):
             REQUEST_STATUS_UNKNOWN (0):
                 The request status is unknown.
             SUCCESS (1):
-                The request succeeded.
+                Processing succeeded for all records without any errors.
+                However, there may be warnings in the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field.
             PROCESSING (2):
                 The request is processing.
             FAILED (3):
-                The request failed.
+                Processing failed for all records. Check the
+                [``error_info``][google.ads.datamanager.v1.RequestStatusPerDestination.error_info]
+                field for error details, and check the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field for warning details.
             PARTIAL_SUCCESS (4):
-                The request partially succeeded.
+                Processing completed successfully without errors for some
+                records, but failed with errors for other records. Check the
+                [``error_info``][google.ads.datamanager.v1.RequestStatusPerDestination.error_info]
+                field for error details, and check the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field for warning details.
         """
 
         REQUEST_STATUS_UNKNOWN = 0

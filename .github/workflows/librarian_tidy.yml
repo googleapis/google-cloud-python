@@ -1,0 +1,40 @@
+name: librarian tidy
+
+on:
+  pull_request:
+    paths:
+      - 'librarian.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  tidy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.x'
+
+      - name: Run librarian tidy
+        run: |
+          V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
+          go run github.com/googleapis/librarian/cmd/librarian@${V} tidy
+          git diff
+
+      - name: Check for diff
+        run: |
+          if ! git diff --exit-code; then
+            V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
+            echo "librarian.yaml is not tidy. Please run:"
+            echo ""
+            echo "  go run github.com/googleapis/librarian/cmd/librarian@${V} tidy"
+            echo ""
+            echo "to tidy librarian.yaml and commit the changes."
+            exit 1
+          fi
+

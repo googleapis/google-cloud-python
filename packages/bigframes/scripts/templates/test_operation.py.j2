@@ -1,0 +1,29 @@
+{% include 'license.py.j2' %}
+
+#
+# DO NOT MODIFY THIS FILE DIRECTLY.
+# This file was generated from: {{ yaml_path }}
+# by the script: {{ script_path }}
+
+from typing import cast
+
+import pytest
+
+import bigframes.pandas as bpd
+import {{ import_path }} as {{ short_name }}
+
+pytest.importorskip("pytest_snapshot")
+
+
+{% for func in functions %}
+def test_{{ func.name }}(scalar_types_df: bpd.DataFrame, snapshot):
+    result = {{ short_name }}.{{ func.name }}(
+{% for arg in func.test_args %}
+        cast(bpd.Series, scalar_types_df["{{ arg.col_name }}"]),
+{% endfor %}
+    ).to_frame()
+
+    snapshot.assert_match(result.sql.rstrip() + "\n", "out.sql")
+
+
+{% endfor %}

@@ -23,6 +23,8 @@ __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2",
     manifest={
         "TranslationDetails",
+        "SuggestionConfig",
+        "SuggestionStep",
         "SourceTargetMapping",
         "SourceSpec",
         "TargetSpec",
@@ -56,6 +58,9 @@ class TranslationDetails(proto.Message):
             set of targets will be generated. Some additional target
             types may be slower to generate. See the documentation for
             the set of available target types.
+        suggestion_config (google.cloud.bigquery_migration_v2.types.SuggestionConfig):
+            The configuration for the suggestion if
+            requested as a target type.
     """
 
     source_target_mapping: MutableSequence["SourceTargetMapping"] = proto.RepeatedField(
@@ -79,6 +84,81 @@ class TranslationDetails(proto.Message):
     target_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    suggestion_config: "SuggestionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="SuggestionConfig",
+    )
+
+
+class SuggestionConfig(proto.Message):
+    r"""The configuration for the suggestion if requested as a target
+    type.
+
+    Attributes:
+        skip_suggestion_steps (MutableSequence[google.cloud.bigquery_migration_v2.types.SuggestionStep]):
+            The list of suggestion steps to skip.
+    """
+
+    skip_suggestion_steps: MutableSequence["SuggestionStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SuggestionStep",
+    )
+
+
+class SuggestionStep(proto.Message):
+    r"""Suggestion step to skip.
+
+    Attributes:
+        suggestion_type (google.cloud.bigquery_migration_v2.types.SuggestionStep.SuggestionType):
+            The type of suggestion.
+        rewrite_target (google.cloud.bigquery_migration_v2.types.SuggestionStep.RewriteTarget):
+            The rewrite target.
+    """
+
+    class SuggestionType(proto.Enum):
+        r"""Suggestion type.
+
+        Values:
+            SUGGESTION_TYPE_UNSPECIFIED (0):
+                Suggestion type unspecified.
+            QUERY_CUSTOMIZATION (1):
+                Query customization.
+            TRANSLATION_EXPLANATION (2):
+                Translation explanation.
+        """
+
+        SUGGESTION_TYPE_UNSPECIFIED = 0
+        QUERY_CUSTOMIZATION = 1
+        TRANSLATION_EXPLANATION = 2
+
+    class RewriteTarget(proto.Enum):
+        r"""The target to apply the suggestion to.
+
+        Values:
+            REWRITE_TARGET_UNSPECIFIED (0):
+                Rewrite target unspecified.
+            SOURCE_SQL (1):
+                Source SQL.
+            TARGET_SQL (2):
+                Target SQL.
+        """
+
+        REWRITE_TARGET_UNSPECIFIED = 0
+        SOURCE_SQL = 1
+        TARGET_SQL = 2
+
+    suggestion_type: SuggestionType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SuggestionType,
+    )
+    rewrite_target: RewriteTarget = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RewriteTarget,
     )
 
 
@@ -124,6 +204,11 @@ class SourceSpec(proto.Message):
             Source literal.
 
             This field is a member of `oneof`_ ``source``.
+        gcs_file_path (str):
+            The path to a single source file in Cloud
+            Storage.
+
+            This field is a member of `oneof`_ ``source``.
         encoding (str):
             Optional. The optional field to specify the
             encoding of the sql bytes.
@@ -139,6 +224,11 @@ class SourceSpec(proto.Message):
         number=2,
         oneof="source",
         message="Literal",
+    )
+    gcs_file_path: str = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="source",
     )
     encoding: str = proto.Field(
         proto.STRING,
