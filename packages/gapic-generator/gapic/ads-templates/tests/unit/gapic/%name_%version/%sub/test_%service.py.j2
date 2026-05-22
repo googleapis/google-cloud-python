@@ -6,7 +6,6 @@
 import os
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import re
-_UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
 from unittest import mock
 from unittest.mock import AsyncMock
@@ -71,6 +70,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+_UUID4_RE = re.compile(r"{{ uuid4_re }}")
+{% endif %}
 
 
 def client_cert_source_callback():
