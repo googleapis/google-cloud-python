@@ -20,13 +20,17 @@ from __future__ import annotations
 import enum
 import time
 from collections import namedtuple
-from typing import TYPE_CHECKING, List, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Callable, List, Optional, Sequence, Tuple, Union, cast
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+from google.api_core import retry as retries
 
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+from google.rpc import code_pb2
+from google.rpc import status_pb2
 
 if TYPE_CHECKING:
     import grpc
@@ -46,6 +50,18 @@ ShardedQuery = List[ReadRowsQuery]
 
 # used by read_rows_sharded to limit how many requests are attempted in parallel
 _CONCURRENCY_LIMIT = 10
+
+# used by every data client as a default project name for testing on Bigtable emulator.
+_DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
+
+# Internal error messages that can be retried during ReadRows. Internal error messages with this error
+# text should be treated as Unavailable error messages with the same error text, and will therefore be
+# treated as Unavailable errors rather than Internal errors.
+_RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+    "rst_stream",
+    "rst stream",
+    "received unexpected eos on data frame from server",
+)
 
 # used to identify an active bigtable resource that needs to be warmed through PingAndWarm
 # each instance/app_profile_id pair needs to be individually tracked
@@ -123,6 +139,30 @@ def _retry_exception_factory(
     return source_exc, cause_exc
 
 
+def _rst_stream_aware_predicate(
+    *exception_types: type[Exception],
+) -> Callable[[Exception], bool]:
+    """A custom retry predicate.
+    This predicate treats Internal error messages with RST_STREAM errors as
+    ServiceUnavailable errors and will retry them if the Unavailable exception is retryable.
+    Args:
+        exception_types: Exception types to be retried during operation
+    Returns:
+        Callable[[Exception], bool]: A retry predicate that takes in an exception and
+            returns whether or not that exception is retryable
+    """
+    # predicate to check for retryable error types
+    if_exception_type = retries.if_exception_type(*exception_types)
+    # special case: treat InternalServerError with rst_stream error message as ServiceUnavailable
+    rst_check = (
+        lambda e: core_exceptions.ServiceUnavailable in exception_types
+        and isinstance(e, core_exceptions.InternalServerError)
+        and any(m in e.message.lower() for m in _RETRYABLE_INTERNAL_ERROR_MESSAGES)
+    )
+
+    return lambda e: if_exception_type(e) or rst_check(e)
+
+
 def _get_timeouts(
     operation: float | TABLE_DEFAULT,
     attempt: float | None | TABLE_DEFAULT,
@@ -186,6 +226,67 @@ def _align_timeouts(operation: float, attempt: float | None) -> tuple[float, flo
 
     _validate_timeouts(operation, final_attempt, allow_none=False)
     return operation, final_attempt
+
+
+def _get_statuses_from_mutations_exception_group(
+    exc_group: MutationsExceptionGroup, batch_size: int
+) -> list[status_pb2.Status]:
+    """
+    Helper function that populates a list of Status objects with exception information from
+    the exception group.
+    Args:
+        exc_group: The exception group from a mutate rows operation
+        batch_size: How many RowMutationGroups were provided to the batch
+    Returns:
+        list[status_pb2.Status]: A list of Status proto objects
+    """
+    # We exception handle as follows:
+    #
+    # 1. Each exception in the error group is a FailedMutationEntryError, and its
+    #    cause is either a singular exception or a RetryExceptionGroup consisting of
+    #    multiple exceptions.
+    #
+    # 2. In the case of a singular exception, if the error does not have a gRPC status
+    #    code, we return a status code of UNKNOWN.
+    #
+    # 3. In the case of a RetryExceptionGroup, we use terminal exception in the exception
+    #    group and process that.
+    statuses = [status_pb2.Status(code=code_pb2.OK)] * batch_size
+    for error in exc_group.exceptions:
+        if isinstance(error.index, int) and 0 <= error.index < len(statuses):
+            cause = error.__cause__
+            if isinstance(cause, RetryExceptionGroup):
+                statuses[error.index] = _get_status(cause.exceptions[-1])
+            else:
+                statuses[error.index] = _get_status(cause)
+    return statuses
+
+
+def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
+    """
+    Helper function that returns a Status object corresponding to the given exception.
+    Args:
+        exc: An exception to be converted into a Status.
+    Returns:
+        status_pb2.Status: A Status proto object.
+    """
+    if isinstance(exc, core_exceptions.GoogleAPICallError):
+        status_code = cast(Optional["grpc.StatusCode"], exc.grpc_status_code)
+        if status_code is not None:
+            return status_pb2.Status(
+                code=status_code.value[0],
+                message=exc.message,
+                details=exc.details,
+            )
+        return status_pb2.Status(
+            code=code_pb2.Code.UNKNOWN,
+            message="An unknown error has occurred",
+        )
+
+    return status_pb2.Status(
+        code=code_pb2.Code.UNKNOWN,
+        message=str(exc) if exc else "An unknown error has occurred",
+    )
 
 
 def _validate_timeouts(

@@ -21,12 +21,15 @@ import atexit
 import concurrent.futures
 import warnings
 from collections import deque
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Callable, Optional, Sequence, cast
+
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
     _get_retryable_errors,
+    _get_statuses_from_mutations_exception_group,
     _get_timeouts,
 )
 from google.cloud.bigtable.data.exceptions import (
@@ -236,10 +239,13 @@ class MutationsBatcher:
         self._entries_processed_since_last_raise: int = 0
         self._exceptions_since_last_raise: int = 0
         self._exception_list_limit: int = 10
-        self._oldest_exceptions: list[Exception] = []
-        self._newest_exceptions: deque[Exception] = deque(
+        self._oldest_exceptions: list[FailedMutationEntryError] = []
+        self._newest_exceptions: deque[FailedMutationEntryError] = deque(
             maxlen=self._exception_list_limit
         )
+        self._user_batch_completed_callback: Optional[
+            Callable[[list[status_pb2.Status]], None]
+        ] = None
         atexit.register(self._on_exit)
 
     def _timer_routine(self, interval: float | None) -> None:
@@ -307,13 +313,16 @@ class MutationsBatcher:
         Args:
             new_entries list of RowMutationEntry objects to flush"""
         in_process_requests: list[
-            CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]]
+            tuple[
+                CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]],
+                list[RowMutationEntry],
+            ]
         ] = []
         for batch in self._flow_control.add_to_flow(new_entries):
             batch_task = CrossSync._Sync_Impl.create_task(
                 self._execute_mutate_rows, batch, sync_executor=self._sync_rpc_executor
             )
-            in_process_requests.append(batch_task)
+            in_process_requests.append((batch_task, batch))
         found_exceptions = self._wait_for_batch_results(*in_process_requests)
         self._entries_processed_since_last_raise += len(new_entries)
         self._add_exceptions(found_exceptions)
@@ -331,6 +340,7 @@ class MutationsBatcher:
             list[FailedMutationEntryError]:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information"""
+        statuses = [status_pb2.Status(code=code_pb2.Code.UNKNOWN)] * len(batch)
         try:
             operation = CrossSync._Sync_Impl._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -342,14 +352,19 @@ class MutationsBatcher:
             )
             operation.start()
         except MutationsExceptionGroup as e:
+            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
+        else:
+            statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(batch)
         finally:
             self._flow_control.remove_from_flow(batch)
+            if self._user_batch_completed_callback:
+                self._user_batch_completed_callback(statuses)
         return []
 
-    def _add_exceptions(self, excs: list[Exception]):
+    def _add_exceptions(self, excs: list[FailedMutationEntryError]):
         """Add new list of exceptions to internal store. To avoid unbounded memory,
         the batcher will store the first and last _exception_list_limit exceptions,
         and discard any in between.
@@ -428,30 +443,42 @@ class MutationsBatcher:
 
     @staticmethod
     def _wait_for_batch_results(
-        *tasks: CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]]
-        | CrossSync._Sync_Impl.Future[None],
-    ) -> list[Exception]:
+        *tasks: tuple[
+            CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]]
+            | CrossSync._Sync_Impl.Future[None],
+            list[RowMutationEntry],
+        ],
+    ) -> list[FailedMutationEntryError]:
         """Takes in a list of futures representing _execute_mutate_rows tasks,
         waits for them to complete, and returns a list of errors encountered.
 
         Args:
-            *tasks: futures representing _execute_mutate_rows or _flush_internal tasks
+            *tasks: Tuples of futures representing _execute_mutate_rows or
+                    _flush_internal tasks, and their associated batches
         Returns:
-            list[Exception]:
-                list of Exceptions encountered by any of the tasks. Errors are expected
-                to be FailedMutationEntryError, representing a failed mutation operation.
-                If a task fails with a different exception, it will be included in the
-                output list. Successful tasks will not be represented in the output list."""
+            list[FailedMutationEntryError]:
+                list of FailedMutationEntryError encountered by any of the tasks,
+                representing a failed mutation operation.
+                Successful tasks will not be represented in the output list."""
         if not tasks:
             return []
-        exceptions: list[Exception] = []
-        for task in tasks:
+        exceptions: list[FailedMutationEntryError] = []
+        for task, batch in tasks:
             try:
                 exc_list = task.result()
                 if exc_list:
                     for exc in exc_list:
                         exc.index = None
                     exceptions.extend(exc_list)
-            except Exception as e:
+            except FailedMutationEntryError as e:
                 exceptions.append(e)
+            except Exception as e:
+                exceptions.extend(
+                    [
+                        FailedMutationEntryError(
+                            failed_idx=None, failed_mutation_entry=entry, cause=e
+                        )
+                        for entry in batch
+                    ]
+                )
         return exceptions

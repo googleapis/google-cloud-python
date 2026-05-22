@@ -20,13 +20,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Sequence
 
-from google.api_core import retry as retries
 from google.api_core.retry import exponential_sleep_generator
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _attempt_timeout_generator,
     _retry_exception_factory,
+    _rst_stream_aware_predicate,
 )
 from google.cloud.bigtable.data.exceptions import (
     InvalidChunk,
@@ -95,7 +95,7 @@ class _ReadRowsOperation:
         else:
             self.request = query._to_pb(target)
         self.target = target
-        self._predicate = retries.if_exception_type(*retryable_exceptions)
+        self._predicate = _rst_stream_aware_predicate(*retryable_exceptions)
         self._last_yielded_row_key: bytes | None = None
         self._remaining_count: int | None = self.request.rows_limit or None
 
