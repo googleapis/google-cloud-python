@@ -31,7 +31,7 @@ var N = (e12, t) => {
       dd.call(t, n) && wa(e12, n, t[n]);
   return e12;
 };
-var O = (e12, t) => cd(e12, ld(t));
+var R = (e12, t) => cd(e12, ld(t));
 var V = null;
 var On = false;
 var wo = 1;
@@ -192,7 +192,7 @@ function jn(e12, t) {
 var Do = Symbol("UNSET");
 var bo = Symbol("COMPUTING");
 var kn = Symbol("ERRORED");
-var gd = O(N({}, ft), { value: Do, dirty: true, error: null, equal: Ro, kind: "computed", producerMustRecompute(e12) {
+var gd = R(N({}, ft), { value: Do, dirty: true, error: null, equal: Ro, kind: "computed", producerMustRecompute(e12) {
   return e12.value === Do || e12.value === bo;
 }, producerRecomputeValue(e12) {
   if (e12.value === bo)
@@ -239,11 +239,11 @@ function ko(e12, t) {
 function Aa(e12, t) {
   So() || xa(e12), ko(e12, t(e12.value));
 }
-var Oa = O(N({}, ft), { equal: Ro, value: void 0, kind: "signal" });
+var Oa = R(N({}, ft), { equal: Ro, value: void 0, kind: "signal" });
 function vd(e12) {
   e12.version++, Ta(), _o(e12), yd?.(e12);
 }
-var Po = O(N({}, ft), { consumerIsAlwaysLive: true, consumerAllowSignalWrites: true, dirty: true, kind: "effect" });
+var Po = R(N({}, ft), { consumerIsAlwaysLive: true, consumerAllowSignalWrites: true, dirty: true, kind: "effect" });
 function Lo(e12) {
   if (e12.dirty = false, e12.version > 0 && !Fn(e12))
     return;
@@ -255,7 +255,7 @@ function Lo(e12) {
     Ln(e12, t);
   }
 }
-function z(e12) {
+function U(e12) {
   return typeof e12 == "function";
 }
 function Hn(e12) {
@@ -291,7 +291,7 @@ var $ = class e {
         else
           n.remove(this);
       let { initialTeardown: r } = this;
-      if (z(r))
+      if (U(r))
         try {
           r();
         } catch (i) {
@@ -348,10 +348,10 @@ $.EMPTY = (() => {
 })();
 var Fo = $.EMPTY;
 function Bn(e12) {
-  return e12 instanceof $ || e12 && "closed" in e12 && z(e12.remove) && z(e12.add) && z(e12.unsubscribe);
+  return e12 instanceof $ || e12 && "closed" in e12 && U(e12.remove) && U(e12.add) && U(e12.unsubscribe);
 }
 function ka(e12) {
-  z(e12) ? e12() : e12.unsubscribe();
+  U(e12) ? e12() : e12.unsubscribe();
 }
 var ne = { onUnhandledError: null, onStoppedNotification: null, Promise: void 0, useDeprecatedSynchronousErrorHandling: false, useDeprecatedNextContext: false };
 var gt = { setTimeout(e12, t, ...n) {
@@ -476,7 +476,7 @@ var yt = class extends qe {
   constructor(t, n, r) {
     super();
     let o;
-    if (z(t) || !t)
+    if (U(t) || !t)
       o = { next: t ?? void 0, error: n ?? void 0, complete: r ?? void 0 };
     else {
       let i;
@@ -564,13 +564,13 @@ function Ua(e12) {
   return (t = e12 ?? ne.Promise) !== null && t !== void 0 ? t : Promise;
 }
 function bd(e12) {
-  return e12 && z(e12.next) && z(e12.error) && z(e12.complete);
+  return e12 && U(e12.next) && U(e12.error) && U(e12.complete);
 }
 function Cd(e12) {
   return e12 && e12 instanceof qe || bd(e12) && Bn(e12);
 }
 function wd(e12) {
-  return z(e12?.lift);
+  return U(e12?.lift);
 }
 function za(e12) {
   return (t) => {
@@ -1342,7 +1342,7 @@ function fc() {
 var re = 0;
 var m = 1;
 var y = 2;
-var k = 3;
+var A = 3;
 var J = 4;
 var X = 5;
 var Ct = 6;
@@ -1350,7 +1350,7 @@ var wt = 7;
 var x = 8;
 var be = 9;
 var de = 10;
-var P = 11;
+var O = 11;
 var Tt = 12;
 var Ii = 13;
 var nt = 14;
@@ -1424,7 +1424,7 @@ function dr(e12) {
   return (e12[y] & 128) === 128;
 }
 function yc(e12) {
-  return oe(e12[k]);
+  return oe(e12[A]);
 }
 function he(e12, t) {
   return t == null ? null : e12[t];
@@ -1464,8 +1464,8 @@ function Ec(e12, t) {
   n !== -1 && e12[Ie].splice(n, 1);
 }
 function Le(e12) {
-  let t = e12[k];
-  return oe(t) ? t[k] : t;
+  let t = e12[A];
+  return oe(t) ? t[A] : t;
 }
 function Ni(e12) {
   return e12[wt] ??= [];
@@ -1655,7 +1655,7 @@ var ue = class e2 {
   static \u0275prov = _({ token: e2, providedIn: "any", factory: () => b(mi) });
   static __NG_ELEMENT_ID__ = -1;
 };
-var W = new D("");
+var z = new D("");
 var Rt = /* @__PURE__ */ (() => {
   class e12 {
     static __NG_ELEMENT_ID__ = qd;
@@ -1933,7 +1933,7 @@ var qc = { provide: tt, useValue: () => {
   let e12 = E(De, { optional: true });
 }, multi: true };
 var ef = new D("", { factory: () => {
-  let e12 = E(W).defaultView;
+  let e12 = E(z).defaultView;
   if (!e12)
     return;
   let t = E(st), n = (i) => {
@@ -2035,7 +2035,7 @@ function $i(e12, t) {
   let n = t?.injector ?? E(ue), r = t?.manualCleanup !== true ? n.get(Rt) : null, o, i = n.get(Er, null, { optional: true }), s = n.get(Ke);
   return i !== null ? (o = of(i.view, s, e12), r instanceof Qn && r._lView === i.view && (r = null)) : o = sf(e12, n.get(Ir), s), o.injector = n, r !== null && (o.onDestroyFns = [r.onDestroy(() => o.destroy())]), new Kn(o);
 }
-var Qc = O(N({}, Po), { cleanupFns: void 0, zone: null, onDestroyFns: null, run() {
+var Qc = R(N({}, Po), { cleanupFns: void 0, zone: null, onDestroyFns: null, run() {
   let e12 = Zt(false);
   try {
     Lo(this);
@@ -2053,7 +2053,7 @@ var Qc = O(N({}, Po), { cleanupFns: void 0, zone: null, onDestroyFns: null, run(
     this.cleanupFns = [], g(e12);
   }
 } });
-var nf = O(N({}, Qc), { consumerMarkedDirty() {
+var nf = R(N({}, Qc), { consumerMarkedDirty() {
   this.scheduler.schedule(this), this.notifier.notify(12);
 }, destroy() {
   if (pt(this), this.onDestroyFns !== null)
@@ -2061,7 +2061,7 @@ var nf = O(N({}, Qc), { consumerMarkedDirty() {
       e12();
   this.cleanup(), this.scheduler.remove(this);
 } });
-var rf = O(N({}, Qc), { consumerMarkedDirty() {
+var rf = R(N({}, Qc), { consumerMarkedDirty() {
   this.view[y] |= 8192, Nt(this.view), this.notifier.notify(13);
 }, destroy() {
   if (pt(this), this.onDestroyFns !== null)
@@ -2600,7 +2600,7 @@ var Ur = new D("", { factory: () => zf });
 var zf = "ng";
 var zr = new D("");
 var vn = new D("", { providedIn: "platform", factory: () => "unknown" });
-var Wr = new D("", { factory: () => E(W).body?.querySelector("[ngCspNonce]")?.getAttribute("ngCspNonce") || null });
+var Wr = new D("", { factory: () => E(z).body?.querySelector("[ngCspNonce]")?.getAttribute("ngCspNonce") || null });
 var Zl = "r";
 var Ql = "di";
 var Yl = false;
@@ -3035,7 +3035,7 @@ function Tp(e12) {
 }
 function Ws(e12, t, n, r, o, i, s, a, c, l, u) {
   let d = t.blueprint.slice();
-  return d[re] = o, d[y] = r | 4 | 128 | 8 | 64 | 1024, (l !== null || e12 && e12[y] & 2048) && (d[y] |= 2048), Mi(d), d[k] = d[nt] = e12, d[x] = n, d[de] = s || e12 && e12[de], d[P] = a || e12 && e12[P], d[be] = c || e12 && e12[be] || null, d[X] = i, d[Ce] = $f(), d[Ct] = u, d[Di] = l, d[ee] = t.type == 2 ? e12[ee] : d, d;
+  return d[re] = o, d[y] = r | 4 | 128 | 8 | 64 | 1024, (l !== null || e12 && e12[y] & 2048) && (d[y] |= 2048), Mi(d), d[A] = d[nt] = e12, d[x] = n, d[de] = s || e12 && e12[de], d[O] = a || e12 && e12[O], d[be] = c || e12 && e12[be] || null, d[X] = i, d[Ce] = $f(), d[Ct] = u, d[Di] = l, d[ee] = t.type == 2 ? e12[ee] : d, d;
 }
 function Mp(e12, t, n) {
   let r = pe(t, e12), o = Tp(n), i = e12[de].rendererFactory, s = Gs(e12, Ws(e12, o, null, uu(n), r, t, null, i.createRenderer(r, n), null, null, null));
@@ -3174,7 +3174,7 @@ function Op(e12, t, n, r, o, i) {
   r[re] = o, r[X] = t, Kr(e12, r, n, 1, o, i);
 }
 function mu(e12, t) {
-  t[de].changeDetectionScheduler?.notify(9), Kr(e12, t, t[P], 2, null, null);
+  t[de].changeDetectionScheduler?.notify(9), Kr(e12, t, t[O], 2, null, null);
 }
 function kp(e12) {
   let t = e12[Tt];
@@ -3190,7 +3190,7 @@ function kp(e12) {
     }
     if (!n) {
       for (; t && !t[J] && t !== e12; )
-        Be(t) && Wi(t[m], t), t = t[k];
+        Be(t) && Wi(t[m], t), t = t[A];
       t === null && (t = e12), Be(t) && Wi(t[m], t), n = t && t[J];
     }
     t = n;
@@ -3203,7 +3203,7 @@ function Qs(e12, t) {
 function Yr(e12, t) {
   if (it(t))
     return;
-  let n = t[P];
+  let n = t[O];
   n.destroyNode && Kr(e12, t, n, 3, null, null), kp(t);
 }
 function Wi(e12, t) {
@@ -3211,10 +3211,10 @@ function Wi(e12, t) {
     return;
   let n = g(null);
   try {
-    t[y] &= -129, t[y] |= 256, t[Z] && pt(t[Z]), Fp(e12, t), Lp(e12, t), t[m].type === 1 && t[P].destroy();
+    t[y] &= -129, t[y] |= 256, t[Z] && pt(t[Z]), Fp(e12, t), Lp(e12, t), t[m].type === 1 && t[O].destroy();
     let r = t[je];
-    if (r !== null && oe(t[k])) {
-      r !== t[k] && Qs(r, t);
+    if (r !== null && oe(t[A])) {
+      r !== t[A] && Qs(r, t);
       let o = t[fe];
       o !== null && o.detachView(e12);
     }
@@ -3332,7 +3332,7 @@ function Bp(e12, t, n) {
 var $p = Bp;
 var gl;
 function Ys(e12, t, n, r) {
-  let o = jp(e12, r, t), i = t[P], s = r.parent || t[X], a = Vp(s, r, t);
+  let o = jp(e12, r, t), i = t[O], s = r.parent || t[X], a = Vp(s, r, t);
   if (o != null)
     if (Array.isArray(n))
       for (let c = 0; c < n.length; c++)
@@ -3423,7 +3423,7 @@ function Up(e12, t, n, r, o, i) {
       Ot(t, e12, n[be], o, u, r, i, n);
     }
   else {
-    let l = c, u = s[k];
+    let l = c, u = s[A];
     $l(r) && (l.flags |= 128), Ks(e12, t, l, u, o, i, true);
   }
 }
@@ -3522,7 +3522,7 @@ function th(e12, t, n, r, o) {
   let i = B + n, s = t[m], a = o(s, t, e12, r, n);
   t[i] = a, xt(e12, true);
   let c = e12.type === 2;
-  return c ? (lu(t[P], a, e12), (Dc() === 0 || wi(e12)) && Pt(a, t), bc()) : Pt(a, t), yr() && (!c || !Fs(e12)) && Ys(s, t, a, e12), e12;
+  return c ? (lu(t[O], a, e12), (Dc() === 0 || wi(e12)) && Pt(a, t), bc()) : Pt(a, t), yr() && (!c || !Fs(e12)) && Ys(s, t, a, e12), e12;
 }
 function nh(e12) {
   let t = e12;
@@ -3655,7 +3655,7 @@ function lh(e12) {
 function uh(e12) {
   e12.lView[Z] !== e12 && (e12.lView = null, bu.push(e12));
 }
-var dh = O(N({}, ft), { consumerIsAlwaysLive: true, kind: "template", consumerMarkedDirty: (e12) => {
+var dh = R(N({}, ft), { consumerIsAlwaysLive: true, kind: "template", consumerMarkedDirty: (e12) => {
   Nt(e12.lView);
 }, consumerOnSignalRead() {
   this.lView[Z] = this;
@@ -3664,7 +3664,7 @@ function fh(e12) {
   let t = e12[Z] ?? Object.create(ph);
   return t.lView = e12, t;
 }
-var ph = O(N({}, ft), { consumerIsAlwaysLive: true, kind: "template", consumerMarkedDirty: (e12) => {
+var ph = R(N({}, ft), { consumerIsAlwaysLive: true, kind: "template", consumerMarkedDirty: (e12) => {
   let t = Le(e12.lView);
   for (; t && !Cu(t[m]); )
     t = Le(t);
@@ -3855,7 +3855,7 @@ function xu(e12, t) {
 function Xr(e12, t, n, r = true) {
   let o = t[m];
   if (Ih(o, t, e12, n), r) {
-    let s = ds(n, e12), a = t[P], c = a.parentNode(e12[Ve]);
+    let s = ds(n, e12), a = t[O], c = a.parentNode(e12[Ve]);
     c !== null && Op(o, e12[X], a, t, c, s);
   }
   let i = t[Ct];
@@ -3875,24 +3875,24 @@ function fn(e12, t) {
     let i = Kt(e12, S + t);
     Ap(r[m], r);
     let s = i[fe];
-    s !== null && s.detachView(i[m]), r[k] = null, r[J] = null, r[y] &= -129;
+    s !== null && s.detachView(i[m]), r[A] = null, r[J] = null, r[y] &= -129;
   }
   return r;
 }
 function Ih(e12, t, n, r) {
   let o = S + r, i = n.length;
-  r > 0 && (n[o - 1][J] = t), r < i - S ? (t[J] = n[o], gi(n, S + r, t)) : (n.push(t), t[J] = null), t[k] = n;
+  r > 0 && (n[o - 1][J] = t), r < i - S ? (t[J] = n[o], gi(n, S + r, t)) : (n.push(t), t[J] = null), t[A] = n;
   let s = t[je];
   s !== null && n !== s && Au(s, t);
   let a = t[fe];
   a !== null && a.insertView(e12), fr(t), t[y] |= 128;
 }
 function Au(e12, t) {
-  let n = e12[ot], r = t[k];
+  let n = e12[ot], r = t[A];
   if (Be(r))
     e12[y] |= 2;
   else {
-    let o = r[k][ee];
+    let o = r[A][ee];
     t[ee] !== o && (e12[y] |= 2);
   }
   n === null ? e12[ot] = [t] : n.push(t);
@@ -3923,7 +3923,7 @@ var Lt = class {
     if (this._appRef)
       this._appRef.detachView(this);
     else if (this._attachedToViewContainer) {
-      let t = this._lView[k];
+      let t = this._lView[A];
       if (oe(t)) {
         let n = t[tn], r = n ? n.indexOf(this) : -1;
         r > -1 && (fn(t, r), Kt(n, r));
@@ -4018,7 +4018,7 @@ function wh(e12, t, n, r, o, i) {
   return wc() && (a |= 128), { type: n, index: r, insertBeforeIndex: null, injectorIndex: s, directiveStart: -1, directiveEnd: -1, directiveStylingLast: -1, componentOffset: -1, controlDirectiveIndex: -1, customControlIndex: -1, propertyBindings: null, flags: a, providerIndexes: 0, value: o, attrs: i, mergedAttrs: null, localNames: null, initialInputs: null, inputs: null, hostDirectiveInputs: null, outputs: null, hostDirectiveOutputs: null, directiveToIndex: null, tView: null, next: null, prev: null, projectionNext: null, child: null, parent: t, projection: null, styles: null, stylesWithoutHost: null, residualStyles: void 0, classes: null, classesWithoutHost: null, residualClasses: void 0, classBindings: 0, styleBindings: 0 };
 }
 function Th(e12) {
-  let t = e12[bi] ?? [], r = e12[k][P], o = [];
+  let t = e12[bi] ?? [], r = e12[A][O], o = [];
   for (let i of t)
     i.data[Ql] !== void 0 ? o.push(i) : Mh(i, r);
   e12[bi] = o;
@@ -4563,7 +4563,7 @@ var vs = class e4 extends ro {
       if (a !== -1)
         this.detach(a);
       else {
-        let c = o[k], l = new e4(c, c[X], c[k]);
+        let c = o[A], l = new e4(c, c[X], c[A]);
         l.detach(l.indexOf(t));
       }
     }
@@ -4600,7 +4600,7 @@ function Hu(e12, t) {
   return oe(r) ? n = r : (n = Nu(r, t, null, e12), t[e12.index] = n, Gs(t, n)), og(n, t, e12, r), new vs(n, e12, t);
 }
 function rg(e12, t) {
-  let n = e12[P], r = n.createComment(""), o = pe(t, e12), i = n.parentNode(o);
+  let n = e12[O], r = n.createComment(""), o = pe(t, e12), i = n.parentNode(o);
   return kr(n, i, r, n.nextSibling(o), false), r;
 }
 var og = ag;
@@ -4812,7 +4812,7 @@ function ws(e12, t, n, r) {
         let l = i[a + 1], u = t[-c];
         for (let d = S; d < u.length; d++) {
           let f = u[d];
-          f[je] === f[k] && ws(f[m], f, l, r);
+          f[je] === f[A] && ws(f[m], f, l, r);
         }
         if (u[ot] !== null) {
           let d = u[ot];
@@ -4901,7 +4901,7 @@ var vg = (() => {
 })();
 function na(e12) {
   return _l(() => {
-    let t = bg(e12), n = O(N({}, t), { decls: e12.decls, vars: e12.vars, template: e12.template, consts: e12.consts || null, ngContentSelectors: e12.ngContentSelectors, onPush: e12.changeDetection === Ps.OnPush, directiveDefs: null, pipeDefs: null, dependencies: t.standalone && e12.dependencies || null, getStandaloneInjector: t.standalone ? (o) => o.get(vg).getOrCreateStandaloneInjector(n) : null, getExternalStyles: null, signals: e12.signals ?? false, data: e12.data || {}, encapsulation: e12.encapsulation || se.Emulated, styles: e12.styles || ke, _: null, schemas: e12.schemas || null, tView: null, id: "" });
+    let t = bg(e12), n = R(N({}, t), { decls: e12.decls, vars: e12.vars, template: e12.template, consts: e12.consts || null, ngContentSelectors: e12.ngContentSelectors, onPush: e12.changeDetection === Ps.OnPush, directiveDefs: null, pipeDefs: null, dependencies: t.standalone && e12.dependencies || null, getStandaloneInjector: t.standalone ? (o) => o.get(vg).getOrCreateStandaloneInjector(n) : null, getExternalStyles: null, signals: e12.signals ?? false, data: e12.data || {}, encapsulation: e12.encapsulation || se.Emulated, styles: e12.styles || ke, _: null, schemas: e12.schemas || null, tView: null, id: "" });
     t.standalone && Vt("NgStandalone"), Cg(n);
     let r = e12.dependencies;
     return n.directiveDefs = bl(r, Eg), n.pipeDefs = bl(r, Xa), n.id = wg(n), n;
@@ -4979,7 +4979,7 @@ function jr(e12, t, n, r, o, i, s, a, c, l, u) {
 }
 var Mg = _g;
 function _g(e12, t, n, r) {
-  return vr(true), t[P].createComment("");
+  return vr(true), t[O].createComment("");
 }
 var ra = new D("");
 function oa(e12) {
@@ -5496,18 +5496,18 @@ function Og(e12, t) {
 function xs(e12, t) {
   return ur(e12, t);
 }
-function R(e12, t, n, r) {
+function k(e12, t, n, r) {
   let o = M(), i = o[m], s = e12 + B, a = i.firstCreatePass ? Bh(s, i, 2, t, n, r) : i.data[s];
-  return th(a, o, e12, t, kg), r != null && Eu(o, a), R;
+  return th(a, o, e12, t, kg), r != null && Eu(o, a), k;
 }
-function A() {
+function P() {
   let e12 = ge(), t = nh(e12);
-  return Tc(t) && Mc(), Cc(), A;
+  return Tc(t) && Mc(), Cc(), P;
 }
 function ao(e12, t, n, r) {
-  return R(e12, t, n, r), A(), ao;
+  return k(e12, t, n, r), P(), ao;
 }
-var kg = (e12, t, n, r, o) => (vr(true), su(t[P], r, Vc()));
+var kg = (e12, t, n, r, o) => (vr(true), su(t[O], r, Vc()));
 function co() {
   return M();
 }
@@ -5515,7 +5515,7 @@ function ae(e12, t, n) {
   let r = M(), o = rn();
   if (In(r, o, t)) {
     let i = ie(), s = Hc();
-    Yp(s, r, e12, t, r[P], n);
+    Yp(s, r, e12, t, r[O], n);
   }
   return ae;
 }
@@ -5526,7 +5526,7 @@ function qu(e12) {
 }
 function Ae(e12, t, n) {
   let r = M(), o = ie(), i = ge();
-  return (i.type & 3 || n) && Uh(i, o, r, n, r[P], e12, t, $h(i, r, t)), Ae;
+  return (i.type & 3 || n) && Uh(i, o, r, n, r[O], e12, t, $h(i, r, t)), Ae;
 }
 function ce(e12 = 1) {
   return jc(e12);
@@ -5620,7 +5620,7 @@ function $g(e12, t, n, r) {
   let o = M(), i = ie(), s = xc(2);
   if (i.firstUpdatePass && zg(i, e12, s, r), t !== Re && In(o, s, t)) {
     let a = i.data[$e()];
-    Qg(i, a, o, o[P], e12, o[s + 1] = Yg(t, n), r, s);
+    Qg(i, a, o, o[O], e12, o[s + 1] = Yg(t, n), r, s);
   }
 }
 function Ug(e12, t) {
@@ -5716,11 +5716,11 @@ function Yg(e12, t) {
 function Kg(e12, t) {
   return (e12.flags & (t ? 8 : 16)) !== 0;
 }
-function U(e12, t = "") {
+function W(e12, t = "") {
   let n = M(), r = ie(), o = e12 + B, i = r.firstCreatePass ? eo(r, o, 1, t, null) : r.data[o], s = Jg(r, n, i, t);
   n[o] = s, yr() && Ys(r, n, s, i), xt(i, false);
 }
-var Jg = (e12, t, n, r) => (vr(true), hp(t[P], r));
+var Jg = (e12, t, n, r) => (vr(true), hp(t[O], r));
 function Xg(e12, t, n, r = "") {
   return In(e12, rn(), n) ? t + fi(n) + r : Re;
 }
@@ -5733,7 +5733,7 @@ function la(e12, t, n) {
 }
 function em(e12, t, n) {
   let r = Ti(t, e12);
-  gp(e12[P], r, n);
+  gp(e12[O], r, n);
 }
 var Zu = (() => {
   class e12 {
@@ -5982,7 +5982,7 @@ var po = (() => {
       return n.removeEventListener(r, o, i);
     }
     static \u0275fac = function(r) {
-      return new (r || e12)(b(W));
+      return new (r || e12)(b(z));
     };
     static \u0275prov = _({ token: e12, factory: e12.\u0275fac });
   }
@@ -6091,7 +6091,7 @@ var va = (() => {
       return this.nonce && r.setAttribute("nonce", this.nonce), n.appendChild(r);
     }
     static \u0275fac = function(r) {
-      return new (r || e12)(b(W), b(Ur), b(Wr, 8), b(vn));
+      return new (r || e12)(b(z), b(Ur), b(Wr, 8), b(vn));
     };
     static \u0275prov = _({ token: e12, factory: e12.\u0275fac });
   }
@@ -6161,7 +6161,7 @@ var Ia = (() => {
       this.rendererByCompId.delete(n);
     }
     static \u0275fac = function(r) {
-      return new (r || e12)(b(ya), b(va), b(Ur), b(Cm), b(W), b(K), b(Wr), b(Ht, 8));
+      return new (r || e12)(b(ya), b(va), b(Ur), b(Cm), b(z), b(K), b(Wr), b(Ht, 8));
     };
     static \u0275prov = _({ token: e12, factory: e12.\u0275fac });
   }
@@ -6443,7 +6443,7 @@ var sd = (() => {
       return n === "esc" ? "escape" : n;
     }
     static \u0275fac = function(r) {
-      return new (r || e12)(b(W));
+      return new (r || e12)(b(z));
     };
     static \u0275prov = _({ token: e12, factory: e12.\u0275fac });
   }
@@ -6465,7 +6465,7 @@ function Om() {
 function km() {
   return Ls(document), document;
 }
-var Pm = [{ provide: vn, useValue: Xu }, { provide: zr, useValue: Am, multi: true }, { provide: W, useFactory: km }];
+var Pm = [{ provide: vn, useValue: Xu }, { provide: zr, useValue: Am, multi: true }, { provide: z, useFactory: km }];
 var Lm = [{ provide: Xt, useValue: "root" }, { provide: De, useFactory: Om }, { provide: mo, useClass: po, multi: true }, { provide: mo, useClass: sd, multi: true }, Ia, va, ya, { provide: lt, useExisting: Ia }, { provide: Sn, useClass: Sm }, []];
 var ba = (() => {
   class e12 {
@@ -6525,7 +6525,7 @@ var Fm = (() => {
       return $s(n);
     }
     static \u0275fac = function(r) {
-      return new (r || e12)(b(W));
+      return new (r || e12)(b(z));
     };
     static \u0275prov = _({ token: e12, factory: e12.\u0275fac, providedIn: "root" });
   }
@@ -6598,39 +6598,39 @@ var vo = class e10 {
 };
 var jm = ["tableContainer"];
 function Hm(e12, t) {
-  if (e12 & 1 && (R(0, "div", 2), U(1), A()), e12 & 2) {
+  if (e12 & 1 && (k(0, "div", 2), W(1), P()), e12 & 2) {
     let n = ce();
     F(), Oe(n.errorMessage());
   }
 }
 function Vm(e12, t) {
-  e12 & 1 && (ao(0, "span", 8), U(1, " Running... "));
+  e12 & 1 && (ao(0, "span", 7), W(1, " Running... "));
 }
 function Bm(e12, t) {
-  e12 & 1 && U(0, " Run Query ");
+  e12 & 1 && W(0, " Run Query ");
 }
 function $m(e12, t) {
   if (e12 & 1) {
     let n = co();
-    R(0, "div", 3)(1, "div", 4)(2, "div", 5), U(3, "SQL Query Execution Deferred"), A(), R(4, "p", 6), U(5), A(), R(6, "button", 7), Ae("click", function() {
+    k(0, "div", 3)(1, "div", 4)(2, "p", 5), W(3), P(), k(4, "button", 6), Ae("click", function() {
       Te(n);
       let o = ce();
       return Me(o.handleRunQuery());
-    }), bn(7, Vm, 2, 0)(8, Bm, 1, 0), A()()();
+    }), bn(5, Vm, 2, 0)(6, Bm, 1, 0), P()()();
   }
   if (e12 & 2) {
     let n = ce();
-    F(5), Oe(n.dryRunInfo()), F(), ae("disabled", n.isLoading()), F(), Cn(n.isLoading() ? 7 : 8);
+    F(3), Oe(n.dryRunInfo()), F(), ae("disabled", n.isLoading()), F(), Cn(n.isLoading() ? 5 : 6);
   }
 }
 function Um(e12, t) {
-  if (e12 & 1 && (R(0, "option", 19), U(1), A()), e12 & 2) {
+  if (e12 & 1 && (k(0, "option", 18), W(1), P()), e12 & 2) {
     let n = t.$implicit;
     ae("value", n), F(), Oe(n === 0 ? "All" : n);
   }
 }
 function zm(e12, t) {
-  if (e12 & 1 && (R(0, "option", 19), U(1), A()), e12 & 2) {
+  if (e12 & 1 && (k(0, "option", 18), W(1), P()), e12 & 2) {
     let n = t.$implicit;
     ae("value", n), F(), Oe(n);
   }
@@ -6638,27 +6638,27 @@ function zm(e12, t) {
 function Wm(e12, t) {
   if (e12 & 1) {
     let n = co();
-    R(0, "div", 9, 0), Ae("click", function(o) {
+    k(0, "div", 8, 0), Ae("click", function(o) {
       Te(n);
       let i = ce();
       return Me(i.handleTableClick(o));
-    }), A(), R(2, "footer", 10)(3, "span", 11), U(4), A(), R(5, "div", 12)(6, "button", 13), Ae("click", function() {
+    }), P(), k(2, "footer", 9)(3, "span", 10), W(4), P(), k(5, "div", 11)(6, "button", 12), Ae("click", function() {
       Te(n);
       let o = ce();
       return Me(o.handlePageChange(-1));
-    }), U(7, "<"), A(), R(8, "span", 14), U(9), A(), R(10, "button", 13), Ae("click", function() {
+    }), W(7, "<"), P(), k(8, "span", 13), W(9), P(), k(10, "button", 12), Ae("click", function() {
       Te(n);
       let o = ce();
       return Me(o.handlePageChange(1));
-    }), U(11, ">"), A()(), R(12, "div", 15)(13, "div", 16)(14, "label", 17), U(15, "Max columns:"), A(), R(16, "select", 18), Ae("change", function(o) {
+    }), W(11, ">"), P()(), k(12, "div", 14)(13, "div", 15)(14, "label", 16), W(15, "Max columns:"), P(), k(16, "select", 17), Ae("change", function(o) {
       Te(n);
       let i = ce();
       return Me(i.handleMaxColumnsChange(o));
-    }), io(17, Um, 2, 2, "option", 19, oo), A()(), R(19, "div", 20)(20, "label", 21), U(21, "Page size:"), A(), R(22, "select", 22), Ae("change", function(o) {
+    }), io(17, Um, 2, 2, "option", 18, oo), P()(), k(19, "div", 19)(20, "label", 20), W(21, "Page size:"), P(), k(22, "select", 21), Ae("change", function(o) {
       Te(n);
       let i = ce();
       return Me(i.handlePageSizeChange(o));
-    }), io(23, zm, 2, 2, "option", 19, oo), A()()()();
+    }), io(23, zm, 2, 2, "option", 18, oo), P()()()();
   }
   if (e12 & 2) {
     let n = ce();
@@ -6740,7 +6740,7 @@ var Eo = class e11 {
     if (!i || !s.includes(i))
       return;
     let a = [...this.state.sortContext()], c = a.findIndex((u) => u.column === i), l = [...a];
-    t.shiftKey ? c !== -1 ? l[c].ascending ? l[c] = O(N({}, l[c]), { ascending: false }) : l.splice(c, 1) : l.push({ column: i, ascending: true }) : c !== -1 && l.length === 1 ? l[c].ascending ? l[c] = O(N({}, l[c]), { ascending: false }) : l = [] : l = [{ column: i, ascending: true }], this.state.setSortContext(l);
+    t.shiftKey ? c !== -1 ? l[c].ascending ? l[c] = R(N({}, l[c]), { ascending: false }) : l.splice(c, 1) : l.push({ column: i, ascending: true }) : c !== -1 && l.length === 1 ? l[c].ascending ? l[c] = R(N({}, l[c]), { ascending: false }) : l = [] : l = [{ column: i, ascending: true }], this.state.setSortContext(l);
   }
   applySortIndicators() {
     let t = this.tableContainerRef?.nativeElement;
@@ -6794,9 +6794,9 @@ var Eo = class e11 {
       let o;
       aa(o = ca()) && (r.tableContainerRef = o.first);
     }
-  }, decls: 4, vars: 4, consts: [["tableContainer", ""], [1, "bigframes-widget"], [1, "bigframes-error-message"], [1, "deferred-container"], [1, "deferred-card"], [1, "deferred-title"], [1, "deferred-estimate"], [1, "run-query-button", 3, "click", "disabled"], [1, "spinner"], [1, "table-container", 3, "click", "innerHTML"], [1, "footer"], [1, "row-count"], [1, "pagination"], [3, "click", "disabled"], [1, "page-indicator"], [1, "settings"], [1, "max-columns"], ["for", "max-cols-select"], ["id", "max-cols-select", 3, "change", "value"], [3, "value"], [1, "page-size"], ["for", "page-size-select"], ["id", "page-size-select", 3, "change", "value"]], template: function(n, r) {
-    n & 1 && (R(0, "div", 1), bn(1, Hm, 2, 1, "div", 2), bn(2, $m, 9, 3, "div", 3)(3, Wm, 25, 7), A()), n & 2 && (uo("bigframes-dark-mode", r.isDarkMode()), F(), Cn(r.errorMessage() ? 1 : -1), F(), Cn(r.isDeferredMode() ? 2 : 3));
-  }, styles: [".bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: white;--bf-border-color: #ccc;--bf-error-bg: #fbe;--bf-error-border: red;--bf-error-fg: black;--bf-fg: black;--bf-header-bg: #f5f5f5;--bf-null-fg: gray;--bf-row-even-bg: #f5f5f5;--bf-row-odd-bg: white;background-color:var(--bf-bg);box-sizing:border-box;color:var(--bf-fg);display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;margin:0;padding:0}.bigframes-widget[_ngcontent-%COMP%]   *[_ngcontent-%COMP%]{box-sizing:border-box}@media(prefers-color-scheme:dark){.bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}}.bigframes-widget.bigframes-dark-mode.bigframes-dark-mode[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}.bigframes-widget[_ngcontent-%COMP%]   .table-container[_ngcontent-%COMP%]{background-color:var(--bf-bg);margin:0;max-height:620px;overflow:auto;padding:0}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%]{align-items:center;background-color:var(--bf-bg);color:var(--bf-fg);display:flex;font-size:.8rem;justify-content:space-between;padding:8px}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%] > *[_ngcontent-%COMP%]{flex:1}.bigframes-widget[_ngcontent-%COMP%]   .pagination[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px;justify-content:center;padding:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-indicator[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .row-count[_ngcontent-%COMP%]{margin:0 8px}.bigframes-widget[_ngcontent-%COMP%]   .settings[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:16px;justify-content:end}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%]   label[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]   label[_ngcontent-%COMP%]{margin-right:8px}.bigframes-widget[_ngcontent-%COMP%]     table.bigframes-widget-table, .bigframes-widget[_ngcontent-%COMP%]     table.dataframe{background-color:var(--bf-bg);border:1px solid var(--bf-border-color);border-collapse:collapse;border-spacing:0;box-shadow:none;color:var(--bf-fg);margin:0;outline:none;text-align:left;width:auto}.bigframes-widget[_ngcontent-%COMP%]     tr{border:none}.bigframes-widget[_ngcontent-%COMP%]     th{background-color:var(--bf-header-bg);border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:0;position:sticky;text-align:left;top:0;z-index:1}.bigframes-widget[_ngcontent-%COMP%]     td{border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:.5em}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd) td{background-color:var(--bf-row-odd-bg)}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n) td{background-color:var(--bf-row-even-bg)}.bigframes-widget[_ngcontent-%COMP%]     .bf-header-content{box-sizing:border-box;height:100%;overflow:auto;padding:.5em;resize:horizontal;width:100%}.bigframes-widget[_ngcontent-%COMP%]     th .sort-indicator{padding-left:4px;visibility:hidden}.bigframes-widget[_ngcontent-%COMP%]     th:hover .sort-indicator{visibility:visible}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]{background-color:transparent;border:1px solid currentColor;border-radius:4px;color:inherit;cursor:pointer;display:inline-block;padding:2px 8px;text-align:center;text-decoration:none;-webkit-user-select:none;user-select:none;vertical-align:middle}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:disabled{opacity:.65;pointer-events:none}.bigframes-widget[_ngcontent-%COMP%]   .bigframes-error-message[_ngcontent-%COMP%]{background-color:var(--bf-error-bg);border:1px solid var(--bf-error-border);border-radius:4px;color:var(--bf-error-fg);font-size:14px;margin-bottom:8px;padding:8px}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-right{text-align:right}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-left{text-align:left}.bigframes-widget[_ngcontent-%COMP%]     .null-value{color:var(--bf-null-fg)}.bigframes-widget[_ngcontent-%COMP%]     .debug-info{border-top:1px solid var(--bf-border-color)}.bigframes-widget[_ngcontent-%COMP%]   .deferred-container[_ngcontent-%COMP%]{align-items:center;display:flex;justify-content:center;min-height:220px;padding:24px;width:100%}.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#fff9,#ffffff4d);border:1px solid rgba(255,255,255,.4);border-radius:16px;box-shadow:0 8px 32px #1f268712;display:flex;flex-direction:column;gap:16px;max-width:500px;padding:32px;text-align:center;transition:all .3s ease-in-out}.bigframes-widget.bigframes-dark-mode[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}@media(prefers-color-scheme:dark){.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}}.bigframes-widget[_ngcontent-%COMP%]   .deferred-title[_ngcontent-%COMP%]{font-size:1.1rem;font-weight:600;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .deferred-estimate[_ngcontent-%COMP%]{color:var(--bf-null-fg);font-size:.9rem;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]{align-items:center;background:linear-gradient(135deg,#34a853,#1a73e8);border:none;border-radius:8px;color:#fff;cursor:pointer;display:inline-flex;font-size:14px;font-weight:600;gap:8px;justify-content:center;padding:10px 20px;transition:transform .2s ease,opacity .2s ease}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:hover{opacity:.9;transform:translateY(-1px)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:active{transform:translateY(0)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:disabled{cursor:not-allowed;opacity:.6}.bigframes-widget[_ngcontent-%COMP%]   .spinner[_ngcontent-%COMP%]{animation:_ngcontent-%COMP%_spin 1s linear infinite;border:2px solid rgba(255,255,255,.3);border-radius:50%;border-top-color:#fff;display:inline-block;height:12px;width:12px}@keyframes _ngcontent-%COMP%_spin{to{transform:rotate(360deg)}}"] });
+  }, decls: 4, vars: 4, consts: [["tableContainer", ""], [1, "bigframes-widget"], [1, "bigframes-error-message"], [1, "deferred-container"], [1, "deferred-card"], [1, "deferred-estimate"], [1, "run-query-button", 3, "click", "disabled"], [1, "spinner"], [1, "table-container", 3, "click", "innerHTML"], [1, "footer"], [1, "row-count"], [1, "pagination"], [3, "click", "disabled"], [1, "page-indicator"], [1, "settings"], [1, "max-columns"], ["for", "max-cols-select"], ["id", "max-cols-select", 3, "change", "value"], [3, "value"], [1, "page-size"], ["for", "page-size-select"], ["id", "page-size-select", 3, "change", "value"]], template: function(n, r) {
+    n & 1 && (k(0, "div", 1), bn(1, Hm, 2, 1, "div", 2), bn(2, $m, 7, 3, "div", 3)(3, Wm, 25, 7), P()), n & 2 && (uo("bigframes-dark-mode", r.isDarkMode()), F(), Cn(r.errorMessage() ? 1 : -1), F(), Cn(r.isDeferredMode() ? 2 : 3));
+  }, styles: [".bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: white;--bf-border-color: #ccc;--bf-error-bg: #fbe;--bf-error-border: red;--bf-error-fg: black;--bf-fg: black;--bf-header-bg: #f5f5f5;--bf-null-fg: gray;--bf-row-even-bg: #f5f5f5;--bf-row-odd-bg: white;background-color:var(--bf-bg);box-sizing:border-box;color:var(--bf-fg);display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;margin:0;padding:0}.bigframes-widget[_ngcontent-%COMP%]   *[_ngcontent-%COMP%]{box-sizing:border-box}@media(prefers-color-scheme:dark){.bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}}.bigframes-widget.bigframes-dark-mode.bigframes-dark-mode[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}.bigframes-widget[_ngcontent-%COMP%]   .table-container[_ngcontent-%COMP%]{background-color:var(--bf-bg);margin:0;max-height:620px;overflow:auto;padding:0}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%]{align-items:center;background-color:var(--bf-bg);color:var(--bf-fg);display:flex;font-size:.8rem;justify-content:space-between;padding:8px}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%] > *[_ngcontent-%COMP%]{flex:1}.bigframes-widget[_ngcontent-%COMP%]   .pagination[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px;justify-content:center;padding:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-indicator[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .row-count[_ngcontent-%COMP%]{margin:0 8px}.bigframes-widget[_ngcontent-%COMP%]   .settings[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:16px;justify-content:end}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%]   label[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]   label[_ngcontent-%COMP%]{margin-right:8px}.bigframes-widget[_ngcontent-%COMP%]     table.bigframes-widget-table, .bigframes-widget[_ngcontent-%COMP%]     table.dataframe{background-color:var(--bf-bg);border:1px solid var(--bf-border-color);border-collapse:collapse;border-spacing:0;box-shadow:none;color:var(--bf-fg);margin:0;outline:none;text-align:left;width:auto}.bigframes-widget[_ngcontent-%COMP%]     tr{border:none}.bigframes-widget[_ngcontent-%COMP%]     th{background-color:var(--bf-header-bg);border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:0;position:sticky;text-align:left;top:0;z-index:1}.bigframes-widget[_ngcontent-%COMP%]     td{border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:.5em}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd) td{background-color:var(--bf-row-odd-bg)}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n) td{background-color:var(--bf-row-even-bg)}.bigframes-widget[_ngcontent-%COMP%]     .bf-header-content{box-sizing:border-box;height:100%;overflow:auto;padding:.5em;resize:horizontal;width:100%}.bigframes-widget[_ngcontent-%COMP%]     th .sort-indicator{padding-left:4px;visibility:hidden}.bigframes-widget[_ngcontent-%COMP%]     th:hover .sort-indicator{visibility:visible}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]{background-color:transparent;border:1px solid currentColor;border-radius:4px;color:inherit;cursor:pointer;display:inline-block;padding:2px 8px;text-align:center;text-decoration:none;-webkit-user-select:none;user-select:none;vertical-align:middle}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:disabled{opacity:.65;pointer-events:none}.bigframes-widget[_ngcontent-%COMP%]   .bigframes-error-message[_ngcontent-%COMP%]{background-color:var(--bf-error-bg);border:1px solid var(--bf-error-border);border-radius:4px;color:var(--bf-error-fg);font-size:14px;margin-bottom:8px;padding:8px}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-right{text-align:right}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-left{text-align:left}.bigframes-widget[_ngcontent-%COMP%]     .null-value{color:var(--bf-null-fg)}.bigframes-widget[_ngcontent-%COMP%]     .debug-info{border-top:1px solid var(--bf-border-color)}.bigframes-widget[_ngcontent-%COMP%]   .deferred-container[_ngcontent-%COMP%]{align-items:center;display:flex;justify-content:center;min-height:220px;padding:24px;width:100%}.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#fff9,#ffffff4d);border:1px solid rgba(255,255,255,.4);border-radius:16px;box-shadow:0 8px 32px #1f268712;display:flex;flex-direction:column;gap:16px;max-width:500px;padding:32px;text-align:center;transition:all .3s ease-in-out}.bigframes-widget.bigframes-dark-mode[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}@media(prefers-color-scheme:dark){.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}}.bigframes-widget[_ngcontent-%COMP%]   .deferred-title[_ngcontent-%COMP%]{font-size:1.1rem;font-weight:600;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .deferred-estimate[_ngcontent-%COMP%]{color:var(--bf-null-fg);font-size:.9rem;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]{align-items:center;background-color:var(--bf-fg);border:1px solid var(--bf-fg);border-radius:8px;color:var(--bf-bg);cursor:pointer;display:inline-flex;font-size:14px;font-weight:600;gap:8px;justify-content:center;padding:10px 20px;transition:transform .2s ease,opacity .2s ease}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:hover{opacity:.9;transform:translateY(-1px)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:active{transform:translateY(0)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:disabled{cursor:not-allowed;opacity:.6}.bigframes-widget[_ngcontent-%COMP%]   .spinner[_ngcontent-%COMP%]{animation:_ngcontent-%COMP%_spin 1s linear infinite;border:2px solid currentColor;border-radius:50%;border-top-color:transparent;display:inline-block;height:12px;width:12px}@keyframes _ngcontent-%COMP%_spin{to{transform:rotate(360deg)}}"] });
 };
 function Gm({ model: e12, el: t }) {
   let n = document.createElement("app-root");

@@ -31,7 +31,6 @@ import { WidgetStateService } from './widget-state.service';
       @if (isDeferredMode()) {
         <div class="deferred-container">
           <div class="deferred-card">
-            <div class="deferred-title">SQL Query Execution Deferred</div>
             <p class="deferred-estimate">{{ dryRunInfo() }}</p>
             <button class="run-query-button"
                     [disabled]="isLoading()"
@@ -362,10 +361,10 @@ import { WidgetStateService } from './widget-state.service';
 
     .bigframes-widget .run-query-button {
       align-items: center;
-      background: linear-gradient(135deg, #34a853, #1a73e8);
-      border: none;
+      background-color: var(--bf-fg);
+      border: 1px solid var(--bf-fg);
       border-radius: 8px;
-      color: white;
+      color: var(--bf-bg);
       cursor: pointer;
       display: inline-flex;
       font-size: 14px;
@@ -373,11 +372,11 @@ import { WidgetStateService } from './widget-state.service';
       gap: 8px;
       justify-content: center;
       padding: 10px 20px;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      transition: transform 0.20s ease, opacity 0.20s ease;
     }
 
     .bigframes-widget .run-query-button:hover {
-      opacity: 0.9;
+      opacity: 0.90;
       transform: translateY(-1px);
     }
 
@@ -387,14 +386,14 @@ import { WidgetStateService } from './widget-state.service';
 
     .bigframes-widget .run-query-button:disabled {
       cursor: not-allowed;
-      opacity: 0.6;
+      opacity: 0.60;
     }
 
     .bigframes-widget .spinner {
       animation: spin 1s linear infinite;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid currentColor;
       border-radius: 50%;
-      border-top-color: white;
+      border-top-color: transparent;
       display: inline-block;
       height: 12px;
       width: 12px;
