@@ -369,14 +369,6 @@ replacements:
     count: 1
 
 
-  # --- FIX: Restore pubsub-specific grpcio bound ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n'
-    after: |-
-      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609
-    count: 1
-
   # --- FIX: Restore missing dependencies, extras, and url dynamically ---
   - paths:
       - "packages/google-cloud-pubsub/setup.py"
@@ -530,8 +522,8 @@ replacements:
 
   - paths:
       - "packages/google-cloud-pubsub/setup.py"
-    before: '"grpcio-status >= 1\.44\.0",'
-    after: '"grpcio-status >= 1.51.3",'
+    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n(?:[ \t]*)"grpcio >= 1\.75\.1, < 2\.0\.0; python_version >= ''3\.14''",\n'
+    after: |-
+      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",
+      \g<1>"grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     count: 1
-
-
