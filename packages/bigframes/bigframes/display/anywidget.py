@@ -102,22 +102,24 @@ class TableWidget(_WIDGET_BASE):
 
         from bigframes.session import deferred
 
+        is_deferred = False
+        deferred_df = None
+        df = None
+
         if isinstance(dataframe, deferred.DeferredBigQueryDataFrame):
-            self.is_deferred_mode = True
-            self._deferred_dataframe: Optional[
-                deferred.DeferredBigQueryDataFrame
-            ] = dataframe
-            self._dataframe: Optional[bigframes.dataframe.DataFrame] = None
+            is_deferred = True
+            deferred_df = dataframe
         elif bigframes.options.display.repr_mode == "deferred":
-            self.is_deferred_mode = True
-            self._deferred_dataframe = None
-            self._dataframe = dataframe  # type: ignore
+            is_deferred = True
+            df = dataframe
         else:
-            self.is_deferred_mode = False
-            self._deferred_dataframe = None
-            self._dataframe = dataframe  # type: ignore
+            df = dataframe
 
         super().__init__()
+
+        self.is_deferred_mode = is_deferred
+        self._deferred_dataframe = deferred_df
+        self._dataframe = df
 
         if dry_run_info:
             self.dry_run_info = dry_run_info
