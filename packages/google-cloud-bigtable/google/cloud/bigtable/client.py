@@ -27,27 +27,37 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
-
+import copy
 import os
 import warnings
-
 import grpc  # type: ignore
+
 from google.api_core.gapic_v1 import client_info as client_info_lib
 from google.auth.credentials import AnonymousCredentials  # type: ignore
-from google.cloud.client import ClientWithProject  # type: ignore
-from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
-from google.cloud import bigtable, bigtable_admin_v2, bigtable_v2
-from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE, Cluster
-from google.cloud.bigtable.instance import Instance
-from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.transports import (
+from google.cloud.bigtable import admin
+from google.cloud.bigtable.admin.services.bigtable_instance_admin.transports import (
     BigtableInstanceAdminGrpcTransport,
 )
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports import (
+from google.cloud.bigtable.admin.services.bigtable_table_admin.transports import (
     BigtableTableAdminGrpcTransport,
 )
-from google.cloud.bigtable_admin_v2.types import instance
-from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport
+
+from google.cloud import bigtable
+from google.cloud.bigtable.instance import Instance
+from google.cloud.bigtable.cluster import Cluster
+
+from google.cloud.client import ClientWithProject  # type: ignore
+
+from google.cloud.bigtable.admin.types import instance
+from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
+from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
+
+from google.cloud.bigtable.data import BigtableDataClient
+from google.cloud.bigtable.data._helpers import (
+    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
+)
+
 
 INSTANCE_TYPE_PRODUCTION = instance.Instance.Type.PRODUCTION
 INSTANCE_TYPE_DEVELOPMENT = instance.Instance.Type.DEVELOPMENT
@@ -60,7 +70,6 @@ DATA_SCOPE = "https://www.googleapis.com/auth/bigtable.data"
 READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 """Scope for reading table data."""
 
-_DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
 _GRPC_CHANNEL_OPTIONS = (
     ("grpc.max_send_message_length", -1),
     ("grpc.max_receive_message_length", -1),
@@ -158,7 +167,7 @@ class Client(ClientWithProject):
             )
         if read_only and admin:
             raise ValueError(
-                "A read-only client cannot also performadministrative actions."
+                "A read-only client cannot also perform" "administrative actions."
             )
 
         # NOTE: We set the scopes **before** calling the parent constructor.
@@ -284,18 +293,7 @@ class Client(ClientWithProject):
         :rtype: :class:`.bigtable_v2.BigtableClient`
         :returns: A BigtableClient object.
         """
-        if self._table_data_client is None:
-            transport = self._create_gapic_client_channel(
-                bigtable_v2.BigtableClient,
-                BigtableGrpcTransport,
-            )
-            klass = _create_gapic_client(
-                bigtable_v2.BigtableClient,
-                client_options=self._client_options,
-                transport=transport,
-            )
-            self._table_data_client = klass(self)
-        return self._table_data_client
+        return self._veneer_data_client._gapic_client
 
     @property
     def table_admin_client(self):
@@ -319,11 +317,11 @@ class Client(ClientWithProject):
                 raise ValueError("Client is not an admin client.")
 
             transport = self._create_gapic_client_channel(
-                bigtable_admin_v2.BaseBigtableTableAdminClient,
+                admin.BigtableTableAdminClient,
                 BigtableTableAdminGrpcTransport,
             )
             klass = _create_gapic_client(
-                bigtable_admin_v2.BaseBigtableTableAdminClient,
+                admin.BigtableTableAdminClient,
                 client_options=self._admin_client_options,
                 transport=transport,
             )
@@ -352,16 +350,31 @@ class Client(ClientWithProject):
                 raise ValueError("Client is not an admin client.")
 
             transport = self._create_gapic_client_channel(
-                bigtable_admin_v2.BigtableInstanceAdminClient,
+                admin.BigtableInstanceAdminClient,
                 BigtableInstanceAdminGrpcTransport,
             )
             klass = _create_gapic_client(
-                bigtable_admin_v2.BigtableInstanceAdminClient,
+                admin.BigtableInstanceAdminClient,
                 client_options=self._admin_client_options,
                 transport=transport,
             )
             self._instance_admin_client = klass(self)
         return self._instance_admin_client
+
+    @property
+    def _veneer_data_client(self):
+        """Getter for the new Data Table API."""
+        if self._table_data_client is None:
+            client_info = copy.copy(self._client_info)
+            client_info.client_library_version = f"{bigtable.__version__}-data-shim"
+            self._table_data_client = BigtableDataClient(
+                project=self.project,
+                credentials=self._credentials,
+                client_options=self._client_options,
+                _client_info=client_info,
+                _disable_background_refresh=True,
+            )
+        return self._table_data_client
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
         """Factory to create a instance associated with this client.

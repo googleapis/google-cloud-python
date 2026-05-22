@@ -13,7 +13,9 @@
 # limitations under the License.
 """Wrappers for gapic enum types."""
 
-from google.cloud.bigtable_admin_v2.types import common, instance, table
+from google.cloud.bigtable.admin.types import common
+from google.cloud.bigtable.admin.types import instance
+from google.cloud.bigtable.admin.types import table
 
 
 class StorageType(object):

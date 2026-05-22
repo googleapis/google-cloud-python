@@ -17,13 +17,12 @@
 import re
 
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
-from google.cloud.exceptions import NotFound  # type: ignore
-from google.protobuf import field_mask_pb2
-
+from google.cloud.bigtable.admin import BigtableTableAdminClient
+from google.cloud.bigtable.admin.types import table
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
-from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
-from google.cloud.bigtable_admin_v2.types import table
+from google.cloud.exceptions import NotFound  # type: ignore
+from google.protobuf import field_mask_pb2
 
 _BACKUP_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/"
@@ -107,7 +106,7 @@ class Backup(object):
         if not self._cluster:
             raise ValueError('"cluster" parameter must be set')
 
-        return BaseBigtableTableAdminClient.backup_path(
+        return BigtableTableAdminClient.backup_path(
             project=self._instance._client.project,
             instance=self._instance.instance_id,
             cluster=self._cluster,
@@ -142,7 +141,7 @@ class Backup(object):
         :returns: A full path to the parent cluster.
         """
         if not self._parent and self._cluster:
-            self._parent = BaseBigtableTableAdminClient.cluster_path(
+            self._parent = BigtableTableAdminClient.cluster_path(
                 project=self._instance._client.project,
                 instance=self._instance.instance_id,
                 cluster=self._cluster,
@@ -164,7 +163,7 @@ class Backup(object):
         :returns: The Table name.
         """
         if not self._source_table and self.table_id:
-            self._source_table = BaseBigtableTableAdminClient.table_path(
+            self._source_table = BigtableTableAdminClient.table_path(
                 project=self._instance._client.project,
                 instance=self._instance.instance_id,
                 table=self.table_id,
@@ -426,7 +425,7 @@ class Backup(object):
         """
         api = self._instance._client.table_admin_client
         if instance_id:
-            parent = BaseBigtableTableAdminClient.instance_path(
+            parent = BigtableTableAdminClient.instance_path(
                 project=self._instance._client.project,
                 instance=instance_id,
             )
