@@ -496,7 +496,7 @@ def prerelease_deps(session):
     # from main to detect any potential breaking changes. For context, see:
     # https://github.com/googleapis/python-bigquery-pandas/issues/854
     session.install(
-        "--ignore-installed",
+        "--reinstall",
         # TODO(https://github.com/googleapis/google-cloud-python/pull/126): Install this again when we relax the pin.
         # "https://github.com/cloudspannerecosystem/spanner-graph-notebook/archive/refs/heads/main.zip",
         f"{CURRENT_DIRECTORY}/../google-cloud-bigquery",

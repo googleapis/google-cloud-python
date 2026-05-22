@@ -617,7 +617,7 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
+        session.install(dep, "--no-deps", "--reinstall")
         print(f"Installed {dep}")
 
     session.run(

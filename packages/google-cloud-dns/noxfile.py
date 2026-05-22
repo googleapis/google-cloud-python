@@ -496,7 +496,7 @@ def core_deps_from_source(session):
         f"{CURRENT_DIRECTORY}/../proto-plus",
     ]
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
+        session.install(dep, "--no-deps", "--reinstall")
         print(f"Installed {dep}")
 
     # Remaining dependencies

@@ -561,7 +561,7 @@ def prerelease_deps(session, protobuf_implementation):
     ]
 
     for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--ignore-installed", dep)
+        session.install("--pre", "--no-deps", "--reinstall", dep)
         # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
         # to the dictionary below once this bug is fixed.
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
