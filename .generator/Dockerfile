@@ -134,8 +134,4 @@ RUN python${PYTHON_VERSION_DEFAULT} -m pip install -r requirements.in
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
-# Copy the script used to parse BUILD.bazel files.
-COPY .generator/parse_googleapis_content.py .
-RUN chmod a+rx ./parse_googleapis_content.py
-
 ENTRYPOINT ["python3.14", "./cli.py"]

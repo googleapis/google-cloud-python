@@ -27,6 +27,7 @@ from .services.migration_service import (
     MigrationServiceAsyncClient,
     MigrationServiceClient,
 )
+from .types.assessment_task import AssessmentFeatureHandle, AssessmentTaskDetails
 from .types.migration_entities import (
     MigrationSubtask,
     MigrationTask,
@@ -82,6 +83,8 @@ from .types.translation_details import (
     SourceEnvironment,
     SourceSpec,
     SourceTargetMapping,
+    SuggestionConfig,
+    SuggestionStep,
     TargetSpec,
     TranslationDetails,
 )
@@ -173,6 +176,8 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "MigrationServiceAsyncClient",
+    "AssessmentFeatureHandle",
+    "AssessmentTaskDetails",
     "AzureSynapseDialect",
     "BigQueryDialect",
     "CreateMigrationWorkflowRequest",
@@ -217,6 +222,8 @@ __all__ = (
     "SourceTargetMapping",
     "SparkSQLDialect",
     "StartMigrationWorkflowRequest",
+    "SuggestionConfig",
+    "SuggestionStep",
     "TargetSpec",
     "TeradataDialect",
     "TimeInterval",

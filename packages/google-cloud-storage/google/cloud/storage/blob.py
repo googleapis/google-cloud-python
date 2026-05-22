@@ -60,7 +60,6 @@ from google.cloud.storage._media.requests import (
 )
 from google.cloud.storage._opentelemetry_tracing import (
     _get_opentelemetry_attributes_from_url,
-    create_trace_span,
 )
 from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
 from google.cloud.storage.acl import ACL, ObjectACL
@@ -744,7 +743,7 @@ class Blob(_PropertyMixin):
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
-        with create_trace_span(name="Storage.Blob.exists"):
+        with self._create_trace_span(name="Storage.Blob.exists"):
             client = self._require_client(client)
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
@@ -848,7 +847,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        with create_trace_span(name="Storage.Blob.delete"):
+        with self._create_trace_span(name="Storage.Blob.delete"):
             self.bucket.delete_blob(
                 self.name,
                 client=client,
@@ -1087,7 +1086,7 @@ class Blob(_PropertyMixin):
                 # not supported for chunked downloads.
                 single_shot_download=single_shot_download,
             )
-            with create_trace_span(
+            with self._create_trace_span(
                 name=f"Storage.{download_class}/consume",
                 attributes=extra_attributes,
                 api_request=args,
@@ -1116,7 +1115,7 @@ class Blob(_PropertyMixin):
                 retry=retry,
             )
 
-            with create_trace_span(
+            with self._create_trace_span(
                 name=f"Storage.{download_class}/consumeNextChunk",
                 attributes=extra_attributes,
                 api_request=args,
@@ -1244,7 +1243,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadToFile"):
+        with self._create_trace_span(name="Storage.Blob.downloadToFile"):
             self._prep_and_do_download(
                 file_obj,
                 client=client,
@@ -1400,7 +1399,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadToFilename"):
+        with self._create_trace_span(name="Storage.Blob.downloadToFilename"):
             self._handle_filename_and_download(
                 filename,
                 client=client,
@@ -1525,7 +1524,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadAsBytes"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsBytes"):
             string_buffer = BytesIO()
 
             self._prep_and_do_download(
@@ -1648,7 +1647,7 @@ class Blob(_PropertyMixin):
             PendingDeprecationWarning,
             stacklevel=2,
         )
-        with create_trace_span(name="Storage.Blob.downloadAsString"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsString"):
             return self.download_as_bytes(
                 client=client,
                 start=start,
@@ -1762,7 +1761,7 @@ class Blob(_PropertyMixin):
         :rtype: text
         :returns: The data stored in this blob, decoded to text.
         """
-        with create_trace_span(name="Storage.Blob.downloadAsText"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsText"):
             data = self.download_as_bytes(
                 client=client,
                 start=start,
@@ -1885,7 +1884,7 @@ class Blob(_PropertyMixin):
                 client._connection.user_agent, content_type, command=command
             ),
             **_get_encryption_headers(self._encryption_key),
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
         object_metadata = self._get_writable_metadata()
         return headers, object_metadata, content_type
@@ -2053,7 +2052,7 @@ class Blob(_PropertyMixin):
         extra_attributes = _get_opentelemetry_attributes_from_url(upload_url)
         extra_attributes["upload.checksum"] = f"{checksum}"
         args = {"timeout": timeout}
-        with create_trace_span(
+        with self._create_trace_span(
             name="Storage.MultipartUpload/transmit",
             attributes=extra_attributes,
             client=client,
@@ -2453,7 +2452,7 @@ class Blob(_PropertyMixin):
         extra_attributes["upload.checksum"] = f"{checksum}"
 
         args = {"timeout": timeout}
-        with create_trace_span(
+        with self._create_trace_span(
             name="Storage.ResumableUpload/transmitNextChunk",
             attributes=extra_attributes,
             client=client,
@@ -3012,7 +3011,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
         """
-        with create_trace_span(name="Storage.Blob.uploadFromFile"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromFile"):
             self._prep_and_do_upload(
                 file_obj,
                 rewind=rewind,
@@ -3195,7 +3194,7 @@ class Blob(_PropertyMixin):
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
         """
-        with create_trace_span(name="Storage.Blob.uploadFromFilename"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromFilename"):
             self._handle_filename_and_upload(
                 filename,
                 content_type=content_type,
@@ -3344,7 +3343,7 @@ class Blob(_PropertyMixin):
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
         """
-        with create_trace_span(name="Storage.Blob.uploadFromString"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromString"):
             data = _to_bytes(data, encoding="utf-8")
             string_buffer = BytesIO(data)
             self.upload_from_file(
@@ -3496,7 +3495,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.GoogleCloudError`
                  if the session creation response returns an error status.
         """
-        with create_trace_span(name="Storage.Blob.createResumableUploadSession"):
+        with self._create_trace_span(name="Storage.Blob.createResumableUploadSession"):
             # Handle ConditionalRetryPolicy.
             if isinstance(retry, ConditionalRetryPolicy):
                 # Conditional retries are designed for non-media calls, which change
@@ -3592,7 +3591,7 @@ class Blob(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Blob.getIamPolicy"):
+        with self._create_trace_span(name="Storage.Blob.getIamPolicy"):
             client = self._require_client(client)
 
             query_params = {}
@@ -3653,7 +3652,7 @@ class Blob(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``setIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Blob.setIamPolicy"):
+        with self._create_trace_span(name="Storage.Blob.setIamPolicy"):
             client = self._require_client(client)
 
             query_params = {}
@@ -3715,7 +3714,7 @@ class Blob(_PropertyMixin):
         :returns: the permissions returned by the ``testIamPermissions`` API
                   request.
         """
-        with create_trace_span(name="Storage.Blob.testIamPermissions"):
+        with self._create_trace_span(name="Storage.Blob.testIamPermissions"):
             client = self._require_client(client)
             query_params = {"permissions": permissions}
 
@@ -3775,7 +3774,7 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Blob.makePublic"):
+        with self._create_trace_span(name="Storage.Blob.makePublic"):
             self.acl.all().grant_read()
             self.acl.save(
                 client=client,
@@ -3829,7 +3828,7 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Blob.makePrivate"):
+        with self._create_trace_span(name="Storage.Blob.makePrivate"):
             self.acl.all().revoke_read()
             self.acl.save(
                 client=client,
@@ -3922,7 +3921,7 @@ class Blob(_PropertyMixin):
             (Optional) If True, the source objects will be deleted after a
             successful composition.
         """
-        with create_trace_span(name="Storage.Blob.compose"):
+        with self._create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
             client = self._require_client(client)
             query_params = {}
@@ -4118,7 +4117,7 @@ class Blob(_PropertyMixin):
                   and ``total_bytes`` is the total number of bytes to be
                   rewritten.
         """
-        with create_trace_span(name="Storage.Blob.rewrite"):
+        with self._create_trace_span(name="Storage.Blob.rewrite"):
             client = self._require_client(client)
             headers = _get_encryption_headers(self._encryption_key)
             headers.update(_get_encryption_headers(source._encryption_key, source=True))
@@ -4286,7 +4285,7 @@ class Blob(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
         """
-        with create_trace_span(name="Storage.Blob.updateStorageClass"):
+        with self._create_trace_span(name="Storage.Blob.updateStorageClass"):
             # Update current blob's storage class prior to rewrite
             self._patch_property("storageClass", new_class)
 
@@ -4430,7 +4429,7 @@ class Blob(_PropertyMixin):
             'google.cloud.storage.fileio', or an 'io.TextIOWrapper' around one
             of those classes, depending on the 'mode' argument.
         """
-        with create_trace_span(name="Storage.Blob.open"):
+        with self._create_trace_span(name="Storage.Blob.open"):
             if mode == "rb":
                 if encoding or errors or newline:
                     raise ValueError(
@@ -4688,7 +4687,7 @@ class Blob(_PropertyMixin):
         headers = {
             **_get_default_headers(client._connection.user_agent, command=command),
             **headers,
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
 
         transport = client._http

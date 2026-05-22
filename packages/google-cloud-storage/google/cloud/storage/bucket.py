@@ -21,7 +21,7 @@ import json
 import warnings
 from urllib.parse import urlsplit
 
-from google.api_core import datetime_helpers
+from google.api_core import datetime_helpers, exceptions as api_exceptions
 from google.api_core.iam import Policy
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
@@ -38,11 +38,9 @@ from google.cloud.storage._helpers import (
     _validate_name,
     _virtual_hosted_style_base_url,
 )
-from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL, DefaultObjectACL
-from google.cloud.storage.blob import Blob, _quote
-from google.cloud.storage.blob import ObjectContexts
+from google.cloud.storage.blob import Blob, ObjectContexts, _quote
 from google.cloud.storage.constants import (
     _DEFAULT_TIMEOUT,
     ARCHIVE_STORAGE_CLASS,
@@ -973,7 +971,7 @@ class Bucket(_PropertyMixin):
         :rtype: bool
         :returns: True if the bucket exists in Cloud Storage.
         """
-        with create_trace_span(name="Storage.Bucket.exists"):
+        with self._create_trace_span(name="Storage.Bucket.exists"):
             client = self._require_client(client)
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
@@ -1074,7 +1072,7 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Bucket.create"):
+        with self._create_trace_span(name="Storage.Bucket.create"):
             client = self._require_client(client)
             client.create_bucket(
                 bucket_or_name=self,
@@ -1124,7 +1122,7 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Bucket.update"):
+        with self._create_trace_span(name="Storage.Bucket.update"):
             super(Bucket, self).update(
                 client=client,
                 timeout=timeout,
@@ -1191,18 +1189,38 @@ class Bucket(_PropertyMixin):
             set if ``soft_deleted`` is set to True.
             See: https://cloud.google.com/storage/docs/soft-delete
         """
-        with create_trace_span(name="Storage.Bucket.reload"):
-            super(Bucket, self).reload(
-                client=client,
-                projection=projection,
-                timeout=timeout,
-                if_etag_match=if_etag_match,
-                if_etag_not_match=if_etag_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                retry=retry,
-                soft_deleted=soft_deleted,
-            )
+        with self._create_trace_span(name="Storage.Bucket.reload"):
+            try:
+                super(Bucket, self).reload(
+                    client=client,
+                    projection=projection,
+                    timeout=timeout,
+                    if_etag_match=if_etag_match,
+                    if_etag_not_match=if_etag_not_match,
+                    if_metageneration_match=if_metageneration_match,
+                    if_metageneration_not_match=if_metageneration_not_match,
+                    retry=retry,
+                    soft_deleted=soft_deleted,
+                )
+            except api_exceptions.Forbidden:
+                active_client = client or self.client
+                cache = getattr(active_client, "_bucket_metadata_cache", None)
+                if cache:
+                    try:
+                        cache.update_cache(
+                            self.name, f"projects/_/buckets/{self.name}", "global"
+                        )
+                    except Exception:
+                        pass
+                raise
+
+            active_client = client or self.client
+            cache = getattr(active_client, "_bucket_metadata_cache", None)
+            if cache:
+                try:
+                    cache.update_from_bucket(self)
+                except Exception:
+                    pass
 
     def patch(
         self,
@@ -1240,7 +1258,7 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Bucket.patch"):
+        with self._create_trace_span(name="Storage.Bucket.patch"):
             # Special case: For buckets, it is possible that labels are being
             # removed; this requires special handling.
             if self._label_removals:
@@ -1376,7 +1394,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        with create_trace_span(name="Storage.Bucket.getBlob"):
+        with self._create_trace_span(name="Storage.Bucket.getBlob"):
             blob = Blob(
                 bucket=self,
                 name=blob_name,
@@ -1532,7 +1550,7 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        with create_trace_span(name="Storage.Bucket.listBlobs"):
+        with self._create_trace_span(name="Storage.Bucket.listBlobs"):
             client = self._require_client(client)
             return client.list_blobs(
                 self,
@@ -1581,7 +1599,7 @@ class Bucket(_PropertyMixin):
         :rtype: list of :class:`.BucketNotification`
         :returns: notification instances
         """
-        with create_trace_span(name="Storage.Bucket.listNotifications"):
+        with self._create_trace_span(name="Storage.Bucket.listNotifications"):
             client = self._require_client(client)
             path = self.path + "/notificationConfigs"
             iterator = client._list_resource(
@@ -1626,7 +1644,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`.BucketNotification`
         :returns: notification instance.
         """
-        with create_trace_span(name="Storage.Bucket.getNotification"):
+        with self._create_trace_span(name="Storage.Bucket.getNotification"):
             notification = self.notification(notification_id=notification_id)
             notification.reload(client=client, timeout=timeout, retry=retry)
             return notification
@@ -1686,7 +1704,7 @@ class Bucket(_PropertyMixin):
         :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket
                  contains more than 256 objects / blobs.
         """
-        with create_trace_span(name="Storage.Bucket.delete"):
+        with self._create_trace_span(name="Storage.Bucket.delete"):
             client = self._require_client(client)
             query_params = {}
 
@@ -1737,6 +1755,12 @@ class Bucket(_PropertyMixin):
                 retry=retry,
                 _target_object=None,
             )
+            cache = getattr(client, "_bucket_metadata_cache", None)
+            if cache:
+                try:
+                    cache.evict(self.name)
+                except Exception:
+                    pass
 
     def delete_blob(
         self,
@@ -1809,7 +1833,7 @@ class Bucket(_PropertyMixin):
                  the exception, use :meth:`delete_blobs` by passing a no-op
                  ``on_error`` callback.
         """
-        with create_trace_span(name="Storage.Bucket.deleteBlob"):
+        with self._create_trace_span(name="Storage.Bucket.deleteBlob"):
             client = self._require_client(client)
             blob = Blob(blob_name, bucket=self, generation=generation)
 
@@ -1922,7 +1946,7 @@ class Bucket(_PropertyMixin):
         :raises: :class:`~google.cloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
-        with create_trace_span(name="Storage.Bucket.deleteBlobs"):
+        with self._create_trace_span(name="Storage.Bucket.deleteBlobs"):
             _raise_if_len_differs(
                 len(blobs),
                 if_generation_match=if_generation_match,
@@ -2081,7 +2105,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
-        with create_trace_span(name="Storage.Bucket.copyBlob"):
+        with self._create_trace_span(name="Storage.Bucket.copyBlob"):
             client = self._require_client(client)
             query_params = {}
 
@@ -2247,7 +2271,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-renamed blob.
         """
-        with create_trace_span(name="Storage.Bucket.renameBlob"):
+        with self._create_trace_span(name="Storage.Bucket.renameBlob"):
             same_name = blob.name == new_name
 
             new_blob = self.copy_blob(
@@ -2367,7 +2391,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-moved blob.
         """
-        with create_trace_span(name="Storage.Bucket.moveBlob"):
+        with self._create_trace_span(name="Storage.Bucket.moveBlob"):
             client = self._require_client(client)
             query_params = {}
 
@@ -2476,7 +2500,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The restored Blob.
         """
-        with create_trace_span(name="Storage.Bucket.restore_blob"):
+        with self._create_trace_span(name="Storage.Bucket.restore_blob"):
             client = self._require_client(client)
             query_params = {}
 
@@ -3371,7 +3395,7 @@ class Bucket(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Bucket.getIamPolicy"):
+        with self._create_trace_span(name="Storage.Bucket.getIamPolicy"):
             client = self._require_client(client)
             query_params = {}
 
@@ -3425,7 +3449,7 @@ class Bucket(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``setIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Bucket.setIamPolicy"):
+        with self._create_trace_span(name="Storage.Bucket.setIamPolicy"):
             client = self._require_client(client)
             query_params = {}
 
@@ -3482,7 +3506,7 @@ class Bucket(_PropertyMixin):
         :returns: the permissions returned by the ``testIamPermissions`` API
                   request.
         """
-        with create_trace_span(name="Storage.Bucket.testIamPermissions"):
+        with self._create_trace_span(name="Storage.Bucket.testIamPermissions"):
             client = self._require_client(client)
             query_params = {"permissions": permissions}
 
@@ -3548,7 +3572,7 @@ class Bucket(_PropertyMixin):
             :meth:`~google.cloud.storage.blob.Blob.make_public`
             for each blob.
         """
-        with create_trace_span(name="Storage.Bucket.makePublic"):
+        with self._create_trace_span(name="Storage.Bucket.makePublic"):
             self.acl.all().grant_read()
             self.acl.save(
                 client=client,
@@ -3645,7 +3669,7 @@ class Bucket(_PropertyMixin):
             :meth:`~google.cloud.storage.blob.Blob.make_private`
             for each blob.
         """
-        with create_trace_span(name="Storage.Bucket.makePrivate"):
+        with self._create_trace_span(name="Storage.Bucket.makePrivate"):
             self.acl.all().revoke_read()
             self.acl.save(
                 client=client,
@@ -3769,7 +3793,7 @@ class Bucket(_PropertyMixin):
             if the bucket has no retention policy assigned;
             if the bucket's retention policy is already locked.
         """
-        with create_trace_span(name="Storage.Bucket.lockRetentionPolicy"):
+        with self._create_trace_span(name="Storage.Bucket.lockRetentionPolicy"):
             if "metageneration" not in self._properties:
                 raise ValueError(
                     "Bucket has no retention policy assigned: try 'reload'?"
