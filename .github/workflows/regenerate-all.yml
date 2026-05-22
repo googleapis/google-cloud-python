@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 permissions:
   contents: read
@@ -40,6 +41,11 @@ jobs:
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
+
+      - name: Pre-populate Synthtool Cache
+        run: |
+          mkdir -p ~/.cache/synthtool
+          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git ~/.cache/synthtool/synthtool
 
       - name: Regenerate
         run: |
