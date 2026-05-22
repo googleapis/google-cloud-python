@@ -62,6 +62,8 @@ from bigframes.session import (
     read_api_execution,
     semi_executor,
 )
+import bigframes.functions._function_session as bff_session
+
 
 # Max complexity that should be executed as a single query
 QUERY_COMPLEXITY_LIMIT = 1e7
@@ -130,6 +132,7 @@ class BigQueryCachingExecutor(executor.Executor):
         labels: tuple[tuple[str, str], ...] = (),
         compiler_name: Literal["ibis", "sqlglot"] = "sqlglot",
         cache: Optional[execution_cache.ExecutionCache] = None,
+        function_manager: bff_session.FunctionSession,
     ):
         self.bqclient = bqclient
         self.storage_manager = storage_manager
@@ -165,6 +168,7 @@ class BigQueryCachingExecutor(executor.Executor):
             publisher=self._publisher,
             labels=dict(labels),
         )
+        self._function_manager = function_manager
 
     def to_sql(
         self,
@@ -523,16 +527,19 @@ class BigQueryCachingExecutor(executor.Executor):
     async def _deploy_undeployed_udfs(
         self, plan: nodes.BigFrameNode
     ) -> nodes.BigFrameNode:
-        referenced_udfs = self._collect_udf_defs(plan)
+        referenced_udfs = list(set(self._collect_udf_defs(plan)))
         session = self.loader._session
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf] = {}
-        for udf in set(referenced_udfs):
-            deployed_udf = await asyncio.to_thread(
-                session._function_session._deploy_udf,
+        tasks = [
+            asyncio.to_thread(
+                self._function_manager._deploy_udf,
                 session,
                 udf,
             )
-            deployed_mapping[udf] = deployed_udf
+            for udf in referenced_udfs
+        ]
+        results = await asyncio.gather(*tasks)
+        deployed_mapping = dict(zip(referenced_udfs, results))
 
         return self._subsitute_temporary_functions(plan, deployed_mapping)
 
