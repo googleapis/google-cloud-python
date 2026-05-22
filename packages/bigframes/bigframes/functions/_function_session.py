@@ -757,6 +757,8 @@ class FunctionSession:
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,
         container_memory: Optional[str] = None,
+        *,
+        _force_deploy: bool = False,
     ):
         """Decorator to turn a Python user defined function (udf) into a
         BigQuery managed function.
