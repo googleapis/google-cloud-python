@@ -307,7 +307,7 @@ def prerelease_deps(session):
     ]
 
     for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--reinstall", dep)
+        session.install("--pre", "--no-deps", "--upgrade", dep)
         package_namespaces = {
             "google-auth": "google.auth",
         }
@@ -376,7 +376,7 @@ def core_deps_from_source(session):
     ]
 
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--reinstall")
+        session.install(dep, "--no-deps", "--upgrade")
         print(f"Installed {dep}")
 
     session.run(

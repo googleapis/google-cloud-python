@@ -699,7 +699,7 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--reinstall")
+        session.install(dep, "--no-deps", "--upgrade")
         print(f"Installed {dep}")
 
     session.run(

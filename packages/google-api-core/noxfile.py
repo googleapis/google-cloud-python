@@ -161,7 +161,7 @@ def install_core_deps_dependencies(session, constraints_path):
         ]
 
         for dep in core_dependencies_from_source:
-            session.install(dep, "--no-deps", "--reinstall")
+            session.install(dep, "--no-deps", "--upgrade")
             print(f"Installed {dep}")
 
         # Remaining dependencies
