@@ -14,21 +14,24 @@
 Provides helper logic used across samples
 """
 
+from google.api_core import exceptions
+from google.api_core.retry import Retry, if_exception_type
 
 from google.cloud import bigtable
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable_admin_v2.types import ColumnFamily as ColumnFamily_pb
-from google.api_core import exceptions
-from google.api_core.retry import Retry
-from google.api_core.retry import if_exception_type
 
-delete_retry = Retry(if_exception_type(exceptions.TooManyRequests, exceptions.ServiceUnavailable))
+delete_retry = Retry(
+    if_exception_type(exceptions.TooManyRequests, exceptions.ServiceUnavailable)
+)
+
 
 class create_table_cm:
     """
     Create a new table using a context manager, to ensure that table.delete() is called to clean up
-    the table, even if an exception is thrown 
+    the table, even if an exception is thrown
     """
+
     def __init__(self, *args, verbose=True, **kwargs):
         self._args = args
         self._kwargs = kwargs
@@ -63,7 +66,9 @@ def create_table(project, instance_id, table_id, column_families={}):
 
     # convert column families to pb if needed
     pb_families = {
-        id: ColumnFamily(id, table, rule).to_pb() if not isinstance(rule, ColumnFamily_pb) else rule
+        id: ColumnFamily(id, table, rule).to_pb()
+        if not isinstance(rule, ColumnFamily_pb)
+        else rule
         for (id, rule) in column_families.items()
     }
 
@@ -79,6 +84,7 @@ def create_table(project, instance_id, table_id, column_families={}):
     wait_for_table(table)
 
     return table
+
 
 @Retry(
     on_error=if_exception_type(

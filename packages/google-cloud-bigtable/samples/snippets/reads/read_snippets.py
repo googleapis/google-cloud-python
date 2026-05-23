@@ -29,6 +29,7 @@ def read_row(project_id, instance_id, table_id):
 
 # [END bigtable_reads_row]
 
+
 # [START bigtable_reads_row_partial]
 def read_row_partial(project_id, instance_id, table_id):
     from google.cloud import bigtable
@@ -143,6 +144,7 @@ def read_filter(project_id, instance_id, table_id):
 
 
 # [END bigtable_reads_filter]
+
 
 # [START bigtable_reads_print]
 def print_row(row):

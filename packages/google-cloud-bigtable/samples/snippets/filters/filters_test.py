@@ -20,9 +20,9 @@ import uuid
 
 import pytest
 
+from ...utils import create_table_cm
 from . import filter_snippets
 from .snapshots.snap_filters_test import snapshots
-from ...utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -34,8 +34,9 @@ def table_id():
     from google.cloud.bigtable.row_set import RowSet
 
     table_id = TABLE_ID
-    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, table_id, {"stats_summary": None, "cell_plan": None}) as table:
-
+    with create_table_cm(
+        PROJECT, BIGTABLE_INSTANCE, table_id, {"stats_summary": None, "cell_plan": None}
+    ) as table:
         timestamp = datetime.datetime(2019, 5, 1)
         timestamp_minus_hr = datetime.datetime(2019, 5, 1) - datetime.timedelta(hours=1)
 

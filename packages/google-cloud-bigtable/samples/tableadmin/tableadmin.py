@@ -35,6 +35,7 @@ import datetime
 
 from google.cloud import bigtable
 from google.cloud.bigtable import column_family
+
 from ..utils import create_table_cm
 
 

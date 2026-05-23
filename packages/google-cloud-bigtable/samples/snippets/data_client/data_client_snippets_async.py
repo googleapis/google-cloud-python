@@ -16,8 +16,7 @@
 
 async def write_simple(table):
     # [START bigtable_async_write_simple]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import SetCell
+    from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell
 
     async def write_simple(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
@@ -40,9 +39,8 @@ async def write_simple(table):
 async def write_batch(table):
     # [START bigtable_async_writes_batch]
     from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data.mutations import SetCell
-    from google.cloud.bigtable.data.mutations import RowMutationEntry
     from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+    from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
 
     async def write_batch(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
@@ -104,9 +102,7 @@ async def write_increment(table):
 
 async def write_conditional(table):
     # [START bigtable_async_writes_conditional]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import row_filters
-    from google.cloud.bigtable.data import SetCell
+    from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell, row_filters
 
     async def write_conditional(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
@@ -139,9 +135,10 @@ async def write_conditional(table):
 async def write_aggregate(table):
     # [START bigtable_async_write_aggregate]
     import time
+
     from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data.mutations import AddToCell, RowMutationEntry
     from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+    from google.cloud.bigtable.data.mutations import AddToCell, RowMutationEntry
 
     async def write_aggregate(project_id, instance_id, table_id):
         """Increments a value in a Bigtable table using AddToCell mutation."""
@@ -194,8 +191,7 @@ async def read_row(table):
 
 async def read_row_partial(table):
     # [START bigtable_async_reads_row_partial]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import row_filters
+    from google.cloud.bigtable.data import BigtableDataClientAsync, row_filters
 
     async def read_row_partial(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
@@ -212,13 +208,11 @@ async def read_row_partial(table):
 
 async def read_rows_multiple(table):
     # [START bigtable_async_reads_rows]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import ReadRowsQuery
+    from google.cloud.bigtable.data import BigtableDataClientAsync, ReadRowsQuery
 
     async def read_rows(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
             async with client.get_table(instance_id, table_id) as table:
-
                 query = ReadRowsQuery(
                     row_keys=[b"phone#4c410523#20190501", b"phone#4c410523#20190502"]
                 )
@@ -231,14 +225,15 @@ async def read_rows_multiple(table):
 
 async def read_row_range(table):
     # [START bigtable_async_reads_row_range]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import ReadRowsQuery
-    from google.cloud.bigtable.data import RowRange
+    from google.cloud.bigtable.data import (
+        BigtableDataClientAsync,
+        ReadRowsQuery,
+        RowRange,
+    )
 
     async def read_row_range(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
             async with client.get_table(instance_id, table_id) as table:
-
                 row_range = RowRange(
                     start_key=b"phone#4c410523#20190501",
                     end_key=b"phone#4c410523#201906201",
@@ -254,14 +249,15 @@ async def read_row_range(table):
 
 async def read_with_prefix(table):
     # [START bigtable_async_reads_prefix]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import ReadRowsQuery
-    from google.cloud.bigtable.data import RowRange
+    from google.cloud.bigtable.data import (
+        BigtableDataClientAsync,
+        ReadRowsQuery,
+        RowRange,
+    )
 
     async def read_prefix(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
             async with client.get_table(instance_id, table_id) as table:
-
                 prefix = "phone#"
                 end_key = prefix[:-1] + chr(ord(prefix[-1]) + 1)
                 prefix_range = RowRange(start_key=prefix, end_key=end_key)
@@ -276,14 +272,15 @@ async def read_with_prefix(table):
 
 async def read_with_filter(table):
     # [START bigtable_async_reads_filter]
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-    from google.cloud.bigtable.data import ReadRowsQuery
-    from google.cloud.bigtable.data import row_filters
+    from google.cloud.bigtable.data import (
+        BigtableDataClientAsync,
+        ReadRowsQuery,
+        row_filters,
+    )
 
     async def read_with_filter(project_id, instance_id, table_id):
         async with BigtableDataClientAsync(project=project_id) as client:
             async with client.get_table(instance_id, table_id) as table:
-
                 row_filter = row_filters.ValueRegexFilter(b"PQ2A.*$")
                 query = ReadRowsQuery(row_filter=row_filter)
 

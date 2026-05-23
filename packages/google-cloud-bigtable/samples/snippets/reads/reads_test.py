@@ -12,16 +12,15 @@
 # limitations under the License.
 
 import datetime
-import os
 import inspect
+import os
 import uuid
 
 import pytest
 
-from .snapshots.snap_reads_test import snapshots
-from . import read_snippets
 from ...utils import create_table_cm
-
+from . import read_snippets
+from .snapshots.snap_reads_test import snapshots
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -30,7 +29,9 @@ TABLE_ID = f"mobile-time-series-reads-{str(uuid.uuid4())[:16]}"
 
 @pytest.fixture(scope="module", autouse=True)
 def table_id():
-    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None}) as table:
+    with create_table_cm(
+        PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None}
+    ) as table:
         timestamp = datetime.datetime(2019, 5, 1)
         rows = [
             table.direct_row("phone#4c410523#20190501"),

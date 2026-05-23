@@ -183,9 +183,10 @@ def filter_limit_value_regex(project_id, instance_id, table_id):
 # [END bigtable_filters_limit_value_regex]
 # [START bigtable_filters_limit_timestamp_range]
 def filter_limit_timestamp_range(project_id, instance_id, table_id):
+    import datetime
+
     from google.cloud import bigtable
     from google.cloud.bigtable import row_filters
-    import datetime
 
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
@@ -331,6 +332,7 @@ def filter_composing_condition(project_id, instance_id, table_id):
 
 
 # [END bigtable_filters_composing_condition]
+
 
 # [START bigtable_filters_print]
 def print_row(row):

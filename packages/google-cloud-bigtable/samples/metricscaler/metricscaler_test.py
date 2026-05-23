@@ -17,19 +17,13 @@
 import os
 import uuid
 
+import pytest
+from metricscaler import get_cpu_load, get_storage_utilization, main, scale_bigtable
+from mock import Mock, patch
+from test_utils.retry import RetryInstanceState, RetryResult
+
 from google.cloud import bigtable
 from google.cloud.bigtable import enums
-from mock import Mock, patch
-
-import pytest
-from test_utils.retry import RetryInstanceState
-from test_utils.retry import RetryResult
-
-from metricscaler import get_cpu_load
-from metricscaler import get_storage_utilization
-from metricscaler import main
-from metricscaler import scale_bigtable
-
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_ZONE = os.environ["BIGTABLE_ZONE"]

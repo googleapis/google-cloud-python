@@ -15,8 +15,9 @@
 import os
 import uuid
 
-from .main import main
 from google.cloud import bigtable
+
+from .main import main
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]

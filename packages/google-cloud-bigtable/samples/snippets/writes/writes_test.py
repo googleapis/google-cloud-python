@@ -13,17 +13,17 @@
 # limitations under the License.
 
 import os
-
-import backoff
-from google.api_core.exceptions import DeadlineExceeded
-import pytest
 import uuid
 
+import backoff
+import pytest
+from google.api_core.exceptions import DeadlineExceeded
+
+from ...utils import create_table_cm
 from .write_batch import write_batch
 from .write_conditionally import write_conditional
 from .write_increment import write_increment
 from .write_simple import write_simple
-from ...utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -37,7 +37,6 @@ def table_id():
 
 
 def test_writes(capsys, table_id):
-
     # `row.commit()` sometimes ends up with DeadlineExceeded, so now
     # we put retries with a hard deadline.
     @backoff.on_exception(backoff.expo, DeadlineExceeded, max_time=60)

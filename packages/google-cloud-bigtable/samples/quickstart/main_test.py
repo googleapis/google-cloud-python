@@ -14,12 +14,11 @@
 
 import os
 import uuid
+
 import pytest
 
-from .main import main
-
 from ..utils import create_table_cm
-
+from .main import main
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -30,7 +29,9 @@ TABLE_ID = f"quickstart-test-{str(uuid.uuid4())[:16]}"
 def table():
     column_family_id = "cf1"
     column_families = {column_family_id: None}
-    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, column_families) as table:
+    with create_table_cm(
+        PROJECT, BIGTABLE_INSTANCE, TABLE_ID, column_families
+    ) as table:
         row = table.direct_row("r1")
         row.set_cell(column_family_id, "c1", "test-value")
         row.commit()

@@ -16,8 +16,7 @@
 # [START bigtable_quickstart_happybase]
 import argparse
 
-from google.cloud import bigtable
-from google.cloud import happybase
+from google.cloud import bigtable, happybase
 
 
 def main(project_id="project-id", instance_id="instance-id", table_id="my-table"):

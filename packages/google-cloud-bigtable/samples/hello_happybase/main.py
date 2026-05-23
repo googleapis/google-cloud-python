@@ -25,11 +25,11 @@ Prerequisites:
 """
 
 import argparse
-from ..utils import wait_for_table
 
 # [START bigtable_hw_imports_happybase]
-from google.cloud import bigtable
-from google.cloud import happybase
+from google.cloud import bigtable, happybase
+
+from ..utils import wait_for_table
 
 # [END bigtable_hw_imports_happybase]
 
@@ -48,7 +48,8 @@ def main(project_id, instance_id, table_name):
         print("Creating the {} table.".format(table_name))
         column_family_name = "cf1"
         connection.create_table(
-            table_name, {column_family_name: dict()}  # Use default options.
+            table_name,
+            {column_family_name: dict()},  # Use default options.
         )
         # [END bigtable_hw_create_table_happybase]
 

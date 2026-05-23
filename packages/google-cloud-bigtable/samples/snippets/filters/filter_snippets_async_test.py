@@ -13,21 +13,20 @@
 
 
 import datetime
+import inspect
 import os
 import uuid
-
-import inspect
 from typing import AsyncGenerator
 
 import pytest
 import pytest_asyncio
-from .snapshots.snap_filters_test import snapshots
-
-from . import filter_snippets_async
-from ...utils import create_table_cm
 from google.cloud._helpers import (
     _microseconds_from_datetime,
 )
+
+from ...utils import create_table_cm
+from . import filter_snippets_async
+from .snapshots.snap_filters_test import snapshots
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -37,6 +36,7 @@ TABLE_ID = f"mobile-time-series-filters-async-{str(uuid.uuid4())[:16]}"
 @pytest.fixture(scope="module")
 def event_loop():
     import asyncio
+
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
@@ -44,7 +44,9 @@ def event_loop():
 
 @pytest_asyncio.fixture(scope="module", autouse=True)
 async def table_id() -> AsyncGenerator[str, None]:
-    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None, "cell_plan": None}):
+    with create_table_cm(
+        PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None, "cell_plan": None}
+    ):
         await _populate_table(TABLE_ID)
         yield TABLE_ID
 
@@ -241,6 +243,7 @@ def _datetime_to_micros(value: datetime.datetime) -> int:
     """Uses the same conversion rules as the old client in"""
     import calendar
     import datetime as dt
+
     if not value.tzinfo:
         value = value.replace(tzinfo=datetime.timezone.utc)
     # Regardless of what timezone is on the value, convert it to UTC.

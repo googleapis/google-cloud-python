@@ -16,12 +16,13 @@ import os
 import uuid
 from typing import AsyncGenerator
 
-from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell
 import pytest
 import pytest_asyncio
 
-from .main_async import main
+from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell
+
 from ..utils import create_table_cm
+from .main_async import main
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]

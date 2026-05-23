@@ -20,10 +20,10 @@ import logging
 import os
 import time
 
-from google.cloud import bigtable
-from google.cloud import monitoring_v3
-from google.cloud.bigtable import enums
 from google.cloud.monitoring_v3 import query
+
+from google.cloud import bigtable, monitoring_v3
+from google.cloud.bigtable import enums
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
@@ -43,7 +43,7 @@ def get_cpu_load(bigtable_instance, bigtable_cluster):
     cpu_query = query.Query(
         client,
         project=PROJECT,
-        metric_type="bigtable.googleapis.com/" "cluster/cpu_load",
+        metric_type="bigtable.googleapis.com/cluster/cpu_load",
         minutes=5,
     )
     cpu_query = cpu_query.select_resources(
@@ -65,7 +65,7 @@ def get_storage_utilization(bigtable_instance, bigtable_cluster):
     utilization_query = query.Query(
         client,
         project=PROJECT,
-        metric_type="bigtable.googleapis.com/" "cluster/storage_utilization",
+        metric_type="bigtable.googleapis.com/cluster/storage_utilization",
         minutes=5,
     )
     utilization_query = utilization_query.select_resources(
@@ -205,8 +205,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--high_storage_threshold",
-        help="If Cloud Bigtable storage utilization is above this threshold, "
-        "scale up",
+        help="If Cloud Bigtable storage utilization is above this threshold, scale up",
         default=0.6,
     )
     parser.add_argument(

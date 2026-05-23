@@ -16,6 +16,7 @@ import datetime
 import apache_beam as beam
 from apache_beam.io.gcp.bigtableio import WriteToBigTable
 from apache_beam.options.pipeline_options import PipelineOptions
+
 from google.cloud.bigtable import row
 
 
@@ -53,12 +54,15 @@ def run(argv=None):
     """Build and run the pipeline."""
     options = BigtableOptions(argv)
     with beam.Pipeline(options=options) as p:
-        p | beam.Create(
-            ["phone#4c410523#20190501", "phone#4c410523#20190502"]
-        ) | beam.ParDo(CreateRowFn()) | WriteToBigTable(
-            project_id=options.bigtable_project,
-            instance_id=options.bigtable_instance,
-            table_id=options.bigtable_table,
+        (
+            p
+            | beam.Create(["phone#4c410523#20190501", "phone#4c410523#20190502"])
+            | beam.ParDo(CreateRowFn())
+            | WriteToBigTable(
+                project_id=options.bigtable_project,
+                instance_id=options.bigtable_instance,
+                table_id=options.bigtable_table,
+            )
         )
 
 

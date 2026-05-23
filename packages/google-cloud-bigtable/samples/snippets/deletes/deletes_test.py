@@ -20,8 +20,8 @@ import uuid
 
 import pytest
 
-from . import deletes_snippets
 from ...utils import create_table_cm
+from . import deletes_snippets
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
@@ -32,7 +32,13 @@ TABLE_ID = f"mobile-time-series-deletes-{str(uuid.uuid4())[:16]}"
 def table_id():
     from google.cloud.bigtable.row_set import RowSet
 
-    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None, "cell_plan": None}, verbose=False) as table:
+    with create_table_cm(
+        PROJECT,
+        BIGTABLE_INSTANCE,
+        TABLE_ID,
+        {"stats_summary": None, "cell_plan": None},
+        verbose=False,
+    ) as table:
         timestamp = datetime.datetime(2019, 5, 1)
         timestamp_minus_hr = datetime.datetime(2019, 5, 1) - datetime.timedelta(hours=1)
 

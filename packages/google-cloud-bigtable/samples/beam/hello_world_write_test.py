@@ -16,8 +16,8 @@ import uuid
 
 import pytest
 
-from . import hello_world_write
 from ..utils import create_table_cm
+from . import hello_world_write
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
