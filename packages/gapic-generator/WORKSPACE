@@ -123,3 +123,12 @@ switched_rules_by_language(
     gapic = True,
     grpc = True,
 )
+
+# BEGIN workaround
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python311",
+    python_version = "3.11",
+)
+# END workaround
