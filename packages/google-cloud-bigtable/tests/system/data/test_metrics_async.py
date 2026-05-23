@@ -136,6 +136,10 @@ class _ErrorInjectorInterceptor(
 
 
 @CrossSync.convert_class(sync_name="TestMetrics")
+@pytest.mark.skipif(
+    bool(os.environ.get(BIGTABLE_EMULATOR)),
+    reason="Emulator does not support metrics",
+)
 class TestMetricsAsync(SystemTestRunner):
     def _make_client(self):
         project = os.getenv("GOOGLE_CLOUD_PROJECT") or None

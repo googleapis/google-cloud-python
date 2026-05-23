@@ -116,6 +116,9 @@ class _ErrorInjectorInterceptor(
         return response
 
 
+@pytest.mark.skipif(
+    bool(os.environ.get(BIGTABLE_EMULATOR)), reason="Emulator does not support metrics"
+)
 class TestMetrics(SystemTestRunner):
     def _make_client(self):
         project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
