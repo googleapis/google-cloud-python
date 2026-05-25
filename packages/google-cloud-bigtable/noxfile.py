@@ -558,8 +558,7 @@ def generate_sync(session):
     """
     Re-generate sync files for the library from CrossSync-annotated async source
     """
-    session.install(BLACK_VERSION)
-    session.install("autoflake")
+    session.install(RUFF_VERSION)
     session.run("python", ".cross_sync/generate.py", ".")
 
 
