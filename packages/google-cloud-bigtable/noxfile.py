@@ -23,7 +23,6 @@ from typing import Dict, List
 import nox
 
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_VERSION = "black[jupyter]==23.7.0"
 LINT_PATHS = ["google", "samples", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -42,8 +41,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
-    BLACK_VERSION,
-    "autoflake",
+    RUFF_VERSION,
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -59,7 +57,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
-    BLACK_VERSION,
+    RUFF_VERSION,
     "pyyaml==6.0.2",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
