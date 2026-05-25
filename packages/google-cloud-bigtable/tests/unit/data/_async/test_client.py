@@ -258,9 +258,6 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.drop
     @CrossSync.pytest
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8), reason="Task.name requires python3.8 or higher"
-    )
     async def test__start_background_channel_refresh_task_names(self):
         # if tasks exist, should do nothing
         client = self._make_client(project="project-id", use_emulator=False)

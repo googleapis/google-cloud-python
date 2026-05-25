@@ -39,9 +39,6 @@ def loader():
 @pytest.mark.parametrize(
     "test_dict", loader(), ids=lambda x: f"{x['file_name']}: {x.get('description', '')}"
 )
-@pytest.mark.skipif(
-    sys.version_info < (3, 9), reason="ast.unparse requires python3.9 or higher"
-)
 def test_e2e_scenario(test_dict):
     before_ast = ast.parse(test_dict["before"])
     got_ast = before_ast
