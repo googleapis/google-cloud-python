@@ -71,6 +71,7 @@ Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python <= 3.9
 
+
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
 

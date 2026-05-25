@@ -30,8 +30,11 @@ from google.cloud.biglake_v1.types.iceberg_rest_catalog import (
     FailoverIcebergCatalogResponse,
     GetIcebergCatalogRequest,
     IcebergCatalog,
+    IcebergNamespaceUpdate,
     ListIcebergCatalogsRequest,
     ListIcebergCatalogsResponse,
+    StorageCredential,
+    TableIdentifier,
     UpdateIcebergCatalogRequest,
 )
 
@@ -43,7 +46,10 @@ __all__ = (
     "FailoverIcebergCatalogResponse",
     "GetIcebergCatalogRequest",
     "IcebergCatalog",
+    "IcebergNamespaceUpdate",
     "ListIcebergCatalogsRequest",
     "ListIcebergCatalogsResponse",
+    "StorageCredential",
+    "TableIdentifier",
     "UpdateIcebergCatalogRequest",
 )
