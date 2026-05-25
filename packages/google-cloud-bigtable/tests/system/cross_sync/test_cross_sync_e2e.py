@@ -73,7 +73,7 @@ def test_e2e_scenario(test_dict):
             text=True,
             capture_output=True,
             check=True,
-        )
+        ).stdout
     if test_dict.get("after") is None:
         expected_str = ""
     else:
@@ -92,5 +92,5 @@ def test_e2e_scenario(test_dict):
             text=True,
             capture_output=True,
             check=True,
-        )
+        ).stdout
     assert final_str == expected_str, f"Expected:\n{expected_str}\nGot:\n{final_str}"
