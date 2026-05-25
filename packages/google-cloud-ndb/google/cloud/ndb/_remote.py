@@ -41,7 +41,7 @@ class RemoteCall(object):
         self.future = future
         self.info = info
         self.start_time = time.time()
-        self.elapsed_time = 0
+        self.elapsed_time = 0.0
 
         def record_time(future):
             self.elapsed_time = time.time() - self.start_time

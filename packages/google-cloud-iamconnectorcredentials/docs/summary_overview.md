@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# iamconnectorcredentials.googleapis.com API API
+# iamconnectorcredentials.googleapis.com API
 
-Overview of the APIs available for iamconnectorcredentials.googleapis.com API API.
+Overview of the APIs available for iamconnectorcredentials.googleapis.com API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-iamconnectorcredentials.googleapis.com API API.
+iamconnectorcredentials.googleapis.com API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-iamconnectorcredentials/latest/summary_class.html)
 

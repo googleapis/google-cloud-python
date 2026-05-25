@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 ALL_PYTHON: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -71,7 +70,6 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -220,8 +218,6 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
         "3.12",
@@ -655,6 +651,12 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
+    system_test_exists = os.path.exists(system_test_path)
+    system_test_folder_exists = os.path.exists(system_test_folder_path)
+    # Sanity check: only run tests if found.
+    if not system_test_exists and not system_test_folder_exists:
+        session.skip("System tests were not found")
+
     if os.environ.get("SPANNER_EMULATOR_HOST"):
         # Run tests against the emulator
         run_system = True
@@ -675,24 +677,77 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         run_system = False
 
     if run_system:
-        # Run the tests (deduplicated logic)
-        test_path = (
-            system_test_path
-            if os.path.exists(system_test_path)
-            else system_test_folder_path
-        )
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )
+        # Run py.test against the system tests.
+        if system_test_exists:
+            args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+            ]
+            if not session.posargs:
+                args.append(system_test_path)
+            args.extend(session.posargs)
+
+            session.run(
+                *args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+        elif system_test_folder_exists:
+            # Run sync tests
+            sync_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sync_sponge_log.xml",
+            ]
+            if not session.posargs:
+                sync_args.append(system_test_folder_path)
+                sync_args.append(
+                    f"--ignore={os.path.join(system_test_folder_path, '_async')}"
+                )
+            else:
+                sync_args.extend(session.posargs)
+
+            session.run(
+                *sync_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+
+            # Run async tests
+            async_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_async_sponge_log.xml",
+            ]
+            if not session.posargs:
+                async_args.append(os.path.join(system_test_folder_path, "_async"))
+            else:
+                # If posargs are provided, only run if they match async tests
+                # or just skip if they were already run in sync.
+                # For simplicity, we only run async folder if no posargs.
+                return
+
+            session.run(
+                *async_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
 
 
 @nox.session(python=ALL_PYTHON)

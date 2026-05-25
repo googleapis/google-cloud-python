@@ -3,7 +3,8 @@ Python Client for Access Context Manager
 
 |preview| |pypi| |versions|
 
-`Access Context Manager`_: 
+`Access Context Manager`_: An API for setting attribute based access control to requests to GCP
+services.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Access Context Manager
    :target: https://pypi.org/project/google-cloud-access-context-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-context-manager.svg
    :target: https://pypi.org/project/google-cloud-access-context-manager/
-.. _Access Context Manager: https://cloud.google.com/access-context-manager/docs/overview
+.. _Access Context Manager: https://cloud.google.com/access-context-manager/
 .. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager
-.. _Product Documentation:  https://cloud.google.com/access-context-manager/docs/overview
+.. _Product Documentation:  https://cloud.google.com/access-context-manager/
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Access Context Manager.:  https://cloud.google.com/access-context-manager/docs/overview
+.. _Enable the Access Context Manager.:  https://cloud.google.com/access-context-manager/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Access Context Manager Product documentation:  https://cloud.google.com/access-context-manager/docs/overview
+.. _Access Context Manager Product documentation:  https://cloud.google.com/access-context-manager/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

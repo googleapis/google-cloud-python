@@ -175,25 +175,6 @@ replacements:
 
   # --- DOCUMENTATION RESTORATIONS ---
 
-  # --- FIX: Restore custom README.rst Introduction ---
-  - paths:
-      - "packages/google-cloud-pubsub/README.rst"
-    before: '`Google Cloud Pub/Sub`_: is designed to provide reliable, many-to-many, asynchronous messaging between applications\. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages\. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications\.'
-    after: |-
-      'Google Cloud Pub/Sub:' is a fully-managed real-time messaging service that
-      allows you to send and receive messages between independent applications. You
-      can leverage Cloud Pub/Sub’s flexibility to decouple systems and components
-      hosted on Google Cloud Platform or elsewhere on the Internet. By building on
-      the same technology Google uses, Cloud Pub / Sub is designed to provide “at
-      least once” delivery at low latency with on-demand scalability to 1 million
-      messages per second (and beyond).
-
-      Publisher applications can send messages to a ``topic`` and other applications
-      can subscribe to that topic to receive the messages. By decoupling senders and
-      receivers, Google Cloud Pub/Sub allows developers to communicate between
-      independently written applications.
-    count: 1
-
   # --- FIX: Restore README.rst Example Usage & Footer sections ---
   - paths:
       - "packages/google-cloud-pubsub/README.rst"
@@ -388,20 +369,12 @@ replacements:
     count: 1
 
 
-  # --- FIX: Restore pubsub-specific grpcio bound ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n'
-    after: |-
-      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609
-    count: 1
-
   # --- FIX: Restore missing dependencies, extras, and url dynamically ---
   - paths:
       - "packages/google-cloud-pubsub/setup.py"
     before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
     after: |-
-      \g<1>\g<2>\g<1>"grpcio-status >= 1.33.2",
+      \g<1>\g<2>\g<1>"grpcio-status >= 1.51.3",
       \g<1>"opentelemetry-api >= 1.27.0",
       \g<1>"opentelemetry-sdk >= 1.27.0",
       ]
@@ -529,4 +502,28 @@ replacements:
       exclude_patterns = [
       \g<1>"pubsub_v1/**",
       \g<1>"_build",
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpc-google-iam-v1==0\.14\.0\n(?!grpcio-status)'
+    after: |-
+      grpc-google-iam-v1==0.14.0
+      grpcio-status==1.51.3
+      opentelemetry-api==1.27.0
+      opentelemetry-sdk==1.27.0
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
+    before: 'grpcio==1.44.0'
+    after: 'grpcio==1.51.3'
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n(?:[ \t]*)"grpcio >= 1\.75\.1, < 2\.0\.0; python_version >= ''3\.14''",\n'
+    after: |-
+      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",
+      \g<1>"grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     count: 1

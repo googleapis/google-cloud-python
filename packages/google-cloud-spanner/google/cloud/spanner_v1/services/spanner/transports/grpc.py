@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ from google.protobuf.json_format import MessageToJson
 from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
 from google.cloud.spanner_v1.types import (
     commit_response,
+    location,
     result_set,
     spanner,
     transaction,
@@ -911,6 +912,40 @@ class SpannerGrpcTransport(SpannerTransport):
                 response_deserializer=spanner.BatchWriteResponse.deserialize,
             )
         return self._stubs["batch_write"]
+
+    @property
+    def fetch_cache_update(
+        self,
+    ) -> Callable[[spanner.FetchCacheUpdateRequest], location.CacheUpdate]:
+        r"""Return a callable for the fetch cache update method over gRPC.
+
+        Retrieves a cache update for a given database.
+
+        This RPC can be used to warm up the client cache by fetching key
+        recipes and server information for a given database. It is
+        recommended to call this RPC at the beginning of the client's
+        lifecycle, prior to any other data plane operations.
+
+        The cache update is returned as a stream because the response
+        can be too large to fit into a single ``CacheUpdate`` message.
+
+        Returns:
+            Callable[[~.FetchCacheUpdateRequest],
+                    ~.CacheUpdate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_cache_update" not in self._stubs:
+            self._stubs["fetch_cache_update"] = self._logged_channel.unary_stream(
+                "/google.spanner.v1.Spanner/FetchCacheUpdate",
+                request_serializer=spanner.FetchCacheUpdateRequest.serialize,
+                response_deserializer=location.CacheUpdate.deserialize,
+            )
+        return self._stubs["fetch_cache_update"]
 
     def close(self):
         self._logged_channel.close()

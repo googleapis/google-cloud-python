@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+
 import geopandas as gpd  # type: ignore
 import pandas as pd
 import pyarrow as pa
@@ -404,7 +406,7 @@ def test_to_json_from_struct():
 
     actual = bbq.to_json(s)
     expected = bpd.Series(
-        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
+        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
         dtype=dtypes.JSON_DTYPE,
     )
 
@@ -429,7 +431,7 @@ def test_to_json_string_from_struct():
 
     actual = bbq.to_json_string(s)
     expected = bpd.Series(
-        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
+        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
         dtype=dtypes.STRING_DTYPE,
     )
 

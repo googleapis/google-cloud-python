@@ -3,7 +3,8 @@ Python Client for Organization Policy
 
 |stable| |pypi| |versions|
 
-`Organization Policy`_: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
+`Organization Policy`_: The Organization Policy API allows users to configure governance rules on
+their Google Cloud resources across the resource hierarchy.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Organization Policy
    :target: https://pypi.org/project/google-cloud-org-policy/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-org-policy.svg
    :target: https://pypi.org/project/google-cloud-org-policy/
-.. _Organization Policy: https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Organization Policy: https://cloud.google.com/resource-manager/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/orgpolicy/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Product Documentation:  https://cloud.google.com/resource-manager/
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Organization Policy.:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Enable the Organization Policy.:  https://cloud.google.com/resource-manager/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Organization Policy Product documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Organization Policy Product documentation:  https://cloud.google.com/resource-manager/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

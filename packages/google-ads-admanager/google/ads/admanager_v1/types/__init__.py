@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ from .ad_break_service import (
 )
 from .ad_review_center_ad_enums import (
     AdReviewCenterAdStatusEnum,
+    ManualAdReviewCenterAdStatusEnum,
 )
 from .ad_review_center_ad_messages import (
     AdReviewCenterAd,
@@ -72,13 +73,29 @@ from .ad_unit_service import (
 from .admanager_error import (
     AdManagerError,
 )
+from .application_enums import (
+    ApplicationApprovalStatusEnum,
+    ApplicationPlatformEnum,
+    ApplicationStoreEnum,
+    WebviewClaimingStatusEnum,
+)
 from .application_messages import (
     Application,
 )
 from .application_service import (
+    BatchArchiveApplicationsRequest,
+    BatchArchiveApplicationsResponse,
+    BatchCreateApplicationsRequest,
+    BatchCreateApplicationsResponse,
+    BatchUnarchiveApplicationsRequest,
+    BatchUnarchiveApplicationsResponse,
+    BatchUpdateApplicationsRequest,
+    BatchUpdateApplicationsResponse,
+    CreateApplicationRequest,
     GetApplicationRequest,
     ListApplicationsRequest,
     ListApplicationsResponse,
+    UpdateApplicationRequest,
 )
 from .applied_label import (
     AppliedLabel,
@@ -115,6 +132,9 @@ from .browser_service import (
     ListBrowsersRequest,
     ListBrowsersResponse,
 )
+from .child_publisher_messages import (
+    ChildPublisher,
+)
 from .cms_metadata_key_enums import (
     CmsMetadataKeyStatusEnum,
 )
@@ -122,6 +142,10 @@ from .cms_metadata_key_messages import (
     CmsMetadataKey,
 )
 from .cms_metadata_key_service import (
+    BatchActivateCmsMetadataKeysRequest,
+    BatchActivateCmsMetadataKeysResponse,
+    BatchDeactivateCmsMetadataKeysRequest,
+    BatchDeactivateCmsMetadataKeysResponse,
     GetCmsMetadataKeyRequest,
     ListCmsMetadataKeysRequest,
     ListCmsMetadataKeysResponse,
@@ -133,6 +157,10 @@ from .cms_metadata_value_messages import (
     CmsMetadataValue,
 )
 from .cms_metadata_value_service import (
+    BatchActivateCmsMetadataValuesRequest,
+    BatchActivateCmsMetadataValuesResponse,
+    BatchDeactivateCmsMetadataValuesRequest,
+    BatchDeactivateCmsMetadataValuesResponse,
     GetCmsMetadataValueRequest,
     ListCmsMetadataValuesRequest,
     ListCmsMetadataValuesResponse,
@@ -337,8 +365,26 @@ from .goal_enums import (
     GoalTypeEnum,
     UnitTypeEnum,
 )
+from .label_enums import (
+    LabelTypeEnum,
+)
 from .label_messages import (
     Label,
+)
+from .label_service import (
+    BatchActivateLabelsRequest,
+    BatchActivateLabelsResponse,
+    BatchCreateLabelsRequest,
+    BatchCreateLabelsResponse,
+    BatchDeactivateLabelsRequest,
+    BatchDeactivateLabelsResponse,
+    BatchUpdateLabelsRequest,
+    BatchUpdateLabelsResponse,
+    CreateLabelRequest,
+    GetLabelRequest,
+    ListLabelsRequest,
+    ListLabelsResponse,
+    UpdateLabelRequest,
 )
 from .line_item_enums import (
     LineItemTypeEnum,
@@ -351,8 +397,31 @@ from .line_item_service import (
     ListLineItemsRequest,
     ListLineItemsResponse,
 )
+from .linked_device_enums import (
+    LinkedDeviceVisibilityEnum,
+)
+from .linked_device_messages import (
+    LinkedDevice,
+)
+from .linked_device_service import (
+    GetLinkedDeviceRequest,
+    ListLinkedDevicesRequest,
+    ListLinkedDevicesResponse,
+)
 from .live_stream_event_messages import (
     LiveStreamEvent,
+)
+from .mcm_earnings_messages import (
+    EarningsProductBreakdown,
+    McmEarnings,
+)
+from .mcm_earnings_service import (
+    FetchMcmEarningsRequest,
+    FetchMcmEarningsResponse,
+)
+from .mcm_enums import (
+    DelegationTypeEnum,
+    McmEarningsProductTypeEnum,
 )
 from .mobile_carrier_messages import (
     MobileCarrier,
@@ -493,6 +562,17 @@ from .report_value import (
 from .request_platform_enum import (
     RequestPlatformEnum,
 )
+from .rich_media_ads_company_enums import (
+    RichMediaAdsCompanyGdprStatusEnum,
+)
+from .rich_media_ads_company_messages import (
+    RichMediaAdsCompany,
+)
+from .rich_media_ads_company_service import (
+    GetRichMediaAdsCompanyRequest,
+    ListRichMediaAdsCompaniesRequest,
+    ListRichMediaAdsCompaniesResponse,
+)
 from .role_enums import (
     RoleStatusEnum,
 )
@@ -622,6 +702,7 @@ __all__ = (
     "ListAdBreaksResponse",
     "UpdateAdBreakRequest",
     "AdReviewCenterAdStatusEnum",
+    "ManualAdReviewCenterAdStatusEnum",
     "AdReviewCenterAd",
     "BatchAdReviewCenterAdsOperationMetadata",
     "BatchAllowAdReviewCenterAdsRequest",
@@ -655,10 +736,24 @@ __all__ = (
     "ListAdUnitsResponse",
     "UpdateAdUnitRequest",
     "AdManagerError",
+    "ApplicationApprovalStatusEnum",
+    "ApplicationPlatformEnum",
+    "ApplicationStoreEnum",
+    "WebviewClaimingStatusEnum",
     "Application",
+    "BatchArchiveApplicationsRequest",
+    "BatchArchiveApplicationsResponse",
+    "BatchCreateApplicationsRequest",
+    "BatchCreateApplicationsResponse",
+    "BatchUnarchiveApplicationsRequest",
+    "BatchUnarchiveApplicationsResponse",
+    "BatchUpdateApplicationsRequest",
+    "BatchUpdateApplicationsResponse",
+    "CreateApplicationRequest",
     "GetApplicationRequest",
     "ListApplicationsRequest",
     "ListApplicationsResponse",
+    "UpdateApplicationRequest",
     "AppliedLabel",
     "AudienceSegment",
     "GetAudienceSegmentRequest",
@@ -676,13 +771,22 @@ __all__ = (
     "GetBrowserRequest",
     "ListBrowsersRequest",
     "ListBrowsersResponse",
+    "ChildPublisher",
     "CmsMetadataKeyStatusEnum",
     "CmsMetadataKey",
+    "BatchActivateCmsMetadataKeysRequest",
+    "BatchActivateCmsMetadataKeysResponse",
+    "BatchDeactivateCmsMetadataKeysRequest",
+    "BatchDeactivateCmsMetadataKeysResponse",
     "GetCmsMetadataKeyRequest",
     "ListCmsMetadataKeysRequest",
     "ListCmsMetadataKeysResponse",
     "CmsMetadataValueStatusEnum",
     "CmsMetadataValue",
+    "BatchActivateCmsMetadataValuesRequest",
+    "BatchActivateCmsMetadataValuesResponse",
+    "BatchDeactivateCmsMetadataValuesRequest",
+    "BatchDeactivateCmsMetadataValuesResponse",
     "GetCmsMetadataValueRequest",
     "ListCmsMetadataValuesRequest",
     "ListCmsMetadataValuesResponse",
@@ -800,13 +904,38 @@ __all__ = (
     "Goal",
     "GoalTypeEnum",
     "UnitTypeEnum",
+    "LabelTypeEnum",
     "Label",
+    "BatchActivateLabelsRequest",
+    "BatchActivateLabelsResponse",
+    "BatchCreateLabelsRequest",
+    "BatchCreateLabelsResponse",
+    "BatchDeactivateLabelsRequest",
+    "BatchDeactivateLabelsResponse",
+    "BatchUpdateLabelsRequest",
+    "BatchUpdateLabelsResponse",
+    "CreateLabelRequest",
+    "GetLabelRequest",
+    "ListLabelsRequest",
+    "ListLabelsResponse",
+    "UpdateLabelRequest",
     "LineItemTypeEnum",
     "LineItem",
     "GetLineItemRequest",
     "ListLineItemsRequest",
     "ListLineItemsResponse",
+    "LinkedDeviceVisibilityEnum",
+    "LinkedDevice",
+    "GetLinkedDeviceRequest",
+    "ListLinkedDevicesRequest",
+    "ListLinkedDevicesResponse",
     "LiveStreamEvent",
+    "EarningsProductBreakdown",
+    "McmEarnings",
+    "FetchMcmEarningsRequest",
+    "FetchMcmEarningsResponse",
+    "DelegationTypeEnum",
+    "McmEarningsProductTypeEnum",
     "MobileCarrier",
     "GetMobileCarrierRequest",
     "ListMobileCarriersRequest",
@@ -886,6 +1015,11 @@ __all__ = (
     "UpdateReportRequest",
     "ReportValue",
     "RequestPlatformEnum",
+    "RichMediaAdsCompanyGdprStatusEnum",
+    "RichMediaAdsCompany",
+    "GetRichMediaAdsCompanyRequest",
+    "ListRichMediaAdsCompaniesRequest",
+    "ListRichMediaAdsCompaniesResponse",
     "RoleStatusEnum",
     "Role",
     "GetRoleRequest",

@@ -245,3 +245,26 @@ def test_write_stats_to_disk_no_env_var(tmp_path, monkeypatch):
         exec_seconds=1.23,
     )
     assert len(list(tmp_path.iterdir())) == 0
+
+
+def test_on_event_with_local_execute_result():
+    import bigframes.core.events
+    from bigframes.session.executor import LocalExecuteResult
+
+    # fmt: off
+    local_result = unittest.mock.create_autospec(
+        LocalExecuteResult, instance=True
+    )
+    # fmt: on
+    local_result.total_bytes_processed = 1024
+
+    event = bigframes.core.events.ExecutionFinished(result=local_result)
+    envelope = bigframes.core.events.EventEnvelope(event)
+    execution_metrics = metrics.ExecutionMetrics()
+    execution_metrics.on_event(envelope)
+
+    assert execution_metrics.execution_count == 1
+    assert len(execution_metrics.jobs) == 1
+    assert execution_metrics.jobs[0].job_type == "polars"
+    assert execution_metrics.jobs[0].status == "DONE"
+    assert execution_metrics.jobs[0].total_bytes_processed == 1024

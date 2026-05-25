@@ -23,11 +23,11 @@ import uuid
 
 import pytest
 from google.api_core import exceptions
-from google.cloud import spanner
-from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from test_utils.retry import RetryErrors
 
 import samples
+from google.cloud import spanner
+from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 
 CREATE_TABLE_SINGERS = """\
 CREATE TABLE Singers (
@@ -51,11 +51,6 @@ INTERLEAVE IN PARENT Singers ON DELETE CASCADE
 """
 
 retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
-
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "snippets"
 
 
 @pytest.fixture(scope="module")

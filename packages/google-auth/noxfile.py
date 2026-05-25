@@ -22,6 +22,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 CLICK_VERSION = "click"
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = [
     "google",
     "tests",
@@ -33,8 +34,6 @@ BLACK_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -42,7 +41,6 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.14",
 ]
 ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS.copy()
-ALL_PYTHON.extend(["3.7"])
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -51,6 +49,7 @@ nox.options.error_on_missing_interpreters = True
 nox.options.sessions = [
     "lint",
     "blacken",
+    "format",
     "mypy",
     # cover must be last to avoid error `No data to report`
     "docs",
@@ -98,6 +97,36 @@ def blacken(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".[aiohttp,rsa]")
@@ -119,8 +148,6 @@ def mypy(session):
 def unit(session, install_deprecated_extras):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
     min_py, max_py = UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]
     if not install_deprecated_extras and session.python not in (min_py, max_py):
         # only run double tests on first and last supported versions
@@ -169,6 +196,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".[aiohttp]")
+    session.install("requests==2.31.0")
     session.install("sphinx", "alabaster", "recommonmark", "sphinx-docstring-typing")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)

@@ -16,17 +16,6 @@ description: Integrate Google Cloud Firestore Handwritten code
 url: https://github.com/googleapis/gapic-generator-python/issues/123
 replacements:
   - paths: [
-      "packages/google-cloud-firestore/testing/constraints-3.9.txt",
-    ]
-    before: |
-      proto-plus==1.22.3
-      protobuf==4.25.8
-    after: |
-      proto-plus==1.22.3
-      google-cloud-core==2.0.0
-      protobuf==4.25.8
-    count: 1
-  - paths: [
       "packages/google-cloud-firestore/google/cloud/firestore_bundle/types/bundle.py",
     ]
     before: |
@@ -69,6 +58,7 @@ replacements:
       from google.cloud.firestore_v1.async_client import AsyncClient
       from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
       from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+      from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
       from google.cloud.firestore_v1.async_query import AsyncQuery
       from google.cloud.firestore_v1.async_transaction import (
           AsyncTransaction,
@@ -76,13 +66,36 @@ replacements:
       )
       from google.cloud.firestore_v1.base_aggregation import CountAggregation
       from google.cloud.firestore_v1.base_document import DocumentSnapshot
+      from google.cloud.firestore_v1.base_pipeline import SubPipeline
       from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
       from google.cloud.firestore_v1.batch import WriteBatch
       from google.cloud.firestore_v1.client import Client
       from google.cloud.firestore_v1.collection import CollectionReference
       from google.cloud.firestore_v1.document import DocumentReference
+      from google.cloud.firestore_v1.pipeline import Pipeline
+      from google.cloud.firestore_v1.pipeline_result import (
+          AsyncPipelineStream,
+          PipelineResult,
+          PipelineSnapshot,
+          PipelineStream,
+      )
+      from google.cloud.firestore_v1.pipeline_source import PipelineSource
+      from google.cloud.firestore_v1.pipeline_types import (
+          FindNearestOptions,
+          Ordering,
+          PipelineDataType,
+          SampleOptions,
+          SearchOptions,
+          TimeGranularity,
+          TimePart,
+          TimeUnit,
+          UnnestOptions,
+      )
       from google.cloud.firestore_v1.query import CollectionGroup, Query
-      from google.cloud.firestore_v1.query_profile import ExplainOptions
+      from google.cloud.firestore_v1.query_profile import (
+          ExplainOptions,
+          PipelineExplainOptions,
+      )
       from google.cloud.firestore_v1.transaction import Transaction, transactional
       from google.cloud.firestore_v1.transforms import (
           DELETE_FIELD,
@@ -151,6 +164,8 @@ replacements:
           "AsyncClient",
           "AsyncCollectionReference",
           "AsyncDocumentReference",
+          "AsyncPipeline",
+          "AsyncPipelineStream",
           "AsyncQuery",
           "async_transactional",
           "AsyncTransaction",
@@ -166,18 +181,34 @@ replacements:
           "ExistsOption",
           "ExplainOptions",
           "FieldFilter",
+          "FindNearestOptions",
           "GeoPoint",
           "Increment",
           "LastUpdateOption",
           "Maximum",
           "Minimum",
           "Or",
+          "Ordering",
+          "Pipeline",
+          "PipelineDataType",
+          "PipelineExplainOptions",
+          "PipelineResult",
+          "PipelineSnapshot",
+          "PipelineSource",
+          "PipelineStream",
           "Query",
           "ReadAfterWriteError",
           "SERVER_TIMESTAMP",
+          "SampleOptions",
+          "SearchOptions",
+          "SubPipeline",
+          "TimeGranularity",
+          "TimePart",
+          "TimeUnit",
           "Transaction",
           "transactional",
           "types",
+          "UnnestOptions",
           "Watch",
           "WriteBatch",
           "WriteOption",
@@ -206,6 +237,8 @@ replacements:
           AsyncClient,
           AsyncCollectionReference,
           AsyncDocumentReference,
+          AsyncPipeline,
+          AsyncPipelineStream,
           AsyncQuery,
           AsyncTransaction,
           AsyncWriteBatch,
@@ -219,15 +252,31 @@ replacements:
           ExistsOption,
           ExplainOptions,
           FieldFilter,
+          FindNearestOptions,
           GeoPoint,
           Increment,
           LastUpdateOption,
           Maximum,
           Minimum,
           Or,
+          Ordering,
+          Pipeline,
+          PipelineDataType,
+          PipelineExplainOptions,
+          PipelineResult,
+          PipelineSnapshot,
+          PipelineSource,
+          PipelineStream,
           Query,
           ReadAfterWriteError,
+          SampleOptions,
+          SearchOptions,
+          SubPipeline,
+          TimeGranularity,
+          TimePart,
+          TimeUnit,
           Transaction,
+          UnnestOptions,
           Watch,
           WriteBatch,
           WriteOption,
@@ -244,6 +293,8 @@ replacements:
           "AsyncClient",
           "AsyncCollectionReference",
           "AsyncDocumentReference",
+          "AsyncPipeline",
+          "AsyncPipelineStream",
           "AsyncQuery",
           "async_transactional",
           "AsyncTransaction",
@@ -259,18 +310,34 @@ replacements:
           "ExistsOption",
           "ExplainOptions",
           "FieldFilter",
+          "FindNearestOptions",
           "GeoPoint",
           "Increment",
           "LastUpdateOption",
           "Maximum",
           "Minimum",
           "Or",
+          "Ordering",
+          "Pipeline",
+          "PipelineDataType",
+          "PipelineExplainOptions",
+          "PipelineResult",
+          "PipelineSnapshot",
+          "PipelineSource",
+          "PipelineStream",
           "Query",
           "ReadAfterWriteError",
           "SERVER_TIMESTAMP",
+          "SampleOptions",
+          "SearchOptions",
+          "SubPipeline",
+          "TimeGranularity",
+          "TimePart",
+          "TimeUnit",
           "Transaction",
           "transactional",
           "types",
+          "UnnestOptions",
           "Watch",
           "WriteBatch",
           "WriteOption",
@@ -406,10 +473,10 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py",
     ]
     before: |
-      metadata\n\n
+      metadata\n
       from .types.bundle import \(
     after: |
-      metadata\n\n
+      metadata\n
       from .bundle import FirestoreBundle
       from .types.bundle import (
     count: 1
@@ -536,11 +603,11 @@ replacements:
     ]
     before: |
       "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
-      \    "grpcio >= 1.33.2, < 2.0.0",
+      \    "grpcio >= 1.44.0, < 2.0.0",
     after: |
       "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "google-cloud-core >= 2.0.0, <3.0.0",
-          "grpcio >= 1.33.2, < 2.0.0",
+          "grpcio >= 1.44.0, < 2.0.0",
     count: 1
   - paths: [
       "packages/google-cloud-firestore/docs/index.rst",

@@ -66,18 +66,6 @@ def test_create_job_configs_labels_always_includes_bigframes_api():
     }
 
 
-def test_create_job_configs_labels_includes_extra_query_labels():
-    user_labels = {"my-label-1": "my-value-1", "my-label-2": "my-value-2"}
-
-    with bigframes.option_context("compute.extra_query_labels", user_labels):
-        labels = io_bq.create_job_configs_labels(None, [])
-        assert labels == {
-            "my-label-1": "my-value-1",
-            "my-label-2": "my-value-2",
-            "bigframes-api": "unknown",
-        }
-
-
 def test_create_job_configs_labels_length_limit_not_met():
     cur_labels = {
         "source": "bigquery-dataframes-temp",
@@ -197,7 +185,7 @@ def test_add_and_trim_labels_length_limit_met():
     ("timeout", "api_name"),
     [(None, None), (30.0, "test_api")],
 )
-def test_start_query_with_client_labels_length_limit_met(
+def test_start_query_with_job_labels_length_limit_met(
     mock_bq_client: bigquery.Client, timeout: Optional[float], api_name
 ):
     sql = "select * from abc"
@@ -221,7 +209,7 @@ def test_start_query_with_client_labels_length_limit_met(
     for _ in range(52):
         df.head()
 
-    io_bq.start_query_with_client(
+    io_bq.start_query_with_job(
         mock_bq_client,
         sql,
         job_config=job_config,
@@ -229,7 +217,6 @@ def test_start_query_with_client_labels_length_limit_met(
         project=None,
         timeout=timeout,
         metrics=None,
-        query_with_job=True,
         publisher=bigframes.core.events.Publisher(),
     )
 
@@ -344,7 +331,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 2024, 5, 14, 12, 42, 36, 125125, tzinfo=datetime.timezone.utc
             ),
             (
-                "SELECT `row_index`, `string_col` FROM `test_table` "
+                "SELECT `_bf_source`.`row_index`, `_bf_source`.`string_col` FROM `test_table` AS _bf_source "
                 "FOR SYSTEM_TIME AS OF CAST('2024-05-14T12:42:36.125125+00:00' AS TIMESTAMP) "
                 "WHERE `rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
                 "'こんにちは') LIMIT 123"
@@ -369,11 +356,11 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 2024, 5, 14, 12, 42, 36, 125125, tzinfo=datetime.timezone.utc
             ),
             (
-                """SELECT `rowindex`, `string_col` FROM (SELECT
+                """SELECT `_bf_source`.`rowindex`, `_bf_source`.`string_col` FROM (SELECT
                     rowindex,
                     string_col,
                 FROM `test_table` AS t
-                ) """
+                ) AS _bf_source """
                 "FOR SYSTEM_TIME AS OF CAST('2024-05-14T12:42:36.125125+00:00' AS TIMESTAMP) "
                 "WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!' "
                 "LIMIT 123"
@@ -386,7 +373,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             None,  # max_results
             None,  # time_travel_timestampe
-            "SELECT `col_a`, `col_b` FROM `test_table`",
+            "SELECT `_bf_source`.`col_a`, `_bf_source`.`col_b` FROM `test_table` AS _bf_source",
             id="table-columns",
         ),
         pytest.param(
@@ -395,7 +382,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [("date_col", ">", "2022-10-20")],
             None,  # max_results
             None,  # time_travel_timestampe
-            "SELECT * FROM `test_table` WHERE `date_col` > '2022-10-20'",
+            "SELECT * FROM `test_table` AS _bf_source WHERE `date_col` > '2022-10-20'",
             id="table-filter",
         ),
         pytest.param(
@@ -404,7 +391,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [],
             None,  # max_results
             None,  # time_travel_timestampe
-            "SELECT * FROM `test_table*`",
+            "SELECT * FROM `test_table*` AS _bf_source",
             id="wildcard-no_params",
         ),
         pytest.param(
@@ -413,7 +400,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             [("_TABLE_SUFFIX", ">", "2022-10-20")],
             None,  # max_results
             None,  # time_travel_timestampe
-            "SELECT * FROM `test_table*` WHERE `_TABLE_SUFFIX` > '2022-10-20'",
+            "SELECT * FROM `test_table*` AS _bf_source WHERE `_TABLE_SUFFIX` > '2022-10-20'",
             id="wildcard-filter",
         ),
     ],

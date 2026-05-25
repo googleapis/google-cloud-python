@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1226,11 +1226,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_import_job(request=request)
+                operation = await client.create_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1596,11 +1596,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_import_job(request=request)
+                operation = await client.delete_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1730,11 +1730,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_import_job(request=request)
+                operation = await client.update_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1869,11 +1869,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.validate_import_job(request=request)
+                operation = await client.validate_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2001,11 +2001,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.run_import_job(request=request)
+                operation = await client.run_import_job(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2378,11 +2378,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_import_data_file(request=request)
+                operation = await client.create_import_data_file(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2522,11 +2522,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_import_data_file(request=request)
+                operation = await client.delete_import_data_file(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2892,11 +2892,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_group(request=request)
+                operation = await client.create_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3039,11 +3039,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_group(request=request)
+                operation = await client.update_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3181,11 +3181,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_group(request=request)
+                operation = await client.delete_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3315,11 +3315,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.add_assets_to_group(request=request)
+                operation = await client.add_assets_to_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3446,11 +3446,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.remove_assets_from_group(request=request)
+                operation = await client.remove_assets_from_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4045,11 +4045,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_source(request=request)
+                operation = await client.create_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4187,11 +4187,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_source(request=request)
+                operation = await client.update_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4324,11 +4324,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_source(request=request)
+                operation = await client.delete_source(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4696,11 +4696,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_preference_set(request=request)
+                operation = await client.create_preference_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4845,11 +4845,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_preference_set(request=request)
+                operation = await client.update_preference_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4989,11 +4989,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_preference_set(request=request)
+                operation = await client.delete_preference_set(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5227,11 +5227,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_settings(request=request)
+                operation = await client.update_settings(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5378,11 +5378,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_report_config(request=request)
+                operation = await client.create_report_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5756,11 +5756,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_report_config(request=request)
+                operation = await client.delete_report_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5889,11 +5889,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_report(request=request)
+                operation = await client.create_report(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6266,11 +6266,11 @@ class MigrationCenterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_report(request=request)
+                operation = await client.delete_report(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

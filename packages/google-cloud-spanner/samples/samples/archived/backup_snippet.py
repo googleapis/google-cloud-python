@@ -127,8 +127,7 @@ def create_backup_with_encryption_key(
     instance_id, database_id, backup_id, kms_key_name
 ):
     """Creates a backup for a database using a Customer Managed Encryption Key (CMEK)."""
-    from google.cloud.spanner_admin_database_v1 import \
-        CreateBackupEncryptionConfig
+    from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
 
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
@@ -187,8 +186,7 @@ def create_database_with_version_retention_period(
         + "  AlbumTitle   STRING(MAX)"
         + ") PRIMARY KEY (SingerId, AlbumId),"
         + "  INTERLEAVE IN PARENT Singers ON DELETE CASCADE",
-        "ALTER DATABASE `{}`"
-        " SET OPTIONS (version_retention_period = '{}')".format(
+        "ALTER DATABASE `{}` SET OPTIONS (version_retention_period = '{}')".format(
             database_id, retention_period
         ),
     ]
@@ -396,8 +394,7 @@ def restore_database_with_encryption_key(
     instance_id, new_database_id, backup_id, kms_key_name
 ):
     """Restores a database from a backup using a Customer Managed Encryption Key (CMEK)."""
-    from google.cloud.spanner_admin_database_v1 import \
-        RestoreDatabaseEncryptionConfig
+    from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConfig
 
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)

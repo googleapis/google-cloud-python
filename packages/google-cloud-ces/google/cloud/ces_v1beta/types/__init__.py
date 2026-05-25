@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -194,6 +194,11 @@ from .evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsResponse,
+    ExportEvaluationRunsResponse,
+    ExportEvaluationsRequest,
+    ExportEvaluationsResponse,
+    ExportOptions,
     GenerateEvaluationOperationMetadata,
     GenerateEvaluationRequest,
     GetEvaluationDatasetRequest,
@@ -264,6 +269,9 @@ from .mcp_tool import (
 from .mcp_toolset import (
     McpToolset,
 )
+from .mocks import (
+    MockedToolCall,
+)
 from .omnichannel import (
     Omnichannel,
     OmnichannelIntegrationConfig,
@@ -301,6 +309,7 @@ from .session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -484,6 +493,11 @@ __all__ = (
     "DeleteEvaluationRunOperationMetadata",
     "DeleteEvaluationRunRequest",
     "DeleteScheduledEvaluationRunRequest",
+    "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsResponse",
+    "ExportEvaluationsRequest",
+    "ExportEvaluationsResponse",
+    "ExportOptions",
     "GenerateEvaluationOperationMetadata",
     "GenerateEvaluationRequest",
     "GetEvaluationDatasetRequest",
@@ -535,6 +549,7 @@ __all__ = (
     "Guardrail",
     "McpTool",
     "McpToolset",
+    "MockedToolCall",
     "Omnichannel",
     "OmnichannelIntegrationConfig",
     "OmnichannelOperationMetadata",
@@ -554,6 +569,7 @@ __all__ = (
     "GoAway",
     "InputAudioConfig",
     "InterruptionSignal",
+    "MockConfig",
     "OutputAudioConfig",
     "RecognitionResult",
     "RunSessionRequest",

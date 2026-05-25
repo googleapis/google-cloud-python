@@ -424,6 +424,60 @@ tests:
                     - integerValue: '0'
                     name: array_get
           name: select
+  - description: testArrayGet_NonArray
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.is_error:
+                - FunctionExpression.array_get:
+                    - Field: title
+                    - Constant: 0
+            - "isError"
+    assert_results:
+      - isError: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                isError:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: title
+                        - integerValue: '0'
+                        name: array_get
+                    name: is_error
+          name: select
+  - description: testOffset_NonArray
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Where:
+          - FunctionExpression.offset:
+              - Field: title
+              - Constant: 0
+    assert_count: 0
   - description: testArrayGet_NegativeOffset
     pipeline:
       - Collection: books
@@ -461,6 +515,116 @@ tests:
                     - fieldReferenceValue: tags
                     - integerValue: '-1'
                     name: array_get
+          name: select
+  - description: testOffset
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Field: tags
+                - Constant: -1
+            - "lastTag"
+    assert_results:
+      - lastTag: "adventure"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                lastTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - integerValue: '-1'
+                    name: offset
+          name: select
+  - description: testOffset_LiteralArray
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Array: [10, 20, 30]
+                - Constant: 1
+            - "element"
+    assert_results:
+      - element: 20
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                element:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - integerValue: '10'
+                        - integerValue: '20'
+                        - integerValue: '30'
+                        name: array
+                    - integerValue: '1'
+                    name: offset
+          name: select
+  - description: testOffset_LiteralArray_Negative
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.offset:
+                - Array: [10, 20, 30]
+                - Constant: -1
+            - "element"
+    assert_results:
+      - element: 30
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                element:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - integerValue: '10'
+                        - integerValue: '20'
+                        - integerValue: '30'
+                        name: array
+                    - integerValue: '-1'
+                    name: offset
           name: select
   - description: testArrayFirst
     pipeline:
@@ -800,3 +964,94 @@ tests:
                     - stringValue: "Science Fiction"
                     name: array_index_of_all
           name: select
+  - description: testArrayFilter
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_filter:
+                - Field: tags
+                - FunctionExpression.equal:
+                    - Variable: tag
+                    - Constant: comedy
+                - "tag"
+            - "comedyTag"
+    assert_results:
+      - comedyTag: ["comedy"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                comedyTag:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - functionValue:
+                        args:
+                        - variableReferenceValue: tag
+                        - stringValue: "comedy"
+                        name: equal
+                    name: array_filter
+          name: select
+  - description: testArrayTransform
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_transform:
+                - Field: tags
+                - FunctionExpression.to_upper:
+                    - Variable: tag
+                - "tag"
+            - "upperTags"
+    assert_results:
+      - upperTags: ["COMEDY", "SPACE", "ADVENTURE"]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                upperTags:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "tag"
+                    - functionValue:
+                        args:
+                        - variableReferenceValue: tag
+                        name: to_upper
+                    name: array_transform
+          name: select
+

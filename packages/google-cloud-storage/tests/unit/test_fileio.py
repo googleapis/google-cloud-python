@@ -922,8 +922,8 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
 
         # The transmit_next_chunk method must actually consume bytes from the
         # sliding buffer for the flush() feature to work properly.
-        upload.transmit_next_chunk.side_effect = (
-            lambda _: unwrapped_writer._buffer.read(chunk_size)
+        upload.transmit_next_chunk.side_effect = lambda _: (
+            unwrapped_writer._buffer.read(chunk_size)
         )
 
         # Write under chunk_size. This should be buffered and the upload not

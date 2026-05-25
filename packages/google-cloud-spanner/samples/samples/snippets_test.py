@@ -56,11 +56,6 @@ retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 
 @pytest.fixture(scope="module")
-def sample_name():
-    return "snippets"
-
-
-@pytest.fixture(scope="module")
 def database_dialect():
     """Spanner dialect to be used for this sample.
 
@@ -254,7 +249,7 @@ def test_create_database_with_encryption_config(
     assert kms_key_name in out
 
 
-@pytest.mark.skip(reason="skipped since the KMS keys are not added on test " "project")
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test project")
 def test_create_database_with_multiple_kms_keys(
     capsys,
     multi_region_instance,
@@ -705,7 +700,14 @@ def test_delete_data_with_partitioned_dml(capsys, instance_id, sample_database):
 def test_update_with_batch_dml(capsys, instance_id, sample_database):
     snippets.update_with_batch_dml(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
-    assert "Executed 2 SQL statements using Batch DML" in out
+    assert "Executed 2 SQL statements using Batch DML." in out
+
+
+def test_dml_last_statement_option(capsys, instance_id, sample_database):
+    snippets.dml_last_statement_option(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) inserted." in out
+    assert "1 record(s) updated." in out
 
 
 @pytest.mark.dependency(name="create_table_with_datatypes")

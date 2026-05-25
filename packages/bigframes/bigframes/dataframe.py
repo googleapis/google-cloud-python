@@ -819,22 +819,25 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
+    def _get_display_df(self) -> DataFrame:
+        """Process ObjectRef and JSON/nested JSON columns for display."""
         df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
+        # columns. Pre-serialize them to string format to bypass this limit.
+        # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
+        # types correctly.
+        json_cols = [
+            col
+            for col in df.columns
+            if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
+        ]
+        if json_cols:
+            op = ops.SqlScalarOp(
+                _output_type=bigframes.dtypes.STRING_DTYPE,
+                sql_template="TO_JSON_STRING({0})",
+            )
+            df = df.assign(**{col: df[col]._apply_unary_op(op) for col in json_cols})
+        return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -1743,7 +1746,8 @@ class DataFrame:
         )
         if query_job:
             self._set_internal_query_job(query_job)
-        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+        df.columns = self._block.column_labels
+        return df
 
     def to_pandas_batches(
         self,
@@ -1869,7 +1873,8 @@ class DataFrame:
                 raise ValueError(
                     "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
                 )
-        return maybe_result.set_axis(self._block.column_labels, axis=1, copy=False)
+        maybe_result.columns = self._block.column_labels
+        return maybe_result
 
     def nlargest(
         self,
@@ -2418,6 +2423,7 @@ class DataFrame:
         *,
         ascending: bool = ...,
         inplace: Literal[False] = ...,
+        kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
     ) -> DataFrame: ...
 
@@ -2427,6 +2433,7 @@ class DataFrame:
         *,
         ascending: bool = ...,
         inplace: Literal[True] = ...,
+        kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -2436,6 +2443,7 @@ class DataFrame:
         axis: Union[int, str] = 0,
         ascending: bool = True,
         inplace: bool = False,
+        kind: str | None = None,
         na_position: Literal["first", "last"] = "last",
     ) -> Optional[DataFrame]:
         if utils.get_axis_number(axis) == 0:
@@ -2449,7 +2457,10 @@ class DataFrame:
                 else order.descending_over(column, na_last)
                 for column in index_columns
             ]
-            block = self._block.order_by(ordering)
+            is_stable = (
+                kind or constants.DEFAULT_SORT_KIND
+            ) in constants.STABLE_SORT_KINDS
+            block = self._block.order_by(ordering, stable=is_stable)
         else:  # axis=1
             _, indexer = self.columns.sort_values(
                 return_indexer=True,
@@ -2472,7 +2483,7 @@ class DataFrame:
         *,
         inplace: Literal[False] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> DataFrame: ...
 
@@ -2483,7 +2494,7 @@ class DataFrame:
         *,
         inplace: Literal[True] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -2493,7 +2504,7 @@ class DataFrame:
         *,
         inplace: bool = False,
         ascending: bool | typing.Sequence[bool] = True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: typing.Literal["first", "last"] = "last",
     ) -> Optional[DataFrame]:
         if isinstance(by, (bigframes.series.Series, indexes.Index, DataFrame)):
@@ -2525,7 +2536,8 @@ class DataFrame:
                 if is_ascending
                 else order.descending_over(column_id, na_last)
             )
-        block = self._block.order_by(ordering)
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
+        block = self._block.order_by(ordering, stable=is_stable)
         if inplace:
             self._set_block(block)
             return None
@@ -2768,11 +2780,11 @@ class DataFrame:
     ):
         if utils.is_dict_like(value):
             return self.apply(
-                lambda x: x.replace(
-                    to_replace=to_replace, value=value[x.name], regex=regex
+                lambda x: (
+                    x.replace(to_replace=to_replace, value=value[x.name], regex=regex)
+                    if (x.name in value)
+                    else x
                 )
-                if (x.name in value)
-                else x
             )
         return self.apply(
             lambda x: x.replace(to_replace=to_replace, value=value, regex=regex)
@@ -2842,7 +2854,7 @@ class DataFrame:
         """Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition, axis=1)
 
             # When it's a plain Python function.
@@ -3926,12 +3938,13 @@ class DataFrame:
                 bigframes.dtypes.BOOL_DTYPE
             }:
                 if is_mapping:
-                    if label in decimals:  # type: ignore
+                    decimals_dict = typing.cast(dict[typing.Hashable, int], decimals)
+                    if label in decimals_dict:
                         exprs.append(
                             ops.round_op.as_expr(
                                 col_id,
                                 ex.const(
-                                    decimals[label],
+                                    decimals_dict[label],
                                     dtype=bigframes.dtypes.INT_DTYPE,  # type: ignore
                                 ),
                             )
@@ -4447,8 +4460,8 @@ class DataFrame:
     ) -> str | None:
         return self.to_pandas(allow_large_results=allow_large_results).to_latex(
             buf,
-            columns=columns,
-            header=header,
+            columns=typing.cast(typing.Optional[list[str]], columns),
+            header=typing.cast(typing.Union[bool, list[str]], header),
             index=index,
             **kwargs,  # type: ignore
         )
@@ -4675,7 +4688,7 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if not isinstance(func, bigframes.functions.Udf):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
@@ -4699,18 +4712,12 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(
-                func,
-                (
-                    bigframes.functions.BigqueryCallableRoutine,
-                    bigframes.functions.BigqueryCallableRowRoutine,
-                ),
-            ):
+            if not isinstance(func, bigframes.functions.Udf):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            if func.is_row_processor:
+            if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4839,7 +4846,7 @@ class DataFrame:
 
         # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_bigquery_function"):
+        if isinstance(func, bigframes.functions.Udf):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support BigFrames "

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1167,7 +1167,9 @@ class RouteInfo(proto.Message):
             Region of the route. DYNAMIC, PEERING_DYNAMIC, POLICY_BASED
             and ADVERTISED routes only. If set for POLICY_BASED route,
             this is a region of VLAN attachments for Cloud Interconnect
-            the route applies to.
+            the route applies to. If set to "all" for POLICY_BASED
+            route, the route applies to VLAN attachments of Cloud
+            Interconnect in all regions.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):

@@ -43,8 +43,9 @@ replacements:
                   "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
               )
 
-          # Install all test dependencies
-          session.install("mock", "pytest", "pytest-cov", "brotli")
+          # Install dependencies for the unit test environment
+          unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+          session.install(*unit_deps_all)
 
           # Install dependencies needed for system tests
           session.install(
@@ -59,7 +60,8 @@ replacements:
 
           prerel_deps = [
               "google-api-core",
-              "google-auth",
+              # Exclude google-auth 3.0.0.dev0 which was yanked
+              "google-auth!=3.0.0.dev0",
               "google-cloud-core",
               "google-crc32c",
               "google-resumable-media",
@@ -88,9 +90,7 @@ replacements:
                       f"import {version_namespace}; print({version_namespace}.__version__)",
                   )
           # Remaining dependencies
-          other_deps = [
-              "requests",
-          ]
+          other_deps = ["requests", "pyopenssl"]
           session.install(*other_deps)
 
           session.run(
@@ -287,11 +287,11 @@ replacements:
       packages/google-cloud-storage/README.rst,
     ]
     before: |
-      Python Client for Google Cloud Storage
+      Python Client for Cloud Storage
       [\s\S]*?\(This is the reason for 2.i. above.\)
     after: |
-      Python Client for Google Cloud Storage
-      ======================================
+      Python Client for Cloud Storage
+      ===============================
 
       |stable| |pypi| |versions|
 
@@ -597,9 +597,10 @@ replacements:
           # experimental in this SDK. More info in b/465352227
           "grpc": [
               "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-              "grpcio >= 1.33.2, < 2.0.0; python_version < '3.14'",
+              "grpcio >= 1.44.0, < 2.0.0; python_version < '3.14'",
               "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "grpcio-status >= 1.76.0, < 2.0.0",
+              "grpcio-status >= 1.44.0, < 2.0.0; python_version < '3.14'",
+              "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
               "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
               "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
               "protobuf >= 4.25.8, < 8.0.0",
@@ -636,26 +637,32 @@ replacements:
       }
     count: 1
   - paths: [
-      packages/google-cloud-storage/testing/constraints-3.9.txt
+      packages/google-cloud-storage/testing/constraints-3.10.txt
     ]
     before: |
-      google-api-core==2.21.0
-      [\s\S]*?grpc-google-iam-v1==0.14.0
+      google-api-core==2.17.1
+      google-auth==2.14.1
+      grpcio==1.44.0
+      proto-plus==1.22.3
+      protobuf==4.25.8
+      grpc-google-iam-v1==0.14.0
     after: |
       google-auth==2.26.1
       # cryptography is a direct dependency of google-auth
-      cryptography
+      cryptography==38.0.0
       google-api-core==2.27.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
-      grpcio==1.33.2
+      grpcio==1.44.0
+      grpcio-status==1.44.0
+      proto-plus==1.22.3
+      protobuf==4.25.8
+      grpc-google-iam-v1==0.14.0
+      opentelemetry-api==1.1.0
       requests==2.22.0
       google-crc32c==1.6.0
-      protobuf==4.25.8
-      opentelemetry-api==1.1.0
     count: 1
   - paths: [
-      packages/google-cloud-storage/testing/constraints-3.10.txt,
       packages/google-cloud-storage/testing/constraints-3.11.txt,
       packages/google-cloud-storage/testing/constraints-3.12.txt,
     ]
@@ -674,7 +681,7 @@ replacements:
       google-crc32c
       protobuf
       opentelemetry-api
-    count: 3
+    count: 2
   - paths: [
       packages/google-cloud-storage/testing/constraints-3.13.txt,
       packages/google-cloud-storage/testing/constraints-3.14.txt,

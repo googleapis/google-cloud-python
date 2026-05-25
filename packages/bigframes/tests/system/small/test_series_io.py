@@ -30,13 +30,23 @@ def test_to_pandas_override_global_option(scalars_df_index):
         assert table_id is not None
 
         session = bf_series._block.session
-        execution_count = session._metrics.execution_count
+
+        history_before = session.execution_history().to_dataframe()
+        queries_before = (
+            len(history_before[history_before["job_type"] == "query"])
+            if "job_type" in history_before.columns
+            else 0
+        )
 
         # When allow_large_results=False, a query_job object should not be created.
         # Therefore, the table_id should remain unchanged.
         bf_series.to_pandas(allow_large_results=False)
         assert bf_series._query_job.destination.table_id == table_id
-        assert session._metrics.execution_count - execution_count == 1
+
+        history_after = session.execution_history().to_dataframe()
+        queries_after = len(history_after[history_after["job_type"] == "query"])
+
+        assert (queries_after - queries_before) == 1
 
 
 @pytest.mark.parametrize(

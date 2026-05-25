@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -301,6 +301,11 @@ class EvaluationServiceTransport(abc.ABC):
             ),
             self.test_persona_voice: gapic_v1.method.wrap_method(
                 self.test_persona_voice,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluations: gapic_v1.method.wrap_method(
+                self.export_evaluations,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -668,6 +673,15 @@ class EvaluationServiceTransport(abc.ABC):
             evaluation_service.TestPersonaVoiceResponse,
             Awaitable[evaluation_service.TestPersonaVoiceResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluations(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

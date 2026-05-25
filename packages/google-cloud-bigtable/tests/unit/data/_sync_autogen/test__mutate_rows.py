@@ -18,6 +18,7 @@
 import pytest
 from google.api_core.exceptions import DeadlineExceeded, Forbidden
 from google.rpc import status_pb2
+
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.mutations import DeleteAllFromRow, RowMutationEntry
 from google.cloud.bigtable_v2.types import MutateRowsResponse
@@ -73,6 +74,7 @@ class TestMutateRowsOperation:
     def test_ctor(self):
         """test that constructor sets all the attributes correctly"""
         from google.api_core.exceptions import Aborted, DeadlineExceeded
+
         from google.cloud.bigtable.data._async._mutate_rows import _EntryWithProto
         from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
 
@@ -223,6 +225,7 @@ class TestMutateRowsOperation:
     def test_mutate_rows_incomplete_ignored(self):
         """MutateRowsIncomplete exceptions should not be added to error list"""
         from google.api_core.exceptions import DeadlineExceeded
+
         from google.cloud.bigtable.data.exceptions import (
             MutationsExceptionGroup,
             _MutateRowsIncomplete,

@@ -395,9 +395,10 @@ class Block:
     def order_by(
         self,
         by: typing.Sequence[ordering.OrderingExpression],
+        stable: bool = True,
     ) -> Block:
         return Block(
-            self._expr.order_by(by),
+            self._expr.order_by(by, stable=stable),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,
@@ -847,7 +848,7 @@ class Block:
         else:
             raw_df = result_batches.to_pandas()
         df = self._copy_index_to_pandas(raw_df)
-        df.set_axis(self.column_labels, axis=1, copy=False)
+        df.columns = self.column_labels
         return df, execute_result.query_job
 
     def split(
@@ -2412,13 +2413,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(get_column_right[other.value_columns[index]])
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2471,15 +2472,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(
-                get_column_right[other.transpose().value_columns[index]]
-            )
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.transpose().value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2506,13 +2505,11 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(self.value_columns[index])
-            if index != -1
-            else ex.const(None)
+        left_input_lookup = lambda index: (
+            ex.deref(self.value_columns[index]) if index != -1 else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.const(other.iloc[index]) if index != -1 else ex.const(None)
+        righ_input_lookup = lambda index: (
+            ex.const(other.iloc[index]) if index != -1 else ex.const(None)
         )
 
         left_inputs = [left_input_lookup(i) for i in lcol_indexer]
@@ -2796,6 +2793,7 @@ class Block:
                 )
                 block = block.drop_columns([equal_monotonic_id, strict_monotonic_id])
 
+        assert last_result_id is not None
         block, monotonic_result_id = block.apply_binary_op(
             last_result_id,
             last_notna_id,

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# BigQuery Logging Protos API
+# BigQuery Logging API
 
-Overview of the APIs available for BigQuery Logging Protos API.
+Overview of the APIs available for BigQuery Logging API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-BigQuery Logging Protos API.
+BigQuery Logging API.
 
 [classes](https://cloud.google.com/python/docs/reference/bigquerylogging/latest/summary_class.html)
 

@@ -18,11 +18,16 @@
 import os
 from datetime import datetime, timedelta
 from typing import Tuple
+
 import pytest
+from google.api_core import exceptions
+from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
 from google.cloud import bigtable_admin_v2 as admin_v2
 from google.cloud.bigtable.data import mutations, read_rows_query
 from google.cloud.bigtable.data._cross_sync import CrossSync
+
 from .conftest import (
     BACKUP_PREFIX,
     DEFAULT_CLUSTER_LOCATIONS,
@@ -38,7 +43,6 @@ from .conftest import (
     TEST_TABLE_NAME,
     generate_unique_suffix,
 )
-from google.api_core import operation as api_core_operation
 
 if os.getenv(BIGTABLE_EMULATOR):
     pytest.skip(
@@ -76,7 +80,10 @@ def instances_to_delete(instance_admin_client):
         yield instances
     finally:
         for instance in instances:
-            instance_admin_client.delete_instance(name=instance.name)
+            try:
+                instance_admin_client.delete_instance(name=instance.name)
+            except exceptions.NotFound:
+                pass
 
 
 @pytest.fixture(scope="session")
@@ -86,7 +93,10 @@ def backups_to_delete(table_admin_client):
         yield backups
     finally:
         for backup in backups:
-            table_admin_client.delete_backup(name=backup.name)
+            try:
+                table_admin_client.delete_backup(name=backup.name)
+            except exceptions.NotFound:
+                pass
 
 
 def create_instance(
@@ -101,8 +111,7 @@ def create_instance(
     """Creates a new Bigtable instance with the specified project_id, storage type, and cluster locations.
 
     After creating the Bigtable instance, it will create a test table and populate it with dummy data.
-    This is not defined as a fixture because the different system tests need different kinds of instances.
-    """
+    This is not defined as a fixture because the different system tests need different kinds of instances."""
     clusters = {}
     instance_id = generate_unique_suffix(INSTANCE_PREFIX)
     for idx, location in enumerate(cluster_locations):
@@ -125,8 +134,10 @@ def create_instance(
             clusters=clusters,
         )
         operation = instance_admin_client.create_instance(create_instance_request)
+        instance_name = instance_admin_client.instance_path(project_id, instance_id)
+        instances_to_delete.append(admin_v2.Instance(name=instance_name))
         instance = operation.result()
-        instances_to_delete.append(instance)
+        instances_to_delete[-1] = instance
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -187,8 +198,11 @@ def create_backup(
             ),
         )
     )
+    backups_to_delete.append(
+        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
+    )
     backup = operation.result()
-    backups_to_delete.append(backup)
+    backups_to_delete[-1] = backup
     return backup
 
 

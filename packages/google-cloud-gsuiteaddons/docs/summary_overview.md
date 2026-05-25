@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Workspace Add-ons API API
+# Google Workspace add-ons API
 
-Overview of the APIs available for Google Workspace Add-ons API API.
+Overview of the APIs available for Google Workspace add-ons API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Workspace Add-ons API API.
+Google Workspace add-ons API.
 
 [classes](https://cloud.google.com/python/docs/reference/gsuiteaddons/latest/summary_class.html)
 

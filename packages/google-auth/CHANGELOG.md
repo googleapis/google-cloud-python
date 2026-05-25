@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.52.0...google-auth-v2.53.0) (2026-05-15)
+
+
+### Bug Fixes
+
+* allowlist agents-nonprod trust domains for agent identity (#17155) ([44c93d2e3012d7c7850dacda587dcb34819738ed](https://github.com/googleapis/google-cloud-python/commit/44c93d2e3012d7c7850dacda587dcb34819738ed))
+* fail-fast on invalid or non-workload certificate configs in agent identity discovery (#17116) ([f27a546127cbbae3459fda8417f86a302fa0bbae](https://github.com/googleapis/google-cloud-python/commit/f27a546127cbbae3459fda8417f86a302fa0bbae))
+
+## [2.52.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.51.0...google-auth-v2.52.0) (2026-05-07)
+
+
+### Features
+
+* make _CLOUD_RESOURCE_MANAGER URL universe-domain-aware (#16546) ([e938028bf17026cf0157fc7e8ce600fd96ca0955](https://github.com/googleapis/google-cloud-python/commit/e938028bf17026cf0157fc7e8ce600fd96ca0955))
+* implement in-place Regional Access Boundary configuration and add public RAB getters (#16987) ([df07fceb9e61f76e70a0954c3d59a52fbb31688d](https://github.com/googleapis/google-cloud-python/commit/df07fceb9e61f76e70a0954c3d59a52fbb31688d))
+
+## [2.51.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.50.0...google-auth-v2.51.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.8 and 3.9 (#16946) ([dcbdd3b40eef6e4fee66b6b486daea056c3384db](https://github.com/googleapis/google-cloud-python/commit/dcbdd3b40eef6e4fee66b6b486daea056c3384db))
+
 ## [2.49.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.1...google-auth-v2.49.2) (2026-04-09)
 
 

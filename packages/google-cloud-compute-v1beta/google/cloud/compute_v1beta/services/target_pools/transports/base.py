@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -149,67 +149,97 @@ class TargetPoolsTransport(abc.ABC):
         self._wrapped_methods = {
             self.add_health_check: gapic_v1.method.wrap_method(
                 self.add_health_check,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.add_instance: gapic_v1.method.wrap_method(
                 self.add_instance,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.aggregated_list: gapic_v1.method.wrap_method(
                 self.aggregated_list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get_health: gapic_v1.method.wrap_method(
                 self.get_health,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_health_check: gapic_v1.method.wrap_method(
                 self.remove_health_check,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.remove_instance: gapic_v1.method.wrap_method(
                 self.remove_instance,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_backup: gapic_v1.method.wrap_method(
                 self.set_backup,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.set_security_policy: gapic_v1.method.wrap_method(
                 self.set_security_policy,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }

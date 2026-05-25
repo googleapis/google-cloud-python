@@ -450,24 +450,6 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-  - paths: [
-      packages/google-cloud-bigquery-storage/testing/constraints-3.9.txt,
-    ]
-    before: |
-      google-api-core==2.21.0
-      google-auth==2.35.0
-    after: |
-      google-api-core==2.21.0
-      libcst==0.2.5
-      fastavro==1.1.0
-      # pytz is required by pandas
-      pytz
-      pandas==1.1.3
-      # numpy is a dependency of pandas
-      numpy==1.19.3
-      pyarrow==3.0.0
-      google-auth==2.35.0
-    count: 1
     # Given that this file is mostly handwritten, we could omit the file during code generation
     # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
@@ -476,7 +458,7 @@ replacements:
     before: |
       .. include:: README.rst\n
       .. include:: multiprocessing.rst\n
-      This package includes clients for multiple versions of Google BigQuery Storage.
+      This package includes clients for multiple versions of BigQuery Storage.
       By default, you will get version ``bigquery_storage_v1``.\n\n
       API Reference
       -------------

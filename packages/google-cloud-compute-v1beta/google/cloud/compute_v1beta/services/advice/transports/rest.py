@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,6 +80,22 @@ class AdviceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_capacity(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_capacity(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_capacity_history(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_capacity_history(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = AdviceRestTransport(interceptor=MyCustomAdviceInterceptor())
         client = AdviceClient(transport=transport)
 
@@ -133,6 +149,104 @@ class AdviceRestInterceptor:
         `post_calendar_mode` interceptor. The (possibly modified) response returned by
         `post_calendar_mode` will be passed to
         `post_calendar_mode_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_capacity(
+        self,
+        request: compute.CapacityAdviceRpcRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.CapacityAdviceRpcRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for capacity
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Advice server.
+        """
+        return request, metadata
+
+    def post_capacity(
+        self, response: compute.CapacityAdviceResponse
+    ) -> compute.CapacityAdviceResponse:
+        """Post-rpc interceptor for capacity
+
+        DEPRECATED. Please use the `post_capacity_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Advice server but before
+        it is returned to user code. This `post_capacity` interceptor runs
+        before the `post_capacity_with_metadata` interceptor.
+        """
+        return response
+
+    def post_capacity_with_metadata(
+        self,
+        response: compute.CapacityAdviceResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.CapacityAdviceResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for capacity
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Advice server but before it is returned to user code.
+
+        We recommend only using this `post_capacity_with_metadata`
+        interceptor in new development instead of the `post_capacity` interceptor.
+        When both interceptors are used, this `post_capacity_with_metadata` interceptor runs after the
+        `post_capacity` interceptor. The (possibly modified) response returned by
+        `post_capacity` will be passed to
+        `post_capacity_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_capacity_history(
+        self,
+        request: compute.CapacityHistoryAdviceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.CapacityHistoryAdviceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for capacity_history
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Advice server.
+        """
+        return request, metadata
+
+    def post_capacity_history(
+        self, response: compute.CapacityHistoryResponse
+    ) -> compute.CapacityHistoryResponse:
+        """Post-rpc interceptor for capacity_history
+
+        DEPRECATED. Please use the `post_capacity_history_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Advice server but before
+        it is returned to user code. This `post_capacity_history` interceptor runs
+        before the `post_capacity_history_with_metadata` interceptor.
+        """
+        return response
+
+    def post_capacity_history_with_metadata(
+        self,
+        response: compute.CapacityHistoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.CapacityHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for capacity_history
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Advice server but before it is returned to user code.
+
+        We recommend only using this `post_capacity_history_with_metadata`
+        interceptor in new development instead of the `post_capacity_history` interceptor.
+        When both interceptors are used, this `post_capacity_history_with_metadata` interceptor runs after the
+        `post_capacity_history` interceptor. The (possibly modified) response returned by
+        `post_capacity_history` will be passed to
+        `post_capacity_history_with_metadata`.
         """
         return response, metadata
 
@@ -396,6 +510,318 @@ class AdviceRestTransport(_BaseAdviceRestTransport):
                 )
             return resp
 
+    class _Capacity(_BaseAdviceRestTransport._BaseCapacity, AdviceRestStub):
+        def __hash__(self):
+            return hash("AdviceRestTransport.Capacity")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.CapacityAdviceRpcRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.CapacityAdviceResponse:
+            r"""Call the capacity method over HTTP.
+
+            Args:
+                request (~.compute.CapacityAdviceRpcRequest):
+                    The request object. A request message for
+                Advice.Capacity. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.CapacityAdviceResponse:
+                    A response contains scoring
+                recommendations.
+
+            """
+
+            http_options = _BaseAdviceRestTransport._BaseCapacity._get_http_options()
+
+            request, metadata = self._interceptor.pre_capacity(request, metadata)
+            transcoded_request = (
+                _BaseAdviceRestTransport._BaseCapacity._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseAdviceRestTransport._BaseCapacity._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAdviceRestTransport._BaseCapacity._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.AdviceClient.Capacity",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Advice",
+                        "rpcName": "Capacity",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdviceRestTransport._Capacity._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.CapacityAdviceResponse()
+            pb_resp = compute.CapacityAdviceResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_capacity(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_capacity_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.CapacityAdviceResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.AdviceClient.capacity",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Advice",
+                        "rpcName": "Capacity",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CapacityHistory(
+        _BaseAdviceRestTransport._BaseCapacityHistory, AdviceRestStub
+    ):
+        def __hash__(self):
+            return hash("AdviceRestTransport.CapacityHistory")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.CapacityHistoryAdviceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.CapacityHistoryResponse:
+            r"""Call the capacity history method over HTTP.
+
+            Args:
+                request (~.compute.CapacityHistoryAdviceRequest):
+                    The request object. A request message for
+                Advice.CapacityHistory. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.CapacityHistoryResponse:
+                    Contains the capacity history.
+            """
+
+            http_options = (
+                _BaseAdviceRestTransport._BaseCapacityHistory._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_capacity_history(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseAdviceRestTransport._BaseCapacityHistory._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseAdviceRestTransport._BaseCapacityHistory._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAdviceRestTransport._BaseCapacityHistory._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.AdviceClient.CapacityHistory",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Advice",
+                        "rpcName": "CapacityHistory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AdviceRestTransport._CapacityHistory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.CapacityHistoryResponse()
+            pb_resp = compute.CapacityHistoryResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_capacity_history(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_capacity_history_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.CapacityHistoryResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.AdviceClient.capacity_history",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Advice",
+                        "rpcName": "CapacityHistory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def calendar_mode(
         self,
@@ -405,6 +831,24 @@ class AdviceRestTransport(_BaseAdviceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CalendarMode(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def capacity(
+        self,
+    ) -> Callable[[compute.CapacityAdviceRpcRequest], compute.CapacityAdviceResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Capacity(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def capacity_history(
+        self,
+    ) -> Callable[
+        [compute.CapacityHistoryAdviceRequest], compute.CapacityHistoryResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CapacityHistory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

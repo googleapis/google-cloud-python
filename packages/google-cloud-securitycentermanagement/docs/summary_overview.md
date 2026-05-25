@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Security Center Management API API
+# Security Command Center Management API
 
-Overview of the APIs available for Security Center Management API API.
+Overview of the APIs available for Security Command Center Management API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Security Center Management API API.
+Security Command Center Management API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest/summary_class.html)
 

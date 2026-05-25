@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1304,7 +1298,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1585,7 +1579,7 @@ def test_cancel_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_rest_unset_required_fields():
@@ -1794,7 +1788,7 @@ def test_cancel_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_unary_rest_unset_required_fields():
@@ -2003,7 +1997,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -2212,7 +2206,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -2413,7 +2407,7 @@ def test_get_rest_required_fields(request_type=compute.GetFutureReservationReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -2619,7 +2613,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -2829,7 +2823,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -3040,7 +3034,7 @@ def test_list_rest_required_fields(request_type=compute.ListFutureReservationsRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -3319,7 +3313,7 @@ def test_update_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -3550,7 +3544,7 @@ def test_update_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -4291,6 +4285,7 @@ def test_get_rest_call_success(request_type):
         return_value = compute.FutureReservation(
             auto_created_reservations_delete_time="auto_created_reservations_delete_time_value",
             auto_delete_auto_created_reservations=True,
+            confidential_compute_type="confidential_compute_type_value",
             creation_timestamp="creation_timestamp_value",
             deployment_type="deployment_type_value",
             description="description_value",
@@ -4329,6 +4324,7 @@ def test_get_rest_call_success(request_type):
         == "auto_created_reservations_delete_time_value"
     )
     assert response.auto_delete_auto_created_reservations is True
+    assert response.confidential_compute_type == "confidential_compute_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.deployment_type == "deployment_type_value"
     assert response.description == "description_value"
@@ -4478,6 +4474,7 @@ def test_insert_rest_call_success(request_type):
             "commitment_plan": "commitment_plan_value",
             "previous_commitment_terms": "previous_commitment_terms_value",
         },
+        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
@@ -4486,6 +4483,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "name_prefix": "name_prefix_value",
+        "params": {"resource_manager_tags": {}},
         "planning_status": "planning_status_value",
         "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",
@@ -4975,6 +4973,7 @@ def test_update_rest_call_success(request_type):
             "commitment_plan": "commitment_plan_value",
             "previous_commitment_terms": "previous_commitment_terms_value",
         },
+        "confidential_compute_type": "confidential_compute_type_value",
         "creation_timestamp": "creation_timestamp_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
@@ -4983,6 +4982,7 @@ def test_update_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "name_prefix": "name_prefix_value",
+        "params": {"resource_manager_tags": {}},
         "planning_status": "planning_status_value",
         "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",

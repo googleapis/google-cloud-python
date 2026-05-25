@@ -14,10 +14,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence, TypeVar, Type
-
+from typing import TYPE_CHECKING, Sequence, Type, TypeVar
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
+from google.cloud.firestore_v1 import pipeline_types as types
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.pipeline_expressions import (
     AggregateFunction,
@@ -25,8 +25,8 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     BooleanExpression,
     Expression,
     Field,
-    Selectable,
     FunctionExpression,
+    Selectable,
     _PipelineValueExpression,
 )
 from google.cloud.firestore_v1.types.pipeline import (
@@ -37,6 +37,7 @@ from google.cloud.firestore_v1.vector import Vector
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient
     from google.cloud.firestore_v1.client import Client
+    from google.cloud.firestore_v1.types.document import Value
 
 _T = TypeVar("_T", bound="_BasePipeline")
 
@@ -274,7 +275,7 @@ class _BasePipeline:
         field: str | Expression,
         vector: Sequence[float] | "Vector",
         distance_measure: "DistanceMeasure",
-        options: stages.FindNearestOptions | None = None,
+        options: types.FindNearestOptions | None = None,
     ) -> "_BasePipeline":
         """
         Performs vector distance (similarity) search with given parameters on the
@@ -395,10 +396,13 @@ class _BasePipeline:
         return self._append(stages.Sort(*orders))
 
     def search(
-        self, query_or_options: str | BooleanExpression | stages.SearchOptions
+        self, query_or_options: str | BooleanExpression | types.SearchOptions
     ) -> "_BasePipeline":
         """
         Adds a search stage to the pipeline.
+
+        .. note::
+            This feature is currently in beta and is subject to change.
 
         This stage filters documents based on the provided query expression.
 
@@ -425,7 +429,7 @@ class _BasePipeline:
         """
         return self._append(stages.Search(query_or_options))
 
-    def sample(self, limit_or_options: int | stages.SampleOptions) -> "_BasePipeline":
+    def sample(self, limit_or_options: int | types.SampleOptions) -> "_BasePipeline":
         """
         Performs a pseudo-random sampling of the documents from the previous stage.
 
@@ -489,7 +493,7 @@ class _BasePipeline:
         self,
         field: str | Selectable,
         alias: str | Field | None = None,
-        options: stages.UnnestOptions | None = None,
+        options: types.UnnestOptions | None = None,
     ) -> "_BasePipeline":
         """
         Produces a document for each element in an array field from the previous stage document.
@@ -548,7 +552,12 @@ class _BasePipeline:
         """
         return self._append(stages.Unnest(field, alias, options))
 
-    def raw_stage(self, name: str, *params: Expression) -> "_BasePipeline":
+    def raw_stage(
+        self,
+        name: str,
+        *params: Expression,
+        options: dict[str, Expression | Value] | None = None,
+    ) -> "_BasePipeline":
         """
         Adds a stage to the pipeline by specifying the stage name as an argument. This does not offer any
         type safety on the stage params and requires the caller to know the order (and optionally names)
@@ -566,11 +575,12 @@ class _BasePipeline:
         Args:
             name: The name of the stage.
             *params: A sequence of `Expression` objects representing the parameters for the stage.
+            options: An optional dictionary of stage options.
 
         Returns:
             A new Pipeline object with this stage appended to the stage list
         """
-        return self._append(stages.RawStage(name, *params))
+        return self._append(stages.RawStage(name, *params, options=options or {}))
 
     def offset(self, offset: int) -> "_BasePipeline":
         """
@@ -704,6 +714,9 @@ class _BasePipeline:
         """
         Deletes the documents from the current pipeline stage.
 
+        .. note::
+            This feature is currently in beta and is subject to change.
+
         Example:
             >>> from google.cloud.firestore_v1.pipeline_expressions import Field
             >>> pipeline = client.pipeline().collection("logs")
@@ -719,6 +732,9 @@ class _BasePipeline:
     def update(self, *transformed_fields: "Selectable") -> "_BasePipeline":
         """
         Performs an update operation using documents from previous stages.
+
+        .. note::
+            This feature is currently in beta and is subject to change.
 
         If called without `transformed_fields`, this method updates the documents in
         place based on the data flowing through the pipeline.

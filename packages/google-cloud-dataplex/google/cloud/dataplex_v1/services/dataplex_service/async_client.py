@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -358,11 +358,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lake(request=request)
+                operation = await client.create_lake(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -517,11 +517,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lake(request=request)
+                operation = await client.update_lake(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -661,11 +661,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lake(request=request)
+                operation = await client.delete_lake(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1175,11 +1175,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_zone(request=request)
+                operation = await client.create_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1334,11 +1334,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_zone(request=request)
+                operation = await client.update_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1471,11 +1471,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_zone(request=request)
+                operation = await client.delete_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1974,11 +1974,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_asset(request=request)
+                operation = await client.create_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2126,11 +2126,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_asset(request=request)
+                operation = await client.update_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2261,11 +2261,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_asset(request=request)
+                operation = await client.delete_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2764,11 +2764,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_task(request=request)
+                operation = await client.create_task(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2910,11 +2910,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_task(request=request)
+                operation = await client.update_task(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3044,11 +3044,11 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_task(request=request)
+                operation = await client.delete_task(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

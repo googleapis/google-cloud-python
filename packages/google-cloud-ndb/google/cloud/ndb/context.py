@@ -22,6 +22,7 @@ import itertools
 import os
 import threading
 import uuid
+from typing import Any, cast
 
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
@@ -254,6 +255,11 @@ class _Context(_ContextTuple):
         client (client.Client): The NDB client for this context.
     """
 
+    cache_policy: Any
+    global_cache_policy: Any
+    global_cache_timeout_policy: Any
+    datastore_policy: Any
+
     def __new__(
         cls,
         client,
@@ -313,11 +319,15 @@ class _Context(_ContextTuple):
             legacy_data=legacy_data,
         )
 
-        context.set_cache_policy(cache_policy)
-        context.set_global_cache_policy(global_cache_policy)
-        context.set_global_cache_timeout_policy(global_cache_timeout_policy)
-        context.set_datastore_policy(datastore_policy)
-        context.set_retry_state(retry)
+        # 'context' is dynamically composed at runtime and may include methods
+        # from multiple sources that Mypy cannot statically resolve here.
+        # We cast to `Any` to access the extended policy interface.
+        ctx = cast(Any, context)
+        ctx.set_cache_policy(cache_policy)
+        ctx.set_global_cache_policy(global_cache_policy)
+        ctx.set_global_cache_timeout_policy(global_cache_timeout_policy)
+        ctx.set_datastore_policy(datastore_policy)
+        ctx.set_retry_state(retry)
 
         return context
 

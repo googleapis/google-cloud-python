@@ -14,11 +14,10 @@
 
 # import time
 import uuid
-import pytest
 
 from google.api_core import exceptions
-
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
+import pytest
 from test_utils.retry import RetryErrors
 
 import graph_snippets
@@ -80,11 +79,6 @@ CREATE OR REPLACE PROPERTY GRAPH FinGraph
                     DESTINATION KEY(to_id) REFERENCES Account(id)
                     LABEL Transfers)
 """
-
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "snippets"
 
 
 @pytest.fixture(scope="module")

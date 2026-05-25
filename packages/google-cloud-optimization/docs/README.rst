@@ -3,7 +3,9 @@ Python Client for Cloud Optimization
 
 |stable| |pypi| |versions|
 
-`Cloud Optimization`_: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
+`Cloud Optimization`_: Cloud Optimization API provides a portfolio of solvers to address common
+optimization use cases starting with optimal route planning for vehicle
+fleets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

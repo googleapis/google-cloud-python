@@ -3,7 +3,8 @@ Python Client for Dataproc Metastore
 
 |stable| |pypi| |versions|
 
-`Dataproc Metastore`_: is a fully managed, highly available, autoscaled, autohealing, OSS-native metastore service that greatly simplifies technical metadata management. Dataproc Metastore service is based on Apache Hive metastore and serves as a critical component towards enterprise data lakes.
+`Dataproc Metastore`_: The Dataproc Metastore API is used to manage the lifecycle and
+configuration of metastore services.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

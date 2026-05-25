@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast
+from typing import Any, cast
 
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
@@ -1920,7 +1920,7 @@ def ai_generate(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
         op.output_schema,  # type: ignore
     ).to_expr()
@@ -1934,7 +1934,7 @@ def ai_generate_bool(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1947,7 +1947,7 @@ def ai_generate_int(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1960,8 +1960,21 @@ def ai_generate_double(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
+    ).to_expr()
+
+
+@scalar_op_compiler.register_unary_op(ops.AIEmbed, pass_op=True)
+def ai_embed(value: ibis_types.Value, op: ops.AIEmbed) -> ibis_types.StructValue:
+    return ai_ops.AIEmbed(
+        value,  # type: ignore
+        connection_id=op.connection_id,  # type: ignore
+        endpoint=op.endpoint,  # type: ignore
+        model=op.model,  # type: ignore
+        task_type=op.task_type,  # type: ignore
+        title=op.title,  # type: ignore
+        model_params=op.model_params,  # type: ignore
     ).to_expr()
 
 
@@ -1970,6 +1983,9 @@ def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
     return ai_ops.AIIf(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.optimization_mode,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -1980,7 +1996,12 @@ def ai_classify(
     return ai_ops.AIClassify(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.categories,  # type: ignore
+        _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.output_mode,  # type: ignore
+        op.optimization_mode,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -1988,6 +2009,22 @@ def ai_classify(
 def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructValue:
     return ai_ops.AIScore(
         _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.max_error_ratio,  # type: ignore
+    ).to_expr()
+
+
+@scalar_op_compiler.register_binary_op(ops.AISimilarity, pass_op=True)
+def ai_similarity(
+    content1: ibis_types.Value, content2: ibis_types.Value, op: ops.AISimilarity
+) -> ibis_types.Value:
+    return ai_ops.AISimilarity(
+        content1,  # type: ignore
+        content2,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.model,  # type: ignore
+        op.model_params,  # type: ignore
         op.connection_id,  # type: ignore
     ).to_expr()
 
@@ -2006,6 +2043,25 @@ def _construct_prompt(
             prompt[f"_field_{idx + 1}"] = elem
 
     return ibis.struct(prompt)
+
+
+def _construct_examples(
+    examples: tuple[tuple[str, str | tuple[str, ...]], ...] | None,
+) -> ibis_types.ArrayValue | None:
+    if examples is None:
+        return None
+
+    results: list[ibis_types.StructValue] = []
+
+    for example in examples:
+        value: Any = example[1]
+        if isinstance(example[1], (list, tuple)):
+            value = list(example[1])
+
+        ibis_example = ibis.struct({"_field_1": example[0], "_field_2": value})
+        results.append(ibis_example)
+
+    return ibis.array(results)
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)
@@ -2168,9 +2224,12 @@ def obj_make_ref_json(objectref_json: ibis_dtypes.JSON) -> _OBJ_REF_IBIS_DTYPE: 
 
 
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
-def obj_get_access_url(
-    obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String
-) -> ibis_dtypes.JSON:  # type: ignore
+# Stub for BigQuery UDF, empty body is intentional.
+# _OBJ_REF_IBIS_DTYPE is a variable holding a type, Mypy complains about it being used as type hint.
+def obj_get_access_url(  # type: ignore[empty-body]
+    obj_ref: _OBJ_REF_IBIS_DTYPE,  # type: ignore[valid-type]
+    mode: ibis_dtypes.String,
+) -> ibis_dtypes.JSON:
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
 
 

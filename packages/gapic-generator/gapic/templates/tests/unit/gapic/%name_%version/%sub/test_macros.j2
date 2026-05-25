@@ -1,11 +1,21 @@
 {% macro grpc_required_tests(method, service, api, full_extended_lro=False) %}
+{%- set method_settings = api.all_method_settings.get(method.meta.address.proto) -%}
+{%- set auto_populated_fields = method_settings.auto_populated_fields if method_settings else [] -%}
+{%- set auto_populated_field_sample_value = "explicit value for autopopulate-able field" -%}
 {% with method_name = method.client_method_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.client_method_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
 @pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }},
-  dict,
+  {{ method.input.ident }}({
+    {% for auto_populated_field in auto_populated_fields %}
+    "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
+    {% endfor %}
+  }),
+  {
+    {% for auto_populated_field in auto_populated_fields %}
+    "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
+    {% endfor %}
+  },
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
-    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -13,18 +23,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    {# Set UUID4 fields so that they are not automatically populated. #}
-    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-    {% if method_settings is not none %}
-    {% for auto_populated_field in method_settings.auto_populated_fields %}
-    if isinstance(request, dict):
-        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
-    else:
-        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
-    {% endfor %}
-    {% endif %}{# if method_settings is not none #}
-    {% endwith %}{# method_settings #}
+    request = request_type
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -71,13 +70,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         assert next(args[0]) == request
         {% else %}
         request = {{ method.input.ident }}()
-        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-        {% if method_settings is not none %}
-        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        {% for auto_populated_field in auto_populated_fields %}
         request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
         {% endfor %}
-        {% endif %}{# if method_settings is not none #}
-        {% endwith %}{# method_settings #}
         assert args[0] == request
         {% endif %}
 
@@ -118,10 +113,9 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
-    {% endwith %}{# auto_populated_field_sample_value #}
+    {%- if not method.client_streaming %}
 
 
-{% if not method.client_streaming %}
 def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -148,20 +142,20 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
 {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-{% if method_settings is not none %}
-{% for auto_populated_field in method_settings.auto_populated_fields %}
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
-{% endfor %}
-{% endif %}{# if method_settings is not none #}
-{% endwith %}{# method_settings #}
-        assert args[0] == {{ method.input.ident }}(
+        request_msg = {{ method.input.ident }}(
         {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
             {{ field.name }}={{ field.mock_value }},
         {% endfor %}
         )
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.fullmatch(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
+        request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
+        assert args[0] == request_msg
 {% endif %}
 
 def test_{{ method_name }}_use_cached_wrapped_rpc():
@@ -265,8 +259,19 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
-    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
+@pytest.mark.parametrize("request_type", [
+  {{ method.input.ident }}({
+    {%- for auto_populated_field in auto_populated_fields %}
+    "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
+    {%- endfor %}
+  }),
+  {
+    {%- for auto_populated_field in auto_populated_fields %}
+    "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
+    {%- endfor %}
+  },
+])
+async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyncio'):
     client = {{ service.async_client_name }}(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -274,18 +279,7 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    {# Set UUID4 fields so that they are not automatically populated. #}
-    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-    {% if method_settings is not none %}
-    {% for auto_populated_field in method_settings.auto_populated_fields %}
-    if isinstance(request, dict):
-        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
-    else:
-        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
-    {% endfor %}
-    {% endif %}{# if method_settings is not none #}
-    {% endwith %}{# method_settings #}
+    request = request_type
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -335,13 +329,9 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
         assert next(args[0]) == request
         {% else %}
         request = {{ method.input.ident }}()
-        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-        {% if method_settings is not none %}
-        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        {% for auto_populated_field in auto_populated_fields %}
         request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
         {% endfor %}
-        {% endif %}{# if method_settings is not none #}
-        {% endwith %}{# method_settings #}
         assert args[0] == request
         {% endif %}
 
@@ -378,12 +368,6 @@ async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_
     {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
-    {% endwith %}{# auto_populated_field_sample_value #}
-
-
-@pytest.mark.asyncio
-async def test_{{ method_name }}_async_from_dict():
-    await test_{{ method_name }}_async(request_type=dict)
 {% endif %}{# full_extended_lro #}
 
 {% if method.field_headers and not method.client_streaming and not method.explicit_routing %}
@@ -1005,9 +989,7 @@ async def test_{{ method_name }}_async_pages():
         {% endif %}
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in ( # pragma: no branch
+        async for page_ in (
             await client.{{ method_name }}(request={})
         ).pages:
             pages.append(page_)
@@ -1020,7 +1002,7 @@ def test_{{ method_name }}_raw_page_lro():
 {% endif %}{# method.paged_result_field #}{% endwith %}
 {% endmacro %}
 
-{% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False) %}
+{% macro rest_required_tests(api, method, service, numeric_enums=False, full_extended_lro=False) %}
 {% with method_name = method.client_method_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.client_method_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
@@ -1220,8 +1202,25 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 ('$alt', 'json;enum-encoding=int')
               {% endif %}
             ]
+    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+    {% if method_settings is not none %}
+    {% for auto_populated_field in method_settings.auto_populated_fields %}
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs['params']):
+                if key == "{{ auto_populated_field|camel_case }}":
+                    assert re.fullmatch(r"{{ get_uuid4_re() }}", value)
+                    break
+            
+            # Include {{ auto_populated_field|camel_case }} within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "{{ auto_populated_field|camel_case }}"]
+            expected_params.append(
+                ("{{ auto_populated_field|camel_case }}", mock.ANY)
+            )
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
             actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_{{ method_name }}_rest_unset_required_fields():
@@ -1557,21 +1556,20 @@ def test_{{ method_name }}_rest_no_http_options():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, {% if routing_param %}kw{% else %}_{% endif %} = call.mock_calls[0]
-        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
-        {% if method_settings is not none %}
-        {% for auto_populated_field in method_settings.auto_populated_fields %}
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
-        # clear UUID field so that the check below succeeds
-        args[0].{{ auto_populated_field }} = None
-        {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
-        {% endif %}{# if method_settings is not none #}
-        {% endwith %}{# method_settings #}
         {% if request_dict %}
         request_msg = {{ method.input.ident }}(**{{ request_dict }})
         {% else %}
         request_msg = {{ method.input.ident }}()
-        {% endif %}{# request_dict #}      
+        {% endif %}{# request_dict #}
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.fullmatch(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
+        request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
+        {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
         assert args[0] == request_msg
 
         {% if routing_param %}

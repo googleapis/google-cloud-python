@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ from google.shopping.merchant_inventories_v1.services.regional_inventory_service
     RegionalInventoryServiceClient,
 )
 from google.shopping.merchant_inventories_v1.types.inventories_common import (
+    InventoryLoyaltyProgram,
     LocalInventoryAttributes,
     RegionalInventoryAttributes,
 )
@@ -54,6 +55,7 @@ __all__ = (
     "LocalInventoryServiceAsyncClient",
     "RegionalInventoryServiceClient",
     "RegionalInventoryServiceAsyncClient",
+    "InventoryLoyaltyProgram",
     "LocalInventoryAttributes",
     "RegionalInventoryAttributes",
     "DeleteLocalInventoryRequest",

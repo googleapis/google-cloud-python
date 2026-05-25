@@ -84,6 +84,13 @@ def data_missing_for_sorting():
 
 
 @pytest.fixture
+def data_for_sorting():
+    return JSONArray._from_sequence(
+        [json.dumps({"b": 1}), json.dumps({"c": 4}), json.dumps({"a": 2})]
+    )
+
+
+@pytest.fixture
 def na_cmp():
     """
     Binary operator for comparing NA values.

@@ -520,6 +520,7 @@ class MessageType:
         default_factory=metadata.Metadata,
     )
     oneofs: Optional[Mapping[str, "Oneof"]] = None
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)
@@ -688,7 +689,12 @@ class MessageType:
     @property
     def resource_type(self) -> Optional[str]:
         resource = self.options.Extensions[resource_pb2.resource]
-        return resource.type[resource.type.find("/") + 1 :] if resource else None
+        if not resource.type:
+            return None
+            
+        default_type = resource.type[resource.type.find("/") + 1 :]
+
+        return self.resource_name_aliases.get(resource.type, default_type)
 
     @property
     def resource_type_full_path(self) -> Optional[str]:
@@ -1284,19 +1290,13 @@ class RoutingParameter:
         return re.compile(f"^{self._convert_to_regex(path_template)}$")
 
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def to_regex(self) -> Pattern:
         return self._to_regex(self.path_template)
 
     @property
     # Use caching to avoid repeated computation
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2161):
-    # Use `@functools.cache` instead of `@functools.lru_cache` once python 3.8 is dropped.
-    # https://docs.python.org/3/library/functools.html#functools.cache
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def key(self) -> Union[str, None]:
         if self.path_template == "":
             return self.field
@@ -2032,7 +2032,9 @@ class Method:
             # the allowlist, as it might not have been specified by
             # the methods under selective_gapic_generation.
             # We assume that the operation service lives in the same proto file as this one.
-            operation_service = services_in_proto[self.operation_service]
+            operation_service = services_in_proto[
+                self.meta.address.resolve(self.operation_service)
+            ]
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.add_to_address_allowlist(
                 address_allowlist=address_allowlist,
@@ -2055,36 +2057,50 @@ class Method:
             resource_messages=resource_messages,
         )
 
-    def with_internal_methods(self, *, public_methods: Set[str]) -> "Method":
-        """Returns a version of this ``Method`` marked as internal
-
-        The methods not in the public_methods set will be marked as internal and
-        this ``Service`` will as well by extension (see :meth:`Service.is_internal`).
+    def with_selective_generation(
+        self,
+        *,
+        generate_omitted_as_internal: bool,
+        public_methods: Set[str],
+        excluded_addresses: Set["metadata.Address"],
+    ) -> Optional["Method"]:
+        """Returns a version of this Method for selective generation.
 
         Args:
-            public_methods (Set[str]): An allowlist of fully-qualified method names.
-                Methods not in this allowlist will be marked as internal.
+            generate_omitted_as_internal (bool): Whether to mark omitted methods as internal.
+            public_methods (Set[str]): The set of fully-qualified method names to keep as public.
+            excluded_addresses (Set[metadata.Address]): The set of addresses to exclude from generation.
+
         Returns:
-            Service: A version of this `Service` with `Method` objects corresponding to methods
-                not in `public_methods` marked as internal.
+            Optional[Method]: The method, possibly marked as internal, or None if it should be removed.
         """
         if self.ident.proto in public_methods:
             return self
 
-        return dataclasses.replace(
-            self,
-            is_internal=True,
-        )
+        # Not public.
+        # We mark it as internal if either:
+        #   1. generate_omitted_as_internal is set in selective_gapic_generation.
+        #   2. The method is NOT in excluded_addresses, which means it is reachable
+        #      from some public method (e.g. as a polling method for an extended LRO).
+        if generate_omitted_as_internal or self.meta.address not in excluded_addresses:
+            return dataclasses.replace(
+                self,
+                is_internal=True,
+            )
+        else:
+            return None
+
 
 
 @dataclasses.dataclass(frozen=True)
 class CommonResource:
     type_name: str
     pattern: str
+    resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     @classmethod
-    def build(cls, resource: resource_pb2.ResourceDescriptor):
-        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)))
+    def build(cls, resource: resource_pb2.ResourceDescriptor, aliases: Optional[Mapping[str, str]] = None):
+        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)), resource_name_aliases=aliases or {})
 
     @utils.cached_property
     def message_type(self):
@@ -2098,6 +2114,7 @@ class CommonResource:
             fields={},
             nested_enums={},
             nested_messages={},
+            resource_name_aliases=self.resource_name_aliases,
         )
 
 
@@ -2278,7 +2295,7 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> FrozenSet[MessageType]:
+    def resource_messages(self) -> Sequence['MessageType']:
         """Returns all the resource message types used in all
         request and response fields in the service."""
 
@@ -2301,7 +2318,7 @@ class Service:
                 if resource:
                     yield resource
 
-        return frozenset(
+        unique_messages = frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
@@ -2315,6 +2332,38 @@ class Service:
                 ),
             )
         )
+
+        # Convert the set to a sorted tuple using the resource path or message name.
+        # This is needed to prevent non-deterministic code generation.
+        sorted_messages = sorted(
+            unique_messages,
+            key=lambda m: m.resource_type_full_path or m.name
+        )
+
+        # Fail-fast collision detection
+        seen_types: Dict[str, "MessageType"] = {}
+        for msg in sorted_messages:
+            res_type = msg.resource_type
+            if not res_type:
+                # Fail fast if a resource is missing type
+                raise ValueError(
+                    f"\n\nFatal: Message '{msg.name}' defines a resource pattern but is missing a resource type. "
+                    f"This violates AIP-123 (https://google.aip.dev/123). Please define a 'type' in the google.api.resource option."
+                )
+                
+            if res_type in seen_types:
+                incumbent = seen_types[res_type]
+                raise ValueError(
+                    f"\n\nFatal: Namespace collision detected for resource type '{res_type}'.\n"
+                    f"Resources '{incumbent.resource_type_full_path}' and '{msg.resource_type_full_path}' "
+                    f"both flatten to the exact same method name.\n"
+                    f"To protect backward compatibility, explicitly alias one of these using "
+                    f"the `--resource-name-alias` CLI parameter.\n"
+                    f"Example: --resource-name-alias={msg.resource_type_full_path}:CustomName\n"
+                )
+            seen_types[res_type] = msg
+
+        return tuple(sorted_messages)
 
     @utils.cached_property
     def resource_messages_dict(self) -> Dict[str, MessageType]:
@@ -2429,45 +2478,33 @@ class Service:
                     services_in_proto=services_in_proto,
                 )
 
-    def prune_messages_for_selective_generation(
-        self, *, address_allowlist: Set["metadata.Address"]
-    ) -> "Service":
-        """Returns a truncated version of this Service.
-
-        Only the methods, messages, and enums contained in the address allowlist
-        are included in the returned object.
-
-        Args:
-            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
-                objects to filter against. Objects with addresses not the allowlist will be
-                removed from the returned Proto.
-        Returns:
-            Service: A truncated version of this proto.
-        """
-        return dataclasses.replace(
-            self,
-            methods={
-                k: v for k, v in self.methods.items() if v.ident in address_allowlist
-            },
-        )
-
-    def with_internal_methods(self, *, public_methods: Set[str]) -> "Service":
-        """Returns a version of this ``Service`` with some Methods marked as internal.
-
-        The methods not in the public_methods set will be marked as internal and
-        this ``Service`` will as well by extension (see :meth:`Service.is_internal`).
+    def with_selective_generation(
+        self,
+        *,
+        generate_omitted_as_internal: bool,
+        public_methods: Set[str],
+        excluded_addresses: Set["metadata.Address"],
+    ) -> Optional["Service"]:
+        """Returns a version of this Service for selective generation.
 
         Args:
-            public_methods (Set[str]): An allowlist of fully-qualified method names.
-                Methods not in this allowlist will be marked as internal.
+            generate_omitted_as_internal (bool): Whether to mark omitted methods as internal.
+            public_methods (Set[str]): The set of fully-qualified method names to keep as public.
+            excluded_addresses (Set[metadata.Address]): The set of addresses to exclude from generation.
+
         Returns:
-            Service: A version of this `Service` with `Method` objects corresponding to methods
-                not in `public_methods` marked as internal.
+            Optional[Service]: The service with filtered methods, or None if it should be removed.
         """
-        return dataclasses.replace(
-            self,
-            methods={
-                k: v.with_internal_methods(public_methods=public_methods)
-                for k, v in self.methods.items()
-            },
-        )
+        methods = {}
+        for k, v in self.methods.items():
+            new_v = v.with_selective_generation(
+                generate_omitted_as_internal=generate_omitted_as_internal,
+                public_methods=public_methods,
+                excluded_addresses=excluded_addresses)
+            if new_v:
+                methods[k] = new_v
+
+        if not generate_omitted_as_internal and not methods:
+            return None
+
+        return dataclasses.replace(self, methods=methods)

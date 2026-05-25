@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1273,7 +1267,7 @@ def test_add_signed_url_key_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_signed_url_key_rest_unset_required_fields():
@@ -1479,7 +1473,7 @@ def test_add_signed_url_key_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_signed_url_key_unary_rest_unset_required_fields():
@@ -1560,6 +1554,284 @@ def test_add_signed_url_key_unary_rest_flattened_error(transport: str = "rest"):
             backend_bucket="backend_bucket_value",
             signed_url_key_resource=compute.SignedUrlKey(key_name="key_name_value"),
         )
+
+
+def test_aggregated_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = BackendBucketsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.aggregated_list in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.aggregated_list] = mock_rpc
+
+        request = {}
+        client.aggregated_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.aggregated_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_aggregated_list_rest_required_fields(
+    request_type=compute.AggregatedListBackendBucketsRequest,
+):
+    transport_class = transports.BackendBucketsRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "include_all_scopes",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+            "service_project_number",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.BackendBucketAggregatedList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.BackendBucketAggregatedList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.aggregated_list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_aggregated_list_rest_unset_required_fields():
+    transport = transports.BackendBucketsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.aggregated_list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "includeAllScopes",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+                "serviceProjectNumber",
+            )
+        )
+        & set(("project",))
+    )
+
+
+def test_aggregated_list_rest_flattened():
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.BackendBucketAggregatedList()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.BackendBucketAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.aggregated_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/aggregated/backendBuckets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.aggregated_list(
+            compute.AggregatedListBackendBucketsRequest(),
+            project="project_value",
+        )
+
+
+def test_aggregated_list_rest_pager(transport: str = "rest"):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.BackendBucketAggregatedList(
+                items={
+                    "a": compute.BackendBucketsScopedList(),
+                    "b": compute.BackendBucketsScopedList(),
+                    "c": compute.BackendBucketsScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.BackendBucketAggregatedList(
+                items={},
+                next_page_token="def",
+            ),
+            compute.BackendBucketAggregatedList(
+                items={
+                    "g": compute.BackendBucketsScopedList(),
+                },
+                next_page_token="ghi",
+            ),
+            compute.BackendBucketAggregatedList(
+                items={
+                    "h": compute.BackendBucketsScopedList(),
+                    "i": compute.BackendBucketsScopedList(),
+                },
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.BackendBucketAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "sample1"}
+
+        pager = client.aggregated_list(request=sample_request)
+
+        assert isinstance(pager.get("a"), compute.BackendBucketsScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.BackendBucketsScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.BackendBucketsScopedList)
+
+        pages = list(client.aggregated_list(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest_use_cached_wrapped_rpc():
@@ -1678,7 +1950,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteBackendBucketReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -1876,7 +2148,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -2096,7 +2368,7 @@ def test_delete_signed_url_key_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_signed_url_key_rest_unset_required_fields():
@@ -2324,7 +2596,7 @@ def test_delete_signed_url_key_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_signed_url_key_unary_rest_unset_required_fields():
@@ -2522,7 +2794,7 @@ def test_get_rest_required_fields(request_type=compute.GetBackendBucketRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -2716,7 +2988,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -2909,7 +3181,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertBackendBucketReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -3108,7 +3380,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -3308,7 +3580,7 @@ def test_list_rest_required_fields(request_type=compute.ListBackendBucketsReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -3450,6 +3722,266 @@ def test_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_list_usable_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = BackendBucketsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_usable in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_usable] = mock_rpc
+
+        request = {}
+        client.list_usable(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_usable(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_usable_rest_required_fields(
+    request_type=compute.ListUsableBackendBucketsRequest,
+):
+    transport_class = transports.BackendBucketsRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_usable._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_usable._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.BackendBucketListUsable()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.BackendBucketListUsable.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_usable(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_usable_rest_unset_required_fields():
+    transport = transports.BackendBucketsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_usable._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(("project",))
+    )
+
+
+def test_list_usable_rest_flattened():
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.BackendBucketListUsable()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.BackendBucketListUsable.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_usable(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/backendBuckets/listUsable"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_usable_rest_flattened_error(transport: str = "rest"):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_usable(
+            compute.ListUsableBackendBucketsRequest(),
+            project="project_value",
+        )
+
+
+def test_list_usable_rest_pager(transport: str = "rest"):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.BackendBucketListUsable(
+                items=[
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.BackendBucketListUsable(
+                items=[],
+                next_page_token="def",
+            ),
+            compute.BackendBucketListUsable(
+                items=[
+                    compute.BackendBucket(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.BackendBucketListUsable(
+                items=[
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.BackendBucketListUsable.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "sample1"}
+
+        pager = client.list_usable(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, compute.BackendBucket) for i in results)
+
+        pages = list(client.list_usable(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_patch_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3567,7 +4099,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchBackendBucketReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -3773,7 +4305,7 @@ def test_patch_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -3984,7 +4516,7 @@ def test_set_edge_security_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_edge_security_policy_rest_unset_required_fields():
@@ -4195,7 +4727,7 @@ def test_set_edge_security_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_edge_security_policy_unary_rest_unset_required_fields():
@@ -4395,7 +4927,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -4599,7 +5131,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -4803,7 +5335,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateBackendBucketReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -5009,7 +5541,7 @@ def test_update_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -5426,6 +5958,148 @@ def test_add_signed_url_key_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_aggregated_list_rest_bad_request(
+    request_type=compute.AggregatedListBackendBucketsRequest,
+):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.aggregated_list(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.AggregatedListBackendBucketsRequest,
+        dict,
+    ],
+)
+def test_aggregated_list_rest_call_success(request_type):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.BackendBucketAggregatedList(
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.BackendBucketAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.aggregated_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregatedListPager)
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.BackendBucketsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackendBucketsRestInterceptor(),
+    )
+    client = BackendBucketsClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor, "post_aggregated_list"
+        ) as post,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor,
+            "post_aggregated_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor, "pre_aggregated_list"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.AggregatedListBackendBucketsRequest.pb(
+            compute.AggregatedListBackendBucketsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.BackendBucketAggregatedList.to_json(
+            compute.BackendBucketAggregatedList()
+        )
+        req.return_value.content = return_value
+
+        request = compute.AggregatedListBackendBucketsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.BackendBucketAggregatedList()
+        post_with_metadata.return_value = (
+            compute.BackendBucketAggregatedList(),
+            metadata,
+        )
+
+        client.aggregated_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_rest_bad_request(request_type=compute.DeleteBackendBucketRequest):
     client = BackendBucketsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5824,6 +6498,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             load_balancing_scheme="load_balancing_scheme_value",
             name="name_value",
+            region="region_value",
             self_link="self_link_value",
         )
 
@@ -5852,6 +6527,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.load_balancing_scheme == "load_balancing_scheme_value"
     assert response.name == "name_value"
+    assert response.region == "region_value"
     assert response.self_link == "self_link_value"
 
 
@@ -6130,6 +6806,7 @@ def test_insert_rest_call_success(request_type):
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "params": {"resource_manager_tags": {}},
+        "region": "region_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }
@@ -6468,6 +7145,144 @@ def test_list_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_list_usable_rest_bad_request(
+    request_type=compute.ListUsableBackendBucketsRequest,
+):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_usable(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListUsableBackendBucketsRequest,
+        dict,
+    ],
+)
+def test_list_usable_rest_call_success(request_type):
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.BackendBucketListUsable(
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.BackendBucketListUsable.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_usable(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsablePager)
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_usable_rest_interceptors(null_interceptor):
+    transport = transports.BackendBucketsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackendBucketsRestInterceptor(),
+    )
+    client = BackendBucketsClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor, "post_list_usable"
+        ) as post,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor, "post_list_usable_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackendBucketsRestInterceptor, "pre_list_usable"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.ListUsableBackendBucketsRequest.pb(
+            compute.ListUsableBackendBucketsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = compute.BackendBucketListUsable.to_json(
+            compute.BackendBucketListUsable()
+        )
+        req.return_value.content = return_value
+
+        request = compute.ListUsableBackendBucketsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.BackendBucketListUsable()
+        post_with_metadata.return_value = compute.BackendBucketListUsable(), metadata
+
+        client.list_usable(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_patch_rest_bad_request(request_type=compute.PatchBackendBucketRequest):
     client = BackendBucketsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -6548,6 +7363,7 @@ def test_patch_rest_call_success(request_type):
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "params": {"resource_manager_tags": {}},
+        "region": "region_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }
@@ -7545,6 +8361,7 @@ def test_update_rest_call_success(request_type):
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "params": {"resource_manager_tags": {}},
+        "region": "region_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }
@@ -7782,6 +8599,26 @@ def test_add_signed_url_key_unary_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_aggregated_list_empty_call_rest():
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.aggregated_list), "__call__") as call:
+        client.aggregated_list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.AggregatedListBackendBucketsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_delete_unary_empty_call_rest():
     client = BackendBucketsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7898,6 +8735,26 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListBackendBucketsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_usable_empty_call_rest():
+    client = BackendBucketsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_usable), "__call__") as call:
+        client.list_usable(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ListUsableBackendBucketsRequest()
 
         assert args[0] == request_msg
 
@@ -8029,12 +8886,14 @@ def test_backend_buckets_base_transport():
     # raise NotImplementedError.
     methods = (
         "add_signed_url_key",
+        "aggregated_list",
         "delete",
         "delete_signed_url_key",
         "get",
         "get_iam_policy",
         "insert",
         "list",
+        "list_usable",
         "patch",
         "set_edge_security_policy",
         "set_iam_policy",
@@ -8186,6 +9045,9 @@ def test_backend_buckets_client_transport_session_collision(transport_name):
     session1 = client1.transport.add_signed_url_key._session
     session2 = client2.transport.add_signed_url_key._session
     assert session1 != session2
+    session1 = client1.transport.aggregated_list._session
+    session2 = client2.transport.aggregated_list._session
+    assert session1 != session2
     session1 = client1.transport.delete._session
     session2 = client2.transport.delete._session
     assert session1 != session2
@@ -8203,6 +9065,9 @@ def test_backend_buckets_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list._session
     session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.list_usable._session
+    session2 = client2.transport.list_usable._session
     assert session1 != session2
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session

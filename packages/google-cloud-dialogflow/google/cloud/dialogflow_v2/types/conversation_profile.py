@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -990,6 +990,30 @@ class HumanAgentAssistantConfig(proto.Message):
                 [ListMessagesResponse.messages.SentimentAnalysisResult][google.cloud.dialogflow.v2.ListMessagesResponse.messages]
                 If Pub/Sub notification is configured, result will be in
                 [ConversationEvent.new_message_payload.SentimentAnalysisResult][google.cloud.dialogflow.v2.ConversationEvent.new_message_payload].
+            enable_sentiment_analysis_v3 (bool):
+                Optional. Enables sentiment analysis for audio input and
+                conversation messages. If unspecified, defaults to false. If
+                this flag is set to true, other 'enable_sentiment_analysis'
+                fields will be ignored.
+
+                Sentiment analysis inspects user input and identifies the
+                prevailing subjective opinion, especially to determine a
+                user's attitude as positive, negative, or neutral.
+                https://cloud.google.com/natural-language/docs/basics#sentiment_analysis
+                For
+                [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
+                method, result will be in
+                [StreamingAnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.message].
+                For
+                [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
+                method, result will be in
+                [AnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.AnalyzeContentResponse.message]
+                For
+                [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages]
+                method, result will be in
+                [ListMessagesResponse.messages.SentimentAnalysisResult][google.cloud.dialogflow.v2.ListMessagesResponse.messages]
+                If Pub/Sub notification is configured, result will be in
+                [ConversationEvent.new_message_payload.SentimentAnalysisResult][google.cloud.dialogflow.v2.ConversationEvent.new_message_payload].
         """
 
         enable_entity_extraction: bool = proto.Field(
@@ -999,6 +1023,10 @@ class HumanAgentAssistantConfig(proto.Message):
         enable_sentiment_analysis: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        enable_sentiment_analysis_v3: bool = proto.Field(
+            proto.BOOL,
+            number=5,
         )
 
     notification_config: "NotificationConfig" = proto.Field(

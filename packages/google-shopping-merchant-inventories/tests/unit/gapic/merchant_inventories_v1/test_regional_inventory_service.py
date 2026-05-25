@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1932,11 +1926,7 @@ async def test_list_regional_inventories_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_regional_inventories(request={})
-        ).pages:
+        async for page_ in (await client.list_regional_inventories(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1966,6 +1956,7 @@ def test_insert_regional_inventory(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = regionalinventory.RegionalInventory(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             account=749,
             region="region_value",
         )
@@ -1980,6 +1971,7 @@ def test_insert_regional_inventory(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, regionalinventory.RegionalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.region == "region_value"
 
@@ -2118,6 +2110,7 @@ async def test_insert_regional_inventory_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             regionalinventory.RegionalInventory(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 account=749,
                 region="region_value",
             )
@@ -2133,6 +2126,7 @@ async def test_insert_regional_inventory_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, regionalinventory.RegionalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.region == "region_value"
 
@@ -2660,7 +2654,7 @@ def test_list_regional_inventories_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_regional_inventories_rest_unset_required_fields():
@@ -2918,7 +2912,7 @@ def test_insert_regional_inventory_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_regional_inventory_rest_unset_required_fields():
@@ -3048,7 +3042,7 @@ def test_delete_regional_inventory_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_regional_inventory_rest_unset_required_fields():
@@ -3353,6 +3347,7 @@ async def test_insert_regional_inventory_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             regionalinventory.RegionalInventory(
                 name="name_value",
+                base64_encoded_name="base64_encoded_name_value",
                 account=749,
                 region="region_value",
             )
@@ -3581,6 +3576,7 @@ def test_insert_regional_inventory_rest_call_success(request_type):
     request_init = {"parent": "accounts/sample1/products/sample2"}
     request_init["regional_inventory"] = {
         "name": "name_value",
+        "base64_encoded_name": "base64_encoded_name_value",
         "account": 749,
         "region": "region_value",
         "regional_inventory_attributes": {
@@ -3591,6 +3587,17 @@ def test_insert_regional_inventory_rest_call_success(request_type):
                 "end_time": {},
             },
             "availability": 1,
+            "loyalty_programs": [
+                {
+                    "program_label": "program_label_value",
+                    "tier_label": "tier_label_value",
+                    "price": {},
+                    "cashback_for_future_use": {},
+                    "loyalty_points": 1546,
+                    "member_price_effective_interval": {},
+                    "shipping_label": "shipping_label_value",
+                }
+            ],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -3669,6 +3676,7 @@ def test_insert_regional_inventory_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = regionalinventory.RegionalInventory(
             name="name_value",
+            base64_encoded_name="base64_encoded_name_value",
             account=749,
             region="region_value",
         )
@@ -3688,6 +3696,7 @@ def test_insert_regional_inventory_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, regionalinventory.RegionalInventory)
     assert response.name == "name_value"
+    assert response.base64_encoded_name == "base64_encoded_name_value"
     assert response.account == 749
     assert response.region == "region_value"
 

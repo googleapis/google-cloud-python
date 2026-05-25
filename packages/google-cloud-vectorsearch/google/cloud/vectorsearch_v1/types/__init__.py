@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -57,6 +57,9 @@ from .embedding_config import (
     EmbeddingTaskType,
     VertexEmbeddingConfig,
 )
+from .encryption_spec import (
+    EncryptionSpec,
+)
 from .vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
@@ -82,6 +85,7 @@ from .vectorsearch_service import (
     OperationMetadata,
     SparseVectorField,
     UpdateCollectionRequest,
+    UpdateIndexRequest,
     VectorField,
 )
 
@@ -120,6 +124,7 @@ __all__ = (
     "UpdateDataObjectRequest",
     "VertexEmbeddingConfig",
     "EmbeddingTaskType",
+    "EncryptionSpec",
     "Collection",
     "CreateCollectionRequest",
     "CreateIndexRequest",
@@ -144,5 +149,6 @@ __all__ = (
     "OperationMetadata",
     "SparseVectorField",
     "UpdateCollectionRequest",
+    "UpdateIndexRequest",
     "VectorField",
 )

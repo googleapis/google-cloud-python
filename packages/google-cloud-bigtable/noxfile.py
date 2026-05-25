@@ -43,8 +43,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
-    BLACK_VERSION,
-    "autoflake",
+    RUFF_VERSION,
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -168,8 +167,14 @@ def format(session):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16984):
+    # Update to the latest version of mypy
     session.install(
-        "mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests"
+        "mypy<2.0.0",
+        "types-setuptools",
+        "types-protobuf",
+        "types-mock",
+        "types-requests",
     )
     session.install("google-cloud-testutils")
     session.run("mypy", "-p", "google.cloud.bigtable.data")
@@ -553,8 +558,7 @@ def generate_sync(session):
     """
     Re-generate sync files for the library from CrossSync-annotated async source
     """
-    session.install(BLACK_VERSION)
-    session.install("autoflake")
+    session.install(RUFF_VERSION)
     session.run("python", ".cross_sync/generate.py", ".")
 
 

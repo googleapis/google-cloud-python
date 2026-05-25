@@ -291,8 +291,9 @@ def _extract_ctes_to_with_expr(
         root.top_down(lambda x: mapping.get(x, x)),
         cte_names,
         tuple(
-            cte_node.child.top_down(lambda x: mapping.get(x, x))
-            for cte_node in topological_ctes  # type: ignore
+            # Mypy loses context that cte_node is a CteNode with a child attribute, despite the isinstance filter above.
+            cte_node.child.top_down(lambda x: mapping.get(x, x))  # type: ignore[attr-defined]
+            for cte_node in topological_ctes
         ),
     )
 

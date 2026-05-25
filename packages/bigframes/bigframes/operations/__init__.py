@@ -16,12 +16,14 @@ from __future__ import annotations
 
 from bigframes.operations.ai_ops import (
     AIClassify,
+    AIEmbed,
     AIGenerate,
     AIGenerateBool,
     AIGenerateDouble,
     AIGenerateInt,
     AIIf,
     AIScore,
+    AISimilarity,
 )
 from bigframes.operations.array_ops import (
     ArrayIndexOp,
@@ -113,10 +115,8 @@ from bigframes.operations.geo_ops import (
     GeoStLengthOp,
     GeoStRegionStatsOp,
     GeoStSimplifyOp,
-    geo_area_op,
     geo_st_astext_op,
     geo_st_boundary_op,
-    geo_st_centroid_op,
     geo_st_convexhull_op,
     geo_st_difference_op,
     geo_st_geogfromtext_op,
@@ -126,6 +126,7 @@ from bigframes.operations.geo_ops import (
     geo_x_op,
     geo_y_op,
 )
+from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
     JSONExtract,
     JSONExtractArray,
@@ -411,9 +412,7 @@ __all__ = [
     "euclidean_distance_op",
     "manhattan_distance_op",
     # Geo ops
-    "geo_area_op",
     "geo_st_boundary_op",
-    "geo_st_centroid_op",
     "geo_st_convexhull_op",
     "geo_st_difference_op",
     "geo_st_astext_op",
@@ -427,19 +426,22 @@ __all__ = [
     "GeoStDistanceOp",
     "GeoStLengthOp",
     "GeoStRegionStatsOp",
-    "GeoStSimplifyOp",
     # AI ops
     "AIClassify",
     "AIGenerate",
     "AIGenerateBool",
     "AIGenerateDouble",
     "AIGenerateInt",
+    "AIEmbed",
     "AIIf",
     "AIScore",
+    "AISimilarity",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
     "ToArrayOp",
     "ArrayReduceOp",
     "ArrayMapOp",
+    # GoogleSql
+    "GoogleSqlScalarOp",
 ]

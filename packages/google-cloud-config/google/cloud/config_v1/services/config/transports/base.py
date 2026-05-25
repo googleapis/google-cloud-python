@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -291,6 +291,51 @@ class ConfigTransport(abc.ABC):
             ),
             self.update_auto_migration_config: gapic_v1.method.wrap_method(
                 self.update_auto_migration_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_deployment_group: gapic_v1.method.wrap_method(
+                self.get_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_deployment_group: gapic_v1.method.wrap_method(
+                self.create_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_deployment_group: gapic_v1.method.wrap_method(
+                self.update_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_deployment_group: gapic_v1.method.wrap_method(
+                self.delete_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_deployment_groups: gapic_v1.method.wrap_method(
+                self.list_deployment_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.provision_deployment_group: gapic_v1.method.wrap_method(
+                self.provision_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.deprovision_deployment_group: gapic_v1.method.wrap_method(
+                self.deprovision_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_deployment_group_revision: gapic_v1.method.wrap_method(
+                self.get_deployment_group_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_deployment_group_revisions: gapic_v1.method.wrap_method(
+                self.list_deployment_group_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -624,6 +669,95 @@ class ConfigTransport(abc.ABC):
     ) -> Callable[
         [config.UpdateAutoMigrationConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_deployment_group(
+        self,
+    ) -> Callable[
+        [config.GetDeploymentGroupRequest],
+        Union[config.DeploymentGroup, Awaitable[config.DeploymentGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_deployment_group(
+        self,
+    ) -> Callable[
+        [config.CreateDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_deployment_group(
+        self,
+    ) -> Callable[
+        [config.UpdateDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_deployment_group(
+        self,
+    ) -> Callable[
+        [config.DeleteDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_deployment_groups(
+        self,
+    ) -> Callable[
+        [config.ListDeploymentGroupsRequest],
+        Union[
+            config.ListDeploymentGroupsResponse,
+            Awaitable[config.ListDeploymentGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def provision_deployment_group(
+        self,
+    ) -> Callable[
+        [config.ProvisionDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def deprovision_deployment_group(
+        self,
+    ) -> Callable[
+        [config.DeprovisionDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_deployment_group_revision(
+        self,
+    ) -> Callable[
+        [config.GetDeploymentGroupRevisionRequest],
+        Union[
+            config.DeploymentGroupRevision, Awaitable[config.DeploymentGroupRevision]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_deployment_group_revisions(
+        self,
+    ) -> Callable[
+        [config.ListDeploymentGroupRevisionsRequest],
+        Union[
+            config.ListDeploymentGroupRevisionsResponse,
+            Awaitable[config.ListDeploymentGroupRevisionsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

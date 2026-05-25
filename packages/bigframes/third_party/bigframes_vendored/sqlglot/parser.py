@@ -290,11 +290,11 @@ class Parser(metaclass=_Parser):
         "RIGHTPAD": lambda args: build_pad(args, is_left=False),
         "RPAD": lambda args: build_pad(args, is_left=False),
         "RTRIM": lambda args: build_trim(args, is_left=False),
-        "SCOPE_RESOLUTION": lambda args: exp.ScopeResolution(
-            expression=seq_get(args, 0)
-        )
-        if len(args) != 2
-        else exp.ScopeResolution(this=seq_get(args, 0), expression=seq_get(args, 1)),
+        "SCOPE_RESOLUTION": lambda args: (
+            exp.ScopeResolution(expression=seq_get(args, 0))
+            if len(args) != 2
+            else exp.ScopeResolution(this=seq_get(args, 0), expression=seq_get(args, 1))
+        ),
         "STRPOS": exp.StrPosition.from_arg_list,
         "CHARINDEX": lambda args: build_locate_strposition(args),
         "INSTR": exp.StrPosition.from_arg_list,
@@ -943,7 +943,9 @@ class Parser(metaclass=_Parser):
     }
 
     UNARY_PARSERS = {
-        TokenType.PLUS: lambda self: self._parse_unary(),  # Unary + is handled as a no-op
+        TokenType.PLUS: lambda self: (
+            self._parse_unary()
+        ),  # Unary + is handled as a no-op
         TokenType.NOT: lambda self: self.expression(
             exp.Not, this=self._parse_equality()
         ),
@@ -1246,12 +1248,14 @@ class Parser(metaclass=_Parser):
             exp.NotNullColumnConstraint, allow_null=True
         ),
         "ON": lambda self: (
-            self._match(TokenType.UPDATE)
-            and self.expression(
-                exp.OnUpdateColumnConstraint, this=self._parse_function()
+            (
+                self._match(TokenType.UPDATE)
+                and self.expression(
+                    exp.OnUpdateColumnConstraint, this=self._parse_function()
+                )
             )
-        )
-        or self.expression(exp.OnProperty, this=self._parse_id_var()),
+            or self.expression(exp.OnProperty, this=self._parse_id_var())
+        ),
         "PATH": lambda self: self.expression(
             exp.PathColumnConstraint, this=self._parse_string()
         ),
@@ -3885,8 +3889,9 @@ class Parser(metaclass=_Parser):
         try:
             for hint in iter(
                 lambda: self._parse_csv(
-                    lambda: self._parse_hint_function_call()
-                    or self._parse_var(upper=True),
+                    lambda: (
+                        self._parse_hint_function_call() or self._parse_var(upper=True)
+                    ),
                 ),
                 [],
             ):
@@ -4305,8 +4310,9 @@ class Parser(metaclass=_Parser):
                 self.expression(
                     exp.WithTableHint,
                     expressions=self._parse_csv(
-                        lambda: self._parse_function()
-                        or self._parse_var(any_token=True)
+                        lambda: (
+                            self._parse_function() or self._parse_var(any_token=True)
+                        )
                     ),
                 )
             )
@@ -4469,6 +4475,14 @@ class Parser(metaclass=_Parser):
         if schema:
             return self._parse_schema(this=this)
 
+        # see: https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#from_clause
+        # from_item, then alias, then time travel, then sample.
+        alias = self._parse_table_alias(
+            alias_tokens=alias_tokens or self.TABLE_ALIAS_TOKENS
+        )
+        if alias:
+            this.set("alias", alias)
+
         version = self._parse_version()
 
         if version:
@@ -4476,12 +4490,6 @@ class Parser(metaclass=_Parser):
 
         if self.dialect.ALIAS_POST_TABLESAMPLE:
             this.set("sample", self._parse_table_sample())
-
-        alias = self._parse_table_alias(
-            alias_tokens=alias_tokens or self.TABLE_ALIAS_TOKENS
-        )
-        if alias:
-            this.set("alias", alias)
 
         if self._match(TokenType.INDEXED_BY):
             this.set("indexed", self._parse_table_parts())
@@ -4935,11 +4943,13 @@ class Parser(metaclass=_Parser):
 
             elements["expressions"].extend(
                 self._parse_csv(
-                    lambda: None
-                    if self._match_set(
-                        (TokenType.CUBE, TokenType.ROLLUP), advance=False
+                    lambda: (
+                        None
+                        if self._match_set(
+                            (TokenType.CUBE, TokenType.ROLLUP), advance=False
+                        )
+                        else self._parse_disjunction()
                     )
-                    else self._parse_disjunction()
                 )
             )
 
@@ -6225,9 +6235,9 @@ class Parser(metaclass=_Parser):
             # https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-reference#function_call_rules
             if isinstance(field, (exp.Func, exp.Window)) and this:
                 this = this.transform(
-                    lambda n: n.to_dot(include_dots=False)
-                    if isinstance(n, exp.Column)
-                    else n
+                    lambda n: (
+                        n.to_dot(include_dots=False) if isinstance(n, exp.Column) else n
+                    )
                 )
 
             if op:

@@ -34,7 +34,7 @@ from bigframes.operations import (
     numeric_ops,
     string_ops,
 )
-from bigframes.session import executor, semi_executor
+from bigframes.session import execution_spec, executor, semi_executor
 
 if TYPE_CHECKING:
     import polars as pl
@@ -122,7 +122,7 @@ def _is_node_polars_executable(node: nodes.BigFrameNode):
         return False
     for expr in node._node_expressions:
         if isinstance(expr, agg_expressions.Aggregation):
-            if not type(expr.op) in _COMPATIBLE_AGG_OPS:
+            if type(expr.op) not in _COMPATIBLE_AGG_OPS:
                 return False
         if isinstance(expr, expression.Expression):
             if not set(map(type, _get_expr_ops(expr))).issubset(_COMPATIBLE_SCALAR_OPS):
@@ -137,24 +137,25 @@ class PolarsExecutor(semi_executor.SemiExecutor):
 
         self._compiler = PolarsCompiler()
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
         if not self._can_execute(plan):
             return None
-        # Note: Ignoring ordered flag, as just executing totally ordered is fine.
+        if execution_spec.destination_spec is not None:
+            return None
         try:
             lazy_frame: pl.LazyFrame = self._compiler.compile(
                 array_value.ArrayValue(plan).node
             )
         except Exception:
             return None
-        if peek is not None:
-            lazy_frame = lazy_frame.limit(peek)
-        pa_table = lazy_frame.collect().to_arrow()
+        if execution_spec.peek is not None:
+            lazy_frame = lazy_frame.limit(execution_spec.peek)
+        pl_df = await lazy_frame.collect_async()
+        pa_table = pl_df.to_arrow()
         return executor.LocalExecuteResult(
             data=pa_table,
             bf_schema=plan.schema,

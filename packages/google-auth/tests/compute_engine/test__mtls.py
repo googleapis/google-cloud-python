@@ -55,7 +55,7 @@ def test__MdsMtlsConfig_non_windows_defaults():
 
 def test__parse_mds_mode_default(monkeypatch):
     monkeypatch.delenv(environment_vars.GCE_METADATA_MTLS_MODE, raising=False)
-    assert _mtls._parse_mds_mode() == _mtls.MdsMtlsMode.DEFAULT
+    assert _mtls._parse_mds_mode() == _mtls.MdsMtlsMode.NONE
 
 
 @pytest.mark.parametrize(

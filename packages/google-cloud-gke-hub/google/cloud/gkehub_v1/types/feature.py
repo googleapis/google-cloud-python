@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
-from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
-from google.cloud.gkehub_v1 import rbacrolebindingactuation_v1  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.gkehub_v1 import (
+    configmanagement_v1,  # type: ignore
+    multiclusteringress_v1,  # type: ignore
+    rbacrolebindingactuation_v1,  # type: ignore
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",

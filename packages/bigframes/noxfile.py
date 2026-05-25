@@ -20,12 +20,18 @@ import argparse
 import multiprocessing
 import os
 import pathlib
+import re
 import shutil
 import time
 from typing import Dict, List
 
 import nox
 import nox.sessions
+
+PROJECT_ID_OVERRIDE = os.getenv("BIGFRAMES_TEST_PROJECT")
+ENV_OVERRIDES = (
+    {"GOOGLE_CLOUD_PROJECT": PROJECT_ID_OVERRIDE} if PROJECT_ID_OVERRIDE else {}
+)
 
 RUFF_VERSION = "ruff==0.14.14"
 MYPY_VERSION = "mypy==1.15.0"
@@ -54,13 +60,15 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
     "pytest-cov",
     "pytest-timeout",
+    "pluggy",
 ]
+UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
@@ -93,7 +101,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
     "google-cloud-bigquery",
 ]
-SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
+SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     # Make sure we leave some versions without "extras" so we know those
     # dependencies are actually optional.
@@ -134,9 +142,20 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
+    session.install(RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # Check formatting
     session.run(
         "ruff",
         "format",
@@ -184,6 +203,15 @@ def format(session):
         "--select",
         "I",
         "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -255,10 +283,12 @@ def run_unit(session, install_test_extra):
 
 
 @nox.session(python=ALL_PYTHON)
-def unit(session):
-    if session.python in ("3.7", "3.8", "3.9"):
-        session.skip("Python 3.9 and below are not supported")
-    run_unit(session, install_test_extra=True)
+@nox.parametrize("test_extra", [True, False])
+def unit(session, test_extra):
+    if test_extra:
+        run_unit(session, install_test_extra=test_extra)
+    else:
+        unit_noextras(session)
 
 
 @nox.session(python=ALL_PYTHON[-1])
@@ -351,24 +381,18 @@ def run_system(
         )
 
     pytest_cmd.extend(extra_pytest_options)
-    session.run(
-        *pytest_cmd,
-        *session.posargs,
-        test_folder,
-    )
+    session.run(*pytest_cmd, *session.posargs, test_folder, env=ENV_OVERRIDES)
 
 
 @nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16489): Restore system test once this bug is fixed
     run_system(
         session=session,
         prefix_name="system",
         test_folder=os.path.join("tests", "system", "small"),
         check_cov=True,
     )
-    # session.skip("Temporarily skip system test")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -385,6 +409,7 @@ def system_noextras(session: nox.sessions.Session):
 @nox.session(python="3.12")
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
+
     run_system(
         session=session,
         prefix_name="doctest",
@@ -440,13 +465,16 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the test runs
     (including system test runs), and then erases coverage data.
     """
+    # TODO: Remove this skip when the issue is resolved.
+    # https://github.com/googleapis/google-cloud-python/issues/16635
+    session.skip("Temporarily skip coverage session")
+
     session.install("coverage", "pytest-cov")
 
     # Create a coverage report that includes only the product code.
     omitted_paths = [
         # non-prod, unit tested
         "bigframes/core/compile/polars/*",
-        "bigframes/core/compile/sqlglot/*",
         # untested
         "bigframes/streaming/*",
         # utils
@@ -588,11 +616,11 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178
         "db-dtypes",
         # Ensure we catch breaking changes in the client libraries early.
-        "git+https://github.com/googleapis/python-bigquery.git#egg=google-cloud-bigquery",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery&subdirectory=packages/google-cloud-bigquery",
         "--upgrade",
         "-e",
         "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
-        "git+https://github.com/googleapis/python-bigquery-pandas.git#egg=pandas-gbq",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=pandas-gbq&subdirectory=packages/pandas-gbq",
     )
 
     # Print out prerelease package versions.
@@ -615,6 +643,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         tests_path,
         *extra_pytest_options,
         *session.posargs,
+        env=ENV_OVERRIDES,
     )
 
 
@@ -649,7 +678,7 @@ def system_prerelease(session: nox.sessions.Session):
 
 @nox.session(python=COLAB_AND_BQ_STUDIO_PYTHON_VERSIONS)
 def notebook(session: nox.Session):
-    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    google_cloud_project = PROJECT_ID_OVERRIDE or os.getenv("GOOGLE_CLOUD_PROJECT")
     if not google_cloud_project:
         session.error(
             "Set GOOGLE_CLOUD_PROJECT environment variable to run notebook session."
@@ -691,6 +720,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
+        "notebooks/generative_ai/ai_movie_poster.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",  # Needs BUCKET_URI.
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",  # Needs BUCKET_URI.
@@ -707,6 +737,8 @@ def notebook(session: nox.Session):
         # This anywidget notebook uses deferred execution, so it won't
         # produce metrics for the performance benchmark script.
         "notebooks/dataframes/anywidget_mode.ipynb",
+        # Needs a connection
+        "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension,
@@ -745,6 +777,7 @@ def notebook(session: nox.Session):
             "python",
             CURRENT_DIRECTORY / "scripts" / "notebooks_fill_params.py",
             *notebooks,
+            env=ENV_OVERRIDES,
         )
 
         processes = []
@@ -757,8 +790,7 @@ def notebook(session: nox.Session):
             )
             if multi_process_mode:
                 process = multiprocessing.Process(
-                    target=session.run,
-                    args=args,
+                    target=session.run, args=args, kwargs={"env": ENV_OVERRIDES}
                 )
                 process.start()
                 processes.append(process)
@@ -766,7 +798,7 @@ def notebook(session: nox.Session):
                 # process to avoid potential race conditions。
                 time.sleep(1)
             else:
-                session.run(*args)
+                session.run(*args, env=ENV_OVERRIDES)
 
         for notebook, regions in notebooks_reg.items():
             for region in regions:
@@ -781,6 +813,7 @@ def notebook(session: nox.Session):
                     process = multiprocessing.Process(
                         target=session.run,
                         args=region_args,
+                        kwargs={"env": ENV_OVERRIDES},
                     )
                     process.start()
                     processes.append(process)
@@ -788,7 +821,7 @@ def notebook(session: nox.Session):
                     # process to avoid potential race conditions。
                     time.sleep(1)
                 else:
-                    session.run(*region_args)
+                    session.run(*region_args, env=ENV_OVERRIDES)
 
         for process in processes:
             process.join()
@@ -805,6 +838,7 @@ def notebook(session: nox.Session):
             "scripts/run_and_publish_benchmark.py",
             "--notebook",
             "--publish-benchmarks=notebooks/",
+            env=ENV_OVERRIDES,
         )
 
 
@@ -868,6 +902,7 @@ def benchmark(session: nox.Session):
                 "scripts/run_and_publish_benchmark.py",
                 f"--benchmark-path={benchmark}",
                 f"--iterations={args.iterations}",
+                env=ENV_OVERRIDES,
             )
     finally:
         session.run(
@@ -876,6 +911,7 @@ def benchmark(session: nox.Session):
             f"--publish-benchmarks={base_path}",
             f"--iterations={args.iterations}",
             f"--output-csv={args.output_csv}",
+            env=ENV_OVERRIDES,
         )
 
 
@@ -896,7 +932,7 @@ def release_dry_run(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cleanup(session):
     """Clean up stale and/or temporary resources in the test project."""
-    google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
+    google_cloud_project = PROJECT_ID_OVERRIDE or os.getenv("GOOGLE_CLOUD_PROJECT")
     cleanup_options = []
     if google_cloud_project:
         cleanup_options.append(f"--project-id={google_cloud_project}")
@@ -921,69 +957,129 @@ def cleanup(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+
+    # Install all dependencies
+    session.install("-e", ".")
+
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
+
+    # Install dependencies for the system test environment
+    system_deps_all = (
+        SYSTEM_TEST_STANDARD_DEPENDENCIES
+        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
+        + SYSTEM_TEST_EXTRAS
+    )
+    session.install(*system_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY / "testing" / "constraints-3.10.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    # Fiona fails to build on GitHub CI because gdal-config is missing and no Python 3.14 wheels are available.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+        if match.group(1) != "fiona"
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
+    # `grpcio-status` should be added to the list below so that they are installed from source,
+    # rather than PyPI.
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
+    # added to the list below so that it is installed from source, rather than PyPI
+    # Note: If a dependency is added to the `core_dependencies_from_source` list,
+    # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=ALL_PYTHON[-1])
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add prerelease deps tests
-    session.skip("prerelease deps tests are not yet supported")
+    unit_prerelease(session)
+    system_prerelease(session)
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# NOTE: this is based on mypy session that came directly from the bigframes split repo
+# the split repo used 3.10, the monorepo uses 3.14
+@nox.session(python="3.14")
 def mypy(session):
-    """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests previously used mypy session (below) failed to run in the monorepo
-    session.skip("mypy tests are not yet supported")
+    """Run type checks with mypy."""
+    # Editable mode is not compatible with mypy when there are multiple
+    # package directories. See:
+    # https://github.com/python/mypy/issues/10564#issuecomment-851687749
+    session.install("--no-cache-dir", ".")
 
+    # Just install the dependencies' type info directly, since "mypy --install-types"
+    # might require an additional pass.
+    deps = (
+        set(
+            [
+                MYPY_VERSION,
+                # TODO: update to latest pandas-stubs once we resolve bigframes issues.
+                "pandas-stubs<=2.2.3.241126",
+                "types-protobuf",
+                "types-python-dateutil",
+                "types-requests",
+                "types-setuptools",
+                "types-tabulate",
+                "types-PyYAML",
+                "polars",
+                "anywidget",
+            ]
+        )
+        | set(SYSTEM_TEST_STANDARD_DEPENDENCIES)
+        | set(UNIT_TEST_STANDARD_DEPENDENCIES)
+    )
 
-# @nox.session(python=ALL_PYTHON)
-# def mypy(session):
-#     """Run type checks with mypy."""
-#     # Editable mode is not compatible with mypy when there are multiple
-#     # package directories. See:
-#     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-#     session.install(".")
-
-#     # Just install the dependencies' type info directly, since "mypy --install-types"
-#     # might require an additional pass.
-#     deps = (
-#         set(
-#             [
-#                 MYPY_VERSION,
-#                 # TODO: update to latest pandas-stubs once we resolve bigframes issues.
-#                 "pandas-stubs<=2.2.3.241126",
-#                 "types-protobuf",
-#                 "types-python-dateutil",
-#                 "types-requests",
-#                 "types-setuptools",
-#                 "types-tabulate",
-#                 "types-PyYAML",
-#                 "polars",
-#                 "anywidget",
-#             ]
-#         )
-#         | set(SYSTEM_TEST_STANDARD_DEPENDENCIES)
-#         | set(UNIT_TEST_STANDARD_DEPENDENCIES)
-#     )
-
-#     session.install(*deps)
-#     shutil.rmtree(".mypy_cache", ignore_errors=True)
-#     session.run(
-#         "mypy",
-#         "bigframes",
-#         os.path.join("tests", "system"),
-#         os.path.join("tests", "unit"),
-#         "--check-untyped-defs",
-#         "--explicit-package-bases",
-#         '--exclude="^third_party"',
-#     )
+    session.install(*deps)
+    shutil.rmtree(".mypy_cache", ignore_errors=True)
+    session.run(
+        "mypy",
+        "bigframes",
+        os.path.join("tests", "system"),
+        os.path.join("tests", "unit"),
+        "--check-untyped-defs",
+        "--explicit-package-bases",
+        '--exclude="^third_party"',
+    )

@@ -1,9 +1,9 @@
-Python Client for App Optimize API
-==================================
+Python Client for App Optimize
+==============================
 
 |preview| |pypi| |versions|
 
-`App Optimize API`_: The App Optimize API provides developers and platform teams with tools to
+`App Optimize`_: The App Optimize API provides developers and platform teams with tools to
 monitor, analyze, and improve the performance and cost-efficiency of their
 cloud applications.
 
@@ -16,7 +16,7 @@ cloud applications.
    :target: https://pypi.org/project/google-cloud-appoptimize/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-appoptimize.svg
    :target: https://pypi.org/project/google-cloud-appoptimize/
-.. _App Optimize API: https://docs.cloud.google.com/app-optimize/overview
+.. _App Optimize: https://docs.cloud.google.com/app-optimize/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-appoptimize/latest/summary_overview
 .. _Product Documentation:  https://docs.cloud.google.com/app-optimize/overview
 
@@ -27,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the App Optimize API.`_
+3. `Enable the App Optimize.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the App Optimize API.:  https://docs.cloud.google.com/app-optimize/overview
+.. _Enable the App Optimize.:  https://docs.cloud.google.com/app-optimize/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -99,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for App Optimize API
+-  Read the `Client Library Documentation`_ for App Optimize
    to see other available methods on the client.
--  Read the `App Optimize API Product documentation`_ to learn
+-  Read the `App Optimize Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _App Optimize API Product documentation:  https://docs.cloud.google.com/app-optimize/overview
+.. _App Optimize Product documentation:  https://docs.cloud.google.com/app-optimize/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -385,21 +385,21 @@ class SearchRequest(proto.Message):
 
             Example #1 (multi-turn /search API calls):
 
-            - Call /search API with the session ID generated
-              in the first call.   Here, the previous search
-              query gets considered in query   standing. I.e.,
-              if the first query is "How did Alphabet do in
-              2022?"   and the current query is "How about
-              2023?", the current query will   be interpreted
-              as "How did Alphabet do in 2023?".
+              Call /search API with the session ID generated
+            in the first call.   Here, the previous search
+            query gets considered in query   standing. I.e.,
+            if the first query is "How did Alphabet do in
+            2022?"   and the current query is "How about
+            2023?", the current query will   be interpreted
+            as "How did Alphabet do in 2023?".
 
             Example #2 (coordination between /search API
             calls and /answer API calls):
 
-            - Call /answer API with the session ID generated
-              in the first call.   Here, the answer generation
-              happens in the context of the search   results
-              from the first search call.
+              Call /answer API with the session ID generated
+            in the first call.   Here, the answer generation
+            happens in the context of the search   results
+            from the first search call.
 
             Multi-turn Search feature is currently at
             private GA stage. Please use v1alpha or v1beta
@@ -1513,11 +1513,17 @@ class SearchRequest(proto.Message):
                     Disables Search As You Type.
                 ENABLED (2):
                     Enables Search As You Type.
+                AUTO (3):
+                    Automatic switching between
+                    search-as-you-type and standard search modes,
+                    ideal for single-API implementations (e.g.,
+                    debouncing).
             """
 
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
+            AUTO = 3
 
         condition: "SearchRequest.SearchAsYouTypeSpec.Condition" = proto.Field(
             proto.ENUM,

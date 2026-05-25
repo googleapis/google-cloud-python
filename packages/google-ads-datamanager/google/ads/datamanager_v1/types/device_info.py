@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,31 @@ class DeviceInfo(proto.Message):
             `About offline conversion
             imports <https://support.google.com/google-ads/answer/2998031>`__
             page for more details.
+        category (str):
+            Optional. The category of device. For
+            example, “desktop”, “tablet”, “mobile”, “smart
+            TV”.
+        language_code (str):
+            Optional. The language the device uses in ISO
+            639-1 format.
+        screen_height (int):
+            Optional. The height of the screen in pixels.
+        screen_width (int):
+            Optional. The width of the screen in pixels.
+        operating_system (str):
+            Optional. The operating system or platform of
+            the device.
+        operating_system_version (str):
+            Optional. The version of the operating system
+            or platform.
+        model (str):
+            Optional. The model of the device.
+        brand (str):
+            Optional. The brand of the device.
+        browser (str):
+            Optional. The brand or type of the browser.
+        browser_version (str):
+            Optional. The version of the browser.
     """
 
     user_agent: str = proto.Field(
@@ -59,6 +84,46 @@ class DeviceInfo(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    category: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    screen_height: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    screen_width: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    operating_system: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    operating_system_version: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    model: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    brand: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    browser: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    browser_version: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 

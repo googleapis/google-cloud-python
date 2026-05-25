@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,12 +68,25 @@ class ReportDefinition(proto.Message):
             any comparison metrics.
 
             This field is a member of `oneof`_ ``_comparison_date_range``.
+        cms_metadata_dimension_key_ids (MutableSequence[int]):
+            Optional. CMS Metadata Dimension keys that represent
+            CMS_METADATA_DIMENSION\_\* dimensions. The index of this
+            repeated field corresponds to the index on each dimension.
+            For example, cms_metadata_dimension_key_ids[0] describes
+            CMS_METADATA_DIMENSION_0_VALUE_ID and
+            CMS_METADATA_DIMENSION_0_VALUE.
         custom_dimension_key_ids (MutableSequence[int]):
             Optional. Custom Dimension keys that represent
             CUSTOM_DIMENSION\_\* dimensions. The index of this repeated
             field corresponds to the index on each dimension. For
             example, custom_dimension_key_ids[0] describes
             CUSTOM_DIMENSION_0_VALUE_ID and CUSTOM_DIMENSION_0_VALUE.
+        ekv_dimension_key_ids (MutableSequence[int]):
+            Optional. Enhanced Key-values Dimension keys that represent
+            EKV_DIMENSION\_\* dimensions. The index of this repeated
+            field corresponds to the index on each dimension. For
+            example, ekv_dimension_key_ids[0] describes
+            EKV_DIMENSION_0_VALUE_ID and EKV_DIMENSION_0_VALUE.
         line_item_custom_field_ids (MutableSequence[int]):
             Optional. Custom field IDs that represent
             LINE_ITEM_CUSTOM_FIELD\_\* dimensions. The index of this
@@ -112,6 +125,24 @@ class ReportDefinition(proto.Message):
         sorts (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.Sort]):
             Optional. Default sorts to apply to this
             report.
+        expanded_compatibility (bool):
+            Optional. Whether to use expanded
+            compatibility for this report.
+            If true, this setting enables certain
+            combinations of dimensions and metrics for this
+            report that would otherwise be incompatible.
+            Enabling this will collapse reservation data
+            into a single row even if the report's
+            dimensions would normally result in multiple
+            rows for reservation data. This impacts
+            dimensions related to line items, orders,
+            creatives, and advertisers.
+
+            This is equivalent to the "Access more dimension
+            and metric combinations" setting in the
+            Interactive Reports UI. For more details, see:
+
+            https://support.google.com/admanager/answer/16865393#combinations
     """
 
     class ReportType(proto.Enum):
@@ -122,6 +153,8 @@ class ReportDefinition(proto.Message):
                 Default value. This value is unused.
             HISTORICAL (1):
                 Historical.
+            FUTURE_SELL_THROUGH (4):
+                Future sell through.
             REACH (5):
                 Reach.
             PRIVACY_AND_MESSAGING (6):
@@ -132,15 +165,31 @@ class ReportDefinition(proto.Message):
                 Partner finance.
             AD_SPEED (13):
                 Ad speed.
+            REAL_TIME_VIDEO (15):
+                Real time video.
+            YOUTUBE_CONSOLIDATED (16):
+                Youtube consolidated.
+            ADS_TRAFFIC_NAVIGATOR (21):
+                Ads traffic navigator report.
+            OFF_PROPERTY_CAMPAIGNS (22):
+                Off property campaigns report.
+            ON_PLATFORM_MULTICALL (24):
+                On platform multicall report.
         """
 
         REPORT_TYPE_UNSPECIFIED = 0
         HISTORICAL = 1
+        FUTURE_SELL_THROUGH = 4
         REACH = 5
         PRIVACY_AND_MESSAGING = 6
         REVENUE_VERIFICATION = 7
         PARTNER_FINANCE = 8
         AD_SPEED = 13
+        REAL_TIME_VIDEO = 15
+        YOUTUBE_CONSOLIDATED = 16
+        ADS_TRAFFIC_NAVIGATOR = 21
+        OFF_PROPERTY_CAMPAIGNS = 22
+        ON_PLATFORM_MULTICALL = 24
 
     class Dimension(proto.Enum):
         r"""Reporting dimensions.
@@ -173,7 +222,7 @@ class ReportDefinition(proto.Message):
                 Manager UI (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``ENUM``
             ADVERTISER_CREDIT_STATUS_NAME (476):
@@ -183,7 +232,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``STRING``
             ADVERTISER_DOMAIN_NAME (242):
@@ -211,7 +260,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Advertiser ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``IDENTIFIER``
             ADVERTISER_LABELS (230):
@@ -240,7 +289,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Advertiser" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``STRING``
             ADVERTISER_PRIMARY_CONTACT (227):
@@ -278,7 +327,7 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``ENUM``
             ADVERTISER_TYPE_NAME (474):
@@ -287,7 +336,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Advertiser type" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``STRING``
             ADVERTISER_VERTICAL (580):
@@ -363,6 +412,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad request sizes" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING_LIST``
             AD_TECHNOLOGY_PROVIDER_DOMAIN (620):
@@ -418,7 +468,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``, ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``REACH``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_1 (65):
@@ -428,7 +479,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 1" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_10 (74):
@@ -438,7 +489,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 10" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_11 (75):
@@ -448,7 +499,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 11" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_12 (76):
@@ -458,7 +509,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 12" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_13 (77):
@@ -468,7 +519,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 13" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_14 (78):
@@ -478,7 +529,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 14" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_15 (79):
@@ -488,7 +539,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 15" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_16 (80):
@@ -498,7 +549,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 16" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_2 (66):
@@ -508,7 +559,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 2" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_3 (67):
@@ -518,7 +569,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 3" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_4 (68):
@@ -528,7 +579,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 4" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_5 (69):
@@ -538,7 +589,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 5" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_6 (70):
@@ -548,7 +599,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 6" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_7 (71):
@@ -558,7 +609,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 7" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_8 (72):
@@ -568,7 +619,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 8" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_CODE_LEVEL_9 (73):
@@ -578,7 +629,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit code level 9" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_ID (25):
@@ -587,7 +638,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``, ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``REACH``, ``ADS_TRAFFIC_NAVIGATOR``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_ALL_LEVEL (27):
@@ -598,7 +651,9 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``, ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``REACH``, ``ADS_TRAFFIC_NAVIGATOR``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``IDENTIFIER_LIST``
             AD_UNIT_ID_LEVEL_1 (30):
@@ -608,7 +663,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 1" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_10 (48):
@@ -618,7 +673,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 10" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_11 (50):
@@ -628,7 +683,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 11" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_12 (52):
@@ -638,7 +693,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 12" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_13 (54):
@@ -648,7 +703,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 13" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_14 (56):
@@ -658,7 +713,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 14" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_15 (58):
@@ -668,7 +723,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 15" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_16 (60):
@@ -678,7 +733,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 16" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_2 (32):
@@ -688,7 +743,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 2" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_3 (34):
@@ -698,7 +753,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 3" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_4 (36):
@@ -708,7 +763,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 4" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_5 (38):
@@ -718,7 +773,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 5" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_6 (40):
@@ -728,7 +783,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 6" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_7 (42):
@@ -738,7 +793,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 7" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_8 (44):
@@ -748,7 +803,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 8" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_LEVEL_9 (46):
@@ -758,7 +813,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit ID level 9" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_ID_TOP_LEVEL (142):
@@ -769,7 +824,8 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``IDENTIFIER``
             AD_UNIT_NAME (26):
@@ -778,7 +834,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``, ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``REACH``, ``ADS_TRAFFIC_NAVIGATOR``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_ALL_LEVEL (29):
@@ -789,7 +847,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit (all levels)" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``, ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``REACH``, ``ADS_TRAFFIC_NAVIGATOR``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING_LIST``
             AD_UNIT_NAME_LEVEL_1 (31):
@@ -799,7 +859,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 1" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_10 (49):
@@ -809,7 +869,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 10" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_11 (51):
@@ -819,7 +879,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 11" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_12 (53):
@@ -829,7 +889,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 12" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_13 (55):
@@ -839,7 +899,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 13" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_14 (57):
@@ -849,7 +909,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 14" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_15 (59):
@@ -859,7 +919,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 15" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_16 (61):
@@ -869,7 +929,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 16" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_2 (33):
@@ -879,7 +939,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 2" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_3 (35):
@@ -889,7 +949,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 3" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_4 (37):
@@ -899,7 +959,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 4" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_5 (39):
@@ -909,7 +969,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 5" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_6 (41):
@@ -919,7 +979,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 6" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_7 (43):
@@ -929,7 +989,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 7" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_8 (45):
@@ -939,7 +999,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 8" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_LEVEL_9 (47):
@@ -949,7 +1009,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit level 9" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AD_UNIT_NAME_TOP_LEVEL (143):
@@ -959,7 +1019,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad unit (top level)" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             AD_UNIT_REWARD_AMOUNT (63):
@@ -987,16 +1048,19 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
+
+                Values:
+                [AdUnitStatus][google.ads.admanager.v1.AdUnitStatusEnum.AdUnitStatus]
             AD_UNIT_STATUS_NAME (207):
                 The name of the status of the ad unit
 
                 Corresponds to "Ad unit status" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``AD_SPEED``, ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             AGENCY_LEVEL_1_ID (565):
@@ -1170,7 +1234,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment ID (targeted)" in the Ad
                 Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``IDENTIFIER``
             AUDIENCE_SEGMENT_TARGETED (585):
@@ -1181,7 +1246,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted)" in the Ad
                 Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             AUDIENCE_SEGMENT_TARGETED_AD_ID_USER_SIZE (605):
@@ -1190,7 +1256,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) AdID size" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_AMAZON_FIRE_USER_SIZE (606):
@@ -1199,7 +1266,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Amazon Fire
                 size" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_ANDROID_TV_USER_SIZE (607):
@@ -1208,7 +1276,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Android TV size"
                 in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_APPLE_TV_USER_SIZE (608):
@@ -1217,7 +1286,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Apple TV size"
                 in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_IDFA_USER_SIZE (609):
@@ -1226,7 +1296,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) IDFA size" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_MOBILE_WEB_USER_SIZE (610):
@@ -1235,7 +1306,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) mobile web size"
                 in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_PLAYSTATION_USER_SIZE (611):
@@ -1244,7 +1316,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) PlayStation
                 size" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_PPID_USER_SIZE (612):
@@ -1253,7 +1326,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) PPID size" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_ROKU_USER_SIZE (615):
@@ -1262,7 +1336,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Roku size" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_SAMSUNG_TV_USER_SIZE (616):
@@ -1271,7 +1346,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Samsung TV size"
                 in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_SIZE (618):
@@ -1280,7 +1356,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) size" in the Ad
                 Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_TARGETED_STATUS (628):
@@ -1289,7 +1366,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) status value" in
                 the Ad Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``ENUM``
             AUDIENCE_SEGMENT_TARGETED_STATUS_NAME (617):
@@ -1298,7 +1376,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) status" in the
                 Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             AUDIENCE_SEGMENT_TARGETED_XBOX_USER_SIZE (619):
@@ -1307,7 +1386,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Audience segment (targeted) Xbox size" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``INTEGER``
             AUTO_REFRESHED_TRAFFIC (421):
@@ -1334,7 +1414,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Bidder encrypted ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REVENUE_VERIFICATION``
+                ``REVENUE_VERIFICATION``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             BIDDER_NAME (494):
@@ -1343,7 +1423,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Bidder" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REVENUE_VERIFICATION``
+                ``REVENUE_VERIFICATION``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             BID_RANGE (679):
@@ -1398,7 +1478,8 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``REACH``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             BROWSER_CATEGORY_NAME (120):
@@ -1407,7 +1488,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Browser category" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``REACH``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             BROWSER_ID (235):
@@ -1415,7 +1497,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Browser ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``IDENTIFIER``
             BROWSER_NAME (236):
@@ -1423,7 +1506,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Browser" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             BUYER_NETWORK_ID (448):
@@ -1442,16 +1526,6 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
-            CALLOUT_STATUS_CATEGORY (588):
-                The callout status category in the Ads traffic navigator
-                report.
-
-                Corresponds to "Callout status category value" in the Ad
-                Manager UI (when showing API fields).
-
-                Compatible with the following report types:
-
-                Data format: ``ENUM``
             CALLOUT_STATUS_CATEGORY_NAME (589):
                 The callout status category name in the Ads traffic
                 navigator report.
@@ -1460,6 +1534,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             CARRIER_ID (369):
@@ -1573,7 +1648,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Content bundle ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``IDENTIFIER``
             CONTENT_BUNDLE_NAME (461):
@@ -1581,7 +1657,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Content bundle" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             CONTENT_CMS_METADATA_KV_NAMESPACE_ID (462):
@@ -1589,7 +1666,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "CMS metadata key ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``IDENTIFIER``
             CONTENT_CMS_METADATA_KV_NAMESPACE_NAME (463):
@@ -1597,7 +1675,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "CMS metadata key" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             CONTENT_CMS_NAME (643):
@@ -1605,7 +1684,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Content source name" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             CONTENT_CMS_VIDEO_ID (644):
@@ -1614,7 +1694,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "ID of the video in the content source" in
                 the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             CONTENT_ID (246):
@@ -1622,7 +1703,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Content ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``IDENTIFIER``
             CONTENT_MAPPING_PRESENCE (731):
@@ -1648,7 +1730,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Content" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             CONTINENT (469):
@@ -1675,7 +1758,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Country code" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``YOUTUBE_CONSOLIDATED``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             COUNTRY_ID (11):
@@ -1684,7 +1769,10 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Country ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``YOUTUBE_CONSOLIDATED``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``IDENTIFIER``
             COUNTRY_NAME (12):
@@ -1693,7 +1781,10 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Country" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``YOUTUBE_CONSOLIDATED``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             CREATIVE_BILLING_TYPE (366):
@@ -1728,7 +1819,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``IDENTIFIER``
             CREATIVE_NAME (139):
@@ -1737,7 +1829,28 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``STRING``
+            CREATIVE_OR_CREATIVE_SET (682):
+                ENUM describing whether the creative is part of a creative
+                set or a normal creative.
+
+                Corresponds to "Creative or creative set value" in the Ad
+                Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            CREATIVE_OR_CREATIVE_SET_NAME (683):
+                Localized string name of whether the creative is part of a
+                creative set or a normal creative.
+
+                Corresponds to "Creative or creative set" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
             CREATIVE_POLICIES_FILTERING (711):
@@ -1795,6 +1908,55 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            CREATIVE_SSL_COMPLIANCE_OVERRIDE (784):
+                Whether the creative has an SSL compliance override, and how
+                the override has been set.
+
+                Corresponds to "Creative SSL compliance override value" in
+                the Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            CREATIVE_SSL_COMPLIANCE_OVERRIDE_NAME (786):
+                Localized name of the creative SSL compliance override.
+
+                Corresponds to "Creative SSL compliance override" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            CREATIVE_SSL_SCAN_RESULT (785):
+                The result of an Ad Manager scan of the creative.
+
+                Corresponds to "Creative SSL scan result value" in the Ad
+                Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            CREATIVE_SSL_SCAN_RESULT_NAME (787):
+                Localized name of the creative SSL scan result.
+
+                Corresponds to "Creative SSL scan result" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            CREATIVE_TARGET_AD_UNIT_SIZE (770):
+                The size of the ad unit that the creative is intended to
+                occupy, such as "468 x 60".
+
+                Corresponds to "Creative target ad unit size" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``AD_SPEED``, ``REAL_TIME_VIDEO``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             CREATIVE_TECHNOLOGY (148):
@@ -1942,8 +2104,11 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``,
-                ``REVENUE_VERIFICATION``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``REVENUE_VERIFICATION``,
+                ``AD_SPEED``, ``REAL_TIME_VIDEO``, ``YOUTUBE_CONSOLIDATED``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``DATE``
             DAY_OF_WEEK (4):
@@ -1953,7 +2118,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Day of week" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``YOUTUBE_CONSOLIDATED``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             DEAL_BUYER_ID (240):
@@ -1977,15 +2144,26 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Deal ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
+            DEAL_ID_ALL (781):
+                List of deal IDs found in a callout.
+
+                Corresponds to "Deal ID (all)" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
+
+                Data format: ``STRING_LIST``
             DEAL_NAME (437):
                 Deal name
 
                 Corresponds to "Deal" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             DELIVERED_SECURE_SIGNAL_ID (309):
@@ -2034,14 +2212,25 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``ENUM``
+            DEMAND_SOURCE_ALL (782):
+                List of demand sources found in a callout.
+
+                Corresponds to "Demand source (all)" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
+
+                Data format: ``STRING_LIST``
             DEMAND_SOURCE_NAME (593):
                 Demand source name.
 
                 Corresponds to "Demand source" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             DEMAND_SUBCHANNEL (22):
@@ -2077,7 +2266,9 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEVICE_CATEGORY_NAME (16):
@@ -2087,7 +2278,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Device category" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEVICE_MANUFACTURER_ID (525):
@@ -2323,6 +2516,7 @@ class ReportDefinition(proto.Message):
                 fields).
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``IDENTIFIER``
             HBT_YIELD_PARTNER_NAME (660):
@@ -2332,6 +2526,7 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             HEADER_BIDDER_INTEGRATION_TYPE (718):
@@ -2357,7 +2552,9 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Hour" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``INTEGER``
             IMPRESSION_COUNTING_METHOD (577):
@@ -2509,7 +2706,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Inventory type (expanded) value" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``ENUM``
             INVENTORY_TYPE_NAME (20):
@@ -2519,7 +2717,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Inventory type (expanded)" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             IS_ADX_DIRECT (382):
@@ -2578,6 +2777,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Key-values" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING_LIST``
             LINE_ITEM_AGENCY (663):
@@ -2598,6 +2798,15 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``BOOLEAN``
+            LINE_ITEM_AVERAGE_NUMBER_OF_VIEWERS (694):
+                The average number of viewers for the line item.
+
+                Corresponds to "Nielsen average number of viewers" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``DOUBLE``
             LINE_ITEM_COMPANION_DELIVERY_OPTION (204):
                 Line item companion delivery option ENUM value.
 
@@ -2608,6 +2817,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemCompanionDeliveryType][google.ads.admanager.v1.LineItemCompanionDeliveryTypeEnum.LineItemCompanionDeliveryType]
             LINE_ITEM_COMPANION_DELIVERY_OPTION_NAME (205):
                 Localized line item companion delivery option name.
 
@@ -2625,9 +2837,13 @@ class ReportDefinition(proto.Message):
                 Manager UI (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemComputedStatus][google.ads.admanager.v1.LineItemComputedStatusEnum.LineItemComputedStatus]
             LINE_ITEM_COMPUTED_STATUS_NAME (251):
                 The localized name of the computed status of the LineItem.
 
@@ -2635,7 +2851,8 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_CONTRACTED_QUANTITY (92):
@@ -2654,7 +2871,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item rate" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``MONEY``
             LINE_ITEM_COST_TYPE (212):
@@ -2664,16 +2882,21 @@ class ReportDefinition(proto.Message):
                 UI (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemCostType][google.ads.admanager.v1.LineItemCostTypeEnum.LineItemCostType]
             LINE_ITEM_COST_TYPE_NAME (213):
                 Localized line item cost type name.
 
                 Corresponds to "Line item cost type" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_CREATIVE_END_DATE (176):
@@ -2696,6 +2919,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [CreativeRotationType][google.ads.admanager.v1.CreativeRotationTypeEnum.CreativeRotationType]
             LINE_ITEM_CREATIVE_ROTATION_TYPE_NAME (190):
                 The localized name of the creative rotation type of the
                 LineItem.
@@ -2724,7 +2950,8 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_DELIVERY_INDICATOR (87):
@@ -2734,7 +2961,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``REACH``, ``REAL_TIME_VIDEO``
 
                 Data format: ``PERCENT``
             LINE_ITEM_DELIVERY_RATE_TYPE (191):
@@ -2744,9 +2971,13 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemDeliveryRateType][google.ads.admanager.v1.LineItemDeliveryRateTypeEnum.LineItemDeliveryRateType]
             LINE_ITEM_DELIVERY_RATE_TYPE_NAME (192):
                 The localized name of the delivery rate type of the
                 LineItem.
@@ -2755,7 +2986,8 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_DISCOUNT_ABSOLUTE (195):
@@ -2786,7 +3018,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item end date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``DATE``
             LINE_ITEM_END_DATE_TIME (83):
@@ -2795,7 +3028,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item end time" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``TIMESTAMP``
             LINE_ITEM_ENVIRONMENT_TYPE (201):
@@ -2808,6 +3042,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [EnvironmentType][google.ads.admanager.v1.EnvironmentTypeEnum.EnvironmentType]
             LINE_ITEM_ENVIRONMENT_TYPE_NAME (202):
                 The localized name of the environment a LineItem is
                 targeting.
@@ -2854,7 +3091,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``IDENTIFIER``
             LINE_ITEM_LABELS (667):
@@ -2893,7 +3132,8 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             LINE_ITEM_LIFETIME_IMPRESSIONS (94):
@@ -2904,7 +3144,8 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             LINE_ITEM_LIFETIME_VIEWABLE_IMPRESSIONS (96):
@@ -2915,7 +3156,8 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             LINE_ITEM_MAKEGOOD (89):
@@ -2935,7 +3177,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             LINE_ITEM_NON_CPD_BOOKED_REVENUE (98):
@@ -2964,7 +3208,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item PO number" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_PRIMARY_GOAL_TYPE (210):
@@ -2977,6 +3222,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [GoalType][google.ads.admanager.v1.GoalTypeEnum.GoalType]
             LINE_ITEM_PRIMARY_GOAL_TYPE_NAME (211):
                 Localized goal type name of the primary goal of the line
                 item.
@@ -3001,7 +3249,8 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             LINE_ITEM_PRIMARY_GOAL_UNITS_PERCENTAGE (396):
@@ -3015,7 +3264,8 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``WHOLE_PERCENT``
             LINE_ITEM_PRIMARY_GOAL_UNIT_TYPE (208):
@@ -3028,6 +3278,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [UnitType][google.ads.admanager.v1.UnitTypeEnum.UnitType]
             LINE_ITEM_PRIMARY_GOAL_UNIT_TYPE_NAME (209):
                 Localized unit type name of the primary goal of the line
                 item.
@@ -3047,7 +3300,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item priority" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             LINE_ITEM_RESERVATION_STATUS (304):
@@ -3061,6 +3315,9 @@ class ReportDefinition(proto.Message):
                 ``REACH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemReservationStatus][google.ads.admanager.v1.LineItemReservationStatusEnum.LineItemReservationStatus]
             LINE_ITEM_RESERVATION_STATUS_NAME (305):
                 Localized string describing the state of inventory
                 reservation for the LineItem.
@@ -3109,7 +3366,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item start date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``DATE``
             LINE_ITEM_START_DATE_TIME (84):
@@ -3118,7 +3376,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item start time" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``TIMESTAMP``
             LINE_ITEM_TRAFFICKER (677):
@@ -3137,16 +3396,21 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
+
+                Values:
+                [LineItemType][google.ads.admanager.v1.LineItemTypeEnum.LineItemType]
             LINE_ITEM_TYPE_NAME (194):
                 Localized line item type name.
 
                 Corresponds to "Line item type" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             LINE_ITEM_UNLIMITED_END (187):
@@ -3156,7 +3420,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Line item is unlimited end time" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``BOOLEAN``
             LINE_ITEM_VALUE_COST_PER_UNIT (88):
@@ -3225,6 +3491,7 @@ class ReportDefinition(proto.Message):
                 Manager UI (when showing API fields).
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``IDENTIFIER``
             MEDIATION_YIELD_PARTNER_NAME (662):
@@ -3234,6 +3501,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             METRO_ID (453):
@@ -3278,7 +3546,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "App ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``
+                ``PRIVACY_AND_MESSAGING``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             MOBILE_APP_NAME (127):
@@ -3287,7 +3555,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "App" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``
+                ``PRIVACY_AND_MESSAGING``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             MOBILE_APP_OWNERSHIP_STATUS (311):
@@ -3337,7 +3605,8 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``ENUM``
             MOBILE_INVENTORY_TYPE_NAME (21):
@@ -3348,7 +3617,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Inventory type" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
+                ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             MOBILE_RENDERING_SDK (646):
@@ -3400,8 +3670,10 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Month and year" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``,
-                ``REVENUE_VERIFICATION``, ``PARTNER_FINANCE``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``REVENUE_VERIFICATION``,
+                ``PARTNER_FINANCE``, ``YOUTUBE_CONSOLIDATED``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             NATIVE_AD_FORMAT_ID (255):
@@ -3436,15 +3708,77 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
-            NO_FILL_REASON_CATEGORY (586):
-                No fill reason category in the Ads traffic navigator report.
+            NIELSEN_DEMOGRAPHICS (695):
+                Nielsen demographics (gender and age group).
 
-                Corresponds to "No fill reason category value" in the Ad
-                Manager UI (when showing API fields).
+                Corresponds to "Nielsen Digital Ad Ratings demographics
+                value" in the Ad Manager UI (when showing API fields).
 
-                Compatible with the following report types:
+                Compatible with the following report types: ``REACH``
 
                 Data format: ``ENUM``
+            NIELSEN_DEMOGRAPHICS_NAME (768):
+                Name of the Nielsen demographics (gender and age group).
+
+                Corresponds to "Nielsen Digital Ad Ratings demographics" in
+                the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``STRING``
+            NIELSEN_DEVICE (696):
+                Nielsen device.
+
+                Corresponds to "Nielsen Digital Ad Ratings device value" in
+                the Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``ENUM``
+            NIELSEN_DEVICE_NAME (697):
+                Name of the Nielsen device.
+
+                Corresponds to "Nielsen Digital Ad Ratings device" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``STRING``
+            NIELSEN_IN_TARGET (769):
+                Nielsen in target
+
+                Corresponds to "Nielsen in-target" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``BOOLEAN``
+            NIELSEN_RESTATEMENT_DATE (698):
+                Data restatement date of Nielsen Digital Ad Ratings data.
+
+                Corresponds to "Nielsen Digital Ad Ratings restatement date"
+                in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``DATE``
+            NIELSEN_SEGMENT (699):
+                Campaign date segment of Nielsen Digital Ad Ratings
+                reporting.
+
+                Corresponds to "Nielsen Digital Ad Ratings segment" in the
+                Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``DATE_RANGE``
+            NIELSEN_SITE_URL (700):
+                Site URL of Nielsen Digital Ad Ratings data.
+
+                Corresponds to "Nielsen Site URL" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``STRING``
             NO_FILL_REASON_CATEGORY_NAME (587):
                 No fill reason category name in the Ads traffic navigator
                 report.
@@ -3453,6 +3787,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             OPERATING_SYSTEM_CATEGORY (117):
@@ -3554,6 +3889,9 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``ENUM``
+
+                Values:
+                [OrderDeliveryStatus][google.ads.admanager.v1.OrderDeliveryStatusEnum.OrderDeliveryStatus]
             ORDER_DELIVERY_STATUS_NAME (239):
                 Order delivery status localized name.
 
@@ -3568,7 +3906,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order end date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``DATE``
             ORDER_END_DATE_TIME (155):
@@ -3577,7 +3915,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order end time" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``TIMESTAMP``
             ORDER_EXTERNAL_ID (156):
@@ -3595,7 +3933,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``IDENTIFIER``
             ORDER_LABELS (170):
@@ -3622,7 +3961,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order lifetime clicks" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``INTEGER``
             ORDER_LIFETIME_IMPRESSIONS (159):
@@ -3632,7 +3971,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``INTEGER``
             ORDER_NAME (8):
@@ -3641,7 +3980,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``,
+                ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             ORDER_PO_NUMBER (160):
@@ -3650,7 +3990,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order PO number" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``STRING``
             ORDER_PROGRAMMATIC (157):
@@ -3668,7 +4008,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order salesperson" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``
 
                 Data format: ``STRING``
             ORDER_SALESPERSON_ID (629):
@@ -3677,7 +4017,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order salesperson ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``
 
                 Data format: ``IDENTIFIER``
             ORDER_SECONDARY_SALESPEOPLE (164):
@@ -3726,7 +4066,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order start date" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``DATE``
             ORDER_START_DATE_TIME (169):
@@ -3735,7 +4075,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order start time" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``AD_SPEED``
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``TIMESTAMP``
             ORDER_TRAFFICKER (162):
@@ -3763,7 +4103,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Order is unlimited end time" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``, ``REACH``, ``AD_SPEED``
 
                 Data format: ``BOOLEAN``
             PAGE_PATH (511):
@@ -3841,7 +4182,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``IDENTIFIER``
             PLACEMENT_ID_ALL (144):
@@ -3850,7 +4192,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement ID (all)" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``IDENTIFIER_LIST``
             PLACEMENT_NAME (114):
@@ -3859,7 +4202,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             PLACEMENT_NAME_ALL (145):
@@ -3869,7 +4213,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement (all)" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING_LIST``
             PLACEMENT_STATUS (362):
@@ -3878,15 +4223,20 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement status value" in the Ad Manager UI
                 (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``ENUM``
+
+                Values:
+                [PlacementStatus][google.ads.admanager.v1.PlacementStatusEnum.PlacementStatus]
             PLACEMENT_STATUS_NAME (364):
                 Localized placement status name.
 
                 Corresponds to "Placement status" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING``
             PLACEMENT_STATUS_NAME_ALL (365):
@@ -3896,7 +4246,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Placement status (all)" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING_LIST``
             POSTAL_CODE_ID (455):
@@ -3974,6 +4325,22 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            PRICING_RULE_ID (393):
+                Pricing rule ID dimension
+
+                Corresponds to "Pricing rule ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            PRICING_RULE_NAME (394):
+                Pricing rule name dimension
+
+                Corresponds to "Pricing rule" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             PRIMARY_PERSONALIZATION_ID_TYPE (408):
                 The ID type selected for personalization.
 
@@ -3993,16 +4360,6 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
-            PROGRAMMATIC_BUYER_ID (240):
-                Deprecated. Dimension has been renamed to ``DEAL_BUYER_ID``.
-                The server will normalize any requests using this value to
-                ``DEAL_BUYER_ID``. This value will be removed on or after
-                October 10, 2025.
-            PROGRAMMATIC_BUYER_NAME (241):
-                Deprecated. Dimension has been renamed to
-                ``DEAL_BUYER_NAME``. The server will normalize any requests
-                using this value to ``DEAL_BUYER_NAME``. This value will be
-                removed on or after October 10, 2025.
             PROGRAMMATIC_CHANNEL (13):
                 Programmatic channel. The type of transaction that occurred
                 in Ad Exchange.
@@ -4204,16 +4561,6 @@ class ReportDefinition(proto.Message):
                 ``PRIVACY_AND_MESSAGING``, ``AD_SPEED``
 
                 Data format: ``STRING``
-            REJECTION_CLASS_CATEGORY (590):
-                The rejection class category in the Ads traffic navigator
-                report.
-
-                Corresponds to "Rejection class category value" in the Ad
-                Manager UI (when showing API fields).
-
-                Compatible with the following report types:
-
-                Data format: ``ENUM``
             REJECTION_CLASS_CATEGORY_NAME (591):
                 The rejection class category name in the Ads traffic
                 navigator report.
@@ -4222,6 +4569,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
             RENDERED_CREATIVE_SIZE (343):
@@ -4233,7 +4581,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             REQUESTED_AD_SIZES (352):
@@ -4347,6 +4695,16 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            TARGETS_CUSTOMER_MATCHING_LIST (789):
+                Targets customer matching list. Whether the query is siloed
+                customer match attributed.
+
+                Corresponds to "Targets customer matching list" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``BOOLEAN``
             THIRD_PARTY_ID_STATUS (402):
                 Whether a third-party cookie or device ID was present on a
                 given ad request.
@@ -4390,7 +4748,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Domain" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``PRIVACY_AND_MESSAGING``
+                ``OFF_PROPERTY_CAMPAIGNS``, ``PRIVACY_AND_MESSAGING``
 
                 Data format: ``STRING``
             TRAFFIC_SOURCE (388):
@@ -4406,23 +4764,6 @@ class ReportDefinition(proto.Message):
                 Inventory Traffic source dimension name
 
                 Corresponds to "Traffic source" in the Ad Manager UI.
-
-                Compatible with the following report types: ``HISTORICAL``
-
-                Data format: ``STRING``
-            UNIFIED_PRICING_RULE_ID (393):
-                Unified pricing rule ID dimension
-
-                Corresponds to "Unified pricing rule ID" in the Ad Manager
-                UI.
-
-                Compatible with the following report types: ``HISTORICAL``
-
-                Data format: ``IDENTIFIER``
-            UNIFIED_PRICING_RULE_NAME (394):
-                Unified pricing rule name dimension
-
-                Corresponds to "Unified pricing rule" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -4600,7 +4941,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad request source value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
             VIDEO_AD_REQUEST_SOURCE_NAME (439):
@@ -4608,7 +4950,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Ad request source" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_AD_TYPE (432):
@@ -4670,7 +5013,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Live stream ad break ID" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_LIVE_STREAM_EVENT_AD_BREAK_NAME (549):
@@ -4678,7 +5022,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Live stream ad break" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_LIVE_STREAM_EVENT_AD_BREAK_TIME (550):
@@ -4695,7 +5040,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Live stream ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_LIVE_STREAM_EVENT_NAME (552):
@@ -4703,7 +5049,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Live stream" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_MEASUREMENT_SOURCE (601):
@@ -4728,8 +5075,8 @@ class ReportDefinition(proto.Message):
             VIDEO_PLCMT (172):
                 The video placement enum as defined by ADCOM 1.0-202303.
 
-                Corresponds to "Video placement value (new)" in the Ad
-                Manager UI (when showing API fields).
+                Corresponds to "Video placement value" in the Ad Manager UI
+                (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -4738,7 +5085,7 @@ class ReportDefinition(proto.Message):
                 The localized name of the video placement as defined by
                 ADCOM 1.0-202303.
 
-                Corresponds to "Video placement (new)" in the Ad Manager UI.
+                Corresponds to "Video placement" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -4757,7 +5104,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Position of pod" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_SDK_VERSION (440):
@@ -4766,7 +5114,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Video SDK version value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
             VIDEO_SDK_VERSION_NAME (441):
@@ -4774,7 +5123,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Video SDK version" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             VIDEO_STITCHER_TYPE (752):
@@ -4808,7 +5158,9 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Week" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``PRIVACY_AND_MESSAGING``
+                ``FUTURE_SELL_THROUGH``, ``REACH``,
+                ``PRIVACY_AND_MESSAGING``, ``YOUTUBE_CONSOLIDATED``,
+                ``OFF_PROPERTY_CAMPAIGNS``, ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             YIELD_GROUP_BUYER_NAME (184):
@@ -4852,6 +5204,7 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``ENUM``
             YOUTUBE_AD_DURATION_BUCKET_NAME (431):
@@ -4860,6 +5213,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad duration" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             YOUTUBE_AD_TYPE (399):
@@ -4869,6 +5223,7 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``ENUM``
             YOUTUBE_AD_TYPE_NAME (400):
@@ -4877,6 +5232,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "YouTube ad type" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``STRING``
             LINE_ITEM_CUSTOM_FIELD_0_OPTION_ID (10000):
@@ -5029,6 +5385,186 @@ class ReportDefinition(proto.Message):
                 ``ReportDefinition.line_item_custom_field_ids``. Treats the
                 value as a string. Can only be used if the custom field at
                 index 14 is of type ``STRING`` or ``DROPDOWN``.
+            LINE_ITEM_CUSTOM_FIELD_0_VALUE_DOUBLE (11015):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 0 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 0 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_1_VALUE_DOUBLE (11016):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 1 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 1 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_2_VALUE_DOUBLE (11017):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 2 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 2 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_3_VALUE_DOUBLE (11018):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 3 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 3 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_4_VALUE_DOUBLE (11019):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 4 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 4 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_5_VALUE_DOUBLE (11020):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 5 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 5 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_6_VALUE_DOUBLE (11021):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 6 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 6 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_7_VALUE_DOUBLE (11022):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 7 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 7 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_8_VALUE_DOUBLE (11023):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 8 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 8 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_9_VALUE_DOUBLE (11024):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 9 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 9 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_10_VALUE_DOUBLE (11025):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 10 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 10 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_11_VALUE_DOUBLE (11026):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 11 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 11 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_12_VALUE_DOUBLE (11027):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 12 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 12 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_13_VALUE_DOUBLE (11028):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 13 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 13 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_14_VALUE_DOUBLE (11029):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 14 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 14 is of type DOUBLE.
+            LINE_ITEM_CUSTOM_FIELD_0_VALUE_BOOL (11030):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 0 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 0 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_1_VALUE_BOOL (11031):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 1 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 1 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_2_VALUE_BOOL (11032):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 2 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 2 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_3_VALUE_BOOL (11033):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 3 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 3 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_4_VALUE_BOOL (11034):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 4 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 4 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_5_VALUE_BOOL (11035):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 5 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 5 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_6_VALUE_BOOL (11036):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 6 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 6 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_7_VALUE_BOOL (11037):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 7 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 7 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_8_VALUE_BOOL (11038):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 8 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 8 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_9_VALUE_BOOL (11039):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 9 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 9 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_10_VALUE_BOOL (11040):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 10 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 10 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_11_VALUE_BOOL (11041):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 11 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 11 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_12_VALUE_BOOL (11042):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 12 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 12 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_13_VALUE_BOOL (11043):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 13 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 13 is of type BOOLEAN.
+            LINE_ITEM_CUSTOM_FIELD_14_VALUE_BOOL (11044):
+                Custom field value for Line Item with custom field ID equal
+                to the ID in index 14 of
+                ``ReportDefinition.line_item_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 14 is of type BOOLEAN.
             ORDER_CUSTOM_FIELD_0_OPTION_ID (12000):
                 Custom field option ID for Order with custom field ID equal
                 to the ID in index 0 of
@@ -5179,6 +5715,186 @@ class ReportDefinition(proto.Message):
                 ``ReportDefinition.order_custom_field_ids``. Treats the
                 value as a string. Can only be used if the custom field at
                 index 14 is of type STRING.
+            ORDER_CUSTOM_FIELD_0_VALUE_DOUBLE (13015):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 0 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 0 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_1_VALUE_DOUBLE (13016):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 1 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 1 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_2_VALUE_DOUBLE (13017):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 2 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 2 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_3_VALUE_DOUBLE (13018):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 3 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 3 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_4_VALUE_DOUBLE (13019):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 4 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 4 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_5_VALUE_DOUBLE (13020):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 5 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 5 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_6_VALUE_DOUBLE (13021):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 6 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 6 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_7_VALUE_DOUBLE (13022):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 7 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 7 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_8_VALUE_DOUBLE (13023):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 8 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 8 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_9_VALUE_DOUBLE (13024):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 9 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 9 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_10_VALUE_DOUBLE (13025):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 10 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 10 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_11_VALUE_DOUBLE (13026):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 11 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 11 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_12_VALUE_DOUBLE (13027):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 12 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 12 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_13_VALUE_DOUBLE (13028):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 13 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 13 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_14_VALUE_DOUBLE (13029):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 14 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as double. Can only be used if the custom field at
+                index 14 is of type DOUBLE.
+            ORDER_CUSTOM_FIELD_0_VALUE_BOOL (13030):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 0 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 0 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_1_VALUE_BOOL (13031):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 1 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 1 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_2_VALUE_BOOL (13032):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 2 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 2 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_3_VALUE_BOOL (13033):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 3 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 3 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_4_VALUE_BOOL (13034):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 4 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 4 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_5_VALUE_BOOL (13035):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 5 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 5 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_6_VALUE_BOOL (13036):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 6 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 6 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_7_VALUE_BOOL (13037):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 7 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 7 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_8_VALUE_BOOL (13038):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 8 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 8 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_9_VALUE_BOOL (13039):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 9 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 9 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_10_VALUE_BOOL (13040):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 10 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 10 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_11_VALUE_BOOL (13041):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 11 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 11 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_12_VALUE_BOOL (13042):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 12 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 12 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_13_VALUE_BOOL (13043):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 13 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 13 is of type BOOLEAN.
+            ORDER_CUSTOM_FIELD_14_VALUE_BOOL (13044):
+                Custom field value for Order with custom field ID equal to
+                the ID in index 14 of
+                ``ReportDefinition.order_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 14 is of type BOOLEAN.
             CREATIVE_CUSTOM_FIELD_0_OPTION_ID (14000):
                 Custom field option ID for Creative with custom field ID
                 equal to the ID in index 0 of
@@ -5329,456 +6045,266 @@ class ReportDefinition(proto.Message):
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
                 value as a string. Can only be used if the custom field at
                 index 14 is of type STRING.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_0_OPTION_ID (16000):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 0 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_1_OPTION_ID (16001):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 1 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_2_OPTION_ID (16002):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 2 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_3_OPTION_ID (16003):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 3 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_4_OPTION_ID (16004):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 4 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_5_OPTION_ID (16005):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 5 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_6_OPTION_ID (16006):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 6 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_7_OPTION_ID (16007):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 7 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_8_OPTION_ID (16008):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 8 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_9_OPTION_ID (16009):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 9 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_10_OPTION_ID (16010):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 10 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_11_OPTION_ID (16011):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 11 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_12_OPTION_ID (16012):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 12 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_13_OPTION_ID (16013):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 13 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_14_OPTION_ID (16014):
-                Custom field option ID for Backfill line item with custom
-                field ID equal to the ID in index 14 of
-                ``ReportDefinition.line_item_custom_field_ids``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_0_VALUE (17000):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 0 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 0 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_1_VALUE (17001):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 1 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 1 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_2_VALUE (17002):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 2 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 2 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_3_VALUE (17003):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 3 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 3 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_4_VALUE (17004):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 4 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 4 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_5_VALUE (17005):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 5 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 5 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_6_VALUE (17006):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 6 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 6 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_7_VALUE (17007):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 7 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 7 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_8_VALUE (17008):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 8 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 8 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_9_VALUE (17009):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 9 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 9 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_10_VALUE (17010):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 10 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 10 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_11_VALUE (17011):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 11 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 11 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_12_VALUE (17012):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 12 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 12 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_13_VALUE (17013):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 13 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 13 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_LINE_ITEM_CUSTOM_FIELD_14_VALUE (17014):
-                Custom field value for Backfill line item with custom field
-                ID equal to the ID in index 14 of
-                ``ReportDefinition.line_item_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 14 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_0_OPTION_ID (18000):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 0 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_1_OPTION_ID (18001):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 1 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_2_OPTION_ID (18002):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 2 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_3_OPTION_ID (18003):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 3 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_4_OPTION_ID (18004):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 4 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_5_OPTION_ID (18005):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 5 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_6_OPTION_ID (18006):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 6 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_7_OPTION_ID (18007):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 7 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_8_OPTION_ID (18008):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 8 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_9_OPTION_ID (18009):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 9 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_10_OPTION_ID (18010):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 10 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_11_OPTION_ID (18011):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 11 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_12_OPTION_ID (18012):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 12 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_13_OPTION_ID (18013):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 13 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_14_OPTION_ID (18014):
-                Custom field option ID for Backfill order with custom field
-                ID equal to the ID in index 14 of
-                ``ReportDefinition.order_custom_field_ids``.
-            BACKFILL_ORDER_CUSTOM_FIELD_0_VALUE (19000):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 0 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 0 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_1_VALUE (19001):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 1 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 1 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_2_VALUE (19002):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 2 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 2 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_3_VALUE (19003):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 3 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 3 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_4_VALUE (19004):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 4 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 4 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_5_VALUE (19005):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 5 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 5 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_6_VALUE (19006):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 6 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 6 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_7_VALUE (19007):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 7 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 7 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_8_VALUE (19008):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 8 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 8 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_9_VALUE (19009):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 9 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 9 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_10_VALUE (19010):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 10 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 10 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_11_VALUE (19011):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 11 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 11 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_12_VALUE (19012):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 12 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 12 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_13_VALUE (19013):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 13 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 13 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_ORDER_CUSTOM_FIELD_14_VALUE (19014):
-                Custom field value for Backfill order with custom field ID
-                equal to the ID in index 14 of
-                ``ReportDefinition.order_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 14 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_0_OPTION_ID (20000):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 0 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_1_OPTION_ID (20001):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 1 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_2_OPTION_ID (20002):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 2 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_3_OPTION_ID (20003):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 3 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_4_OPTION_ID (20004):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 4 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_5_OPTION_ID (20005):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 5 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_6_OPTION_ID (20006):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 6 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_7_OPTION_ID (20007):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 7 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_8_OPTION_ID (20008):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 8 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_9_OPTION_ID (20009):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 9 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_10_OPTION_ID (20010):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 10 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_11_OPTION_ID (20011):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 11 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_12_OPTION_ID (20012):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 12 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_13_OPTION_ID (20013):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 13 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_14_OPTION_ID (20014):
-                Custom field option ID for Backfill creative with custom
-                field ID equal to the ID in index 14 of
-                ``ReportDefinition.creative_custom_field_ids``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_0_VALUE (21000):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 0 of
+            CREATIVE_CUSTOM_FIELD_0_VALUE_DOUBLE (15015):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 0 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 0 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_1_VALUE (21001):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 1 of
+                value as double. Can only be used if the custom field at
+                index 0 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_1_VALUE_DOUBLE (15016):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 1 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 1 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_2_VALUE (21002):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 2 of
+                value as double. Can only be used if the custom field at
+                index 1 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_2_VALUE_DOUBLE (15017):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 2 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 2 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_3_VALUE (21003):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 3 of
+                value as double. Can only be used if the custom field at
+                index 2 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_3_VALUE_DOUBLE (15018):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 3 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 3 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_4_VALUE (21004):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 4 of
+                value as double. Can only be used if the custom field at
+                index 3 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_4_VALUE_DOUBLE (15019):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 4 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 4 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_5_VALUE (21005):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 5 of
+                value as double. Can only be used if the custom field at
+                index 4 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_5_VALUE_DOUBLE (15020):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 5 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 5 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_6_VALUE (21006):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 6 of
+                value as double. Can only be used if the custom field at
+                index 5 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_6_VALUE_DOUBLE (15021):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 6 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 6 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_7_VALUE (21007):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 7 of
+                value as double. Can only be used if the custom field at
+                index 6 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_7_VALUE_DOUBLE (15022):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 7 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 7 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_8_VALUE (21008):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 8 of
+                value as double. Can only be used if the custom field at
+                index 7 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_8_VALUE_DOUBLE (15023):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 8 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 8 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_9_VALUE (21009):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 9 of
+                value as double. Can only be used if the custom field at
+                index 8 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_9_VALUE_DOUBLE (15024):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 9 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 9 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_10_VALUE (21010):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 10 of
+                value as double. Can only be used if the custom field at
+                index 9 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_10_VALUE_DOUBLE (15025):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 10 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 10 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_11_VALUE (21011):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 11 of
+                value as double. Can only be used if the custom field at
+                index 10 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_11_VALUE_DOUBLE (15026):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 11 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 11 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_12_VALUE (21012):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 12 of
+                value as double. Can only be used if the custom field at
+                index 11 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_12_VALUE_DOUBLE (15027):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 12 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 12 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_13_VALUE (21013):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 13 of
+                value as double. Can only be used if the custom field at
+                index 12 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_13_VALUE_DOUBLE (15028):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 13 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 13 is of type ``STRING`` or ``DROPDOWN``.
-            BACKFILL_CREATIVE_CUSTOM_FIELD_14_VALUE (21014):
-                Custom field value for Backfill creative with custom field
-                ID equal to the ID in index 14 of
+                value as double. Can only be used if the custom field at
+                index 13 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_14_VALUE_DOUBLE (15029):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 14 of
                 ``ReportDefinition.creative_custom_field_ids``. Treats the
-                value as a string. Can only be used if the custom field at
-                index 14 is of type ``STRING`` or ``DROPDOWN``.
+                value as double. Can only be used if the custom field at
+                index 14 is of type DOUBLE.
+            CREATIVE_CUSTOM_FIELD_0_VALUE_BOOL (15030):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 0 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 0 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_1_VALUE_BOOL (15031):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 1 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 1 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_2_VALUE_BOOL (15032):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 2 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 2 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_3_VALUE_BOOL (15033):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 3 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 3 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_4_VALUE_BOOL (15034):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 4 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 4 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_5_VALUE_BOOL (15035):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 5 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 5 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_6_VALUE_BOOL (15036):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 6 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 6 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_7_VALUE_BOOL (15037):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 7 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 7 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_8_VALUE_BOOL (15038):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 8 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 8 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_9_VALUE_BOOL (15039):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 9 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 9 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_10_VALUE_BOOL (15040):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 10 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 10 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_11_VALUE_BOOL (15041):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 11 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 11 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_12_VALUE_BOOL (15042):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 12 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 12 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_13_VALUE_BOOL (15043):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 13 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 13 is of type BOOLEAN.
+            CREATIVE_CUSTOM_FIELD_14_VALUE_BOOL (15044):
+                Custom field value for Creative with custom field ID equal
+                to the ID in index 14 of
+                ``ReportDefinition.creative_custom_field_ids``. Treats the
+                value as boolean. Can only be used if the custom field at
+                index 14 is of type BOOLEAN.
+            CMS_METADATA_DIMENSION_0_VALUE_ID (102000):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 0 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_1_VALUE_ID (102001):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 1 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_2_VALUE_ID (102002):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 2 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_3_VALUE_ID (102003):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 3 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_4_VALUE_ID (102004):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 4 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_5_VALUE_ID (102005):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 5 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_6_VALUE_ID (102006):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 6 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_7_VALUE_ID (102007):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 7 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_8_VALUE_ID (102008):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 8 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_9_VALUE_ID (102009):
+                CMS Metadata Dimension Value ID for CMS Metadata Dimension
+                with key equal to the key in index 9 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_0_VALUE (103000):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 9 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_1_VALUE (103001):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 1 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_2_VALUE (103002):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 2 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_3_VALUE (103003):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 3 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_4_VALUE (103004):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 4 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_5_VALUE (103005):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 5 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_6_VALUE (103006):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 6 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_7_VALUE (103007):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 7 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_8_VALUE (103008):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 8 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
+            CMS_METADATA_DIMENSION_9_VALUE (103009):
+                CMS Metadata Dimension Value Name for CMS Metadata Dimension
+                with key equal to the key in index 9 of
+                ``ReportDefinition.cms_metadata_dimension_key_ids``.
             CUSTOM_DIMENSION_0_VALUE_ID (100000):
                 Custom Dimension Value ID for Custom Dimension with key
                 equal to the key in index 0 of
@@ -5859,9 +6385,88 @@ class ReportDefinition(proto.Message):
                 Custom Dimension Value name for Custom Dimension with key
                 equal to the ID in index 9 of
                 ``ReportDefinition.custom_dimension_key_ids``.
+            EKV_DIMENSION_0_VALUE_ID (105000):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 0 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_1_VALUE_ID (105001):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 1 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_2_VALUE_ID (105002):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 2 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_3_VALUE_ID (105003):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 3 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_4_VALUE_ID (105004):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 4 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_5_VALUE_ID (105005):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 5 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_6_VALUE_ID (105006):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 6 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_7_VALUE_ID (105007):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 9 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_8_VALUE_ID (105008):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 8 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_9_VALUE_ID (105009):
+                Enhanced Key-values Dimension Value ID for EKV Dimension
+                with key equal to the key in index 9 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_0_VALUE (106000):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 0 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_1_VALUE (106001):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 1 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_2_VALUE (106002):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 2 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_3_VALUE (106003):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 3 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_4_VALUE (106004):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 4 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_5_VALUE (106005):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 5 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_6_VALUE (106006):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 6 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_7_VALUE (106007):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 7 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_8_VALUE (106008):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 8 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
+            EKV_DIMENSION_9_VALUE (106009):
+                Enhanced Key-values Dimension Value name for EKV Dimension
+                with key equal to the ID in index 9 of
+                ``ReportDefinition.ekv_dimension_key_ids``.
         """
 
-        _pb_options = {"allow_alias": True}
         DIMENSION_UNSPECIFIED = 0
         ACTIVE_VIEW_MEASUREMENT_SOURCE = 575
         ACTIVE_VIEW_MEASUREMENT_SOURCE_NAME = 576
@@ -6000,7 +6605,6 @@ class ReportDefinition(proto.Message):
         BROWSER_NAME = 236
         BUYER_NETWORK_ID = 448
         BUYER_NETWORK_NAME = 449
-        CALLOUT_STATUS_CATEGORY = 588
         CALLOUT_STATUS_CATEGORY_NAME = 589
         CARRIER_ID = 369
         CARRIER_NAME = 368
@@ -6034,12 +6638,19 @@ class ReportDefinition(proto.Message):
         CREATIVE_CLICK_THROUGH_URL = 174
         CREATIVE_ID = 138
         CREATIVE_NAME = 139
+        CREATIVE_OR_CREATIVE_SET = 682
+        CREATIVE_OR_CREATIVE_SET_NAME = 683
         CREATIVE_POLICIES_FILTERING = 711
         CREATIVE_POLICIES_FILTERING_NAME = 712
         CREATIVE_PROTECTIONS_FILTERING = 704
         CREATIVE_PROTECTIONS_FILTERING_NAME = 705
         CREATIVE_SET_ROLE_TYPE = 686
         CREATIVE_SET_ROLE_TYPE_NAME = 687
+        CREATIVE_SSL_COMPLIANCE_OVERRIDE = 784
+        CREATIVE_SSL_COMPLIANCE_OVERRIDE_NAME = 786
+        CREATIVE_SSL_SCAN_RESULT = 785
+        CREATIVE_SSL_SCAN_RESULT_NAME = 787
+        CREATIVE_TARGET_AD_UNIT_SIZE = 770
         CREATIVE_TECHNOLOGY = 148
         CREATIVE_TECHNOLOGY_NAME = 149
         CREATIVE_THIRD_PARTY_VENDOR = 361
@@ -6061,12 +6672,14 @@ class ReportDefinition(proto.Message):
         DEAL_BUYER_ID = 240
         DEAL_BUYER_NAME = 241
         DEAL_ID = 436
+        DEAL_ID_ALL = 781
         DEAL_NAME = 437
         DELIVERED_SECURE_SIGNAL_ID = 309
         DELIVERED_SECURE_SIGNAL_NAME = 310
         DEMAND_CHANNEL = 9
         DEMAND_CHANNEL_NAME = 10
         DEMAND_SOURCE = 592
+        DEMAND_SOURCE_ALL = 782
         DEMAND_SOURCE_NAME = 593
         DEMAND_SUBCHANNEL = 22
         DEMAND_SUBCHANNEL_NAME = 23
@@ -6130,6 +6743,7 @@ class ReportDefinition(proto.Message):
         KEY_VALUES_SET = 713
         LINE_ITEM_AGENCY = 663
         LINE_ITEM_ARCHIVED = 188
+        LINE_ITEM_AVERAGE_NUMBER_OF_VIEWERS = 694
         LINE_ITEM_COMPANION_DELIVERY_OPTION = 204
         LINE_ITEM_COMPANION_DELIVERY_OPTION_NAME = 205
         LINE_ITEM_COMPUTED_STATUS = 250
@@ -6215,7 +6829,14 @@ class ReportDefinition(proto.Message):
         NATIVE_AD_FORMAT_NAME = 254
         NATIVE_STYLE_ID = 253
         NATIVE_STYLE_NAME = 252
-        NO_FILL_REASON_CATEGORY = 586
+        NIELSEN_DEMOGRAPHICS = 695
+        NIELSEN_DEMOGRAPHICS_NAME = 768
+        NIELSEN_DEVICE = 696
+        NIELSEN_DEVICE_NAME = 697
+        NIELSEN_IN_TARGET = 769
+        NIELSEN_RESTATEMENT_DATE = 698
+        NIELSEN_SEGMENT = 699
+        NIELSEN_SITE_URL = 700
         NO_FILL_REASON_CATEGORY_NAME = 587
         OPERATING_SYSTEM_CATEGORY = 117
         OPERATING_SYSTEM_CATEGORY_NAME = 118
@@ -6273,10 +6894,10 @@ class ReportDefinition(proto.Message):
         PREDICTED_VIEWABILITY_BUCKET_NAME = 634
         PRESENTED_SECURE_SIGNAL_ID = 495
         PRESENTED_SECURE_SIGNAL_NAME = 496
+        PRICING_RULE_ID = 393
+        PRICING_RULE_NAME = 394
         PRIMARY_PERSONALIZATION_ID_TYPE = 408
         PRIMARY_PERSONALIZATION_ID_TYPE_NAME = 409
-        PROGRAMMATIC_BUYER_ID = 240
-        PROGRAMMATIC_BUYER_NAME = 241
         PROGRAMMATIC_CHANNEL = 13
         PROGRAMMATIC_CHANNEL_NAME = 14
         PUBLISHER_PROVIDED_SIGNALS_ALL_LEVELS_EXTERNAL_CODE = 410
@@ -6298,7 +6919,6 @@ class ReportDefinition(proto.Message):
         PUBLISHER_PROVIDED_SIGNAL_DATA_PROVIDER_NAME = 137
         REGION_ID = 457
         REGION_NAME = 458
-        REJECTION_CLASS_CATEGORY = 590
         REJECTION_CLASS_CATEGORY_NAME = 591
         RENDERED_CREATIVE_SIZE = 343
         REQUESTED_AD_SIZES = 352
@@ -6313,6 +6933,7 @@ class ReportDefinition(proto.Message):
         TARGETING_NAME = 233
         TARGETING_TYPE = 385
         TARGETING_TYPE_NAME = 386
+        TARGETS_CUSTOMER_MATCHING_LIST = 789
         THIRD_PARTY_ID_STATUS = 402
         THIRD_PARTY_ID_STATUS_NAME = 403
         TOPICS_STATUS = 504
@@ -6320,8 +6941,6 @@ class ReportDefinition(proto.Message):
         TOP_PRIVATE_DOMAIN = 444
         TRAFFIC_SOURCE = 388
         TRAFFIC_SOURCE_NAME = 389
-        UNIFIED_PRICING_RULE_ID = 393
-        UNIFIED_PRICING_RULE_NAME = 394
         URL = 506
         URL_ID = 507
         USER_MESSAGES_CHOICE = 702
@@ -6403,6 +7022,36 @@ class ReportDefinition(proto.Message):
         LINE_ITEM_CUSTOM_FIELD_12_VALUE = 11012
         LINE_ITEM_CUSTOM_FIELD_13_VALUE = 11013
         LINE_ITEM_CUSTOM_FIELD_14_VALUE = 11014
+        LINE_ITEM_CUSTOM_FIELD_0_VALUE_DOUBLE = 11015
+        LINE_ITEM_CUSTOM_FIELD_1_VALUE_DOUBLE = 11016
+        LINE_ITEM_CUSTOM_FIELD_2_VALUE_DOUBLE = 11017
+        LINE_ITEM_CUSTOM_FIELD_3_VALUE_DOUBLE = 11018
+        LINE_ITEM_CUSTOM_FIELD_4_VALUE_DOUBLE = 11019
+        LINE_ITEM_CUSTOM_FIELD_5_VALUE_DOUBLE = 11020
+        LINE_ITEM_CUSTOM_FIELD_6_VALUE_DOUBLE = 11021
+        LINE_ITEM_CUSTOM_FIELD_7_VALUE_DOUBLE = 11022
+        LINE_ITEM_CUSTOM_FIELD_8_VALUE_DOUBLE = 11023
+        LINE_ITEM_CUSTOM_FIELD_9_VALUE_DOUBLE = 11024
+        LINE_ITEM_CUSTOM_FIELD_10_VALUE_DOUBLE = 11025
+        LINE_ITEM_CUSTOM_FIELD_11_VALUE_DOUBLE = 11026
+        LINE_ITEM_CUSTOM_FIELD_12_VALUE_DOUBLE = 11027
+        LINE_ITEM_CUSTOM_FIELD_13_VALUE_DOUBLE = 11028
+        LINE_ITEM_CUSTOM_FIELD_14_VALUE_DOUBLE = 11029
+        LINE_ITEM_CUSTOM_FIELD_0_VALUE_BOOL = 11030
+        LINE_ITEM_CUSTOM_FIELD_1_VALUE_BOOL = 11031
+        LINE_ITEM_CUSTOM_FIELD_2_VALUE_BOOL = 11032
+        LINE_ITEM_CUSTOM_FIELD_3_VALUE_BOOL = 11033
+        LINE_ITEM_CUSTOM_FIELD_4_VALUE_BOOL = 11034
+        LINE_ITEM_CUSTOM_FIELD_5_VALUE_BOOL = 11035
+        LINE_ITEM_CUSTOM_FIELD_6_VALUE_BOOL = 11036
+        LINE_ITEM_CUSTOM_FIELD_7_VALUE_BOOL = 11037
+        LINE_ITEM_CUSTOM_FIELD_8_VALUE_BOOL = 11038
+        LINE_ITEM_CUSTOM_FIELD_9_VALUE_BOOL = 11039
+        LINE_ITEM_CUSTOM_FIELD_10_VALUE_BOOL = 11040
+        LINE_ITEM_CUSTOM_FIELD_11_VALUE_BOOL = 11041
+        LINE_ITEM_CUSTOM_FIELD_12_VALUE_BOOL = 11042
+        LINE_ITEM_CUSTOM_FIELD_13_VALUE_BOOL = 11043
+        LINE_ITEM_CUSTOM_FIELD_14_VALUE_BOOL = 11044
         ORDER_CUSTOM_FIELD_0_OPTION_ID = 12000
         ORDER_CUSTOM_FIELD_1_OPTION_ID = 12001
         ORDER_CUSTOM_FIELD_2_OPTION_ID = 12002
@@ -6433,6 +7082,36 @@ class ReportDefinition(proto.Message):
         ORDER_CUSTOM_FIELD_12_VALUE = 13012
         ORDER_CUSTOM_FIELD_13_VALUE = 13013
         ORDER_CUSTOM_FIELD_14_VALUE = 13014
+        ORDER_CUSTOM_FIELD_0_VALUE_DOUBLE = 13015
+        ORDER_CUSTOM_FIELD_1_VALUE_DOUBLE = 13016
+        ORDER_CUSTOM_FIELD_2_VALUE_DOUBLE = 13017
+        ORDER_CUSTOM_FIELD_3_VALUE_DOUBLE = 13018
+        ORDER_CUSTOM_FIELD_4_VALUE_DOUBLE = 13019
+        ORDER_CUSTOM_FIELD_5_VALUE_DOUBLE = 13020
+        ORDER_CUSTOM_FIELD_6_VALUE_DOUBLE = 13021
+        ORDER_CUSTOM_FIELD_7_VALUE_DOUBLE = 13022
+        ORDER_CUSTOM_FIELD_8_VALUE_DOUBLE = 13023
+        ORDER_CUSTOM_FIELD_9_VALUE_DOUBLE = 13024
+        ORDER_CUSTOM_FIELD_10_VALUE_DOUBLE = 13025
+        ORDER_CUSTOM_FIELD_11_VALUE_DOUBLE = 13026
+        ORDER_CUSTOM_FIELD_12_VALUE_DOUBLE = 13027
+        ORDER_CUSTOM_FIELD_13_VALUE_DOUBLE = 13028
+        ORDER_CUSTOM_FIELD_14_VALUE_DOUBLE = 13029
+        ORDER_CUSTOM_FIELD_0_VALUE_BOOL = 13030
+        ORDER_CUSTOM_FIELD_1_VALUE_BOOL = 13031
+        ORDER_CUSTOM_FIELD_2_VALUE_BOOL = 13032
+        ORDER_CUSTOM_FIELD_3_VALUE_BOOL = 13033
+        ORDER_CUSTOM_FIELD_4_VALUE_BOOL = 13034
+        ORDER_CUSTOM_FIELD_5_VALUE_BOOL = 13035
+        ORDER_CUSTOM_FIELD_6_VALUE_BOOL = 13036
+        ORDER_CUSTOM_FIELD_7_VALUE_BOOL = 13037
+        ORDER_CUSTOM_FIELD_8_VALUE_BOOL = 13038
+        ORDER_CUSTOM_FIELD_9_VALUE_BOOL = 13039
+        ORDER_CUSTOM_FIELD_10_VALUE_BOOL = 13040
+        ORDER_CUSTOM_FIELD_11_VALUE_BOOL = 13041
+        ORDER_CUSTOM_FIELD_12_VALUE_BOOL = 13042
+        ORDER_CUSTOM_FIELD_13_VALUE_BOOL = 13043
+        ORDER_CUSTOM_FIELD_14_VALUE_BOOL = 13044
         CREATIVE_CUSTOM_FIELD_0_OPTION_ID = 14000
         CREATIVE_CUSTOM_FIELD_1_OPTION_ID = 14001
         CREATIVE_CUSTOM_FIELD_2_OPTION_ID = 14002
@@ -6463,96 +7142,56 @@ class ReportDefinition(proto.Message):
         CREATIVE_CUSTOM_FIELD_12_VALUE = 15012
         CREATIVE_CUSTOM_FIELD_13_VALUE = 15013
         CREATIVE_CUSTOM_FIELD_14_VALUE = 15014
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_0_OPTION_ID = 16000
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_1_OPTION_ID = 16001
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_2_OPTION_ID = 16002
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_3_OPTION_ID = 16003
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_4_OPTION_ID = 16004
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_5_OPTION_ID = 16005
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_6_OPTION_ID = 16006
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_7_OPTION_ID = 16007
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_8_OPTION_ID = 16008
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_9_OPTION_ID = 16009
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_10_OPTION_ID = 16010
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_11_OPTION_ID = 16011
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_12_OPTION_ID = 16012
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_13_OPTION_ID = 16013
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_14_OPTION_ID = 16014
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_0_VALUE = 17000
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_1_VALUE = 17001
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_2_VALUE = 17002
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_3_VALUE = 17003
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_4_VALUE = 17004
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_5_VALUE = 17005
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_6_VALUE = 17006
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_7_VALUE = 17007
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_8_VALUE = 17008
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_9_VALUE = 17009
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_10_VALUE = 17010
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_11_VALUE = 17011
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_12_VALUE = 17012
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_13_VALUE = 17013
-        BACKFILL_LINE_ITEM_CUSTOM_FIELD_14_VALUE = 17014
-        BACKFILL_ORDER_CUSTOM_FIELD_0_OPTION_ID = 18000
-        BACKFILL_ORDER_CUSTOM_FIELD_1_OPTION_ID = 18001
-        BACKFILL_ORDER_CUSTOM_FIELD_2_OPTION_ID = 18002
-        BACKFILL_ORDER_CUSTOM_FIELD_3_OPTION_ID = 18003
-        BACKFILL_ORDER_CUSTOM_FIELD_4_OPTION_ID = 18004
-        BACKFILL_ORDER_CUSTOM_FIELD_5_OPTION_ID = 18005
-        BACKFILL_ORDER_CUSTOM_FIELD_6_OPTION_ID = 18006
-        BACKFILL_ORDER_CUSTOM_FIELD_7_OPTION_ID = 18007
-        BACKFILL_ORDER_CUSTOM_FIELD_8_OPTION_ID = 18008
-        BACKFILL_ORDER_CUSTOM_FIELD_9_OPTION_ID = 18009
-        BACKFILL_ORDER_CUSTOM_FIELD_10_OPTION_ID = 18010
-        BACKFILL_ORDER_CUSTOM_FIELD_11_OPTION_ID = 18011
-        BACKFILL_ORDER_CUSTOM_FIELD_12_OPTION_ID = 18012
-        BACKFILL_ORDER_CUSTOM_FIELD_13_OPTION_ID = 18013
-        BACKFILL_ORDER_CUSTOM_FIELD_14_OPTION_ID = 18014
-        BACKFILL_ORDER_CUSTOM_FIELD_0_VALUE = 19000
-        BACKFILL_ORDER_CUSTOM_FIELD_1_VALUE = 19001
-        BACKFILL_ORDER_CUSTOM_FIELD_2_VALUE = 19002
-        BACKFILL_ORDER_CUSTOM_FIELD_3_VALUE = 19003
-        BACKFILL_ORDER_CUSTOM_FIELD_4_VALUE = 19004
-        BACKFILL_ORDER_CUSTOM_FIELD_5_VALUE = 19005
-        BACKFILL_ORDER_CUSTOM_FIELD_6_VALUE = 19006
-        BACKFILL_ORDER_CUSTOM_FIELD_7_VALUE = 19007
-        BACKFILL_ORDER_CUSTOM_FIELD_8_VALUE = 19008
-        BACKFILL_ORDER_CUSTOM_FIELD_9_VALUE = 19009
-        BACKFILL_ORDER_CUSTOM_FIELD_10_VALUE = 19010
-        BACKFILL_ORDER_CUSTOM_FIELD_11_VALUE = 19011
-        BACKFILL_ORDER_CUSTOM_FIELD_12_VALUE = 19012
-        BACKFILL_ORDER_CUSTOM_FIELD_13_VALUE = 19013
-        BACKFILL_ORDER_CUSTOM_FIELD_14_VALUE = 19014
-        BACKFILL_CREATIVE_CUSTOM_FIELD_0_OPTION_ID = 20000
-        BACKFILL_CREATIVE_CUSTOM_FIELD_1_OPTION_ID = 20001
-        BACKFILL_CREATIVE_CUSTOM_FIELD_2_OPTION_ID = 20002
-        BACKFILL_CREATIVE_CUSTOM_FIELD_3_OPTION_ID = 20003
-        BACKFILL_CREATIVE_CUSTOM_FIELD_4_OPTION_ID = 20004
-        BACKFILL_CREATIVE_CUSTOM_FIELD_5_OPTION_ID = 20005
-        BACKFILL_CREATIVE_CUSTOM_FIELD_6_OPTION_ID = 20006
-        BACKFILL_CREATIVE_CUSTOM_FIELD_7_OPTION_ID = 20007
-        BACKFILL_CREATIVE_CUSTOM_FIELD_8_OPTION_ID = 20008
-        BACKFILL_CREATIVE_CUSTOM_FIELD_9_OPTION_ID = 20009
-        BACKFILL_CREATIVE_CUSTOM_FIELD_10_OPTION_ID = 20010
-        BACKFILL_CREATIVE_CUSTOM_FIELD_11_OPTION_ID = 20011
-        BACKFILL_CREATIVE_CUSTOM_FIELD_12_OPTION_ID = 20012
-        BACKFILL_CREATIVE_CUSTOM_FIELD_13_OPTION_ID = 20013
-        BACKFILL_CREATIVE_CUSTOM_FIELD_14_OPTION_ID = 20014
-        BACKFILL_CREATIVE_CUSTOM_FIELD_0_VALUE = 21000
-        BACKFILL_CREATIVE_CUSTOM_FIELD_1_VALUE = 21001
-        BACKFILL_CREATIVE_CUSTOM_FIELD_2_VALUE = 21002
-        BACKFILL_CREATIVE_CUSTOM_FIELD_3_VALUE = 21003
-        BACKFILL_CREATIVE_CUSTOM_FIELD_4_VALUE = 21004
-        BACKFILL_CREATIVE_CUSTOM_FIELD_5_VALUE = 21005
-        BACKFILL_CREATIVE_CUSTOM_FIELD_6_VALUE = 21006
-        BACKFILL_CREATIVE_CUSTOM_FIELD_7_VALUE = 21007
-        BACKFILL_CREATIVE_CUSTOM_FIELD_8_VALUE = 21008
-        BACKFILL_CREATIVE_CUSTOM_FIELD_9_VALUE = 21009
-        BACKFILL_CREATIVE_CUSTOM_FIELD_10_VALUE = 21010
-        BACKFILL_CREATIVE_CUSTOM_FIELD_11_VALUE = 21011
-        BACKFILL_CREATIVE_CUSTOM_FIELD_12_VALUE = 21012
-        BACKFILL_CREATIVE_CUSTOM_FIELD_13_VALUE = 21013
-        BACKFILL_CREATIVE_CUSTOM_FIELD_14_VALUE = 21014
+        CREATIVE_CUSTOM_FIELD_0_VALUE_DOUBLE = 15015
+        CREATIVE_CUSTOM_FIELD_1_VALUE_DOUBLE = 15016
+        CREATIVE_CUSTOM_FIELD_2_VALUE_DOUBLE = 15017
+        CREATIVE_CUSTOM_FIELD_3_VALUE_DOUBLE = 15018
+        CREATIVE_CUSTOM_FIELD_4_VALUE_DOUBLE = 15019
+        CREATIVE_CUSTOM_FIELD_5_VALUE_DOUBLE = 15020
+        CREATIVE_CUSTOM_FIELD_6_VALUE_DOUBLE = 15021
+        CREATIVE_CUSTOM_FIELD_7_VALUE_DOUBLE = 15022
+        CREATIVE_CUSTOM_FIELD_8_VALUE_DOUBLE = 15023
+        CREATIVE_CUSTOM_FIELD_9_VALUE_DOUBLE = 15024
+        CREATIVE_CUSTOM_FIELD_10_VALUE_DOUBLE = 15025
+        CREATIVE_CUSTOM_FIELD_11_VALUE_DOUBLE = 15026
+        CREATIVE_CUSTOM_FIELD_12_VALUE_DOUBLE = 15027
+        CREATIVE_CUSTOM_FIELD_13_VALUE_DOUBLE = 15028
+        CREATIVE_CUSTOM_FIELD_14_VALUE_DOUBLE = 15029
+        CREATIVE_CUSTOM_FIELD_0_VALUE_BOOL = 15030
+        CREATIVE_CUSTOM_FIELD_1_VALUE_BOOL = 15031
+        CREATIVE_CUSTOM_FIELD_2_VALUE_BOOL = 15032
+        CREATIVE_CUSTOM_FIELD_3_VALUE_BOOL = 15033
+        CREATIVE_CUSTOM_FIELD_4_VALUE_BOOL = 15034
+        CREATIVE_CUSTOM_FIELD_5_VALUE_BOOL = 15035
+        CREATIVE_CUSTOM_FIELD_6_VALUE_BOOL = 15036
+        CREATIVE_CUSTOM_FIELD_7_VALUE_BOOL = 15037
+        CREATIVE_CUSTOM_FIELD_8_VALUE_BOOL = 15038
+        CREATIVE_CUSTOM_FIELD_9_VALUE_BOOL = 15039
+        CREATIVE_CUSTOM_FIELD_10_VALUE_BOOL = 15040
+        CREATIVE_CUSTOM_FIELD_11_VALUE_BOOL = 15041
+        CREATIVE_CUSTOM_FIELD_12_VALUE_BOOL = 15042
+        CREATIVE_CUSTOM_FIELD_13_VALUE_BOOL = 15043
+        CREATIVE_CUSTOM_FIELD_14_VALUE_BOOL = 15044
+        CMS_METADATA_DIMENSION_0_VALUE_ID = 102000
+        CMS_METADATA_DIMENSION_1_VALUE_ID = 102001
+        CMS_METADATA_DIMENSION_2_VALUE_ID = 102002
+        CMS_METADATA_DIMENSION_3_VALUE_ID = 102003
+        CMS_METADATA_DIMENSION_4_VALUE_ID = 102004
+        CMS_METADATA_DIMENSION_5_VALUE_ID = 102005
+        CMS_METADATA_DIMENSION_6_VALUE_ID = 102006
+        CMS_METADATA_DIMENSION_7_VALUE_ID = 102007
+        CMS_METADATA_DIMENSION_8_VALUE_ID = 102008
+        CMS_METADATA_DIMENSION_9_VALUE_ID = 102009
+        CMS_METADATA_DIMENSION_0_VALUE = 103000
+        CMS_METADATA_DIMENSION_1_VALUE = 103001
+        CMS_METADATA_DIMENSION_2_VALUE = 103002
+        CMS_METADATA_DIMENSION_3_VALUE = 103003
+        CMS_METADATA_DIMENSION_4_VALUE = 103004
+        CMS_METADATA_DIMENSION_5_VALUE = 103005
+        CMS_METADATA_DIMENSION_6_VALUE = 103006
+        CMS_METADATA_DIMENSION_7_VALUE = 103007
+        CMS_METADATA_DIMENSION_8_VALUE = 103008
+        CMS_METADATA_DIMENSION_9_VALUE = 103009
         CUSTOM_DIMENSION_0_VALUE_ID = 100000
         CUSTOM_DIMENSION_1_VALUE_ID = 100001
         CUSTOM_DIMENSION_2_VALUE_ID = 100002
@@ -6573,6 +7212,26 @@ class ReportDefinition(proto.Message):
         CUSTOM_DIMENSION_7_VALUE = 101007
         CUSTOM_DIMENSION_8_VALUE = 101008
         CUSTOM_DIMENSION_9_VALUE = 101009
+        EKV_DIMENSION_0_VALUE_ID = 105000
+        EKV_DIMENSION_1_VALUE_ID = 105001
+        EKV_DIMENSION_2_VALUE_ID = 105002
+        EKV_DIMENSION_3_VALUE_ID = 105003
+        EKV_DIMENSION_4_VALUE_ID = 105004
+        EKV_DIMENSION_5_VALUE_ID = 105005
+        EKV_DIMENSION_6_VALUE_ID = 105006
+        EKV_DIMENSION_7_VALUE_ID = 105007
+        EKV_DIMENSION_8_VALUE_ID = 105008
+        EKV_DIMENSION_9_VALUE_ID = 105009
+        EKV_DIMENSION_0_VALUE = 106000
+        EKV_DIMENSION_1_VALUE = 106001
+        EKV_DIMENSION_2_VALUE = 106002
+        EKV_DIMENSION_3_VALUE = 106003
+        EKV_DIMENSION_4_VALUE = 106004
+        EKV_DIMENSION_5_VALUE = 106005
+        EKV_DIMENSION_6_VALUE = 106006
+        EKV_DIMENSION_7_VALUE = 106007
+        EKV_DIMENSION_8_VALUE = 106008
+        EKV_DIMENSION_9_VALUE = 106009
 
     class Metric(proto.Enum):
         r"""Reporting metrics.
@@ -7544,6 +8203,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``PERCENT``
+            AD_SERVER_ACTIVE_VIEW_REVENUE (704):
+                Revenue generated from Ad Server Active View impressions.
+
+                Corresponds to "Ad server Active View revenue" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``MONEY``
             AD_SERVER_ACTIVE_VIEW_UNDETERMINED_IMPRESSIONS_DISTRIBUTION (335):
                 The fraction of non-eligible impressions among eligible
                 impressions from Ad Server in Active View reporting."
@@ -7925,6 +8593,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ads failed to render" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_ELIGIBLE_LINE_ITEMS (342):
@@ -7934,6 +8603,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Eligible line items" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_ELIGIBLE_LINE_ITEMS_AD_REQUESTS (343):
@@ -7944,6 +8614,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_ALLOWED_AD_REQUESTS (344):
@@ -7954,6 +8625,7 @@ class ReportDefinition(proto.Message):
                 trafficking" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_BIDS_IN_AUCTION (345):
@@ -7965,6 +8637,7 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_BIDS_IN_AUCTION_AD_REQUESTS (346):
@@ -7975,6 +8648,7 @@ class ReportDefinition(proto.Message):
                 trafficking bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_CANDIDATE_BIDS (347):
@@ -7985,6 +8659,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_INVALID_AD_REQUESTS (348):
@@ -7995,6 +8670,7 @@ class ReportDefinition(proto.Message):
                 trafficking" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_NO_BIDS_AD_REQUESTS (472):
@@ -8005,6 +8681,7 @@ class ReportDefinition(proto.Message):
                 trafficking bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_REJECTED_BIDS (349):
@@ -8015,6 +8692,7 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_VALID_AD_REQUESTS (350):
@@ -8025,6 +8703,7 @@ class ReportDefinition(proto.Message):
                 requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_HBT_WITH_BIDS_AD_REQUESTS (473):
@@ -8035,6 +8714,7 @@ class ReportDefinition(proto.Message):
                 bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_INVALID_AD_REQUESTS (351):
@@ -8044,6 +8724,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Invalid ad requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEMS_CREATIVE_NOT_RETRIEVED (476):
@@ -8054,6 +8735,7 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEMS_IN_AUCTION (352):
@@ -8063,6 +8745,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Competing line items" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEMS_NOT_COMPETING (515):
@@ -8073,6 +8756,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEMS_NOT_SELECTED (353):
@@ -8084,6 +8768,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEM_IN_AUCTION_AD_REQUESTS (354):
@@ -8094,6 +8779,7 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_LINE_ITEM_TARGETED_AD_REQUESTS (355):
@@ -8104,6 +8790,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_ALLOWED_AD_REQUESTS (356):
@@ -8114,6 +8801,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_INVALID_AD_REQUESTS (357):
@@ -8124,6 +8812,7 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_LOADED_ADS_FROM_CHAINS (358):
@@ -8134,6 +8823,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_NO_PARTNER_AD_REQUESTS (474):
@@ -8144,6 +8834,7 @@ class ReportDefinition(proto.Message):
                 partners" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_PARTNERS_IN_AUCTION (359):
@@ -8154,6 +8845,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_PARTNERS_IN_AUCTION_AD_REQUESTS (360):
@@ -8164,6 +8856,7 @@ class ReportDefinition(proto.Message):
                 partners" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_REJECTED_PARTNERS (361):
@@ -8173,6 +8866,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Rejected partners" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_TARGETED_PARTNERS (362):
@@ -8184,15 +8878,17 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
-            ATN_MEDIATION_TOTAL_YIELD_PARTNERS (442):
-                Number of partners on served mediation chains in the Ads
-                traffic navigator report.
+            ATN_MEDIATION_TOTAL_ADS_IN_CHAINS (703):
+                Number of ads in mediation chains in the Ads traffic
+                navigator report.
 
-                Corresponds to "Total yield partners" in the Ad Manager UI.
+                Corresponds to "Total ads in chains" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_UNLOADED_ADS_FROM_CHAINS (363):
@@ -8203,6 +8899,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_UNUSED_BIDS_OR_PARTNERS (364):
@@ -8213,6 +8910,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_VALID_AD_REQUESTS (365):
@@ -8223,6 +8921,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_MEDIATION_WITH_PARTNERS_AD_REQUESTS (475):
@@ -8233,6 +8932,7 @@ class ReportDefinition(proto.Message):
                 partners" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_AD_REQUESTS_WITH_BIDS (366):
@@ -8242,6 +8942,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Ad requests with bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_AD_REQUESTS_WITH_BID_REQUESTS_SENT (367):
@@ -8253,6 +8954,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_ALLOWED_AD_REQUESTS (368):
@@ -8263,6 +8965,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BIDS_IN_AUCTION (369):
@@ -8273,6 +8976,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BID_IN_AUCTION_AD_REQUESTS (370):
@@ -8284,6 +8988,7 @@ class ReportDefinition(proto.Message):
                 bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BID_REQUESTS_SENT (371):
@@ -8293,6 +8998,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Bid requests sent" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BID_REQUESTS_WITH_RESPONSE (372):
@@ -8303,6 +9009,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BID_REQUEST_CANDIDATES (373):
@@ -8314,6 +9021,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_BID_REQUEST_ERRORS (374):
@@ -8323,6 +9031,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Bid request errors" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_INELIGIBLE_AD_REQUESTS (375):
@@ -8333,6 +9042,7 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_REJECTED_BIDS (376):
@@ -8342,6 +9052,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Rejected bids" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_SKIPPED_BID_REQUESTS (377):
@@ -8351,6 +9062,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Skipped bid requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_TOTAL_BIDS (378):
@@ -8361,6 +9073,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_PROGRAMMATIC_VALID_AD_REQUESTS (379):
@@ -8371,6 +9084,7 @@ class ReportDefinition(proto.Message):
                 the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_REJECTED_LINE_ITEMS (380):
@@ -8380,6 +9094,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Rejected line items" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_SERVED_MEDIATION_CHAINS (381):
@@ -8390,6 +9105,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_SERVED_SINGLE_ADS (382):
@@ -8399,6 +9115,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Served single ads" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_TARGETED_LINE_ITEMS (383):
@@ -8408,6 +9125,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Targeted line items" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_TOTAL_AD_REQUESTS (384):
@@ -8419,15 +9137,7 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types:
-
-                Data format: ``INTEGER``
-            ATN_TOTAL_COMPETING_ADS_IN_AUCTION (385):
-                Number of competing ads in auction in the Ads traffic
-                navigator report.
-
-                Corresponds to "Total competing ads" in the Ad Manager UI.
-
-                Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_TOTAL_LOADED_ADS (387):
@@ -8437,6 +9147,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total loaded ads" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_VALID_AD_REQUESTS (389):
@@ -8446,6 +9157,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Valid ad requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             ATN_YIELD_GROUP_MEDIATION_PASSBACKS (390):
@@ -8456,6 +9168,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             AUDIENCE_SEGMENT_COST (558):
@@ -8572,7 +9285,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total clicks" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``ADS_TRAFFIC_NAVIGATOR``, ``AD_SPEED``
 
                 Data format: ``INTEGER``
             CODE_SERVED_COUNT (44):
@@ -8582,7 +9295,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total code served count" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``INTEGER``
             CPC_REVENUE (440):
@@ -8591,6 +9305,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "CPC revenue" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``MONEY``
             CPM_REVENUE (441):
@@ -8599,6 +9314,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "CPM revenue" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``MONEY``
             CREATIVE_LOAD_TIME_0_500_PERCENT (324):
@@ -8986,6 +9702,7 @@ class ReportDefinition(proto.Message):
                 in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             GOOGLE_SOLD_AUCTION_IMPRESSIONS (128):
@@ -8996,6 +9713,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             GOOGLE_SOLD_COVIEWED_IMPRESSIONS (131):
@@ -9006,6 +9724,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             GOOGLE_SOLD_IMPRESSIONS (130):
@@ -9015,6 +9734,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             GOOGLE_SOLD_RESERVATION_COVIEWED_IMPRESSIONS (127):
@@ -9025,6 +9745,7 @@ class ReportDefinition(proto.Message):
                 (co-viewed)" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             GOOGLE_SOLD_RESERVATION_IMPRESSIONS (126):
@@ -9035,6 +9756,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             IMPRESSIONS (1):
@@ -9044,7 +9766,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total impressions" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``ADS_TRAFFIC_NAVIGATOR``, ``AD_SPEED``
 
                 Data format: ``INTEGER``
             INACTIVE_BEGIN_TO_RENDER_IMPRESSIONS (407):
@@ -9124,6 +9846,253 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
+            NIELSEN_AUDIENCE_INDEX (568):
+                Nielsen: The relative unique audience in the demographic
+                compared with its share of the overall population.
+
+                Corresponds to "Audience index" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_AVERAGE_FREQUENCY (569):
+                Nielsen: The average number of times that a person within
+                the target audience sees an advertisement.
+
+                Corresponds to "Average frequency" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``DOUBLE``
+            NIELSEN_AVERAGE_NUMBER_OF_VIEWERS (570):
+                Nielsen: The average number of viewers.
+
+                Corresponds to "Average number of viewers" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``DOUBLE``
+            NIELSEN_GROSS_RATING_POINTS (571):
+                Nielsen: The unit of audience volume, based on the
+                percentage of the reached target audience population
+                multiplied by the average frequency.
+
+                Corresponds to "Gross rating points" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_IMPRESSIONS (572):
+                Nielsen: The total number of impressions tracked for Nielsen
+                Digital Ad Ratings measurement.
+
+                Corresponds to "Impressions" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``INTEGER``
+            NIELSEN_IMPRESSIONS_INDEX (573):
+                Nielsen: The relative impressions per person in the
+                demographic compared with the impressions per person for the
+                overall population.
+
+                Corresponds to "Impressions index" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_IN_TARGET_RATIO (576):
+                Nielsen: The adjusted in-target impression share used for
+                pacing and billing.
+
+                Corresponds to "Processed Nielsen in-target rate" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_PERCENT_AUDIENCE_REACH (578):
+                Nielsen: The unique audience reached as a percentage of the
+                population base.
+
+                Corresponds to "% audience reach" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_PERCENT_AUDIENCE_SHARE (579):
+                Nielsen: The share of the unique audience in the
+                demographic.
+
+                Corresponds to "% audience share" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_PERCENT_IMPRESSIONS_SHARE (580):
+                Nielsen: The share of impressions that reached the target
+                demographic.
+
+                Corresponds to "% impression share" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_PERCENT_POPULATION_SHARE (581):
+                Nielsen: The share of the total population represented by
+                the population base.
+
+                Corresponds to "% population share" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``PERCENT``
+            NIELSEN_POPULATION_BASE (582):
+                Nielsen: The population in the demographic.
+
+                Corresponds to "Population base" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``INTEGER``
+            NIELSEN_UNIQUE_AUDIENCE (583):
+                Nielsen: The total number of different people within the
+                selected demographic who were reached.
+
+                Corresponds to "Unique audience" in the Ad Manager UI.
+
+                Compatible with the following report types: ``REACH``
+
+                Data format: ``INTEGER``
+            OFF_PROPERTY_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS (395):
+                The total number of cross publisher impressions that were
+                sampled and measured by active view.
+
+                Corresponds to "Off-property Active View measurable
+                impressions" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``INTEGER``
+            OFF_PROPERTY_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS (396):
+                The total number of cross publisher impressions viewed on
+                the user's screen.
+
+                Corresponds to "Off-property Active View viewable
+                impressions" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``INTEGER``
+            OFF_PROPERTY_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS_RATE (397):
+                The percentage of total cross publisher impressions viewed
+                on the user's screen (out of the total impressions
+                measurable by active view).
+
+                Corresponds to "Off-property Active View % viewable
+                impressions" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``PERCENT``
+            OFF_PROPERTY_CLICKS (398):
+                The total number of cross publisher clicks.
+
+                Corresponds to "Off-property clicks" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``INTEGER``
+            OFF_PROPERTY_CTR (399):
+                The ratio of cross publisher impressions that resulted in
+                users clicking on an ad. Cross publisher CTR is calculated
+                as: (Cross publisher clicks / Cross publisher impressions).
+
+                Corresponds to "Off-property CTR" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``PERCENT``
+            OFF_PROPERTY_IMPRESSIONS (400):
+                The total number of cross publisher impressions.
+
+                Corresponds to "Off-property impressions" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``INTEGER``
+            OFF_PROPERTY_REVENUE (401):
+                The total cross publisher revenue from line item and works
+                with the currency code from the same line item.
+
+                Corresponds to "Off-property revenue" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``MONEY``
+            OFF_PROPERTY_SPEND (402):
+                The total cross publisher spend and works with the billing
+                currency code of the this network.
+
+                Corresponds to "Off-property spend" in the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``MONEY``
+            OFF_PROPERTY_SPEND_ECPM (403):
+                The average effective cost-per-thousand-impressions earned
+                from the ads delivered from cross publisher traffic.
+
+                Corresponds to "Off-property spend eCPM" in the Ad Manager
+                UI.
+
+                Compatible with the following report types:
+                ``OFF_PROPERTY_CAMPAIGNS``
+
+                Data format: ``MONEY``
+            ON_PLATFORM_MULTIPLE_CALL_ECPM (678):
+                Average effective cost-per-thousand-impressions earned from
+                the mediation on-platform multiple call, excluding CPD
+                value.
+
+                Corresponds to "On-platform multiple call eCPM" in the Ad
+                Manager UI.
+
+                Compatible with the following report types:
+                ``ON_PLATFORM_MULTICALL``
+
+                Data format: ``MONEY``
+            ON_PLATFORM_MULTIPLE_CALL_IMPRESSIONS (676):
+                Total impressions delivered by the mediation on-platform
+                multiple call.
+
+                Corresponds to "On-platform multiple call impressions" in
+                the Ad Manager UI.
+
+                Compatible with the following report types:
+                ``ON_PLATFORM_MULTICALL``
+
+                Data format: ``INTEGER``
+            ON_PLATFORM_MULTIPLE_CALL_REVENUE (677):
+                Total revenue from the mediation on-platform multiple call.
+
+                Corresponds to "On-platform multiple call revenue" in the Ad
+                Manager UI.
+
+                Compatible with the following report types:
+                ``ON_PLATFORM_MULTICALL``
+
+                Data format: ``MONEY``
             OPPORTUNITIES (463):
                 The total number of opportunities from impressions and
                 errors.
@@ -9285,6 +10254,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Filled pod requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SALES_FILL_RATE (136):
@@ -9294,6 +10264,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Fill rate" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``PERCENT``
             PARTNER_SALES_PARTNER_MATCH_RATE (137):
@@ -9303,6 +10274,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Partner match rate" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``PERCENT``
             PARTNER_SALES_QUERIES (132):
@@ -9312,6 +10284,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SALES_UNFILLED_IMPRESSIONS (133):
@@ -9323,6 +10296,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SALES_UNMATCHED_QUERIES (134):
@@ -9334,6 +10308,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SOLD_CODE_SERVED (125):
@@ -9343,6 +10318,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SOLD_COVIEWED_IMPRESSIONS (124):
@@ -9353,6 +10329,7 @@ class ReportDefinition(proto.Message):
                 Ad Manager UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PARTNER_SOLD_IMPRESSIONS (123):
@@ -9362,6 +10339,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``YOUTUBE_CONSOLIDATED``
 
                 Data format: ``INTEGER``
             PROGRAMMATIC_ELIGIBLE_AD_REQUESTS (177):
@@ -9510,7 +10488,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total CPM and CPC revenue" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``MONEY``
             REWARDS_GRANTED (413):
@@ -9770,6 +10749,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Available impressions" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``INTEGER``
             SELL_THROUGH_FORECASTED_IMPRESSIONS (478):
@@ -9779,6 +10759,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``INTEGER``
             SELL_THROUGH_RESERVED_IMPRESSIONS (479):
@@ -9787,6 +10768,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Reserved impressions" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``INTEGER``
             SELL_THROUGH_SELL_THROUGH_RATE (480):
@@ -9796,6 +10778,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Sell-through rate" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``PERCENT``
             SERVER_SIDE_UNWRAPPING_AVERAGE_LATENCY_MS (434):
@@ -10630,6 +11613,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total creative serves" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_100_COUNT (143):
@@ -10639,6 +11623,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 100 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_101_COUNT (144):
@@ -10648,6 +11633,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 101 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_102_COUNT (145):
@@ -10657,6 +11643,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 102 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_200_COUNT (146):
@@ -10666,6 +11653,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 200 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_201_COUNT (147):
@@ -10675,6 +11663,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 201 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_202_COUNT (148):
@@ -10684,6 +11673,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 202 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_203_COUNT (149):
@@ -10693,6 +11683,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 203 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_300_COUNT (150):
@@ -10702,6 +11693,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 300 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_301_COUNT (151):
@@ -10711,6 +11703,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 301 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_302_COUNT (152):
@@ -10720,6 +11713,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 302 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_303_COUNT (153):
@@ -10729,6 +11723,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 303 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_400_COUNT (154):
@@ -10738,6 +11733,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 400 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_401_COUNT (155):
@@ -10747,6 +11743,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 401 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_402_COUNT (156):
@@ -10756,6 +11753,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 402 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_403_COUNT (157):
@@ -10765,6 +11763,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 403 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_405_COUNT (158):
@@ -10774,6 +11773,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 405 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_406_COUNT (159):
@@ -10783,6 +11783,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 406 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_407_COUNT (160):
@@ -10792,6 +11793,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 407 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_408_COUNT (161):
@@ -10801,6 +11803,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 408 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_409_COUNT (162):
@@ -10810,6 +11813,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 409 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_410_COUNT (163):
@@ -10819,6 +11823,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 410 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_500_COUNT (164):
@@ -10828,6 +11833,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 500 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_501_COUNT (165):
@@ -10837,6 +11843,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 501 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_502_COUNT (166):
@@ -10846,6 +11853,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 502 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_503_COUNT (167):
@@ -10855,6 +11863,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 503 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_600_COUNT (168):
@@ -10864,6 +11873,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 600 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_601_COUNT (169):
@@ -10873,6 +11883,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 601 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_602_COUNT (170):
@@ -10882,6 +11893,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 602 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_603_COUNT (171):
@@ -10891,6 +11903,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 603 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_604_COUNT (172):
@@ -10900,6 +11913,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 604 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_900_COUNT (173):
@@ -10909,6 +11923,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 900 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_ERROR_901_COUNT (174):
@@ -10918,6 +11933,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "VAST error 901 count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_IMPRESSIONS (138):
@@ -10926,6 +11942,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total impressions" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_MATCHED_QUERIES (140):
@@ -10935,6 +11952,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_TOTAL_ERROR_COUNT (175):
@@ -10943,6 +11961,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total error count" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_TOTAL_QUERIES (142):
@@ -10951,6 +11970,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Total ad requests" in the Ad Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_REAL_TIME_UNMATCHED_QUERIES (141):
@@ -10960,6 +11980,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types:
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``INTEGER``
             VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_END (279):
@@ -10991,10 +12012,30 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_CAPPED_OPPORTUNITIES_SUBPOD (282):
+                The number of video ad opportunities reached by a user
+                (rounded down, or capped based on your max ads setting,
+                whichever is less).
+
+                Corresponds to "Capped opportunities (subpod)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_ADBREAK (283):
                 The total number of seconds available to be filled.
 
                 Corresponds to "Total duration (adbreak)" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_SUBPOD (284):
+                The total number of seconds available to be filled.
+
+                Corresponds to "Total duration (subpod)" in the Ad Manager
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``
@@ -11009,6 +12050,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_DURATION_SUBPOD (286):
+                The total number of seconds filled.
+
+                Corresponds to "Matched duration (subpod)" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_ADBREAK (287):
                 The total matched opportunities in video true opportunities
                 reporting.
@@ -11019,11 +12069,31 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_SUBPOD (288):
+                The total matched opportunities in video true opportunities
+                reporting.
+
+                Corresponds to "Matched opportunities (subpod)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_ADBREAK (289):
                 The number of video ad opportunities reached by a user
                 (rounded down).
 
                 Corresponds to "Viewed opportunities (adbreak)" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
+            VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_SUBPOD (290):
+                The number of video ad opportunities reached by a user
+                (rounded down).
+
+                Corresponds to "Viewed opportunities (subpod)" in the Ad
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
@@ -11421,6 +12491,7 @@ class ReportDefinition(proto.Message):
         AD_SERVER_ACTIVE_VIEW_NON_MEASURABLE_IMPRESSIONS = 332
         AD_SERVER_ACTIVE_VIEW_NON_VIEWABLE_IMPRESSIONS = 331
         AD_SERVER_ACTIVE_VIEW_NON_VIEWABLE_IMPRESSIONS_DISTRIBUTION = 334
+        AD_SERVER_ACTIVE_VIEW_REVENUE = 704
         AD_SERVER_ACTIVE_VIEW_UNDETERMINED_IMPRESSIONS_DISTRIBUTION = 335
         AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS = 62
         AD_SERVER_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS_DISTRIBUTION = 333
@@ -11485,7 +12556,7 @@ class ReportDefinition(proto.Message):
         ATN_MEDIATION_PARTNERS_IN_AUCTION_AD_REQUESTS = 360
         ATN_MEDIATION_REJECTED_PARTNERS = 361
         ATN_MEDIATION_TARGETED_PARTNERS = 362
-        ATN_MEDIATION_TOTAL_YIELD_PARTNERS = 442
+        ATN_MEDIATION_TOTAL_ADS_IN_CHAINS = 703
         ATN_MEDIATION_UNLOADED_ADS_FROM_CHAINS = 363
         ATN_MEDIATION_UNUSED_BIDS_OR_PARTNERS = 364
         ATN_MEDIATION_VALID_AD_REQUESTS = 365
@@ -11509,7 +12580,6 @@ class ReportDefinition(proto.Message):
         ATN_SERVED_SINGLE_ADS = 382
         ATN_TARGETED_LINE_ITEMS = 383
         ATN_TOTAL_AD_REQUESTS = 384
-        ATN_TOTAL_COMPETING_ADS_IN_AUCTION = 385
         ATN_TOTAL_LOADED_ADS = 387
         ATN_VALID_AD_REQUESTS = 389
         ATN_YIELD_GROUP_MEDIATION_PASSBACKS = 390
@@ -11584,6 +12654,31 @@ class ReportDefinition(proto.Message):
         MEDIATION_CHAINS_FILLED = 584
         MUTED_IMPRESSIONS = 412
         MUTE_ELIGIBLE_IMPRESSIONS = 409
+        NIELSEN_AUDIENCE_INDEX = 568
+        NIELSEN_AVERAGE_FREQUENCY = 569
+        NIELSEN_AVERAGE_NUMBER_OF_VIEWERS = 570
+        NIELSEN_GROSS_RATING_POINTS = 571
+        NIELSEN_IMPRESSIONS = 572
+        NIELSEN_IMPRESSIONS_INDEX = 573
+        NIELSEN_IN_TARGET_RATIO = 576
+        NIELSEN_PERCENT_AUDIENCE_REACH = 578
+        NIELSEN_PERCENT_AUDIENCE_SHARE = 579
+        NIELSEN_PERCENT_IMPRESSIONS_SHARE = 580
+        NIELSEN_PERCENT_POPULATION_SHARE = 581
+        NIELSEN_POPULATION_BASE = 582
+        NIELSEN_UNIQUE_AUDIENCE = 583
+        OFF_PROPERTY_ACTIVE_VIEW_MEASURABLE_IMPRESSIONS = 395
+        OFF_PROPERTY_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS = 396
+        OFF_PROPERTY_ACTIVE_VIEW_VIEWABLE_IMPRESSIONS_RATE = 397
+        OFF_PROPERTY_CLICKS = 398
+        OFF_PROPERTY_CTR = 399
+        OFF_PROPERTY_IMPRESSIONS = 400
+        OFF_PROPERTY_REVENUE = 401
+        OFF_PROPERTY_SPEND = 402
+        OFF_PROPERTY_SPEND_ECPM = 403
+        ON_PLATFORM_MULTIPLE_CALL_ECPM = 678
+        ON_PLATFORM_MULTIPLE_CALL_IMPRESSIONS = 676
+        ON_PLATFORM_MULTIPLE_CALL_REVENUE = 677
         OPPORTUNITIES = 463
         OVERDELIVERED_IMPRESSIONS = 432
         PARTNER_FINANCE_GROSS_REVENUE = 648
@@ -11785,10 +12880,15 @@ class ReportDefinition(proto.Message):
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_END = 279
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_BREAK_START = 280
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_CAPPED_OPPORTUNITIES_ADBREAK = 281
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_CAPPED_OPPORTUNITIES_SUBPOD = 282
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_ADBREAK = 283
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_DURATION_SUBPOD = 284
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_DURATION_ADBREAK = 285
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_DURATION_SUBPOD = 286
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_ADBREAK = 287
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_MATCHED_OPPORTUNITIES_SUBPOD = 288
         VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_ADBREAK = 289
+        VIDEO_TRUE_OPPORTUNITIES_TOTAL_VIEWED_OPPORTUNITIES_SUBPOD = 290
         VIDEO_TRUE_VIEWS = 392
         VIDEO_TRUE_VIEW_SKIP_RATE = 393
         VIDEO_TRUE_VIEW_VIEW_THROUGH_RATE = 394
@@ -11974,9 +13074,13 @@ class ReportDefinition(proto.Message):
                     The full week in which this report is run.
                     Could include dates in the future.
                 THIS_WEEK_TO_DATE (29):
-                    From the beginning of the calendar week
-                    (Monday to Sunday) in which the up to and
-                    including the day the report is run.
+                    From the beginning of the calendar week in
+                    which the up to and including the day the report
+                    is run.
+                THIS_WEEK_TO_YESTERDAY (40):
+                    From the beginning of the calendar week in
+                    which the report is run, up to and including the
+                    day before the report is run.
                 THIS_MONTH (4):
                     The full month in which this report is run.
                     Could include dates in the future.
@@ -11984,6 +13088,10 @@ class ReportDefinition(proto.Message):
                     From the beginning of the calendar month in
                     which the report is run, to up to and including
                     the day the report is run.
+                THIS_MONTH_TO_YESTERDAY (41):
+                    From the beginning of the calendar month in
+                    which the report is run, up to and including the
+                    day before the report is run.
                 THIS_QUARTER (5):
                     The full quarter in which this report is run.
                     Could include dates in the future.
@@ -11991,6 +13099,10 @@ class ReportDefinition(proto.Message):
                     From the beginning of the calendar quarter in
                     which the report is run, up to and including the
                     day the report is run.
+                THIS_QUARTER_TO_YESTERDAY (42):
+                    From the beginning of the calendar quarter in
+                    which the report is run, up to and including the
+                    day before the report is run.
                 THIS_YEAR (6):
                     The full year in which this report is run.
                     Could include dates in the future.
@@ -11998,6 +13110,10 @@ class ReportDefinition(proto.Message):
                     From the beginning of the calendar year in
                     which the report is run, to up to and including
                     the day the report is run.
+                THIS_YEAR_TO_YESTERDAY (43):
+                    From the beginning of the calendar year in
+                    which the report is run, to up to and including
+                    the day before the report is run.
                 LAST_WEEK (7):
                     The entire previous calendar week, Monday to
                     Sunday (inclusive), preceding the calendar week
@@ -12121,12 +13237,16 @@ class ReportDefinition(proto.Message):
             YESTERDAY = 2
             THIS_WEEK = 3
             THIS_WEEK_TO_DATE = 29
+            THIS_WEEK_TO_YESTERDAY = 40
             THIS_MONTH = 4
             THIS_MONTH_TO_DATE = 26
+            THIS_MONTH_TO_YESTERDAY = 41
             THIS_QUARTER = 5
             THIS_QUARTER_TO_DATE = 27
+            THIS_QUARTER_TO_YESTERDAY = 42
             THIS_YEAR = 6
             THIS_YEAR_TO_DATE = 28
+            THIS_YEAR_TO_YESTERDAY = 43
             LAST_WEEK = 7
             LAST_WEEK_STARTING_SUNDAY = 39
             LAST_MONTH = 8
@@ -12538,9 +13658,17 @@ class ReportDefinition(proto.Message):
         optional=True,
         message=DateRange,
     )
+    cms_metadata_dimension_key_ids: MutableSequence[int] = proto.RepeatedField(
+        proto.INT64,
+        number=19,
+    )
     custom_dimension_key_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,
         number=7,
+    )
+    ekv_dimension_key_ids: MutableSequence[int] = proto.RepeatedField(
+        proto.INT64,
+        number=21,
     )
     line_item_custom_field_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,
@@ -12573,6 +13701,10 @@ class ReportDefinition(proto.Message):
         proto.MESSAGE,
         number=15,
         message=Sort,
+    )
+    expanded_compatibility: bool = proto.Field(
+        proto.BOOL,
+        number=22,
     )
 
 

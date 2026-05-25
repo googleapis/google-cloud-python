@@ -43,7 +43,8 @@ run_package_test() {
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
   local NOX_FILE
-  local NOX_SESSION
+  # Inherit NOX_SESSION from environment to allow configs (like prerelease.cfg) to pass it in
+  local NOX_SESSION="${NOX_SESSION}"
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
@@ -66,7 +67,8 @@ run_package_test() {
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
-      NOX_SESSION="system-3.12"
+      # Use inherited NOX_SESSION if set, otherwise fallback to system-3.12
+      NOX_SESSION="${NOX_SESSION:-system-3.12}"
       ;;
   esac
 
@@ -93,6 +95,8 @@ packages_with_system_tests=(
   "google-auth"
   "google-cloud-bigquery-storage"
   "google-cloud-bigtable"
+  "google-cloud-compute"
+  "google-cloud-compute-v1beta"
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
@@ -129,21 +133,31 @@ for path in `find 'packages' \
   package_path="packages/${package_name}"
 
   # Determine if we should skip based on git diff
-  files_to_check="${package_path}/CHANGELOG.md"
+  # We always check for changes in these specific versioning/config files
+  files_to_check=(
+    "${package_path}/CHANGELOG.md"
+    "${package_path}/setup.py"
+    "${package_path}/pyproject.toml"
+    "${package_path}/**/gapic_version.py"
+    "${package_path}/**/version.py"
+  )
+
+  # If the package is in our "always run full system tests" list, check the whole directory
   if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check="${package_path}"
+    files_to_check=("${package_path}")
   fi
 
-  echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
+  echo "checking changes with 'git diff ${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT} -- ${files_to_check[*]}'"
   set +e
-  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
+  # Passing the array expanded as arguments to git diff
+  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
   set -e
 
-  if [[ "${package_modified}" -gt 0 ]]; then
+  if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
       # Call the function - its internal exports won't affect the next loop
       run_package_test "$package_name" || RETVAL=$?
   else
-      echo "No changes in ${package_name}, skipping."
+      echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
 exit ${RETVAL}

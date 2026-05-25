@@ -381,6 +381,7 @@ class UnorderedIR:
             new_column = (
                 (left_table[conditions[0]])
                 .isin((right_table[conditions[1]]))
+                .fillna(False)
                 .name(indicator_col)
             )
 

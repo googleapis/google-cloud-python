@@ -267,6 +267,11 @@
               "methods": [
                 "update_collection"
               ]
+            },
+            "UpdateIndex": {
+              "methods": [
+                "update_index"
+              ]
             }
           }
         },
@@ -327,6 +332,11 @@
               "methods": [
                 "update_collection"
               ]
+            },
+            "UpdateIndex": {
+              "methods": [
+                "update_index"
+              ]
             }
           }
         },
@@ -386,6 +396,11 @@
             "UpdateCollection": {
               "methods": [
                 "update_collection"
+              ]
+            },
+            "UpdateIndex": {
+              "methods": [
+                "update_index"
               ]
             }
           }

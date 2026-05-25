@@ -1,0 +1,92 @@
+name: Regenerate all packages after merging to main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    env:
+      PANDOC_VERSION: 3.8.2
+      SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.x'
+
+      - name: Install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.3"
+
+      - name: Install pandoc
+        run: |
+          mkdir /tmp/pandoc
+          curl -fsSL --retry 5 --retry-delay 15 -o /tmp/pandoc.tar.gz \
+            https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
+          tar -xvf /tmp/pandoc.tar.gz -C /tmp/pandoc --strip-components=1
+
+      - name: Install Python packages for Librarian
+        run: |
+          version=$(sed -n 's/^version: *//p' librarian.yaml)
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
+
+      - name: Clone Synthtool Templates
+        run: |
+          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
+
+      - name: Regenerate
+        run: |
+          version=$(sed -n 's/^version: *//p' librarian.yaml)
+          PATH=$PATH:/tmp/pandoc/bin
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -all -v
+
+      - name: Create issue on diff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            TITLE="Regeneration check found diff"
+            RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            DIFF_STAT=$(git diff --stat)
+            BODY="The post-submit [regeneration check]($RUN_URL) found a diff.
+
+            Diff summary:
+            \`\`\`
+            $DIFF_STAT
+            \`\`\`"
+
+            EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+            if [ -z "$EXISTING_ISSUE" ]; then
+              gh issue create --title "$TITLE" --body "$BODY"
+            else
+              echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
+              gh issue comment "$EXISTING_ISSUE" --body "Another failure with diff occurred: $RUN_URL"
+            fi
+          fi
+      - name: Create issue on generation failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Regeneration failed"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          BODY="The post-submit [regeneration check]($RUN_URL) failed."
+          EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+          if [ -z "$EXISTING_ISSUE" ]; then
+            gh issue create --title "$TITLE" --body "$BODY"
+          else
+            echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
+            gh issue comment "$EXISTING_ISSUE" --body "Another regeneration failure occurred: $RUN_URL"
+          fi

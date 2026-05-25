@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.services.generators import pagers
-from google.cloud.dialogflow_v2.types import generator
+from google.cloud.dialogflow_v2.types import ces_app, ces_tool, generator, toolset
 from google.cloud.dialogflow_v2.types import generator as gcd_generator
 
 from .client import GeneratorsClient
@@ -84,10 +84,16 @@ class GeneratorsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GeneratorsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GeneratorsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(GeneratorsClient.app_path)
+    parse_app_path = staticmethod(GeneratorsClient.parse_app_path)
+    ces_tool_path = staticmethod(GeneratorsClient.ces_tool_path)
+    parse_ces_tool_path = staticmethod(GeneratorsClient.parse_ces_tool_path)
     generator_path = staticmethod(GeneratorsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorsClient.parse_generator_path)
     tool_path = staticmethod(GeneratorsClient.tool_path)
     parse_tool_path = staticmethod(GeneratorsClient.parse_tool_path)
+    toolset_path = staticmethod(GeneratorsClient.toolset_path)
+    parse_toolset_path = staticmethod(GeneratorsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         GeneratorsClient.common_billing_account_path
     )

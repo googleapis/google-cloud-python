@@ -674,7 +674,9 @@ class ReadLocalNode(LeafNode):
             Field(
                 col_id,
                 self.local_data_source.schema.get_type(source_id),
-                nullable=self.local_data_source.is_nullable(source_id),
+                nullable=self.local_data_source.is_nullable(
+                    identifiers.ColumnId(source_id)
+                ),
             )
             for col_id, source_id in self.scan_list.items
         )
@@ -844,10 +846,10 @@ class ReadTableNode(LeafNode):
     ) -> ReadTableNode:
         return self
 
-    def with_order_cols(self):
+    def pull_out_order(self):
         # Maybe the ordering should be required to always be in the scan list, and then we won't need this?
         if self.source.ordering is None:
-            return self, orderings.RowOrdering()
+            return self, RowOrdering()
 
         order_cols = {col.sql for col in self.source.ordering.referenced_columns}
         scan_cols = {col.source_id for col in self.scan_list.items}
@@ -861,10 +863,18 @@ class ReadTableNode(LeafNode):
         ]
         new_scan_list = ScanList(items=(*self.scan_list.items, *new_scan_cols))
         new_order = self.source.ordering.remap_column_refs(
-            {identifiers.ColumnId(item.source_id): item.id for item in new_scan_cols},
+            {
+                identifiers.ColumnId(item.source_id): item.id
+                for item in new_scan_list.items
+            },
             allow_partial_bindings=True,
         )
-        return dataclasses.replace(self, scan_list=new_scan_list), new_order
+        new_node = dataclasses.replace(
+            self,
+            scan_list=new_scan_list,
+            source=self.source.with_ordering(RowOrdering()),
+        )
+        return new_node, new_order
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -989,7 +999,8 @@ class FilterNode(UnaryNode):
 @dataclasses.dataclass(frozen=True, eq=False)
 class OrderByNode(UnaryNode):
     by: Tuple[OrderingExpression, ...]
-    # This is an optimization, if true, can discard previous orderings.
+    stable: bool = True
+    # This is an optimization, if true, can discard previous orderings, even if doing a stable sort
     # might be a total ordering even if false
     is_total_order: bool = False
 

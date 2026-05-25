@@ -1,3 +1,3 @@
-bigframes==2.25.0
-polars==1.24.0
-pyarrow==21.0.0
+bigframes==2.39.0
+polars==1.40.1
+pyarrow==24.0.0

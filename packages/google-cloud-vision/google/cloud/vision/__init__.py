@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ from google.cloud.vision import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1.services.image_annotator.async_client import (
     ImageAnnotatorAsyncClient,
 )
-from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1.services.product_search.async_client import (
     ProductSearchAsyncClient,
 )

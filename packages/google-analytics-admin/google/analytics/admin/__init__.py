@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -144,6 +144,7 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
     GetSKAdNetworkConversionValueSchemaRequest,
     GetSubpropertyEventFilterRequest,
     GetSubpropertySyncConfigRequest,
+    GetUserProvidedDataSettingsRequest,
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     ListAccountsRequest,
@@ -320,6 +321,7 @@ from google.analytics.admin_v1alpha.types.resources import (
     ServiceLevel,
     SKAdNetworkConversionValueSchema,
     SubpropertySyncConfig,
+    UserProvidedDataSettings,
 )
 from google.analytics.admin_v1alpha.types.subproperty_event_filter import (
     SubpropertyEventFilter,
@@ -449,6 +451,7 @@ __all__ = (
     "GetSKAdNetworkConversionValueSchemaRequest",
     "GetSubpropertyEventFilterRequest",
     "GetSubpropertySyncConfigRequest",
+    "GetUserProvidedDataSettingsRequest",
     "ListAccessBindingsRequest",
     "ListAccessBindingsResponse",
     "ListAccountsRequest",
@@ -604,6 +607,7 @@ __all__ = (
     "SearchAds360Link",
     "SKAdNetworkConversionValueSchema",
     "SubpropertySyncConfig",
+    "UserProvidedDataSettings",
     "ActionType",
     "ActorType",
     "ChangeHistoryResourceType",

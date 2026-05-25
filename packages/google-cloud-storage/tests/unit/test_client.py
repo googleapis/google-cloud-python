@@ -300,7 +300,8 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         credentials = _make_credentials(project=PROJECT)
 
-        client = self._make_one(credentials=credentials)
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
@@ -368,10 +369,11 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_bypass_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(
-            client_options={"api_endpoint": custom_endpoint},
-            use_auth_w_custom_endpoint=False,
-        )
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(
+                client_options={"api_endpoint": custom_endpoint},
+                use_auth_w_custom_endpoint=False,
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, None)
         self.assertIsInstance(client._connection, Connection)
@@ -381,9 +383,11 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         custom_endpoint = "storage-example.p.googleapis.com"
         credentials = _make_credentials(project=PROJECT)
-        client = self._make_one(
-            credentials=credentials, client_options={"api_endpoint": custom_endpoint}
-        )
+        with mock.patch.dict("os.environ", {}, clear=True):
+            client = self._make_one(
+                credentials=credentials,
+                client_options={"api_endpoint": custom_endpoint},
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
@@ -1098,6 +1102,29 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(target, Bucket)
         self.assertEqual(target.name, bucket_name)
 
+    def test_get_bucket_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock()
+        client._get_resource.side_effect = Forbidden("forbidden")
+        bucket_name = "forbidden-bucket"
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            client.get_bucket(bucket_name)
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(bucket_name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(loc, "global")
+
     def test_get_bucket_hit_w_string_w_timeout(self):
         from google.cloud.storage.bucket import Bucket
 
@@ -1312,6 +1339,28 @@ class TestClient(unittest.TestCase):
         target = client._get_resource.call_args[1]["_target_object"]
         self.assertIsInstance(target, Bucket)
         self.assertEqual(target.name, bucket_name)
+
+    def test_lookup_bucket_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(side_effect=Forbidden("forbidden"))
+        bucket_name = "forbidden-bucket"
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            client.lookup_bucket(bucket_name)
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(bucket_name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{bucket_name}")
+        self.assertEqual(loc, "global")
 
     def test_lookup_bucket_hit_w_timeout(self):
         from google.cloud.storage.bucket import Bucket
@@ -2245,6 +2294,50 @@ class TestClient(unittest.TestCase):
             page_size=expected_page_size,
             timeout=timeout,
             retry=retry,
+        )
+
+    def test_list_blobs_w_filter(self):
+        from google.cloud.storage.bucket import _blobs_page_start, _item_to_blob
+
+        project = "PROJECT"
+        bucket_name = "name"
+        filter_ = 'contexts."foo"="bar"'
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._list_resource = mock.Mock(spec=[])
+        client._bucket_arg_to_bucket = mock.Mock(spec=[])
+        bucket = client._bucket_arg_to_bucket.return_value = mock.Mock(
+            spec=["path", "user_project"],
+        )
+        bucket.path = f"/b/{bucket_name}"
+        bucket.user_project = None
+
+        iterator = client.list_blobs(bucket_or_name=bucket_name, filter_=filter_)
+
+        self.assertIs(iterator, client._list_resource.return_value)
+        self.assertIs(iterator.bucket, bucket)
+        self.assertEqual(iterator.prefixes, set())
+
+        expected_path = f"/b/{bucket_name}/o"
+        expected_item_to_value = _item_to_blob
+        expected_page_token = None
+        expected_max_results = None
+        expected_extra_params = {
+            "projection": "noAcl",
+            "filter": filter_,
+        }
+        expected_page_start = _blobs_page_start
+        expected_page_size = None
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            page_token=expected_page_token,
+            max_results=expected_max_results,
+            extra_params=expected_extra_params,
+            page_start=expected_page_start,
+            page_size=expected_page_size,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
     def test_list_buckets_wo_project(self):

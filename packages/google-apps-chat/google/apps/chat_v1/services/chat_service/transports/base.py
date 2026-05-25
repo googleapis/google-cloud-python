@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -439,6 +439,20 @@ class ChatServiceTransport(abc.ABC):
             ),
             self.find_direct_message: gapic_v1.method.wrap_method(
                 self.find_direct_message,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.find_group_chats: gapic_v1.method.wrap_method(
+                self.find_group_chats,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -957,6 +971,15 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [space.FindDirectMessageRequest], Union[space.Space, Awaitable[space.Space]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def find_group_chats(
+        self,
+    ) -> Callable[
+        [space.FindGroupChatsRequest],
+        Union[space.FindGroupChatsResponse, Awaitable[space.FindGroupChatsResponse]],
     ]:
         raise NotImplementedError()
 

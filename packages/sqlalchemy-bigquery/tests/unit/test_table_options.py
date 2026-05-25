@@ -62,6 +62,18 @@ def test_table_default_rounding_mode_dialect_option(faux_conn):
     )
 
 
+def test_table_with_json_columns(faux_conn):
+    setup_table(
+        faux_conn,
+        "some_table",
+        sqlalchemy.Column("some_stuff", sqlalchemy.JSON),
+    )
+
+    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
+        "CREATE TABLE `some_table` ( `some_stuff` JSON )"
+    )
+
+
 def test_table_clustering_fields_dialect_option_no_such_column(faux_conn):
     with pytest.raises(sqlalchemy.exc.NoSuchColumnError):
         setup_table(

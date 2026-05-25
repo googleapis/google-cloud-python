@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class SiteServiceTransport(abc.ABC):
     """Abstract transport class for SiteService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/admanager",
+        "https://www.googleapis.com/auth/admanager.readonly",
+    )
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 
@@ -183,6 +186,11 @@ class SiteServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -291,6 +299,15 @@ class SiteServiceTransport(abc.ABC):
     ) -> Callable[
         [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
     ]:
         raise NotImplementedError()
 

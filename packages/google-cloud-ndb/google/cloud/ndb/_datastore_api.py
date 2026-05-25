@@ -168,7 +168,7 @@ def lookup(key, options):
         if use_global_cache and not key_locked:
             if entity_pb is not _NOT_FOUND:
                 expires = context._global_cache_timeout(key, options)
-                serialized = entity_pb._pb.SerializeToString()
+                serialized = entity_pb._pb.SerializeToString()  # type: ignore[attr-defined]
                 yield _cache.global_compare_and_swap(
                     cache_key, serialized, expires=expires
                 )

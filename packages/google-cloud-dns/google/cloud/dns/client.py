@@ -14,8 +14,8 @@
 
 """Client for interacting with the Google Cloud DNS API."""
 
-from google.api_core import page_iterator
 from google.api_core import client_options as client_options_mod
+from google.api_core import page_iterator
 from google.cloud.client import ClientWithProject
 
 from google.cloud.dns._http import Connection

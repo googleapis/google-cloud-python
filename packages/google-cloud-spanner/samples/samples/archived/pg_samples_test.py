@@ -17,8 +17,9 @@ import uuid
 import pg_samples as samples
 import pytest
 from google.api_core import exceptions
-from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from test_utils.retry import RetryErrors
+
+from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 
 CREATE_TABLE_SINGERS = """\
 CREATE TABLE Singers (
@@ -42,11 +43,6 @@ CREATE TABLE Albums (
 """
 
 retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
-
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "pg_snippets"
 
 
 @pytest.fixture(scope="module")

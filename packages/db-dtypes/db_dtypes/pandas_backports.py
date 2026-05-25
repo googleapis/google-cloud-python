@@ -26,16 +26,16 @@ import pandas.compat.numpy.function
 pandas_release = packaging.version.parse(pandas.__version__).release
 
 # # Create aliases for private methods in case they move in a future version.
-nanall = pandas.core.nanops.nanall
-nanany = pandas.core.nanops.nanany
-nanmax = pandas.core.nanops.nanmax
-nanmin = pandas.core.nanops.nanmin
+nanall = pandas.core.nanops.nanall  # type: ignore[attr-defined]
+nanany = pandas.core.nanops.nanany  # type: ignore[attr-defined]
+nanmax = pandas.core.nanops.nanmax  # type: ignore[attr-defined]
+nanmin = pandas.core.nanops.nanmin  # type: ignore[attr-defined]
 numpy_validate_all = pandas.compat.numpy.function.validate_all
 numpy_validate_any = pandas.compat.numpy.function.validate_any
 numpy_validate_max = pandas.compat.numpy.function.validate_max
 numpy_validate_min = pandas.compat.numpy.function.validate_min
 
-nanmedian = pandas.core.nanops.nanmedian
+nanmedian = pandas.core.nanops.nanmedian  # type: ignore[attr-defined]
 numpy_validate_median = pandas.compat.numpy.function.validate_median
 
 

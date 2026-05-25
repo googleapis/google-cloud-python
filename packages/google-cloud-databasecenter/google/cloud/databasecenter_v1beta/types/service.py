@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,28 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.databasecenter_v1beta.types import (
+    affiliation,
+    maintenance,
+    metric_data,
+    signals,
+)
+from google.cloud.databasecenter_v1beta.types import (
     machine_config as gcd_machine_config,
 )
-from google.cloud.databasecenter_v1beta.types import maintenance, metric_data, signals
 from google.cloud.databasecenter_v1beta.types import product as gcd_product
 
 __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
     manifest={
-        "ResourceCategory",
         "Edition",
         "SubResourceType",
         "ManagementType",
+        "ResourceCategory",
         "QueryProductsRequest",
         "QueryProductsResponse",
         "QueryDatabaseResourceGroupsRequest",
@@ -40,11 +46,17 @@ __protobuf__ = proto.module(
         "DatabaseResourceGroup",
         "DatabaseResource",
         "AggregateIssueStatsRequest",
+        "AggregateQueryStatsRequest",
+        "AggregateQueryStatsResponse",
         "AggregateIssueStatsResponse",
         "IssueGroupStats",
         "IssueStats",
         "Label",
         "AggregateFleetRequest",
+        "QueryStatsInfo",
+        "ResourceId",
+        "QueryStats",
+        "QueryMetrics",
         "AggregateFleetResponse",
         "AggregateFleetRow",
         "Dimension",
@@ -58,27 +70,6 @@ __protobuf__ = proto.module(
         "DeltaDetails",
     },
 )
-
-
-class ResourceCategory(proto.Enum):
-    r"""The enum value corresponds to 'type' suffix in the resource_type
-    field.
-
-    Values:
-        RESOURCE_CATEGORY_UNSPECIFIED (0):
-            Unspecified.
-        INSTANCE (1):
-            A resource that is an Instance.
-        CLUSTER (2):
-            A resource that is a Cluster.
-        DATABASE (3):
-            A resource that is a Database.
-    """
-
-    RESOURCE_CATEGORY_UNSPECIFIED = 0
-    INSTANCE = 1
-    CLUSTER = 2
-    DATABASE = 3
 
 
 class Edition(proto.Enum):
@@ -152,6 +143,33 @@ class ManagementType(proto.Enum):
     MANAGEMENT_TYPE_UNSPECIFIED = 0
     MANAGEMENT_TYPE_GCP_MANAGED = 1
     MANAGEMENT_TYPE_SELF_MANAGED = 2
+
+
+class ResourceCategory(proto.Enum):
+    r"""The enum value corresponds to 'type' suffix in the resource_type
+    field.
+
+    Values:
+        RESOURCE_CATEGORY_UNSPECIFIED (0):
+            Unspecified.
+        INSTANCE (1):
+            A resource that is an Instance.
+        CLUSTER (2):
+            A resource that is a Cluster.
+        DATABASE (3):
+            A resource that is a Database.
+        DATASET (4):
+            A resource that is a Dataset.
+        RESERVATION (5):
+            A resource that is a Reservation.
+    """
+
+    RESOURCE_CATEGORY_UNSPECIFIED = 0
+    INSTANCE = 1
+    CLUSTER = 2
+    DATABASE = 3
+    DATASET = 4
+    RESERVATION = 5
 
 
 class QueryProductsRequest(proto.Message):
@@ -533,6 +551,9 @@ class DatabaseResource(proto.Message):
         maintenance_info (google.cloud.databasecenter_v1beta.types.MaintenanceInfo):
             Optional. The maintenance information of the
             resource.
+        affiliations (MutableSequence[google.cloud.databasecenter_v1beta.types.Affiliation]):
+            Optional. Affiliation details of the
+            resource.
     """
 
     child_resources: MutableSequence["DatabaseResource"] = proto.RepeatedField(
@@ -615,6 +636,11 @@ class DatabaseResource(proto.Message):
         number=19,
         message=maintenance.MaintenanceInfo,
     )
+    affiliations: MutableSequence[affiliation.Affiliation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=20,
+        message=affiliation.Affiliation,
+    )
 
 
 class AggregateIssueStatsRequest(proto.Message):
@@ -687,6 +713,126 @@ class AggregateIssueStatsRequest(proto.Message):
         number=4,
         optional=True,
         message=date_pb2.Date,
+    )
+
+
+class AggregateQueryStatsRequest(proto.Message):
+    r"""AggregateQueryStatsRequest represents the input to the
+    AggregateQueryStats method.
+
+    Attributes:
+        parent (str):
+            Required. Parent can be a project, a folder, or an
+            organization. The search is limited to the resources within
+            the ``parent``.
+
+            The allowed values are:
+
+            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            - organizations/{ORGANIZATION_NUMBER} (e.g.,
+              "organizations/123456")
+        order_by (str):
+            Optional. The expression to order the results by. Example:
+            ``order_by="execution_count"`` Example:
+            ``order_by="execution_count desc"`` Supported order by
+            fields are ``execution_count``, ``rows_processed``,
+            ``total_cpu_time``, ``avg_cpu_time``.
+        filter (str):
+            Optional. The expression to filter resources.
+
+            Supported fields are: ``full_resource_name``,
+            ``resource_type``, ``container``, ``product.type``,
+            ``product.engine``, ``product.version``, ``location``,
+            ``labels``, ``issues``, fields of availability_info,
+            data_protection_info,'resource_name', etc.
+
+            The expression is a list of zero or more restrictions
+            combined via logical operators ``AND`` and ``OR``. When
+            ``AND`` and ``OR`` are both used in the expression,
+            parentheses must be appropriately used to group the
+            combinations.
+
+            Example: ``location="us-east1"`` Example:
+            ``container="projects/123" OR container="projects/456"``
+            Example:
+            ``(container="projects/123" OR container="projects/456") AND location="us-east1"``
+            Additional specific fields for query stats are:
+            ``metric_window``, ``query_hash``, ``normalized_query``.
+            Example: ``metric_window="LAST_ONE_DAY"`` (Possible values
+            for ``metric_window`` are: ``LAST_ONE_DAY``,
+            ``LAST_ONE_WEEK``, ``LAST_TWO_WEEKS``) Example:
+            ``query_hash="12345678"`` Example:
+            ``normalized_query="SELECT * FROM table"``
+        page_size (int):
+            Optional. If unspecified, at most 100 query
+            stats will be returned. The maximum value is
+            1000; values above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``AggregateQueryStatsRequest`` call. Provide this to
+            retrieve the subsequent page. All parameters except
+            page_token should match the parameters in the call that
+            provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AggregateQueryStatsResponse(proto.Message):
+    r"""The response message containing relevant query stats
+    for database resources.
+
+    Attributes:
+        query_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.QueryStatsInfo]):
+            List of query stats where each group contains
+            stats for resources having a particular
+            combination of relevant query stats.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Unordered list. List of unreachable regions
+            from where data could not be retrieved.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    query_stats: MutableSequence["QueryStatsInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="QueryStatsInfo",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -985,6 +1131,184 @@ class AggregateFleetRequest(proto.Message):
         number=7,
         optional=True,
         message=date_pb2.Date,
+    )
+
+
+class QueryStatsInfo(proto.Message):
+    r"""QueryStatsInfo contains the aggregated and detailed query
+    stats for a particular combination of relevant query stats for
+    queries having same normalized query.
+
+    Attributes:
+        aggregated_query_stats (google.cloud.databasecenter_v1beta.types.QueryStats):
+            Aggregated query stats for the resources for
+            same normalized query.
+        query_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.QueryStats]):
+            List of query stats for the resources in the
+            group. This stats is stats at resource level for
+            the resources having same normalized query.
+    """
+
+    aggregated_query_stats: "QueryStats" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="QueryStats",
+    )
+    query_stats: MutableSequence["QueryStats"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="QueryStats",
+    )
+
+
+class ResourceId(proto.Message):
+    r"""ResourceId contains the identifier for a database resource,
+    including the full resource name, resource type, and product.
+
+    Attributes:
+        full_resource_name (str):
+            The full resource name of the resource.
+        resource_type (str):
+            The type of the resource.
+            sqladmin.googleapis.com/Instance
+            alloydb.googleapis.com/Cluster
+            alloydb.googleapis.com/Instance
+        product (google.cloud.databasecenter_v1beta.types.Product):
+            The product of the resource, including the
+            type, engine, and version.
+    """
+
+    full_resource_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    product: gcd_product.Product = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_product.Product,
+    )
+
+
+class QueryStats(proto.Message):
+    r"""QueryStats contains the stats for a particular combination of
+    query_hash, query_string and resource_type.
+
+    Attributes:
+        query_hash (str):
+            The query hash of the query.
+        normalized_query (str):
+            The query string is normalized query without
+            any PII data.
+        resource_type (str):
+            The type of the resource.
+            sqladmin.googleapis.com/Instance
+            alloydb.googleapis.com/Cluster
+            alloydb.googleapis.com/Instance
+        resource_ids (MutableSequence[google.cloud.databasecenter_v1beta.types.ResourceId]):
+            The resource ids for which the query stats
+            are collected.
+        query_metrics (google.cloud.databasecenter_v1beta.types.QueryMetrics):
+            Metrics related to the query performance.
+        inefficient_query_info (google.cloud.databasecenter_v1beta.types.InefficientQueryInfo):
+            Information about inefficient query.
+    """
+
+    query_hash: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    normalized_query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    resource_ids: MutableSequence["ResourceId"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="ResourceId",
+    )
+    query_metrics: "QueryMetrics" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="QueryMetrics",
+    )
+    inefficient_query_info: signals.InefficientQueryInfo = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=signals.InefficientQueryInfo,
+    )
+
+
+class QueryMetrics(proto.Message):
+    r"""QueryMetrics contains the metrics related to the query
+    execution.
+
+    Attributes:
+        execution_count (int):
+            The number of times the query was executed.
+        avg_cpu_time (google.protobuf.duration_pb2.Duration):
+            The average execution period of the query
+            across all runs.
+        total_cpu_time (google.protobuf.duration_pb2.Duration):
+            The total CPU time consumed by the query
+            across all runs.
+        rows_processed (int):
+            The average number of rows processed by the
+            query across all runs.
+        metrics_window (google.cloud.databasecenter_v1beta.types.QueryMetrics.MetricsWindow):
+            The window over which the metrics are
+            aggregated.
+    """
+
+    class MetricsWindow(proto.Enum):
+        r"""Enum to represent the window over which the metrics are
+        aggregated.
+
+        Values:
+            METRICS_WINDOW_UNSPECIFIED (0):
+                Unspecified. Default value.
+            LAST_ONE_DAY (1):
+                Metrics are aggregated over the last 1 day.
+            LAST_ONE_WEEK (2):
+                Metrics are aggregated over the last 7 days.
+            LAST_TWO_WEEKS (3):
+                Metrics are aggregated over the last 14 days.
+        """
+
+        METRICS_WINDOW_UNSPECIFIED = 0
+        LAST_ONE_DAY = 1
+        LAST_ONE_WEEK = 2
+        LAST_TWO_WEEKS = 3
+
+    execution_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    avg_cpu_time: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    total_cpu_time: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    rows_processed: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    metrics_window: MetricsWindow = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=MetricsWindow,
     )
 
 

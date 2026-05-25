@@ -95,7 +95,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
 
             ddl = f"CREATE TEMP TABLE `_SESSION`.{sg_sql.to_sql(sg_sql.identifier(table_ref.table_id))} ({fields_string}){cluster_string}"
 
-            _, job = bfbqio.start_query_with_client(
+            _, job = bfbqio.start_query_with_job(
                 self.bqclient,
                 ddl,
                 job_config=job_config,
@@ -103,7 +103,6 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 project=None,
                 timeout=None,
                 metrics=None,
-                query_with_job=True,
                 publisher=self._publisher,
             )
             job.result()
@@ -117,15 +116,18 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             self._sessiondaemon.stop()
 
         if self._session_id is not None and self.bqclient is not None:
-            bfbqio.start_query_with_client(
+            bfbqio.start_query_job_optional(
                 self.bqclient,
                 f"CALL BQ.ABORT_SESSION('{self._session_id}')",
-                job_config=bigquery.QueryJobConfig(),
+                # Assume this is being called in the user thread, so we can access
+                # this thread-local config.
+                job_config=bigquery.QueryJobConfig(
+                    labels=bigframes.options.compute.extra_query_labels
+                ),
                 location=self.location,
                 project=None,
                 timeout=None,
                 metrics=None,
-                query_with_job=False,
                 publisher=self._publisher,
             )
 
@@ -137,7 +139,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 job_config = bigquery.QueryJobConfig(create_session=True)
                 # Make sure the session is a new one, not one associated with another query.
                 job_config.use_query_cache = False
-                _, query_job = bfbqio.start_query_with_client(
+                _, query_job = bfbqio.start_query_with_job(
                     self.bqclient,
                     "SELECT 1",
                     job_config=job_config,
@@ -145,7 +147,6 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                     project=None,
                     timeout=None,
                     metrics=None,
-                    query_with_job=True,
                     publisher=self._publisher,
                 )
                 query_job.result()  # blocks until finished
@@ -169,7 +170,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 ]
             )
             try:
-                bfbqio.start_query_with_client(
+                bfbqio.start_query_job_optional(
                     self.bqclient,
                     "SELECT 1",
                     job_config=job_config,
@@ -177,7 +178,6 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                     project=None,
                     timeout=KEEPALIVE_QUERY_TIMEOUT_SECONDS,
                     metrics=None,
-                    query_with_job=False,
                     publisher=self._publisher,
                 )
             except Exception as e:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class PrivateAuctionDeal(proto.Message):
             Format:
             ``networks/{network_code}/privateAuctionDeals/{private_auction_deal_id}``
         private_auction_deal_id (int):
-            Output only. ``PrivateAuctionDeal`` ID.
+            Output only. Deprecated: ``PrivateAuctionDeal`` ID.
 
             This field is a member of `oneof`_ ``_private_auction_deal_id``.
         private_auction_id (int):

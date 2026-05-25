@@ -11,19 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-.. warning::
-    **Preview API**: Firestore Pipelines is currently in preview and is
-    subject to potential breaking changes in future releases.
-"""
 
 from __future__ import annotations
 
-from typing import Generic, TypeVar, TYPE_CHECKING
+from typing import TYPE_CHECKING, Generic, TypeVar
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1._helpers import DOCUMENT_PATH_DELIMITER
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline, SubPipeline
+from google.cloud.firestore_v1.base_pipeline import SubPipeline, _BasePipeline
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_client import AsyncClient

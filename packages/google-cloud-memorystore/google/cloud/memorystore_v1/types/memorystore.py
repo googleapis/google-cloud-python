@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -374,6 +374,18 @@ class Instance(proto.Message):
                 High memory extra large.
             STANDARD_SMALL (4):
                 Standard small.
+            CUSTOM_MICRO (5):
+                Custom micro.
+            CUSTOM_MINI (6):
+                Custom mini.
+            HIGHCPU_MEDIUM (7):
+                High cpu medium.
+            STANDARD_LARGE (8):
+                Standard large.
+            HIGHMEM_2XLARGE (9):
+                High memory 2x large.
+            CUSTOM_PICO (10):
+                Custom pico.
         """
 
         NODE_TYPE_UNSPECIFIED = 0
@@ -381,6 +393,12 @@ class Instance(proto.Message):
         HIGHMEM_MEDIUM = 2
         HIGHMEM_XLARGE = 3
         STANDARD_SMALL = 4
+        CUSTOM_MICRO = 5
+        CUSTOM_MINI = 6
+        HIGHCPU_MEDIUM = 7
+        STANDARD_LARGE = 8
+        HIGHMEM_2XLARGE = 9
+        CUSTOM_PICO = 10
 
     class Mode(proto.Enum):
         r"""The mode config, which is used to enable/disable cluster

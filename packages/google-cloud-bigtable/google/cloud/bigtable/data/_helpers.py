@@ -105,6 +105,7 @@ def _retry_exception_factory(
         tuple[Exception, Exception|None]:
             tuple of the exception to raise, and a cause exception if applicable
     """
+    exc_list = exc_list.copy()
     if reason == RetryFailureReason.TIMEOUT:
         timeout_val_str = f"of {timeout_val:0.1f}s " if timeout_val is not None else ""
         # if failed due to timeout, raise deadline exceeded as primary exception

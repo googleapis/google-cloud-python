@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1820,9 +1814,7 @@ async def test_list_framework_compliance_summaries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_framework_compliance_summaries(request={})
         ).pages:
             pages.append(page_)
@@ -2368,11 +2360,7 @@ async def test_list_finding_summaries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_finding_summaries(request={})
-        ).pages:
+        async for page_ in (await client.list_finding_summaries(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2447,6 +2435,7 @@ def test_fetch_framework_compliance_report_non_empty_request_with_auto_populated
     # if they meet the requirements of AIP 4235.
     request = monitoring.FetchFrameworkComplianceReportRequest(
         name="name_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2461,6 +2450,7 @@ def test_fetch_framework_compliance_report_non_empty_request_with_auto_populated
         _, args, _ = call.mock_calls[0]
         assert args[0] == monitoring.FetchFrameworkComplianceReportRequest(
             name="name_value",
+            filter="filter_value",
         )
 
 
@@ -3302,9 +3292,7 @@ async def test_list_control_compliance_summaries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_control_compliance_summaries(request={})
         ).pages:
             pages.append(page_)
@@ -3725,6 +3713,7 @@ def test_list_framework_compliance_summaries_rest_required_fields(
             "filter",
             "page_size",
             "page_token",
+            "view",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3774,7 +3763,7 @@ def test_list_framework_compliance_summaries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_framework_compliance_summaries_rest_unset_required_fields():
@@ -3791,6 +3780,7 @@ def test_list_framework_compliance_summaries_rest_unset_required_fields():
                 "filter",
                 "pageSize",
                 "pageToken",
+                "view",
             )
         )
         & set(("parent",))
@@ -4049,7 +4039,7 @@ def test_list_finding_summaries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_finding_summaries_rest_unset_required_fields():
@@ -4261,7 +4251,12 @@ def test_fetch_framework_compliance_report_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).fetch_framework_compliance_report._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("end_time",))
+    assert not set(unset_fields) - set(
+        (
+            "end_time",
+            "filter",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4307,7 +4302,7 @@ def test_fetch_framework_compliance_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_framework_compliance_report_rest_unset_required_fields():
@@ -4318,7 +4313,15 @@ def test_fetch_framework_compliance_report_rest_unset_required_fields():
     unset_fields = (
         transport.fetch_framework_compliance_report._get_unset_required_fields({})
     )
-    assert set(unset_fields) == (set(("endTime",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "endTime",
+                "filter",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_fetch_framework_compliance_report_rest_flattened():
@@ -4507,7 +4510,7 @@ def test_list_control_compliance_summaries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_control_compliance_summaries_rest_unset_required_fields():
@@ -4789,7 +4792,7 @@ def test_aggregate_framework_compliance_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregate_framework_compliance_report_rest_unset_required_fields():

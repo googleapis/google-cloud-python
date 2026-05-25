@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .access_policies_service import (
+    CreateAccessPolicyRequest,
+    DeleteAccessPolicyRequest,
+    GetAccessPolicyRequest,
+    ListAccessPoliciesRequest,
+    ListAccessPoliciesResponse,
+    SearchAccessPolicyBindingsRequest,
+    SearchAccessPolicyBindingsResponse,
+    UpdateAccessPolicyRequest,
+)
+from .access_policy_resources import (
+    AccessPolicy,
+    AccessPolicyDetails,
+    AccessPolicyRule,
+)
 from .operation_metadata import (
     OperationMetadata,
 )
@@ -46,6 +61,17 @@ from .principal_access_boundary_policy_resources import (
 )
 
 __all__ = (
+    "CreateAccessPolicyRequest",
+    "DeleteAccessPolicyRequest",
+    "GetAccessPolicyRequest",
+    "ListAccessPoliciesRequest",
+    "ListAccessPoliciesResponse",
+    "SearchAccessPolicyBindingsRequest",
+    "SearchAccessPolicyBindingsResponse",
+    "UpdateAccessPolicyRequest",
+    "AccessPolicy",
+    "AccessPolicyDetails",
+    "AccessPolicyRule",
     "OperationMetadata",
     "PolicyBinding",
     "CreatePolicyBindingRequest",

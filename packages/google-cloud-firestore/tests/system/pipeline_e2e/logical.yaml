@@ -760,6 +760,77 @@ tests:
             - "value_or_default"
     assert_results:
       - value_or_default: "1984"
+  - description: whereByNorCondition
+    pipeline:
+      - Collection: books
+      - Where:
+          - Nor:
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Romance
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Dystopian
+              - FunctionExpression.equal:
+                  - Field: genre
+                  - Constant: Fantasy
+              - FunctionExpression.greater_than:
+                  - Field: published
+                  - Constant: 1949
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: "Crime and Punishment"
+      - title: "The Great Gatsby"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Romance
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Dystopian
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: genre
+                  - stringValue: Fantasy
+                  name: equal
+              - functionValue:
+                  args:
+                  - fieldReferenceValue: published
+                  - integerValue: '1949'
+                  name: greater_than
+              name: nor
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
   - description: expression_between
     pipeline:
     - Collection: restaurants

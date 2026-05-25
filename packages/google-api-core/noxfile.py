@@ -14,10 +14,11 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import re
@@ -27,14 +28,14 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
-
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -70,6 +71,36 @@ def blacken(session):
     """
     session.install(BLACK_VERSION)
     session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
 
 
 def install_prerelease_dependencies(session, constraints_path):
@@ -272,7 +303,7 @@ def default(
         (
             True,
             False,
-            ["3.9", "3.10", "3.11"],
+            ["3.10", "3.11"],
             4,
         ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
@@ -294,13 +325,13 @@ def unit(
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
 
-    # TODO: consider converting the following into a `match` statement once
-    # we drop Python 3.9 support.
-    if legacy_proto:
-        if legacy_proto == 4:
+    match legacy_proto:
+        case 4:
             # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
             session.install("protobuf>=4.25.8,<5.0.0")
-        else:
+        case None | False:
+            pass
+        case _:
             assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(

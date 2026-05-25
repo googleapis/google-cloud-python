@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import unittest.mock as mock
 from unittest.mock import AsyncMock, MagicMock
 
@@ -19,9 +20,11 @@ import grpc
 import pytest
 
 from google.cloud import _storage_v2
+from google.cloud.storage import Blob, Bucket
 from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
+from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
 
 BUCKET = "my-bucket"
 OBJECT = "my-object"
@@ -150,6 +153,83 @@ class TestAsyncWriteObjectStream:
         params = meta_dict["x-goog-request-params"]
         assert f"bucket={FULL_BUCKET_PATH}" in params
         assert "extra=param" in params
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_new_object_with_blob_sync_attrs(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        mock_bucket = mock.Mock(spec=Bucket)
+        mock_bucket.name = BUCKET
+
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket = mock_bucket
+        mock_blob.content_type = "text/plain"
+        mock_blob.metadata = {"test-key": "test-value"}
+        mock_blob.kms_key_name = "kms-key-name"
+        mock_blob.cache_control = "cache-control"
+        mock_blob.content_disposition = "content-disposition"
+        mock_blob.content_encoding = "content-encoding"
+        mock_blob.content_language = "content-language"
+        mock_blob.temporary_hold = True
+        mock_blob.event_based_hold = True
+
+        custom_time = datetime.datetime(
+            2025, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
+        )
+        mock_blob.custom_time = custom_time
+
+        acl_mock = MagicMock()
+        acl_mock.loaded = True
+        acl_mock.__iter__.return_value = iter(
+            [{"role": "READER", "entity": "allUsers"}]
+        )
+        mock_blob.acl = acl_mock
+
+        retain_until_time = datetime.datetime(
+            2026, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
+        )
+        mock_blob.retention = {
+            "mode": "Locked",
+            "retain_until_time": retain_until_time,
+        }
+        payload = ObjectCustomContextPayload(value="context-value")
+        mock_blob.contexts = ObjectContexts(mock_blob, custom={"context-key": payload})
+
+        stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
+        await stream.open()
+
+        # Verify initial request contains synced attributes from blob
+        initial_request = mock_rpc_cls.call_args.kwargs["initial_request"]
+        resource = initial_request.write_object_spec.resource
+
+        assert resource.content_type == "text/plain"
+        assert resource.metadata == {"test-key": "test-value"}
+        assert resource.kms_key == "kms-key-name"
+        assert resource.cache_control == "cache-control"
+        assert resource.content_disposition == "content-disposition"
+        assert resource.content_encoding == "content-encoding"
+        assert resource.content_language == "content-language"
+        assert resource.temporary_hold is True
+        assert resource.event_based_hold is True
+
+        assert int(resource.custom_time.timestamp()) == int(custom_time.timestamp())
+
+        assert len(resource.acl) == 1
+        assert resource.acl[0].role == "READER"
+        assert resource.acl[0].entity == "allUsers"
+
+        assert resource.retention.mode == _storage_v2.Object.Retention.Mode.LOCKED
+        assert int(resource.retention.retain_until_time.timestamp()) == int(
+            retain_until_time.timestamp()
+        )
+        assert "context-key" in resource.contexts.custom
+        assert resource.contexts.custom["context-key"].value == "context-value"
 
     @pytest.mark.asyncio
     async def test_open_already_open_raises(self, mock_client):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -2909,11 +2903,7 @@ async def test_list_framework_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_framework_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_framework_deployments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3831,9 +3821,7 @@ async def test_list_cloud_control_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_cloud_control_deployments(request={})
         ).pages:
             pages.append(page_)
@@ -3958,7 +3946,7 @@ def test_create_framework_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_framework_deployment_rest_unset_required_fields():
@@ -4154,7 +4142,7 @@ def test_delete_framework_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_framework_deployment_rest_unset_required_fields():
@@ -4337,7 +4325,7 @@ def test_get_framework_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_framework_deployment_rest_unset_required_fields():
@@ -4531,7 +4519,7 @@ def test_list_framework_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_framework_deployments_rest_unset_required_fields():
@@ -4787,7 +4775,7 @@ def test_get_cloud_control_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cloud_control_deployment_rest_unset_required_fields():
@@ -4983,7 +4971,7 @@ def test_list_cloud_control_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_cloud_control_deployments_rest_unset_required_fields():
@@ -7600,10 +7588,36 @@ def test_parse_cloud_control_deployment_path():
     assert expected == actual
 
 
-def test_framework_deployment_path():
+def test_framework_path():
     organization = "squid"
     location = "clam"
-    framework_deployment = "whelk"
+    framework = "whelk"
+    expected = "organizations/{organization}/locations/{location}/frameworks/{framework}".format(
+        organization=organization,
+        location=location,
+        framework=framework,
+    )
+    actual = DeploymentClient.framework_path(organization, location, framework)
+    assert expected == actual
+
+
+def test_parse_framework_path():
+    expected = {
+        "organization": "octopus",
+        "location": "oyster",
+        "framework": "nudibranch",
+    }
+    path = DeploymentClient.framework_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DeploymentClient.parse_framework_path(path)
+    assert expected == actual
+
+
+def test_framework_deployment_path():
+    organization = "cuttlefish"
+    location = "mussel"
+    framework_deployment = "winkle"
     expected = "organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}".format(
         organization=organization,
         location=location,
@@ -7617,9 +7631,9 @@ def test_framework_deployment_path():
 
 def test_parse_framework_deployment_path():
     expected = {
-        "organization": "octopus",
-        "location": "oyster",
-        "framework_deployment": "nudibranch",
+        "organization": "nautilus",
+        "location": "scallop",
+        "framework_deployment": "abalone",
     }
     path = DeploymentClient.framework_deployment_path(**expected)
 
@@ -7629,7 +7643,7 @@ def test_parse_framework_deployment_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7639,7 +7653,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
     path = DeploymentClient.common_billing_account_path(**expected)
 
@@ -7649,7 +7663,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7659,7 +7673,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
     path = DeploymentClient.common_folder_path(**expected)
 
@@ -7669,7 +7683,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7679,7 +7693,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
     path = DeploymentClient.common_organization_path(**expected)
 
@@ -7689,7 +7703,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7699,7 +7713,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = DeploymentClient.common_project_path(**expected)
 
@@ -7709,8 +7723,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7721,8 +7735,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = DeploymentClient.common_location_path(**expected)
 

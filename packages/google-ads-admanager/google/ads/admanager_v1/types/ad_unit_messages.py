@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class AdUnit(proto.Message):
             Identifier. The resource name of the AdUnit. Format:
             ``networks/{network_code}/adUnits/{ad_unit_id}``
         ad_unit_id (int):
-            Output only. AdUnit ID.
+            Output only. Deprecated: AdUnit ID.
         parent_ad_unit (str):
             Required. Immutable. The AdUnit's parent. Every ad unit has
             a parent except for the root ad unit, which is created by

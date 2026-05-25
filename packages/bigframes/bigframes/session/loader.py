@@ -52,7 +52,14 @@ import google.cloud.bigquery.table
 import pandas
 import pyarrow as pa
 from google.cloud import bigquery_storage_v1
-from google.cloud.bigquery_storage_v1 import types as bq_storage_types
+from google.cloud.bigquery.job.load import LoadJob
+from google.cloud.bigquery.job.query import QueryJob
+from google.cloud.bigquery_storage_v1 import (
+    types as bq_storage_types,
+)
+from google.cloud.bigquery_storage_v1 import (
+    writer as bq_storage_writer,
+)
 
 import bigframes._tools
 import bigframes._tools.strings
@@ -520,38 +527,51 @@ class GbqDataLoader:
         )
         serialized_schema = schema.serialize().to_pybytes()
 
-        def stream_worker(work: Iterator[pa.RecordBatch]) -> str:
+        def stream_worker(
+            work: Iterator[pa.RecordBatch], max_outstanding: int = 5
+        ) -> str:
             requested_stream = bq_storage_types.WriteStream(
                 type_=bq_storage_types.WriteStream.Type.PENDING
             )
             stream = self._write_client.create_write_stream(
                 parent=parent, write_stream=requested_stream
             )
+            base_request = bq_storage_types.AppendRowsRequest(
+                write_stream=stream.name,
+            )
+            base_request.arrow_rows.writer_schema.serialized_schema = serialized_schema
+
+            stream_manager = bq_storage_writer.AppendRowsStream(
+                client=self._write_client, initial_request_template=base_request
+            )
             stream_name = stream.name
+            current_offset = 0
+            futures: list[bq_storage_writer.AppendRowsFuture] = []
 
-            def request_generator():
-                current_offset = 0
-                for batch in work:
-                    request = bq_storage_types.AppendRowsRequest(
-                        write_stream=stream.name, offset=current_offset
-                    )
+            for batch in work:
+                if len(futures) >= max_outstanding:
+                    row_errors = futures.pop(0).result().row_errors
+                    if row_errors:
+                        raise ValueError(
+                            f"Problem loading rows: {row_errors}. {constants.FEEDBACK_LINK}"
+                        )
 
-                    request.arrow_rows.writer_schema.serialized_schema = (
-                        serialized_schema
-                    )
-                    request.arrow_rows.rows.serialized_record_batch = (
-                        batch.serialize().to_pybytes()
-                    )
+                request = bq_storage_types.AppendRowsRequest(offset=current_offset)
+                request.arrow_rows.rows.serialized_record_batch = (
+                    batch.serialize().to_pybytes()
+                )
 
-                    yield request
-                    current_offset += batch.num_rows
+                futures.append(stream_manager.send(request))
+                current_offset += batch.num_rows
 
-            responses = self._write_client.append_rows(requests=request_generator())
-            for resp in responses:
-                if resp.row_errors:
+            for future in futures:
+                row_errors = future.result().row_errors
+                if row_errors:
                     raise ValueError(
-                        f"Errors in stream {stream_name}: {resp.row_errors}"
+                        f"Problem loading rows: {row_errors}. {constants.FEEDBACK_LINK}"
                     )
+
+            stream_manager.close()
             self._write_client.finalize_write_stream(name=stream_name)
             return stream_name
 
@@ -604,6 +624,9 @@ class GbqDataLoader:
             )  # Wait for the job to complete
         else:
             job.result()
+
+        if self._metrics is not None and isinstance(job, (QueryJob, LoadJob)):
+            self._metrics.count_job_stats(query_job=job)
 
     @overload
     def read_gbq_table(  # type: ignore[overload-overlap]
@@ -1419,7 +1442,7 @@ class GbqDataLoader:
         job_config = bigquery.QueryJobConfig() if job_config is None else job_config
 
         if bigframes.options.compute.maximum_bytes_billed is not None:
-            # Maybe this should be pushed down into start_query_with_client
+            # Maybe this should be pushed down into start_query_with_job
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
             )
@@ -1439,7 +1462,7 @@ class GbqDataLoader:
         Do not execute dataframe through this API, instead use the executor.
         """
         job_config = self._prepare_job_config(job_config)
-        rows, _ = bf_io_bigquery.start_query_with_client(
+        rows = bf_io_bigquery.start_query_job_optional(
             self._bqclient,
             sql,
             job_config=job_config,
@@ -1447,7 +1470,6 @@ class GbqDataLoader:
             location=None,
             project=None,
             metrics=None,
-            query_with_job=False,
             publisher=self._publisher,
             session=self._session,
         )
@@ -1466,7 +1488,7 @@ class GbqDataLoader:
         Do not execute dataframe through this API, instead use the executor.
         """
         job_config = self._prepare_job_config(job_config)
-        _, query_job = bf_io_bigquery.start_query_with_client(
+        _, query_job = bf_io_bigquery.start_query_with_job(
             self._bqclient,
             sql,
             job_config=job_config,
@@ -1474,7 +1496,6 @@ class GbqDataLoader:
             location=None,
             project=None,
             metrics=None,
-            query_with_job=True,
             publisher=self._publisher,
             session=self._session,
         )

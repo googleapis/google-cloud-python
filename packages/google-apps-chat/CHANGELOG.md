@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.8.0...google-apps-chat-v0.9.0) (2026-05-06)
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.7.0...google-apps-chat-v0.8.0) (2026-04-09)
 
 

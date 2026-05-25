@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,8 +80,15 @@ from google.ads.admanager_v1.services.entity_signals_mapping_service.client impo
 from google.ads.admanager_v1.services.geo_target_service.client import (
     GeoTargetServiceClient,
 )
+from google.ads.admanager_v1.services.label_service.client import LabelServiceClient
 from google.ads.admanager_v1.services.line_item_service.client import (
     LineItemServiceClient,
+)
+from google.ads.admanager_v1.services.linked_device_service.client import (
+    LinkedDeviceServiceClient,
+)
+from google.ads.admanager_v1.services.mcm_earnings_service.client import (
+    McmEarningsServiceClient,
 )
 from google.ads.admanager_v1.services.mobile_carrier_service.client import (
     MobileCarrierServiceClient,
@@ -113,6 +120,9 @@ from google.ads.admanager_v1.services.programmatic_buyer_service.client import (
     ProgrammaticBuyerServiceClient,
 )
 from google.ads.admanager_v1.services.report_service.client import ReportServiceClient
+from google.ads.admanager_v1.services.rich_media_ads_company_service.client import (
+    RichMediaAdsCompanyServiceClient,
+)
 from google.ads.admanager_v1.services.role_service.client import RoleServiceClient
 from google.ads.admanager_v1.services.site_service.client import SiteServiceClient
 from google.ads.admanager_v1.services.taxonomy_category_service.client import (
@@ -131,6 +141,7 @@ from google.ads.admanager_v1.types.ad_break_service import (
 )
 from google.ads.admanager_v1.types.ad_review_center_ad_enums import (
     AdReviewCenterAdStatusEnum,
+    ManualAdReviewCenterAdStatusEnum,
 )
 from google.ads.admanager_v1.types.ad_review_center_ad_messages import AdReviewCenterAd
 from google.ads.admanager_v1.types.ad_review_center_ad_service import (
@@ -173,11 +184,27 @@ from google.ads.admanager_v1.types.ad_unit_service import (
     UpdateAdUnitRequest,
 )
 from google.ads.admanager_v1.types.admanager_error import AdManagerError
+from google.ads.admanager_v1.types.application_enums import (
+    ApplicationApprovalStatusEnum,
+    ApplicationPlatformEnum,
+    ApplicationStoreEnum,
+    WebviewClaimingStatusEnum,
+)
 from google.ads.admanager_v1.types.application_messages import Application
 from google.ads.admanager_v1.types.application_service import (
+    BatchArchiveApplicationsRequest,
+    BatchArchiveApplicationsResponse,
+    BatchCreateApplicationsRequest,
+    BatchCreateApplicationsResponse,
+    BatchUnarchiveApplicationsRequest,
+    BatchUnarchiveApplicationsResponse,
+    BatchUpdateApplicationsRequest,
+    BatchUpdateApplicationsResponse,
+    CreateApplicationRequest,
     GetApplicationRequest,
     ListApplicationsRequest,
     ListApplicationsResponse,
+    UpdateApplicationRequest,
 )
 from google.ads.admanager_v1.types.applied_label import AppliedLabel
 from google.ads.admanager_v1.types.audience_segment_messages import AudienceSegment
@@ -204,11 +231,16 @@ from google.ads.admanager_v1.types.browser_service import (
     ListBrowsersRequest,
     ListBrowsersResponse,
 )
+from google.ads.admanager_v1.types.child_publisher_messages import ChildPublisher
 from google.ads.admanager_v1.types.cms_metadata_key_enums import (
     CmsMetadataKeyStatusEnum,
 )
 from google.ads.admanager_v1.types.cms_metadata_key_messages import CmsMetadataKey
 from google.ads.admanager_v1.types.cms_metadata_key_service import (
+    BatchActivateCmsMetadataKeysRequest,
+    BatchActivateCmsMetadataKeysResponse,
+    BatchDeactivateCmsMetadataKeysRequest,
+    BatchDeactivateCmsMetadataKeysResponse,
     GetCmsMetadataKeyRequest,
     ListCmsMetadataKeysRequest,
     ListCmsMetadataKeysResponse,
@@ -218,6 +250,10 @@ from google.ads.admanager_v1.types.cms_metadata_value_enums import (
 )
 from google.ads.admanager_v1.types.cms_metadata_value_messages import CmsMetadataValue
 from google.ads.admanager_v1.types.cms_metadata_value_service import (
+    BatchActivateCmsMetadataValuesRequest,
+    BatchActivateCmsMetadataValuesResponse,
+    BatchDeactivateCmsMetadataValuesRequest,
+    BatchDeactivateCmsMetadataValuesResponse,
     GetCmsMetadataValueRequest,
     ListCmsMetadataValuesRequest,
     ListCmsMetadataValuesResponse,
@@ -393,7 +429,23 @@ from google.ads.admanager_v1.types.geo_target_service import (
 )
 from google.ads.admanager_v1.types.goal import Goal
 from google.ads.admanager_v1.types.goal_enums import GoalTypeEnum, UnitTypeEnum
+from google.ads.admanager_v1.types.label_enums import LabelTypeEnum
 from google.ads.admanager_v1.types.label_messages import Label
+from google.ads.admanager_v1.types.label_service import (
+    BatchActivateLabelsRequest,
+    BatchActivateLabelsResponse,
+    BatchCreateLabelsRequest,
+    BatchCreateLabelsResponse,
+    BatchDeactivateLabelsRequest,
+    BatchDeactivateLabelsResponse,
+    BatchUpdateLabelsRequest,
+    BatchUpdateLabelsResponse,
+    CreateLabelRequest,
+    GetLabelRequest,
+    ListLabelsRequest,
+    ListLabelsResponse,
+    UpdateLabelRequest,
+)
 from google.ads.admanager_v1.types.line_item_enums import LineItemTypeEnum
 from google.ads.admanager_v1.types.line_item_messages import LineItem
 from google.ads.admanager_v1.types.line_item_service import (
@@ -401,7 +453,26 @@ from google.ads.admanager_v1.types.line_item_service import (
     ListLineItemsRequest,
     ListLineItemsResponse,
 )
+from google.ads.admanager_v1.types.linked_device_enums import LinkedDeviceVisibilityEnum
+from google.ads.admanager_v1.types.linked_device_messages import LinkedDevice
+from google.ads.admanager_v1.types.linked_device_service import (
+    GetLinkedDeviceRequest,
+    ListLinkedDevicesRequest,
+    ListLinkedDevicesResponse,
+)
 from google.ads.admanager_v1.types.live_stream_event_messages import LiveStreamEvent
+from google.ads.admanager_v1.types.mcm_earnings_messages import (
+    EarningsProductBreakdown,
+    McmEarnings,
+)
+from google.ads.admanager_v1.types.mcm_earnings_service import (
+    FetchMcmEarningsRequest,
+    FetchMcmEarningsResponse,
+)
+from google.ads.admanager_v1.types.mcm_enums import (
+    DelegationTypeEnum,
+    McmEarningsProductTypeEnum,
+)
 from google.ads.admanager_v1.types.mobile_carrier_messages import MobileCarrier
 from google.ads.admanager_v1.types.mobile_carrier_service import (
     GetMobileCarrierRequest,
@@ -515,6 +586,17 @@ from google.ads.admanager_v1.types.report_service import (
 )
 from google.ads.admanager_v1.types.report_value import ReportValue
 from google.ads.admanager_v1.types.request_platform_enum import RequestPlatformEnum
+from google.ads.admanager_v1.types.rich_media_ads_company_enums import (
+    RichMediaAdsCompanyGdprStatusEnum,
+)
+from google.ads.admanager_v1.types.rich_media_ads_company_messages import (
+    RichMediaAdsCompany,
+)
+from google.ads.admanager_v1.types.rich_media_ads_company_service import (
+    GetRichMediaAdsCompanyRequest,
+    ListRichMediaAdsCompaniesRequest,
+    ListRichMediaAdsCompaniesResponse,
+)
 from google.ads.admanager_v1.types.role_enums import RoleStatusEnum
 from google.ads.admanager_v1.types.role_messages import Role
 from google.ads.admanager_v1.types.role_service import (
@@ -630,7 +712,10 @@ __all__ = (
     "DeviceManufacturerServiceClient",
     "EntitySignalsMappingServiceClient",
     "GeoTargetServiceClient",
+    "LabelServiceClient",
     "LineItemServiceClient",
+    "LinkedDeviceServiceClient",
+    "McmEarningsServiceClient",
     "MobileCarrierServiceClient",
     "MobileDeviceServiceClient",
     "MobileDeviceSubmodelServiceClient",
@@ -643,6 +728,7 @@ __all__ = (
     "PrivateAuctionServiceClient",
     "ProgrammaticBuyerServiceClient",
     "ReportServiceClient",
+    "RichMediaAdsCompanyServiceClient",
     "RoleServiceClient",
     "SiteServiceClient",
     "TaxonomyCategoryServiceClient",
@@ -656,6 +742,7 @@ __all__ = (
     "ListAdBreaksResponse",
     "UpdateAdBreakRequest",
     "AdReviewCenterAdStatusEnum",
+    "ManualAdReviewCenterAdStatusEnum",
     "AdReviewCenterAd",
     "BatchAdReviewCenterAdsOperationMetadata",
     "BatchAllowAdReviewCenterAdsRequest",
@@ -689,10 +776,24 @@ __all__ = (
     "ListAdUnitsResponse",
     "UpdateAdUnitRequest",
     "AdManagerError",
+    "ApplicationApprovalStatusEnum",
+    "ApplicationPlatformEnum",
+    "ApplicationStoreEnum",
+    "WebviewClaimingStatusEnum",
     "Application",
+    "BatchArchiveApplicationsRequest",
+    "BatchArchiveApplicationsResponse",
+    "BatchCreateApplicationsRequest",
+    "BatchCreateApplicationsResponse",
+    "BatchUnarchiveApplicationsRequest",
+    "BatchUnarchiveApplicationsResponse",
+    "BatchUpdateApplicationsRequest",
+    "BatchUpdateApplicationsResponse",
+    "CreateApplicationRequest",
     "GetApplicationRequest",
     "ListApplicationsRequest",
     "ListApplicationsResponse",
+    "UpdateApplicationRequest",
     "AppliedLabel",
     "AudienceSegment",
     "GetAudienceSegmentRequest",
@@ -710,13 +811,22 @@ __all__ = (
     "GetBrowserRequest",
     "ListBrowsersRequest",
     "ListBrowsersResponse",
+    "ChildPublisher",
     "CmsMetadataKeyStatusEnum",
     "CmsMetadataKey",
+    "BatchActivateCmsMetadataKeysRequest",
+    "BatchActivateCmsMetadataKeysResponse",
+    "BatchDeactivateCmsMetadataKeysRequest",
+    "BatchDeactivateCmsMetadataKeysResponse",
     "GetCmsMetadataKeyRequest",
     "ListCmsMetadataKeysRequest",
     "ListCmsMetadataKeysResponse",
     "CmsMetadataValueStatusEnum",
     "CmsMetadataValue",
+    "BatchActivateCmsMetadataValuesRequest",
+    "BatchActivateCmsMetadataValuesResponse",
+    "BatchDeactivateCmsMetadataValuesRequest",
+    "BatchDeactivateCmsMetadataValuesResponse",
     "GetCmsMetadataValueRequest",
     "ListCmsMetadataValuesRequest",
     "ListCmsMetadataValuesResponse",
@@ -834,13 +944,38 @@ __all__ = (
     "Goal",
     "GoalTypeEnum",
     "UnitTypeEnum",
+    "LabelTypeEnum",
     "Label",
+    "BatchActivateLabelsRequest",
+    "BatchActivateLabelsResponse",
+    "BatchCreateLabelsRequest",
+    "BatchCreateLabelsResponse",
+    "BatchDeactivateLabelsRequest",
+    "BatchDeactivateLabelsResponse",
+    "BatchUpdateLabelsRequest",
+    "BatchUpdateLabelsResponse",
+    "CreateLabelRequest",
+    "GetLabelRequest",
+    "ListLabelsRequest",
+    "ListLabelsResponse",
+    "UpdateLabelRequest",
     "LineItemTypeEnum",
     "LineItem",
     "GetLineItemRequest",
     "ListLineItemsRequest",
     "ListLineItemsResponse",
+    "LinkedDeviceVisibilityEnum",
+    "LinkedDevice",
+    "GetLinkedDeviceRequest",
+    "ListLinkedDevicesRequest",
+    "ListLinkedDevicesResponse",
     "LiveStreamEvent",
+    "EarningsProductBreakdown",
+    "McmEarnings",
+    "FetchMcmEarningsRequest",
+    "FetchMcmEarningsResponse",
+    "DelegationTypeEnum",
+    "McmEarningsProductTypeEnum",
     "MobileCarrier",
     "GetMobileCarrierRequest",
     "ListMobileCarriersRequest",
@@ -920,6 +1055,11 @@ __all__ = (
     "UpdateReportRequest",
     "ReportValue",
     "RequestPlatformEnum",
+    "RichMediaAdsCompanyGdprStatusEnum",
+    "RichMediaAdsCompany",
+    "GetRichMediaAdsCompanyRequest",
+    "ListRichMediaAdsCompaniesRequest",
+    "ListRichMediaAdsCompaniesResponse",
     "RoleStatusEnum",
     "Role",
     "GetRoleRequest",

@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/django-google-spanner/#history
 
+## [5.0.0](https://github.com/googleapis/google-cloud-python/compare/django-google-spanner-v4.0.3...django-google-spanner-v5.0.0) (2026-05-01 )
+
+### Breaking changes
+
+* Dropped support for Django 3.2 and 4.2.
+* Minimum supported Python version is now 3.10 (as required by Django 5.2).
+
+### Features
+
+* Add support for Django 5.2
+
 ## [4.0.3](https://github.com/googleapis/google-cloud-python/compare/django-google-spanner-v4.0.2...django-google-spanner-v4.0.3) (2026-03-23)
 
 

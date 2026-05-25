@@ -32,6 +32,9 @@ class ProtocolMessage:
         d = Decoder(a, 0, len(a))
         self.TryMerge(d)
 
+    def TryMerge(self, d):
+        raise NotImplementedError
+
 
 class Decoder:
     NUMERIC = 0

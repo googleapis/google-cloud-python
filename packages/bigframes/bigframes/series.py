@@ -68,7 +68,6 @@ import bigframes.formatting_helpers as formatter
 import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.operations.blob as blob
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
@@ -321,18 +320,6 @@ class Series:
         return lists.ListAccessor(self)
 
     @property
-    def blob(self) -> blob.BlobAccessor:
-        """
-        Accessor for Blob operations.
-        """
-        warnings.warn(
-            "The blob accessor is deprecated and will be removed in a future release. Use bigframes.bigquery.obj functions instead.",
-            category=bfe.ApiDeprecationWarning,
-            stacklevel=2,
-        )
-        return blob.BlobAccessor(self)
-
-    @property
     @validations.requires_ordering()
     def T(self) -> Series:
         return self.transpose()
@@ -352,6 +339,16 @@ class Series:
 
         struct_type = typing.cast(pa.StructType, self._dtype.pyarrow_dtype)
         return [struct_type.field(i).name for i in range(struct_type.num_fields)]
+
+    @property
+    def sql(self) -> str:
+        """Compiles this Series's expression tree to SQL.
+
+        Returns:
+            A string representing the compiled SQL.
+        """
+
+        return self.to_frame().sql
 
     @validations.requires_ordering()
     def transpose(self) -> Series:
@@ -574,6 +571,9 @@ class Series:
             if name:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
+
+    def _get_display_df(self) -> bigframes.dataframe.DataFrame:
+        return self.to_frame()._get_display_df()
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -1549,7 +1549,7 @@ class Series:
         """ "Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition)
             # When it's a plain Python function.
             else:
@@ -1769,7 +1769,7 @@ class Series:
         axis=...,
         inplace: Literal[True] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -1780,7 +1780,7 @@ class Series:
         axis=...,
         inplace: Literal[False] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> Series: ...
 
@@ -1790,19 +1790,21 @@ class Series:
         axis=0,
         inplace: bool = False,
         ascending=True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: typing.Literal["first", "last"] = "last",
     ) -> Optional[Series]:
         if axis != 0 and axis != "index":
             raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
         block = self._block.order_by(
             [
                 order.ascending_over(self._value_column, (na_position == "last"))
                 if ascending
                 else order.descending_over(self._value_column, (na_position == "last"))
             ],
+            stable=is_stable,
         )
         if inplace:
             self._set_block(block)
@@ -1812,17 +1814,35 @@ class Series:
 
     @typing.overload  # type: ignore[override]
     def sort_index(
-        self, *, axis=..., inplace: Literal[False] = ..., ascending=..., na_position=...
+        self,
+        *,
+        axis=...,
+        inplace: Literal[False] = ...,
+        ascending=...,
+        kind: str | None = ...,
+        na_position=...,
     ) -> Series: ...
 
     @typing.overload
     def sort_index(
-        self, *, axis=0, inplace: Literal[True] = ..., ascending=..., na_position=...
+        self,
+        *,
+        axis=0,
+        inplace: Literal[True] = ...,
+        ascending=...,
+        kind: str | None = ...,
+        na_position=...,
     ) -> None: ...
 
     @validations.requires_index
     def sort_index(
-        self, *, axis=0, inplace: bool = False, ascending=True, na_position="last"
+        self,
+        *,
+        axis=0,
+        inplace: bool = False,
+        ascending=True,
+        kind: str | None = None,
+        na_position="last",
     ) -> Optional[Series]:
         # TODO(tbergeron): Support level parameter once multi-index introduced.
         if axis != 0 and axis != "index":
@@ -1837,7 +1857,8 @@ class Series:
             else order.descending_over(column, na_last)
             for column in block.index_columns
         ]
-        block = block.order_by(ordering)
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
+        block = block.order_by(ordering, stable=is_stable)
         if inplace:
             self._set_block(block)
             return None
@@ -2019,7 +2040,7 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if isinstance(func, bigframes.functions.Udf):
             # We are working with bigquery function at this point
             if args:
                 result_series = self._apply_nary_op(
@@ -2080,7 +2101,7 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if isinstance(func, bigframes.functions.Udf):
             result_series = self._apply_binary_op(
                 other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
             )
@@ -2308,9 +2329,10 @@ class Series:
             )
         else:
             pd_series = self.to_pandas(allow_large_results=allow_large_results)
+            # Pandas Series.to_json only supports a subset of orients, but bigframes Series.to_json allows all of them.
             return pd_series.to_json(
                 path_or_buf=path_or_buf,
-                orient=orient,
+                orient=orient,  # type: ignore[arg-type]
                 lines=lines,
                 index=index,  # type: ignore
             )

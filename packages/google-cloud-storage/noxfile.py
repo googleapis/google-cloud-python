@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -334,7 +333,7 @@ def system(session, test_type):
         session.skip(
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
-    # Install pyopenssl for mTLS testing.
+    # mTLS tests requires pyopenssl.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
         session.install("pyopenssl")
     # Check if endpoint is being overriden for rerun_count
@@ -494,7 +493,6 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
@@ -567,8 +565,9 @@ def prerelease_deps(session, protobuf_implementation):
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
 
-    # Install all test dependencies
-    session.install("mock", "pytest", "pytest-cov", "brotli")
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
 
     # Install dependencies needed for system tests
     session.install(
@@ -583,7 +582,8 @@ def prerelease_deps(session, protobuf_implementation):
 
     prerel_deps = [
         "google-api-core",
-        "google-auth",
+        # Exclude google-auth 3.0.0.dev0 which was yanked
+        "google-auth!=3.0.0.dev0",
         "google-cloud-core",
         "google-crc32c",
         "google-resumable-media",
@@ -612,9 +612,7 @@ def prerelease_deps(session, protobuf_implementation):
                 f"import {version_namespace}; print({version_namespace}.__version__)",
             )
     # Remaining dependencies
-    other_deps = [
-        "requests",
-    ]
+    other_deps = ["requests", "pyopenssl"]
     session.install(*other_deps)
 
     session.run(

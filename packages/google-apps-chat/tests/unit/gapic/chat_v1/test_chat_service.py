@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1375,6 +1369,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.create_message(request)
@@ -1393,6 +1388,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -1531,6 +1527,7 @@ async def test_create_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -1550,6 +1547,7 @@ async def test_create_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -2230,11 +2228,7 @@ async def test_list_messages_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_messages(request={})
-        ).pages:
+        async for page_ in (await client.list_messages(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2753,11 +2747,7 @@ async def test_list_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_memberships(request={})
-        ).pages:
+        async for page_ in (await client.list_memberships(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3121,6 +3111,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.get_message(request)
@@ -3139,6 +3130,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3271,6 +3263,7 @@ async def test_get_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3290,6 +3283,7 @@ async def test_get_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3464,6 +3458,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.update_message(request)
@@ -3482,6 +3477,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3610,6 +3606,7 @@ async def test_update_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3629,6 +3626,7 @@ async def test_update_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -5052,11 +5050,7 @@ async def test_list_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_spaces(request={})
-        ).pages:
+        async for page_ in (await client.list_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5431,11 +5425,7 @@ async def test_search_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_spaces(request={})
-        ).pages:
+        async for page_ in (await client.search_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7552,6 +7542,375 @@ async def test_find_direct_message_async_from_dict():
 @pytest.mark.parametrize(
     "request_type",
     [
+        space.FindGroupChatsRequest,
+        dict,
+    ],
+)
+def test_find_group_chats(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = space.FindGroupChatsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.find_group_chats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = space.FindGroupChatsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FindGroupChatsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_find_group_chats_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = space.FindGroupChatsRequest(
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.find_group_chats(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == space.FindGroupChatsRequest(
+            page_token="page_token_value",
+        )
+
+
+def test_find_group_chats_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.find_group_chats in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.find_group_chats] = (
+            mock_rpc
+        )
+        request = {}
+        client.find_group_chats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.find_group_chats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_find_group_chats_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.find_group_chats
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.find_group_chats
+        ] = mock_rpc
+
+        request = {}
+        await client.find_group_chats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.find_group_chats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_find_group_chats_async(
+    transport: str = "grpc_asyncio", request_type=space.FindGroupChatsRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space.FindGroupChatsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.find_group_chats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = space.FindGroupChatsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FindGroupChatsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_find_group_chats_async_from_dict():
+    await test_find_group_chats_async(request_type=dict)
+
+
+def test_find_group_chats_pager(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                    space.Space(),
+                ],
+                next_page_token="abc",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[],
+                next_page_token="def",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                ],
+                next_page_token="ghi",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.find_group_chats(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, space.Space) for i in results)
+
+
+def test_find_group_chats_pages(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                    space.Space(),
+                ],
+                next_page_token="abc",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[],
+                next_page_token="def",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                ],
+                next_page_token="ghi",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.find_group_chats(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_find_group_chats_async_pager():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.find_group_chats), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                    space.Space(),
+                ],
+                next_page_token="abc",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[],
+                next_page_token="def",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                ],
+                next_page_token="ghi",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.find_group_chats(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, space.Space) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_find_group_chats_async_pages():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.find_group_chats), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                    space.Space(),
+                ],
+                next_page_token="abc",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[],
+                next_page_token="def",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                ],
+                next_page_token="ghi",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.find_group_chats(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gc_membership.CreateMembershipRequest,
         dict,
     ],
@@ -9450,11 +9809,7 @@ async def test_list_reactions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_reactions(request={})
-        ).pages:
+        async for page_ in (await client.list_reactions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10773,11 +11128,7 @@ async def test_list_custom_emojis_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_custom_emojis(request={})
-        ).pages:
+        async for page_ in (await client.list_custom_emojis(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13018,11 +13369,7 @@ async def test_list_space_events_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_space_events(request={})
-        ).pages:
+        async for page_ in (await client.list_space_events(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15273,11 +15620,7 @@ async def test_list_sections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sections(request={})
-        ).pages:
+        async for page_ in (await client.list_sections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16057,11 +16400,7 @@ async def test_list_section_items_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_section_items(request={})
-        ).pages:
+        async for page_ in (await client.list_section_items(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16478,6 +16817,7 @@ def test_create_message_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "create_message_notification_options",
             "message_id",
             "message_reply_option",
             "request_id",
@@ -16530,7 +16870,7 @@ def test_create_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_message_rest_unset_required_fields():
@@ -16542,6 +16882,7 @@ def test_create_message_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "createMessageNotificationOptions",
                 "messageId",
                 "messageReplyOption",
                 "requestId",
@@ -16733,7 +17074,7 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_messages_rest_unset_required_fields():
@@ -16994,7 +17335,7 @@ def test_list_memberships_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_memberships_rest_unset_required_fields():
@@ -17247,7 +17588,7 @@ def test_get_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_membership_rest_unset_required_fields():
@@ -17421,7 +17762,7 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_message_rest_unset_required_fields():
@@ -17600,7 +17941,7 @@ def test_update_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_message_rest_unset_required_fields():
@@ -17788,7 +18129,7 @@ def test_delete_message_rest_required_fields(request_type=message.DeleteMessageR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_message_rest_unset_required_fields():
@@ -17962,7 +18303,7 @@ def test_get_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_attachment_rest_unset_required_fields():
@@ -18146,7 +18487,7 @@ def test_upload_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upload_attachment_rest_unset_required_fields():
@@ -18388,7 +18729,7 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_spaces_rest_unset_required_fields():
@@ -18580,7 +18921,7 @@ def test_get_space_rest_required_fields(request_type=space.GetSpaceRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_rest_unset_required_fields():
@@ -18752,7 +19093,7 @@ def test_create_space_rest_required_fields(request_type=gc_space.CreateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_space_rest_unset_required_fields():
@@ -18920,7 +19261,7 @@ def test_set_up_space_rest_required_fields(request_type=space_setup.SetUpSpaceRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_up_space_rest_unset_required_fields():
@@ -19041,7 +19382,7 @@ def test_update_space_rest_required_fields(request_type=gc_space.UpdateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_rest_unset_required_fields():
@@ -19229,7 +19570,7 @@ def test_delete_space_rest_required_fields(request_type=space.DeleteSpaceRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_space_rest_unset_required_fields():
@@ -19409,7 +19750,7 @@ def test_complete_import_space_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_complete_import_space_rest_unset_required_fields():
@@ -19544,7 +19885,7 @@ def test_find_direct_message_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_find_direct_message_rest_unset_required_fields():
@@ -19554,6 +19895,105 @@ def test_find_direct_message_rest_unset_required_fields():
 
     unset_fields = transport.find_direct_message._get_unset_required_fields({})
     assert set(unset_fields) == (set(("name",)) & set(("name",)))
+
+
+def test_find_group_chats_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.find_group_chats in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.find_group_chats] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.find_group_chats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.find_group_chats(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_find_group_chats_rest_pager(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                    space.Space(),
+                ],
+                next_page_token="abc",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[],
+                next_page_token="def",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                ],
+                next_page_token="ghi",
+            ),
+            space.FindGroupChatsResponse(
+                spaces=[
+                    space.Space(),
+                    space.Space(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(space.FindGroupChatsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.find_group_chats(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, space.Space) for i in results)
+
+        pages = list(client.find_group_chats(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_create_membership_rest_use_cached_wrapped_rpc():
@@ -19669,7 +20109,7 @@ def test_create_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_membership_rest_unset_required_fields():
@@ -19860,7 +20300,7 @@ def test_update_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_membership_rest_unset_required_fields():
@@ -20056,7 +20496,7 @@ def test_delete_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_membership_rest_unset_required_fields():
@@ -20233,7 +20673,7 @@ def test_create_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_reaction_rest_unset_required_fields():
@@ -20428,7 +20868,7 @@ def test_list_reactions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_reactions_rest_unset_required_fields():
@@ -20672,7 +21112,7 @@ def test_delete_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_reaction_rest_unset_required_fields():
@@ -20847,7 +21287,7 @@ def test_create_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_custom_emoji_rest_unset_required_fields():
@@ -21025,7 +21465,7 @@ def test_get_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_custom_emoji_rest_unset_required_fields():
@@ -21303,7 +21743,7 @@ def test_delete_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_custom_emoji_rest_unset_required_fields():
@@ -21481,7 +21921,7 @@ def test_get_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_read_state_rest_unset_required_fields():
@@ -21661,7 +22101,7 @@ def test_update_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_read_state_rest_unset_required_fields():
@@ -21856,7 +22296,7 @@ def test_get_thread_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_thread_read_state_rest_unset_required_fields():
@@ -22036,7 +22476,7 @@ def test_get_space_event_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_event_rest_unset_required_fields():
@@ -22235,7 +22675,7 @@ def test_list_space_events_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_space_events_rest_unset_required_fields():
@@ -22497,7 +22937,7 @@ def test_get_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_notification_setting_rest_unset_required_fields():
@@ -22686,7 +23126,7 @@ def test_update_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_notification_setting_rest_unset_required_fields():
@@ -22889,7 +23329,7 @@ def test_create_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_section_rest_unset_required_fields():
@@ -23070,7 +23510,7 @@ def test_delete_section_rest_required_fields(request_type=section.DeleteSectionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_section_rest_unset_required_fields():
@@ -23242,7 +23682,7 @@ def test_update_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_section_rest_unset_required_fields():
@@ -23433,7 +23873,7 @@ def test_list_sections_rest_required_fields(request_type=section.ListSectionsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sections_rest_unset_required_fields():
@@ -23681,7 +24121,7 @@ def test_position_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_position_section_rest_unset_required_fields():
@@ -23813,7 +24253,7 @@ def test_list_section_items_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_section_items_rest_unset_required_fields():
@@ -24066,7 +24506,7 @@ def test_move_section_item_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_section_item_rest_unset_required_fields():
@@ -24631,6 +25071,27 @@ def test_find_direct_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindDirectMessageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_find_group_chats_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        call.return_value = space.FindGroupChatsResponse()
+        client.find_group_chats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = space.FindGroupChatsRequest()
 
         assert args[0] == request_msg
 
@@ -25203,6 +25664,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25319,6 +25781,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25352,6 +25815,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25745,6 +26209,33 @@ async def test_find_direct_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindDirectMessageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_find_group_chats_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            space.FindGroupChatsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.find_group_chats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = space.FindGroupChatsRequest()
 
         assert args[0] == request_msg
 
@@ -26932,6 +27423,7 @@ def test_create_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -27039,6 +27531,7 @@ def test_create_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -27062,6 +27555,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -27571,6 +28065,7 @@ def test_get_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -27594,6 +28089,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28150,6 +28646,7 @@ def test_update_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -28257,6 +28754,7 @@ def test_update_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28280,6 +28778,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -30193,6 +30692,134 @@ def test_find_direct_message_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = space.Space(), metadata
 
         client.find_direct_message(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_find_group_chats_rest_bad_request(request_type=space.FindGroupChatsRequest):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.find_group_chats(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.FindGroupChatsRequest,
+        dict,
+    ],
+)
+def test_find_group_chats_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = space.FindGroupChatsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = space.FindGroupChatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.find_group_chats(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FindGroupChatsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_find_group_chats_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_find_group_chats"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_find_group_chats_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_find_group_chats"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = space.FindGroupChatsRequest.pb(space.FindGroupChatsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = space.FindGroupChatsResponse.to_json(
+            space.FindGroupChatsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = space.FindGroupChatsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = space.FindGroupChatsResponse()
+        post_with_metadata.return_value = space.FindGroupChatsResponse(), metadata
+
+        client.find_group_chats(
             request,
             metadata=[
                 ("key", "val"),
@@ -34359,6 +34986,26 @@ def test_find_direct_message_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_find_group_chats_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
+        client.find_group_chats(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = space.FindGroupChatsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_membership_empty_call_rest():
     client = ChatServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34918,6 +35565,7 @@ def test_chat_service_base_transport():
         "delete_space",
         "complete_import_space",
         "find_direct_message",
+        "find_group_chats",
         "create_membership",
         "update_membership",
         "delete_membership",
@@ -35395,6 +36043,9 @@ def test_chat_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.find_direct_message._session
     session2 = client2.transport.find_direct_message._session
+    assert session1 != session2
+    session1 = client1.transport.find_group_chats._session
+    session2 = client2.transport.find_group_chats._session
     assert session1 != session2
     session1 = client1.transport.create_membership._session
     session2 = client2.transport.create_membership._session

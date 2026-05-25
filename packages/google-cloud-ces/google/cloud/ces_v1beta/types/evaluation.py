@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1039,11 +1039,14 @@ class EvaluationResult(proto.Message):
                 Evaluation/Expectation failed. In the case of
                 an evaluation, this means that at least one
                 expectation was not met.
+            SKIPPED (3):
+                Evaluation/Expectation was skipped.
         """
 
         OUTCOME_UNSPECIFIED = 0
         PASS = 1
         FAIL = 2
+        SKIPPED = 3
 
     class ExecutionState(proto.Enum):
         r"""The state of the evaluation result execution.

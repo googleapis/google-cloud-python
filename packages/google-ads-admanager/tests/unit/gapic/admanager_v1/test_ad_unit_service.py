@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -1266,7 +1260,7 @@ def test_get_ad_unit_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_ad_unit_rest_unset_required_fields():
@@ -1452,7 +1446,7 @@ def test_list_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_ad_units_rest_unset_required_fields():
@@ -1716,7 +1710,7 @@ def test_list_ad_unit_sizes_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_ad_unit_sizes_rest_unset_required_fields():
@@ -1967,7 +1961,7 @@ def test_create_ad_unit_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_ad_unit_rest_unset_required_fields():
@@ -2151,7 +2145,7 @@ def test_update_ad_unit_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_ad_unit_rest_unset_required_fields():
@@ -2160,15 +2154,7 @@ def test_update_ad_unit_rest_unset_required_fields():
     )
 
     unset_fields = transport.update_ad_unit._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "adUnit",
-                "updateMask",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("adUnit",)))
 
 
 def test_update_ad_unit_rest_flattened():
@@ -2344,7 +2330,7 @@ def test_batch_create_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_ad_units_rest_unset_required_fields():
@@ -2537,7 +2523,7 @@ def test_batch_update_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_update_ad_units_rest_unset_required_fields():
@@ -2742,7 +2728,7 @@ def test_batch_activate_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_activate_ad_units_rest_unset_required_fields():
@@ -2941,7 +2927,7 @@ def test_batch_deactivate_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_deactivate_ad_units_rest_unset_required_fields():
@@ -3139,7 +3125,7 @@ def test_batch_archive_ad_units_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_archive_ad_units_rest_unset_required_fields():
@@ -4987,6 +4973,69 @@ def test_batch_archive_ad_units_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = AdUnitServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = AdUnitServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
@@ -5302,6 +5351,7 @@ def test_ad_unit_service_base_transport():
         "batch_deactivate_ad_units",
         "batch_archive_ad_units",
         "get_operation",
+        "cancel_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5338,7 +5388,10 @@ def test_ad_unit_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5364,7 +5417,10 @@ def test_ad_unit_service_auth_adc():
         AdUnitServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id=None,
         )
 

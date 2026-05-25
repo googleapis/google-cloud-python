@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .affiliation import (
+    Affiliation,
+)
 from .machine_config import (
     MachineConfig,
 )
 from .maintenance import (
     MaintenanceInfo,
+    MaintenanceState,
     Phase,
+    PossibleFailureReason,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
+    UpcomingMaintenance,
 )
 from .metric_data import (
     MetricData,
@@ -41,6 +47,8 @@ from .service import (
     AggregateFleetRow,
     AggregateIssueStatsRequest,
     AggregateIssueStatsResponse,
+    AggregateQueryStatsRequest,
+    AggregateQueryStatsResponse,
     BackupDRConfig,
     DatabaseResource,
     DatabaseResourceGroup,
@@ -56,10 +64,14 @@ from .service import (
     QueryDatabaseResourceGroupsResponse,
     QueryIssuesRequest,
     QueryIssuesResponse,
+    QueryMetrics,
     QueryProductsRequest,
     QueryProductsResponse,
+    QueryStats,
+    QueryStatsInfo,
     ResourceCategory,
     ResourceDetails,
+    ResourceId,
     SignalProductsFilters,
     SubResourceType,
     Tag,
@@ -93,11 +105,15 @@ from .suspension_reason import (
 )
 
 __all__ = (
+    "Affiliation",
     "MachineConfig",
     "MaintenanceInfo",
     "ResourceMaintenanceDenySchedule",
     "ResourceMaintenanceSchedule",
+    "UpcomingMaintenance",
+    "MaintenanceState",
     "Phase",
+    "PossibleFailureReason",
     "MetricData",
     "Metrics",
     "TypedValue",
@@ -110,6 +126,8 @@ __all__ = (
     "AggregateFleetRow",
     "AggregateIssueStatsRequest",
     "AggregateIssueStatsResponse",
+    "AggregateQueryStatsRequest",
+    "AggregateQueryStatsResponse",
     "BackupDRConfig",
     "DatabaseResource",
     "DatabaseResourceGroup",
@@ -123,9 +141,13 @@ __all__ = (
     "QueryDatabaseResourceGroupsResponse",
     "QueryIssuesRequest",
     "QueryIssuesResponse",
+    "QueryMetrics",
     "QueryProductsRequest",
     "QueryProductsResponse",
+    "QueryStats",
+    "QueryStatsInfo",
     "ResourceDetails",
+    "ResourceId",
     "SignalProductsFilters",
     "Tag",
     "Edition",

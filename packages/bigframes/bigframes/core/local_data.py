@@ -33,7 +33,7 @@ import pyarrow.parquet  # type: ignore
 
 import bigframes.core.schema as schemata
 import bigframes.dtypes
-from bigframes.core import pyarrow_utils
+from bigframes.core import identifiers, pyarrow_utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -155,7 +155,7 @@ class ManagedArrowTable:
             return schema, batches
 
     def is_nullable(self, column_id: identifiers.ColumnId) -> bool:
-        return self.data.column(column_id).null_count > 0
+        return self.data.column(column_id.name).null_count > 0
 
     def to_pyarrow_table(
         self,
@@ -248,10 +248,11 @@ def _iter_table(
         elif dtype == bigframes.dtypes.TIMEDELTA_DTYPE:
             if duration_type == "int":
                 yield from map(
-                    lambda x: ((x.days * 3600 * 24) + x.seconds) * 1_000_000
-                    + x.microseconds
-                    if x is not None
-                    else x,
+                    lambda x: (
+                        ((x.days * 3600 * 24) + x.seconds) * 1_000_000 + x.microseconds
+                        if x is not None
+                        else x
+                    ),
                     values,
                 )
             else:

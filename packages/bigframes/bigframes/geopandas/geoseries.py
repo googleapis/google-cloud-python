@@ -107,7 +107,7 @@ class GeoSeries(bigframes.series.Series):
 
     @property
     def centroid(self: GeoSeries) -> bigframes.series.Series:  # type: ignore
-        return self._apply_unary_op(ops.geo_st_centroid_op)
+        return self._apply_nary_op(ops.googlesql.ST_CENTROID, [])
 
     @property
     def convex_hull(self: GeoSeries) -> bigframes.series.Series:  # type: ignore

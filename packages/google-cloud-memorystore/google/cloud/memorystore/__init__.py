@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ from google.cloud.memorystore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.memorystore_v1.services.memorystore.async_client import (
+    MemorystoreAsyncClient,
+)
 from google.cloud.memorystore_v1.services.memorystore.client import MemorystoreClient
 from google.cloud.memorystore_v1.types.memorystore import (
     AutomatedBackupConfig,
@@ -64,6 +67,7 @@ from google.cloud.memorystore_v1.types.memorystore import (
 
 __all__ = (
     "MemorystoreClient",
+    "MemorystoreAsyncClient",
     "AutomatedBackupConfig",
     "Backup",
     "BackupCollection",

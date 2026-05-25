@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -992,9 +992,9 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=900.0,
+                    deadline=1800.0,
                 ),
-                default_timeout=900.0,
+                default_timeout=1800.0,
                 client_info=client_info,
             ),
             self.modify_push_config: self._wrap_method(

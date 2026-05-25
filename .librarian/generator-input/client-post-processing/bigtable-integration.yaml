@@ -204,18 +204,6 @@ replacements:
       ]
     count: 1
   - paths: [
-      packages/google-cloud-bigtable/testing/constraints-3.9.txt
-    ]
-    before: |
-      google-api-core==2.21.0
-      google-auth==2.35.0
-    after: |
-      google-api-core==2.21.0
-      google-cloud-core==2.0.0
-      grpc-google-iam-v1==0.12.4
-      google-auth==2.35.0
-    count: 1
-  - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_v2/services/bigtable/async_client.py,
       packages/google-cloud-bigtable/google/cloud/bigtable_v2/services/bigtable/client.py,
     ]
@@ -247,7 +235,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/__init__.py
     ]
-    before: '"UpdateTableRequest",\n\)\n\z'
+    before: '"UpdateTableRequest",\n\)\n\Z'
     after: |
       "UpdateTableRequest",
       )
@@ -259,7 +247,7 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin/__init__.py
     ]
-    before: '"Type",\n\)\n\z'
+    before: '"Type",\n\)\n\Z'
     after: |
       "Type",
       )
@@ -325,7 +313,7 @@ replacements:
       packages/google-cloud-bigtable/README.rst
     ]
     before: |
-      .. _Product Documentation:  https://cloud.google.com/bigtable\n
+      .. _Product Documentation:  https://cloud.google.com/bigtable/docs\n
       Quick Start
     after: |
       .. _Product Documentation:  https://cloud.google.com/bigtable/docs
@@ -565,8 +553,14 @@ replacements:
       def mypy(session):
           """Verify type hints are mypy compatible."""
           session.install("-e", ".")
+          # TODO(https://github.com/googleapis/google-cloud-python/issues/16984):
+          # Update to the latest version of mypy
           session.install(
-              "mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests"
+              "mypy<2.0.0",
+              "types-setuptools",
+              "types-protobuf",
+              "types-mock",
+              "types-requests",
           )
           session.install("google-cloud-testutils")
           session.run("mypy", "-p", "google.cloud.bigtable.data")

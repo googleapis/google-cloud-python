@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -139,6 +139,15 @@ class UnitTypeEnum(proto.Message):
                 [LineItem.line_item_type][google.ads.admanager.v1.LineItem.line_item_type]
                 must be
                 [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD].
+            COMPLETED_VIEWS (8):
+                The number of completed views reported by creatives
+                associated with the line item. A completed view is defined
+                as having watched the entirety of the in-stream video ad and
+                is only supported for standard reservation video line items.
+                The
+                [LineItem.line_item_type][google.ads.admanager.v1.LineItem.line_item_type]
+                must be
+                [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD].
         """
 
         UNIT_TYPE_UNSPECIFIED = 0
@@ -149,6 +158,7 @@ class UnitTypeEnum(proto.Message):
         TOTAL_CPA_CONVERSIONS = 5
         VIEWABLE_IMPRESSIONS = 6
         IN_TARGET_IMPRESSIONS = 7
+        COMPLETED_VIEWS = 8
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

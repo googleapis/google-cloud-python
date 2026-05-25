@@ -33,7 +33,7 @@ dependencies = [
     "numpy >= 1.24.0, <= 2.2.6 ; python_version == '3.10'",
     "numpy >= 1.24.0 ; python_version != '3.10'",
     "packaging >= 24.2.0",
-    "pandas >= 1.5.3, < 3.0.0",
+    "pandas >= 1.5.3, < 4.0.0",
     "pyarrow >= 13.0.0",
 ]
 
@@ -64,7 +64,6 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -75,6 +74,6 @@ setup(
     ],
     platforms="Posix; MacOS X; Windows",
     install_requires=dependencies,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     tests_require=["pytest"],
 )
