@@ -7,7 +7,7 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-bigtable-admin",
+    "name": "google-cloud-bigtable",
     "version": "2.38.0"
   },
   "snippets": [
