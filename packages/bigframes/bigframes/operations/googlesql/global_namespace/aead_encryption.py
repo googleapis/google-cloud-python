@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import datetime
+import decimal
 from typing import Any, Literal, Optional, TypeVar, Union
 
 import bigframes.core.col

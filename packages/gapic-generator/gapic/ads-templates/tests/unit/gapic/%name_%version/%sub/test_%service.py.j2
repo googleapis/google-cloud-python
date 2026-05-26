@@ -70,8 +70,10 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+_UUID4_RE = re.compile(r"{{ uuid4_re }}")
+{% endif %}
 
-{% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -692,7 +694,7 @@ def test_{{ method_name }}_empty_call():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.match(args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -730,7 +732,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.match(args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -2488,5 +2490,4 @@ def test_client_ctx():
                 pass
             close.assert_called()
 
-{% endwith %}{# uuid4_re #}
 {% endblock %}

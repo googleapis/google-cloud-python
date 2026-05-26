@@ -5146,3 +5146,42 @@ def test_series_dt_total_seconds(scalars_df_index, scalars_pandas_df_index):
         # bigframes uses Float64, newer pandas may use double[pyarrow]
         check_dtype=False,
     )
+
+
+def test_series_where_with_expression(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    bf_result = s1.where(s2, bpd.col("bool_col")).to_pandas()
+
+    s1_pd = scalars_pandas_df["float64_col"]
+    s2_pd = scalars_pandas_df["bool_col"]
+
+    pd_result = s1_pd.where(s2_pd, s2_pd)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_expression_unbound_fails(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    with pytest.raises(ValueError, match="remains unbound"):
+        s1.where(s2, bpd.col("non_existent_column"))
+
+
+def test_series_where_with_expression_resolving_to_self(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    s1 = scalars_df["float64_col"]
+    s2 = scalars_df["bool_col"]
+
+    bf_result = s1.where(s2, bpd.col("float64_col")).to_pandas()
+
+    s1_pd = scalars_pandas_df["float64_col"]
+    s2_pd = scalars_pandas_df["bool_col"]
+
+    pd_result = s1_pd.where(s2_pd, s1_pd)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)

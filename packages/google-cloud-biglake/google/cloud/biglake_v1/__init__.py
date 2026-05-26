@@ -33,8 +33,11 @@ from .types.iceberg_rest_catalog import (
     FailoverIcebergCatalogResponse,
     GetIcebergCatalogRequest,
     IcebergCatalog,
+    IcebergNamespaceUpdate,
     ListIcebergCatalogsRequest,
     ListIcebergCatalogsResponse,
+    StorageCredential,
+    TableIdentifier,
     UpdateIcebergCatalogRequest,
 )
 
@@ -129,7 +132,10 @@ __all__ = (
     "GetIcebergCatalogRequest",
     "IcebergCatalog",
     "IcebergCatalogServiceClient",
+    "IcebergNamespaceUpdate",
     "ListIcebergCatalogsRequest",
     "ListIcebergCatalogsResponse",
+    "StorageCredential",
+    "TableIdentifier",
     "UpdateIcebergCatalogRequest",
 )

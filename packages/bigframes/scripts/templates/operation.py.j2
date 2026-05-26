@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import datetime
+import decimal
 from typing import Any, Literal, Optional, TypeVar, Union
 
 from bigframes import dtypes
@@ -20,6 +21,11 @@ import bigframes.operations as ops
 import bigframes.series as series
 
 {% for op in ops %}
+{% if op.signature_definition %}
+{{ op.signature_definition }}
+
+
+{% endif %}
 {{ op.internal_name }} = googlesql.GoogleSqlScalarOp(
     "{{ op.sql_name }}",
     args=({{ op.arg_specs }}),

@@ -1,0 +1,22 @@
+# Directories and files to ignore by the version scanner
+.git
+__pycache__
+.tox
+.nox
+venv
+.venv
+.conductor
+version_scanner
+docs
+samples
+changelog.md
+.librarian
+goldens
+# Ignore pandoc references in repositories.bzl
+repositories.bzl
+
+# Ignore binary media files
+*.jpg
+*.png
+*.gif
+*.ico
