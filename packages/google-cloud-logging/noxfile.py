@@ -268,8 +268,6 @@ def unit(session, protobuf_implementation):
     # Run py.test against the unit tests.
     session.run(
         "py.test",
-        "-W",
-        "ignore::DeprecationWarning",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -282,7 +280,6 @@ def unit(session, protobuf_implementation):
         *session.posargs,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            "PYTHONWARNINGS": "ignore::DeprecationWarning",
         },
     )
 
