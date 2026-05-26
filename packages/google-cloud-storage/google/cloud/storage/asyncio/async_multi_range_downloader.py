@@ -45,6 +45,7 @@ from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
     _ReadResumptionStrategy,
 )
 
+from google.cloud.storage.exceptions import DataCorruption
 from ._utils import raise_if_no_fast_crc32c
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
@@ -219,8 +220,6 @@ class AsyncMultiRangeDownloader:
             )
             generation = kwargs.pop("generation_number")
 
-        raise_if_no_fast_crc32c()
-
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
@@ -232,6 +231,8 @@ class AsyncMultiRangeDownloader:
         self._multiplexer: Optional[_StreamMultiplexer] = None
         self.persisted_size: Optional[int] = None  # updated after opening the stream
         self._open_retries: int = 0
+        self.is_finalized: bool = False
+        self.full_obj_server_crc32c: Optional[int] = None
 
     async def __aenter__(self):
         """Opens the underlying bidi-gRPC connection to read from the object."""
@@ -327,6 +328,8 @@ class AsyncMultiRangeDownloader:
                 self.read_handle = self.read_obj_str.read_handle
             if self.read_obj_str.persisted_size is not None:
                 self.persisted_size = self.read_obj_str.persisted_size
+            self.is_finalized = self.read_obj_str.is_finalized
+            self.full_obj_server_crc32c = self.read_obj_str.full_obj_server_crc32c
 
             self._is_stream_open = True
 
@@ -363,6 +366,8 @@ class AsyncMultiRangeDownloader:
                 self.generation = stream.generation_number
             if stream.read_handle:
                 self.read_handle = stream.read_handle
+            self.is_finalized = stream.is_finalized
+            self.full_obj_server_crc32c = stream.full_obj_server_crc32c
 
             self.read_obj_str = stream
             self._is_stream_open = True
@@ -377,6 +382,7 @@ class AsyncMultiRangeDownloader:
         lock: asyncio.Lock = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        enable_checksum: bool = True,
     ) -> None:
         """Downloads multiple byte ranges from the object into the buffers
         provided by user with automatic retries.
@@ -412,6 +418,9 @@ class AsyncMultiRangeDownloader:
                 "Invalid input - length of read_ranges cannot be more than 1000"
             )
 
+        if enable_checksum:
+            raise_if_no_fast_crc32c()
+
         if not self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is not open")
 
@@ -422,16 +431,29 @@ class AsyncMultiRangeDownloader:
         download_states = {}
         for read_range in read_ranges:
             read_id = generate_random_56_bit_integer()
+            # Unpack tuple into self-documenting variable names to improve readability.
+            offset, length, user_buffer = read_range
+
+            # Heuristic to detect full object reads:
+            # - Implicit full object read: start offset is 0 and length is 0 (read all).
+            # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
+            is_full_object_read = (
+                (offset == 0 and length == 0) or
+                (self.persisted_size is not None and offset == 0 and length == self.persisted_size)
+            )
             download_states[read_id] = _DownloadState(
-                initial_offset=read_range[0],
-                initial_length=read_range[1],
-                user_buffer=read_range[2],
+                initial_offset=offset,
+                initial_length=length,
+                user_buffer=user_buffer,
+                is_full_object_read=is_full_object_read,
             )
 
         initial_state = {
             "download_states": download_states,
             "read_handle": self.read_handle,
             "routing_token": None,
+            "enable_checksum": enable_checksum,
+            "full_obj_server_crc32c": self.full_obj_server_crc32c,
         }
 
         read_ids = set(download_states.keys())
@@ -519,12 +541,18 @@ class AsyncMultiRangeDownloader:
                 strategy, send_and_recv_via_multiplexer
             )
 
-            await retry_manager.execute(initial_state, retry_policy)
+            try:
+                await retry_manager.execute(initial_state, retry_policy)
+            except DataCorruption:
+                if self.is_stream_open:
+                    await self.close()
+                raise
 
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
         finally:
-            self._multiplexer.unregister(read_ids)
+            if self._multiplexer is not None:
+                self._multiplexer.unregister(read_ids)
 
     async def close(self):
         """
