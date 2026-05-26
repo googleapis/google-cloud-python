@@ -16,6 +16,7 @@
 
 import functools
 import logging
+import os
 import re
 
 from google.api_core import exceptions as api_exceptions
@@ -82,9 +83,18 @@ class Connection(_http.JSONConnection):
         span_attributes = {
             "gccl-invocation-id": invocation_id,
         }
+        # Check if GCS destination annotations are explicitly disabled via environment
+        disable_bucket_md = os.environ.get("DISABLE_BUCKET_MD_IN_OTEL", "").lower() in (
+            "1",
+            "true",
+            "yes",
+            "on",
+        )
         client = self._client
+
         if (
-            HAS_OPENTELEMETRY
+            not disable_bucket_md
+            and HAS_OPENTELEMETRY
             and enable_otel_traces
             and hasattr(client, "_bucket_metadata_cache")
             and client._bucket_metadata_cache
