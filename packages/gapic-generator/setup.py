@@ -21,7 +21,7 @@ import setuptools
 
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/gapic-generator"
+url = "https://github.com/googleapis/gapic-generator-python"
 version = "1.33.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [

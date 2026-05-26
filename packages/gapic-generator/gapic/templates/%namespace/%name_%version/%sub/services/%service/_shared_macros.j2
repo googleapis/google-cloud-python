@@ -14,7 +14,7 @@
  # limitations under the License.
 #}
 
-{% macro auto_populate_uuid4_fields(api, method, is_async=False) %}
+{% macro auto_populate_uuid4_fields(api, method) %}
 {#
     Automatically populate UUID4 fields according to
     https://google.aip.dev/client-libraries/4235 when the
@@ -27,12 +27,12 @@
 {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
-    {% set is_proto3_optional = method.input.fields[auto_populated_field].proto3_optional %}
-    {% if is_async %}
-        self._client._setup_request_id(request, '{{ auto_populated_field }}', {{ is_proto3_optional }})
+    {% if method.input.fields[auto_populated_field].proto3_optional %}
+        if '{{ auto_populated_field }}' not in request:
     {% else %}
-        self._setup_request_id(request, '{{ auto_populated_field }}', {{ is_proto3_optional }})
+        if not request.{{ auto_populated_field }}:
     {% endif %}
+            request.{{ auto_populated_field }} = str(uuid.uuid4())
 {% endfor %}
 {% endif %}{# if method_settings is not none #}
 {% endwith %}{# method_settings #}

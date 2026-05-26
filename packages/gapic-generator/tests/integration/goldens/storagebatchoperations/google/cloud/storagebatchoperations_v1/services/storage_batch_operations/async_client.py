@@ -621,7 +621,8 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -727,7 +728,8 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -829,7 +831,8 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        self._client._setup_request_id(request, 'request_id', False)
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

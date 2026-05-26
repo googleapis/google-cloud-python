@@ -944,10 +944,8 @@ def test_config_service_v2_client_create_channel_credentials_file(client_class, 
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListBucketsRequest({
-  }),
-  {
-  },
+  logging_config.ListBucketsRequest,
+  dict,
 ])
 def test_list_buckets(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -957,7 +955,7 @@ def test_list_buckets(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1004,11 +1002,10 @@ def test_list_buckets_non_empty_request_with_auto_populated_field():
         client.list_buckets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.ListBucketsRequest(
+        assert args[0] == logging_config.ListBucketsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_buckets_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1077,11 +1074,7 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.ListBucketsRequest({  }),
-  {  },
-])
-async def test_list_buckets_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_buckets_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListBucketsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1089,7 +1082,7 @@ async def test_list_buckets_async(request_type, transport: str = 'grpc_asyncio')
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1110,6 +1103,11 @@ async def test_list_buckets_async(request_type, transport: str = 'grpc_asyncio')
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_buckets_async_from_dict():
+    await test_list_buckets_async(request_type=dict)
 
 def test_list_buckets_field_headers():
     client = ConfigServiceV2Client(
@@ -1451,10 +1449,8 @@ async def test_list_buckets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetBucketRequest({
-  }),
-  {
-  },
+  logging_config.GetBucketRequest,
+  dict,
 ])
 def test_get_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -1464,7 +1460,7 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1522,10 +1518,9 @@ def test_get_bucket_non_empty_request_with_auto_populated_field():
         client.get_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetBucketRequest(
+        assert args[0] == logging_config.GetBucketRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1594,11 +1589,7 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetBucketRequest({  }),
-  {  },
-])
-async def test_get_bucket_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1606,7 +1597,7 @@ async def test_get_bucket_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1639,6 +1630,11 @@ async def test_get_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
+
+
+@pytest.mark.asyncio
+async def test_get_bucket_async_from_dict():
+    await test_get_bucket_async(request_type=dict)
 
 def test_get_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -1704,10 +1700,8 @@ async def test_get_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({
-  }),
-  {
-  },
+  logging_config.CreateBucketRequest,
+  dict,
 ])
 def test_create_bucket_async(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -1717,7 +1711,7 @@ def test_create_bucket_async(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1761,11 +1755,10 @@ def test_create_bucket_async_non_empty_request_with_auto_populated_field():
         client.create_bucket_async(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateBucketRequest(
+        assert args[0] == logging_config.CreateBucketRequest(
             parent='parent_value',
             bucket_id='bucket_id_value',
         )
-        assert args[0] == request_msg
 
 def test_create_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1844,11 +1837,7 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({  }),
-  {  },
-])
-async def test_create_bucket_async_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1856,7 +1845,7 @@ async def test_create_bucket_async_async(request_type, transport: str = 'grpc_as
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1876,6 +1865,11 @@ async def test_create_bucket_async_async(request_type, transport: str = 'grpc_as
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_async_from_dict():
+    await test_create_bucket_async_async(request_type=dict)
 
 def test_create_bucket_async_field_headers():
     client = ConfigServiceV2Client(
@@ -1941,10 +1935,8 @@ async def test_create_bucket_async_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({
-  }),
-  {
-  },
+  logging_config.UpdateBucketRequest,
+  dict,
 ])
 def test_update_bucket_async(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -1954,7 +1946,7 @@ def test_update_bucket_async(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1997,10 +1989,9 @@ def test_update_bucket_async_non_empty_request_with_auto_populated_field():
         client.update_bucket_async(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateBucketRequest(
+        assert args[0] == logging_config.UpdateBucketRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_bucket_async_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2079,11 +2070,7 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str =
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({  }),
-  {  },
-])
-async def test_update_bucket_async_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_bucket_async_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2091,7 +2078,7 @@ async def test_update_bucket_async_async(request_type, transport: str = 'grpc_as
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2111,6 +2098,11 @@ async def test_update_bucket_async_async(request_type, transport: str = 'grpc_as
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_bucket_async_async_from_dict():
+    await test_update_bucket_async_async(request_type=dict)
 
 def test_update_bucket_async_field_headers():
     client = ConfigServiceV2Client(
@@ -2176,10 +2168,8 @@ async def test_update_bucket_async_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({
-  }),
-  {
-  },
+  logging_config.CreateBucketRequest,
+  dict,
 ])
 def test_create_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -2189,7 +2179,7 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2248,11 +2238,10 @@ def test_create_bucket_non_empty_request_with_auto_populated_field():
         client.create_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateBucketRequest(
+        assert args[0] == logging_config.CreateBucketRequest(
             parent='parent_value',
             bucket_id='bucket_id_value',
         )
-        assert args[0] == request_msg
 
 def test_create_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2321,11 +2310,7 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({  }),
-  {  },
-])
-async def test_create_bucket_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2333,7 +2318,7 @@ async def test_create_bucket_async(request_type, transport: str = 'grpc_asyncio'
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2366,6 +2351,11 @@ async def test_create_bucket_async(request_type, transport: str = 'grpc_asyncio'
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_from_dict():
+    await test_create_bucket_async(request_type=dict)
 
 def test_create_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -2431,10 +2421,8 @@ async def test_create_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({
-  }),
-  {
-  },
+  logging_config.UpdateBucketRequest,
+  dict,
 ])
 def test_update_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -2444,7 +2432,7 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2502,10 +2490,9 @@ def test_update_bucket_non_empty_request_with_auto_populated_field():
         client.update_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateBucketRequest(
+        assert args[0] == logging_config.UpdateBucketRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2574,11 +2561,7 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({  }),
-  {  },
-])
-async def test_update_bucket_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2586,7 +2569,7 @@ async def test_update_bucket_async(request_type, transport: str = 'grpc_asyncio'
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2619,6 +2602,11 @@ async def test_update_bucket_async(request_type, transport: str = 'grpc_asyncio'
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
     assert response.restricted_fields == ['restricted_fields_value']
+
+
+@pytest.mark.asyncio
+async def test_update_bucket_async_from_dict():
+    await test_update_bucket_async(request_type=dict)
 
 def test_update_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -2684,10 +2672,8 @@ async def test_update_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteBucketRequest({
-  }),
-  {
-  },
+  logging_config.DeleteBucketRequest,
+  dict,
 ])
 def test_delete_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -2697,7 +2683,7 @@ def test_delete_bucket(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2740,10 +2726,9 @@ def test_delete_bucket_non_empty_request_with_auto_populated_field():
         client.delete_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.DeleteBucketRequest(
+        assert args[0] == logging_config.DeleteBucketRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2812,11 +2797,7 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.DeleteBucketRequest({  }),
-  {  },
-])
-async def test_delete_bucket_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2824,7 +2805,7 @@ async def test_delete_bucket_async(request_type, transport: str = 'grpc_asyncio'
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2842,6 +2823,11 @@ async def test_delete_bucket_async(request_type, transport: str = 'grpc_asyncio'
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_bucket_async_from_dict():
+    await test_delete_bucket_async(request_type=dict)
 
 def test_delete_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -2907,10 +2893,8 @@ async def test_delete_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UndeleteBucketRequest({
-  }),
-  {
-  },
+  logging_config.UndeleteBucketRequest,
+  dict,
 ])
 def test_undelete_bucket(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -2920,7 +2904,7 @@ def test_undelete_bucket(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2963,10 +2947,9 @@ def test_undelete_bucket_non_empty_request_with_auto_populated_field():
         client.undelete_bucket(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UndeleteBucketRequest(
+        assert args[0] == logging_config.UndeleteBucketRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_undelete_bucket_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3035,11 +3018,7 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UndeleteBucketRequest({  }),
-  {  },
-])
-async def test_undelete_bucket_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_undelete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UndeleteBucketRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3047,7 +3026,7 @@ async def test_undelete_bucket_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3065,6 +3044,11 @@ async def test_undelete_bucket_async(request_type, transport: str = 'grpc_asynci
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_undelete_bucket_async_from_dict():
+    await test_undelete_bucket_async(request_type=dict)
 
 def test_undelete_bucket_field_headers():
     client = ConfigServiceV2Client(
@@ -3130,10 +3114,8 @@ async def test_undelete_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListViewsRequest({
-  }),
-  {
-  },
+  logging_config.ListViewsRequest,
+  dict,
 ])
 def test_list_views(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -3143,7 +3125,7 @@ def test_list_views(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3190,11 +3172,10 @@ def test_list_views_non_empty_request_with_auto_populated_field():
         client.list_views(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.ListViewsRequest(
+        assert args[0] == logging_config.ListViewsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_views_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3263,11 +3244,7 @@ async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.ListViewsRequest({  }),
-  {  },
-])
-async def test_list_views_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_views_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListViewsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3275,7 +3252,7 @@ async def test_list_views_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3296,6 +3273,11 @@ async def test_list_views_async(request_type, transport: str = 'grpc_asyncio'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_from_dict():
+    await test_list_views_async(request_type=dict)
 
 def test_list_views_field_headers():
     client = ConfigServiceV2Client(
@@ -3637,10 +3619,8 @@ async def test_list_views_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetViewRequest({
-  }),
-  {
-  },
+  logging_config.GetViewRequest,
+  dict,
 ])
 def test_get_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -3650,7 +3630,7 @@ def test_get_view(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3700,10 +3680,9 @@ def test_get_view_non_empty_request_with_auto_populated_field():
         client.get_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetViewRequest(
+        assert args[0] == logging_config.GetViewRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3772,11 +3751,7 @@ async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetViewRequest({  }),
-  {  },
-])
-async def test_get_view_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetViewRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3784,7 +3759,7 @@ async def test_get_view_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3809,6 +3784,11 @@ async def test_get_view_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+
+
+@pytest.mark.asyncio
+async def test_get_view_async_from_dict():
+    await test_get_view_async(request_type=dict)
 
 def test_get_view_field_headers():
     client = ConfigServiceV2Client(
@@ -3874,10 +3854,8 @@ async def test_get_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateViewRequest({
-  }),
-  {
-  },
+  logging_config.CreateViewRequest,
+  dict,
 ])
 def test_create_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -3887,7 +3865,7 @@ def test_create_view(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3938,11 +3916,10 @@ def test_create_view_non_empty_request_with_auto_populated_field():
         client.create_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateViewRequest(
+        assert args[0] == logging_config.CreateViewRequest(
             parent='parent_value',
             view_id='view_id_value',
         )
-        assert args[0] == request_msg
 
 def test_create_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4011,11 +3988,7 @@ async def test_create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateViewRequest({  }),
-  {  },
-])
-async def test_create_view_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateViewRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4023,7 +3996,7 @@ async def test_create_view_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4048,6 +4021,11 @@ async def test_create_view_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+
+
+@pytest.mark.asyncio
+async def test_create_view_async_from_dict():
+    await test_create_view_async(request_type=dict)
 
 def test_create_view_field_headers():
     client = ConfigServiceV2Client(
@@ -4113,10 +4091,8 @@ async def test_create_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateViewRequest({
-  }),
-  {
-  },
+  logging_config.UpdateViewRequest,
+  dict,
 ])
 def test_update_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -4126,7 +4102,7 @@ def test_update_view(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4176,10 +4152,9 @@ def test_update_view_non_empty_request_with_auto_populated_field():
         client.update_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateViewRequest(
+        assert args[0] == logging_config.UpdateViewRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4248,11 +4223,7 @@ async def test_update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateViewRequest({  }),
-  {  },
-])
-async def test_update_view_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateViewRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4260,7 +4231,7 @@ async def test_update_view_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4285,6 +4256,11 @@ async def test_update_view_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+
+
+@pytest.mark.asyncio
+async def test_update_view_async_from_dict():
+    await test_update_view_async(request_type=dict)
 
 def test_update_view_field_headers():
     client = ConfigServiceV2Client(
@@ -4350,10 +4326,8 @@ async def test_update_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteViewRequest({
-  }),
-  {
-  },
+  logging_config.DeleteViewRequest,
+  dict,
 ])
 def test_delete_view(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -4363,7 +4337,7 @@ def test_delete_view(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4406,10 +4380,9 @@ def test_delete_view_non_empty_request_with_auto_populated_field():
         client.delete_view(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.DeleteViewRequest(
+        assert args[0] == logging_config.DeleteViewRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_view_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4478,11 +4451,7 @@ async def test_delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.DeleteViewRequest({  }),
-  {  },
-])
-async def test_delete_view_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteViewRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4490,7 +4459,7 @@ async def test_delete_view_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4508,6 +4477,11 @@ async def test_delete_view_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_view_async_from_dict():
+    await test_delete_view_async(request_type=dict)
 
 def test_delete_view_field_headers():
     client = ConfigServiceV2Client(
@@ -4573,10 +4547,8 @@ async def test_delete_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListSinksRequest({
-  }),
-  {
-  },
+  logging_config.ListSinksRequest,
+  dict,
 ])
 def test_list_sinks(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -4586,7 +4558,7 @@ def test_list_sinks(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4633,11 +4605,10 @@ def test_list_sinks_non_empty_request_with_auto_populated_field():
         client.list_sinks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.ListSinksRequest(
+        assert args[0] == logging_config.ListSinksRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_sinks_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -4706,11 +4677,7 @@ async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.ListSinksRequest({  }),
-  {  },
-])
-async def test_list_sinks_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_sinks_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListSinksRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4718,7 +4685,7 @@ async def test_list_sinks_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4739,6 +4706,11 @@ async def test_list_sinks_async(request_type, transport: str = 'grpc_asyncio'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_sinks_async_from_dict():
+    await test_list_sinks_async(request_type=dict)
 
 def test_list_sinks_field_headers():
     client = ConfigServiceV2Client(
@@ -5080,10 +5052,8 @@ async def test_list_sinks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSinkRequest({
-  }),
-  {
-  },
+  logging_config.GetSinkRequest,
+  dict,
 ])
 def test_get_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -5093,7 +5063,7 @@ def test_get_sink(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5153,10 +5123,9 @@ def test_get_sink_non_empty_request_with_auto_populated_field():
         client.get_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetSinkRequest(
+        assert args[0] == logging_config.GetSinkRequest(
             sink_name='sink_name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5225,11 +5194,7 @@ async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetSinkRequest({  }),
-  {  },
-])
-async def test_get_sink_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5237,7 +5202,7 @@ async def test_get_sink_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5272,6 +5237,11 @@ async def test_get_sink_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
+
+
+@pytest.mark.asyncio
+async def test_get_sink_async_from_dict():
+    await test_get_sink_async(request_type=dict)
 
 def test_get_sink_field_headers():
     client = ConfigServiceV2Client(
@@ -5419,10 +5389,8 @@ async def test_get_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateSinkRequest({
-  }),
-  {
-  },
+  logging_config.CreateSinkRequest,
+  dict,
 ])
 def test_create_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -5432,7 +5400,7 @@ def test_create_sink(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5492,10 +5460,9 @@ def test_create_sink_non_empty_request_with_auto_populated_field():
         client.create_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateSinkRequest(
+        assert args[0] == logging_config.CreateSinkRequest(
             parent='parent_value',
         )
-        assert args[0] == request_msg
 
 def test_create_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5564,11 +5531,7 @@ async def test_create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateSinkRequest({  }),
-  {  },
-])
-async def test_create_sink_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateSinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5576,7 +5539,7 @@ async def test_create_sink_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5611,6 +5574,11 @@ async def test_create_sink_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
+
+
+@pytest.mark.asyncio
+async def test_create_sink_async_from_dict():
+    await test_create_sink_async(request_type=dict)
 
 def test_create_sink_field_headers():
     client = ConfigServiceV2Client(
@@ -5768,10 +5736,8 @@ async def test_create_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSinkRequest({
-  }),
-  {
-  },
+  logging_config.UpdateSinkRequest,
+  dict,
 ])
 def test_update_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -5781,7 +5747,7 @@ def test_update_sink(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5841,10 +5807,9 @@ def test_update_sink_non_empty_request_with_auto_populated_field():
         client.update_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateSinkRequest(
+        assert args[0] == logging_config.UpdateSinkRequest(
             sink_name='sink_name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5913,11 +5878,7 @@ async def test_update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSinkRequest({  }),
-  {  },
-])
-async def test_update_sink_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5925,7 +5886,7 @@ async def test_update_sink_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5960,6 +5921,11 @@ async def test_update_sink_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
     assert response.writer_identity == 'writer_identity_value'
     assert response.include_children is True
+
+
+@pytest.mark.asyncio
+async def test_update_sink_async_from_dict():
+    await test_update_sink_async(request_type=dict)
 
 def test_update_sink_field_headers():
     client = ConfigServiceV2Client(
@@ -6127,10 +6093,8 @@ async def test_update_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteSinkRequest({
-  }),
-  {
-  },
+  logging_config.DeleteSinkRequest,
+  dict,
 ])
 def test_delete_sink(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -6140,7 +6104,7 @@ def test_delete_sink(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6183,10 +6147,9 @@ def test_delete_sink_non_empty_request_with_auto_populated_field():
         client.delete_sink(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.DeleteSinkRequest(
+        assert args[0] == logging_config.DeleteSinkRequest(
             sink_name='sink_name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_sink_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6255,11 +6218,7 @@ async def test_delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.DeleteSinkRequest({  }),
-  {  },
-])
-async def test_delete_sink_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteSinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6267,7 +6226,7 @@ async def test_delete_sink_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6285,6 +6244,11 @@ async def test_delete_sink_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_sink_async_from_dict():
+    await test_delete_sink_async(request_type=dict)
 
 def test_delete_sink_field_headers():
     client = ConfigServiceV2Client(
@@ -6432,10 +6396,8 @@ async def test_delete_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateLinkRequest({
-  }),
-  {
-  },
+  logging_config.CreateLinkRequest,
+  dict,
 ])
 def test_create_link(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -6445,7 +6407,7 @@ def test_create_link(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6489,11 +6451,10 @@ def test_create_link_non_empty_request_with_auto_populated_field():
         client.create_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateLinkRequest(
+        assert args[0] == logging_config.CreateLinkRequest(
             parent='parent_value',
             link_id='link_id_value',
         )
-        assert args[0] == request_msg
 
 def test_create_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6572,11 +6533,7 @@ async def test_create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateLinkRequest({  }),
-  {  },
-])
-async def test_create_link_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateLinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6584,7 +6541,7 @@ async def test_create_link_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6604,6 +6561,11 @@ async def test_create_link_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_link_async_from_dict():
+    await test_create_link_async(request_type=dict)
 
 def test_create_link_field_headers():
     client = ConfigServiceV2Client(
@@ -6773,10 +6735,8 @@ async def test_create_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteLinkRequest({
-  }),
-  {
-  },
+  logging_config.DeleteLinkRequest,
+  dict,
 ])
 def test_delete_link(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -6786,7 +6746,7 @@ def test_delete_link(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6829,10 +6789,9 @@ def test_delete_link_non_empty_request_with_auto_populated_field():
         client.delete_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.DeleteLinkRequest(
+        assert args[0] == logging_config.DeleteLinkRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6911,11 +6870,7 @@ async def test_delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_a
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.DeleteLinkRequest({  }),
-  {  },
-])
-async def test_delete_link_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteLinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6923,7 +6878,7 @@ async def test_delete_link_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6943,6 +6898,11 @@ async def test_delete_link_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_link_async_from_dict():
+    await test_delete_link_async(request_type=dict)
 
 def test_delete_link_field_headers():
     client = ConfigServiceV2Client(
@@ -7092,10 +7052,8 @@ async def test_delete_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListLinksRequest({
-  }),
-  {
-  },
+  logging_config.ListLinksRequest,
+  dict,
 ])
 def test_list_links(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -7105,7 +7063,7 @@ def test_list_links(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7152,11 +7110,10 @@ def test_list_links_non_empty_request_with_auto_populated_field():
         client.list_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.ListLinksRequest(
+        assert args[0] == logging_config.ListLinksRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_links_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7225,11 +7182,7 @@ async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.ListLinksRequest({  }),
-  {  },
-])
-async def test_list_links_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_links_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListLinksRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7237,7 +7190,7 @@ async def test_list_links_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7258,6 +7211,11 @@ async def test_list_links_async(request_type, transport: str = 'grpc_asyncio'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinksAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_links_async_from_dict():
+    await test_list_links_async(request_type=dict)
 
 def test_list_links_field_headers():
     client = ConfigServiceV2Client(
@@ -7599,10 +7557,8 @@ async def test_list_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetLinkRequest({
-  }),
-  {
-  },
+  logging_config.GetLinkRequest,
+  dict,
 ])
 def test_get_link(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -7612,7 +7568,7 @@ def test_get_link(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7662,10 +7618,9 @@ def test_get_link_non_empty_request_with_auto_populated_field():
         client.get_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetLinkRequest(
+        assert args[0] == logging_config.GetLinkRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_link_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7734,11 +7689,7 @@ async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetLinkRequest({  }),
-  {  },
-])
-async def test_get_link_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_link_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetLinkRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7746,7 +7697,7 @@ async def test_get_link_async(request_type, transport: str = 'grpc_asyncio'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7771,6 +7722,11 @@ async def test_get_link_async(request_type, transport: str = 'grpc_asyncio'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_get_link_async_from_dict():
+    await test_get_link_async(request_type=dict)
 
 def test_get_link_field_headers():
     client = ConfigServiceV2Client(
@@ -7918,10 +7874,8 @@ async def test_get_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListExclusionsRequest({
-  }),
-  {
-  },
+  logging_config.ListExclusionsRequest,
+  dict,
 ])
 def test_list_exclusions(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -7931,7 +7885,7 @@ def test_list_exclusions(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7978,11 +7932,10 @@ def test_list_exclusions_non_empty_request_with_auto_populated_field():
         client.list_exclusions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.ListExclusionsRequest(
+        assert args[0] == logging_config.ListExclusionsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_exclusions_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8051,11 +8004,7 @@ async def test_list_exclusions_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.ListExclusionsRequest({  }),
-  {  },
-])
-async def test_list_exclusions_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_exclusions_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListExclusionsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8063,7 +8012,7 @@ async def test_list_exclusions_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8084,6 +8033,11 @@ async def test_list_exclusions_async(request_type, transport: str = 'grpc_asynci
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_exclusions_async_from_dict():
+    await test_list_exclusions_async(request_type=dict)
 
 def test_list_exclusions_field_headers():
     client = ConfigServiceV2Client(
@@ -8425,10 +8379,8 @@ async def test_list_exclusions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetExclusionRequest({
-  }),
-  {
-  },
+  logging_config.GetExclusionRequest,
+  dict,
 ])
 def test_get_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -8438,7 +8390,7 @@ def test_get_exclusion(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8490,10 +8442,9 @@ def test_get_exclusion_non_empty_request_with_auto_populated_field():
         client.get_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetExclusionRequest(
+        assert args[0] == logging_config.GetExclusionRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8562,11 +8513,7 @@ async def test_get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grpc
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetExclusionRequest({  }),
-  {  },
-])
-async def test_get_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetExclusionRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8574,7 +8521,7 @@ async def test_get_exclusion_async(request_type, transport: str = 'grpc_asyncio'
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8601,6 +8548,11 @@ async def test_get_exclusion_async(request_type, transport: str = 'grpc_asyncio'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
+
+
+@pytest.mark.asyncio
+async def test_get_exclusion_async_from_dict():
+    await test_get_exclusion_async(request_type=dict)
 
 def test_get_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -8748,10 +8700,8 @@ async def test_get_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateExclusionRequest({
-  }),
-  {
-  },
+  logging_config.CreateExclusionRequest,
+  dict,
 ])
 def test_create_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -8761,7 +8711,7 @@ def test_create_exclusion(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8813,10 +8763,9 @@ def test_create_exclusion_non_empty_request_with_auto_populated_field():
         client.create_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CreateExclusionRequest(
+        assert args[0] == logging_config.CreateExclusionRequest(
             parent='parent_value',
         )
-        assert args[0] == request_msg
 
 def test_create_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8885,11 +8834,7 @@ async def test_create_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CreateExclusionRequest({  }),
-  {  },
-])
-async def test_create_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateExclusionRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8897,7 +8842,7 @@ async def test_create_exclusion_async(request_type, transport: str = 'grpc_async
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8924,6 +8869,11 @@ async def test_create_exclusion_async(request_type, transport: str = 'grpc_async
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
+
+
+@pytest.mark.asyncio
+async def test_create_exclusion_async_from_dict():
+    await test_create_exclusion_async(request_type=dict)
 
 def test_create_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -9081,10 +9031,8 @@ async def test_create_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateExclusionRequest({
-  }),
-  {
-  },
+  logging_config.UpdateExclusionRequest,
+  dict,
 ])
 def test_update_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -9094,7 +9042,7 @@ def test_update_exclusion(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9146,10 +9094,9 @@ def test_update_exclusion_non_empty_request_with_auto_populated_field():
         client.update_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateExclusionRequest(
+        assert args[0] == logging_config.UpdateExclusionRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9218,11 +9165,7 @@ async def test_update_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateExclusionRequest({  }),
-  {  },
-])
-async def test_update_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateExclusionRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9230,7 +9173,7 @@ async def test_update_exclusion_async(request_type, transport: str = 'grpc_async
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9257,6 +9200,11 @@ async def test_update_exclusion_async(request_type, transport: str = 'grpc_async
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
     assert response.disabled is True
+
+
+@pytest.mark.asyncio
+async def test_update_exclusion_async_from_dict():
+    await test_update_exclusion_async(request_type=dict)
 
 def test_update_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -9424,10 +9372,8 @@ async def test_update_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteExclusionRequest({
-  }),
-  {
-  },
+  logging_config.DeleteExclusionRequest,
+  dict,
 ])
 def test_delete_exclusion(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -9437,7 +9383,7 @@ def test_delete_exclusion(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9480,10 +9426,9 @@ def test_delete_exclusion_non_empty_request_with_auto_populated_field():
         client.delete_exclusion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.DeleteExclusionRequest(
+        assert args[0] == logging_config.DeleteExclusionRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_exclusion_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9552,11 +9497,7 @@ async def test_delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "g
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.DeleteExclusionRequest({  }),
-  {  },
-])
-async def test_delete_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteExclusionRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9564,7 +9505,7 @@ async def test_delete_exclusion_async(request_type, transport: str = 'grpc_async
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9582,6 +9523,11 @@ async def test_delete_exclusion_async(request_type, transport: str = 'grpc_async
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_exclusion_async_from_dict():
+    await test_delete_exclusion_async(request_type=dict)
 
 def test_delete_exclusion_field_headers():
     client = ConfigServiceV2Client(
@@ -9729,10 +9675,8 @@ async def test_delete_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetCmekSettingsRequest({
-  }),
-  {
-  },
+  logging_config.GetCmekSettingsRequest,
+  dict,
 ])
 def test_get_cmek_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -9742,7 +9686,7 @@ def test_get_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9794,10 +9738,9 @@ def test_get_cmek_settings_non_empty_request_with_auto_populated_field():
         client.get_cmek_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetCmekSettingsRequest(
+        assert args[0] == logging_config.GetCmekSettingsRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -9866,11 +9809,7 @@ async def test_get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetCmekSettingsRequest({  }),
-  {  },
-])
-async def test_get_cmek_settings_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetCmekSettingsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9878,7 +9817,7 @@ async def test_get_cmek_settings_async(request_type, transport: str = 'grpc_asyn
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9905,6 +9844,11 @@ async def test_get_cmek_settings_async(request_type, transport: str = 'grpc_asyn
     assert response.kms_key_name == 'kms_key_name_value'
     assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
+
+
+@pytest.mark.asyncio
+async def test_get_cmek_settings_async_from_dict():
+    await test_get_cmek_settings_async(request_type=dict)
 
 def test_get_cmek_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -9970,10 +9914,8 @@ async def test_get_cmek_settings_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateCmekSettingsRequest({
-  }),
-  {
-  },
+  logging_config.UpdateCmekSettingsRequest,
+  dict,
 ])
 def test_update_cmek_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -9983,7 +9925,7 @@ def test_update_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10035,10 +9977,9 @@ def test_update_cmek_settings_non_empty_request_with_auto_populated_field():
         client.update_cmek_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateCmekSettingsRequest(
+        assert args[0] == logging_config.UpdateCmekSettingsRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_cmek_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10107,11 +10048,7 @@ async def test_update_cmek_settings_async_use_cached_wrapped_rpc(transport: str 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateCmekSettingsRequest({  }),
-  {  },
-])
-async def test_update_cmek_settings_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateCmekSettingsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10119,7 +10056,7 @@ async def test_update_cmek_settings_async(request_type, transport: str = 'grpc_a
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10146,6 +10083,11 @@ async def test_update_cmek_settings_async(request_type, transport: str = 'grpc_a
     assert response.kms_key_name == 'kms_key_name_value'
     assert response.kms_key_version_name == 'kms_key_version_name_value'
     assert response.service_account_id == 'service_account_id_value'
+
+
+@pytest.mark.asyncio
+async def test_update_cmek_settings_async_from_dict():
+    await test_update_cmek_settings_async(request_type=dict)
 
 def test_update_cmek_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -10211,10 +10153,8 @@ async def test_update_cmek_settings_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSettingsRequest({
-  }),
-  {
-  },
+  logging_config.GetSettingsRequest,
+  dict,
 ])
 def test_get_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -10224,7 +10164,7 @@ def test_get_settings(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10278,10 +10218,9 @@ def test_get_settings_non_empty_request_with_auto_populated_field():
         client.get_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.GetSettingsRequest(
+        assert args[0] == logging_config.GetSettingsRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10350,11 +10289,7 @@ async def test_get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.GetSettingsRequest({  }),
-  {  },
-])
-async def test_get_settings_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSettingsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10362,7 +10297,7 @@ async def test_get_settings_async(request_type, transport: str = 'grpc_asyncio')
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10391,6 +10326,11 @@ async def test_get_settings_async(request_type, transport: str = 'grpc_asyncio')
     assert response.kms_service_account_id == 'kms_service_account_id_value'
     assert response.storage_location == 'storage_location_value'
     assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async_from_dict():
+    await test_get_settings_async(request_type=dict)
 
 def test_get_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -10538,10 +10478,8 @@ async def test_get_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSettingsRequest({
-  }),
-  {
-  },
+  logging_config.UpdateSettingsRequest,
+  dict,
 ])
 def test_update_settings(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -10551,7 +10489,7 @@ def test_update_settings(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10605,10 +10543,9 @@ def test_update_settings_non_empty_request_with_auto_populated_field():
         client.update_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.UpdateSettingsRequest(
+        assert args[0] == logging_config.UpdateSettingsRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_update_settings_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -10677,11 +10614,7 @@ async def test_update_settings_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSettingsRequest({  }),
-  {  },
-])
-async def test_update_settings_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSettingsRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10689,7 +10622,7 @@ async def test_update_settings_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10718,6 +10651,11 @@ async def test_update_settings_async(request_type, transport: str = 'grpc_asynci
     assert response.kms_service_account_id == 'kms_service_account_id_value'
     assert response.storage_location == 'storage_location_value'
     assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async_from_dict():
+    await test_update_settings_async(request_type=dict)
 
 def test_update_settings_field_headers():
     client = ConfigServiceV2Client(
@@ -10875,10 +10813,8 @@ async def test_update_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CopyLogEntriesRequest({
-  }),
-  {
-  },
+  logging_config.CopyLogEntriesRequest,
+  dict,
 ])
 def test_copy_log_entries(request_type, transport: str = 'grpc'):
     client = ConfigServiceV2Client(
@@ -10888,7 +10824,7 @@ def test_copy_log_entries(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10933,12 +10869,11 @@ def test_copy_log_entries_non_empty_request_with_auto_populated_field():
         client.copy_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = logging_config.CopyLogEntriesRequest(
+        assert args[0] == logging_config.CopyLogEntriesRequest(
             name='name_value',
             filter='filter_value',
             destination='destination_value',
         )
-        assert args[0] == request_msg
 
 def test_copy_log_entries_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -11017,11 +10952,7 @@ async def test_copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  logging_config.CopyLogEntriesRequest({  }),
-  {  },
-])
-async def test_copy_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_copy_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging_config.CopyLogEntriesRequest):
     client = ConfigServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11029,7 +10960,7 @@ async def test_copy_log_entries_async(request_type, transport: str = 'grpc_async
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11049,6 +10980,11 @@ async def test_copy_log_entries_async(request_type, transport: str = 'grpc_async
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_copy_log_entries_async_from_dict():
+    await test_copy_log_entries_async(request_type=dict)
 
 
 def test_credentials_transport_error():
@@ -11171,6 +11107,7 @@ def test_list_buckets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListBucketsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11193,6 +11130,7 @@ def test_get_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11215,6 +11153,7 @@ def test_create_bucket_async_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11237,6 +11176,7 @@ def test_update_bucket_async_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11259,6 +11199,7 @@ def test_create_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11281,6 +11222,7 @@ def test_update_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11303,6 +11245,7 @@ def test_delete_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11325,6 +11268,7 @@ def test_undelete_bucket_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UndeleteBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11347,6 +11291,7 @@ def test_list_views_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListViewsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11369,6 +11314,7 @@ def test_get_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -11391,6 +11337,7 @@ def test_create_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -11413,6 +11360,7 @@ def test_update_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -11435,6 +11383,7 @@ def test_delete_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -11457,6 +11406,7 @@ def test_list_sinks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListSinksRequest()
+
         assert args[0] == request_msg
 
 
@@ -11479,6 +11429,7 @@ def test_get_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11501,6 +11452,7 @@ def test_create_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11523,6 +11475,7 @@ def test_update_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11545,6 +11498,7 @@ def test_delete_sink_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11567,6 +11521,7 @@ def test_create_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11589,6 +11544,7 @@ def test_delete_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11611,6 +11567,7 @@ def test_list_links_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListLinksRequest()
+
         assert args[0] == request_msg
 
 
@@ -11633,6 +11590,7 @@ def test_get_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -11655,6 +11613,7 @@ def test_list_exclusions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListExclusionsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11677,6 +11636,7 @@ def test_get_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -11699,6 +11659,7 @@ def test_create_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -11721,6 +11682,7 @@ def test_update_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -11743,6 +11705,7 @@ def test_delete_exclusion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -11765,6 +11728,7 @@ def test_get_cmek_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetCmekSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11787,6 +11751,7 @@ def test_update_cmek_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateCmekSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11809,6 +11774,7 @@ def test_get_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11831,6 +11797,7 @@ def test_update_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11853,6 +11820,7 @@ def test_copy_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CopyLogEntriesRequest()
+
         assert args[0] == request_msg
 
 
@@ -11894,6 +11862,7 @@ async def test_list_buckets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListBucketsRequest()
+
         assert args[0] == request_msg
 
 
@@ -11926,6 +11895,7 @@ async def test_get_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11952,6 +11922,7 @@ async def test_create_bucket_async_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -11978,6 +11949,7 @@ async def test_update_bucket_async_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -12010,6 +11982,7 @@ async def test_create_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -12042,6 +12015,7 @@ async def test_update_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -12066,6 +12040,7 @@ async def test_delete_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -12090,6 +12065,7 @@ async def test_undelete_bucket_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UndeleteBucketRequest()
+
         assert args[0] == request_msg
 
 
@@ -12116,6 +12092,7 @@ async def test_list_views_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListViewsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12144,6 +12121,7 @@ async def test_get_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -12172,6 +12150,7 @@ async def test_create_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -12200,6 +12179,7 @@ async def test_update_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -12224,6 +12204,7 @@ async def test_delete_view_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteViewRequest()
+
         assert args[0] == request_msg
 
 
@@ -12250,6 +12231,7 @@ async def test_list_sinks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListSinksRequest()
+
         assert args[0] == request_msg
 
 
@@ -12283,6 +12265,7 @@ async def test_get_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12316,6 +12299,7 @@ async def test_create_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12349,6 +12333,7 @@ async def test_update_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12373,6 +12358,7 @@ async def test_delete_sink_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteSinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12399,6 +12385,7 @@ async def test_create_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12425,6 +12412,7 @@ async def test_delete_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12451,6 +12439,7 @@ async def test_list_links_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListLinksRequest()
+
         assert args[0] == request_msg
 
 
@@ -12479,6 +12468,7 @@ async def test_get_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetLinkRequest()
+
         assert args[0] == request_msg
 
 
@@ -12505,6 +12495,7 @@ async def test_list_exclusions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.ListExclusionsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12534,6 +12525,7 @@ async def test_get_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -12563,6 +12555,7 @@ async def test_create_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CreateExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -12592,6 +12585,7 @@ async def test_update_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -12616,6 +12610,7 @@ async def test_delete_exclusion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.DeleteExclusionRequest()
+
         assert args[0] == request_msg
 
 
@@ -12645,6 +12640,7 @@ async def test_get_cmek_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetCmekSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12674,6 +12670,7 @@ async def test_update_cmek_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateCmekSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12704,6 +12701,7 @@ async def test_get_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.GetSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12734,6 +12732,7 @@ async def test_update_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.UpdateSettingsRequest()
+
         assert args[0] == request_msg
 
 
@@ -12760,6 +12759,7 @@ async def test_copy_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_config.CopyLogEntriesRequest()
+
         assert args[0] == request_msg
 
 

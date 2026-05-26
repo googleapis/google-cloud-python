@@ -22,7 +22,6 @@ from gapic.utils.code import empty
 from gapic.utils.code import nth
 from gapic.utils.code import partition
 from gapic.utils.code import make_private
-from gapic.utils.constants import UUID4_RE
 from gapic.utils.doc import doc
 from gapic.utils.filename import to_valid_filename
 from gapic.utils.filename import to_valid_module_name
@@ -53,6 +52,5 @@ __all__ = (
     "to_camel_case",
     "to_valid_filename",
     "to_valid_module_name",
-    "UUID4_RE",
     "wrap",
 )

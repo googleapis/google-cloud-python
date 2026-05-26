@@ -973,10 +973,8 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({
-  }),
-  {
-  },
+  cloud_redis.ListInstancesRequest,
+  dict,
 ])
 def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -986,7 +984,7 @@ def test_list_instances(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1035,11 +1033,10 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = cloud_redis.ListInstancesRequest(
+        assert args[0] == cloud_redis.ListInstancesRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
-        assert args[0] == request_msg
 
 def test_list_instances_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1108,11 +1105,7 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({  }),
-  {  },
-])
-async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1120,7 +1113,7 @@ async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1143,6 +1136,11 @@ async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
     assert response.unreachable == ['unreachable_value']
+
+
+@pytest.mark.asyncio
+async def test_list_instances_async_from_dict():
+    await test_list_instances_async(request_type=dict)
 
 def test_list_instances_field_headers():
     client = CloudRedisClient(
@@ -1484,10 +1482,8 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.GetInstanceRequest,
+  dict,
 ])
 def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1497,7 +1493,7 @@ def test_get_instance(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1595,10 +1591,9 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = cloud_redis.GetInstanceRequest(
+        assert args[0] == cloud_redis.GetInstanceRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_get_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1667,11 +1662,7 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({  }),
-  {  },
-])
-async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1679,7 +1670,7 @@ async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio')
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1752,6 +1743,11 @@ async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio')
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
     assert response.maintenance_version == 'maintenance_version_value'
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+
+
+@pytest.mark.asyncio
+async def test_get_instance_async_from_dict():
+    await test_get_instance_async(request_type=dict)
 
 def test_get_instance_field_headers():
     client = CloudRedisClient(
@@ -1899,10 +1895,8 @@ async def test_get_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.CreateInstanceRequest,
+  dict,
 ])
 def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1912,7 +1906,7 @@ def test_create_instance(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1956,11 +1950,10 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = cloud_redis.CreateInstanceRequest(
+        assert args[0] == cloud_redis.CreateInstanceRequest(
             parent='parent_value',
             instance_id='instance_id_value',
         )
-        assert args[0] == request_msg
 
 def test_create_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2039,11 +2032,7 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({  }),
-  {  },
-])
-async def test_create_instance_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2051,7 +2040,7 @@ async def test_create_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2071,6 +2060,11 @@ async def test_create_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_instance_async_from_dict():
+    await test_create_instance_async(request_type=dict)
 
 def test_create_instance_field_headers():
     client = CloudRedisClient(
@@ -2240,10 +2234,8 @@ async def test_create_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.UpdateInstanceRequest,
+  dict,
 ])
 def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2253,7 +2245,7 @@ def test_update_instance(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2295,9 +2287,8 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = cloud_redis.UpdateInstanceRequest(
+        assert args[0] == cloud_redis.UpdateInstanceRequest(
         )
-        assert args[0] == request_msg
 
 def test_update_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2376,11 +2367,7 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({  }),
-  {  },
-])
-async def test_update_instance_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2388,7 +2375,7 @@ async def test_update_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2408,6 +2395,11 @@ async def test_update_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_instance_async_from_dict():
+    await test_update_instance_async(request_type=dict)
 
 def test_update_instance_field_headers():
     client = CloudRedisClient(
@@ -2567,10 +2559,8 @@ async def test_update_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.DeleteInstanceRequest,
+  dict,
 ])
 def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2580,7 +2570,7 @@ def test_delete_instance(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2623,10 +2613,9 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = cloud_redis.DeleteInstanceRequest(
+        assert args[0] == cloud_redis.DeleteInstanceRequest(
             name='name_value',
         )
-        assert args[0] == request_msg
 
 def test_delete_instance_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2705,11 +2694,7 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({  }),
-  {  },
-])
-async def test_delete_instance_async(request_type, transport: str = 'grpc_asyncio'):
+async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2717,7 +2702,7 @@ async def test_delete_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2737,6 +2722,11 @@ async def test_delete_instance_async(request_type, transport: str = 'grpc_asynci
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_async_from_dict():
+    await test_delete_instance_async(request_type=dict)
 
 def test_delete_instance_field_headers():
     client = CloudRedisClient(
@@ -3915,6 +3905,7 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
+
         assert args[0] == request_msg
 
 
@@ -3937,6 +3928,7 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -3959,6 +3951,7 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -3981,6 +3974,7 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -4003,6 +3997,7 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -4045,6 +4040,7 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
+
         assert args[0] == request_msg
 
 
@@ -4097,6 +4093,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -4123,6 +4120,7 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -4149,6 +4147,7 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -4175,6 +4174,7 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -5278,6 +5278,7 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
+
         assert args[0] == request_msg
 
 
@@ -5299,6 +5300,7 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -5320,6 +5322,7 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -5341,6 +5344,7 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -5362,6 +5366,7 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -6545,6 +6550,7 @@ async def test_list_instances_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.ListInstancesRequest()
+
         assert args[0] == request_msg
 
 
@@ -6569,6 +6575,7 @@ async def test_get_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.GetInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -6593,6 +6600,7 @@ async def test_create_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.CreateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -6617,6 +6625,7 @@ async def test_update_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.UpdateInstanceRequest()
+
         assert args[0] == request_msg
 
 
@@ -6641,6 +6650,7 @@ async def test_delete_instance_empty_call_rest_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis.DeleteInstanceRequest()
+
         assert args[0] == request_msg
 
 
