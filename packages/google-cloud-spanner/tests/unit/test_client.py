@@ -944,3 +944,46 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(cm.output), 1)
         log_output = cm.output[0]
         self.assertIn(f"\n  Host: {experimental_host}", log_output)
+
+    def test_constructor_w_instance_type_omni(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        creds = build_scoped_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+        )
+        self.assertEqual(client.project, "default")
+        self.assertEqual(client.instance_type, InstanceType.OMNI)
+        self.assertEqual(client._host, "omni-host:15000")
+        self.assertIsInstance(client._credentials, AnonymousCredentials)
+
+    def test_constructor_w_instance_type_omni_no_host_raises_value_error(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        creds = build_scoped_credentials()
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                instance_type=InstanceType.OMNI,
+            )
+        self.assertIn(
+            "Host must be set for connecting to Spanner Omni instances",
+            str(ctx.exception),
+        )
+
+    def test_constructor_w_invalid_instance_type_raises_value_error(self):
+        creds = build_scoped_credentials()
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                instance_type="invalid-type",
+            )
+        self.assertIn(
+            "instance_type must be one of 'cloud', 'omni', or 'emulator'",
+            str(ctx.exception),
+        )

@@ -85,7 +85,11 @@ class DatabaseSessionsManager(object):
         session = (
             await self._get_multiplexed_session()
             if self._use_multiplexed(transaction_type)
-            or self._database._experimental_host is not None
+            or (
+                self._database._instance
+                and getattr(self._database._instance._client, "instance_type", None)
+                == "omni"
+            )
             else await CrossSync.run_if_async(self._pool.get)
         )
         add_span_event(

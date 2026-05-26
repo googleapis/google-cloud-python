@@ -882,6 +882,49 @@ class TestConnection(unittest.TestCase):
         )
         self.assertTrue(connection.database is None)
 
+    def test_connect_w_instance_type_omni(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.client import InstanceType
+
+        connection = connect(
+            "test-instance",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+        )
+        self.assertEqual(connection.spanner_client.project, "default")
+        self.assertEqual(connection.spanner_client.instance_type, InstanceType.OMNI)
+        self.assertEqual(connection.spanner_client._host, "omni-host:15000")
+
+    def test_connect_w_instance_type_omni_no_host_raises_error(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.client import InstanceType
+
+        with self.assertRaises(ValueError) as ctx:
+            connect(
+                "test-instance",
+                credentials=AnonymousCredentials(),
+                instance_type=InstanceType.OMNI,
+            )
+        self.assertIn(
+            "Host must be set for connecting to Spanner Omni instances",
+            str(ctx.exception),
+        )
+
+    def test_connect_w_invalid_instance_type_raises_error(self):
+        from google.cloud.spanner_dbapi import connect
+
+        with self.assertRaises(ValueError) as ctx:
+            connect(
+                "test-instance",
+                credentials=AnonymousCredentials(),
+                instance_type="invalid-type",
+            )
+        self.assertIn(
+            "instance_type must be one of 'cloud', 'omni', or 'emulator'",
+            str(ctx.exception),
+        )
+
 
 def exit_ctx_func(self, exc_type, exc_value, traceback):
     """Context __exit__ method mock."""
