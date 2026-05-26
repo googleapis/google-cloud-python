@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.54.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.53.0...google-auth-v2.54.0) (2026-05-26)
+
+
+### Bug Fixes
+
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+* Rename the 'seed' argument for setting an initial regional access boundary for clarity (#17186) ([e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4](https://github.com/googleapis/google-cloud-python/commit/e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4))
+
 ## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.52.0...google-auth-v2.53.0) (2026-05-15)
 
 

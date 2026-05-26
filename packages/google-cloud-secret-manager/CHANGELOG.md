@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-secret-manager/#history
 
+## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.28.0...google-cloud-secret-manager-v2.29.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.27.0...google-cloud-secret-manager-v2.28.0) (2026-05-06)
 
 ## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.26.0...google-cloud-secret-manager-v2.27.0) (2026-03-26)

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-assured-workloads/#history
 
+## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v2.3.0...google-cloud-assured-workloads-v2.4.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-a packages (#17089) ([39c988267529419b03f808d7662ec521258571b4](https://github.com/googleapis/google-cloud-python/commit/39c988267529419b03f808d7662ec521258571b4))
+
 ## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v2.2.0...google-cloud-assured-workloads-v2.3.0) (2026-03-26)
 
 

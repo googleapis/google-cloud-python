@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.39.0...google-cloud-speech-v2.40.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.38.0...google-cloud-speech-v2.39.0) (2026-05-06)
 
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.37.0...google-cloud-speech-v2.38.0) (2026-03-26)

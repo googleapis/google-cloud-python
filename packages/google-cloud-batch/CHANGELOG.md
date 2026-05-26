@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-batch/#history
 
+## [0.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.21.0...google-cloud-batch-v0.22.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [0.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.20.0...google-cloud-batch-v0.21.0) (2026-03-26)
 
 

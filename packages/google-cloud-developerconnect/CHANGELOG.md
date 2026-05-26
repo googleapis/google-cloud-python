@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-developerconnect/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.5.0...google-cloud-developerconnect-v0.6.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.4.0...google-cloud-developerconnect-v0.5.0) (2026-03-26)
 
 

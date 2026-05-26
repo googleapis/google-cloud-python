@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.22.0...grafeas-v1.23.0) (2026-05-26)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.21.0...grafeas-v1.22.0) (2026-03-26)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-service-usage/#history
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.16.0...google-cloud-service-usage-v1.17.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.15.0...google-cloud-service-usage-v1.16.0) (2026-03-26)
 
 

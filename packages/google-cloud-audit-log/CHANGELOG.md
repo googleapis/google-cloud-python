@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-audit-log/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.5.0...google-cloud-audit-log-v0.6.0) (2026-05-26)
+
+
+### Bug Fixes
+
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.4.0...google-cloud-audit-log-v0.5.0) (2026-03-26)
 
 

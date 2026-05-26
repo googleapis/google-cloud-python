@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-api-gateway/#history
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.15.0...google-cloud-api-gateway-v1.16.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-a packages (#17089) ([39c988267529419b03f808d7662ec521258571b4](https://github.com/googleapis/google-cloud-python/commit/39c988267529419b03f808d7662ec521258571b4))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.14.0...google-cloud-api-gateway-v1.15.0) (2026-03-26)
 
 

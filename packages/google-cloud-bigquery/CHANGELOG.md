@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.41.0...google-cloud-bigquery-v3.42.0) (2026-05-26)
+
+
+### Documentation
+
+* fix FAQ grammar in httplib2 example</li> <li><a href="https://github.com/psf/requests/commit/774a0b837a194ee885d4fdd9ca947900cc3daf71"><code>774a0b8</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* same block as other sections</li> <li><a href="https://github.com/psf/requests/commit/9c72a41bec8597f948c9d8caa5dc3f12273b3303"><code>9c72a41</code></a> Bump github/codeql-action from 4.33.0 to 4.34.1</li> <li><a href="https://github.com/psf/requests/commit/ebf71906798ec82f34e07d3168f8b8aecaf8a3be"><code>ebf7190</code></a> Bump github/codeql-action from 4.32.0 to 4.33.0</li> <li><a href="https://github.com/psf/requests/commit/0e4ae38f0c93d4f92a96c774bd52c069d12a4798"><code>0e4ae38</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* exclude Response.is_permanent_redirect from API docs (<a href="https://redirect.github.com/psf/requests/issues/7244">#7244</a>)</li> <li><a href="https://github.com/psf/requests/commit/d568f47278492e630cc990a259047c67991d007a"><code>d568f47</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* clarify Quickstart POST example (<a href="https://redirect.github.com/psf/requests/issues/6960">#6960</a>)</li> <li>Additional commits viewable in <a href="https://github.com/psf/requests/compare/v2.21.0...v2.33.0">compare view</a></li> </ul> </details> <br /> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+
+
+### Features
+
+* drop Python 3.7-3.9 support and regenerate (#17187) ([494abcdfc2bc4f28be9477db86fde149a3af6b66](https://github.com/googleapis/google-cloud-python/commit/494abcdfc2bc4f28be9477db86fde149a3af6b66))
+
+
+### Bug Fixes
+
+* bump requests from 2.21.0 to 2.33.0 in /packages/google-cloud-bigquery (#17192) ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* bump tqdm from 4.23.4 to 4.66.3 in /packages/google-cloud-bigquery (#17194) ([8cda5fe1c6aec69af209851c778183e1bb673f07](https://github.com/googleapis/google-cloud-python/commit/8cda5fe1c6aec69af209851c778183e1bb673f07))
+* bump opentelemetry-instrumentation from 0.37b0 to 0.41b0 in /packages/google-cloud-bigquery (#17195) ([f530a2c64fb468c611cfe23c833efdb0b9ea45e1](https://github.com/googleapis/google-cloud-python/commit/f530a2c64fb468c611cfe23c833efdb0b9ea45e1))
+* allow multi-part dataset IDs to support BigLake tables (#17137) ([f93911c0a7f163a8d0374f96cbb73cce75e8dc42](https://github.com/googleapis/google-cloud-python/commit/f93911c0a7f163a8d0374f96cbb73cce75e8dc42))
+
 ## [3.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.40.1...google-cloud-bigquery-v3.41.0) (2026-03-26)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-cloudcontrolspartner/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.5.0...google-cloud-cloudcontrolspartner-v0.6.0) (2026-05-26)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.4.0...google-cloud-cloudcontrolspartner-v0.5.0) (2026-03-26)
 
 
