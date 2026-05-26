@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
 from typing import List, Optional, Tuple
 
 from google.api_core.bidi_async import AsyncBidiRpc
@@ -137,20 +136,14 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             # update persisted size
             self.persisted_size = response.metadata.size
             self.object_metadata = response.metadata
-            # Since full object checksum validation is only required for finalized objects,
-            # check finalize_time (which is DatetimeWithNanoseconds/datetime in production, or mocked in tests).
-            finalize_time = getattr(response.metadata, "finalize_time", None)
-            if finalize_time:
-                is_finalized_val = False
-                if isinstance(finalize_time, datetime.datetime):
-                    is_finalized_val = True
-                elif hasattr(finalize_time, "seconds") and finalize_time.seconds > 0:
-                    is_finalized_val = True
-
-                if is_finalized_val:
-                    self.is_finalized = True
-                    if hasattr(response.metadata, "checksums") and response.metadata.checksums:
-                        self.full_obj_server_crc32c = response.metadata.checksums.crc32c
+            if (
+                hasattr(response.metadata, "finalize_time")
+                and response.metadata.finalize_time
+                and response.metadata.finalize_time.seconds > 0
+            ):
+                self.is_finalized = True
+                if hasattr(response.metadata, "checksums") and response.metadata.checksums:
+                    self.full_obj_server_crc32c = response.metadata.checksums.crc32c
 
         if response and response.read_handle:
             self.read_handle = response.read_handle
