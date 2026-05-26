@@ -1987,6 +1987,28 @@ def test_literal_value__write_literal_regex(input_arg, expected_bytes):
     assert filter_.regex == expected_bytes
 
 
+class TestValueBitmaskFilter:
+    @staticmethod
+    def _target_class():
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        return ValueBitmaskFilter
+
+    def test_to_dict(self):
+        from google.cloud.bigtable_v2.types import data as data_v2_pb2
+
+        mask = b"\xaa" * 8
+        row_filter = self._target_class()(mask)
+        expected = {"value_bitmask_filter": data_v2_pb2.ValueBitmask(mask=mask)}
+        assert row_filter._to_dict() == expected
+
+    def test_to_pb(self):
+        mask = b"\xaa" * 8
+        row_filter = self._target_class()(mask)
+        pb = row_filter._to_pb()
+        assert pb.value_bitmask_filter.mask == mask
+
+
 def _ColumnRangePB(*args, **kw):
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 

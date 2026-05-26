@@ -484,6 +484,37 @@ class ValueRegexFilter(_RegexFilter):
         return {"value_regex_filter": self.regex}
 
 
+class ValueBitmaskFilter(RowFilter):
+    """Row filter for a value bitmask.
+
+    Matches only cells with values that satisfy the condition
+    ``(value & mask) == mask``. The mask length must exactly match the value
+    length, otherwise the cell is not considered a match.
+
+    :type mask: bytes or str
+    :param mask: A bitmask to match against cell values. String values
+                 will be encoded as ASCII.
+    """
+
+    def __init__(self, mask: bytes | str):
+        self.mask: bytes = _to_bytes(mask)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return other.mask == self.mask
+
+    def __ne__(self, other):
+        return not self == other
+
+    def _to_dict(self) -> dict[str, Any]:
+        """Converts the row filter to a dict representation."""
+        return {"value_bitmask_filter": data_v2_pb2.ValueBitmask(mask=self.mask)}
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(mask={self.mask!r})"
+
+
 class LiteralValueFilter(ValueRegexFilter):
     """Row filter for an exact value.
 
