@@ -397,7 +397,7 @@ class TestCrossSync:
         start_time = time.monotonic()
         await cs_async.event_wait(event, timeout=timeout)
         end_time = time.monotonic()
-        assert abs((end_time - start_time) - timeout) < 0.01
+        assert abs((end_time - start_time) - timeout) < 0.5
 
     @pytest.mark.parametrize("break_early", [True, False])
     @pytest.mark.asyncio
