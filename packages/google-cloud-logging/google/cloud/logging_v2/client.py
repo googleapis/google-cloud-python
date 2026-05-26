@@ -383,7 +383,7 @@ class Client(ClientWithProject):
             elif monitored_resource.type == _GKE_RESOURCE_TYPE:
                 return StructuredLogHandler(**kw, project_id=self.project)
             elif monitored_resource.type == _GCF_RESOURCE_TYPE:
-                # __stdout__ stream required to support structured logging on Python 3.7
+                # __stdout__ stream required to support structured logging on Google Cloud Functions
                 kw["stream"] = kw.get("stream", sys.__stdout__)
                 return StructuredLogHandler(**kw, project_id=self.project)
             elif monitored_resource.type == _RUN_RESOURCE_TYPE:

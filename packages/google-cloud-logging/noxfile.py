@@ -47,7 +47,9 @@ PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
+LOWER_BOUND_CONSTRAINTS_FILE = (
+    CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
+)
 PACKAGE_NAME = "google-cloud-logging"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -55,7 +57,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "asyncmock",
     "pytest",
     "pytest-cov",
-    "pytest-asyncio",
+    "pytest-asyncio==0.23.8",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "flask",
@@ -111,7 +113,7 @@ def mypy(session):
 @nox.session
 def update_lower_bounds(session):
     """Update lower bounds in constraints.txt to match setup.py"""
-    session.install("google-cloud-testutils")
+    session.install("../google-cloud-testutils")
     session.install(".")
 
     session.run(
@@ -127,7 +129,7 @@ def update_lower_bounds(session):
 @nox.session
 def check_lower_bounds(session):
     """Check lower bounds in setup.py are reflected in constraints file"""
-    session.install("google-cloud-testutils")
+    session.install("../google-cloud-testutils")
     session.install(".")
 
     session.run(
