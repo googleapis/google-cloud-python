@@ -655,3 +655,15 @@ replacements:
       google-cloud-core==2.0.0
       grpcio==1.44.0
     count: 1
+  - paths: [
+      "packages/google-cloud-firestore/testing/constraints-3.13.txt",
+      "packages/google-cloud-firestore/testing/constraints-3.14.txt",
+    ]
+    before: |
+      google-auth>=2
+      grpcio>=1
+    after: |
+      google-auth>=2
+      google-cloud-core>=2
+      grpcio>=1
+    count: 1
