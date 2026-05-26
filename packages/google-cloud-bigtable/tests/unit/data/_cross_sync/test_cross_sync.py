@@ -15,7 +15,6 @@ import asyncio
 import concurrent.futures
 import functools
 import queue
-import sys
 import threading
 import time
 import typing

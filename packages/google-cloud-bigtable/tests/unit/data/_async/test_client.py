@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import asyncio
 import re
-import sys
 
 import grpc
 import mock
