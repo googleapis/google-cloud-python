@@ -22,14 +22,13 @@ from packaging.version import Version
 import importlib.metadata as metadata
 
 
-def _get_package_requirements(package_name: str, env: dict = None) -> List[Requirement]:
+def _get_package_requirements(package_name: str) -> List[Requirement]:
     """
     Get a list of all requirements and extras declared by this package.
     The package must already be installed in the environment.
 
     Args:
         package_name (str): The name of the package.
-        env (dict): Optional environment dictionary for marker evaluation.
 
     Returns:
         List[packaging.requirements.Requirement]: A list of package requirements and extras.
@@ -37,12 +36,7 @@ def _get_package_requirements(package_name: str, env: dict = None) -> List[Requi
     requirements = []
     distribution = metadata.distribution(package_name)
     if distribution.requires:
-        for r in distribution.requires:
-            req = Requirement(str(r))
-            if req.marker and env:
-                if not req.marker.evaluate(env):
-                    continue
-            requirements.append(req)
+        requirements = [Requirement(str(r)) for r in distribution.requires]
     return requirements
 
 
@@ -127,7 +121,7 @@ def _lower_bound(requirement: Requirement) -> str:
     Returns:
         str: The lower bound for the requirement.
     """
-    spec_set = [spec for spec in requirement.specifier if spec.operator != "!="]
+    spec_set = list(requirement.specifier)
 
     # sort by operator: <, then >=
     spec_set.sort(key=lambda x: x.operator)
@@ -195,11 +189,7 @@ def update(ctx: click.Context, package_name: str, constraints_file: str) -> None
 
     If the constraints file already exists the contents will be overwritten.
     """
-    import re
-    match = re.search(r"constraints-(\d+\.\d+)\.txt", constraints_file)
-    env = {"python_version": match.group(1)} if match else None
-
-    requirements = _get_package_requirements(package_name, env=env)
+    requirements = _get_package_requirements(package_name)
     requirements.sort(key=lambda x: x.name)
 
     package_lower_bounds = list(_get_package_lower_bounds(ctx, requirements))
@@ -236,11 +226,7 @@ def check(ctx: click.Context, package_name: str, constraints_file: str):
     3. package-name is already installed in the environment.
     """
 
-    import re
-    match = re.search(r"constraints-(\d+\.\d+)\.txt", constraints_file)
-    env = {"python_version": match.group(1)} if match else None
-
-    package_requirements = _get_package_requirements(package_name, env=env)
+    package_requirements = _get_package_requirements(package_name)
     constraints = _parse_requirements_file(constraints_file)
 
     package_lower_bounds = _get_package_lower_bounds(ctx, package_requirements)
