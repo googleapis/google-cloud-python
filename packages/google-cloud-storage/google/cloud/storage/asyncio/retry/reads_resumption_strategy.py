@@ -36,7 +36,7 @@ class _DownloadState:
     """A helper class to track the state of a single range download."""
 
     def __init__(
-        self, initial_offset: int, initial_length: int, user_buffer: IO[bytes]
+        self, initial_offset: int, initial_length: int, user_buffer: IO[bytes], is_full_object_read: bool = False
     ):
         self.initial_offset = initial_offset
         self.initial_length = initial_length
@@ -44,6 +44,8 @@ class _DownloadState:
         self.bytes_written = 0
         self.next_expected_offset = initial_offset
         self.is_complete = False
+        self.is_full_object_read = is_full_object_read
+        self.rolling_checksum = google_crc32c.Checksum() if is_full_object_read else None
 
 
 class _ReadResumptionStrategy(_BaseResumptionStrategy):
@@ -90,6 +92,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             )
 
         download_states = state["download_states"]
+        checksum_enabled = state.get("enable_checksum", True)
 
         for object_data_range in proto.object_data_ranges:
             # Ignore empty ranges or ranges for IDs not in our state
@@ -125,7 +128,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             checksummed_data = object_data_range.checksummed_data
             data = checksummed_data.content
 
-            if checksummed_data.HasField("crc32c"):
+            if checksum_enabled and checksummed_data.HasField("crc32c"):
                 server_checksum = checksummed_data.crc32c
                 client_checksum = google_crc32c.value(data)
                 if server_checksum != client_checksum:
@@ -138,10 +141,14 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             # Update State & Write Data
             chunk_size = len(data)
             read_state.user_buffer.write(data)
+
+            # Commit updates only after the write succeeds
+            if read_state.rolling_checksum is not None:
+                read_state.rolling_checksum.update(data)
             read_state.bytes_written += chunk_size
             read_state.next_expected_offset += chunk_size
 
-            # Final Byte Count Verification
+            # Final Byte Count & Full Object Checksum Verification
             if object_data_range.range_end:
                 read_state.is_complete = True
                 if (
@@ -153,6 +160,22 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                         f"Byte count mismatch for read_id {read_id}. "
                         f"Expected {read_state.initial_length}, got {read_state.bytes_written}",
                     )
+
+                # Perform full-object checksum verification once the stream finishes.
+                if read_state.is_full_object_read and checksum_enabled:
+                    full_obj_server_crc32c = state.get("full_obj_server_crc32c")
+                    if full_obj_server_crc32c is not None:
+                        # Use standard big-endian byte conversion to retrieve the rolling checksum value.
+                        client_checksum = int.from_bytes(
+                            read_state.rolling_checksum.digest(),
+                            byteorder="big",
+                        )
+                        if client_checksum != full_obj_server_crc32c:
+                            raise DataCorruption(
+                                response,
+                                f"Full object checksum mismatch for read_id {read_id}. "
+                                f"Server authoritative crc32c: {full_obj_server_crc32c}, client calculated rolling: {client_checksum}.",
+                            )
 
     async def recover_state_on_failure(self, error: Exception, state: Any) -> None:
         """Handles BidiReadObjectRedirectedError for reads."""

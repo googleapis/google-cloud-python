@@ -45,6 +45,24 @@ class TestDownloadState(unittest.TestCase):
         self.assertEqual(state.bytes_written, 0)
         self.assertEqual(state.next_expected_offset, initial_offset)
         self.assertFalse(state.is_complete)
+        self.assertFalse(state.is_full_object_read)
+        self.assertIsNone(state.rolling_checksum)
+
+    def test_initialization_with_full_object_read(self):
+        """Test that _DownloadState initializes correctly when is_full_object_read is True."""
+        initial_offset = 10
+        initial_length = 100
+        user_buffer = io.BytesIO()
+        state_full = _DownloadState(initial_offset, initial_length, user_buffer, is_full_object_read=True)
+
+        self.assertEqual(state_full.initial_offset, initial_offset)
+        self.assertEqual(state_full.initial_length, initial_length)
+        self.assertEqual(state_full.user_buffer, user_buffer)
+        self.assertEqual(state_full.bytes_written, 0)
+        self.assertEqual(state_full.next_expected_offset, initial_offset)
+        self.assertFalse(state_full.is_complete)
+        self.assertTrue(state_full.is_full_object_read)
+        self.assertIsNotNone(state_full.rolling_checksum)
 
 
 class TestReadResumptionStrategy(unittest.TestCase):
@@ -53,12 +71,12 @@ class TestReadResumptionStrategy(unittest.TestCase):
 
         self.state = {"download_states": {}, "read_handle": None, "routing_token": None}
 
-    def _add_download(self, read_id, offset=0, length=100, buffer=None):
+    def _add_download(self, read_id, offset=0, length=100, buffer=None, is_full_object_read=False):
         """Helper to inject a download state into the correct nested location."""
         if buffer is None:
             buffer = io.BytesIO()
         state = _DownloadState(
-            initial_offset=offset, initial_length=length, user_buffer=buffer
+            initial_offset=offset, initial_length=length, user_buffer=buffer, is_full_object_read=is_full_object_read
         )
         self.state["download_states"][read_id] = state
         return state
@@ -358,3 +376,40 @@ class TestReadResumptionStrategy(unittest.TestCase):
 
         # Token should remain unchanged
         self.assertEqual(self.state["routing_token"], "existing-token")
+
+    def test_update_state_full_object_checksum_success(self):
+        """Test that full object checksum verification succeeds on range_end."""
+        read_state = self._add_download(_READ_ID, offset=0, length=9, is_full_object_read=True)
+        self.state["enable_checksum"] = True
+        self.state["full_obj_server_crc32c"] = google_crc32c.value(b"testdata1")
+
+        resp1 = self._create_response(b"test", _READ_ID, offset=0)
+        self.strategy.update_state_from_response(resp1, self.state)
+
+        resp2 = self._create_response(b"data1", _READ_ID, offset=4, range_end=True)
+        self.strategy.update_state_from_response(resp2, self.state)
+
+        self.assertTrue(read_state.is_complete)
+        self.assertEqual(read_state.bytes_written, 9)
+
+    def test_update_state_full_object_checksum_failure(self):
+        """Test that full object checksum verification raises DataCorruption on mismatch at range_end."""
+        self._add_download(_READ_ID, offset=0, length=9, is_full_object_read=True)
+        self.state["enable_checksum"] = True
+        self.state["full_obj_server_crc32c"] = 111111  # Wrong server checksum!
+
+        resp1 = self._create_response(b"test", _READ_ID, offset=0)
+        self.strategy.update_state_from_response(resp1, self.state)
+
+        resp2 = self._create_response(b"data1", _READ_ID, offset=4, range_end=True)
+        with self.assertRaisesRegex(DataCorruption, "Full object checksum mismatch"):
+            self.strategy.update_state_from_response(resp2, self.state)
+
+    def test_update_state_checksum_mismatch_ignored_when_disabled(self):
+        """Test that a CRC32C mismatch is ignored when enable_checksum is False."""
+        self._add_download(_READ_ID)
+        self.state["enable_checksum"] = False
+        response = self._create_response(b"data", _READ_ID, offset=0, crc=999999)
+
+        # Should NOT raise DataCorruption!
+        self.strategy.update_state_from_response(response, self.state)
