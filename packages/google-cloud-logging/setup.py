@@ -47,7 +47,7 @@ dependencies = [
     "google-cloud-audit-log >= 0.3.1, < 1.0.0",
     "google-cloud-core >= 2.0.0, <3.0.0",
     "grpc-google-iam-v1 >=0.12.4, <1.0.0",
-    "opentelemetry-api >= 1.28.1",
+    "opentelemetry-api >= 1.16.0",
     "grpcio >= 1.44.0, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
