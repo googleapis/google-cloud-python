@@ -130,8 +130,6 @@ def execution_history(
     job_ids: Optional[Iterable[str]] = None,
     all_cells: bool = True,
 ) -> "bigframes.session._ExecutionHistory":
-    import pandas  # noqa: F401
-
     import bigframes.session
 
     return with_default_session(
