@@ -202,7 +202,7 @@ class CrossSync(metaclass=MappingMeta):
         sync_executor: ThreadPoolExecutor to use for sync operations. Ignored in async version
         """
         task: CrossSync.Task[T] = asyncio.create_task(fn(*fn_args, **fn_kwargs))
-        if task_name and sys.version_info >= (3, 8):
+        if task_name:
             task.set_name(task_name)
         return task
 
