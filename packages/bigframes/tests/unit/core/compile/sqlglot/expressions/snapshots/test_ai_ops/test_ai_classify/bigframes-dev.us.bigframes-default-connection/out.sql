@@ -1,6 +1,6 @@
 SELECT
   AI.CLASSIFY(
-    input => (`string_col`),
+    input => `string_col`,
     categories => ['greeting', 'rejection'],
     connection_id => 'bigframes-dev.us.bigframes-default-connection'
   ) AS `result`

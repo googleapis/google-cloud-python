@@ -1,3 +1,7 @@
 SELECT
-  AI.CLASSIFY(input => (`string_col`), categories => ['greeting', 'rejection']) AS `result`
+  AI.CLASSIFY(
+    input => `string_col`,
+    categories => ['greeting', 'rejection'],
+    connection_id => NULL
+  ) AS `result`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

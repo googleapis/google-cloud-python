@@ -149,26 +149,7 @@ class AIIf(Value):
         return dt.bool
 
 
-@public
-class AIClassify(Value):
-    """Generate categories based on the prompt"""
 
-    input: Value
-    categories: Value[dt.Array[dt.String]]
-    examples: Optional[Value]
-    connection_id: Optional[Value[dt.String]]
-    endpoint: Optional[Value[dt.String]]
-    output_mode: Optional[Value[dt.String]]
-    optimization_mode: Optional[Value[dt.String]]
-    max_error_ratio: Optional[Value[dt.Float64]]
-
-    shape = rlz.shape_like("input")
-
-    @attribute
-    def dtype(self) -> dt.DataType:
-        if self.output_mode is not None:
-            return dt.Array(dt.string)
-        return dt.string
 
 
 @public

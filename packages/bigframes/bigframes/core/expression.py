@@ -32,10 +32,27 @@ if typing.TYPE_CHECKING:
     import bigframes.operations
 
 
+class FrozenDict(dict):
+    def __hash__(self) -> int:
+        return hash(tuple((k, make_hashable(v)) for k, v in sorted(self.items())))
+
+
+def make_hashable(val: typing.Any) -> typing.Hashable:
+    if isinstance(val, list):
+        return tuple(make_hashable(x) for x in val)
+    elif isinstance(val, dict):
+        return FrozenDict({k: make_hashable(v) for k, v in val.items()})
+    elif isinstance(val, tuple):
+        return tuple(make_hashable(x) for x in val)
+    else:
+        return val
+
+
 def const(
-    value: typing.Hashable, dtype: dtypes.ExpressionType = None
+    value: typing.Any, dtype: dtypes.ExpressionType = None
 ) -> ScalarConstantExpression:
-    return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
+    hashable_value = make_hashable(value)
+    return ScalarConstantExpression(hashable_value, dtype or dtypes.infer_literal_type(hashable_value))
 
 
 def deref(name: str) -> DerefOp:

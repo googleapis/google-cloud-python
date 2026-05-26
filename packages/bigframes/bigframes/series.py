@@ -2772,40 +2772,20 @@ class Series:
         typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp]],
         blocks.Block,
     ]:
-        if ignore_self:
-            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp]] = []
-        else:
-            value_ids = [ex.deref(self._value_column)]
+        inputs = others if ignore_self else [self, *others]
+        import bigframes.core.align as align
+        aligned_exprs, block = align.align_n(inputs, how=how)
 
-        block = self._block
-        for other in others:
-            if isinstance(other, Series):
-                (
-                    block,
-                    (
-                        get_column_left,
-                        get_column_right,
-                    ),
-                ) = block.join(other._block, how=how)
-                rebindings = {
-                    ids.ColumnId(old): ids.ColumnId(new)
-                    for old, new in get_column_left.items()
-                }
-                remapped_value_ids = (
-                    value.remap_column_refs(rebindings) for value in value_ids
-                )
-                value_ids = [
-                    *remapped_value_ids,  # type: ignore
-                    ex.deref(get_column_right[other._value_column]),
-                ]
+        # Post-wrap raw scalars into ex.const with proper type coercion
+        final_exprs = []
+        for expr in aligned_exprs:
+            if isinstance(expr, ex.Expression):
+                final_exprs.append(expr)
             else:
-                # Will throw if can't interpret as scalar.
                 dtype = typing.cast(bigframes.dtypes.Dtype, self._dtype)
-                value_ids = [
-                    *value_ids,
-                    ex.const(other, dtype=dtype if cast_scalars else None),
-                ]
-        return (value_ids, block)
+                final_exprs.append(ex.const(expr, dtype=dtype if cast_scalars else None))
+
+        return final_exprs, block
 
     def _throw_if_null_index(self, opname: __builtins__.str):
         if len(self._block.index_columns) == 0:

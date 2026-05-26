@@ -3553,3 +3553,4 @@ def _resolve_index_col(
     else:
         # Joining with value columns only. Existing indices will be discarded.
         return []
+
