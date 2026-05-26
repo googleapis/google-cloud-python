@@ -464,36 +464,3 @@ replacements:
           # Enable mypy once this repo has been updated for mypy evaluation.
           session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
     count: 1
-  - paths: [
-      packages/google-cloud-logging/noxfile.py
-    ]
-    before: |
-      LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-    after: |
-      LOWER_BOUND_CONSTRAINTS_FILE = (
-          CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
-      )
-    count: 1
-  - paths: [
-      packages/google-cloud-logging/noxfile.py
-    ]
-    before: |
-      UNIT_TEST_STANDARD_DEPENDENCIES = \[
-      \    "mock",
-      \    "asyncmock",
-      \    "pytest",
-      \    "pytest-cov",
-      \    "pytest-asyncio",
-      \]
-    after: |
-      UNIT_TEST_STANDARD_DEPENDENCIES = [
-          "mock",
-          "asyncmock",
-          "pytest",
-          "pytest-cov",
-          # Pin pytest-asyncio to 0.23.8 to avoid strict event loop regressions
-          # in newer versions (v0.24+) which conflict with older grpcio (1.44.0)
-          # that does not automatically initialize loops in synchronous test threads.
-          "pytest-asyncio==0.23.8",
-      ]
-    count: 1
