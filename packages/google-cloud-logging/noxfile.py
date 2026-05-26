@@ -116,7 +116,7 @@ def mypy(session):
 @nox.session
 def update_lower_bounds(session):
     """Update lower bounds in constraints.txt to match setup.py"""
-    session.install("../google-cloud-testutils")
+    session.install("google-cloud-testutils")
     session.install(".")
 
     session.run(
@@ -132,7 +132,7 @@ def update_lower_bounds(session):
 @nox.session
 def check_lower_bounds(session):
     """Check lower bounds in setup.py are reflected in constraints file"""
-    session.install("../google-cloud-testutils")
+    session.install("google-cloud-testutils")
     session.install(".")
 
     session.run(
