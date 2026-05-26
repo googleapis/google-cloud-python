@@ -882,6 +882,7 @@ def connect(
                     client_options["api_endpoint"] = host_endpoint
                 else:
                     import copy
+
                     client_options = copy.copy(client_options)
                     client_options.api_endpoint = host_endpoint
 

@@ -232,7 +232,7 @@ class Client(ClientWithProject):
 
     :type instance_type: str
     :param instance_type: (Optional) The type of Spanner instance to connect to.
-        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type=`"omni"`.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type="omni".
 
     :type disable_builtin_metrics: bool
     :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
