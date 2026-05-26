@@ -19,13 +19,14 @@ import logging
 import re
 
 from google.api_core import exceptions as api_exceptions
-from google.cloud import _http
 from google.cloud.exceptions import NotFound
+
+from google.cloud import _http
 from google.cloud.storage import __version__, _helpers
 from google.cloud.storage._opentelemetry_tracing import (
+    HAS_OPENTELEMETRY,
     create_trace_span,
     enable_otel_traces,
-    HAS_OPENTELEMETRY,
 )
 
 logger = logging.getLogger(__name__)

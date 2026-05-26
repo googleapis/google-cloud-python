@@ -22,7 +22,8 @@ import warnings
 from typing import Any, Optional, Set, Tuple, Union, TYPE_CHECKING
 from urllib.parse import urlsplit
 
-from google.api_core import datetime_helpers, exceptions as api_exceptions
+from google.api_core import datetime_helpers
+from google.api_core import exceptions as api_exceptions
 from google.api_core.iam import Policy
 from google.api_core.retry import Retry
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
