@@ -439,7 +439,7 @@ class Database(object):
                     client_info=client_info, transport=transport
                 )
                 return self._spanner_api
-            client = self._instance._client
+            client = getattr(self._instance, "_client", None)
             if getattr(client, "instance_type", None) == "omni":
                 from google.cloud.spanner_v1._helpers import (
                     _create_spanner_omni_transport as _create_spanner_omni_transport_sync,

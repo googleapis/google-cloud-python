@@ -807,8 +807,7 @@ def connect(
 
     :type instance_type: str
     :param instance_type: (Optional) The type of Spanner instance to connect to.
-        Supported values are `"cloud"`, `"omni"`, and `"emulator"`. Except `"omni"`,
-        setting other values is a no-op.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type=`"omni"`.
 
     :type use_plain_text: bool
     :param use_plain_text: (Optional) Whether to use plain text for the connection.
@@ -856,10 +855,8 @@ def connect(
 
             if instance_type is not None:
                 instance_type = instance_type.lower()
-                if instance_type not in ("cloud", "omni", "emulator"):
-                    raise ValueError(
-                        "instance_type must be one of 'cloud', 'omni', or 'emulator'"
-                    )
+                if instance_type not in ("cloud", "omni"):
+                    raise ValueError("instance_type must be one of 'cloud' or 'omni'")
 
             if instance_type == "omni":
                 host_endpoint = experimental_host
@@ -877,7 +874,16 @@ def connect(
 
                 project = "default"
                 credentials = AnonymousCredentials()
-                client_options = ClientOptions(api_endpoint=host_endpoint)
+                client_options = kwargs.get("client_options")
+                if client_options is None:
+                    client_options = ClientOptions(api_endpoint=host_endpoint)
+                elif isinstance(client_options, dict):
+                    client_options = client_options.copy()
+                    client_options["api_endpoint"] = host_endpoint
+                else:
+                    import copy
+                    client_options = copy.copy(client_options)
+                    client_options.api_endpoint = host_endpoint
 
             client = spanner.Client(
                 project=project,

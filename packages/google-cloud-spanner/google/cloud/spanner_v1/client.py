@@ -232,8 +232,7 @@ class Client(ClientWithProject):
 
     :type instance_type: str
     :param instance_type: (Optional) The type of Spanner instance to connect to.
-        Supported values are `"cloud"`, `"omni"`, and `"emulator"`. Except `"omni"`,
-        setting other values is a no-op.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type=`"omni"`.
 
     :type disable_builtin_metrics: bool
     :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
@@ -293,20 +292,19 @@ class Client(ClientWithProject):
 
         if instance_type is not None:
             instance_type = instance_type.lower()
-            if instance_type not in ("cloud", "omni", "emulator"):
-                raise ValueError(
-                    "instance_type must be one of 'cloud', 'omni', or 'emulator'"
-                )
+            if instance_type not in ("cloud", "omni"):
+                raise ValueError("instance_type must be one of 'cloud' or 'omni'")
         self._instance_type = instance_type
 
         if self._emulator_host:
             credentials = AnonymousCredentials()
         elif self._instance_type == "omni":
             if not host_endpoint:
-                if self._client_options and getattr(
-                    self._client_options, "api_endpoint", None
-                ):
-                    host_endpoint = self._client_options.api_endpoint
+                if self._client_options:
+                    if hasattr(self._client_options, "api_endpoint"):
+                        host_endpoint = self._client_options.api_endpoint
+                    elif isinstance(self._client_options, dict):
+                        host_endpoint = self._client_options.get("api_endpoint")
 
             if not host_endpoint:
                 raise ValueError(

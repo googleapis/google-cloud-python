@@ -921,8 +921,7 @@ class TestConnection(unittest.TestCase):
                 instance_type="invalid-type",
             )
         self.assertIn(
-            "instance_type must be one of 'cloud', 'omni', or 'emulator'",
-            str(ctx.exception),
+            "instance_type must be one of 'cloud' or 'omni'", str(ctx.exception)
         )
 
 
