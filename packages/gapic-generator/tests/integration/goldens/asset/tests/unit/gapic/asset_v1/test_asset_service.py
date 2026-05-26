@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -103,6 +104,15 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
 
 def test__get_default_mtls_endpoint():
