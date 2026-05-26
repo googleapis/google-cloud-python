@@ -1671,9 +1671,12 @@ def test_query_stream_or_get_w_explain_options_analyze_false(
 @pytest.mark.parametrize("method", ["execute", "stream"])
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 def test_pipeline_explain_options_explain_mode(database, method, query_docs):
-    """Explain currently not supported by backend. Expect error"""
     from google.cloud.firestore_v1.query_profile import (
+        ExplainStats,
         PipelineExplainOptions,
+    )
+    from google.cloud.firestore_v1.types.explain_stats import (
+        ExplainStats as ExplainStats_pb,
     )
 
     collection, _, _ = query_docs
@@ -1685,11 +1688,14 @@ def test_pipeline_explain_options_explain_mode(database, method, query_docs):
     method_under_test = getattr(pipeline, method)
     explain_options = PipelineExplainOptions(mode="explain")
 
-    # for now, expect error on explain mode
-    with pytest.raises(InvalidArgument) as e:
-        results = method_under_test(explain_options=explain_options)
-        list(results)
-    assert "Explain execution mode is not supported" in str(e)
+    results = method_under_test(explain_options=explain_options)
+    results_list = list(results)
+    assert len(results_list) == 0
+
+    # Verify explain_stats.
+    explain_stats = results.explain_stats
+    assert isinstance(explain_stats, ExplainStats)
+    assert isinstance(explain_stats.get_raw(), ExplainStats_pb)
 
 
 @pytest.mark.skipif(
