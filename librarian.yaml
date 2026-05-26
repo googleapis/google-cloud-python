@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.14.0
+version: v0.14.1-0.20260522151051-433d9e6211ad
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -67,7 +67,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.32.0
+    version: 1.33.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -1659,7 +1659,6 @@ libraries:
     version: 2.38.0
     apis:
       - path: google/pubsub/v1
-    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
