@@ -16,7 +16,7 @@
 import re
 import typing
 import warnings
-from typing import List, Optional
+from typing import List, Optional, cast
 
 import numpy as np
 
@@ -201,13 +201,19 @@ class Semantics:
                 agg_df[cluster_column] = agg_df[cluster_column].list[0]
 
             # Skip if the aggregated group only has a single item
-            single_row_df: bigframes.series.Series = bbq.array_to_string(
-                agg_df[agg_df[group_row_index].list.len() <= 1][column],
-                delimiter="",
+            single_row_df: bigframes.series.Series = cast(
+                bigframes.series.Series,
+                bbq.array_to_string(
+                    agg_df[agg_df[group_row_index].list.len() <= 1][column],
+                    delimiter="",
+                ),
             )
-            prompt_s: bigframes.series.Series = bbq.array_to_string(
-                agg_df[agg_df[group_row_index].list.len() > 1][llm_prompt],
-                delimiter="",
+            prompt_s: bigframes.series.Series = cast(
+                bigframes.series.Series,
+                bbq.array_to_string(
+                    agg_df[agg_df[group_row_index].list.len() > 1][llm_prompt],
+                    delimiter="",
+                ),
             )
             prompt_s = output_instruction + prompt_s  # type:ignore
 
