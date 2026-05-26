@@ -144,7 +144,6 @@ class EventEnvelope:
     cell_execution_count: Optional[int] = None
 
 
-
 @dataclasses.dataclass(frozen=True)
 class SessionClosed(Event):
     session_id: str
