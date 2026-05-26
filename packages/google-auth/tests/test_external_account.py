@@ -525,6 +525,20 @@ class TestCredentials(object):
         new_credentials = credentials.with_universe_domain("dummy_universe.com")
         assert new_credentials.universe_domain == "dummy_universe.com"
 
+    def test_copy_regional_access_boundary_manager_state_and_config(self):
+        credentials = self.make_credentials()
+        credentials._rab_manager._data = mock.sentinel.rab_data
+        credentials._rab_manager._use_blocking_regional_access_boundary_lookup = True
+
+        new_credentials = credentials.with_universe_domain("dummy_universe.com")
+
+        # Verify references to boundary data are shared
+        assert new_credentials._rab_manager._data == mock.sentinel.rab_data
+        # Verify blocking config flag is preserved
+        assert new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        # Verify target manager object is not replaced
+        assert new_credentials._rab_manager is not credentials._rab_manager
+
     def test_info_workforce_pool(self):
         credentials = self.make_workforce_pool_credentials(
             workforce_pool_user_project=self.WORKFORCE_POOL_USER_PROJECT
