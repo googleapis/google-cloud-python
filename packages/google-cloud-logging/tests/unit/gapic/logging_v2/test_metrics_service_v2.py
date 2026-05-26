@@ -16,6 +16,7 @@
 import json
 import math
 import os
+import re
 from collections.abc import Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
