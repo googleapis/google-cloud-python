@@ -19,6 +19,7 @@ import threading
 
 from google.api_core import exceptions as api_exceptions
 from google.cloud.exceptions import NotFound
+
 from google.cloud.storage._lru_cache import LRUCache
 
 logger = logging.getLogger(__name__)

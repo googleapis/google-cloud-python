@@ -1321,7 +1321,7 @@ def test_process_open_lineage_run_event_non_empty_request_with_auto_populated_fi
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -1729,7 +1729,7 @@ def test_create_process_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -2077,7 +2077,7 @@ def test_update_process_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -3592,7 +3592,7 @@ def test_create_run_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -5438,7 +5438,7 @@ def test_create_lineage_event_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -8210,7 +8210,7 @@ def test_process_open_lineage_run_event_rest_required_fields(
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
                 if key == "requestId":
-                    assert re.match(
+                    assert re.fullmatch(
                         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
                         value,
                     )
@@ -8425,7 +8425,7 @@ def test_create_process_rest_required_fields(request_type=lineage.CreateProcessR
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
                 if key == "requestId":
-                    assert re.match(
+                    assert re.fullmatch(
                         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
                         value,
                     )
@@ -8626,7 +8626,7 @@ def test_update_process_rest_required_fields(request_type=lineage.UpdateProcessR
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
                 if key == "requestId":
-                    assert re.match(
+                    assert re.fullmatch(
                         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
                         value,
                     )
@@ -9436,7 +9436,7 @@ def test_create_run_rest_required_fields(request_type=lineage.CreateRunRequest):
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
                 if key == "requestId":
-                    assert re.match(
+                    assert re.fullmatch(
                         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
                         value,
                     )
@@ -10451,7 +10451,7 @@ def test_create_lineage_event_rest_required_fields(
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
                 if key == "requestId":
-                    assert re.match(
+                    assert re.fullmatch(
                         r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
                         value,
                     )
@@ -11817,7 +11817,7 @@ def test_process_open_lineage_run_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -11845,7 +11845,7 @@ def test_create_process_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -11873,7 +11873,7 @@ def test_update_process_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -11964,7 +11964,7 @@ def test_create_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12078,7 +12078,7 @@ def test_create_lineage_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12266,7 +12266,7 @@ async def test_process_open_lineage_run_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12301,7 +12301,7 @@ async def test_create_process_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12336,7 +12336,7 @@ async def test_update_process_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12452,7 +12452,7 @@ async def test_create_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -12598,7 +12598,7 @@ async def test_create_lineage_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -15796,7 +15796,7 @@ def test_process_open_lineage_run_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -15823,7 +15823,7 @@ def test_create_process_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -15850,7 +15850,7 @@ def test_update_process_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -15937,7 +15937,7 @@ def test_create_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )
@@ -16046,7 +16046,7 @@ def test_create_lineage_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
+        assert re.fullmatch(
             r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
             args[0].request_id,
         )

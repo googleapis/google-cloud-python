@@ -2079,6 +2079,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_reload_forbidden_sync_cache_fallback(self):
         from google.api_core.exceptions import Forbidden
+
         from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 
         name = "forbidden-bucket"

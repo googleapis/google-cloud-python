@@ -19,18 +19,17 @@
 from __future__ import annotations
 
 import datetime
+import decimal
 from typing import Any, Literal, Optional, TypeVar, Union
 
-import bigframes.bigquery._googlesql
 import bigframes.core.col
 import bigframes.core.expression as ex
+import bigframes.core.googlesql
 import bigframes.core.sentinels as sentinels
 import bigframes.operations as ops
 import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql
-
-T = TypeVar("T", series.Series, bigframes.core.col.Expression)
 
 _DETERMINISTIC_DECRYPT_BYTES_OP = googlesql.GoogleSqlScalarOp(
     "DETERMINISTIC_DECRYPT_BYTES",
@@ -51,77 +50,77 @@ _DETERMINISTIC_ENCRYPT_OP = googlesql.GoogleSqlScalarOp(
 
 def deterministic_decrypt_bytes(
     keyset: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
     ],
     ciphertext: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
     ],
     additional_data: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Uses the matching key from `keyset` to decrypt `ciphertext` and verifies the integrity of the data using `additional_data`. Returns an error if decryption fails."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DETERMINISTIC_DECRYPT_BYTES_OP,
         keyset,
         ciphertext,
         additional_data,
-    )  # type: ignore
+    )
 
 
 def deterministic_decrypt_string(
     keyset: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
     ],
     ciphertext: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
     ],
     additional_data: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Like `DETERMINISTIC_DECRYPT_BYTES`, but where plaintext is of type STRING."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DETERMINISTIC_DECRYPT_STRING_OP,
         keyset,
         ciphertext,
         additional_data,
-    )  # type: ignore
+    )
 
 
 def deterministic_encrypt(
     keyset: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, dict],
     ],
     plaintext: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
     ],
     additional_data: Union[
-        T,
+        series.Series,
         bigframes.core.col.Expression,
         Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
     ],
-) -> T:
+) -> Union[series.Series, bigframes.core.col.Expression]:
     """Encrypts `plaintext` using the primary cryptographic key in `keyset` using deterministic AEAD. The algorithm of the primary key must be `DETERMINISTIC_AEAD_AES_SIV_CMAC_256`. Binds the ciphertext to the context defined by `additional_data`. Returns `NULL` if any input is `NULL`."""
-    return bigframes.bigquery._googlesql.apply_googlesql_scalar_op(
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DETERMINISTIC_ENCRYPT_OP,
         keyset,
         plaintext,
         additional_data,
-    )  # type: ignore
+    )
