@@ -554,7 +554,7 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     for dep in core_dependencies_from_source:
-        session.install(dep, "--ignore-installed", "--no-deps")
+        session.install(dep, "--upgrade", "--no-deps")
 
     session.run(
         "py.test",

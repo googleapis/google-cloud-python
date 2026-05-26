@@ -539,9 +539,9 @@ def prerelease_deps(session, protobuf_implementation):
 
     # Batch pip installations to avoid sequential overhead
     if local_paths:
-        session.install(*local_paths, "--no-deps", "--ignore-installed")
+        session.install(*local_paths, "--no-deps", "--upgrade")
     if pypi_deps:
-        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+        session.install(*pypi_deps, "--pre", "--no-deps", "--upgrade")
 
     # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
     # to the dictionary below once this bug is fixed.
@@ -644,7 +644,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
-    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install(*dep_paths, "--no-deps", "--upgrade")
     print(
         f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
     )

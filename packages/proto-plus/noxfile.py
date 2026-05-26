@@ -175,7 +175,7 @@ def core_deps_from_source(session, implementation):
     ]
 
     for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
+        session.install(dep, "--no-deps", "--upgrade")
         print(f"Installed {dep}")
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15115): Install protobuf from source at HEAD

@@ -580,9 +580,9 @@ def prerelease_deps(session, protobuf_implementation):
 
     # Batch pip installations to avoid sequential overhead
     if local_paths:
-        session.install(*local_paths, "--no-deps", "--ignore-installed")
+        session.install(*local_paths, "--no-deps", "--upgrade")
     if pypi_deps:
-        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+        session.install(*pypi_deps, "--pre", "--no-deps", "--upgrade")
 
     # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
     # to the dictionary below once this bug is fixed.
