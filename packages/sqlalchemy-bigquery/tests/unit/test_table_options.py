@@ -21,6 +21,12 @@ import datetime
 import sqlite3
 
 from google.cloud.bigquery import (
+    AvroOptions,
+    CSVOptions,
+    ExternalConfig,
+    ExternalSourceFormat,
+    HivePartitioningOptions,
+    ParquetOptions,
     PartitionRange,
     RangePartitioning,
     TimePartitioning,
@@ -468,6 +474,137 @@ def test_table_all_dialect_option(faux_conn):
         " PARTITION BY DATETIME_TRUNC(createdAt, DAY)"
         " CLUSTER BY country, town"
         " OPTIONS(partition_expiration_days=30.0, expiration_timestamp=TIMESTAMP '2038-01-01 00:00:00+00:00', require_partition_filter=true, default_rounding_mode='ROUND_HALF_EVEN')"
+    )
+
+    assert result == expected
+
+
+def test_create_external_table(faux_conn):
+    external_config = ExternalConfig(ExternalSourceFormat.AVRO)
+    external_config.source_uris = ["gs://bucket-name/prefix/file.avro"]
+
+    with pytest.raises(sqlite3.OperationalError):
+        setup_table(
+            faux_conn,
+            "some_table",
+            sqlalchemy.Column("string_col", sqlalchemy.String),
+            sqlalchemy.Column("int_col", sqlalchemy.Integer),
+            prefixes=["EXTERNAL"],
+            bigquery_external_data_configuration=external_config,
+        )
+
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE EXTERNAL TABLE `some_table` ( `string_col` STRING, `int_col` INT64 )"
+        " OPTIONS(format='AVRO', uris=['gs://bucket-name/prefix/file.avro'])"
+    )
+
+    assert result == expected
+
+
+def test_create_external_table_hive_partitioning(faux_conn):
+    hive_partitioning = HivePartitioningOptions()
+    hive_partitioning.source_uri_prefix = "gs://bucket-name/prefix"
+    hive_partitioning.require_partition_filter = False
+
+    external_config = ExternalConfig(ExternalSourceFormat.PARQUET)
+    external_config.source_uris = [
+        "gs://bucket-name/prefix/string_col=A/*",
+        "gs://bucket-name/prefix/string_col=B/*",
+    ]
+    external_config.hive_partitioning = hive_partitioning
+
+    with pytest.raises(sqlite3.OperationalError):
+        setup_table(
+            faux_conn,
+            "some_table",
+            sqlalchemy.Column("string_col", sqlalchemy.String),
+            sqlalchemy.Column("int_col", sqlalchemy.Integer),
+            prefixes=["EXTERNAL"],
+            bigquery_external_data_configuration=external_config,
+        )
+
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE EXTERNAL TABLE `some_table` WITH PARTITION COLUMNS ( `string_col` STRING, `int_col` INT64 )"
+        " OPTIONS(format='PARQUET', uris=['gs://bucket-name/prefix/string_col=A/*', 'gs://bucket-name/prefix/string_col=B/*'], hive_partition_uri_prefix='gs://bucket-name/prefix', require_hive_partition_filter=false)"
+    )
+
+    assert result == expected
+
+
+def test_create_external_table_format_csv_options(faux_conn):
+    external_config = ExternalConfig(ExternalSourceFormat.CSV)
+    external_config.source_uris = ["gs://bucket-name/prefix/string_col=A/file.csv"]
+
+    external_config.csv_options = CSVOptions()
+    external_config.csv_options.skip_leading_rows = 1
+    external_config.csv_options.preserve_ascii_control_characters = True
+
+    with pytest.raises(sqlite3.OperationalError):
+        setup_table(
+            faux_conn,
+            "some_table",
+            sqlalchemy.Column("string_col", sqlalchemy.String),
+            prefixes=["EXTERNAL"],
+            bigquery_external_data_configuration=external_config,
+        )
+
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE EXTERNAL TABLE `some_table` ( `string_col` STRING )"
+        " OPTIONS(format='CSV', uris=['gs://bucket-name/prefix/string_col=A/file.csv'], preserve_ascii_control_characters=true, skip_leading_rows=1)"
+    )
+
+    assert result == expected
+
+
+def test_create_external_table_format_parquet_options(faux_conn):
+    external_config = ExternalConfig(ExternalSourceFormat.PARQUET)
+    external_config.source_uris = ["gs://bucket-name/prefix/string_col=A/file.parquet"]
+
+    external_config.parquet_options = ParquetOptions()
+    external_config.parquet_options.enable_list_inference = True
+    external_config.parquet_options.enum_as_string = False
+
+    with pytest.raises(sqlite3.OperationalError):
+        setup_table(
+            faux_conn,
+            "some_table",
+            sqlalchemy.Column("string_col", sqlalchemy.String),
+            prefixes=["EXTERNAL"],
+            bigquery_external_data_configuration=external_config,
+        )
+
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE EXTERNAL TABLE `some_table` ( `string_col` STRING )"
+        " OPTIONS(format='PARQUET', uris=['gs://bucket-name/prefix/string_col=A/file.parquet'], enable_list_inference=true, enum_as_string=false)"
+    )
+
+    assert result == expected
+
+
+def test_create_external_table_format_avro_options(faux_conn):
+    external_config = ExternalConfig(ExternalSourceFormat.AVRO)
+    external_config.source_uris = ["gs://bucket-name/prefix/string_col=A/file.avro"]
+
+    external_config.avro_options = AvroOptions()
+    external_config.avro_options.use_avro_logical_types = True
+
+    with pytest.raises(sqlite3.OperationalError):
+        setup_table(
+            faux_conn,
+            "some_table",
+            sqlalchemy.Column("string_col", sqlalchemy.String),
+            prefixes=["EXTERNAL"],
+            bigquery_external_data_configuration=external_config,
+        )
+
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE EXTERNAL TABLE `some_table` ( `string_col` STRING )"
+        " OPTIONS(format='AVRO', uris=['gs://bucket-name/prefix/string_col=A/file.avro'], use_avro_logical_types=true)"
     )
 
     assert result == expected
