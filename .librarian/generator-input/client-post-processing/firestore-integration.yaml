@@ -666,4 +666,4 @@ replacements:
       google-auth>=2
       google-cloud-core>=2
       grpcio>=1
-    count: 1
+    count: 2
