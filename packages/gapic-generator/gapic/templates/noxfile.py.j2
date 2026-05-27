@@ -158,7 +158,7 @@ def lint(session):
         "ruff", "format",
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
+        "--line-length=88", 
         *LINT_PATHS,
     )
 
@@ -174,7 +174,7 @@ def lint(session):
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
     session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
-
+    
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
     session.run(
@@ -513,14 +513,14 @@ def prerelease_deps(session, protobuf_implementation):
     # Extract the base package name, safely ignoring version bounds and spaces
     # (e.g., "grpcio>=1.75.1" becomes "grpcio")
     parsed_deps = {
-        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1)
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) 
         for dep in prerel_deps
     }
 
     # Dynamically sort local packages vs PyPI dependencies
     local_paths = []
     pypi_deps = []
-
+    
     for dep, pkg_name in parsed_deps.items():
         if (deps_dir / pkg_name).exists():
             local_paths.append(str(deps_dir / pkg_name))
@@ -625,7 +625,7 @@ def core_deps_from_source(session, protobuf_implementation):
 
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
-
+    
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
     print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
 

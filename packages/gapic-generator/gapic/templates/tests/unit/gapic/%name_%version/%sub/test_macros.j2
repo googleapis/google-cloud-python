@@ -1222,7 +1222,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 if key == "{{ auto_populated_field|camel_case }}":
                     assert _UUID4_RE.match(value)
                     break
-
+            
             # Include {{ auto_populated_field|camel_case }} within expected_params with value mock.ANY
             expected_params = [p for p in expected_params if p[0] != "{{ auto_populated_field|camel_case }}"]
             expected_params.append(
@@ -1723,7 +1723,7 @@ def test_unsupported_parameter_rest_asyncio():
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Continue migrating the test cases
 # in macro::run_transport_tests_for_config into here, and then delete that macro in favor of this one.
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2153): As a follow up, migrate gRPC test cases
-# into `run_transport_tests_for_config` and make any of the rest specific specific macros which are called within more generic.
+# into `run_transport_tests_for_config` and make any of the rest specific specific macros which are called within more generic. 
 #}
 {% macro run_transport_tests_for_config(service, api, transport, is_async) %}
 {% for method in service.methods.values() %}
@@ -1779,7 +1779,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% endmacro %}
 
 {# initialize_client_with_transport_test adds coverage for transport clients.
- # Note: This test case is needed because we aren't unconditionally
+ # Note: This test case is needed because we aren't unconditionally 
  # generating the not implemented coverage test for every client.
 #}
 {% macro initialize_client_with_transport_test(service, transport, is_async) %}
@@ -2082,7 +2082,7 @@ def test_initialize_client_w_{{transport_name}}():
 
     assert response.raw_page is response
     {% endif %}
-
+    
     {% if method.server_streaming %}
     {% if is_async %}
     assert isinstance(response, AsyncIterable)
@@ -2092,7 +2092,7 @@ def test_initialize_client_w_{{transport_name}}():
     response = next(response)
     {% endif %}
     {% endif %}
-
+    
     # Establish that the response is the type that we expect.
     {% if method.void %}
     assert response is None
