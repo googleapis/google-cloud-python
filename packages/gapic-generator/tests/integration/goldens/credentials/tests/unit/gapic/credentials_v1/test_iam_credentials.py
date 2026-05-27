@@ -13,26 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
 import asyncio
+import json
+import math
+import os
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
 
 import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable, AsyncIterable
-from google.protobuf import json_format
-import json
-import math
 import pytest
-from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
 from google.protobuf import json_format
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -40,25 +37,27 @@ try:
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.iam.credentials_v1.services.iam_credentials import IAMCredentialsAsyncClient
-from google.iam.credentials_v1.services.iam_credentials import IAMCredentialsClient
-from google.iam.credentials_v1.services.iam_credentials import transports
-from google.iam.credentials_v1.types import common
-from google.oauth2 import service_account
 import google.auth
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
-
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.iam.credentials_v1.services.iam_credentials import (
+    IAMCredentialsAsyncClient,
+    IAMCredentialsClient,
+    transports,
+)
+from google.iam.credentials_v1.types import common
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -971,10 +970,8 @@ def test_iam_credentials_client_create_channel_credentials_file(client_class, tr
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest({
-  }),
-  {
-  },
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 def test_generate_access_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1103,8 +1100,8 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest({  }),
-  {  },
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 async def test_generate_access_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1308,10 +1305,8 @@ async def test_generate_access_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest({
-  }),
-  {
-  },
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 def test_generate_id_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1442,8 +1437,8 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest({  }),
-  {  },
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 async def test_generate_id_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1651,10 +1646,8 @@ async def test_generate_id_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest({
-  }),
-  {
-  },
+  common.SignBlobRequest(),
+  {},
 ])
 def test_sign_blob(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1785,8 +1778,8 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest({  }),
-  {  },
+  common.SignBlobRequest(),
+  {},
 ])
 async def test_sign_blob_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1986,10 +1979,8 @@ async def test_sign_blob_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest({
-  }),
-  {
-  },
+  common.SignJwtRequest(),
+  {},
 ])
 def test_sign_jwt(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -2122,8 +2113,8 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest({  }),
-  {  },
+  common.SignJwtRequest(),
+  {},
 ])
 async def test_sign_jwt_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(

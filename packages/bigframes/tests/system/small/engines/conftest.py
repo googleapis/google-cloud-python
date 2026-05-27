@@ -60,7 +60,7 @@ def bq_engine(
     bigquery_client: bigquery.Client,
     bigquery_storage_read_client: google.cloud.bigquery_storage_v1.BigQueryReadClient,
 ):
-    publisher = events.Publisher()
+
     return direct_gbq_execution.DirectGbqExecutor(
         bigquery_client,
         bqstoragereadclient=bigquery_storage_read_client,

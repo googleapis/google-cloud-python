@@ -13,20 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
 import asyncio
+import json
+import math
+import os
+from collections.abc import Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
 
 import grpc
-from grpc.experimental import aio
-import json
-import math
 import pytest
-from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from grpc.experimental import aio
 from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -34,23 +34,6 @@ try:
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2AsyncClient
-from google.cloud.logging_v2.services.logging_service_v2 import LoggingServiceV2Client
-from google.cloud.logging_v2.services.logging_service_v2 import pagers
-from google.cloud.logging_v2.services.logging_service_v2 import transports
-from google.cloud.logging_v2.types import log_entry
-from google.cloud.logging_v2.types import logging
-from google.longrunning import operations_pb2 # type: ignore
-from google.oauth2 import service_account
 import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import google.auth
 import google.logging.type.http_request_pb2 as http_request_pb2  # type: ignore
@@ -59,8 +42,26 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
-
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.logging_v2.services.logging_service_v2 import (
+    LoggingServiceV2AsyncClient,
+    LoggingServiceV2Client,
+    pagers,
+    transports,
+)
+from google.cloud.logging_v2.types import log_entry, logging
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -962,10 +963,8 @@ def test_logging_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({
-  }),
-  {
-  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 def test_delete_log(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1091,8 +1090,8 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({  }),
-  {  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 async def test_delete_log_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1267,10 +1266,8 @@ async def test_delete_log_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({
-  }),
-  {
-  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 def test_write_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1397,8 +1394,8 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({  }),
-  {  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 async def test_write_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1542,10 +1539,8 @@ async def test_write_log_entries_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({
-  }),
-  {
-  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 def test_list_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1678,8 +1673,8 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({  }),
-  {  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 async def test_list_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2004,10 +1999,8 @@ async def test_list_log_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({
-  }),
-  {
-  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 def test_list_monitored_resource_descriptors(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2136,8 +2129,8 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({  }),
-  {  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 async def test_list_monitored_resource_descriptors_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2360,10 +2353,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({
-  }),
-  {
-  },
+  logging.ListLogsRequest(),
+  {},
 ])
 def test_list_logs(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2496,8 +2487,8 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({  }),
-  {  },
+  logging.ListLogsRequest(),
+  {},
 ])
 async def test_list_logs_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2871,10 +2862,8 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({
-  }),
-  {
-  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 def test_tail_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2972,8 +2961,8 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({  }),
-  {  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 async def test_tail_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(

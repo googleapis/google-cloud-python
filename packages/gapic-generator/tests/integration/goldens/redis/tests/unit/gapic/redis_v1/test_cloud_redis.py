@@ -13,33 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
 import asyncio
+import json
+import math
+import os
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
 
 import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable, AsyncIterable
-from google.protobuf import json_format
-import json
-import math
 import pytest
-from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+from google.protobuf import json_format
+from grpc.experimental import aio
 from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+
 try:
     import aiohttp  # type: ignore
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
     from google.api_core.operations_v1 import AsyncOperationsRestClient
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
     HAS_ASYNC_REST_EXTRA = True
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_EXTRA = False
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
 from google.protobuf import json_format
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -47,26 +46,6 @@ try:
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
-from google.api_core import operations_v1
-from google.api_core import path_template
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.cloud.redis_v1.services.cloud_redis import CloudRedisAsyncClient
-from google.cloud.redis_v1.services.cloud_redis import CloudRedisClient
-from google.cloud.redis_v1.services.cloud_redis import pagers
-from google.cloud.redis_v1.services.cloud_redis import transports
-from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2 # type: ignore
-from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
@@ -75,8 +54,30 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
 import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
-
-
+from google.api_core import (
+    client_options,
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.cloud.redis_v1.services.cloud_redis import (
+    CloudRedisAsyncClient,
+    CloudRedisClient,
+    pagers,
+    transports,
+)
+from google.cloud.redis_v1.types import cloud_redis
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -989,10 +990,8 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({
-  }),
-  {
-  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1125,8 +1124,8 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({  }),
-  {  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -1500,10 +1499,8 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1684,8 +1681,8 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({  }),
-  {  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -1915,10 +1912,8 @@ async def test_get_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceAuthStringRequest({
-  }),
-  {
-  },
+  cloud_redis.GetInstanceAuthStringRequest(),
+  {},
 ])
 def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2047,8 +2042,8 @@ async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceAuthStringRequest({  }),
-  {  },
+  cloud_redis.GetInstanceAuthStringRequest(),
+  {},
 ])
 async def test_get_instance_auth_string_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2226,10 +2221,8 @@ async def test_get_instance_auth_string_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2367,8 +2360,8 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({  }),
-  {  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 async def test_create_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2567,10 +2560,8 @@ async def test_create_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2704,8 +2695,8 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({  }),
-  {  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 async def test_update_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2894,10 +2885,8 @@ async def test_update_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpgradeInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.UpgradeInstanceRequest(),
+  {},
 ])
 def test_upgrade_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -3035,8 +3024,8 @@ async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpgradeInstanceRequest({  }),
-  {  },
+  cloud_redis.UpgradeInstanceRequest(),
+  {},
 ])
 async def test_upgrade_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -3225,10 +3214,8 @@ async def test_upgrade_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ImportInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.ImportInstanceRequest(),
+  {},
 ])
 def test_import_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -3364,8 +3351,8 @@ async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ImportInstanceRequest({  }),
-  {  },
+  cloud_redis.ImportInstanceRequest(),
+  {},
 ])
 async def test_import_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -3554,10 +3541,8 @@ async def test_import_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ExportInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.ExportInstanceRequest(),
+  {},
 ])
 def test_export_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -3693,8 +3678,8 @@ async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ExportInstanceRequest({  }),
-  {  },
+  cloud_redis.ExportInstanceRequest(),
+  {},
 ])
 async def test_export_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -3883,10 +3868,8 @@ async def test_export_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.FailoverInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.FailoverInstanceRequest(),
+  {},
 ])
 def test_failover_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -4022,8 +4005,8 @@ async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.FailoverInstanceRequest({  }),
-  {  },
+  cloud_redis.FailoverInstanceRequest(),
+  {},
 ])
 async def test_failover_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -4212,10 +4195,8 @@ async def test_failover_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -4351,8 +4332,8 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({  }),
-  {  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 async def test_delete_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -4531,10 +4512,8 @@ async def test_delete_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.RescheduleMaintenanceRequest({
-  }),
-  {
-  },
+  cloud_redis.RescheduleMaintenanceRequest(),
+  {},
 ])
 def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -4670,8 +4649,8 @@ async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: st
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.RescheduleMaintenanceRequest({  }),
-  {  },
+  cloud_redis.RescheduleMaintenanceRequest(),
+  {},
 ])
 async def test_reschedule_maintenance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(

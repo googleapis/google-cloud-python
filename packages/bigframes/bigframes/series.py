@@ -41,7 +41,7 @@ from typing import (
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
-import google.cloud.bigquery.job
+import google.cloud.bigquery as bigquery
 import numpy
 import pandas
 import pyarrow as pa
@@ -119,7 +119,7 @@ class Series:
         *,
         session: Optional[bigframes.session.Session] = None,
     ):
-        self._query_job: Optional[google.cloud.bigquery.job.QueryJob] = None
+        self._query_job: Optional[bigquery.QueryJob] = None
         import bigframes.pandas
 
         # Ignore object dtype if provided, as it provides no additional
@@ -321,7 +321,7 @@ class Series:
         )
 
     @property
-    def query_job(self) -> Optional[google.cloud.bigquery.job.QueryJob]:
+    def query_job(self) -> Optional[bigquery.QueryJob]:
         """BigQuery job metadata for the most recent query.
 
         Returns:
@@ -375,9 +375,7 @@ class Series:
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(
-        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
-    ):
+    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
         self._query_job = query_job
 
     def __len__(self):
@@ -837,7 +835,7 @@ class Series:
         )
         return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 
-    def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
+    def _compute_dry_run(self) -> bigquery.QueryJob:
         _, query_job = self._block._compute_dry_run((self._value_column,))
         return query_job
 
