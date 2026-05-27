@@ -839,7 +839,7 @@ def core_deps_from_source(session, protobuf_implementation):
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
-    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install(*dep_paths, "--no-deps", "--upgrade")
     print(
         f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
     )

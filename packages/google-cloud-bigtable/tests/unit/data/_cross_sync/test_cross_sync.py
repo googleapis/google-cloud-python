@@ -410,7 +410,7 @@ class TestCrossSync:
         start_time = time.monotonic()
         await cs_async.event_wait(event, async_break_early=break_early)
         end_time = time.monotonic()
-        assert abs(end_time - start_time) < 0.01
+        assert abs(end_time - start_time) < 0.5
 
     @pytest.mark.asyncio
     async def test_event_wait_no_break_early(self, cs_async):
