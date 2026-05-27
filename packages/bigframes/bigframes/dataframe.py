@@ -4697,7 +4697,7 @@ class DataFrame:
         op = ops.func_to_op(func)
 
         # TODO(shobs): Support **kwargs
-        return self._apply_nary_op(op)
+        return self._apply_unary_op(op)
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
         # In Bigframes BigQuery function, DataFrame '.apply' method is specifically

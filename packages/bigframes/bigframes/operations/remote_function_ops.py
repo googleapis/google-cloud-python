@@ -19,7 +19,7 @@ from bigframes.functions import udf_def
 from bigframes.operations import base_ops
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class PythonUdfOp(base_ops.NaryOp):
     name: typing.ClassVar[str] = "python_udf"
     function_def: udf_def.PythonUdf

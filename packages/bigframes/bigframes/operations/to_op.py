@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bigframes.functions import Udf
 from bigframes.functions.udf_def import BigqueryUdf, PythonUdf
 from bigframes.operations import base_ops, remote_function_ops
 
@@ -31,9 +32,10 @@ def func_to_op(op) -> base_ops.NaryOp:
         A bigframes operations.
     """
     # TODO: Handle numpy ufuncs, builtin functions, etc.
-    if isinstance(op, BigqueryUdf):
-        return remote_function_ops.RemoteFunctionOp(function_def=op.udf_def)
-    elif isinstance(op, PythonUdf):
-        return remote_function_ops.PythonUdfOp(function_def=op.udf_def)
+    if isinstance(op, Udf):
+        if isinstance(op.udf_def, BigqueryUdf):
+            return remote_function_ops.RemoteFunctionOp(function_def=op.udf_def)
+        elif isinstance(op.udf_def, PythonUdf):
+            return remote_function_ops.PythonUdfOp(function_def=op.udf_def)
     else:
         raise TypeError(f"Unsupported function type: {op}")

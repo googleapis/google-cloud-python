@@ -1034,8 +1034,8 @@ def timedelta_floor_op_impl(x: ibis_types.NumericValue):
     return ibis_api.case().when(x > ibis.literal(0), x.floor()).else_(x.ceil()).end()
 
 
-@scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
-def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
+@scalar_op_compiler.register_nary_op(ops.RemoteFunctionOp, pass_op=True)
+def remote_function_op_impl(*values: ibis_types.Value, op: ops.RemoteFunctionOp):
     udf_sig = op.function_def.signature
     assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
     ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
@@ -1048,8 +1048,7 @@ def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     )
     def udf(*inputs): ...
 
-    result = udf(*operands)
-    return result
+    return udf(*values)
 
 
 @scalar_op_compiler.register_unary_op(ops.MapOp, pass_op=True)

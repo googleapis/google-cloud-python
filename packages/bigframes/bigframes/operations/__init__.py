@@ -185,7 +185,6 @@ from bigframes.operations.numpy_op_maps import NUMPY_TO_BINOP, NUMPY_TO_OP
 from bigframes.operations.remote_function_ops import (
     PythonUdfOp,
     RemoteFunctionOp,
-    func_to_op,
 )
 from bigframes.operations.string_ops import (
     EndsWithOp,
@@ -230,6 +229,7 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
+from bigframes.operations.to_op import func_to_op
 
 __all__ = [
     # Base ops

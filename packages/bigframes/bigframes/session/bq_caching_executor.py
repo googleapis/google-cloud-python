@@ -35,13 +35,22 @@ import bigframes.core.ordering
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
+import bigframes.operations as ops
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.execution_cache as execution_cache
 import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes.core import compile, guid, identifiers, local_data, rewrite
+from bigframes._config import ComputeOptions
+from bigframes.core import (
+    compile,
+    expression,
+    guid,
+    identifiers,
+    local_data,
+    rewrite,
+)
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (

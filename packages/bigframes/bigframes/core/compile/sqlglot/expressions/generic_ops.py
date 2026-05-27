@@ -186,10 +186,9 @@ def _get_remote_function_name(op):
     )
 
 
-@register_unary_op(ops.RemoteFunctionOp, pass_op=True)
-def _(expr: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
-    func_name = _get_remote_function_name(op)
-    return sge.func(func_name, *(operand.expr for operand in operands))
+@register_nary_op(ops.RemoteFunctionOp, pass_op=True)
+def _(*values: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
+    return sge.func(_get_remote_function_name(op), *(value.expr for value in values))
 
 
 @register_nary_op(ops.case_when_op)
