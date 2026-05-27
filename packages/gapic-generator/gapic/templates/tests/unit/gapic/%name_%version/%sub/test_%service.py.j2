@@ -107,7 +107,7 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
 
