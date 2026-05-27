@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1260,8 +1276,8 @@ def test_bigtable_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadRowsRequest,
-        dict,
+        bigtable.ReadRowsRequest({}),
+        {},
     ],
 )
 def test_read_rows(request_type, transport: str = "grpc"):
@@ -1272,7 +1288,7 @@ def test_read_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1317,12 +1333,13 @@ def test_read_rows_non_empty_request_with_auto_populated_field():
         client.read_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.ReadRowsRequest(
+        request_msg = bigtable.ReadRowsRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             materialized_view_name="materialized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_rows_use_cached_wrapped_rpc():
@@ -1401,9 +1418,14 @@ async def test_read_rows_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_read_rows_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.ReadRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.ReadRowsRequest({}),
+        {},
+    ],
+)
+async def test_read_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1411,7 +1433,7 @@ async def test_read_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1431,11 +1453,6 @@ async def test_read_rows_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.ReadRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_read_rows_async_from_dict():
-    await test_read_rows_async(request_type=dict)
 
 
 def test_read_rows_flattened():
@@ -1531,8 +1548,8 @@ async def test_read_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.SampleRowKeysRequest,
-        dict,
+        bigtable.SampleRowKeysRequest({}),
+        {},
     ],
 )
 def test_sample_row_keys(request_type, transport: str = "grpc"):
@@ -1543,7 +1560,7 @@ def test_sample_row_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sample_row_keys), "__call__") as call:
@@ -1588,12 +1605,13 @@ def test_sample_row_keys_non_empty_request_with_auto_populated_field():
         client.sample_row_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.SampleRowKeysRequest(
+        request_msg = bigtable.SampleRowKeysRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             materialized_view_name="materialized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_sample_row_keys_use_cached_wrapped_rpc():
@@ -1674,9 +1692,14 @@ async def test_sample_row_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_sample_row_keys_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.SampleRowKeysRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.SampleRowKeysRequest({}),
+        {},
+    ],
+)
+async def test_sample_row_keys_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1684,7 +1707,7 @@ async def test_sample_row_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sample_row_keys), "__call__") as call:
@@ -1704,11 +1727,6 @@ async def test_sample_row_keys_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.SampleRowKeysResponse)
-
-
-@pytest.mark.asyncio
-async def test_sample_row_keys_async_from_dict():
-    await test_sample_row_keys_async(request_type=dict)
 
 
 def test_sample_row_keys_flattened():
@@ -1804,8 +1822,8 @@ async def test_sample_row_keys_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowRequest,
-        dict,
+        bigtable.MutateRowRequest({}),
+        {},
     ],
 )
 def test_mutate_row(request_type, transport: str = "grpc"):
@@ -1816,7 +1834,7 @@ def test_mutate_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_row), "__call__") as call:
@@ -1859,11 +1877,12 @@ def test_mutate_row_non_empty_request_with_auto_populated_field():
         client.mutate_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.MutateRowRequest(
+        request_msg = bigtable.MutateRowRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_mutate_row_use_cached_wrapped_rpc():
@@ -1942,9 +1961,14 @@ async def test_mutate_row_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_mutate_row_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.MutateRowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.MutateRowRequest({}),
+        {},
+    ],
+)
+async def test_mutate_row_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1952,7 +1976,7 @@ async def test_mutate_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_row), "__call__") as call:
@@ -1970,11 +1994,6 @@ async def test_mutate_row_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable.MutateRowResponse)
-
-
-@pytest.mark.asyncio
-async def test_mutate_row_async_from_dict():
-    await test_mutate_row_async(request_type=dict)
 
 
 def test_mutate_row_flattened():
@@ -2116,8 +2135,8 @@ async def test_mutate_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowsRequest,
-        dict,
+        bigtable.MutateRowsRequest({}),
+        {},
     ],
 )
 def test_mutate_rows(request_type, transport: str = "grpc"):
@@ -2128,7 +2147,7 @@ def test_mutate_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_rows), "__call__") as call:
@@ -2172,11 +2191,12 @@ def test_mutate_rows_non_empty_request_with_auto_populated_field():
         client.mutate_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.MutateRowsRequest(
+        request_msg = bigtable.MutateRowsRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_mutate_rows_use_cached_wrapped_rpc():
@@ -2257,9 +2277,14 @@ async def test_mutate_rows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_mutate_rows_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.MutateRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.MutateRowsRequest({}),
+        {},
+    ],
+)
+async def test_mutate_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2267,7 +2292,7 @@ async def test_mutate_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mutate_rows), "__call__") as call:
@@ -2287,11 +2312,6 @@ async def test_mutate_rows_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.MutateRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_mutate_rows_async_from_dict():
-    await test_mutate_rows_async(request_type=dict)
 
 
 def test_mutate_rows_flattened():
@@ -2397,8 +2417,8 @@ async def test_mutate_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.CheckAndMutateRowRequest,
-        dict,
+        bigtable.CheckAndMutateRowRequest({}),
+        {},
     ],
 )
 def test_check_and_mutate_row(request_type, transport: str = "grpc"):
@@ -2409,7 +2429,7 @@ def test_check_and_mutate_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2459,11 +2479,12 @@ def test_check_and_mutate_row_non_empty_request_with_auto_populated_field():
         client.check_and_mutate_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.CheckAndMutateRowRequest(
+        request_msg = bigtable.CheckAndMutateRowRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_check_and_mutate_row_use_cached_wrapped_rpc():
@@ -2548,8 +2569,15 @@ async def test_check_and_mutate_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.CheckAndMutateRowRequest({}),
+        {},
+    ],
+)
 async def test_check_and_mutate_row_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.CheckAndMutateRowRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2558,7 +2586,7 @@ async def test_check_and_mutate_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2581,11 +2609,6 @@ async def test_check_and_mutate_row_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable.CheckAndMutateRowResponse)
     assert response.predicate_matched is True
-
-
-@pytest.mark.asyncio
-async def test_check_and_mutate_row_async_from_dict():
-    await test_check_and_mutate_row_async(request_type=dict)
 
 
 def test_check_and_mutate_row_flattened():
@@ -2831,8 +2854,8 @@ async def test_check_and_mutate_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PingAndWarmRequest,
-        dict,
+        bigtable.PingAndWarmRequest({}),
+        {},
     ],
 )
 def test_ping_and_warm(request_type, transport: str = "grpc"):
@@ -2843,7 +2866,7 @@ def test_ping_and_warm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ping_and_warm), "__call__") as call:
@@ -2885,10 +2908,11 @@ def test_ping_and_warm_non_empty_request_with_auto_populated_field():
         client.ping_and_warm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.PingAndWarmRequest(
+        request_msg = bigtable.PingAndWarmRequest(
             name="name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_ping_and_warm_use_cached_wrapped_rpc():
@@ -2969,9 +2993,14 @@ async def test_ping_and_warm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_ping_and_warm_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.PingAndWarmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.PingAndWarmRequest({}),
+        {},
+    ],
+)
+async def test_ping_and_warm_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2979,7 +3008,7 @@ async def test_ping_and_warm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ping_and_warm), "__call__") as call:
@@ -2997,11 +3026,6 @@ async def test_ping_and_warm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable.PingAndWarmResponse)
-
-
-@pytest.mark.asyncio
-async def test_ping_and_warm_async_from_dict():
-    await test_ping_and_warm_async(request_type=dict)
 
 
 def test_ping_and_warm_flattened():
@@ -3099,8 +3123,8 @@ async def test_ping_and_warm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadModifyWriteRowRequest,
-        dict,
+        bigtable.ReadModifyWriteRowRequest({}),
+        {},
     ],
 )
 def test_read_modify_write_row(request_type, transport: str = "grpc"):
@@ -3111,7 +3135,7 @@ def test_read_modify_write_row(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3158,11 +3182,12 @@ def test_read_modify_write_row_non_empty_request_with_auto_populated_field():
         client.read_modify_write_row(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.ReadModifyWriteRowRequest(
+        request_msg = bigtable.ReadModifyWriteRowRequest(
             table_name="table_name_value",
             authorized_view_name="authorized_view_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_modify_write_row_use_cached_wrapped_rpc():
@@ -3248,8 +3273,15 @@ async def test_read_modify_write_row_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.ReadModifyWriteRowRequest({}),
+        {},
+    ],
+)
 async def test_read_modify_write_row_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.ReadModifyWriteRowRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3258,7 +3290,7 @@ async def test_read_modify_write_row_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3278,11 +3310,6 @@ async def test_read_modify_write_row_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable.ReadModifyWriteRowResponse)
-
-
-@pytest.mark.asyncio
-async def test_read_modify_write_row_async_from_dict():
-    await test_read_modify_write_row_async(request_type=dict)
 
 
 def test_read_modify_write_row_flattened():
@@ -3404,8 +3431,8 @@ async def test_read_modify_write_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.GenerateInitialChangeStreamPartitionsRequest,
-        dict,
+        bigtable.GenerateInitialChangeStreamPartitionsRequest({}),
+        {},
     ],
 )
 def test_generate_initial_change_stream_partitions(
@@ -3418,7 +3445,7 @@ def test_generate_initial_change_stream_partitions(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3469,10 +3496,11 @@ def test_generate_initial_change_stream_partitions_non_empty_request_with_auto_p
         client.generate_initial_change_stream_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.GenerateInitialChangeStreamPartitionsRequest(
+        request_msg = bigtable.GenerateInitialChangeStreamPartitionsRequest(
             table_name="table_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_initial_change_stream_partitions_use_cached_wrapped_rpc():
@@ -3558,9 +3586,15 @@ async def test_generate_initial_change_stream_partitions_async_use_cached_wrappe
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.GenerateInitialChangeStreamPartitionsRequest({}),
+        {},
+    ],
+)
 async def test_generate_initial_change_stream_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=bigtable.GenerateInitialChangeStreamPartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3569,7 +3603,7 @@ async def test_generate_initial_change_stream_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3591,11 +3625,6 @@ async def test_generate_initial_change_stream_partitions_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.GenerateInitialChangeStreamPartitionsResponse)
-
-
-@pytest.mark.asyncio
-async def test_generate_initial_change_stream_partitions_async_from_dict():
-    await test_generate_initial_change_stream_partitions_async(request_type=dict)
 
 
 def test_generate_initial_change_stream_partitions_field_headers():
@@ -3767,8 +3796,8 @@ async def test_generate_initial_change_stream_partitions_flattened_error_async()
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadChangeStreamRequest,
-        dict,
+        bigtable.ReadChangeStreamRequest({}),
+        {},
     ],
 )
 def test_read_change_stream(request_type, transport: str = "grpc"):
@@ -3779,7 +3808,7 @@ def test_read_change_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3826,10 +3855,11 @@ def test_read_change_stream_non_empty_request_with_auto_populated_field():
         client.read_change_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.ReadChangeStreamRequest(
+        request_msg = bigtable.ReadChangeStreamRequest(
             table_name="table_name_value",
             app_profile_id="app_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_change_stream_use_cached_wrapped_rpc():
@@ -3914,9 +3944,14 @@ async def test_read_change_stream_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_read_change_stream_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.ReadChangeStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.ReadChangeStreamRequest({}),
+        {},
+    ],
+)
+async def test_read_change_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3924,7 +3959,7 @@ async def test_read_change_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3946,11 +3981,6 @@ async def test_read_change_stream_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.ReadChangeStreamResponse)
-
-
-@pytest.mark.asyncio
-async def test_read_change_stream_async_from_dict():
-    await test_read_change_stream_async(request_type=dict)
 
 
 def test_read_change_stream_field_headers():
@@ -4116,8 +4146,8 @@ async def test_read_change_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PrepareQueryRequest,
-        dict,
+        bigtable.PrepareQueryRequest({}),
+        {},
     ],
 )
 def test_prepare_query(request_type, transport: str = "grpc"):
@@ -4128,7 +4158,7 @@ def test_prepare_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.prepare_query), "__call__") as call:
@@ -4174,11 +4204,12 @@ def test_prepare_query_non_empty_request_with_auto_populated_field():
         client.prepare_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.PrepareQueryRequest(
+        request_msg = bigtable.PrepareQueryRequest(
             instance_name="instance_name_value",
             app_profile_id="app_profile_id_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_prepare_query_use_cached_wrapped_rpc():
@@ -4259,9 +4290,14 @@ async def test_prepare_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_prepare_query_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.PrepareQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.PrepareQueryRequest({}),
+        {},
+    ],
+)
+async def test_prepare_query_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4269,7 +4305,7 @@ async def test_prepare_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.prepare_query), "__call__") as call:
@@ -4290,11 +4326,6 @@ async def test_prepare_query_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable.PrepareQueryResponse)
     assert response.prepared_query == b"prepared_query_blob"
-
-
-@pytest.mark.asyncio
-async def test_prepare_query_async_from_dict():
-    await test_prepare_query_async(request_type=dict)
 
 
 def test_prepare_query_flattened():
@@ -4402,8 +4433,8 @@ async def test_prepare_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ExecuteQueryRequest,
-        dict,
+        bigtable.ExecuteQueryRequest({}),
+        {},
     ],
 )
 def test_execute_query(request_type, transport: str = "grpc"):
@@ -4414,7 +4445,7 @@ def test_execute_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_query), "__call__") as call:
@@ -4458,11 +4489,12 @@ def test_execute_query_non_empty_request_with_auto_populated_field():
         client.execute_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable.ExecuteQueryRequest(
+        request_msg = bigtable.ExecuteQueryRequest(
             instance_name="instance_name_value",
             app_profile_id="app_profile_id_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_query_use_cached_wrapped_rpc():
@@ -4543,9 +4575,14 @@ async def test_execute_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_query_async(
-    transport: str = "grpc_asyncio", request_type=bigtable.ExecuteQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable.ExecuteQueryRequest({}),
+        {},
+    ],
+)
+async def test_execute_query_async(request_type, transport: str = "grpc_asyncio"):
     client = BigtableAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4553,7 +4590,7 @@ async def test_execute_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_query), "__call__") as call:
@@ -4573,11 +4610,6 @@ async def test_execute_query_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, bigtable.ExecuteQueryResponse)
-
-
-@pytest.mark.asyncio
-async def test_execute_query_async_from_dict():
-    await test_execute_query_async(request_type=dict)
 
 
 def test_execute_query_flattened():
@@ -6793,7 +6825,6 @@ def test_read_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6814,7 +6845,6 @@ def test_sample_row_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -6835,7 +6865,6 @@ def test_mutate_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -6856,7 +6885,6 @@ def test_mutate_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6879,7 +6907,6 @@ def test_check_and_mutate_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -6900,7 +6927,6 @@ def test_ping_and_warm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest()
-
         assert args[0] == request_msg
 
 
@@ -6923,7 +6949,6 @@ def test_read_modify_write_row_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadModifyWriteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -6948,7 +6973,6 @@ def test_generate_initial_change_stream_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.GenerateInitialChangeStreamPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6971,7 +6995,6 @@ def test_read_change_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadChangeStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -6992,7 +7015,6 @@ def test_prepare_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -7013,7 +7035,6 @@ def test_execute_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -7036,7 +7057,6 @@ def test_read_rows_routing_parameters_request_1_grpc():
         request_msg = bigtable.ReadRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7065,7 +7085,6 @@ def test_read_rows_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7099,7 +7118,6 @@ def test_read_rows_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7134,7 +7152,6 @@ def test_read_rows_routing_parameters_request_4_grpc():
         request_msg = bigtable.ReadRowsRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7167,7 +7184,6 @@ def test_sample_row_keys_routing_parameters_request_1_grpc():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7196,7 +7212,6 @@ def test_sample_row_keys_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7230,7 +7245,6 @@ def test_sample_row_keys_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7265,7 +7279,6 @@ def test_sample_row_keys_routing_parameters_request_4_grpc():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7298,7 +7311,6 @@ def test_mutate_row_routing_parameters_request_1_grpc():
         request_msg = bigtable.MutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7327,7 +7339,6 @@ def test_mutate_row_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7361,7 +7372,6 @@ def test_mutate_row_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7394,7 +7404,6 @@ def test_mutate_rows_routing_parameters_request_1_grpc():
         request_msg = bigtable.MutateRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7423,7 +7432,6 @@ def test_mutate_rows_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7457,7 +7465,6 @@ def test_mutate_rows_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7492,7 +7499,6 @@ def test_check_and_mutate_row_routing_parameters_request_1_grpc():
         request_msg = bigtable.CheckAndMutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7523,7 +7529,6 @@ def test_check_and_mutate_row_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7559,7 +7564,6 @@ def test_check_and_mutate_row_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7590,7 +7594,6 @@ def test_ping_and_warm_routing_parameters_request_1_grpc():
         request_msg = bigtable.PingAndWarmRequest(
             **{"name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7619,7 +7622,6 @@ def test_ping_and_warm_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7651,7 +7653,6 @@ def test_read_modify_write_row_routing_parameters_request_1_grpc():
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7684,7 +7685,6 @@ def test_read_modify_write_row_routing_parameters_request_2_grpc():
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"app_profile_id": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7720,7 +7720,6 @@ def test_read_modify_write_row_routing_parameters_request_3_grpc():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7753,7 +7752,6 @@ def test_prepare_query_routing_parameters_request_1_grpc():
         request_msg = bigtable.PrepareQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7782,7 +7780,6 @@ def test_prepare_query_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7812,7 +7809,6 @@ def test_execute_query_routing_parameters_request_1_grpc():
         request_msg = bigtable.ExecuteQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -7841,7 +7837,6 @@ def test_execute_query_routing_parameters_request_2_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -7888,7 +7883,6 @@ async def test_read_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7914,7 +7908,6 @@ async def test_sample_row_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -7939,7 +7932,6 @@ async def test_mutate_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -7965,7 +7957,6 @@ async def test_mutate_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7994,7 +7985,6 @@ async def test_check_and_mutate_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -8019,7 +8009,6 @@ async def test_ping_and_warm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest()
-
         assert args[0] == request_msg
 
 
@@ -8046,7 +8035,6 @@ async def test_read_modify_write_row_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadModifyWriteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -8074,7 +8062,6 @@ async def test_generate_initial_change_stream_partitions_empty_call_grpc_asyncio
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.GenerateInitialChangeStreamPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8102,7 +8089,6 @@ async def test_read_change_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadChangeStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -8129,7 +8115,6 @@ async def test_prepare_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -8155,7 +8140,6 @@ async def test_execute_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -8183,7 +8167,6 @@ async def test_read_rows_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.ReadRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8217,7 +8200,6 @@ async def test_read_rows_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8256,7 +8238,6 @@ async def test_read_rows_routing_parameters_request_3_grpc_asyncio():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8296,7 +8277,6 @@ async def test_read_rows_routing_parameters_request_4_grpc_asyncio():
         request_msg = bigtable.ReadRowsRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8334,7 +8314,6 @@ async def test_sample_row_keys_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8368,7 +8347,6 @@ async def test_sample_row_keys_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8407,7 +8385,6 @@ async def test_sample_row_keys_routing_parameters_request_3_grpc_asyncio():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8447,7 +8424,6 @@ async def test_sample_row_keys_routing_parameters_request_4_grpc_asyncio():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8484,7 +8460,6 @@ async def test_mutate_row_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.MutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8517,7 +8492,6 @@ async def test_mutate_row_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8555,7 +8529,6 @@ async def test_mutate_row_routing_parameters_request_3_grpc_asyncio():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8593,7 +8566,6 @@ async def test_mutate_rows_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.MutateRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8627,7 +8599,6 @@ async def test_mutate_rows_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8666,7 +8637,6 @@ async def test_mutate_rows_routing_parameters_request_3_grpc_asyncio():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8707,7 +8677,6 @@ async def test_check_and_mutate_row_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.CheckAndMutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8744,7 +8713,6 @@ async def test_check_and_mutate_row_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8786,7 +8754,6 @@ async def test_check_and_mutate_row_routing_parameters_request_3_grpc_asyncio():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8823,7 +8790,6 @@ async def test_ping_and_warm_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.PingAndWarmRequest(
             **{"name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8856,7 +8822,6 @@ async def test_ping_and_warm_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8892,7 +8857,6 @@ async def test_read_modify_write_row_routing_parameters_request_1_grpc_asyncio()
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -8929,7 +8893,6 @@ async def test_read_modify_write_row_routing_parameters_request_2_grpc_asyncio()
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"app_profile_id": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -8969,7 +8932,6 @@ async def test_read_modify_write_row_routing_parameters_request_3_grpc_asyncio()
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -9008,7 +8970,6 @@ async def test_prepare_query_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.PrepareQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -9043,7 +9004,6 @@ async def test_prepare_query_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -9078,7 +9038,6 @@ async def test_execute_query_routing_parameters_request_1_grpc_asyncio():
         request_msg = bigtable.ExecuteQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -9112,7 +9071,6 @@ async def test_execute_query_routing_parameters_request_2_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -10561,7 +10519,6 @@ def test_read_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10581,7 +10538,6 @@ def test_sample_row_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -10601,7 +10557,6 @@ def test_mutate_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10621,7 +10576,6 @@ def test_mutate_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10643,7 +10597,6 @@ def test_check_and_mutate_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10663,7 +10616,6 @@ def test_ping_and_warm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest()
-
         assert args[0] == request_msg
 
 
@@ -10685,7 +10637,6 @@ def test_read_modify_write_row_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadModifyWriteRowRequest()
-
         assert args[0] == request_msg
 
 
@@ -10707,7 +10658,6 @@ def test_generate_initial_change_stream_partitions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.GenerateInitialChangeStreamPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10729,7 +10679,6 @@ def test_read_change_stream_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ReadChangeStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -10749,7 +10698,6 @@ def test_prepare_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10769,7 +10717,6 @@ def test_execute_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10791,7 +10738,6 @@ def test_read_rows_routing_parameters_request_1_rest():
         request_msg = bigtable.ReadRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -10819,7 +10765,6 @@ def test_read_rows_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ReadRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -10852,7 +10797,6 @@ def test_read_rows_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -10886,7 +10830,6 @@ def test_read_rows_routing_parameters_request_4_rest():
         request_msg = bigtable.ReadRowsRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -10918,7 +10861,6 @@ def test_sample_row_keys_routing_parameters_request_1_rest():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -10946,7 +10888,6 @@ def test_sample_row_keys_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.SampleRowKeysRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -10979,7 +10920,6 @@ def test_sample_row_keys_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11013,7 +10953,6 @@ def test_sample_row_keys_routing_parameters_request_4_rest():
         request_msg = bigtable.SampleRowKeysRequest(
             **{"materialized_view_name": "projects/sample1/instances/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11045,7 +10984,6 @@ def test_mutate_row_routing_parameters_request_1_rest():
         request_msg = bigtable.MutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11073,7 +11011,6 @@ def test_mutate_row_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11106,7 +11043,6 @@ def test_mutate_row_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11138,7 +11074,6 @@ def test_mutate_rows_routing_parameters_request_1_rest():
         request_msg = bigtable.MutateRowsRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11166,7 +11101,6 @@ def test_mutate_rows_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.MutateRowsRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11199,7 +11133,6 @@ def test_mutate_rows_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11233,7 +11166,6 @@ def test_check_and_mutate_row_routing_parameters_request_1_rest():
         request_msg = bigtable.CheckAndMutateRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11263,7 +11195,6 @@ def test_check_and_mutate_row_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.CheckAndMutateRowRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11298,7 +11229,6 @@ def test_check_and_mutate_row_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11328,7 +11258,6 @@ def test_ping_and_warm_routing_parameters_request_1_rest():
         request_msg = bigtable.PingAndWarmRequest(
             **{"name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11356,7 +11285,6 @@ def test_ping_and_warm_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PingAndWarmRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11387,7 +11315,6 @@ def test_read_modify_write_row_routing_parameters_request_1_rest():
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"table_name": "projects/sample1/instances/sample2/tables/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11419,7 +11346,6 @@ def test_read_modify_write_row_routing_parameters_request_2_rest():
         request_msg = bigtable.ReadModifyWriteRowRequest(
             **{"app_profile_id": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11454,7 +11380,6 @@ def test_read_modify_write_row_routing_parameters_request_3_rest():
                 "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/sample4"
             }
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11486,7 +11411,6 @@ def test_prepare_query_routing_parameters_request_1_rest():
         request_msg = bigtable.PrepareQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11514,7 +11438,6 @@ def test_prepare_query_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.PrepareQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
@@ -11543,7 +11466,6 @@ def test_execute_query_routing_parameters_request_1_rest():
         request_msg = bigtable.ExecuteQueryRequest(
             **{"instance_name": "projects/sample1/instances/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {
@@ -11571,7 +11493,6 @@ def test_execute_query_routing_parameters_request_2_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = bigtable.ExecuteQueryRequest(**{"app_profile_id": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"app_profile_id": "sample1"}
