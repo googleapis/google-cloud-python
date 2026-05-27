@@ -395,7 +395,7 @@ class {{ service.async_client_name }}:
 
 {{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
-{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method, is_async=True) }}
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
