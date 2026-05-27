@@ -960,7 +960,7 @@ def test_base_metrics_service_v2_client_create_channel_credentials_file(client_c
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest({
+  logging_metrics.ListLogMetricsRequest(**{
   }),
   {
   },
@@ -1094,7 +1094,7 @@ async def test__list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest({  }),
+  logging_metrics.ListLogMetricsRequest(**{  }),
   {  },
 ])
 async def test__list_log_metrics_async(request_type, transport: str = 'grpc_asyncio'):
@@ -1467,7 +1467,7 @@ async def test__list_log_metrics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest({
+  logging_metrics.GetLogMetricRequest(**{
   }),
   {
   },
@@ -1611,7 +1611,7 @@ async def test__get_log_metric_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest({  }),
+  logging_metrics.GetLogMetricRequest(**{  }),
   {  },
 ])
 async def test__get_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
@@ -1802,7 +1802,7 @@ async def test__get_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest({
+  logging_metrics.CreateLogMetricRequest(**{
   }),
   {
   },
@@ -1946,7 +1946,7 @@ async def test__create_log_metric_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest({  }),
+  logging_metrics.CreateLogMetricRequest(**{  }),
   {  },
 ])
 async def test__create_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
@@ -2147,7 +2147,7 @@ async def test__create_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest({
+  logging_metrics.UpdateLogMetricRequest(**{
   }),
   {
   },
@@ -2291,7 +2291,7 @@ async def test__update_log_metric_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest({  }),
+  logging_metrics.UpdateLogMetricRequest(**{  }),
   {  },
 ])
 async def test__update_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
@@ -2492,7 +2492,7 @@ async def test__update_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest({
+  logging_metrics.DeleteLogMetricRequest(**{
   }),
   {
   },
@@ -2621,7 +2621,7 @@ async def test__delete_log_metric_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest({  }),
+  logging_metrics.DeleteLogMetricRequest(**{  }),
   {  },
 ])
 async def test__delete_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
