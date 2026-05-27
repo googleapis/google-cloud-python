@@ -392,7 +392,9 @@ async def test_recv_updates_read_handle_on_refresh(
     "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
 )
 @pytest.mark.asyncio
-async def test_open_unfinalized_object_skips_checksum(mock_client, mock_cls_async_bidi_rpc):
+async def test_open_unfinalized_object_skips_checksum(
+    mock_client, mock_cls_async_bidi_rpc
+):
     socket_like_rpc = AsyncMock()
     mock_cls_async_bidi_rpc.return_value = socket_like_rpc
     socket_like_rpc.open = AsyncMock()
