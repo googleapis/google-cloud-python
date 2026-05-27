@@ -78,7 +78,7 @@ class FunctionClient:
         gcp_project_id: str,
         bq_location: str,
         bq_client: bigquery.Client,
-        bq_connection_manager: bigquery_connection.BigQueryConnectionManager,
+        bq_connection_manager,
         cloud_functions_client: functions_v2.FunctionServiceClient,
         publisher,
     ):
@@ -110,15 +110,15 @@ class FunctionClient:
     def _ensure_dataset_exists(self, dataset_ref: bigquery.DatasetReference) -> None:
         # Make sure the dataset exists, i.e. if it doesn't exist, go ahead and
         # create it.
-        dataset = bigquery.Dataset(dataset_ref)
-        dataset.location = self._bq_location
         try:
             # This check does not require bigquery.datasets.create IAM
             # permission. So, if the data set already exists, then user can work
             # without having that permission.
-            self._bq_client.get_dataset(dataset)
+            self._bq_client.get_dataset(dataset_ref)
         except google.api_core.exceptions.NotFound:
             # This requires bigquery.datasets.create IAM permission.
+            dataset = bigquery.Dataset(dataset_ref)
+            dataset.location = self._bq_location
             self._bq_client.create_dataset(dataset, exists_ok=True)
 
     def _create_bq_function(self, create_function_ddl: str) -> None:
@@ -424,9 +424,10 @@ class FunctionClient:
             function.build_config.source.storage_source.object_ = (
                 upload_url_response.storage_source.object_
             )
-            function.build_config.docker_repository = config.docker_repository
+            if config.docker_repository is not None:
+                function.build_config.docker_repository = config.docker_repository
 
-            if config.cloud_build_service_account:
+            if config.cloud_build_service_account is not None:
                 canonical_cloud_build_service_account = (
                     config.cloud_build_service_account
                     if "/" in config.cloud_build_service_account
@@ -470,9 +471,9 @@ class FunctionClient:
                     functions_v2.ServiceConfig.VpcConnectorEgressSettings,
                     _VPC_EGRESS_SETTINGS_MAP[vpc_connector_egress_settings],
                 )
-            if config.cloud_function_service_account:
+            if config.cloud_run_service_account:
                 function.service_config.service_account_email = (
-                    config.cloud_function_service_account
+                    config.cloud_run_service_account
                 )
             if config.concurrency:
                 function.service_config.max_instance_request_concurrency = (

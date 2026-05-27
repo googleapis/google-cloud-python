@@ -1952,7 +1952,7 @@ class Session(
         *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
-        dataset: str,
+        dataset: Optional[str] = None,
         bigquery_connection: Optional[str] = None,
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
@@ -2046,7 +2046,7 @@ class Session(
                 be specified. The supported output types are `bool`, `bytes`,
                 `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
                 and `list[str]`.
-            dataset (str):
+            dataset (str, Optional):
                 Dataset in which to create a BigQuery managed function. It
                 should be in `<project_id>.<dataset_name>` or `<dataset_name>`
                 format.

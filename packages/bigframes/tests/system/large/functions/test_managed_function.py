@@ -1130,28 +1130,25 @@ def test_managed_function_series_apply_args(
     pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
-def test_deferred_unnamed_udf_execution(session, dataset_id, scalars_dfs):
+def test_deferred_unnamed_udf_execution(session, scalars_dfs):
     import bigframes.functions.udf_def as udf_def
 
     # Create an unnamed UDF (name=None)
-    @session.udf(dataset=dataset_id)
+    @session.udf()
     def unnamed_multiplier(x: int) -> int:
         return x * 3
 
-    # 1. Assert it is represented as a PythonUdf (not deployed yet)
     assert isinstance(unnamed_multiplier.udf_def, udf_def.PythonUdf)
 
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series = scalars_df["int64_too"]
     pd_series = scalars_pandas_df["int64_too"]
 
-    # 2. Applying it triggers deployment behind the scenes!
     bf_result = bf_series.apply(unnamed_multiplier).to_pandas()
     pd_result = pd_series.apply(lambda x: x * 3)
 
     pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
-    # 3. Verify that the deployed routine name matches our stable hash and exists in BigQuery
     import bigframes.functions._function_client as bff_client
 
     config = unnamed_multiplier.udf_def.to_managed_function_config()
@@ -1164,12 +1161,11 @@ def test_deferred_unnamed_udf_execution(session, dataset_id, scalars_dfs):
     assert routine is not None
 
 
-def test_deferred_udf_with_runtime_requirements(session, dataset_id, scalars_dfs):
+def test_deferred_udf_with_runtime_requirements(session, scalars_dfs):
     import bigframes.functions.udf_def as udf_def
 
     # Create an unnamed UDF with custom options
     @session.udf(
-        dataset=dataset_id,
         container_cpu=1,
         container_memory="2Gi",
         max_batching_rows=25,
