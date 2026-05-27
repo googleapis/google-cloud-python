@@ -4,7 +4,7 @@
 {%- set auto_populated_field_sample_value = "explicit value for autopopulate-able field" -%}
 {% with method_name = method.client_method_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.client_method_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
 @pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }}({
+  {{ method.input.ident }}(**{
     {% for auto_populated_field in auto_populated_fields %}
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {% endfor %}
@@ -260,7 +260,7 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }}({
+  {{ method.input.ident }}(**{
     {%- for auto_populated_field in auto_populated_fields %}
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {%- endfor %}
