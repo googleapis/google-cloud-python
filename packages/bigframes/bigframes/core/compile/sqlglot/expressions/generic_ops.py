@@ -94,7 +94,7 @@ def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
             )
             arg_spec = op.args[-1]
         if operand.is_omitted:
-            assert arg_spec.optional, f"Argument omitted, but not optional"
+            assert arg_spec.optional, "Argument omitted, but not optional"
             continue
         elif arg_spec.arg_name:
             args.append(sge.Kwarg(this=arg_spec.arg_name, expression=operand.expr))

@@ -14,10 +14,9 @@
 
 from __future__ import annotations
 
-import typing
 import uuid
 import warnings
-from typing import Mapping, Optional
+from typing import Optional
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
@@ -30,7 +29,6 @@ from bigframes.session import (
     execution_spec,
     executor,
     loader,
-    metrics,
     temporary_storage,
 )
 
