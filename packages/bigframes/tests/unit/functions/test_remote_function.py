@@ -14,7 +14,6 @@
 
 import pytest
 
-import bigframes.functions.function as bff
 from bigframes.testing import mocks
 
 

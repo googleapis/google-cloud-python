@@ -17,30 +17,23 @@ from __future__ import annotations
 
 import logging
 import os
-import random
 import re
 import shutil
-import string
 import tempfile
 import textwrap
 import types
 import warnings
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import Any, cast
 
+import google.api_core.exceptions
+import google.api_core.retry
 import requests
+from google.cloud import bigquery, functions_v2
 
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
 import bigframes.functions.function_template as bff_template
 import bigframes.functions.udf_def as udf_def
-
-if TYPE_CHECKING:
-    from bigframes.session import Session
-
-import google.api_core.exceptions
-import google.api_core.retry
-from google.cloud import bigquery, functions_v2
-
 from bigframes.functions import _utils
 
 logger = logging.getLogger(__name__)

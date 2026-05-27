@@ -28,21 +28,15 @@ import warnings
 from typing import (
     TYPE_CHECKING,
     Any,
-    Dict,
     Literal,
     Mapping,
     Optional,
     Sequence,
     Union,
-    cast,
 )
 
-import google.api_core.exceptions
 from google.cloud import (
     bigquery,
-    bigquery_connection_v1,
-    functions_v2,
-    resourcemanager_v3,
 )
 
 import bigframes.exceptions as bfe
@@ -57,7 +51,7 @@ from bigframes.functions._utils import (
 )
 
 if TYPE_CHECKING:
-    from bigframes.session import Session, anonymous_dataset
+    from bigframes.session import anonymous_dataset
 
 
 _DEFAULT_FUNCTION_MEMORY_MIB = 1024
@@ -473,7 +467,6 @@ class FunctionSession:
         # BQ remote function must be persisted, for which we need a dataset.
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#:~:text=You%20cannot%20create%20temporary%20remote%20functions.
         dataset_ref = self._resolve_dataset_reference(dataset)
-        cloud_function_region = _utils.gcf_location_from_bq_location(self._location)
         # A connection is required for BQ remote function.
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function
         bq_connection_id = self._resolve_bigquery_connection_id(

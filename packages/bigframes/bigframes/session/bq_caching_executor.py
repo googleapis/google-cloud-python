@@ -43,7 +43,6 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes._config import ComputeOptions
 from bigframes.core import (
     compile,
     expression,
@@ -527,7 +526,6 @@ class BigQueryCachingExecutor(executor.Executor):
         self, plan: nodes.BigFrameNode
     ) -> nodes.BigFrameNode:
         referenced_udfs = list(set(self._collect_udf_defs(plan)))
-        session = self.loader._session
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf] = {}
         tasks = [
             asyncio.to_thread(

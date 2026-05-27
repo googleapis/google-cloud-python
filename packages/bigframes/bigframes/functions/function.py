@@ -26,8 +26,6 @@ from bigframes.functions import _function_session as bff_session
 from bigframes.functions import function_typing, udf_def
 
 if TYPE_CHECKING:
-    import bigframes.core.col
-    import bigframes.series
     from bigframes.session import Session
 
 logger = logging.getLogger(__name__)
