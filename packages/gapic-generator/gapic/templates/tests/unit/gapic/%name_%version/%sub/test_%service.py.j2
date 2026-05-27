@@ -144,10 +144,16 @@ def modify_default_endpoint_template(client):
 @pytest.fixture(autouse=True)
 def set_event_loop():
     try:
-        asyncio.get_event_loop()
+        asyncio.get_event_loop_policy().get_event_loop()
+        yield
     except RuntimeError:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():

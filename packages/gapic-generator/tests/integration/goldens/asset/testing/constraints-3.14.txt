@@ -10,7 +10,6 @@ google-auth>=2
 grpcio>=1
 proto-plus>=1
 protobuf>=6
-pytest-asyncio>=1.3.0
 google-cloud-access-context-manager>=0
 google-cloud-os-config>=1
 grpc-google-iam-v1>=0
