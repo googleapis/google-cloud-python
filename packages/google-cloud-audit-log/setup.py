@@ -58,7 +58,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     install_requires=dependencies,
     license="Apache-2.0",
-    packages=find_namespace_packages(exclude=("tests*", "testing*")),
+    packages=find_namespace_packages(
+        include=("google*",), exclude=("docs*", "tests*", "testing*")
+    ),
     python_requires=">=3.9",
     url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log",
     include_package_data=True,
