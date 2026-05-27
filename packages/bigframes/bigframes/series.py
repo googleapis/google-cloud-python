@@ -375,7 +375,9 @@ class Series:
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(self, query_job: Optional[google.cloud.bigquery.job.QueryJob]):
+    def _set_internal_query_job(
+        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
+    ):
         self._query_job = query_job
 
     def __len__(self):
