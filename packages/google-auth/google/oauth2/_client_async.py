@@ -424,7 +424,8 @@ async def _lookup_regional_access_boundary_request_no_throw(
             )
             response_data = json.loads(response_body)
         except (UnicodeDecodeError, ValueError):
-            return False, {}, False
+            # Keep types safe and allow status-code checks below to determine retryability
+            response_data = {}
 
         status_code = (
             response.status_code

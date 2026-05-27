@@ -628,3 +628,34 @@ async def test__lookup_regional_access_boundary_request_no_throw_transport_error
     assert success is False
     assert data == {}
     assert retryable is False
+
+
+@pytest.mark.asyncio
+@mock.patch("asyncio.sleep", new_callable=mock.AsyncMock)
+async def test__lookup_regional_access_boundary_request_no_throw_non_json_bad_gateway_retry(
+    mock_sleep,
+):
+    bad_gateway_response = mock.AsyncMock(spec=["status", "content"])
+    bad_gateway_response.status = http_client.BAD_GATEWAY
+    bad_gateway_response.content = mock.AsyncMock(return_value=b"<html>Bad Gateway</html>")
+
+    ok_response = mock.AsyncMock(spec=["status", "content"])
+    ok_response.status = http_client.OK
+    ok_response.content = mock.AsyncMock(return_value=b'{"encodedLocations": "0xA30"}')
+
+    request = mock.AsyncMock(spec=["__call__"])
+    request.side_effect = [bad_gateway_response, ok_response]
+
+    (
+        success,
+        data,
+        retryable,
+    ) = await _client._lookup_regional_access_boundary_request_no_throw(
+        request, "http://example.com"
+    )
+
+    assert success is True
+    assert data == {"encodedLocations": "0xA30"}
+    assert retryable is None
+    assert request.call_count == 2
+    mock_sleep.assert_called_once()
