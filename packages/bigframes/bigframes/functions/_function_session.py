@@ -122,7 +122,7 @@ class FunctionSession:
     def _resolve_routine_reference(
         self,
         function_name: str,
-        dataset: Optional[bigquery.DatasetReference]=None,
+        dataset: Optional[bigquery.DatasetReference] = None,
     ) -> bigquery.RoutineReference:
         """Resolves the routine reference for a BQ routine."""
         dataset_ref = dataset if dataset else self.default_dataset
@@ -171,11 +171,11 @@ class FunctionSession:
             self._temp_remote_functions.add(bqrf_routine)
 
     def _deploy_managed_function(
-        self, 
-        config: udf_def.ManagedFunctionConfig, 
-        name: str, 
+        self,
+        config: udf_def.ManagedFunctionConfig,
+        name: str,
         temp: bool,
-        dataset: Optional[bigquery.DatasetReference]=None
+        dataset: Optional[bigquery.DatasetReference] = None,
     ) -> udf_def.BigqueryUdf:
         routine_ref = self._resolve_routine_reference(name, dataset=dataset)
         if temp:
@@ -623,7 +623,9 @@ class FunctionSession:
                 session_id=self.session_id,
                 uniq_suffix=uniq_suffix,
             )
-            routine_ref = self._resolve_routine_reference(remote_function_name, dataset=dataset_ref)
+            routine_ref = self._resolve_routine_reference(
+                remote_function_name, dataset=dataset_ref
+            )
             if not name:
                 self._add_temp_remote_function(routine_ref)
 

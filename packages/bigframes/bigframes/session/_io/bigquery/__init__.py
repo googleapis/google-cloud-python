@@ -373,7 +373,9 @@ def start_query_job_optional(
             project=project,
             api_timeout=timeout,
             job_retry=job_retry,
-            callback=create_bq_event_callback(publisher) if publisher else lambda _: None,
+            callback=create_bq_event_callback(publisher)
+            if publisher
+            else lambda _: None,
         )
         if metrics is not None:
             metrics.count_job_stats(row_iterator=results_iterator)
