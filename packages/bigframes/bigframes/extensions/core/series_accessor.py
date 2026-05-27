@@ -24,7 +24,6 @@ from typing import Any, Generic, Literal, Optional, TypeVar, Union, cast
 import bigframes.core.col
 import bigframes.core.sentinels as sentinels
 import bigframes.series as series
-from bigframes import dtypes
 
 S = TypeVar("S")
 

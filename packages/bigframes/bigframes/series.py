@@ -41,7 +41,6 @@ from typing import (
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
-import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.job
 import numpy
 import pandas

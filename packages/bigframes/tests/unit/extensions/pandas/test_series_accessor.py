@@ -15,7 +15,6 @@
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
-import pytest
 
 import bigframes  # noqa: F401 registers pandas extensions
 import bigframes.series as series
