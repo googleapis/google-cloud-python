@@ -28,8 +28,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 
+from google.cloud.support_v2.types import comment, comment_service
 from google.cloud.support_v2.types import comment as gcs_comment
-from google.cloud.support_v2.types import comment_service
 
 from .base import DEFAULT_CLIENT_INFO, CommentServiceTransport
 
@@ -381,6 +381,61 @@ class CommentServiceGrpcTransport(CommentServiceTransport):
                 response_deserializer=gcs_comment.Comment.deserialize,
             )
         return self._stubs["create_comment"]
+
+    @property
+    def get_comment(
+        self,
+    ) -> Callable[[comment_service.GetCommentRequest], comment.Comment]:
+        r"""Return a callable for the get comment method over gRPC.
+
+        Retrieve a comment.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           comment="projects/some-project/cases/43595344/comments/234567890"
+           curl \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2/$comment"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+
+           request = supportApiService.cases().comments().get(
+               name="projects/some-project/cases/43595344/comments/234567890",
+           )
+           print(request.execute())
+
+        Returns:
+            Callable[[~.GetCommentRequest],
+                    ~.Comment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_comment" not in self._stubs:
+            self._stubs["get_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.support.v2.CommentService/GetComment",
+                request_serializer=comment_service.GetCommentRequest.serialize,
+                response_deserializer=comment.Comment.deserialize,
+            )
+        return self._stubs["get_comment"]
 
     def close(self):
         self._logged_channel.close()

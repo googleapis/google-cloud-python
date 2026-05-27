@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,13 +39,19 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.19.0, <3.0.0",
+    "google-api-core[grpc] >= 2.17.1, <3.0.0",
+    # Exclude incompatible versions of `google-auth`
+    # See https://github.com/googleapis/google-cloud-python/issues/12364
+    "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "google-cloud-core >= 2.0.0, < 3.0.0",
+    "grpcio >= 1.49.1, < 2.0.0",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
     "proto-plus >= 1.22.3, <2.0.0",
-    "sqlparse >= 0.4.4",
+    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
     "protobuf >= 4.25.8, < 8.0.0",
     "grpc-interceptor >= 0.15.4",
+    "sqlparse >= 0.4.4",
     # Make OpenTelemetry a core dependency
     "opentelemetry-api >= 1.22.0",
     "opentelemetry-sdk >= 1.22.0",
@@ -77,7 +83,7 @@ setuptools.setup(
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     url=url,
     classifiers=[
         release_status,

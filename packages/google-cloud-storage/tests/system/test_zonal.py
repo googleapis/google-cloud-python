@@ -22,6 +22,10 @@ from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
+from google.cloud.storage.blob import (
+    ObjectContexts,
+    ObjectCustomContextPayload,
+)
 
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
@@ -431,6 +435,36 @@ def test_write_from_blob_with_kms_key(
     event_loop.run_until_complete(_run())
 
 
+@pytest.mark.asyncio
+async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
+    async_client = await create_async_grpc_client()
+    blob_name = f"ObjectContextsGrpc-{uuid.uuid4().hex}"
+
+    bucket = storage_client.bucket(_ZONAL_BUCKET)
+    blob = bucket.blob(blob_name)
+    blob.contexts = ObjectContexts(
+        blob, custom={"foo": ObjectCustomContextPayload(value="bar")}
+    )
+    writer = AsyncAppendableObjectWriter.from_blob(async_client, blob)
+    await writer.open()
+    await writer.append(b"grpc-test")
+    await writer.close(finalize_on_close=True)
+
+    try:
+        blobs = list(
+            storage_client.list_blobs(_ZONAL_BUCKET, filter_='contexts."foo"="bar"')
+        )
+        names = [b.name for b in blobs]
+        assert blob_name in names
+
+        # Assert contexts via gRPC GetObject
+        obj_proto = await async_client.get_object(_ZONAL_BUCKET, blob_name)
+        assert "foo" in obj_proto.contexts.custom
+        assert obj_proto.contexts.custom["foo"].value == "bar"
+    finally:
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(blob_name))
+
+
 def test_read_unfinalized_appendable_object(
     storage_client, blobs_to_delete, event_loop, grpc_client_direct
 ):
@@ -827,7 +861,7 @@ def test_mrd_concurrent_download_cancellation(
     Tests that downloading gracefully manages memory and internal references
     when tasks are canceled during active multiplexing, without breaking remaining downloads.
     """
-    object_size = 5 * 1024 * 1024  # 5MB
+    object_size = 20 * 1024 * 1024  # 20MB
     object_name = f"test_mrd_cancel-{uuid.uuid4()}"
 
     async def _run():
@@ -844,7 +878,7 @@ def test_mrd_concurrent_download_cancellation(
             grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             tasks = []
-            num_chunks = 100
+            num_chunks = 40
             chunk_size = object_size // num_chunks
             buffers = [BytesIO() for _ in range(num_chunks)]
 
@@ -856,8 +890,8 @@ def test_mrd_concurrent_download_cancellation(
                     )
                 )
 
-            # Let the loop start sending Bidi requests
-            await asyncio.sleep(0.01)
+            # Yield control to event loop so tasks send Bidi requests, but do not wait for server responses
+            await asyncio.sleep(0)
 
             # Cancel a subset of evenly distributed tasks
             for i in range(0, num_chunks, 2):

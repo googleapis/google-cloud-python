@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
         "DeleteMessageRequest",
         "UpdateMessageRequest",
         "CreateMessageRequest",
+        "CreateMessageNotificationOptions",
         "ListMessagesRequest",
         "ListMessagesResponse",
         "DialogAction",
@@ -205,6 +206,10 @@ class Message(proto.Message):
 
             If the space doesn't support reply in threads, this field is
             always ``false``.
+        silent (bool):
+            Output only. Whether this is a silent
+            message. Silent messages are messages where Chat
+            suppresses push notifications for recipients.
         client_assigned_message_id (str):
             Optional. A custom ID for the message. You can use field to
             identify a message, or to get, delete, or update a message.
@@ -351,6 +356,10 @@ class Message(proto.Message):
     thread_reply: bool = proto.Field(
         proto.BOOL,
         number=25,
+    )
+    silent: bool = proto.Field(
+        proto.BOOL,
+        number=46,
     )
     client_assigned_message_id: str = proto.Field(
         proto.STRING,
@@ -911,6 +920,11 @@ class CreateMessageRequest(proto.Message):
 
             For details, see `Name a
             message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
+        create_message_notification_options (google.apps.chat_v1.types.CreateMessageNotificationOptions):
+            Optional. Controls the notification behavior when the
+            message is posted. To learn more, see `Force notifications
+            or send silent
+            messages <https://developer.google.com/workspace/chat/create-messages#force-notify-silent>`__.
     """
 
     class MessageReplyOption(proto.Enum):
@@ -966,6 +980,61 @@ class CreateMessageRequest(proto.Message):
     message_id: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    create_message_notification_options: "CreateMessageNotificationOptions" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message="CreateMessageNotificationOptions",
+        )
+    )
+
+
+class CreateMessageNotificationOptions(proto.Message):
+    r"""Options for the notification behavior when the message is
+    posted.
+
+    Attributes:
+        notification_type (google.apps.chat_v1.types.CreateMessageNotificationOptions.NotificationType):
+            The notification type for the message.
+    """
+
+    class NotificationType(proto.Enum):
+        r"""The notification types options for the message.
+
+        Values:
+            NOTIFICATION_TYPE_NONE (0):
+                Default behavior. Notification behavior is
+                similar to when the human user sends the message
+                using the Chat UI: no notification is sent to
+                the human sender.
+            NOTIFICATION_TYPE_FORCE_NOTIFY (2):
+                Force notify recipients. This bypasses users' space
+                notification settings and `Chat Do Not Disturb
+                settings <https://support.google.com/chat/answer/9093489>`__.
+                This option does not bypass device-level Do Not Disturb
+                settings.
+
+                Requires [app authentication]
+                (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+            NOTIFICATION_TYPE_SILENT (3):
+                Silence the notification as if the recipients have `Chat Do
+                Not
+                Disturb <https://support.google.com/chat/answer/9093489>`__
+                enabled or have muted the space.
+
+                Requires [app authentication]
+                (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+        """
+
+        NOTIFICATION_TYPE_NONE = 0
+        NOTIFICATION_TYPE_FORCE_NOTIFY = 2
+        NOTIFICATION_TYPE_SILENT = 3
+
+    notification_type: NotificationType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=NotificationType,
     )
 
 

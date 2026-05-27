@@ -1356,7 +1356,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
     ]:
         r"""Return a callable for the fetch node pool upgrade info method over gRPC.
 
-        Fetch upgrade information of a specific nodepool.
+        Fetch upgrade information of a specific node pool.
 
         Returns:
             Callable[[~.FetchNodePoolUpgradeInfoRequest],

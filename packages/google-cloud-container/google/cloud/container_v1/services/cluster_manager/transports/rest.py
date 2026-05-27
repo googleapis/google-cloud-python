@@ -3497,7 +3497,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     request (~.cluster_service.FetchNodePoolUpgradeInfoRequest):
                         The request object. FetchNodePoolUpgradeInfoRequest
                     fetches the upgrade information of a
-                    nodepool.
+                    node pool.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3509,7 +3509,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 Returns:
                     ~.cluster_service.NodePoolUpgradeInfo:
                         NodePoolUpgradeInfo contains the
-                    upgrade information of a nodepool.
+                    upgrade information of a node pool.
 
             """
 

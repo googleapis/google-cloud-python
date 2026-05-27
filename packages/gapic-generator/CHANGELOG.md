@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.33.0...gapic-generator-v1.34.0) (2026-05-27)
+
+
+### Bug Fixes
+
+* add pragma to `constants.py` to resolve coverage failure and correct `if` block (#17268) ([1436a23c923e799f9909d039e1f418435845565d](https://github.com/googleapis/google-cloud-python/commit/1436a23c923e799f9909d039e1f418435845565d))
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
+## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.32.0...gapic-generator-v1.33.0) (2026-05-21)
+
+
+### Bug Fixes
+
+* restore messages not attached to rpc in selective_gapic_generation (#16951) ([3ef95d61995869318097e414e439da1d6c214d1f](https://github.com/googleapis/google-cloud-python/commit/3ef95d61995869318097e414e439da1d6c214d1f))
+* bump idna from 3.14 to 3.15 in /packages/gapic-generator (#17179) ([0f7c68bfd437e7f366dacd4080f31e219d7c7090](https://github.com/googleapis/google-cloud-python/commit/0f7c68bfd437e7f366dacd4080f31e219d7c7090))
+* resolve core dependencies locally and batch pip installs (#17032) ([5ca88030476fd6be7a2eceef9c94c4fc76820f40](https://github.com/googleapis/google-cloud-python/commit/5ca88030476fd6be7a2eceef9c94c4fc76820f40))
+* resolve core dependencies locally and batch pip installs ([5ca88030476fd6be7a2eceef9c94c4fc76820f40](https://github.com/googleapis/google-cloud-python/commit/5ca88030476fd6be7a2eceef9c94c4fc76820f40))
+
 ## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.31.0...gapic-generator-v1.32.0) (2026-05-11)
 
 ## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.30.14...gapic-generator-v1.31.0) (2026-05-06)

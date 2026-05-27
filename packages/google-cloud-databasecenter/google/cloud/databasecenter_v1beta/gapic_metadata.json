@@ -20,6 +20,11 @@
                 "aggregate_issue_stats"
               ]
             },
+            "AggregateQueryStats": {
+              "methods": [
+                "aggregate_query_stats"
+              ]
+            },
             "QueryDatabaseResourceGroups": {
               "methods": [
                 "query_database_resource_groups"
@@ -50,6 +55,11 @@
                 "aggregate_issue_stats"
               ]
             },
+            "AggregateQueryStats": {
+              "methods": [
+                "aggregate_query_stats"
+              ]
+            },
             "QueryDatabaseResourceGroups": {
               "methods": [
                 "query_database_resource_groups"
@@ -78,6 +88,11 @@
             "AggregateIssueStats": {
               "methods": [
                 "aggregate_issue_stats"
+              ]
+            },
+            "AggregateQueryStats": {
+              "methods": [
+                "aggregate_query_stats"
               ]
             },
             "QueryDatabaseResourceGroups": {

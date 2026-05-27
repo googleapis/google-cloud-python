@@ -3891,6 +3891,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             min_tls_version="min_tls_version_value",
             name="name_value",
+            post_quantum_key_exchange="post_quantum_key_exchange_value",
             profile="profile_value",
             region="region_value",
             self_link="self_link_value",
@@ -3919,6 +3920,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.min_tls_version == "min_tls_version_value"
     assert response.name == "name_value"
+    assert response.post_quantum_key_exchange == "post_quantum_key_exchange_value"
     assert response.profile == "profile_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
@@ -4030,6 +4032,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "min_tls_version": "min_tls_version_value",
         "name": "name_value",
+        "post_quantum_key_exchange": "post_quantum_key_exchange_value",
         "profile": "profile_value",
         "region": "region_value",
         "self_link": "self_link_value",
@@ -4546,6 +4549,7 @@ def test_patch_rest_call_success(request_type):
         "kind": "kind_value",
         "min_tls_version": "min_tls_version_value",
         "name": "name_value",
+        "post_quantum_key_exchange": "post_quantum_key_exchange_value",
         "profile": "profile_value",
         "region": "region_value",
         "self_link": "self_link_value",

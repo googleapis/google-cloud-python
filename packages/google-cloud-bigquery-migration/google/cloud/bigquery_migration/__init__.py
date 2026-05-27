@@ -24,6 +24,10 @@ from google.cloud.bigquery_migration_v2.services.migration_service.async_client 
 from google.cloud.bigquery_migration_v2.services.migration_service.client import (
     MigrationServiceClient,
 )
+from google.cloud.bigquery_migration_v2.types.assessment_task import (
+    AssessmentFeatureHandle,
+    AssessmentTaskDetails,
+)
 from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationSubtask,
     MigrationTask,
@@ -84,6 +88,8 @@ from google.cloud.bigquery_migration_v2.types.translation_details import (
     SourceEnvironment,
     SourceSpec,
     SourceTargetMapping,
+    SuggestionConfig,
+    SuggestionStep,
     TargetSpec,
     TranslationDetails,
 )
@@ -97,6 +103,8 @@ from google.cloud.bigquery_migration_v2.types.translation_usability import (
 __all__ = (
     "MigrationServiceClient",
     "MigrationServiceAsyncClient",
+    "AssessmentFeatureHandle",
+    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
     "MigrationTaskResult",
@@ -146,6 +154,8 @@ __all__ = (
     "SourceEnvironment",
     "SourceSpec",
     "SourceTargetMapping",
+    "SuggestionConfig",
+    "SuggestionStep",
     "TargetSpec",
     "TranslationDetails",
     "TranslationReportRecord",

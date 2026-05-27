@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -439,7 +438,6 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
@@ -560,24 +558,50 @@ def prerelease_deps(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--ignore-installed", dep)
-        # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
-        # to the dictionary below once this bug is fixed.
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
-        # `googleapis-common-protos` and `grpc-google-iam-v1` to the dictionary below
-        # once this bug is fixed.
-        package_namespaces = {
-            "google-api-core": "google.api_core",
-            "google-auth": "google.auth",
-            "grpcio": "grpc",
-            "protobuf": "google.protobuf",
-            "proto-plus": "proto",
-        }
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
 
-        version_namespace = package_namespaces.get(dep)
+    # Extract the base package name, safely ignoring version bounds and spaces
+    # (e.g., "grpcio>=1.75.1" becomes "grpcio")
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
+    }
 
+    # Dynamically sort local packages vs PyPI dependencies
+    local_paths = []
+    pypi_deps = []
+
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
+
+    # Batch pip installations to avoid sequential overhead
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+
+    # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
+    # to the dictionary below once this bug is fixed.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
+    # `googleapis-common-protos` and `grpc-google-iam-v1` to the dictionary below
+    # once this bug is fixed.
+    package_namespaces = {
+        "google-api-core": "google.api_core",
+        "google-auth": "google.auth",
+        "grpcio": "grpc",
+        "protobuf": "google.protobuf",
+        "proto-plus": "proto",
+    }
+
+    # Reuse the parsed names for logging and version verification
+    for dep, pkg_name in parsed_deps.items():
         print(f"Installed {dep}")
+        version_namespace = package_namespaces.get(pkg_name)
+
         if version_namespace:
             session.run(
                 "python",

@@ -1048,7 +1048,7 @@ def mypy(session):
     # Editable mode is not compatible with mypy when there are multiple
     # package directories. See:
     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-    session.install(".")
+    session.install("--no-cache-dir", ".")
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.

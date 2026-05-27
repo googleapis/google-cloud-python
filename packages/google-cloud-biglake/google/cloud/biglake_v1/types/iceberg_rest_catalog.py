@@ -32,6 +32,9 @@ __protobuf__ = proto.module(
         "ListIcebergCatalogsResponse",
         "FailoverIcebergCatalogRequest",
         "FailoverIcebergCatalogResponse",
+        "TableIdentifier",
+        "IcebergNamespaceUpdate",
+        "StorageCredential",
     },
 )
 
@@ -379,6 +382,77 @@ class FailoverIcebergCatalogResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class TableIdentifier(proto.Message):
+    r"""The table identifier.
+
+    Attributes:
+        namespace (MutableSequence[str]):
+            The namespace of the table. This is always 1
+            element, since we don't support nested
+            namespaces.
+        name (str):
+            The table name.
+    """
+
+    namespace: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class IcebergNamespaceUpdate(proto.Message):
+    r"""The request message for the ``UpdateIcebergNamespace`` API.
+
+    Attributes:
+        removals (MutableSequence[str]):
+            Optional. Keys of the properties to remove.
+        updates (MutableMapping[str, str]):
+            Optional. List of properties to update or
+            add.
+    """
+
+    removals: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    updates: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+
+
+class StorageCredential(proto.Message):
+    r"""The storage credential for a path in the table.
+
+    Attributes:
+        prefix (str):
+            Indicates a storage location prefix where the
+            credential is relevant.
+        config (MutableMapping[str, str]):
+            The credentials for the storage location. The keys that are
+            populated are:
+
+            - ``gcs.oauth2.token``
+            - ``gcs.oauth2.token_expires_at``
+            - ``expiration-time`` (to support federation from Polaris).
+    """
+
+    prefix: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
     )
 
 

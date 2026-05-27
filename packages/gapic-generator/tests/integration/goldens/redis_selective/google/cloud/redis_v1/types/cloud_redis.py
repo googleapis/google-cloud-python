@@ -41,7 +41,13 @@ __protobuf__ = proto.module(
         'CreateInstanceRequest',
         'UpdateInstanceRequest',
         'DeleteInstanceRequest',
+        'GcsSource',
+        'InputConfig',
+        'GcsDestination',
+        'OutputConfig',
         'OperationMetadata',
+        'LocationMetadata',
+        'ZoneMetadata',
         'TlsCertificate',
     },
 )
@@ -920,6 +926,79 @@ class DeleteInstanceRequest(proto.Message):
     )
 
 
+class GcsSource(proto.Message):
+    r"""The Cloud Storage location for the input content
+
+    Attributes:
+        uri (str):
+            Required. Source data URI. (e.g.
+            'gs://my_bucket/my_object').
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class InputConfig(proto.Message):
+    r"""The input content
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_source (google.cloud.redis_v1.types.GcsSource):
+            Google Cloud Storage location where input
+            content is located.
+
+            This field is a member of `oneof`_ ``source``.
+    """
+
+    gcs_source: 'GcsSource' = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof='source',
+        message='GcsSource',
+    )
+
+
+class GcsDestination(proto.Message):
+    r"""The Cloud Storage location for the output content
+
+    Attributes:
+        uri (str):
+            Required. Data destination URI (e.g.
+            'gs://my_bucket/my_object'). Existing files will be
+            overwritten.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class OutputConfig(proto.Message):
+    r"""The output content
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.redis_v1.types.GcsDestination):
+            Google Cloud Storage destination for output
+            content.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    gcs_destination: 'GcsDestination' = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof='destination',
+        message='GcsDestination',
+    )
+
+
 class OperationMetadata(proto.Message):
     r"""Represents the v1 metadata of the long-running operation.
 
@@ -971,6 +1050,36 @@ class OperationMetadata(proto.Message):
         proto.STRING,
         number=7,
     )
+
+
+class LocationMetadata(proto.Message):
+    r"""This location metadata represents additional configuration options
+    for a given location where a Redis instance may be created. All
+    fields are output only. It is returned as content of the
+    ``google.cloud.location.Location.metadata`` field.
+
+    Attributes:
+        available_zones (MutableMapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
+            Output only. The set of available zones in the location. The
+            map is keyed by the lowercase ID of each zone, as defined by
+            GCE. These keys can be specified in ``location_id`` or
+            ``alternative_location_id`` fields when creating a Redis
+            instance.
+    """
+
+    available_zones: MutableMapping[str, 'ZoneMetadata'] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message='ZoneMetadata',
+    )
+
+
+class ZoneMetadata(proto.Message):
+    r"""Defines specific information for a particular zone. Currently
+    empty and reserved for future use only.
+
+    """
 
 
 class TlsCertificate(proto.Message):
