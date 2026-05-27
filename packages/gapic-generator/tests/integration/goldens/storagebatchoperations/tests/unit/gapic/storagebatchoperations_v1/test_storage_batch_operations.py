@@ -1057,10 +1057,8 @@ def test_storage_batch_operations_client_create_channel_credentials_file(client_
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListJobsRequest({
-  }),
-  {
-  },
+  storage_batch_operations.ListJobsRequest(),
+  {},
 ])
 def test_list_jobs(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1197,8 +1195,8 @@ async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListJobsRequest({  }),
-  {  },
+  storage_batch_operations.ListJobsRequest(),
+  {},
 ])
 async def test_list_jobs_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
@@ -1572,10 +1570,8 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetJobRequest({
-  }),
-  {
-  },
+  storage_batch_operations.GetJobRequest(),
+  {},
 ])
 def test_get_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1712,8 +1708,8 @@ async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetJobRequest({  }),
-  {  },
+  storage_batch_operations.GetJobRequest(),
+  {},
 ])
 async def test_get_job_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
@@ -1899,7 +1895,8 @@ async def test_get_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CreateJobRequest({
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.CreateJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
   {
@@ -2046,7 +2043,8 @@ async def test_create_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CreateJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.CreateJobRequest(**{    "request_id": "explicit value for autopopulate-able field",  }),
   {    "request_id": "explicit value for autopopulate-able field",  },
 ])
 async def test_create_job_async(request_type, transport: str = 'grpc_asyncio'):
@@ -2247,7 +2245,8 @@ async def test_create_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.DeleteJobRequest({
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.DeleteJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
   {
@@ -2382,7 +2381,8 @@ async def test_delete_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.DeleteJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.DeleteJobRequest(**{    "request_id": "explicit value for autopopulate-able field",  }),
   {    "request_id": "explicit value for autopopulate-able field",  },
 ])
 async def test_delete_job_async(request_type, transport: str = 'grpc_asyncio'):
@@ -2559,7 +2559,8 @@ async def test_delete_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CancelJobRequest({
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.CancelJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
   {
@@ -2695,7 +2696,8 @@ async def test_cancel_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.CancelJobRequest({    "request_id": "explicit value for autopopulate-able field",  }),
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
+  storage_batch_operations.CancelJobRequest(**{    "request_id": "explicit value for autopopulate-able field",  }),
   {    "request_id": "explicit value for autopopulate-able field",  },
 ])
 async def test_cancel_job_async(request_type, transport: str = 'grpc_asyncio'):
@@ -2873,10 +2875,8 @@ async def test_cancel_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListBucketOperationsRequest({
-  }),
-  {
-  },
+  storage_batch_operations.ListBucketOperationsRequest(),
+  {},
 ])
 def test_list_bucket_operations(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -3013,8 +3013,8 @@ async def test_list_bucket_operations_async_use_cached_wrapped_rpc(transport: st
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListBucketOperationsRequest({  }),
-  {  },
+  storage_batch_operations.ListBucketOperationsRequest(),
+  {},
 ])
 async def test_list_bucket_operations_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
@@ -3388,10 +3388,8 @@ async def test_list_bucket_operations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetBucketOperationRequest({
-  }),
-  {
-  },
+  storage_batch_operations.GetBucketOperationRequest(),
+  {},
 ])
 def test_get_bucket_operation(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -3524,8 +3522,8 @@ async def test_get_bucket_operation_async_use_cached_wrapped_rpc(transport: str 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetBucketOperationRequest({  }),
-  {  },
+  storage_batch_operations.GetBucketOperationRequest(),
+  {},
 ])
 async def test_get_bucket_operation_async(request_type, transport: str = 'grpc_asyncio'):
     client = StorageBatchOperationsAsyncClient(
