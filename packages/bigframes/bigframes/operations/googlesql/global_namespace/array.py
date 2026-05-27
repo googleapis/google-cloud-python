@@ -696,7 +696,26 @@ def array_length(
         2    2
         dtype: Int64
 
-    You can also apply this function directly to Series.
+    You can call this function using the Series `bigquery` accessor.
+
+        >>> s.bigquery.array_length()
+        0    4
+        1    0
+        2    2
+        dtype: Int64
+
+    You can also use this accessor on a pandas Series after importing bigframes.
+
+        >>> import bigframes
+        >>> import pandas as pd
+        >>> ps = pd.Series([[1, 2, 8, 3], [], [3, 4]])
+        >>> ps.bigquery.array_length()
+        0    4
+        1    0
+        2    2
+        dtype: Int64
+
+    You can also apply this function directly to Series using `apply`.
 
         >>> s.apply(bbq.array_length, by_row=False)
         0    4
@@ -783,6 +802,29 @@ def array_to_string(
 
         >>> s = bpd.Series([["H", "i", "!"], ["Hello", "World"], np.nan, [], ["Hi"]])
         >>> bbq.array_to_string(s, delimiter=", ")
+        0         H, i, !
+        1    Hello, World
+        2
+        3
+        4              Hi
+        dtype: string
+
+    You can call this function using the Series `bigquery` accessor.
+
+        >>> s.bigquery.array_to_string(delimiter=", ")
+        0         H, i, !
+        1    Hello, World
+        2
+        3
+        4              Hi
+        dtype: string
+
+    You can also use this accessor on a pandas Series after importing bigframes.
+
+        >>> import bigframes
+        >>> import pandas as pd
+        >>> ps = pd.Series([["H", "i", "!"], ["Hello", "World"], None, [], ["Hi"]])
+        >>> ps.bigquery.array_to_string(delimiter=", ")
         0         H, i, !
         1    Hello, World
         2
