@@ -139,7 +139,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             if (
                 hasattr(response.metadata, "finalize_time")
                 and response.metadata.finalize_time
-                and response.metadata.finalize_time.seconds > 0
+                and response.metadata.finalize_time.second > 0
             ):
                 self.is_finalized = True
                 if (

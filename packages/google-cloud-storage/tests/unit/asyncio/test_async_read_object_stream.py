@@ -41,7 +41,7 @@ async def instantiate_read_obj_stream(mock_client, mock_cls_async_bidi_rpc, open
     recv_response.metadata = mock.MagicMock()
     recv_response.metadata.generation = _TEST_GENERATION_NUMBER
     recv_response.metadata.size = _TEST_OBJECT_SIZE
-    recv_response.metadata.finalize_time.seconds = 12345
+    recv_response.metadata.finalize_time.second = 30
     recv_response.metadata.checksums.crc32c = 98765
     recv_response.read_handle = _TEST_READ_HANDLE
     socket_like_rpc.recv = AsyncMock(return_value=recv_response)
@@ -403,7 +403,7 @@ async def test_open_unfinalized_object_skips_checksum(
     recv_response.metadata = mock.MagicMock()
     recv_response.metadata.generation = _TEST_GENERATION_NUMBER
     recv_response.metadata.size = _TEST_OBJECT_SIZE
-    recv_response.metadata.finalize_time.seconds = 0  # NOT finalized!
+    recv_response.metadata.finalize_time.second = 0  # NOT finalized!
     recv_response.metadata.checksums.crc32c = 98765
     recv_response.read_handle = _TEST_READ_HANDLE
     socket_like_rpc.recv = AsyncMock(return_value=recv_response)
