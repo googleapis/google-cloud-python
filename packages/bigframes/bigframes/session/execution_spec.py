@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import TYPE_CHECKING, Literal, Mapping, Optional, Union
+from typing import Literal, Mapping, Optional, Union
 
 from google.cloud import bigquery
 

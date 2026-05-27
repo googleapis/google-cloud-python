@@ -9,6 +9,7 @@ packages.
 
     bigframes._config
     bigframes.bigquery
+    bigframes.bigquery.aead
     bigframes.bigquery.ai
     bigframes.bigquery.ml
     bigframes.bigquery.obj

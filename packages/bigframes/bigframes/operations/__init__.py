@@ -426,6 +426,7 @@ __all__ = [
     "GeoStDistanceOp",
     "GeoStLengthOp",
     "GeoStRegionStatsOp",
+    "GeoStSimplifyOp",
     # AI ops
     "AIClassify",
     "AIGenerate",

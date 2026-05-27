@@ -74,7 +74,7 @@ libraries:
       - packages/django-google-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.33.0
+    version: 1.34.0
     last_generated_commit: ""
     apis: []
     source_roots:
