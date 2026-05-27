@@ -150,21 +150,16 @@ def _validate_name(name):
 def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwargs):
     span_attrs = dict(attributes) if attributes else {}
 
-    # Check if GCS destination annotations are explicitly disabled via environment
-    disable_bucket_md = os.environ.get("DISABLE_BUCKET_MD_IN_OTEL", "").lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
-
     if (
-        not disable_bucket_md
-        and bucket_name
+        bucket_name
         and isinstance(bucket_name, str)
         and client
         and hasattr(client, "_bucket_metadata_cache")
         and client._bucket_metadata_cache
+        and not (
+            os.environ.get("DISABLE_BUCKET_MD_IN_OTEL", "").lower()
+            in ("1", "true", "yes", "on")
+        )
     ):
         try:
             if name in (

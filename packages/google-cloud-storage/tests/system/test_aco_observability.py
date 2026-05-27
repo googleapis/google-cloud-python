@@ -16,7 +16,6 @@ import concurrent.futures
 import threading
 import time
 
-import os
 import pytest
 from google.api_core import exceptions
 
@@ -552,7 +551,9 @@ def test_sequential_cache_priming_multi_region(
         storage_client._bucket_metadata_cache.update_cache = original_update
 
 
-def test_disable_bucket_md_env_flag(storage_client, exporter, buckets_to_delete):
+def test_disable_bucket_md_env_flag(
+    storage_client, exporter, buckets_to_delete, monkeypatch
+):
     """Verifies that setting DISABLE_BUCKET_MD_IN_OTEL=true disables GCS
     destination annotations, even on cache hits."""
     # Clear cache and OTel exporter logs
@@ -571,20 +572,16 @@ def test_disable_bucket_md_env_flag(storage_client, exporter, buckets_to_delete)
     # Warm cache directly via GCS creation warming (client.create_bucket already primes the cache)
     assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
 
-    # Enable the DISABLE_BUCKET_MD_IN_OTEL environment variable
-    os.environ["DISABLE_BUCKET_MD_IN_OTEL"] = "true"
+    # Enable the DISABLE_BUCKET_MD_IN_OTEL environment variable using monkeypatch
+    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "true")
 
-    try:
-        # Download (normally would be a cache hit with GCS annotations)
-        blob.download_as_bytes()
+    # Download (normally would be a cache hit with GCS annotations)
+    blob.download_as_bytes()
 
-        # Verify that ACO attributes are NOT present in the OTel span!
-        spans = exporter.get_finished_spans()
-        dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
-        assert len(dl_spans) == 1
-        attrs = dl_spans[0].attributes
-        assert "gcp.resource.destination.id" not in attrs
-        assert "gcp.resource.destination.location" not in attrs
-    finally:
-        # Restore env var
-        os.environ.pop("DISABLE_BUCKET_MD_IN_OTEL", None)
+    # Verify that ACO attributes are NOT present in the OTel span!
+    spans = exporter.get_finished_spans()
+    dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+    assert len(dl_spans) == 1
+    attrs = dl_spans[0].attributes
+    assert "gcp.resource.destination.id" not in attrs
+    assert "gcp.resource.destination.location" not in attrs
