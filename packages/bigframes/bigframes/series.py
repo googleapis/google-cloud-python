@@ -51,6 +51,7 @@ from pandas.api import extensions as pd_ext
 import bigframes.core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.col
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.core.indexers
@@ -2710,7 +2711,7 @@ class Series:
         assert isinstance(right, ex.DerefOp)
         return block.get_binary_stat(left.id.name, right.id.name, stat)
 
-    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp]
+    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
 
     @typing.overload
     def _align(
@@ -2764,16 +2765,20 @@ class Series:
 
     def _align_n(
         self,
-        others: typing.Sequence[typing.Union[Series, scalars.Scalar]],
+        others: typing.Sequence[
+            typing.Union[Series, bigframes.core.col.Expression, scalars.Scalar]
+        ],
         how="outer",
         ignore_self=False,
         cast_scalars: bool = False,
     ) -> tuple[
-        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp]],
+        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]],
         blocks.Block,
     ]:
         if ignore_self:
-            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp]] = []
+            value_ids: List[
+                Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
+            ] = []
         else:
             value_ids = [ex.deref(self._value_column)]
 
@@ -2798,6 +2803,17 @@ class Series:
                     *remapped_value_ids,  # type: ignore
                     ex.deref(get_column_right[other._value_column]),
                 ]
+            elif isinstance(other, bigframes.core.col.Expression):
+                if isinstance(other._value, ex.OmittedArg):
+                    value_ids = [*value_ids, other._value]
+                    continue
+
+                label_to_col_ref = {
+                    label: ex.deref(id) for id, label in block.col_id_to_label.items()
+                }
+                resolved_expr = other._value.bind_variables(label_to_col_ref)
+                block = block.project_block_exprs([resolved_expr], labels=[None])
+                value_ids = [*value_ids, ex.deref(block.value_columns[-1])]
             else:
                 # Will throw if can't interpret as scalar.
                 dtype = typing.cast(bigframes.dtypes.Dtype, self._dtype)
