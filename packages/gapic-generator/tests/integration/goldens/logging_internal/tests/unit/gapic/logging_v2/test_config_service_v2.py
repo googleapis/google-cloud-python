@@ -100,7 +100,7 @@ def modify_default_endpoint_template(client):
 @pytest.fixture(autouse=True)
 def set_event_loop():
     try:
-        asyncio.get_event_loop_policy().get_event_loop()
+        asyncio.get_running_loop()
         yield
     except RuntimeError:
         loop = asyncio.new_event_loop()
