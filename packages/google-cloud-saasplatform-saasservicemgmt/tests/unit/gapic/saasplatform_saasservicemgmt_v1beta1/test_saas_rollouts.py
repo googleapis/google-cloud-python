@@ -1845,6 +1845,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -1872,6 +1873,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2008,6 +2010,7 @@ async def test_get_rollout_async(
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2036,6 +2039,7 @@ async def test_get_rollout_async(
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2218,6 +2222,7 @@ def test_create_rollout(request_type, transport: str = "grpc"):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -2245,6 +2250,7 @@ def test_create_rollout(request_type, transport: str = "grpc"):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2385,6 +2391,7 @@ async def test_create_rollout_async(
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2413,6 +2420,7 @@ async def test_create_rollout_async(
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2615,6 +2623,7 @@ def test_update_rollout(request_type, transport: str = "grpc"):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -2642,6 +2651,7 @@ def test_update_rollout(request_type, transport: str = "grpc"):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2778,6 +2788,7 @@ async def test_update_rollout_async(
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2806,6 +2817,7 @@ async def test_update_rollout_async(
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -7815,6 +7827,7 @@ async def test_get_rollout_empty_call_grpc_asyncio():
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -7852,6 +7865,7 @@ async def test_create_rollout_empty_call_grpc_asyncio():
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -7889,6 +7903,7 @@ async def test_update_rollout_empty_call_grpc_asyncio():
                 rollout_orchestration_strategy="rollout_orchestration_strategy_value",
                 unit_filter="unit_filter_value",
                 rollout_kind="rollout_kind_value",
+                effective_unit_filter="effective_unit_filter_value",
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -8281,6 +8296,7 @@ def test_get_rollout_rest_call_success(request_type):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -8313,6 +8329,7 @@ def test_get_rollout_rest_call_success(request_type):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -8434,14 +8451,19 @@ def test_create_rollout_rest_call_success(request_type):
         "rollout_orchestration_strategy": "rollout_orchestration_strategy_value",
         "unit_filter": "unit_filter_value",
         "rollout_kind": "rollout_kind_value",
-        "stats": {"operations_by_state": [{"group": "group_value", "count": 553}]},
+        "stats": {
+            "operations_by_state": [{"group": "group_value", "count": 553}],
+            "estimated_total_unit_count": 2794,
+        },
         "control": {"run_params": {"retry_failed_operations": True}, "action": 1},
+        "effective_unit_filter": "effective_unit_filter_value",
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "delete_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8525,6 +8547,7 @@ def test_create_rollout_rest_call_success(request_type):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -8557,6 +8580,7 @@ def test_create_rollout_rest_call_success(request_type):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -8682,14 +8706,19 @@ def test_update_rollout_rest_call_success(request_type):
         "rollout_orchestration_strategy": "rollout_orchestration_strategy_value",
         "unit_filter": "unit_filter_value",
         "rollout_kind": "rollout_kind_value",
-        "stats": {"operations_by_state": [{"group": "group_value", "count": 553}]},
+        "stats": {
+            "operations_by_state": [{"group": "group_value", "count": 553}],
+            "estimated_total_unit_count": 2794,
+        },
         "control": {"run_params": {"retry_failed_operations": True}, "action": 1},
+        "effective_unit_filter": "effective_unit_filter_value",
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "delete_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8773,6 +8802,7 @@ def test_update_rollout_rest_call_success(request_type):
             rollout_orchestration_strategy="rollout_orchestration_strategy_value",
             unit_filter="unit_filter_value",
             rollout_kind="rollout_kind_value",
+            effective_unit_filter="effective_unit_filter_value",
             uid="uid_value",
             etag="etag_value",
         )
@@ -8805,6 +8835,7 @@ def test_update_rollout_rest_call_success(request_type):
     )
     assert response.unit_filter == "unit_filter_value"
     assert response.rollout_kind == "rollout_kind_value"
+    assert response.effective_unit_filter == "effective_unit_filter_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 

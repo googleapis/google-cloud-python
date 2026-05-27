@@ -1335,7 +1335,12 @@ def test_dataplex_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -24586,7 +24591,12 @@ def test_dataplex_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -24612,7 +24622,12 @@ def test_dataplex_service_auth_adc():
         DataplexServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id=None,
         )
 
@@ -24632,7 +24647,12 @@ def test_dataplex_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -24685,7 +24705,12 @@ def test_dataplex_service_transport_create_channel(transport_class, grpc_helpers
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,

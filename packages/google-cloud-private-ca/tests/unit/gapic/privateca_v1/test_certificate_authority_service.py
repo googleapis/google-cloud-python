@@ -20433,6 +20433,7 @@ def test_create_certificate_rest_call_success(request_type):
         "create_time": {},
         "update_time": {},
         "labels": {},
+        "requested_not_before_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21226,6 +21227,7 @@ def test_update_certificate_rest_call_success(request_type):
         "create_time": {},
         "update_time": {},
         "labels": {},
+        "requested_not_before_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23290,6 +23292,7 @@ def test_create_ca_pool_rest_call_success(request_type):
                 }
             ],
             "backdate_duration": {"seconds": 751, "nanos": 543},
+            "allow_requester_specified_not_before_time": True,
             "maximum_lifetime": {},
             "allowed_issuance_modes": {
                 "allow_csr_based_issuance": True,
@@ -23380,6 +23383,7 @@ def test_create_ca_pool_rest_call_success(request_type):
             "publish_crl": True,
             "encoding_format": 1,
         },
+        "encryption_spec": {"cloud_kms_key": "cloud_kms_key_value"},
         "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -23586,6 +23590,7 @@ def test_update_ca_pool_rest_call_success(request_type):
                 }
             ],
             "backdate_duration": {"seconds": 751, "nanos": 543},
+            "allow_requester_specified_not_before_time": True,
             "maximum_lifetime": {},
             "allowed_issuance_modes": {
                 "allow_csr_based_issuance": True,
@@ -23676,6 +23681,7 @@ def test_update_ca_pool_rest_call_success(request_type):
             "publish_crl": True,
             "encoding_format": 1,
         },
+        "encryption_spec": {"cloud_kms_key": "cloud_kms_key_value"},
         "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
