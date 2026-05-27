@@ -298,6 +298,7 @@ def _ARRAY_TO_STRING_SIG(*args):
     # Pad args with None to match max expected args
     args = args + (None,) * (3 - len(args))
     # Try matching impl 0
+    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         if not dtypes.is_array_like(args[0]):
@@ -334,6 +335,7 @@ def _ARRAY_TO_STRING_SIG(*args):
         return dtypes.STRING_DTYPE
 
     # Try matching impl 1
+    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         if not dtypes.is_array_like(args[0]):
@@ -427,6 +429,7 @@ def _GENERATE_ARRAY_SIG(*args):
     # Pad args with None to match max expected args
     args = args + (None,) * (3 - len(args))
     # Try matching impl 0
+    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
@@ -450,6 +453,7 @@ def _GENERATE_ARRAY_SIG(*args):
         return dtypes.list_type(dtypes.INT_DTYPE)
 
     # Try matching impl 1
+    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
@@ -482,6 +486,7 @@ def _GENERATE_ARRAY_SIG(*args):
         return dtypes.list_type(dtypes.NUMERIC_DTYPE)
 
     # Try matching impl 2
+    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
