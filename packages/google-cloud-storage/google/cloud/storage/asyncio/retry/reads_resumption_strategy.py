@@ -36,7 +36,11 @@ class _DownloadState:
     """A helper class to track the state of a single range download."""
 
     def __init__(
-        self, initial_offset: int, initial_length: int, user_buffer: IO[bytes], is_full_object_read: bool = False
+        self,
+        initial_offset: int,
+        initial_length: int,
+        user_buffer: IO[bytes],
+        is_full_object_read: bool = False,
     ):
         self.initial_offset = initial_offset
         self.initial_length = initial_length
@@ -45,7 +49,9 @@ class _DownloadState:
         self.next_expected_offset = initial_offset
         self.is_complete = False
         self.is_full_object_read = is_full_object_read
-        self.rolling_checksum = google_crc32c.Checksum() if is_full_object_read else None
+        self.rolling_checksum = (
+            google_crc32c.Checksum() if is_full_object_read else None
+        )
 
 
 class _ReadResumptionStrategy(_BaseResumptionStrategy):
@@ -143,7 +149,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             read_state.user_buffer.write(data)
 
             # Commit updates only after the write succeeds
-            if read_state.rolling_checksum is not None:
+            if checksum_enabled and read_state.rolling_checksum is not None:
                 read_state.rolling_checksum.update(data)
             read_state.bytes_written += chunk_size
             read_state.next_expected_offset += chunk_size
