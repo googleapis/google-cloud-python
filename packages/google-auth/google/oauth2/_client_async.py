@@ -413,7 +413,8 @@ async def _lookup_regional_access_boundary_request_no_throw(
                 response_bytes = await response.read()
             else:
                 response_bytes = await response.content()
-        except (asyncio.TimeoutError, exceptions.TransportError):
+        # Catch raw transport/socket exceptions raised during body streaming.
+        except Exception:
             return False, {}, False
 
         try:
