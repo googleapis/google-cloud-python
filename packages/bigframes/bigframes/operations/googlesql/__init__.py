@@ -17,11 +17,8 @@ from __future__ import annotations
 
 import dataclasses
 import typing
-from enum import Enum, auto
-from typing import Callable, Iterable
 
 import bigframes.operations as ops
-import bigframes.operations.type as op_typing
 from bigframes import dtypes
 
 

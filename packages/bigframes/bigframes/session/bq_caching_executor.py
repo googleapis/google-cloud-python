@@ -19,7 +19,7 @@ import concurrent.futures
 import dataclasses
 import math
 import threading
-from typing import Literal, Mapping, Optional, Sequence, Tuple
+from typing import Literal, Optional, Sequence, Tuple
 
 import google.api_core.exceptions
 import google.cloud.bigquery_storage_v1
@@ -41,8 +41,7 @@ import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
-from bigframes._config import ComputeOptions
-from bigframes.core import bq_data, compile, guid, identifiers, local_data, rewrite
+from bigframes.core import compile, guid, identifiers, local_data, rewrite
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.session import (

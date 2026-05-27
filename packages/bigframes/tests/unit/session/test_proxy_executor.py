@@ -16,12 +16,9 @@ from unittest import mock
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
-import pyarrow as pa
 import pytest
 
 import bigframes
-import bigframes.core.nodes as nodes
-import bigframes.core.schema as schemata
 from bigframes.session.proxy_executor import DualCompilerProxyExecutor
 
 
