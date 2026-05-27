@@ -238,11 +238,16 @@ class TestCredentials(object):
         # Verify references to boundary data are shared
         assert new_credentials._rab_manager._data == mock.sentinel.rab_data
         # Verify blocking config flag is preserved
-        assert new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
         # Verify target manager object is not replaced
         assert new_credentials._rab_manager is not credentials._rab_manager
 
-    def test_copy_regional_access_boundary_manager_state_and_config_with_quota_project(self):
+    def test_copy_regional_access_boundary_manager_state_and_config_with_quota_project(
+        self,
+    ):
         credentials = self.make_credentials()
         credentials._rab_manager._data = mock.sentinel.rab_data
         credentials._rab_manager._use_blocking_regional_access_boundary_lookup = True
@@ -252,22 +257,36 @@ class TestCredentials(object):
         # Verify references to boundary data are shared
         assert new_credentials._rab_manager._data == mock.sentinel.rab_data
         # Verify blocking config flag is preserved
-        assert new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
         # Verify target manager object is not replaced
         assert new_credentials._rab_manager is not credentials._rab_manager
 
-    def test_build_regional_access_boundary_lookup_url(self):
+    def test_build_regional_access_boundary_lookup_url_standard(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_credentials()
         url = credentials._build_regional_access_boundary_lookup_url()
-
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
             credentials.service_account_email
         )
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
             credentials.service_account_email
         )
-
-        assert url in (expected_url_standard, expected_url_mtls)
+        assert url == expected_url
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()

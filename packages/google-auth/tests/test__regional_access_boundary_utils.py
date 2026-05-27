@@ -678,3 +678,71 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         # Verify that the lookup was still triggered but failed open cleanly
         credentials._lookup_regional_access_boundary.assert_called_once_with(request)
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+
+def test_get_service_account_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_service_account_rab_endpoint(
+        "test@example.com"
+    )
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/test@example.com/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_service_account_rab_endpoint(
+        "test@example.com"
+    )
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/test@example.com/allowedLocations"
+    )
+
+
+def test_get_workforce_pool_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint("POOL_ID")
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint("POOL_ID")
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    )
+
+
+def test_get_workload_identity_pool_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+        "PROJECT_NUM", "POOL_ID"
+    )
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+        "PROJECT_NUM", "POOL_ID"
+    )
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+    )

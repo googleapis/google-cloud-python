@@ -601,14 +601,25 @@ class TestCredentials(object):
         assert creds._revoke_url == REVOKE_URL
         assert creds._quota_project_id == QUOTA_PROJECT_ID
 
-    def test_build_regional_access_boundary_lookup_url(self):
+    def test_build_regional_access_boundary_lookup_url_standard(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_credentials()
         url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    def test_build_regional_access_boundary_lookup_url_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
 
-        assert url in (expected_url_standard, expected_url_mtls)
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
     @pytest.mark.parametrize(
         "audience",

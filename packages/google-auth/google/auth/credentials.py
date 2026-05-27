@@ -34,7 +34,7 @@ from google.auth._refresh_worker import RefreshThreadManager
 if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.transport
 
-DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+DEFAULT_UNIVERSE_DOMAIN = _helpers.DEFAULT_UNIVERSE_DOMAIN
 
 # These constants are deprecated and no longer used.
 # They are kept solely for backward compatibility with older implementations.

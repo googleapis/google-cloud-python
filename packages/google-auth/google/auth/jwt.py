@@ -52,10 +52,10 @@ import urllib
 
 from google.auth import _cache
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import _service_account_info
 from google.auth import crypt
 from google.auth import exceptions
-from google.auth import iam
 import google.auth.credentials
 
 try:
@@ -589,8 +589,8 @@ class Credentials(
         if not self.signer_email:
             return None
 
-        return iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-            service_account_email=self.signer_email
+        return _regional_access_boundary_utils.get_service_account_rab_endpoint(
+            self.signer_email
         )
 
     @_helpers.copy_docstring(google.auth.credentials.Signing)

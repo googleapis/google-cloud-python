@@ -535,7 +535,10 @@ class TestCredentials(object):
         # Verify references to boundary data are shared
         assert new_credentials._rab_manager._data == mock.sentinel.rab_data
         # Verify blocking config flag is preserved
-        assert new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
         # Verify target manager object is not replaced
         assert new_credentials._rab_manager is not credentials._rab_manager
 
@@ -1722,23 +1725,51 @@ class TestCredentials(object):
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"])
         }
 
-    def test_build_regional_access_boundary_lookup_url_workload(self):
+    def test_build_regional_access_boundary_lookup_url_workload_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_credentials()
         url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+    def test_build_regional_access_boundary_lookup_url_workload_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
 
-        assert url in (expected_url_standard, expected_url_mtls)
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
 
-    def test_build_regional_access_boundary_lookup_url_workforce(self):
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_workforce_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_workforce_pool_credentials()
         url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    def test_build_regional_access_boundary_lookup_url_workforce_mtls(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
 
-        assert url in (expected_url_standard, expected_url_mtls)
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_workforce_pool_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
     @pytest.mark.parametrize(
         "audience",

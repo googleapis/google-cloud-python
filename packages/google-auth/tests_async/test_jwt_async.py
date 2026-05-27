@@ -143,6 +143,30 @@ class TestCredentials(object):
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == quota_project_id
 
+    def test_build_regional_access_boundary_lookup_url_standard(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return False to simulate standard TLS
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
+        url = self.credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            self.SERVICE_ACCOUNT_EMAIL
+        )
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return True to simulate mTLS
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        url = self.credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            self.SERVICE_ACCOUNT_EMAIL
+        )
+        assert url == expected_url
+
     def test_unpickle_old_credentials_without_rab(self):
         from google.auth import _regional_access_boundary_utils
 

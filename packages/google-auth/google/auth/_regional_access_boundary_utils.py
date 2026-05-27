@@ -501,3 +501,57 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 )
 
             self._worker_task = asyncio.create_task(_worker())
+
+
+def _get_domain() -> str:
+    """Dynamically determines the domain for IAM credentials based on active mTLS configuration.
+
+    Returns:
+        str: The dynamic domain string.
+    """
+    from google.auth.transport import _mtls_helper
+
+    if (
+        hasattr(_mtls_helper, "check_use_client_cert")
+        and _mtls_helper.check_use_client_cert()
+    ):
+        return f"iamcredentials.mtls.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+    else:
+        return f"iamcredentials.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+
+
+def get_service_account_rab_endpoint(service_account_email: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for service accounts.
+
+    Args:
+        service_account_email: The service account email.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/-/serviceAccounts/{service_account_email}/allowedLocations"
+
+
+def get_workforce_pool_rab_endpoint(pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workforce pools.
+
+    Args:
+        pool_id: The workforce pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/locations/global/workforcePools/{pool_id}/allowedLocations"
+
+
+def get_workload_identity_pool_rab_endpoint(project_number: str, pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workload identity pools.
+
+    Args:
+        project_number: The Google Cloud project number.
+        pool_id: The workload identity pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/allowedLocations"

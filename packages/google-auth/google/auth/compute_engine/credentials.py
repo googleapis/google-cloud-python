@@ -25,6 +25,7 @@ from typing import Optional, TYPE_CHECKING
 
 
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import iam
@@ -196,8 +197,8 @@ class Credentials(
                 )
                 return None
 
-        return iam._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-            service_account_email=self.service_account_email
+        return _regional_access_boundary_utils.get_service_account_rab_endpoint(
+            self.service_account_email
         )
 
     @property

@@ -334,9 +334,14 @@ class TestCredentials(object):
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
     )
-    def test_build_regional_access_boundary_lookup_url_explicit_email(
-        self, mock_get_universe_domain, mock_get_service_account_info
+    def test_build_regional_access_boundary_lookup_url_explicit_email_standard(
+        self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
     ):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return False
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         # Test with an explicit service account email, no resolution needed
         creds = self.credentials
         creds._service_account_email = FAKE_SERVICE_ACCOUNT_EMAIL
@@ -345,9 +350,33 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
 
         mock_get_service_account_info.assert_not_called()
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
-        assert url in (expected_url_standard, expected_url_mtls)
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        assert url == expected_url
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
+    )
+    def test_build_regional_access_boundary_lookup_url_explicit_email_mtls(
+        self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return True
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        # Test with an explicit service account email, no resolution needed
+        creds = self.credentials
+        creds._service_account_email = FAKE_SERVICE_ACCOUNT_EMAIL
+        mock_get_universe_domain.return_value = "googleapis.com"
+
+        url = creds._build_regional_access_boundary_lookup_url()
+
+        mock_get_service_account_info.assert_not_called()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        assert url == expected_url
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain", autospec=True

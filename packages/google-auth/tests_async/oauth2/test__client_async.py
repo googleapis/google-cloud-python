@@ -637,7 +637,9 @@ async def test__lookup_regional_access_boundary_request_no_throw_non_json_bad_ga
 ):
     bad_gateway_response = mock.AsyncMock(spec=["status", "content"])
     bad_gateway_response.status = http_client.BAD_GATEWAY
-    bad_gateway_response.content = mock.AsyncMock(return_value=b"<html>Bad Gateway</html>")
+    bad_gateway_response.content = mock.AsyncMock(
+        return_value=b"<html>Bad Gateway</html>"
+    )
 
     ok_response = mock.AsyncMock(spec=["status", "content"])
     ok_response.status = http_client.OK
