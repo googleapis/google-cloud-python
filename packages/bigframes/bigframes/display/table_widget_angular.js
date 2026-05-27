@@ -6604,7 +6604,7 @@ function Hm(e12, t) {
   }
 }
 function Vm(e12, t) {
-  e12 & 1 && (ao(0, "span", 7), W(1, " Running... "));
+  e12 & 1 && (ao(0, "span", 7), W(1, " Run Query "));
 }
 function Bm(e12, t) {
   e12 & 1 && W(0, " Run Query ");

@@ -241,9 +241,8 @@ def get_anywidget_bundle(
     else:
         df = obj
 
-    df, _ = df._process_display_df()
-
     widget = display.TableWidget(df, dry_run_info=dry_run_info)
+    display_df, _ = df._process_display_df()
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
 
     if isinstance(widget_repr_result, tuple):
@@ -259,20 +258,23 @@ def get_anywidget_bundle(
     total_rows = widget.row_count
     total_columns = len(df.columns)
 
-    widget_repr["text/html"] = create_html_representation(
-        obj,
-        cached_pd,
-        total_rows,
-        total_columns,
-    )
-    is_series, has_index = _get_obj_metadata(obj)
-    widget_repr["text/plain"] = plaintext.create_text_representation(
-        cached_pd,
-        total_rows,
-        is_series=is_series,
-        has_index=has_index,
-        column_count=len(df.columns) if not is_series else 0,
-    )
+    if dry_run_info:
+        widget_repr["text/plain"] = dry_run_info
+    else:
+        widget_repr["text/html"] = create_html_representation(
+            obj,
+            cached_pd,
+            total_rows,
+            total_columns,
+        )
+        is_series, has_index = _get_obj_metadata(obj)
+        widget_repr["text/plain"] = plaintext.create_text_representation(
+            cached_pd,
+            total_rows,
+            is_series=is_series,
+            has_index=has_index,
+            column_count=len(df.columns) if not is_series else 0,
+        )
 
     return widget_repr, widget_metadata
 
@@ -346,12 +348,12 @@ def repr_mimebundle(
                     return get_anywidget_bundle(
                         obj, include=include, exclude=exclude, dry_run_info=dry_run_info
                     )
-        except ImportError:
+        except Exception as e:
             # Anywidget is an optional dependency, so warn rather than fail.
             # TODO(shuowei): When Anywidget becomes the default for all repr modes,
             # remove this warning.
             warnings.warn(
-                "Anywidget mode is not available. "
+                "Anywidget mode is not available or failed to load. "
                 "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
                 f"Falling back to static HTML. Error: {traceback.format_exc()}"
             )

@@ -36,7 +36,7 @@ import { WidgetStateService } from './widget-state.service';
                     [disabled]="isLoading()"
                     (click)="handleRunQuery()">
               @if (isLoading()) {
-                <span class="spinner"></span> Running...
+                <span class="spinner"></span> Run Query
               } @else {
                 Run Query
               }

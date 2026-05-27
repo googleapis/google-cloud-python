@@ -262,6 +262,7 @@ def mock_df_deferred():
 
         df._block = mock.Mock()
         df._block.has_index = False
+        df._process_display_df.return_value = (df, None)
 
         yield df
 
@@ -271,7 +272,12 @@ def mock_deferred_df():
     from bigframes.session.deferred import DeferredBigQueryDataFrame
 
     with mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", True):
-        df = mock.Mock(spec=DeferredBigQueryDataFrame)
+        # We create a mock that subclasses DeferredBigQueryDataFrame so isinstance passes
+        class MockDeferredBigQueryDataFrame(DeferredBigQueryDataFrame):
+            def __init__(self):
+                pass
+        df = mock.MagicMock(spec=MockDeferredBigQueryDataFrame)
+        df.__class__ = DeferredBigQueryDataFrame
         yield df
 
 
