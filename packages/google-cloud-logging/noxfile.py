@@ -47,9 +47,12 @@ PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-LOWER_BOUND_CONSTRAINTS_FILE = (
-    CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
-)
+if (CURRENT_DIRECTORY / "testing").exists():
+    LOWER_BOUND_CONSTRAINTS_FILE = (
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
+    )
+else:
+    LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-cloud-logging"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -57,10 +60,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "asyncmock",
     "pytest",
     "pytest-cov",
-    # Pin pytest-asyncio to 0.23.8 to avoid strict event loop regressions
-    # in newer versions (v0.24+) which conflict with older grpcio (1.44.0)
-    # that does not automatically initialize loops in synchronous test threads.
-    "pytest-asyncio==0.23.8",
+    "pytest-asyncio",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "flask",
