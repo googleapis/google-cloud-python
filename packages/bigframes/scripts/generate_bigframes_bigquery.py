@@ -46,7 +46,7 @@ RUFF_CHECK_ARGS = [
     "ruff",
     "check",
     "--select",
-    "I",
+    "I,F",
     "--fix",
 ] + RUFF_COMMON_ARGS
 RUFF_FORMAT_ARGS = [
@@ -217,6 +217,15 @@ def _validate_types(impls):
 
 
 def _generate_signature_def(python_name, impls, sql_name, template):
+    for impl in impls:
+        uses_any1 = False
+        if "any1" in str(impl["return"]):
+            uses_any1 = True
+        for arg in impl["args"]:
+            if "any1" in str(arg["value"]):
+                uses_any1 = True
+        impl["uses_any1"] = uses_any1
+
     return_types = {impl["return"] for impl in impls}
 
     # Optimization: if all impls return the same concrete type,
