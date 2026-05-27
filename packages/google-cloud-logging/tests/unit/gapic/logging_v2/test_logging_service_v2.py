@@ -71,6 +71,9 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+_UUID4_RE = re.compile(
+    r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
+)
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -1335,8 +1338,8 @@ def test_logging_service_v2_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.DeleteLogRequest,
-        dict,
+        logging.DeleteLogRequest({}),
+        {},
     ],
 )
 def test_delete_log(request_type, transport: str = "grpc"):
@@ -1347,7 +1350,7 @@ def test_delete_log(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_log), "__call__") as call:
@@ -1388,9 +1391,10 @@ def test_delete_log_non_empty_request_with_auto_populated_field():
         client.delete_log(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.DeleteLogRequest(
+        request_msg = logging.DeleteLogRequest(
             log_name="log_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_log_use_cached_wrapped_rpc():
@@ -1469,9 +1473,14 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_log_async(
-    transport: str = "grpc_asyncio", request_type=logging.DeleteLogRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.DeleteLogRequest({}),
+        {},
+    ],
+)
+async def test_delete_log_async(request_type, transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1479,7 +1488,7 @@ async def test_delete_log_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_log), "__call__") as call:
@@ -1495,11 +1504,6 @@ async def test_delete_log_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_log_async_from_dict():
-    await test_delete_log_async(request_type=dict)
 
 
 def test_delete_log_field_headers():
@@ -1644,8 +1648,8 @@ async def test_delete_log_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.WriteLogEntriesRequest,
-        dict,
+        logging.WriteLogEntriesRequest({}),
+        {},
     ],
 )
 def test_write_log_entries(request_type, transport: str = "grpc"):
@@ -1656,7 +1660,7 @@ def test_write_log_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1701,9 +1705,10 @@ def test_write_log_entries_non_empty_request_with_auto_populated_field():
         client.write_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.WriteLogEntriesRequest(
+        request_msg = logging.WriteLogEntriesRequest(
             log_name="log_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_write_log_entries_use_cached_wrapped_rpc():
@@ -1786,9 +1791,14 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_write_log_entries_async(
-    transport: str = "grpc_asyncio", request_type=logging.WriteLogEntriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.WriteLogEntriesRequest({}),
+        {},
+    ],
+)
+async def test_write_log_entries_async(request_type, transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1796,7 +1806,7 @@ async def test_write_log_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1816,11 +1826,6 @@ async def test_write_log_entries_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging.WriteLogEntriesResponse)
-
-
-@pytest.mark.asyncio
-async def test_write_log_entries_async_from_dict():
-    await test_write_log_entries_async(request_type=dict)
 
 
 def test_write_log_entries_flattened():
@@ -1942,8 +1947,8 @@ async def test_write_log_entries_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogEntriesRequest,
-        dict,
+        logging.ListLogEntriesRequest({}),
+        {},
     ],
 )
 def test_list_log_entries(request_type, transport: str = "grpc"):
@@ -1954,7 +1959,7 @@ def test_list_log_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
@@ -2000,11 +2005,12 @@ def test_list_log_entries_non_empty_request_with_auto_populated_field():
         client.list_log_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListLogEntriesRequest(
+        request_msg = logging.ListLogEntriesRequest(
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_log_entries_use_cached_wrapped_rpc():
@@ -2087,9 +2093,14 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_log_entries_async(
-    transport: str = "grpc_asyncio", request_type=logging.ListLogEntriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.ListLogEntriesRequest({}),
+        {},
+    ],
+)
+async def test_list_log_entries_async(request_type, transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2097,7 +2108,7 @@ async def test_list_log_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
@@ -2118,11 +2129,6 @@ async def test_list_log_entries_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_log_entries_async_from_dict():
-    await test_list_log_entries_async(request_type=dict)
 
 
 def test_list_log_entries_flattened():
@@ -2417,8 +2423,8 @@ async def test_list_log_entries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListMonitoredResourceDescriptorsRequest,
-        dict,
+        logging.ListMonitoredResourceDescriptorsRequest({}),
+        {},
     ],
 )
 def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
@@ -2429,7 +2435,7 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2477,9 +2483,10 @@ def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populat
         client.list_monitored_resource_descriptors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListMonitoredResourceDescriptorsRequest(
+        request_msg = logging.ListMonitoredResourceDescriptorsRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_monitored_resource_descriptors_use_cached_wrapped_rpc():
@@ -2565,9 +2572,15 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.ListMonitoredResourceDescriptorsRequest({}),
+        {},
+    ],
+)
 async def test_list_monitored_resource_descriptors_async(
-    transport: str = "grpc_asyncio",
-    request_type=logging.ListMonitoredResourceDescriptorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2576,7 +2589,7 @@ async def test_list_monitored_resource_descriptors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2599,11 +2612,6 @@ async def test_list_monitored_resource_descriptors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_monitored_resource_descriptors_async_from_dict():
-    await test_list_monitored_resource_descriptors_async(request_type=dict)
 
 
 def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
@@ -2814,8 +2822,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogsRequest,
-        dict,
+        logging.ListLogsRequest({}),
+        {},
     ],
 )
 def test_list_logs(request_type, transport: str = "grpc"):
@@ -2826,7 +2834,7 @@ def test_list_logs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -2873,10 +2881,11 @@ def test_list_logs_non_empty_request_with_auto_populated_field():
         client.list_logs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging.ListLogsRequest(
+        request_msg = logging.ListLogsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_logs_use_cached_wrapped_rpc():
@@ -2955,9 +2964,14 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_logs_async(
-    transport: str = "grpc_asyncio", request_type=logging.ListLogsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.ListLogsRequest({}),
+        {},
+    ],
+)
+async def test_list_logs_async(request_type, transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2965,7 +2979,7 @@ async def test_list_logs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -2988,11 +3002,6 @@ async def test_list_logs_async(
     assert isinstance(response, pagers.ListLogsAsyncPager)
     assert response.log_names == ["log_names_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_logs_async_from_dict():
-    await test_list_logs_async(request_type=dict)
 
 
 def test_list_logs_field_headers():
@@ -3331,8 +3340,8 @@ async def test_list_logs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.TailLogEntriesRequest,
-        dict,
+        logging.TailLogEntriesRequest({}),
+        {},
     ],
 )
 def test_tail_log_entries(request_type, transport: str = "grpc"):
@@ -3343,7 +3352,7 @@ def test_tail_log_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3442,9 +3451,14 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_tail_log_entries_async(
-    transport: str = "grpc_asyncio", request_type=logging.TailLogEntriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.TailLogEntriesRequest({}),
+        {},
+    ],
+)
+async def test_tail_log_entries_async(request_type, transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3452,7 +3466,7 @@ async def test_tail_log_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3472,11 +3486,6 @@ async def test_tail_log_entries_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, logging.TailLogEntriesResponse)
-
-
-@pytest.mark.asyncio
-async def test_tail_log_entries_async_from_dict():
-    await test_tail_log_entries_async(request_type=dict)
 
 
 def test_credentials_transport_error():
@@ -3601,7 +3610,6 @@ def test_delete_log_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.DeleteLogRequest()
-
         assert args[0] == request_msg
 
 
@@ -3624,7 +3632,6 @@ def test_write_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.WriteLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3645,7 +3652,6 @@ def test_list_log_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3668,7 +3674,6 @@ def test_list_monitored_resource_descriptors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3689,7 +3694,6 @@ def test_list_logs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3726,7 +3730,6 @@ async def test_delete_log_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.DeleteLogRequest()
-
         assert args[0] == request_msg
 
 
@@ -3753,7 +3756,6 @@ async def test_write_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.WriteLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3780,7 +3782,6 @@ async def test_list_log_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3809,7 +3810,6 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListMonitoredResourceDescriptorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3837,7 +3837,6 @@ async def test_list_logs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging.ListLogsRequest()
-
         assert args[0] == request_msg
 
 
