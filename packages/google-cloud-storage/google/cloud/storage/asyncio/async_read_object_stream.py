@@ -142,7 +142,10 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
                 and response.metadata.finalize_time.seconds > 0
             ):
                 self.is_finalized = True
-                if hasattr(response.metadata, "checksums") and response.metadata.checksums:
+                if (
+                    hasattr(response.metadata, "checksums")
+                    and response.metadata.checksums
+                ):
                     self.full_obj_server_crc32c = response.metadata.checksums.crc32c
 
         if response and response.read_handle:
