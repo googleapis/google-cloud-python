@@ -1125,8 +1125,8 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest(**{  }),
-  {  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -1684,8 +1684,8 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest(**{  }),
-  {  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2056,8 +2056,8 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest(**{  }),
-  {  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 async def test_create_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2393,8 +2393,8 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest(**{  }),
-  {  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 async def test_update_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2722,8 +2722,8 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest(**{  }),
-  {  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 async def test_delete_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(

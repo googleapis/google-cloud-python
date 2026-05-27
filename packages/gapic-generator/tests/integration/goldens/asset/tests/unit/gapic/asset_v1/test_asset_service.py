@@ -1120,8 +1120,8 @@ async def test_export_assets_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ExportAssetsRequest(**{  }),
-  {  },
+  asset_service.ExportAssetsRequest(),
+  {},
 ])
 async def test_export_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -1350,8 +1350,8 @@ async def test_list_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListAssetsRequest(**{  }),
-  {  },
+  asset_service.ListAssetsRequest(),
+  {},
 ])
 async def test_list_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -1853,8 +1853,8 @@ async def test_batch_get_assets_history_async_use_cached_wrapped_rpc(transport: 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetAssetsHistoryRequest(**{  }),
-  {  },
+  asset_service.BatchGetAssetsHistoryRequest(),
+  {},
 ])
 async def test_batch_get_assets_history_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2090,8 +2090,8 @@ async def test_create_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateFeedRequest(**{  }),
-  {  },
+  asset_service.CreateFeedRequest(),
+  {},
 ])
 async def test_create_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2417,8 +2417,8 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetFeedRequest(**{  }),
-  {  },
+  asset_service.GetFeedRequest(),
+  {},
 ])
 async def test_get_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -2734,8 +2734,8 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListFeedsRequest(**{  }),
-  {  },
+  asset_service.ListFeedsRequest(),
+  {},
 ])
 async def test_list_feeds_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3049,8 +3049,8 @@ async def test_update_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateFeedRequest(**{  }),
-  {  },
+  asset_service.UpdateFeedRequest(),
+  {},
 ])
 async def test_update_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3365,8 +3365,8 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteFeedRequest(**{  }),
-  {  },
+  asset_service.DeleteFeedRequest(),
+  {},
 ])
 async def test_delete_feed_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -3679,8 +3679,8 @@ async def test_search_all_resources_async_use_cached_wrapped_rpc(transport: str 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllResourcesRequest(**{  }),
-  {  },
+  asset_service.SearchAllResourcesRequest(),
+  {},
 ])
 async def test_search_all_resources_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -4210,8 +4210,8 @@ async def test_search_all_iam_policies_async_use_cached_wrapped_rpc(transport: s
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.SearchAllIamPoliciesRequest(**{  }),
-  {  },
+  asset_service.SearchAllIamPoliciesRequest(),
+  {},
 ])
 async def test_search_all_iam_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -4725,8 +4725,8 @@ async def test_analyze_iam_policy_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyRequest(**{  }),
-  {  },
+  asset_service.AnalyzeIamPolicyRequest(),
+  {},
 ])
 async def test_analyze_iam_policy_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -4961,8 +4961,8 @@ async def test_analyze_iam_policy_longrunning_async_use_cached_wrapped_rpc(trans
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeIamPolicyLongrunningRequest(**{  }),
-  {  },
+  asset_service.AnalyzeIamPolicyLongrunningRequest(),
+  {},
 ])
 async def test_analyze_iam_policy_longrunning_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5189,8 +5189,8 @@ async def test_analyze_move_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeMoveRequest(**{  }),
-  {  },
+  asset_service.AnalyzeMoveRequest(),
+  {},
 ])
 async def test_analyze_move_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5424,8 +5424,8 @@ async def test_query_assets_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.QueryAssetsRequest(**{  }),
-  {  },
+  asset_service.QueryAssetsRequest(),
+  {},
 ])
 async def test_query_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -5663,8 +5663,8 @@ async def test_create_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.CreateSavedQueryRequest(**{  }),
-  {  },
+  asset_service.CreateSavedQueryRequest(),
+  {},
 ])
 async def test_create_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -6006,8 +6006,8 @@ async def test_get_saved_query_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.GetSavedQueryRequest(**{  }),
-  {  },
+  asset_service.GetSavedQueryRequest(),
+  {},
 ])
 async def test_get_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -6327,8 +6327,8 @@ async def test_list_saved_queries_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.ListSavedQueriesRequest(**{  }),
-  {  },
+  asset_service.ListSavedQueriesRequest(),
+  {},
 ])
 async def test_list_saved_queries_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -6836,8 +6836,8 @@ async def test_update_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.UpdateSavedQueryRequest(**{  }),
-  {  },
+  asset_service.UpdateSavedQueryRequest(),
+  {},
 ])
 async def test_update_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7160,8 +7160,8 @@ async def test_delete_saved_query_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.DeleteSavedQueryRequest(**{  }),
-  {  },
+  asset_service.DeleteSavedQueryRequest(),
+  {},
 ])
 async def test_delete_saved_query_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7466,8 +7466,8 @@ async def test_batch_get_effective_iam_policies_async_use_cached_wrapped_rpc(tra
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.BatchGetEffectiveIamPoliciesRequest(**{  }),
-  {  },
+  asset_service.BatchGetEffectiveIamPoliciesRequest(),
+  {},
 ])
 async def test_batch_get_effective_iam_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -7699,8 +7699,8 @@ async def test_analyze_org_policies_async_use_cached_wrapped_rpc(transport: str 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPoliciesRequest(**{  }),
-  {  },
+  asset_service.AnalyzeOrgPoliciesRequest(),
+  {},
 ])
 async def test_analyze_org_policies_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -8230,8 +8230,8 @@ async def test_analyze_org_policy_governed_containers_async_use_cached_wrapped_r
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedContainersRequest(**{  }),
-  {  },
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+  {},
 ])
 async def test_analyze_org_policy_governed_containers_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(
@@ -8761,8 +8761,8 @@ async def test_analyze_org_policy_governed_assets_async_use_cached_wrapped_rpc(t
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(**{  }),
-  {  },
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+  {},
 ])
 async def test_analyze_org_policy_governed_assets_async(request_type, transport: str = 'grpc_asyncio'):
     client = AssetServiceAsyncClient(

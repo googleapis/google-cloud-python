@@ -1094,8 +1094,8 @@ async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest(**{  }),
-  {  },
+  logging_metrics.ListLogMetricsRequest(),
+  {},
 ])
 async def test_list_log_metrics_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -1611,8 +1611,8 @@ async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest(**{  }),
-  {  },
+  logging_metrics.GetLogMetricRequest(),
+  {},
 ])
 async def test_get_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -1946,8 +1946,8 @@ async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest(**{  }),
-  {  },
+  logging_metrics.CreateLogMetricRequest(),
+  {},
 ])
 async def test_create_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -2291,8 +2291,8 @@ async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest(**{  }),
-  {  },
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
 ])
 async def test_update_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -2621,8 +2621,8 @@ async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest(**{  }),
-  {  },
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
 ])
 async def test_delete_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(

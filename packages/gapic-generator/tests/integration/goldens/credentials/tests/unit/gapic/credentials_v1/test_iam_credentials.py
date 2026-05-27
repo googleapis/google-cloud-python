@@ -1103,8 +1103,8 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest(**{  }),
-  {  },
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 async def test_generate_access_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1442,8 +1442,8 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest(**{  }),
-  {  },
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 async def test_generate_id_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1785,8 +1785,8 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest(**{  }),
-  {  },
+  common.SignBlobRequest(),
+  {},
 ])
 async def test_sign_blob_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -2122,8 +2122,8 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest(**{  }),
-  {  },
+  common.SignJwtRequest(),
+  {},
 ])
 async def test_sign_jwt_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(

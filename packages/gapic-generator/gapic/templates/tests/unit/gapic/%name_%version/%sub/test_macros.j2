@@ -260,6 +260,8 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
+{% if auto_populated_fields %}
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
   {{ method.input.ident }}(**{
     {%- for auto_populated_field in auto_populated_fields %}
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
@@ -270,6 +272,10 @@ async def test_{{ method_name }}_async_use_cached_wrapped_rpc(transport: str = "
     "{{ auto_populated_field }}": "{{ auto_populated_field_sample_value }}",
     {%- endfor %}
   },
+{% else %}
+  {{ method.input.ident }}(),
+  {},
+{% endif %}
 ])
 async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyncio'):
     client = {{ service.async_client_name }}(

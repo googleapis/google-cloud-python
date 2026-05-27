@@ -1091,8 +1091,8 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest(**{  }),
-  {  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 async def test_delete_log_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1397,8 +1397,8 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest(**{  }),
-  {  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 async def test_write_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1678,8 +1678,8 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest(**{  }),
-  {  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 async def test_list_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2136,8 +2136,8 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest(**{  }),
-  {  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 async def test_list_monitored_resource_descriptors_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2496,8 +2496,8 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest(**{  }),
-  {  },
+  logging.ListLogsRequest(),
+  {},
 ])
 async def test_list_logs_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2972,8 +2972,8 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest(**{  }),
-  {  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 async def test_tail_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
