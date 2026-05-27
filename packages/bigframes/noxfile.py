@@ -149,7 +149,7 @@ def lint(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -201,7 +201,7 @@ def format(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length

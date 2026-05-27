@@ -150,7 +150,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.fullmatch(args[0].{{ auto_populated_field }})
         request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
 {% endfor %}
 {% endif %}{# if method_settings is not none #}
@@ -1208,7 +1208,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             # Ensure that the uuid4 field is set according to AIP 4235
             for i, (key, value) in enumerate(req.call_args.kwargs['params']):
                 if key == "{{ auto_populated_field|camel_case }}":
-                    assert re.fullmatch(r"{{ get_uuid4_re() }}", value)
+                    assert _UUID4_RE.match(value)
                     break
             
             # Include {{ auto_populated_field|camel_case }} within expected_params with value mock.ANY
@@ -1565,7 +1565,7 @@ def test_{{ method_name }}_rest_no_http_options():
         {% if method_settings is not none %}
         {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(r"{{ get_uuid4_re() }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.fullmatch(args[0].{{ auto_populated_field }})
         request_msg.{{ auto_populated_field }} = args[0].{{ auto_populated_field }}
         {% endfor %}{# for auto_populated_field in method_settings.auto_populated_fields #}
         {% endif %}{# if method_settings is not none #}
@@ -2196,7 +2196,7 @@ def test_initialize_client_w_{{transport_name}}():
 {% endmacro %}{# empty_call_test #}
 
 {% macro get_uuid4_re() -%}
-[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}
+{{ uuid4_re }}
 {%- endmacro %}{# uuid_re #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
