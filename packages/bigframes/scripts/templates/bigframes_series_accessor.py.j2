@@ -12,6 +12,7 @@ from typing import cast, Optional, TypeVar
 from bigframes.core.logging import log_adapter
 import bigframes.extensions.core.series_accessor as core_accessor
 import bigframes.series
+import bigframes.session
 
 S = TypeVar("S", bound="bigframes.series.Series")
 

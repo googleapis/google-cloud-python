@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import abc
 from typing import (
-    TYPE_CHECKING,
     Any,
     cast,
     Generic,
@@ -23,9 +22,7 @@ from bigframes import dtypes
 import bigframes.core.col
 import bigframes.core.sentinels as sentinels
 import bigframes.series as series
-
-if TYPE_CHECKING:
-    import bigframes.session
+import bigframes.session
 
 S = TypeVar("S")
 
