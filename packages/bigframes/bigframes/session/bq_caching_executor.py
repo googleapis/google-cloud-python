@@ -543,15 +543,17 @@ class BigQueryCachingExecutor(executor.Executor):
 
     def _collect_udf_defs(self, plan: nodes.BigFrameNode) -> list[udf_def.PythonUdf]:
         udf_defs: list[udf_def.PythonUdf] = []
-        for node in plan.unique_nodes():
-            for expr in node._node_expressions:
-                for sub_expr in expr.walk():
-                    if isinstance(sub_expr, expression.OpExpression):
-                        op = sub_expr.op
-                        if isinstance(op, ops.PythonUdfOp):
-                            func_def = op.function_def
-                            if isinstance(func_def, udf_def.PythonUdf):
-                                udf_defs.append(func_def)
+        exprs = [
+            expr for node in plan.unique_nodes() for expr in node._node_expressions
+        ]
+        expr_nodes = [expr for expr in exprs for expr in expr.walk()]
+        for expr_node in expr_nodes:
+            if (
+                isinstance(expr_node, expression.OpExpression)
+                and isinstance(expr_node.op, ops.PythonUdfOp)
+                and isinstance(expr_node.op.function_def, udf_def.PythonUdf)
+            ):
+                udf_defs.append(expr_node.op.function_def)
         return udf_defs
 
     def _subsitute_temporary_functions(
@@ -559,22 +561,20 @@ class BigQueryCachingExecutor(executor.Executor):
         plan: nodes.BigFrameNode,
         deployed_mapping: dict[udf_def.PythonUdf, udf_def.BigqueryUdf],
     ) -> nodes.BigFrameNode:
-        def replace_in_expr(expr: expression.Expression) -> expression.Expression:
-            def replace_step(e: expression.Expression) -> expression.Expression:
-                if isinstance(e, expression.OpExpression):
-                    op = e.op
-                    if isinstance(op, ops.PythonUdfOp):
-                        func_def = op.function_def
-                        if func_def in deployed_mapping:
-                            deployed_func = deployed_mapping[func_def]
-                            rf_op = ops.RemoteFunctionOp(function_def=deployed_func)
-                            return dataclasses.replace(e, op=rf_op)
-                        raise ValueError(
-                            f"UDF definition {func_def} not found in deployed mapping"
-                        )
-                return e
+        def replace_udf_expr(e: expression.Expression) -> expression.Expression:
+            if isinstance(e, expression.OpExpression) and isinstance(
+                e.op, ops.PythonUdfOp
+            ):
+                func_def = e.op.function_def
+                # We will have already deployed the function
+                assert func_def in deployed_mapping
+                deployed_func = deployed_mapping[func_def]
+                rf_op = ops.RemoteFunctionOp(function_def=deployed_func)
+                return dataclasses.replace(e, op=rf_op)
+            return e
 
-            return expr.bottom_up(replace_step)
+        def replace_in_expr(expr: expression.Expression) -> expression.Expression:
+            return expr.bottom_up(replace_udf_expr)
 
         def replace_in_node(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
             if hasattr(node, "transform_exprs"):

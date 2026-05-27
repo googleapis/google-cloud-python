@@ -198,14 +198,6 @@ class FunctionSession:
         config = bq_udf.to_managed_function_config()
         bq_function_name = get_managed_function_name(config, self.session_id)
         routine_ref = self._resolve_routine_reference(bq_function_name)
-
-        with self._artifacts_lock:
-            if udf_hash in self._deployed_routines:
-                return udf_def.BigqueryUdf(
-                    routine_ref=routine_ref,
-                    signature=bq_udf.signature,
-                )
-
         while True:
             with self._artifacts_lock:
                 if udf_hash in self._deployed_routines:
@@ -219,7 +211,6 @@ class FunctionSession:
                     break
 
             time.sleep(0.1)
-
         try:
             self._function_client.provision_bq_managed_function(
                 routine_ref=routine_ref, config=config
@@ -228,12 +219,10 @@ class FunctionSession:
             with self._artifacts_lock:
                 self._deploying_routines.discard(udf_hash)
             raise
-
+        self._add_temp_remote_function(routine_ref)
         with self._artifacts_lock:
             self._deploying_routines.discard(udf_hash)
             self._deployed_routines.add(udf_hash)
-            self._add_temp_remote_function(routine_ref)
-
         return udf_def.BigqueryUdf(
             routine_ref=routine_ref,
             signature=bq_udf.signature,
@@ -583,7 +572,11 @@ class FunctionSession:
                 kms_key_name=cloud_function_kms_key_name,
                 docker_repository=cloud_function_docker_repository,
                 cloud_build_service_account=cloud_build_service_account,
-                cloud_run_service_account=cloud_function_service_account,
+                cloud_run_service_account=(
+                    None
+                    if (cloud_function_service_account == "default")
+                    else cloud_function_service_account
+                ),
             )
             uniq_suffix = None
             if not reuse:

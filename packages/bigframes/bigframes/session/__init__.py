@@ -305,7 +305,10 @@ class Session(
                 gcp_project_id=project,
                 bq_location=self._location,
                 bq_client=self._clients_provider.bqclient,
-                bq_connection_manager=self._clients_provider.bqconnectionclient,
+                bq_connection_manager=bigframes.clients.BqConnectionManager(
+                    self._clients_provider.bqconnectionclient,
+                    self._clients_provider.resourcemanagerclient,
+                ),
                 cloud_functions_client=self._clients_provider.cloudfunctionsclient,
                 publisher=self._publisher,
             ),

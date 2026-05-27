@@ -19,7 +19,7 @@ from bigframes.operations import base_ops, remote_function_ops
 
 def func_to_op(op) -> base_ops.NaryOp:
     """
-    Convert various bigframes, python objects into a bigframes operations.
+    Convert various bigframes, python functions into bigframes operations.
 
     This should handle anything that might be passed to eg map, combine, other pandas methods that take a function.
 

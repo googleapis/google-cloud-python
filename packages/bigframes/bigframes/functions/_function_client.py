@@ -194,7 +194,7 @@ class FunctionClient:
         _validate_routine_name(routine_ref.routine_id)
         bq_function_name_escaped = bigframes.core.sql.identifier(routine_ref.routine_id)
         create_function_ddl = f"""
-            CREATE OR REPLACE FUNCTION `{routine_ref.project}.{routine_ref.dataset_id}.{bq_function_name_escaped}`({udf_def.signature.to_sql_input_signature()})
+            CREATE OR REPLACE FUNCTION `{routine_ref.project}.{routine_ref.dataset_id}`.{bq_function_name_escaped}({udf_def.signature.to_sql_input_signature()})
             RETURNS {udf_def.signature.with_devirtualize().output.sql_type}
             REMOTE WITH CONNECTION `{routine_ref.project}.{self._bq_location}.{udf_def.connection_id}`
             OPTIONS ({remote_function_options_str})"""
