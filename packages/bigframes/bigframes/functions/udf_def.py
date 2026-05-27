@@ -559,6 +559,10 @@ class CloudRunFunctionConfig:
     workers: int | None
     threads: int | None
     concurrency: int | None
+    kms_key_name: str | None
+    docker_repository: str | None
+    cloud_build_service_account: str | None
+    cloud_run_service_account: str | None
 
     def stable_hash(self) -> bytes:
         hash_val = google_crc32c.Checksum()
@@ -574,6 +578,10 @@ class CloudRunFunctionConfig:
         hash_val.update(str(self.workers).encode())
         hash_val.update(str(self.threads).encode())
         hash_val.update(str(self.concurrency).encode())
+        hash_val.update(str(self.kms_key_name).encode())
+        hash_val.update(str(self.docker_repository).encode())
+        hash_val.update(str(self.cloud_build_service_account).encode())
+        hash_val.update(str(self.cloud_run_service_account).encode())
         return hash_val.digest()
 
 

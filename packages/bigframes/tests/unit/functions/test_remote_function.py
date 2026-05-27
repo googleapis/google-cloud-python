@@ -20,8 +20,8 @@ from bigframes.testing import mocks
 
 def test_missing_input_types():
     session = mocks.create_bigquery_session()
-    remote_function_decorator = bff.remote_function(
-        session=session, cloud_function_service_account="default"
+    remote_function_decorator = session._function_session.remote_function(
+        cloud_function_service_account="default"
     )
 
     def function_without_parameter_annotations(myparam) -> str:
@@ -38,8 +38,8 @@ def test_missing_input_types():
 
 def test_missing_output_type():
     session = mocks.create_bigquery_session()
-    remote_function_decorator = bff.remote_function(
-        session=session, cloud_function_service_account="default"
+    remote_function_decorator = session._function_session.remote_function(
+        cloud_function_service_account="default"
     )
 
     def function_without_return_annotation(myparam: int):

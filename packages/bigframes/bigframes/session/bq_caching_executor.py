@@ -532,7 +532,6 @@ class BigQueryCachingExecutor(executor.Executor):
         tasks = [
             asyncio.to_thread(
                 self._function_manager._deploy_udf,
-                session,
                 udf,
             )
             for udf in referenced_udfs
