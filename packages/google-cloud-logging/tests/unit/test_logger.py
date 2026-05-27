@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import unittest
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
@@ -466,6 +467,8 @@ class TestLogger(unittest.TestCase):
         Users should be able to input a dictionary with type and labels instead
         of a Resource object
         """
+        import pytest
+
         MESSAGE = "hello world"
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
@@ -1770,6 +1773,10 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch.entries), UNSENT)
         self.assertIsNone(api._write_entries_called_with)
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason="InvalidArgument init with details requires python3.8+",
+    )
     def test_append_context_to_error(self):
         """
         If an InvalidArgument exception contains info on the log that threw it,
@@ -1819,6 +1826,10 @@ class TestBatch(unittest.TestCase):
             err.message, starting_message, "message should have been unchanged"
         )
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason="InvalidArgument init with details requires python3.8+",
+    )
     def test_batch_error_gets_context(self):
         """
         Simulate an InvalidArgument sent as part of a batch commit, to ensure
