@@ -960,10 +960,8 @@ def test_metrics_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest(**{
-  }),
-  {
-  },
+  logging_metrics.ListLogMetricsRequest(),
+  {},
 ])
 def test_list_log_metrics(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -1467,10 +1465,8 @@ async def test_list_log_metrics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest(**{
-  }),
-  {
-  },
+  logging_metrics.GetLogMetricRequest(),
+  {},
 ])
 def test_get_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -1802,10 +1798,8 @@ async def test_get_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest(**{
-  }),
-  {
-  },
+  logging_metrics.CreateLogMetricRequest(),
+  {},
 ])
 def test_create_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -2147,10 +2141,8 @@ async def test_create_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest(**{
-  }),
-  {
-  },
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
 ])
 def test_update_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -2492,10 +2484,8 @@ async def test_update_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest(**{
-  }),
-  {
-  },
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
 ])
 def test_delete_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(

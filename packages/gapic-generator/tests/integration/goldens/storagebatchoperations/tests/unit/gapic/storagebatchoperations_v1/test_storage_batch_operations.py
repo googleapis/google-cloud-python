@@ -1057,10 +1057,8 @@ def test_storage_batch_operations_client_create_channel_credentials_file(client_
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListJobsRequest(**{
-  }),
-  {
-  },
+  storage_batch_operations.ListJobsRequest(),
+  {},
 ])
 def test_list_jobs(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1572,10 +1570,8 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetJobRequest(**{
-  }),
-  {
-  },
+  storage_batch_operations.GetJobRequest(),
+  {},
 ])
 def test_get_job(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -1899,6 +1895,7 @@ async def test_get_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
   storage_batch_operations.CreateJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
@@ -2248,6 +2245,7 @@ async def test_create_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
   storage_batch_operations.DeleteJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
@@ -2561,6 +2559,7 @@ async def test_delete_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  # Pure protobuf messages (non-proto-plus) require keyword arguments.
   storage_batch_operations.CancelJobRequest(**{
     "request_id": "explicit value for autopopulate-able field",
   }),
@@ -2876,10 +2875,8 @@ async def test_cancel_job_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.ListBucketOperationsRequest(**{
-  }),
-  {
-  },
+  storage_batch_operations.ListBucketOperationsRequest(),
+  {},
 ])
 def test_list_bucket_operations(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(
@@ -3391,10 +3388,8 @@ async def test_list_bucket_operations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  storage_batch_operations.GetBucketOperationRequest(**{
-  }),
-  {
-  },
+  storage_batch_operations.GetBucketOperationRequest(),
+  {},
 ])
 def test_get_bucket_operation(request_type, transport: str = 'grpc'):
     client = StorageBatchOperationsClient(

@@ -962,10 +962,8 @@ def test_logging_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest(**{
-  }),
-  {
-  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 def test_delete_log(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1267,10 +1265,8 @@ async def test_delete_log_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest(**{
-  }),
-  {
-  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 def test_write_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1542,10 +1538,8 @@ async def test_write_log_entries_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest(**{
-  }),
-  {
-  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 def test_list_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2004,10 +1998,8 @@ async def test_list_log_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest(**{
-  }),
-  {
-  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 def test_list_monitored_resource_descriptors(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2360,10 +2352,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest(**{
-  }),
-  {
-  },
+  logging.ListLogsRequest(),
+  {},
 ])
 def test_list_logs(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2871,10 +2861,8 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest(**{
-  }),
-  {
-  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 def test_tail_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(

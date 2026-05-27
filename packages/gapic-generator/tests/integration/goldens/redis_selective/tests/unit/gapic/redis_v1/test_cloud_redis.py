@@ -989,10 +989,8 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest(**{
-  }),
-  {
-  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1500,10 +1498,8 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest(**{
-  }),
-  {
-  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1915,10 +1911,8 @@ async def test_get_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest(**{
-  }),
-  {
-  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2256,10 +2250,8 @@ async def test_create_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest(**{
-  }),
-  {
-  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2583,10 +2575,8 @@ async def test_update_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest(**{
-  }),
-  {
-  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(

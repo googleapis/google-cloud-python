@@ -1002,10 +1002,8 @@ def test_eventarc_client_create_channel_credentials_file(client_class, transport
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetTriggerRequest(**{
-  }),
-  {
-  },
+  eventarc.GetTriggerRequest(),
+  {},
 ])
 def test_get_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1337,10 +1335,8 @@ async def test_get_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListTriggersRequest(**{
-  }),
-  {
-  },
+  eventarc.ListTriggersRequest(),
+  {},
 ])
 def test_list_triggers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -1852,10 +1848,8 @@ async def test_list_triggers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateTriggerRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateTriggerRequest(),
+  {},
 ])
 def test_create_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2193,10 +2187,8 @@ async def test_create_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateTriggerRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateTriggerRequest(),
+  {},
 ])
 def test_update_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2530,10 +2522,8 @@ async def test_update_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteTriggerRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteTriggerRequest(),
+  {},
 ])
 def test_delete_trigger(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -2861,10 +2851,8 @@ async def test_delete_trigger_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelRequest(**{
-  }),
-  {
-  },
+  eventarc.GetChannelRequest(),
+  {},
 ])
 def test_get_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3197,10 +3185,8 @@ async def test_get_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelsRequest(**{
-  }),
-  {
-  },
+  eventarc.ListChannelsRequest(),
+  {},
 ])
 def test_list_channels(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -3710,10 +3696,8 @@ async def test_list_channels_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateChannelRequest(),
+  {},
 ])
 def test_create_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4051,10 +4035,8 @@ async def test_create_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateChannelRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateChannelRequest(),
+  {},
 ])
 def test_update_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4378,10 +4360,8 @@ async def test_update_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteChannelRequest(),
+  {},
 ])
 def test_delete_channel(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -4697,10 +4677,8 @@ async def test_delete_channel_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetProviderRequest(**{
-  }),
-  {
-  },
+  eventarc.GetProviderRequest(),
+  {},
 ])
 def test_get_provider(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5012,10 +4990,8 @@ async def test_get_provider_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListProvidersRequest(**{
-  }),
-  {
-  },
+  eventarc.ListProvidersRequest(),
+  {},
 ])
 def test_list_providers(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5527,10 +5503,8 @@ async def test_list_providers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetChannelConnectionRequest(**{
-  }),
-  {
-  },
+  eventarc.GetChannelConnectionRequest(),
+  {},
 ])
 def test_get_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -5850,10 +5824,8 @@ async def test_get_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListChannelConnectionsRequest(**{
-  }),
-  {
-  },
+  eventarc.ListChannelConnectionsRequest(),
+  {},
 ])
 def test_list_channel_connections(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6361,10 +6333,8 @@ async def test_list_channel_connections_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateChannelConnectionRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateChannelConnectionRequest(),
+  {},
 ])
 def test_create_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -6702,10 +6672,8 @@ async def test_create_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteChannelConnectionRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteChannelConnectionRequest(),
+  {},
 ])
 def test_delete_channel_connection(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7021,10 +6989,8 @@ async def test_delete_channel_connection_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleChannelConfigRequest(**{
-  }),
-  {
-  },
+  eventarc.GetGoogleChannelConfigRequest(),
+  {},
 ])
 def test_get_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7336,10 +7302,8 @@ async def test_get_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleChannelConfigRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateGoogleChannelConfigRequest(),
+  {},
 ])
 def test_update_google_channel_config(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7659,10 +7623,8 @@ async def test_update_google_channel_config_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetMessageBusRequest(**{
-  }),
-  {
-  },
+  eventarc.GetMessageBusRequest(),
+  {},
 ])
 def test_get_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -7986,10 +7948,8 @@ async def test_get_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusesRequest(**{
-  }),
-  {
-  },
+  eventarc.ListMessageBusesRequest(),
+  {},
 ])
 def test_list_message_buses(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -8501,10 +8461,8 @@ async def test_list_message_buses_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListMessageBusEnrollmentsRequest(**{
-  }),
-  {
-  },
+  eventarc.ListMessageBusEnrollmentsRequest(),
+  {},
 ])
 def test_list_message_bus_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9016,10 +8974,8 @@ async def test_list_message_bus_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateMessageBusRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateMessageBusRequest(),
+  {},
 ])
 def test_create_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9357,10 +9313,8 @@ async def test_create_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateMessageBusRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateMessageBusRequest(),
+  {},
 ])
 def test_update_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -9684,10 +9638,8 @@ async def test_update_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteMessageBusRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteMessageBusRequest(),
+  {},
 ])
 def test_delete_message_bus(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10015,10 +9967,8 @@ async def test_delete_message_bus_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetEnrollmentRequest(**{
-  }),
-  {
-  },
+  eventarc.GetEnrollmentRequest(),
+  {},
 ])
 def test_get_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10350,10 +10300,8 @@ async def test_get_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListEnrollmentsRequest(**{
-  }),
-  {
-  },
+  eventarc.ListEnrollmentsRequest(),
+  {},
 ])
 def test_list_enrollments(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -10865,10 +10813,8 @@ async def test_list_enrollments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateEnrollmentRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateEnrollmentRequest(),
+  {},
 ])
 def test_create_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11206,10 +11152,8 @@ async def test_create_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateEnrollmentRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateEnrollmentRequest(),
+  {},
 ])
 def test_update_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11533,10 +11477,8 @@ async def test_update_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteEnrollmentRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteEnrollmentRequest(),
+  {},
 ])
 def test_delete_enrollment(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -11864,10 +11806,8 @@ async def test_delete_enrollment_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetPipelineRequest(**{
-  }),
-  {
-  },
+  eventarc.GetPipelineRequest(),
+  {},
 ])
 def test_get_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12195,10 +12135,8 @@ async def test_get_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListPipelinesRequest(**{
-  }),
-  {
-  },
+  eventarc.ListPipelinesRequest(),
+  {},
 ])
 def test_list_pipelines(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -12710,10 +12648,8 @@ async def test_list_pipelines_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreatePipelineRequest(**{
-  }),
-  {
-  },
+  eventarc.CreatePipelineRequest(),
+  {},
 ])
 def test_create_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13051,10 +12987,8 @@ async def test_create_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdatePipelineRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdatePipelineRequest(),
+  {},
 ])
 def test_update_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13378,10 +13312,8 @@ async def test_update_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeletePipelineRequest(**{
-  }),
-  {
-  },
+  eventarc.DeletePipelineRequest(),
+  {},
 ])
 def test_delete_pipeline(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -13709,10 +13641,8 @@ async def test_delete_pipeline_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.GetGoogleApiSourceRequest(**{
-  }),
-  {
-  },
+  eventarc.GetGoogleApiSourceRequest(),
+  {},
 ])
 def test_get_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14040,10 +13970,8 @@ async def test_get_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.ListGoogleApiSourcesRequest(**{
-  }),
-  {
-  },
+  eventarc.ListGoogleApiSourcesRequest(),
+  {},
 ])
 def test_list_google_api_sources(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14555,10 +14483,8 @@ async def test_list_google_api_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.CreateGoogleApiSourceRequest(**{
-  }),
-  {
-  },
+  eventarc.CreateGoogleApiSourceRequest(),
+  {},
 ])
 def test_create_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -14896,10 +14822,8 @@ async def test_create_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.UpdateGoogleApiSourceRequest(**{
-  }),
-  {
-  },
+  eventarc.UpdateGoogleApiSourceRequest(),
+  {},
 ])
 def test_update_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
@@ -15223,10 +15147,8 @@ async def test_update_google_api_source_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  eventarc.DeleteGoogleApiSourceRequest(**{
-  }),
-  {
-  },
+  eventarc.DeleteGoogleApiSourceRequest(),
+  {},
 ])
 def test_delete_google_api_source(request_type, transport: str = 'grpc'):
     client = EventarcClient(
