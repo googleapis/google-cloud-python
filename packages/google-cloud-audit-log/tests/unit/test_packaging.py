@@ -15,6 +15,7 @@
 import os
 import subprocess
 import sys
+from importlib import metadata
 
 
 # See https://docs.pytest.org/en/stable/how-to/tmp_path.html#the-tmp-path-fixture
@@ -39,24 +40,13 @@ def test_namespace_package_compat(tmp_path):
     subprocess.check_call(cmd, env=env)
 
 
-def test_setup_py_does_not_discover_docs_package(monkeypatch):
-    import pathlib
-    import runpy
-
-    captured_kwargs = {}
-
-    def fake_setup(**kwargs):
-        captured_kwargs.update(kwargs)
-
-    package_root = pathlib.Path(__file__).parents[2]
-    monkeypatch.chdir(package_root)
-    monkeypatch.setattr("setuptools.setup", fake_setup)
-
-    runpy.run_path(str(package_root / "setup.py"), run_name="__main__")
-
-    packages = captured_kwargs["packages"]
-
-    assert "google.cloud.audit" in packages
-    assert not any(
-        package == "docs" or package.startswith("docs.") for package in packages
+def test_top_level_package_metadata_excludes_docs():
+    top_level = metadata.distribution("google-cloud-audit-log").read_text(
+        "top_level.txt"
     )
+
+    assert top_level is not None
+    top_level_packages = set(top_level.splitlines())
+
+    assert "google" in top_level_packages
+    assert "docs" not in top_level_packages
