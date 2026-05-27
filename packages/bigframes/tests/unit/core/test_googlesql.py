@@ -54,7 +54,7 @@ def test_apply_googlesql_scalar_op_pandas_series_global_session(monkeypatch):
 
     # Mock read_pandas on the session
     mock_read_pandas = mock.MagicMock(return_value=bf_series)
-    session.read_pandas = mock_read_pandas
+    session.read_pandas = mock_read_pandas  # type: ignore
 
     # Mock _apply_nary_op on Series class to avoid real compilation/execution
     mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
@@ -101,10 +101,10 @@ def test_apply_googlesql_scalar_op_pandas_series_with_bf_series(monkeypatch):
 
     # Mock read_pandas on both sessions
     mock_global_read_pandas = mock.MagicMock()
-    global_session.read_pandas = mock_global_read_pandas
+    global_session.read_pandas = mock_global_read_pandas  # type: ignore
 
     mock_bf_read_pandas = mock.MagicMock(return_value=bf_series)
-    bf_session.read_pandas = mock_bf_read_pandas
+    bf_session.read_pandas = mock_bf_read_pandas  # type: ignore
 
     # Mock _apply_nary_op
     mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
@@ -138,7 +138,7 @@ def test_apply_googlesql_scalar_op_mixed_args(monkeypatch):
     bf_series = df["col"]
 
     mock_read_pandas = mock.MagicMock(return_value=bf_series)
-    session.read_pandas = mock_read_pandas
+    session.read_pandas = mock_read_pandas  # type: ignore
 
     mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
     monkeypatch.setattr(series.Series, "_apply_nary_op", mock_apply_nary_op)
@@ -192,10 +192,10 @@ def test_apply_googlesql_scalar_op_pandas_series_with_bf_dataframe(monkeypatch):
 
     # Mock read_pandas on both sessions
     mock_global_read_pandas = mock.MagicMock()
-    global_session.read_pandas = mock_global_read_pandas
+    global_session.read_pandas = mock_global_read_pandas  # type: ignore
 
     mock_bf_read_pandas = mock.MagicMock(return_value=bf_series)
-    bf_session.read_pandas = mock_bf_read_pandas
+    bf_session.read_pandas = mock_bf_read_pandas  # type: ignore
 
     # Mock _apply_nary_op
     mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
@@ -241,10 +241,10 @@ def test_apply_googlesql_scalar_op_pandas_series_with_bf_index(monkeypatch):
 
     # Mock read_pandas on both sessions
     mock_global_read_pandas = mock.MagicMock()
-    global_session.read_pandas = mock_global_read_pandas
+    global_session.read_pandas = mock_global_read_pandas  # type: ignore
 
     mock_bf_read_pandas = mock.MagicMock(return_value=bf_series)
-    bf_session.read_pandas = mock_bf_read_pandas
+    bf_session.read_pandas = mock_bf_read_pandas  # type: ignore
 
     # Mock _apply_nary_op
     mock_apply_nary_op = mock.MagicMock(return_value=bf_series)
