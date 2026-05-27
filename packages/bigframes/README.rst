@@ -87,49 +87,6 @@ For details, see the `third_party
 <https://github.com/googleapis/google-cloud-python/tree/main/third_party/bigframes_vendored>`_
 directory.
 
-Contributing to the Angular Frontend Widget
--------------------------------------------
-
-This branch introduces an Angular-based implementation for the interactive Table Widget (located under ``bigframes/display/table_widget_angular/``).
-
-If you want to contribute to the frontend portion of BigQuery DataFrames on this branch, please follow these steps:
-
-1. **Prerequisites**:
-   Ensure you have Node.js and ``npm`` installed on your machine.
-
-2. **Install Dependencies**:
-   Navigate to the Angular project directory and install the required packages:
-
-   .. code-block:: bash
-
-      $ cd bigframes/display/table_widget_angular
-      $ npm install
-
-3. **Development & Live Reloading**:
-   To run a local development server with live reloading:
-
-   .. code-block:: bash
-
-      $ npm run start
-
-   This boots up the Angular CLI server on ``http://localhost:4200/``. Any changes to the source files under ``src/`` will automatically trigger a reload.
-
-4. **Running Frontend Tests**:
-   To run the unit tests:
-
-   .. code-block:: bash
-
-      $ npm run test
-
-5. **Building & Bundling the Widget for Python**:
-   Before testing the widget inside a Jupyter notebook or submitting a pull request, you must bundle the Angular build output so that the Python backend (using ``anywidget``) can load it:
-
-   .. code-block:: bash
-
-      $ npm run build:widget
-
-   This command compiles the Angular application and bundles it into a single unified ES module file at ``bigframes/display/table_widget_angular.js``.
-
 
 Contact Us
 ----------
