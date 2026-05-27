@@ -48,7 +48,12 @@ PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
+if (CURRENT_DIRECTORY / "testing").exists():
+    LOWER_BOUND_CONSTRAINTS_FILE = (
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
+    )
+else:
+    LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-cloud-storagebatchoperations"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
