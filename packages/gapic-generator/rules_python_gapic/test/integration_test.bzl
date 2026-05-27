@@ -114,7 +114,7 @@ def _overwrite_golden_impl(ctx):
     golden_update_script_content = """
     cd ${{BUILD_WORKSPACE_DIRECTORY}}
     # Filename pattern-based removal is needed to preserve the BUILD.bazel file.
-    find tests/integration/goldens/{api_name}/ -name \\*.py-type f -delete
+    find tests/integration/goldens/{api_name}/ -name \\*.py -type f -delete
     find tests/integration/goldens/{api_name}/ -name \\*.json -type f -delete
     unzip -ao {goldens_output_zip} -d tests/integration/goldens/{api_name}
     """.format(
