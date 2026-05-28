@@ -121,7 +121,8 @@ for path in `find 'packages' \
   metadata="${package_path}/.repo-metadata.json"
   library_type="UNKNOWN"
   if [ -f "$metadata" ]; then
-    library_type=$(grep -oP '"library_type":\s*"\K[^"]+' "$metadata" || echo "UNKNOWN")
+    library_type=$(sed -n 's/.*"library_type":[[:space:]]*"\([^"]*\)".*/\1/p' "$metadata")
+    library_type="${library_type:-UNKNOWN}"
   fi
 
   if [[ "${library_type}" != "GAPIC_AUTO" || "${package_name}" == "google-cloud-compute"* ]]; then
