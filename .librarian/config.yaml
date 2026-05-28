@@ -34,4 +34,8 @@ libraries:
   # Disable automatic releases until system tests are sped up or reorganized.
   - id: "google-cloud-firestore"
     release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17287):
+  # Allow releases for sqlalchemy-bigquery once the bug above is fixed.
+  - id: "sqlalchemy-bigquery"
+    release_blocked: true
 
