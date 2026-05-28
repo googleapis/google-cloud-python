@@ -31,7 +31,7 @@ def func_to_op(op) -> base_ops.NaryOp:
     Returns:
         A bigframes operations.
     """
-    # TODO: Handle numpy ufuncs, builtin functions, etc.
+    # TODO(b/517578802): Handle numpy ufuncs, builtin functions, etc.
     if isinstance(op, Udf):
         if isinstance(op.udf_def, BigqueryUdf):
             return remote_function_ops.RemoteFunctionOp(function_def=op.udf_def)
