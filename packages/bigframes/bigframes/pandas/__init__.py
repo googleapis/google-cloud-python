@@ -200,7 +200,7 @@ def udf(
     *,
     input_types: Union[None, type, Sequence[type]] = None,
     output_type: Optional[type] = None,
-    dataset: str,
+    dataset: Optional[str] = None,
     bigquery_connection: Optional[str] = None,
     name: Optional[str] = None,
     packages: Optional[Sequence[str]] = None,
