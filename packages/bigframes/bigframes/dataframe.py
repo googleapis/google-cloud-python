@@ -1755,6 +1755,7 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         """Stream DataFrame results to an iterable of pandas DataFrame.
 
@@ -1807,6 +1808,7 @@ class DataFrame:
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _to_pandas_batches(
@@ -1815,11 +1817,13 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         return self._block.to_pandas_batches(
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:

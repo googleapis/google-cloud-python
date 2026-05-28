@@ -113,6 +113,18 @@ logger = logging.getLogger(__name__)
 class _ExecutionHistory:
     def __init__(self, jobs: list[dict]):
         self._df = pandas.DataFrame(jobs)
+        if self._df.empty:
+            self._df = pandas.DataFrame(
+                columns=[
+                    "job_id",
+                    "query_id",
+                    "job_type",
+                    "status",
+                    "query",
+                    "total_bytes_processed",
+                    "job_url",
+                ]
+            )
 
     def to_dataframe(self) -> pandas.DataFrame:
         """Returns the execution history as a pandas DataFrame."""
@@ -199,9 +211,10 @@ class Session(
             self._clients_provider = clients_provider
             self._location = context.location or "US"
         else:
-            credentials, project = (
-                bigframes._config.auth.resolve_credentials_and_project(context)
-            )
+            (
+                credentials,
+                project,
+            ) = bigframes._config.auth.resolve_credentials_and_project(context)
             if context.location is None:
                 with bigquery.Client(
                     project=project,
@@ -430,12 +443,83 @@ class Session(
         """The sum of all slot time used by bigquery jobs in this session."""
         return self._metrics.slot_millis
 
-    def execution_history(self) -> _ExecutionHistory:
+    def execution_history(
+        self,
+        *,
+        events: Optional[Iterable[bigframes.core.events.Event]] = None,
+        job_ids: Optional[Iterable[str]] = None,
+        all_cells: bool = True,
+    ) -> _ExecutionHistory:
         """Returns the history of executions initiated by BigFrames in the current session.
 
         Use `.to_dataframe()` on the result to get a pandas DataFrame.
+
+        Args:
+            events (Iterable[Event], optional):
+                Filter execution history to only include jobs associated with the given events.
+            job_ids (Iterable[str], optional):
+                Filter execution history to only include jobs matching the given job IDs.
+            all_cells (bool, optional):
+                If True, do not filter execution history by notebook cell. If False,
+                and running in Colab/Jupyter, automatically filter history to only include
+                jobs executed within the current cell. Defaults to True.
         """
-        return _ExecutionHistory([job.__dict__ for job in self._metrics.jobs])
+        jobs = [job.__dict__ for job in self._metrics.jobs]
+
+        if events is not None:
+            event_job_ids = {
+                getattr(event, "job_id", None)
+                for event in events
+                if getattr(event, "job_id", None) is not None
+            }
+            event_query_ids = {
+                getattr(event, "query_id", None)
+                for event in events
+                if getattr(event, "query_id", None) is not None
+            }
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None and job.get("job_id") in event_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in event_query_ids
+                )
+            ]
+
+        elif job_ids is not None:
+            target_job_ids = set(job_ids)
+            jobs = [
+                job
+                for job in jobs
+                if (
+                    job.get("job_id") is not None
+                    and job.get("job_id") in target_job_ids
+                )
+                or (
+                    job.get("query_id") is not None
+                    and job.get("query_id") in target_job_ids
+                )
+            ]
+
+        elif not all_cells:
+            try:
+                import IPython
+
+                ipy = IPython.get_ipython()
+                if ipy is not None and hasattr(ipy, "execution_count"):
+                    current_count = ipy.execution_count
+                    jobs = [
+                        job
+                        for job in jobs
+                        if job.get("cell_execution_count") == current_count
+                    ]
+            except (ImportError, NameError):
+                pass
+
+        return _ExecutionHistory(jobs)
 
     @property
     def _allows_ambiguity(self) -> bool:
@@ -584,6 +668,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[False] = ...,
     ) -> dataframe.DataFrame: ...
@@ -593,6 +678,7 @@ class Session(
         self,
         query: str,
         *,
+        callback: Optional[Callable[[bigframes.core.events.EventEnvelope], None]] = ...,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: Literal[True] = ...,
     ) -> pandas.Series: ...
@@ -601,8 +687,10 @@ class Session(
     def _read_gbq_colab(
         self,
         query: str,
-        # TODO: Add a callback parameter that takes some kind of Event object.
         *,
+        callback: Optional[
+            Callable[[bigframes.core.events.EventEnvelope], None]
+        ] = None,
         pyformat_args: Optional[Dict[str, Any]] = None,
         dry_run: bool = False,
     ) -> Union[dataframe.DataFrame, pandas.Series]:
@@ -615,6 +703,8 @@ class Session(
             query (str):
                 A SQL query string to execute. Results (if any) are turned into
                 a DataFrame.
+            callback (Optional[Callable[[bigframes.core.events.EventEnvelope], None]]):
+                Callback to receive query execution events.
             pyformat_args (dict):
                 A dictionary of potential variables to replace in ``query``.
                 Note: strings are _not_ escaped. Use query parameters for these,
@@ -634,13 +724,19 @@ class Session(
             dry_run=dry_run,
         )
 
-        return self._loader.read_gbq_query(
-            query=query,
-            index_col=bigframes.enums.DefaultIndexKind.NULL,
-            force_total_order=False,
-            dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
-            allow_large_results=allow_large_results,
-        )
+        def _run_query():
+            return self._loader.read_gbq_query(
+                query=query,
+                index_col=bigframes.enums.DefaultIndexKind.NULL,
+                force_total_order=False,
+                dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
+                allow_large_results=allow_large_results,
+            )
+
+        if callback is not None:
+            with self._publisher.subscribe(callback):
+                return _run_query()
+        return _run_query()
 
     @overload
     def read_gbq_query(  # type: ignore[overload-overlap]

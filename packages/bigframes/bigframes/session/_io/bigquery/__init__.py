@@ -64,6 +64,8 @@ def create_job_configs_labels(
 ) -> Dict[str, str]:
     if job_configs_labels is None:
         job_configs_labels = {}
+    else:
+        job_configs_labels = dict(job_configs_labels)
 
     if api_methods and "bigframes-api" not in job_configs_labels:
         job_configs_labels["bigframes-api"] = api_methods[0]
@@ -261,7 +263,7 @@ def add_and_trim_labels(
     )
 
 
-def create_bq_event_callback(publisher):
+def create_bq_event_callback(publisher, cell_execution_count=None):
     event_map = {
         google.cloud.bigquery._job_helpers.QueryFinishedEvent: (
             bigframes.core.events.BigQueryFinishedEvent
@@ -284,7 +286,9 @@ def create_bq_event_callback(publisher):
                 bf_event = bf_type.from_bqclient(event)  # type: ignore
                 break
         envelope = bigframes.core.events.EventEnvelope(
-            event=bf_event, progress_bar=bigframes.core.events._DEFAULT
+            event=bf_event,
+            progress_bar=bigframes.core.events._DEFAULT,
+            cell_execution_count=cell_execution_count,
         )
         publisher.publish(envelope)
 
@@ -307,10 +311,16 @@ def start_query_with_job(
     job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
+    cell_execution_count: Optional[int] = None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
     """
     Starts query job and waits for results.
     """
+    if cell_execution_count is None:
+        from bigframes.core.utils import get_ipython_execution_count
+
+        cell_execution_count = get_ipython_execution_count()
+
     # Note: Ensure no additional labels are added to job_config after this
     # point, as `add_and_trim_labels` ensures the label count does not
     # exceed MAX_LABELS_COUNT.
@@ -337,6 +347,7 @@ def start_query_with_job(
         sql=sql,
         publisher=publisher,
         metrics=metrics,
+        cell_execution_count=cell_execution_count,
     )
     return results_iterator, query_job
 
@@ -357,6 +368,7 @@ def start_query_job_optional(
     job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
     publisher: bigframes.core.events.Publisher,
     session=None,
+    cell_execution_count: Optional[int] = None,
 ) -> google.cloud.bigquery.table.RowIterator:
     """
     Run a bigquery query, with job optional.
@@ -364,6 +376,11 @@ def start_query_job_optional(
     See:
     https://docs.cloud.google.com/bigquery/docs/running-queries#optional-job-creation
     """
+    if cell_execution_count is None:
+        from bigframes.core.utils import get_ipython_execution_count
+
+        cell_execution_count = get_ipython_execution_count()
+
     add_and_trim_labels(job_config, session=session)
     try:
         results_iterator = bq_client._query_and_wait_bigframes(
@@ -373,10 +390,14 @@ def start_query_job_optional(
             project=project,
             api_timeout=timeout,
             job_retry=job_retry,
-            callback=create_bq_event_callback(publisher),
+            callback=create_bq_event_callback(
+                publisher, cell_execution_count=cell_execution_count
+            ),
         )
         if metrics is not None:
-            metrics.count_job_stats(row_iterator=results_iterator)
+            metrics.count_job_stats(
+                row_iterator=results_iterator, cell_execution_count=cell_execution_count
+            )
         return results_iterator
     except google.api_core.exceptions.Forbidden as ex:
         if "Drive credentials" in ex.message:
@@ -390,35 +411,45 @@ def _publish_events(
     total_rows: Optional[int],
     publisher: bigframes.core.events.Publisher,
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
+    cell_execution_count: Optional[int] = None,
 ):
     if not query_job.configuration.dry_run:
         publisher.publish(
-            bigframes.core.events.BigQuerySentEvent(
-                sql,
-                billing_project=query_job.project,
-                location=query_job.location,
-                job_id=query_job.job_id,
-                request_id=None,
+            bigframes.core.events.EventEnvelope(
+                event=bigframes.core.events.BigQuerySentEvent(
+                    sql,
+                    billing_project=query_job.project,
+                    location=query_job.location,
+                    job_id=query_job.job_id,
+                    request_id=None,
+                ),
+                cell_execution_count=cell_execution_count,
             )
         )
     if not query_job.configuration.dry_run:
         publisher.publish(
-            bigframes.core.events.BigQueryFinishedEvent(
-                billing_project=query_job.project,
-                location=query_job.location,
-                job_id=query_job.job_id,
-                destination=query_job.destination,
-                total_rows=total_rows,
-                total_bytes_processed=query_job.total_bytes_processed,
-                slot_millis=query_job.slot_millis,
-                created=query_job.created,
-                started=query_job.started,
-                ended=query_job.ended,
+            bigframes.core.events.EventEnvelope(
+                event=bigframes.core.events.BigQueryFinishedEvent(
+                    billing_project=query_job.project,
+                    location=query_job.location,
+                    query_id=query_job.query_id,
+                    job_id=query_job.job_id,
+                    destination=query_job.destination,
+                    total_rows=total_rows,
+                    total_bytes_processed=query_job.total_bytes_processed,
+                    slot_millis=query_job.slot_millis,
+                    created=query_job.created,
+                    started=query_job.started,
+                    ended=query_job.ended,
+                ),
+                cell_execution_count=cell_execution_count,
             )
         )
 
     if metrics is not None:
-        metrics.count_job_stats(query_job=query_job)
+        metrics.count_job_stats(
+            query_job=query_job, cell_execution_count=cell_execution_count
+        )
 
 
 def delete_tables_matching_session_id(

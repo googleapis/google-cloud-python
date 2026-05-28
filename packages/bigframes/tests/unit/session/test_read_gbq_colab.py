@@ -126,3 +126,94 @@ def test_read_gbq_colab_doesnt_set_destination_table():
 
     assert query == "SELECT 'my-test-query';"
     assert config.destination is None
+
+
+def test_read_gbq_colab_with_callback():
+    """Make sure callback receives events during execution."""
+    session = mocks.create_bigquery_session()
+    callback = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'my-test-query';", callback=callback)
+
+    assert callback.call_count > 0
+
+
+def test_read_gbq_colab_filters_by_cell():
+    """Verify that callbacks are scoped to individual executions."""
+    session = mocks.create_bigquery_session()
+    callback1 = mock.Mock()
+    callback2 = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'cell_1_query';", callback=callback1)
+    callback1_initial_count = callback1.call_count
+
+    _ = session._read_gbq_colab("SELECT 'cell_2_query';", callback=callback2)
+
+    # Verify callback1 was automatically unsubscribed upon completion
+    # of the first query.
+    assert callback1.call_count == callback1_initial_count
+    assert callback2.call_count > 0
+
+
+def test_execution_history_filtering():
+    """Verify that execution_history can be filtered by job_ids or events."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+
+    job1 = metrics.JobMetadata(job_id="job_1", job_type="query", query="SELECT 1")
+    job2 = metrics.JobMetadata(job_id="job_2", job_type="query", query="SELECT 2")
+    session._metrics.jobs.extend([job1, job2])
+
+    history_job1 = session.execution_history(job_ids=["job_1"]).to_dataframe()
+    assert len(history_job1) == 1
+    assert history_job1.iloc[0]["job_id"] == "job_1"
+
+    event2 = mock.Mock()
+    event2.job_id = "job_2"
+    history_job2 = session.execution_history(events=[event2]).to_dataframe()
+    assert len(history_job2) == 1
+    assert history_job2.iloc[0]["job_id"] == "job_2"
+
+
+def test_execution_history_returns_all_executions_by_default():
+    """Verify that execution_history returns all executions by default."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    history = session.execution_history().to_dataframe()
+
+    assert len(history) == 2
+
+
+def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
+    """Verify that execution_history filters to the current cell when all_cells is False."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    mock_ipy = mock.Mock()
+    mock_ipy.execution_count = 20
+    mock_ipython = mock.MagicMock()
+    mock_ipython.get_ipython.return_value = mock_ipy
+
+    with mock.patch.dict("sys.modules", {"IPython": mock_ipython}):
+        history = session.execution_history(all_cells=False).to_dataframe()
+
+    assert len(history) == 1
+    assert history.iloc[0]["job_id"] == "job_2"

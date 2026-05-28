@@ -696,6 +696,7 @@ class Block:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> PandasBatches:
         """Download results one message at a time.
 
@@ -713,6 +714,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=True,
+                cell_execution_count=cell_execution_count,
             ),
         )
         result_batches = execution_result.batches()

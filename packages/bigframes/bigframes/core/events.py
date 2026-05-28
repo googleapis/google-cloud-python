@@ -20,7 +20,7 @@ import dataclasses
 import datetime
 import threading
 import uuid
-from typing import Any, Callable, Literal, Set
+from typing import Any, Callable, Literal, Optional, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query
@@ -127,8 +127,21 @@ class Event:
 
 @dataclasses.dataclass(frozen=True)
 class EventEnvelope:
+    """An envelope that wraps an execution event with metadata and display options.
+
+    Attributes:
+        event:
+            The actual execution event details (e.g., ExecutionStarted, BigQuerySentEvent).
+        progress_bar:
+            Specifies the style of progress bar to display during execution.
+        cell_execution_count:
+            The 1-indexed execution count of the notebook cell that triggered the event.
+            Used to group and filter execution history on a per-cell basis.
+    """
+
     event: Event
     progress_bar: ProgressBarType = _DEFAULT
+    cell_execution_count: Optional[int] = None
 
 
 @dataclasses.dataclass(frozen=True)

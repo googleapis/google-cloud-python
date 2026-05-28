@@ -268,3 +268,35 @@ def test_on_event_with_local_execute_result():
     assert execution_metrics.jobs[0].job_type == "polars"
     assert execution_metrics.jobs[0].status == "DONE"
     assert execution_metrics.jobs[0].total_bytes_processed == 1024
+
+
+def test_count_job_stats_with_explicit_cell_execution_count():
+    row_iterator = unittest.mock.create_autospec(
+        bigquery.table.RowIterator, instance=True
+    )
+    row_iterator.total_bytes_processed = 1024
+    row_iterator.query = "SELECT * FROM table"
+    row_iterator.slot_millis = 1234
+    execution_metrics = metrics.ExecutionMetrics()
+    execution_metrics.count_job_stats(
+        row_iterator=row_iterator, cell_execution_count=42
+    )
+
+    assert len(execution_metrics.jobs) == 1
+    assert execution_metrics.jobs[0].cell_execution_count == 42
+
+
+def test_on_event_with_explicit_cell_execution_count():
+    import bigframes.core.events
+    from bigframes.session.executor import LocalExecuteResult
+
+    local_result = unittest.mock.create_autospec(LocalExecuteResult, instance=True)
+    local_result.total_bytes_processed = 1024
+
+    event = bigframes.core.events.ExecutionFinished(result=local_result)
+    envelope = bigframes.core.events.EventEnvelope(event=event, cell_execution_count=42)
+    execution_metrics = metrics.ExecutionMetrics()
+    execution_metrics.on_event(envelope)
+
+    assert len(execution_metrics.jobs) == 1
+    assert execution_metrics.jobs[0].cell_execution_count == 42
