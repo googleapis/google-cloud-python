@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -128,6 +129,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1363,8 +1379,8 @@ def test_data_agent_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.ListDataAgentsRequest,
-        dict,
+        data_agent_service.ListDataAgentsRequest(),
+        {},
     ],
 )
 def test_list_data_agents(request_type, transport: str = "grpc"):
@@ -1375,7 +1391,7 @@ def test_list_data_agents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_agents), "__call__") as call:
@@ -1424,12 +1440,13 @@ def test_list_data_agents_non_empty_request_with_auto_populated_field():
         client.list_data_agents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.ListDataAgentsRequest(
+        request_msg = data_agent_service.ListDataAgentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_agents_use_cached_wrapped_rpc():
@@ -1512,10 +1529,14 @@ async def test_list_data_agents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_agents_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.ListDataAgentsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.ListDataAgentsRequest(),
+        {},
+    ],
+)
+async def test_list_data_agents_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1523,7 +1544,7 @@ async def test_list_data_agents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_agents), "__call__") as call:
@@ -1546,11 +1567,6 @@ async def test_list_data_agents_async(
     assert isinstance(response, pagers.ListDataAgentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_data_agents_async_from_dict():
-    await test_list_data_agents_async(request_type=dict)
 
 
 def test_list_data_agents_field_headers():
@@ -1889,8 +1905,8 @@ async def test_list_data_agents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.ListAccessibleDataAgentsRequest,
-        dict,
+        data_agent_service.ListAccessibleDataAgentsRequest(),
+        {},
     ],
 )
 def test_list_accessible_data_agents(request_type, transport: str = "grpc"):
@@ -1901,7 +1917,7 @@ def test_list_accessible_data_agents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1954,12 +1970,13 @@ def test_list_accessible_data_agents_non_empty_request_with_auto_populated_field
         client.list_accessible_data_agents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.ListAccessibleDataAgentsRequest(
+        request_msg = data_agent_service.ListAccessibleDataAgentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_accessible_data_agents_use_cached_wrapped_rpc():
@@ -2045,9 +2062,15 @@ async def test_list_accessible_data_agents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.ListAccessibleDataAgentsRequest(),
+        {},
+    ],
+)
 async def test_list_accessible_data_agents_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.ListAccessibleDataAgentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2056,7 +2079,7 @@ async def test_list_accessible_data_agents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2081,11 +2104,6 @@ async def test_list_accessible_data_agents_async(
     assert isinstance(response, pagers.ListAccessibleDataAgentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_accessible_data_agents_async_from_dict():
-    await test_list_accessible_data_agents_async(request_type=dict)
 
 
 def test_list_accessible_data_agents_field_headers():
@@ -2442,8 +2460,8 @@ async def test_list_accessible_data_agents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.GetDataAgentRequest,
-        dict,
+        data_agent_service.GetDataAgentRequest(),
+        {},
     ],
 )
 def test_get_data_agent(request_type, transport: str = "grpc"):
@@ -2454,7 +2472,7 @@ def test_get_data_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_agent), "__call__") as call:
@@ -2502,9 +2520,10 @@ def test_get_data_agent_non_empty_request_with_auto_populated_field():
         client.get_data_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.GetDataAgentRequest(
+        request_msg = data_agent_service.GetDataAgentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_agent_use_cached_wrapped_rpc():
@@ -2585,9 +2604,14 @@ async def test_get_data_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_agent_async(
-    transport: str = "grpc_asyncio", request_type=data_agent_service.GetDataAgentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.GetDataAgentRequest(),
+        {},
+    ],
+)
+async def test_get_data_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2595,7 +2619,7 @@ async def test_get_data_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_agent), "__call__") as call:
@@ -2620,11 +2644,6 @@ async def test_get_data_agent_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_agent_async_from_dict():
-    await test_get_data_agent_async(request_type=dict)
 
 
 def test_get_data_agent_field_headers():
@@ -2773,8 +2792,8 @@ async def test_get_data_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.CreateDataAgentRequest,
-        dict,
+        data_agent_service.CreateDataAgentRequest(),
+        {},
     ],
 )
 def test_create_data_agent(request_type, transport: str = "grpc"):
@@ -2785,7 +2804,7 @@ def test_create_data_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2831,10 +2850,11 @@ def test_create_data_agent_non_empty_request_with_auto_populated_field():
         client.create_data_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.CreateDataAgentRequest(
+        request_msg = data_agent_service.CreateDataAgentRequest(
             parent="parent_value",
             data_agent_id="data_agent_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_agent_use_cached_wrapped_rpc():
@@ -2927,10 +2947,14 @@ async def test_create_data_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_agent_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.CreateDataAgentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.CreateDataAgentRequest(),
+        {},
+    ],
+)
+async def test_create_data_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2938,7 +2962,7 @@ async def test_create_data_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2958,11 +2982,6 @@ async def test_create_data_agent_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_data_agent_async_from_dict():
-    await test_create_data_agent_async(request_type=dict)
 
 
 def test_create_data_agent_field_headers():
@@ -3175,8 +3194,8 @@ async def test_create_data_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.CreateDataAgentRequest,
-        dict,
+        data_agent_service.CreateDataAgentRequest(),
+        {},
     ],
 )
 def test_create_data_agent_sync(request_type, transport: str = "grpc"):
@@ -3187,7 +3206,7 @@ def test_create_data_agent_sync(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3240,10 +3259,11 @@ def test_create_data_agent_sync_non_empty_request_with_auto_populated_field():
         client.create_data_agent_sync(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.CreateDataAgentRequest(
+        request_msg = data_agent_service.CreateDataAgentRequest(
             parent="parent_value",
             data_agent_id="data_agent_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_agent_sync_use_cached_wrapped_rpc():
@@ -3329,9 +3349,15 @@ async def test_create_data_agent_sync_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.CreateDataAgentRequest(),
+        {},
+    ],
+)
 async def test_create_data_agent_sync_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.CreateDataAgentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3340,7 +3366,7 @@ async def test_create_data_agent_sync_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3367,11 +3393,6 @@ async def test_create_data_agent_sync_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_data_agent_sync_async_from_dict():
-    await test_create_data_agent_sync_async(request_type=dict)
 
 
 def test_create_data_agent_sync_field_headers():
@@ -3584,8 +3605,8 @@ async def test_create_data_agent_sync_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.UpdateDataAgentRequest,
-        dict,
+        data_agent_service.UpdateDataAgentRequest(),
+        {},
     ],
 )
 def test_update_data_agent(request_type, transport: str = "grpc"):
@@ -3596,7 +3617,7 @@ def test_update_data_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3639,7 +3660,8 @@ def test_update_data_agent_non_empty_request_with_auto_populated_field():
         client.update_data_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.UpdateDataAgentRequest()
+        request_msg = data_agent_service.UpdateDataAgentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_agent_use_cached_wrapped_rpc():
@@ -3732,10 +3754,14 @@ async def test_update_data_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_agent_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.UpdateDataAgentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.UpdateDataAgentRequest(),
+        {},
+    ],
+)
+async def test_update_data_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3743,7 +3769,7 @@ async def test_update_data_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3763,11 +3789,6 @@ async def test_update_data_agent_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_data_agent_async_from_dict():
-    await test_update_data_agent_async(request_type=dict)
 
 
 def test_update_data_agent_field_headers():
@@ -3970,8 +3991,8 @@ async def test_update_data_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.UpdateDataAgentRequest,
-        dict,
+        data_agent_service.UpdateDataAgentRequest(),
+        {},
     ],
 )
 def test_update_data_agent_sync(request_type, transport: str = "grpc"):
@@ -3982,7 +4003,7 @@ def test_update_data_agent_sync(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4032,7 +4053,8 @@ def test_update_data_agent_sync_non_empty_request_with_auto_populated_field():
         client.update_data_agent_sync(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.UpdateDataAgentRequest()
+        request_msg = data_agent_service.UpdateDataAgentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_agent_sync_use_cached_wrapped_rpc():
@@ -4118,9 +4140,15 @@ async def test_update_data_agent_sync_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.UpdateDataAgentRequest(),
+        {},
+    ],
+)
 async def test_update_data_agent_sync_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.UpdateDataAgentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4129,7 +4157,7 @@ async def test_update_data_agent_sync_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4156,11 +4184,6 @@ async def test_update_data_agent_sync_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_data_agent_sync_async_from_dict():
-    await test_update_data_agent_sync_async(request_type=dict)
 
 
 def test_update_data_agent_sync_field_headers():
@@ -4363,8 +4386,8 @@ async def test_update_data_agent_sync_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.DeleteDataAgentRequest,
-        dict,
+        data_agent_service.DeleteDataAgentRequest(),
+        {},
     ],
 )
 def test_delete_data_agent(request_type, transport: str = "grpc"):
@@ -4375,7 +4398,7 @@ def test_delete_data_agent(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4420,9 +4443,10 @@ def test_delete_data_agent_non_empty_request_with_auto_populated_field():
         client.delete_data_agent(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.DeleteDataAgentRequest(
+        request_msg = data_agent_service.DeleteDataAgentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_agent_use_cached_wrapped_rpc():
@@ -4515,10 +4539,14 @@ async def test_delete_data_agent_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_agent_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.DeleteDataAgentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.DeleteDataAgentRequest(),
+        {},
+    ],
+)
+async def test_delete_data_agent_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4526,7 +4554,7 @@ async def test_delete_data_agent_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4546,11 +4574,6 @@ async def test_delete_data_agent_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_data_agent_async_from_dict():
-    await test_delete_data_agent_async(request_type=dict)
 
 
 def test_delete_data_agent_field_headers():
@@ -4707,8 +4730,8 @@ async def test_delete_data_agent_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_agent_service.DeleteDataAgentRequest,
-        dict,
+        data_agent_service.DeleteDataAgentRequest(),
+        {},
     ],
 )
 def test_delete_data_agent_sync(request_type, transport: str = "grpc"):
@@ -4719,7 +4742,7 @@ def test_delete_data_agent_sync(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4764,9 +4787,10 @@ def test_delete_data_agent_sync_non_empty_request_with_auto_populated_field():
         client.delete_data_agent_sync(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_agent_service.DeleteDataAgentRequest(
+        request_msg = data_agent_service.DeleteDataAgentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_agent_sync_use_cached_wrapped_rpc():
@@ -4852,9 +4876,15 @@ async def test_delete_data_agent_sync_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_agent_service.DeleteDataAgentRequest(),
+        {},
+    ],
+)
 async def test_delete_data_agent_sync_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_agent_service.DeleteDataAgentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4863,7 +4893,7 @@ async def test_delete_data_agent_sync_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4881,11 +4911,6 @@ async def test_delete_data_agent_sync_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_agent_sync_async_from_dict():
-    await test_delete_data_agent_sync_async(request_type=dict)
 
 
 def test_delete_data_agent_sync_field_headers():
@@ -5038,8 +5063,8 @@ async def test_delete_data_agent_sync_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -5050,7 +5075,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -5096,9 +5121,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -5179,9 +5205,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5189,7 +5220,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -5212,11 +5243,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -5378,8 +5404,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -5390,7 +5416,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5436,9 +5462,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -5519,9 +5546,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DataAgentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5529,7 +5561,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5552,11 +5584,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -8140,7 +8167,6 @@ def test_list_data_agents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8163,7 +8189,6 @@ def test_list_accessible_data_agents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListAccessibleDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8184,7 +8209,6 @@ def test_get_data_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.GetDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8207,7 +8231,6 @@ def test_create_data_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8230,7 +8253,6 @@ def test_create_data_agent_sync_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8253,7 +8275,6 @@ def test_update_data_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8276,7 +8297,6 @@ def test_update_data_agent_sync_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8299,7 +8319,6 @@ def test_delete_data_agent_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8322,7 +8341,6 @@ def test_delete_data_agent_sync_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8343,7 +8361,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8364,7 +8381,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8406,7 +8422,6 @@ async def test_list_data_agents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8436,7 +8451,6 @@ async def test_list_accessible_data_agents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListAccessibleDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8465,7 +8479,6 @@ async def test_get_data_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.GetDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8492,7 +8505,6 @@ async def test_create_data_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8523,7 +8535,6 @@ async def test_create_data_agent_sync_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8550,7 +8561,6 @@ async def test_update_data_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8581,7 +8591,6 @@ async def test_update_data_agent_sync_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8608,7 +8617,6 @@ async def test_delete_data_agent_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8633,7 +8641,6 @@ async def test_delete_data_agent_sync_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8661,7 +8668,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8689,7 +8695,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11466,7 +11471,6 @@ def test_list_data_agents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11488,7 +11492,6 @@ def test_list_accessible_data_agents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.ListAccessibleDataAgentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11508,7 +11511,6 @@ def test_get_data_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.GetDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11530,7 +11532,6 @@ def test_create_data_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11552,7 +11553,6 @@ def test_create_data_agent_sync_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.CreateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11574,7 +11574,6 @@ def test_update_data_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11596,7 +11595,6 @@ def test_update_data_agent_sync_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.UpdateDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11618,7 +11616,6 @@ def test_delete_data_agent_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11640,7 +11637,6 @@ def test_delete_data_agent_sync_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_agent_service.DeleteDataAgentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11660,7 +11656,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11680,7 +11675,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
