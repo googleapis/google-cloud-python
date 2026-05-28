@@ -135,8 +135,9 @@ class EventEnvelope:
         progress_bar:
             Specifies the style of progress bar to display during execution.
         cell_execution_count:
-            The 1-indexed execution count of the notebook cell that triggered the event.
-            Used to group and filter execution history on a per-cell basis.
+            The 1-indexed IPython/Jupyter notebook cell execution number (e.g. the 'x' in 'In [x]').
+            This is NOT a job count, but rather the sequential number of the cell execution in the
+            current notebook session, used to group and filter execution history on a per-cell basis.
     """
 
     event: Event
