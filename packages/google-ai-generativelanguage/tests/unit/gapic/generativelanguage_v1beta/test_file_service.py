@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1277,8 +1293,8 @@ def test_file_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        file_service.CreateFileRequest,
-        dict,
+        file_service.CreateFileRequest(),
+        {},
     ],
 )
 def test_create_file(request_type, transport: str = "grpc"):
@@ -1289,7 +1305,7 @@ def test_create_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_file), "__call__") as call:
@@ -1328,7 +1344,8 @@ def test_create_file_non_empty_request_with_auto_populated_field():
         client.create_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == file_service.CreateFileRequest()
+        request_msg = file_service.CreateFileRequest()
+        assert args[0] == request_msg
 
 
 def test_create_file_use_cached_wrapped_rpc():
@@ -1409,9 +1426,14 @@ async def test_create_file_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_file_async(
-    transport: str = "grpc_asyncio", request_type=file_service.CreateFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file_service.CreateFileRequest(),
+        {},
+    ],
+)
+async def test_create_file_async(request_type, transport: str = "grpc_asyncio"):
     client = FileServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1419,7 +1441,7 @@ async def test_create_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_file), "__call__") as call:
@@ -1439,16 +1461,11 @@ async def test_create_file_async(
     assert isinstance(response, file_service.CreateFileResponse)
 
 
-@pytest.mark.asyncio
-async def test_create_file_async_from_dict():
-    await test_create_file_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        file_service.ListFilesRequest,
-        dict,
+        file_service.ListFilesRequest(),
+        {},
     ],
 )
 def test_list_files(request_type, transport: str = "grpc"):
@@ -1459,7 +1476,7 @@ def test_list_files(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_files), "__call__") as call:
@@ -1503,9 +1520,10 @@ def test_list_files_non_empty_request_with_auto_populated_field():
         client.list_files(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == file_service.ListFilesRequest(
+        request_msg = file_service.ListFilesRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_files_use_cached_wrapped_rpc():
@@ -1584,9 +1602,14 @@ async def test_list_files_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_files_async(
-    transport: str = "grpc_asyncio", request_type=file_service.ListFilesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file_service.ListFilesRequest(),
+        {},
+    ],
+)
+async def test_list_files_async(request_type, transport: str = "grpc_asyncio"):
     client = FileServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1594,7 +1617,7 @@ async def test_list_files_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_files), "__call__") as call:
@@ -1615,11 +1638,6 @@ async def test_list_files_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_files_async_from_dict():
-    await test_list_files_async(request_type=dict)
 
 
 def test_list_files_pager(transport_name: str = "grpc"):
@@ -1812,8 +1830,8 @@ async def test_list_files_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        file_service.GetFileRequest,
-        dict,
+        file_service.GetFileRequest(),
+        {},
     ],
 )
 def test_get_file(request_type, transport: str = "grpc"):
@@ -1824,7 +1842,7 @@ def test_get_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_file), "__call__") as call:
@@ -1884,9 +1902,10 @@ def test_get_file_non_empty_request_with_auto_populated_field():
         client.get_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == file_service.GetFileRequest(
+        request_msg = file_service.GetFileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_file_use_cached_wrapped_rpc():
@@ -1965,9 +1984,14 @@ async def test_get_file_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_file_async(
-    transport: str = "grpc_asyncio", request_type=file_service.GetFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file_service.GetFileRequest(),
+        {},
+    ],
+)
+async def test_get_file_async(request_type, transport: str = "grpc_asyncio"):
     client = FileServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1975,7 +1999,7 @@ async def test_get_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_file), "__call__") as call:
@@ -2012,11 +2036,6 @@ async def test_get_file_async(
     assert response.download_uri == "download_uri_value"
     assert response.state == file.File.State.PROCESSING
     assert response.source == file.File.Source.UPLOADED
-
-
-@pytest.mark.asyncio
-async def test_get_file_async_from_dict():
-    await test_get_file_async(request_type=dict)
 
 
 def test_get_file_field_headers():
@@ -2161,8 +2180,8 @@ async def test_get_file_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        file_service.DeleteFileRequest,
-        dict,
+        file_service.DeleteFileRequest(),
+        {},
     ],
 )
 def test_delete_file(request_type, transport: str = "grpc"):
@@ -2173,7 +2192,7 @@ def test_delete_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_file), "__call__") as call:
@@ -2214,9 +2233,10 @@ def test_delete_file_non_empty_request_with_auto_populated_field():
         client.delete_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == file_service.DeleteFileRequest(
+        request_msg = file_service.DeleteFileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_file_use_cached_wrapped_rpc():
@@ -2297,9 +2317,14 @@ async def test_delete_file_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_file_async(
-    transport: str = "grpc_asyncio", request_type=file_service.DeleteFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file_service.DeleteFileRequest(),
+        {},
+    ],
+)
+async def test_delete_file_async(request_type, transport: str = "grpc_asyncio"):
     client = FileServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2307,7 +2332,7 @@ async def test_delete_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_file), "__call__") as call:
@@ -2323,11 +2348,6 @@ async def test_delete_file_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_file_async_from_dict():
-    await test_delete_file_async(request_type=dict)
 
 
 def test_delete_file_field_headers():
@@ -2472,8 +2492,8 @@ async def test_delete_file_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        file_service.DownloadFileRequest,
-        dict,
+        file_service.DownloadFileRequest(),
+        {},
     ],
 )
 def test_download_file(request_type, transport: str = "grpc"):
@@ -2484,7 +2504,7 @@ def test_download_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.download_file), "__call__") as call:
@@ -2525,9 +2545,10 @@ def test_download_file_non_empty_request_with_auto_populated_field():
         client.download_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == file_service.DownloadFileRequest(
+        request_msg = file_service.DownloadFileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_download_file_use_cached_wrapped_rpc():
@@ -2608,9 +2629,14 @@ async def test_download_file_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_download_file_async(
-    transport: str = "grpc_asyncio", request_type=file_service.DownloadFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file_service.DownloadFileRequest(),
+        {},
+    ],
+)
+async def test_download_file_async(request_type, transport: str = "grpc_asyncio"):
     client = FileServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2618,7 +2644,7 @@ async def test_download_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.download_file), "__call__") as call:
@@ -2636,11 +2662,6 @@ async def test_download_file_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, file_service.DownloadFileResponse)
-
-
-@pytest.mark.asyncio
-async def test_download_file_async_from_dict():
-    await test_download_file_async(request_type=dict)
 
 
 def test_download_file_field_headers():
@@ -3561,7 +3582,6 @@ def test_create_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.CreateFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3582,7 +3602,6 @@ def test_list_files_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.ListFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3603,7 +3622,6 @@ def test_get_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.GetFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3624,7 +3642,6 @@ def test_delete_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DeleteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3645,7 +3662,6 @@ def test_download_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DownloadFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3684,7 +3700,6 @@ async def test_create_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.CreateFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3711,7 +3726,6 @@ async def test_list_files_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.ListFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3746,7 +3760,6 @@ async def test_get_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.GetFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3769,7 +3782,6 @@ async def test_delete_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DeleteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -3794,7 +3806,6 @@ async def test_download_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DownloadFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -4700,7 +4711,6 @@ def test_create_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.CreateFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -4720,7 +4730,6 @@ def test_list_files_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.ListFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4740,7 +4749,6 @@ def test_get_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.GetFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -4760,7 +4768,6 @@ def test_delete_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DeleteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -4780,7 +4787,6 @@ def test_download_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = file_service.DownloadFileRequest()
-
         assert args[0] == request_msg
 
 

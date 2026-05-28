@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1259,8 +1275,8 @@ def test_webhooks_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        webhook.ListWebhooksRequest,
-        dict,
+        webhook.ListWebhooksRequest(),
+        {},
     ],
 )
 def test_list_webhooks(request_type, transport: str = "grpc"):
@@ -1271,7 +1287,7 @@ def test_list_webhooks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_webhooks), "__call__") as call:
@@ -1316,10 +1332,11 @@ def test_list_webhooks_non_empty_request_with_auto_populated_field():
         client.list_webhooks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.ListWebhooksRequest(
+        request_msg = webhook.ListWebhooksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_webhooks_use_cached_wrapped_rpc():
@@ -1400,9 +1417,14 @@ async def test_list_webhooks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_webhooks_async(
-    transport: str = "grpc_asyncio", request_type=webhook.ListWebhooksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webhook.ListWebhooksRequest(),
+        {},
+    ],
+)
+async def test_list_webhooks_async(request_type, transport: str = "grpc_asyncio"):
     client = WebhooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1410,7 +1432,7 @@ async def test_list_webhooks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_webhooks), "__call__") as call:
@@ -1431,11 +1453,6 @@ async def test_list_webhooks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWebhooksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_webhooks_async_from_dict():
-    await test_list_webhooks_async(request_type=dict)
 
 
 def test_list_webhooks_field_headers():
@@ -1774,8 +1791,8 @@ async def test_list_webhooks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        webhook.GetWebhookRequest,
-        dict,
+        webhook.GetWebhookRequest(),
+        {},
     ],
 )
 def test_get_webhook(request_type, transport: str = "grpc"):
@@ -1786,7 +1803,7 @@ def test_get_webhook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_webhook), "__call__") as call:
@@ -1834,9 +1851,10 @@ def test_get_webhook_non_empty_request_with_auto_populated_field():
         client.get_webhook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.GetWebhookRequest(
+        request_msg = webhook.GetWebhookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_webhook_use_cached_wrapped_rpc():
@@ -1917,9 +1935,14 @@ async def test_get_webhook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_webhook_async(
-    transport: str = "grpc_asyncio", request_type=webhook.GetWebhookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webhook.GetWebhookRequest(),
+        {},
+    ],
+)
+async def test_get_webhook_async(request_type, transport: str = "grpc_asyncio"):
     client = WebhooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1927,7 +1950,7 @@ async def test_get_webhook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_webhook), "__call__") as call:
@@ -1952,11 +1975,6 @@ async def test_get_webhook_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_webhook_async_from_dict():
-    await test_get_webhook_async(request_type=dict)
 
 
 def test_get_webhook_field_headers():
@@ -2101,8 +2119,8 @@ async def test_get_webhook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_webhook.CreateWebhookRequest,
-        dict,
+        gcdc_webhook.CreateWebhookRequest(),
+        {},
     ],
 )
 def test_create_webhook(request_type, transport: str = "grpc"):
@@ -2113,7 +2131,7 @@ def test_create_webhook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_webhook), "__call__") as call:
@@ -2161,9 +2179,10 @@ def test_create_webhook_non_empty_request_with_auto_populated_field():
         client.create_webhook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.CreateWebhookRequest(
+        request_msg = gcdc_webhook.CreateWebhookRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_webhook_use_cached_wrapped_rpc():
@@ -2244,9 +2263,14 @@ async def test_create_webhook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_webhook_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_webhook.CreateWebhookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_webhook.CreateWebhookRequest(),
+        {},
+    ],
+)
+async def test_create_webhook_async(request_type, transport: str = "grpc_asyncio"):
     client = WebhooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2254,7 +2278,7 @@ async def test_create_webhook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_webhook), "__call__") as call:
@@ -2279,11 +2303,6 @@ async def test_create_webhook_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_create_webhook_async_from_dict():
-    await test_create_webhook_async(request_type=dict)
 
 
 def test_create_webhook_field_headers():
@@ -2442,8 +2461,8 @@ async def test_create_webhook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_webhook.UpdateWebhookRequest,
-        dict,
+        gcdc_webhook.UpdateWebhookRequest(),
+        {},
     ],
 )
 def test_update_webhook(request_type, transport: str = "grpc"):
@@ -2454,7 +2473,7 @@ def test_update_webhook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_webhook), "__call__") as call:
@@ -2500,7 +2519,8 @@ def test_update_webhook_non_empty_request_with_auto_populated_field():
         client.update_webhook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_webhook.UpdateWebhookRequest()
+        request_msg = gcdc_webhook.UpdateWebhookRequest()
+        assert args[0] == request_msg
 
 
 def test_update_webhook_use_cached_wrapped_rpc():
@@ -2581,9 +2601,14 @@ async def test_update_webhook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_webhook_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_webhook.UpdateWebhookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_webhook.UpdateWebhookRequest(),
+        {},
+    ],
+)
+async def test_update_webhook_async(request_type, transport: str = "grpc_asyncio"):
     client = WebhooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2591,7 +2616,7 @@ async def test_update_webhook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_webhook), "__call__") as call:
@@ -2616,11 +2641,6 @@ async def test_update_webhook_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_update_webhook_async_from_dict():
-    await test_update_webhook_async(request_type=dict)
 
 
 def test_update_webhook_field_headers():
@@ -2779,8 +2799,8 @@ async def test_update_webhook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        webhook.DeleteWebhookRequest,
-        dict,
+        webhook.DeleteWebhookRequest(),
+        {},
     ],
 )
 def test_delete_webhook(request_type, transport: str = "grpc"):
@@ -2791,7 +2811,7 @@ def test_delete_webhook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_webhook), "__call__") as call:
@@ -2832,9 +2852,10 @@ def test_delete_webhook_non_empty_request_with_auto_populated_field():
         client.delete_webhook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webhook.DeleteWebhookRequest(
+        request_msg = webhook.DeleteWebhookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_webhook_use_cached_wrapped_rpc():
@@ -2915,9 +2936,14 @@ async def test_delete_webhook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_webhook_async(
-    transport: str = "grpc_asyncio", request_type=webhook.DeleteWebhookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        webhook.DeleteWebhookRequest(),
+        {},
+    ],
+)
+async def test_delete_webhook_async(request_type, transport: str = "grpc_asyncio"):
     client = WebhooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2925,7 +2951,7 @@ async def test_delete_webhook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_webhook), "__call__") as call:
@@ -2941,11 +2967,6 @@ async def test_delete_webhook_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_webhook_async_from_dict():
-    await test_delete_webhook_async(request_type=dict)
 
 
 def test_delete_webhook_field_headers():
@@ -4186,7 +4207,6 @@ def test_list_webhooks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.ListWebhooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -4207,7 +4227,6 @@ def test_get_webhook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.GetWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4228,7 +4247,6 @@ def test_create_webhook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.CreateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4249,7 +4267,6 @@ def test_update_webhook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.UpdateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4270,7 +4287,6 @@ def test_delete_webhook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.DeleteWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4311,7 +4327,6 @@ async def test_list_webhooks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.ListWebhooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -4340,7 +4355,6 @@ async def test_get_webhook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.GetWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4369,7 +4383,6 @@ async def test_create_webhook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.CreateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4398,7 +4411,6 @@ async def test_update_webhook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.UpdateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -4421,7 +4433,6 @@ async def test_delete_webhook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.DeleteWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -5592,7 +5603,6 @@ def test_list_webhooks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.ListWebhooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -5612,7 +5622,6 @@ def test_get_webhook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.GetWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -5632,7 +5641,6 @@ def test_create_webhook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.CreateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -5652,7 +5660,6 @@ def test_update_webhook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_webhook.UpdateWebhookRequest()
-
         assert args[0] == request_msg
 
 
@@ -5672,7 +5679,6 @@ def test_delete_webhook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = webhook.DeleteWebhookRequest()
-
         assert args[0] == request_msg
 
 

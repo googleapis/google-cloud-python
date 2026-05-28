@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1275,8 +1291,8 @@ def test_cloud_quotas_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.ListQuotaInfosRequest,
-        dict,
+        cloudquotas.ListQuotaInfosRequest(),
+        {},
     ],
 )
 def test_list_quota_infos(request_type, transport: str = "grpc"):
@@ -1287,7 +1303,7 @@ def test_list_quota_infos(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
@@ -1332,10 +1348,11 @@ def test_list_quota_infos_non_empty_request_with_auto_populated_field():
         client.list_quota_infos(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaInfosRequest(
+        request_msg = cloudquotas.ListQuotaInfosRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_quota_infos_use_cached_wrapped_rpc():
@@ -1418,9 +1435,14 @@ async def test_list_quota_infos_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_quota_infos_async(
-    transport: str = "grpc_asyncio", request_type=cloudquotas.ListQuotaInfosRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.ListQuotaInfosRequest(),
+        {},
+    ],
+)
+async def test_list_quota_infos_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1428,7 +1450,7 @@ async def test_list_quota_infos_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
@@ -1449,11 +1471,6 @@ async def test_list_quota_infos_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQuotaInfosAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_quota_infos_async_from_dict():
-    await test_list_quota_infos_async(request_type=dict)
 
 
 def test_list_quota_infos_field_headers():
@@ -1792,8 +1809,8 @@ async def test_list_quota_infos_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.GetQuotaInfoRequest,
-        dict,
+        cloudquotas.GetQuotaInfoRequest(),
+        {},
     ],
 )
 def test_get_quota_info(request_type, transport: str = "grpc"):
@@ -1804,7 +1821,7 @@ def test_get_quota_info(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
@@ -1874,9 +1891,10 @@ def test_get_quota_info_non_empty_request_with_auto_populated_field():
         client.get_quota_info(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaInfoRequest(
+        request_msg = cloudquotas.GetQuotaInfoRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_quota_info_use_cached_wrapped_rpc():
@@ -1957,9 +1975,14 @@ async def test_get_quota_info_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_quota_info_async(
-    transport: str = "grpc_asyncio", request_type=cloudquotas.GetQuotaInfoRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.GetQuotaInfoRequest(),
+        {},
+    ],
+)
+async def test_get_quota_info_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1967,7 +1990,7 @@ async def test_get_quota_info_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
@@ -2014,11 +2037,6 @@ async def test_get_quota_info_async(
     assert response.is_fixed is True
     assert response.is_concurrent is True
     assert response.service_request_quota_uri == "service_request_quota_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_quota_info_async_from_dict():
-    await test_get_quota_info_async(request_type=dict)
 
 
 def test_get_quota_info_field_headers():
@@ -2163,8 +2181,8 @@ async def test_get_quota_info_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.ListQuotaPreferencesRequest,
-        dict,
+        cloudquotas.ListQuotaPreferencesRequest(),
+        {},
     ],
 )
 def test_list_quota_preferences(request_type, transport: str = "grpc"):
@@ -2175,7 +2193,7 @@ def test_list_quota_preferences(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2228,12 +2246,13 @@ def test_list_quota_preferences_non_empty_request_with_auto_populated_field():
         client.list_quota_preferences(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaPreferencesRequest(
+        request_msg = cloudquotas.ListQuotaPreferencesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_quota_preferences_use_cached_wrapped_rpc():
@@ -2319,9 +2338,15 @@ async def test_list_quota_preferences_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.ListQuotaPreferencesRequest(),
+        {},
+    ],
+)
 async def test_list_quota_preferences_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloudquotas.ListQuotaPreferencesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2330,7 +2355,7 @@ async def test_list_quota_preferences_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2355,11 +2380,6 @@ async def test_list_quota_preferences_async(
     assert isinstance(response, pagers.ListQuotaPreferencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_quota_preferences_async_from_dict():
-    await test_list_quota_preferences_async(request_type=dict)
 
 
 def test_list_quota_preferences_field_headers():
@@ -2714,8 +2734,8 @@ async def test_list_quota_preferences_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.GetQuotaPreferenceRequest,
-        dict,
+        cloudquotas.GetQuotaPreferenceRequest(),
+        {},
     ],
 )
 def test_get_quota_preference(request_type, transport: str = "grpc"):
@@ -2726,7 +2746,7 @@ def test_get_quota_preference(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2786,9 +2806,10 @@ def test_get_quota_preference_non_empty_request_with_auto_populated_field():
         client.get_quota_preference(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaPreferenceRequest(
+        request_msg = cloudquotas.GetQuotaPreferenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_quota_preference_use_cached_wrapped_rpc():
@@ -2873,8 +2894,15 @@ async def test_get_quota_preference_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.GetQuotaPreferenceRequest(),
+        {},
+    ],
+)
 async def test_get_quota_preference_async(
-    transport: str = "grpc_asyncio", request_type=cloudquotas.GetQuotaPreferenceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2883,7 +2911,7 @@ async def test_get_quota_preference_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2918,11 +2946,6 @@ async def test_get_quota_preference_async(
     assert response.reconciling is True
     assert response.justification == "justification_value"
     assert response.contact_email == "contact_email_value"
-
-
-@pytest.mark.asyncio
-async def test_get_quota_preference_async_from_dict():
-    await test_get_quota_preference_async(request_type=dict)
 
 
 def test_get_quota_preference_field_headers():
@@ -3079,8 +3102,8 @@ async def test_get_quota_preference_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.CreateQuotaPreferenceRequest,
-        dict,
+        cloudquotas.CreateQuotaPreferenceRequest(),
+        {},
     ],
 )
 def test_create_quota_preference(request_type, transport: str = "grpc"):
@@ -3091,7 +3114,7 @@ def test_create_quota_preference(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3152,10 +3175,11 @@ def test_create_quota_preference_non_empty_request_with_auto_populated_field():
         client.create_quota_preference(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest(
+        request_msg = cloudquotas.CreateQuotaPreferenceRequest(
             parent="parent_value",
             quota_preference_id="quota_preference_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_quota_preference_use_cached_wrapped_rpc():
@@ -3241,9 +3265,15 @@ async def test_create_quota_preference_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.CreateQuotaPreferenceRequest(),
+        {},
+    ],
+)
 async def test_create_quota_preference_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloudquotas.CreateQuotaPreferenceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3252,7 +3282,7 @@ async def test_create_quota_preference_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3287,11 +3317,6 @@ async def test_create_quota_preference_async(
     assert response.reconciling is True
     assert response.justification == "justification_value"
     assert response.contact_email == "contact_email_value"
-
-
-@pytest.mark.asyncio
-async def test_create_quota_preference_async_from_dict():
-    await test_create_quota_preference_async(request_type=dict)
 
 
 def test_create_quota_preference_field_headers():
@@ -3468,8 +3493,8 @@ async def test_create_quota_preference_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudquotas.UpdateQuotaPreferenceRequest,
-        dict,
+        cloudquotas.UpdateQuotaPreferenceRequest(),
+        {},
     ],
 )
 def test_update_quota_preference(request_type, transport: str = "grpc"):
@@ -3480,7 +3505,7 @@ def test_update_quota_preference(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3538,7 +3563,8 @@ def test_update_quota_preference_non_empty_request_with_auto_populated_field():
         client.update_quota_preference(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
+        request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_quota_preference_use_cached_wrapped_rpc():
@@ -3624,9 +3650,15 @@ async def test_update_quota_preference_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.UpdateQuotaPreferenceRequest(),
+        {},
+    ],
+)
 async def test_update_quota_preference_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloudquotas.UpdateQuotaPreferenceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudQuotasAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3635,7 +3667,7 @@ async def test_update_quota_preference_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3670,11 +3702,6 @@ async def test_update_quota_preference_async(
     assert response.reconciling is True
     assert response.justification == "justification_value"
     assert response.contact_email == "contact_email_value"
-
-
-@pytest.mark.asyncio
-async def test_update_quota_preference_async_from_dict():
-    await test_update_quota_preference_async(request_type=dict)
 
 
 def test_update_quota_preference_field_headers():
@@ -5264,7 +5291,6 @@ def test_list_quota_infos_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaInfosRequest()
-
         assert args[0] == request_msg
 
 
@@ -5285,7 +5311,6 @@ def test_get_quota_info_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -5308,7 +5333,6 @@ def test_list_quota_preferences_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaPreferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5331,7 +5355,6 @@ def test_get_quota_preference_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5354,7 +5377,6 @@ def test_create_quota_preference_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.CreateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5377,7 +5399,6 @@ def test_update_quota_preference_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5418,7 +5439,6 @@ async def test_list_quota_infos_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaInfosRequest()
-
         assert args[0] == request_msg
 
 
@@ -5458,7 +5478,6 @@ async def test_get_quota_info_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -5488,7 +5507,6 @@ async def test_list_quota_preferences_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaPreferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5523,7 +5541,6 @@ async def test_get_quota_preference_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5558,7 +5575,6 @@ async def test_create_quota_preference_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.CreateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5593,7 +5609,6 @@ async def test_update_quota_preference_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6674,7 +6689,6 @@ def test_list_quota_infos_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaInfosRequest()
-
         assert args[0] == request_msg
 
 
@@ -6694,7 +6708,6 @@ def test_get_quota_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -6716,7 +6729,6 @@ def test_list_quota_preferences_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.ListQuotaPreferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6738,7 +6750,6 @@ def test_get_quota_preference_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.GetQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6760,7 +6771,6 @@ def test_create_quota_preference_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.CreateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6782,7 +6792,6 @@ def test_update_quota_preference_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
-
         assert args[0] == request_msg
 
 

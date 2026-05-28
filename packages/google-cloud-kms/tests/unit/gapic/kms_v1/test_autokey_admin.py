@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -112,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1297,8 +1313,8 @@ def test_autokey_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        autokey_admin.UpdateAutokeyConfigRequest,
-        dict,
+        autokey_admin.UpdateAutokeyConfigRequest(),
+        {},
     ],
 )
 def test_update_autokey_config(request_type, transport: str = "grpc"):
@@ -1309,7 +1325,7 @@ def test_update_autokey_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1366,7 +1382,8 @@ def test_update_autokey_config_non_empty_request_with_auto_populated_field():
         client.update_autokey_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autokey_admin.UpdateAutokeyConfigRequest()
+        request_msg = autokey_admin.UpdateAutokeyConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_autokey_config_use_cached_wrapped_rpc():
@@ -1452,9 +1469,15 @@ async def test_update_autokey_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autokey_admin.UpdateAutokeyConfigRequest(),
+        {},
+    ],
+)
 async def test_update_autokey_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=autokey_admin.UpdateAutokeyConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AutokeyAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1463,7 +1486,7 @@ async def test_update_autokey_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1497,11 +1520,6 @@ async def test_update_autokey_config_async(
         response.key_project_resolution_mode
         == autokey_admin.AutokeyConfig.KeyProjectResolutionMode.DEDICATED_KEY_PROJECT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_autokey_config_async_from_dict():
-    await test_update_autokey_config_async(request_type=dict)
 
 
 def test_update_autokey_config_field_headers():
@@ -1668,8 +1686,8 @@ async def test_update_autokey_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        autokey_admin.GetAutokeyConfigRequest,
-        dict,
+        autokey_admin.GetAutokeyConfigRequest(),
+        {},
     ],
 )
 def test_get_autokey_config(request_type, transport: str = "grpc"):
@@ -1680,7 +1698,7 @@ def test_get_autokey_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1739,9 +1757,10 @@ def test_get_autokey_config_non_empty_request_with_auto_populated_field():
         client.get_autokey_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autokey_admin.GetAutokeyConfigRequest(
+        request_msg = autokey_admin.GetAutokeyConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_autokey_config_use_cached_wrapped_rpc():
@@ -1826,9 +1845,14 @@ async def test_get_autokey_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_autokey_config_async(
-    transport: str = "grpc_asyncio", request_type=autokey_admin.GetAutokeyConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autokey_admin.GetAutokeyConfigRequest(),
+        {},
+    ],
+)
+async def test_get_autokey_config_async(request_type, transport: str = "grpc_asyncio"):
     client = AutokeyAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1836,7 +1860,7 @@ async def test_get_autokey_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1870,11 +1894,6 @@ async def test_get_autokey_config_async(
         response.key_project_resolution_mode
         == autokey_admin.AutokeyConfig.KeyProjectResolutionMode.DEDICATED_KEY_PROJECT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_autokey_config_async_from_dict():
-    await test_get_autokey_config_async(request_type=dict)
 
 
 def test_get_autokey_config_field_headers():
@@ -2031,8 +2050,8 @@ async def test_get_autokey_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        autokey_admin.ShowEffectiveAutokeyConfigRequest,
-        dict,
+        autokey_admin.ShowEffectiveAutokeyConfigRequest(),
+        {},
     ],
 )
 def test_show_effective_autokey_config(request_type, transport: str = "grpc"):
@@ -2043,7 +2062,7 @@ def test_show_effective_autokey_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2091,9 +2110,10 @@ def test_show_effective_autokey_config_non_empty_request_with_auto_populated_fie
         client.show_effective_autokey_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == autokey_admin.ShowEffectiveAutokeyConfigRequest(
+        request_msg = autokey_admin.ShowEffectiveAutokeyConfigRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_show_effective_autokey_config_use_cached_wrapped_rpc():
@@ -2179,9 +2199,15 @@ async def test_show_effective_autokey_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        autokey_admin.ShowEffectiveAutokeyConfigRequest(),
+        {},
+    ],
+)
 async def test_show_effective_autokey_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=autokey_admin.ShowEffectiveAutokeyConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AutokeyAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2190,7 +2216,7 @@ async def test_show_effective_autokey_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2213,11 +2239,6 @@ async def test_show_effective_autokey_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, autokey_admin.ShowEffectiveAutokeyConfigResponse)
     assert response.key_project == "key_project_value"
-
-
-@pytest.mark.asyncio
-async def test_show_effective_autokey_config_async_from_dict():
-    await test_show_effective_autokey_config_async(request_type=dict)
 
 
 def test_show_effective_autokey_config_field_headers():
@@ -3054,7 +3075,6 @@ def test_update_autokey_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.UpdateAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3077,7 +3097,6 @@ def test_get_autokey_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.GetAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3100,7 +3119,6 @@ def test_show_effective_autokey_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.ShowEffectiveAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3147,7 +3165,6 @@ async def test_update_autokey_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.UpdateAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3180,7 +3197,6 @@ async def test_get_autokey_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.GetAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3209,7 +3225,6 @@ async def test_show_effective_autokey_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.ShowEffectiveAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4117,7 +4132,6 @@ def test_update_autokey_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.UpdateAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4139,7 +4153,6 @@ def test_get_autokey_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.GetAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4161,7 +4174,6 @@ def test_show_effective_autokey_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = autokey_admin.ShowEffectiveAutokeyConfigRequest()
-
         assert args[0] == request_msg
 
 

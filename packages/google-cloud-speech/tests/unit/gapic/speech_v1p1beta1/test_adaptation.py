@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1271,8 +1287,8 @@ def test_adaptation_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.CreatePhraseSetRequest,
-        dict,
+        cloud_speech_adaptation.CreatePhraseSetRequest(),
+        {},
     ],
 )
 def test_create_phrase_set(request_type, transport: str = "grpc"):
@@ -1283,7 +1299,7 @@ def test_create_phrase_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1348,10 +1364,11 @@ def test_create_phrase_set_non_empty_request_with_auto_populated_field():
         client.create_phrase_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest(
+        request_msg = cloud_speech_adaptation.CreatePhraseSetRequest(
             parent="parent_value",
             phrase_set_id="phrase_set_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_phrase_set_use_cached_wrapped_rpc():
@@ -1434,10 +1451,14 @@ async def test_create_phrase_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_phrase_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.CreatePhraseSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.CreatePhraseSetRequest(),
+        {},
+    ],
+)
+async def test_create_phrase_set_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1445,7 +1466,7 @@ async def test_create_phrase_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1484,11 +1505,6 @@ async def test_create_phrase_set_async(
     assert response.state == resource.PhraseSet.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_create_phrase_set_async_from_dict():
-    await test_create_phrase_set_async(request_type=dict)
 
 
 def test_create_phrase_set_field_headers():
@@ -1661,8 +1677,8 @@ async def test_create_phrase_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.GetPhraseSetRequest,
-        dict,
+        cloud_speech_adaptation.GetPhraseSetRequest(),
+        {},
     ],
 )
 def test_get_phrase_set(request_type, transport: str = "grpc"):
@@ -1673,7 +1689,7 @@ def test_get_phrase_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_phrase_set), "__call__") as call:
@@ -1733,9 +1749,10 @@ def test_get_phrase_set_non_empty_request_with_auto_populated_field():
         client.get_phrase_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest(
+        request_msg = cloud_speech_adaptation.GetPhraseSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_phrase_set_use_cached_wrapped_rpc():
@@ -1816,10 +1833,14 @@ async def test_get_phrase_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_phrase_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.GetPhraseSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.GetPhraseSetRequest(),
+        {},
+    ],
+)
+async def test_get_phrase_set_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1827,7 +1848,7 @@ async def test_get_phrase_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_phrase_set), "__call__") as call:
@@ -1864,11 +1885,6 @@ async def test_get_phrase_set_async(
     assert response.state == resource.PhraseSet.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_phrase_set_async_from_dict():
-    await test_get_phrase_set_async(request_type=dict)
 
 
 def test_get_phrase_set_field_headers():
@@ -2013,8 +2029,8 @@ async def test_get_phrase_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.ListPhraseSetRequest,
-        dict,
+        cloud_speech_adaptation.ListPhraseSetRequest(),
+        {},
     ],
 )
 def test_list_phrase_set(request_type, transport: str = "grpc"):
@@ -2025,7 +2041,7 @@ def test_list_phrase_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_phrase_set), "__call__") as call:
@@ -2070,10 +2086,11 @@ def test_list_phrase_set_non_empty_request_with_auto_populated_field():
         client.list_phrase_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest(
+        request_msg = cloud_speech_adaptation.ListPhraseSetRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_phrase_set_use_cached_wrapped_rpc():
@@ -2154,10 +2171,14 @@ async def test_list_phrase_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_phrase_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.ListPhraseSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.ListPhraseSetRequest(),
+        {},
+    ],
+)
+async def test_list_phrase_set_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2165,7 +2186,7 @@ async def test_list_phrase_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_phrase_set), "__call__") as call:
@@ -2186,11 +2207,6 @@ async def test_list_phrase_set_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPhraseSetAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_phrase_set_async_from_dict():
-    await test_list_phrase_set_async(request_type=dict)
 
 
 def test_list_phrase_set_field_headers():
@@ -2529,8 +2545,8 @@ async def test_list_phrase_set_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.UpdatePhraseSetRequest,
-        dict,
+        cloud_speech_adaptation.UpdatePhraseSetRequest(),
+        {},
     ],
 )
 def test_update_phrase_set(request_type, transport: str = "grpc"):
@@ -2541,7 +2557,7 @@ def test_update_phrase_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2603,7 +2619,8 @@ def test_update_phrase_set_non_empty_request_with_auto_populated_field():
         client.update_phrase_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
+        request_msg = cloud_speech_adaptation.UpdatePhraseSetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_phrase_set_use_cached_wrapped_rpc():
@@ -2686,10 +2703,14 @@ async def test_update_phrase_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_phrase_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.UpdatePhraseSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.UpdatePhraseSetRequest(),
+        {},
+    ],
+)
+async def test_update_phrase_set_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2697,7 +2718,7 @@ async def test_update_phrase_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2736,11 +2757,6 @@ async def test_update_phrase_set_async(
     assert response.state == resource.PhraseSet.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_update_phrase_set_async_from_dict():
-    await test_update_phrase_set_async(request_type=dict)
 
 
 def test_update_phrase_set_field_headers():
@@ -2903,8 +2919,8 @@ async def test_update_phrase_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.DeletePhraseSetRequest,
-        dict,
+        cloud_speech_adaptation.DeletePhraseSetRequest(),
+        {},
     ],
 )
 def test_delete_phrase_set(request_type, transport: str = "grpc"):
@@ -2915,7 +2931,7 @@ def test_delete_phrase_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2960,9 +2976,10 @@ def test_delete_phrase_set_non_empty_request_with_auto_populated_field():
         client.delete_phrase_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest(
+        request_msg = cloud_speech_adaptation.DeletePhraseSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_phrase_set_use_cached_wrapped_rpc():
@@ -3045,10 +3062,14 @@ async def test_delete_phrase_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_phrase_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.DeletePhraseSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.DeletePhraseSetRequest(),
+        {},
+    ],
+)
+async def test_delete_phrase_set_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3056,7 +3077,7 @@ async def test_delete_phrase_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3074,11 +3095,6 @@ async def test_delete_phrase_set_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_phrase_set_async_from_dict():
-    await test_delete_phrase_set_async(request_type=dict)
 
 
 def test_delete_phrase_set_field_headers():
@@ -3231,8 +3247,8 @@ async def test_delete_phrase_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.CreateCustomClassRequest,
-        dict,
+        cloud_speech_adaptation.CreateCustomClassRequest(),
+        {},
     ],
 )
 def test_create_custom_class(request_type, transport: str = "grpc"):
@@ -3243,7 +3259,7 @@ def test_create_custom_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3308,10 +3324,11 @@ def test_create_custom_class_non_empty_request_with_auto_populated_field():
         client.create_custom_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest(
+        request_msg = cloud_speech_adaptation.CreateCustomClassRequest(
             parent="parent_value",
             custom_class_id="custom_class_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_custom_class_use_cached_wrapped_rpc():
@@ -3396,10 +3413,14 @@ async def test_create_custom_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_custom_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.CreateCustomClassRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.CreateCustomClassRequest(),
+        {},
+    ],
+)
+async def test_create_custom_class_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3407,7 +3428,7 @@ async def test_create_custom_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3446,11 +3467,6 @@ async def test_create_custom_class_async(
     assert response.state == resource.CustomClass.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_create_custom_class_async_from_dict():
-    await test_create_custom_class_async(request_type=dict)
 
 
 def test_create_custom_class_field_headers():
@@ -3627,8 +3643,8 @@ async def test_create_custom_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.GetCustomClassRequest,
-        dict,
+        cloud_speech_adaptation.GetCustomClassRequest(),
+        {},
     ],
 )
 def test_get_custom_class(request_type, transport: str = "grpc"):
@@ -3639,7 +3655,7 @@ def test_get_custom_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_custom_class), "__call__") as call:
@@ -3699,9 +3715,10 @@ def test_get_custom_class_non_empty_request_with_auto_populated_field():
         client.get_custom_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetCustomClassRequest(
+        request_msg = cloud_speech_adaptation.GetCustomClassRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_custom_class_use_cached_wrapped_rpc():
@@ -3784,10 +3801,14 @@ async def test_get_custom_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_custom_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.GetCustomClassRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.GetCustomClassRequest(),
+        {},
+    ],
+)
+async def test_get_custom_class_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3795,7 +3816,7 @@ async def test_get_custom_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_custom_class), "__call__") as call:
@@ -3832,11 +3853,6 @@ async def test_get_custom_class_async(
     assert response.state == resource.CustomClass.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_custom_class_async_from_dict():
-    await test_get_custom_class_async(request_type=dict)
 
 
 def test_get_custom_class_field_headers():
@@ -3985,8 +4001,8 @@ async def test_get_custom_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.ListCustomClassesRequest,
-        dict,
+        cloud_speech_adaptation.ListCustomClassesRequest(),
+        {},
     ],
 )
 def test_list_custom_classes(request_type, transport: str = "grpc"):
@@ -3997,7 +4013,7 @@ def test_list_custom_classes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4046,10 +4062,11 @@ def test_list_custom_classes_non_empty_request_with_auto_populated_field():
         client.list_custom_classes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest(
+        request_msg = cloud_speech_adaptation.ListCustomClassesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_custom_classes_use_cached_wrapped_rpc():
@@ -4134,10 +4151,14 @@ async def test_list_custom_classes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_custom_classes_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.ListCustomClassesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.ListCustomClassesRequest(),
+        {},
+    ],
+)
+async def test_list_custom_classes_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4145,7 +4166,7 @@ async def test_list_custom_classes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4168,11 +4189,6 @@ async def test_list_custom_classes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomClassesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_custom_classes_async_from_dict():
-    await test_list_custom_classes_async(request_type=dict)
 
 
 def test_list_custom_classes_field_headers():
@@ -4527,8 +4543,8 @@ async def test_list_custom_classes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.UpdateCustomClassRequest,
-        dict,
+        cloud_speech_adaptation.UpdateCustomClassRequest(),
+        {},
     ],
 )
 def test_update_custom_class(request_type, transport: str = "grpc"):
@@ -4539,7 +4555,7 @@ def test_update_custom_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4601,7 +4617,8 @@ def test_update_custom_class_non_empty_request_with_auto_populated_field():
         client.update_custom_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
+        request_msg = cloud_speech_adaptation.UpdateCustomClassRequest()
+        assert args[0] == request_msg
 
 
 def test_update_custom_class_use_cached_wrapped_rpc():
@@ -4686,10 +4703,14 @@ async def test_update_custom_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_custom_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.UpdateCustomClassRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.UpdateCustomClassRequest(),
+        {},
+    ],
+)
+async def test_update_custom_class_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4697,7 +4718,7 @@ async def test_update_custom_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4736,11 +4757,6 @@ async def test_update_custom_class_async(
     assert response.state == resource.CustomClass.State.ACTIVE
     assert response.etag == "etag_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_update_custom_class_async_from_dict():
-    await test_update_custom_class_async(request_type=dict)
 
 
 def test_update_custom_class_field_headers():
@@ -4907,8 +4923,8 @@ async def test_update_custom_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_speech_adaptation.DeleteCustomClassRequest,
-        dict,
+        cloud_speech_adaptation.DeleteCustomClassRequest(),
+        {},
     ],
 )
 def test_delete_custom_class(request_type, transport: str = "grpc"):
@@ -4919,7 +4935,7 @@ def test_delete_custom_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4964,9 +4980,10 @@ def test_delete_custom_class_non_empty_request_with_auto_populated_field():
         client.delete_custom_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest(
+        request_msg = cloud_speech_adaptation.DeleteCustomClassRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_custom_class_use_cached_wrapped_rpc():
@@ -5051,10 +5068,14 @@ async def test_delete_custom_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_custom_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_speech_adaptation.DeleteCustomClassRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_speech_adaptation.DeleteCustomClassRequest(),
+        {},
+    ],
+)
+async def test_delete_custom_class_async(request_type, transport: str = "grpc_asyncio"):
     client = AdaptationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5062,7 +5083,7 @@ async def test_delete_custom_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5080,11 +5101,6 @@ async def test_delete_custom_class_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_custom_class_async_from_dict():
-    await test_delete_custom_class_async(request_type=dict)
 
 
 def test_delete_custom_class_field_headers():
@@ -7368,7 +7384,6 @@ def test_create_phrase_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7389,7 +7404,6 @@ def test_get_phrase_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7410,7 +7424,6 @@ def test_list_phrase_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7433,7 +7446,6 @@ def test_update_phrase_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7456,7 +7468,6 @@ def test_delete_phrase_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeletePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7479,7 +7490,6 @@ def test_create_custom_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7500,7 +7510,6 @@ def test_get_custom_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7523,7 +7532,6 @@ def test_list_custom_classes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListCustomClassesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7546,7 +7554,6 @@ def test_update_custom_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7569,7 +7576,6 @@ def test_delete_custom_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeleteCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7620,7 +7626,6 @@ async def test_create_phrase_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7655,7 +7660,6 @@ async def test_get_phrase_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7682,7 +7686,6 @@ async def test_list_phrase_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7719,7 +7722,6 @@ async def test_update_phrase_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7744,7 +7746,6 @@ async def test_delete_phrase_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeletePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7781,7 +7782,6 @@ async def test_create_custom_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7816,7 +7816,6 @@ async def test_get_custom_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7845,7 +7844,6 @@ async def test_list_custom_classes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListCustomClassesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7882,7 +7880,6 @@ async def test_update_custom_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -7907,7 +7904,6 @@ async def test_delete_custom_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeleteCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9616,7 +9612,6 @@ def test_create_phrase_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -9636,7 +9631,6 @@ def test_get_phrase_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -9656,7 +9650,6 @@ def test_list_phrase_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListPhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -9678,7 +9671,6 @@ def test_update_phrase_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdatePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -9700,7 +9692,6 @@ def test_delete_phrase_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeletePhraseSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -9722,7 +9713,6 @@ def test_create_custom_class_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.CreateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9742,7 +9732,6 @@ def test_get_custom_class_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.GetCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9764,7 +9753,6 @@ def test_list_custom_classes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.ListCustomClassesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9786,7 +9774,6 @@ def test_update_custom_class_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.UpdateCustomClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9808,7 +9795,6 @@ def test_delete_custom_class_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_speech_adaptation.DeleteCustomClassRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -112,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1242,8 +1258,8 @@ def test_audit_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        audit.GenerateFrameworkAuditScopeReportRequest,
-        dict,
+        audit.GenerateFrameworkAuditScopeReportRequest(),
+        {},
     ],
 )
 def test_generate_framework_audit_scope_report(request_type, transport: str = "grpc"):
@@ -1254,7 +1270,7 @@ def test_generate_framework_audit_scope_report(request_type, transport: str = "g
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1306,10 +1322,11 @@ def test_generate_framework_audit_scope_report_non_empty_request_with_auto_popul
         client.generate_framework_audit_scope_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == audit.GenerateFrameworkAuditScopeReportRequest(
+        request_msg = audit.GenerateFrameworkAuditScopeReportRequest(
             scope="scope_value",
             compliance_framework="compliance_framework_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_framework_audit_scope_report_use_cached_wrapped_rpc():
@@ -1395,9 +1412,15 @@ async def test_generate_framework_audit_scope_report_async_use_cached_wrapped_rp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        audit.GenerateFrameworkAuditScopeReportRequest(),
+        {},
+    ],
+)
 async def test_generate_framework_audit_scope_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=audit.GenerateFrameworkAuditScopeReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1406,7 +1429,7 @@ async def test_generate_framework_audit_scope_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1431,11 +1454,6 @@ async def test_generate_framework_audit_scope_report_async(
     assert isinstance(response, audit.GenerateFrameworkAuditScopeReportResponse)
     assert response.name == "name_value"
     assert response.compliance_framework == "compliance_framework_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_framework_audit_scope_report_async_from_dict():
-    await test_generate_framework_audit_scope_report_async(request_type=dict)
 
 
 def test_generate_framework_audit_scope_report_field_headers():
@@ -1612,8 +1630,8 @@ async def test_generate_framework_audit_scope_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        audit.CreateFrameworkAuditRequest,
-        dict,
+        audit.CreateFrameworkAuditRequest(),
+        {},
     ],
 )
 def test_create_framework_audit(request_type, transport: str = "grpc"):
@@ -1624,7 +1642,7 @@ def test_create_framework_audit(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1670,10 +1688,11 @@ def test_create_framework_audit_non_empty_request_with_auto_populated_field():
         client.create_framework_audit(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == audit.CreateFrameworkAuditRequest(
+        request_msg = audit.CreateFrameworkAuditRequest(
             parent="parent_value",
             framework_audit_id="framework_audit_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_framework_audit_use_cached_wrapped_rpc():
@@ -1769,8 +1788,15 @@ async def test_create_framework_audit_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        audit.CreateFrameworkAuditRequest(),
+        {},
+    ],
+)
 async def test_create_framework_audit_async(
-    transport: str = "grpc_asyncio", request_type=audit.CreateFrameworkAuditRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1779,7 +1805,7 @@ async def test_create_framework_audit_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1799,11 +1825,6 @@ async def test_create_framework_audit_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_framework_audit_async_from_dict():
-    await test_create_framework_audit_async(request_type=dict)
 
 
 def test_create_framework_audit_field_headers():
@@ -1980,8 +2001,8 @@ async def test_create_framework_audit_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        audit.ListFrameworkAuditsRequest,
-        dict,
+        audit.ListFrameworkAuditsRequest(),
+        {},
     ],
 )
 def test_list_framework_audits(request_type, transport: str = "grpc"):
@@ -1992,7 +2013,7 @@ def test_list_framework_audits(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2042,11 +2063,12 @@ def test_list_framework_audits_non_empty_request_with_auto_populated_field():
         client.list_framework_audits(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == audit.ListFrameworkAuditsRequest(
+        request_msg = audit.ListFrameworkAuditsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_framework_audits_use_cached_wrapped_rpc():
@@ -2132,8 +2154,15 @@ async def test_list_framework_audits_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        audit.ListFrameworkAuditsRequest(),
+        {},
+    ],
+)
 async def test_list_framework_audits_async(
-    transport: str = "grpc_asyncio", request_type=audit.ListFrameworkAuditsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2142,7 +2171,7 @@ async def test_list_framework_audits_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2165,11 +2194,6 @@ async def test_list_framework_audits_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFrameworkAuditsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_framework_audits_async_from_dict():
-    await test_list_framework_audits_async(request_type=dict)
 
 
 def test_list_framework_audits_field_headers():
@@ -2524,8 +2548,8 @@ async def test_list_framework_audits_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        audit.GetFrameworkAuditRequest,
-        dict,
+        audit.GetFrameworkAuditRequest(),
+        {},
     ],
 )
 def test_get_framework_audit(request_type, transport: str = "grpc"):
@@ -2536,7 +2560,7 @@ def test_get_framework_audit(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2596,9 +2620,10 @@ def test_get_framework_audit_non_empty_request_with_auto_populated_field():
         client.get_framework_audit(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == audit.GetFrameworkAuditRequest(
+        request_msg = audit.GetFrameworkAuditRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_framework_audit_use_cached_wrapped_rpc():
@@ -2683,9 +2708,14 @@ async def test_get_framework_audit_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_framework_audit_async(
-    transport: str = "grpc_asyncio", request_type=audit.GetFrameworkAuditRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        audit.GetFrameworkAuditRequest(),
+        {},
+    ],
+)
+async def test_get_framework_audit_async(request_type, transport: str = "grpc_asyncio"):
     client = AuditAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2693,7 +2723,7 @@ async def test_get_framework_audit_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2728,11 +2758,6 @@ async def test_get_framework_audit_async(
     assert response.compliance_state == audit.ComplianceState.COMPLIANT
     assert response.operation_id == "operation_id_value"
     assert response.state == audit.FrameworkAudit.State.SCHEDULED
-
-
-@pytest.mark.asyncio
-async def test_get_framework_audit_async_from_dict():
-    await test_get_framework_audit_async(request_type=dict)
 
 
 def test_get_framework_audit_field_headers():
@@ -3864,7 +3889,6 @@ def test_generate_framework_audit_scope_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GenerateFrameworkAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3887,7 +3911,6 @@ def test_create_framework_audit_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.CreateFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 
@@ -3910,7 +3933,6 @@ def test_list_framework_audits_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.ListFrameworkAuditsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3933,7 +3955,6 @@ def test_get_framework_audit_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GetFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 
@@ -3977,7 +3998,6 @@ async def test_generate_framework_audit_scope_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GenerateFrameworkAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4004,7 +4024,6 @@ async def test_create_framework_audit_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.CreateFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 
@@ -4033,7 +4052,6 @@ async def test_list_framework_audits_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.ListFrameworkAuditsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4068,7 +4086,6 @@ async def test_get_framework_audit_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GetFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 
@@ -5150,7 +5167,6 @@ def test_generate_framework_audit_scope_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GenerateFrameworkAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -5172,7 +5188,6 @@ def test_create_framework_audit_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.CreateFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 
@@ -5194,7 +5209,6 @@ def test_list_framework_audits_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.ListFrameworkAuditsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5216,7 +5230,6 @@ def test_get_framework_audit_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = audit.GetFrameworkAuditRequest()
-
         assert args[0] == request_msg
 
 

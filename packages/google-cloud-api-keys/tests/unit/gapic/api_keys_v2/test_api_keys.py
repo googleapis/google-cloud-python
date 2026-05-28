@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1253,8 +1269,8 @@ def test_api_keys_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.CreateKeyRequest,
-        dict,
+        apikeys.CreateKeyRequest(),
+        {},
     ],
 )
 def test_create_key(request_type, transport: str = "grpc"):
@@ -1265,7 +1281,7 @@ def test_create_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key), "__call__") as call:
@@ -1307,10 +1323,11 @@ def test_create_key_non_empty_request_with_auto_populated_field():
         client.create_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.CreateKeyRequest(
+        request_msg = apikeys.CreateKeyRequest(
             parent="parent_value",
             key_id="key_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_key_use_cached_wrapped_rpc():
@@ -1399,9 +1416,14 @@ async def test_create_key_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.CreateKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.CreateKeyRequest(),
+        {},
+    ],
+)
+async def test_create_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1409,7 +1431,7 @@ async def test_create_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key), "__call__") as call:
@@ -1427,11 +1449,6 @@ async def test_create_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_key_async_from_dict():
-    await test_create_key_async(request_type=dict)
 
 
 def test_create_key_field_headers():
@@ -1600,8 +1617,8 @@ async def test_create_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.ListKeysRequest,
-        dict,
+        apikeys.ListKeysRequest(),
+        {},
     ],
 )
 def test_list_keys(request_type, transport: str = "grpc"):
@@ -1612,7 +1629,7 @@ def test_list_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
@@ -1657,10 +1674,11 @@ def test_list_keys_non_empty_request_with_auto_populated_field():
         client.list_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.ListKeysRequest(
+        request_msg = apikeys.ListKeysRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_keys_use_cached_wrapped_rpc():
@@ -1739,9 +1757,14 @@ async def test_list_keys_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_keys_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.ListKeysRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.ListKeysRequest(),
+        {},
+    ],
+)
+async def test_list_keys_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1749,7 +1772,7 @@ async def test_list_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
@@ -1770,11 +1793,6 @@ async def test_list_keys_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKeysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_keys_async_from_dict():
-    await test_list_keys_async(request_type=dict)
 
 
 def test_list_keys_field_headers():
@@ -2113,8 +2131,8 @@ async def test_list_keys_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.GetKeyRequest,
-        dict,
+        apikeys.GetKeyRequest(),
+        {},
     ],
 )
 def test_get_key(request_type, transport: str = "grpc"):
@@ -2125,7 +2143,7 @@ def test_get_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key), "__call__") as call:
@@ -2177,9 +2195,10 @@ def test_get_key_non_empty_request_with_auto_populated_field():
         client.get_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyRequest(
+        request_msg = apikeys.GetKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_key_use_cached_wrapped_rpc():
@@ -2258,9 +2277,14 @@ async def test_get_key_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.GetKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.GetKeyRequest(),
+        {},
+    ],
+)
+async def test_get_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2268,7 +2292,7 @@ async def test_get_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key), "__call__") as call:
@@ -2297,11 +2321,6 @@ async def test_get_key_async(
     assert response.display_name == "display_name_value"
     assert response.key_string == "key_string_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_key_async_from_dict():
-    await test_get_key_async(request_type=dict)
 
 
 def test_get_key_field_headers():
@@ -2446,8 +2465,8 @@ async def test_get_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.GetKeyStringRequest,
-        dict,
+        apikeys.GetKeyStringRequest(),
+        {},
     ],
 )
 def test_get_key_string(request_type, transport: str = "grpc"):
@@ -2458,7 +2477,7 @@ def test_get_key_string(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_string), "__call__") as call:
@@ -2502,9 +2521,10 @@ def test_get_key_string_non_empty_request_with_auto_populated_field():
         client.get_key_string(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.GetKeyStringRequest(
+        request_msg = apikeys.GetKeyStringRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_key_string_use_cached_wrapped_rpc():
@@ -2585,9 +2605,14 @@ async def test_get_key_string_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_key_string_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.GetKeyStringRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.GetKeyStringRequest(),
+        {},
+    ],
+)
+async def test_get_key_string_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2595,7 +2620,7 @@ async def test_get_key_string_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_string), "__call__") as call:
@@ -2616,11 +2641,6 @@ async def test_get_key_string_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, apikeys.GetKeyStringResponse)
     assert response.key_string == "key_string_value"
-
-
-@pytest.mark.asyncio
-async def test_get_key_string_async_from_dict():
-    await test_get_key_string_async(request_type=dict)
 
 
 def test_get_key_string_field_headers():
@@ -2769,8 +2789,8 @@ async def test_get_key_string_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.UpdateKeyRequest,
-        dict,
+        apikeys.UpdateKeyRequest(),
+        {},
     ],
 )
 def test_update_key(request_type, transport: str = "grpc"):
@@ -2781,7 +2801,7 @@ def test_update_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_key), "__call__") as call:
@@ -2820,7 +2840,8 @@ def test_update_key_non_empty_request_with_auto_populated_field():
         client.update_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UpdateKeyRequest()
+        request_msg = apikeys.UpdateKeyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_key_use_cached_wrapped_rpc():
@@ -2909,9 +2930,14 @@ async def test_update_key_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_update_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.UpdateKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.UpdateKeyRequest(),
+        {},
+    ],
+)
+async def test_update_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2919,7 +2945,7 @@ async def test_update_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_key), "__call__") as call:
@@ -2937,11 +2963,6 @@ async def test_update_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_key_async_from_dict():
-    await test_update_key_async(request_type=dict)
 
 
 def test_update_key_field_headers():
@@ -3100,8 +3121,8 @@ async def test_update_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.DeleteKeyRequest,
-        dict,
+        apikeys.DeleteKeyRequest(),
+        {},
     ],
 )
 def test_delete_key(request_type, transport: str = "grpc"):
@@ -3112,7 +3133,7 @@ def test_delete_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
@@ -3154,10 +3175,11 @@ def test_delete_key_non_empty_request_with_auto_populated_field():
         client.delete_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.DeleteKeyRequest(
+        request_msg = apikeys.DeleteKeyRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_key_use_cached_wrapped_rpc():
@@ -3246,9 +3268,14 @@ async def test_delete_key_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.DeleteKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.DeleteKeyRequest(),
+        {},
+    ],
+)
+async def test_delete_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3256,7 +3283,7 @@ async def test_delete_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
@@ -3274,11 +3301,6 @@ async def test_delete_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_key_async_from_dict():
-    await test_delete_key_async(request_type=dict)
 
 
 def test_delete_key_field_headers():
@@ -3427,8 +3449,8 @@ async def test_delete_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.UndeleteKeyRequest,
-        dict,
+        apikeys.UndeleteKeyRequest(),
+        {},
     ],
 )
 def test_undelete_key(request_type, transport: str = "grpc"):
@@ -3439,7 +3461,7 @@ def test_undelete_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_key), "__call__") as call:
@@ -3480,9 +3502,10 @@ def test_undelete_key_non_empty_request_with_auto_populated_field():
         client.undelete_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.UndeleteKeyRequest(
+        request_msg = apikeys.UndeleteKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undelete_key_use_cached_wrapped_rpc():
@@ -3573,9 +3596,14 @@ async def test_undelete_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_undelete_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.UndeleteKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.UndeleteKeyRequest(),
+        {},
+    ],
+)
+async def test_undelete_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3583,7 +3611,7 @@ async def test_undelete_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.undelete_key), "__call__") as call:
@@ -3601,11 +3629,6 @@ async def test_undelete_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_undelete_key_async_from_dict():
-    await test_undelete_key_async(request_type=dict)
 
 
 def test_undelete_key_field_headers():
@@ -3672,8 +3695,8 @@ async def test_undelete_key_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apikeys.LookupKeyRequest,
-        dict,
+        apikeys.LookupKeyRequest(),
+        {},
     ],
 )
 def test_lookup_key(request_type, transport: str = "grpc"):
@@ -3684,7 +3707,7 @@ def test_lookup_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_key), "__call__") as call:
@@ -3730,9 +3753,10 @@ def test_lookup_key_non_empty_request_with_auto_populated_field():
         client.lookup_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apikeys.LookupKeyRequest(
+        request_msg = apikeys.LookupKeyRequest(
             key_string="key_string_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_key_use_cached_wrapped_rpc():
@@ -3811,9 +3835,14 @@ async def test_lookup_key_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_lookup_key_async(
-    transport: str = "grpc_asyncio", request_type=apikeys.LookupKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apikeys.LookupKeyRequest(),
+        {},
+    ],
+)
+async def test_lookup_key_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiKeysAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3821,7 +3850,7 @@ async def test_lookup_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_key), "__call__") as call:
@@ -3844,11 +3873,6 @@ async def test_lookup_key_async(
     assert isinstance(response, apikeys.LookupKeyResponse)
     assert response.parent == "parent_value"
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_lookup_key_async_from_dict():
-    await test_lookup_key_async(request_type=dict)
 
 
 def test_create_key_rest_use_cached_wrapped_rpc():
@@ -5368,7 +5392,6 @@ def test_create_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.CreateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5389,7 +5412,6 @@ def test_list_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.ListKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -5410,7 +5432,6 @@ def test_get_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5431,7 +5452,6 @@ def test_get_key_string_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -5452,7 +5472,6 @@ def test_update_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UpdateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5473,7 +5492,6 @@ def test_delete_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.DeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5494,7 +5512,6 @@ def test_undelete_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UndeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5515,7 +5532,6 @@ def test_lookup_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.LookupKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5554,7 +5570,6 @@ async def test_create_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.CreateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5581,7 +5596,6 @@ async def test_list_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.ListKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -5612,7 +5626,6 @@ async def test_get_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5639,7 +5652,6 @@ async def test_get_key_string_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -5664,7 +5676,6 @@ async def test_update_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UpdateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5689,7 +5700,6 @@ async def test_delete_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.DeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5714,7 +5724,6 @@ async def test_undelete_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UndeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5742,7 +5751,6 @@ async def test_lookup_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.LookupKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7013,7 +7021,6 @@ def test_create_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.CreateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7033,7 +7040,6 @@ def test_list_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.ListKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -7053,7 +7059,6 @@ def test_get_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7073,7 +7078,6 @@ def test_get_key_string_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.GetKeyStringRequest()
-
         assert args[0] == request_msg
 
 
@@ -7093,7 +7097,6 @@ def test_update_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UpdateKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7113,7 +7116,6 @@ def test_delete_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.DeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7133,7 +7135,6 @@ def test_undelete_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.UndeleteKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7153,7 +7154,6 @@ def test_lookup_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apikeys.LookupKeyRequest()
-
         assert args[0] == request_msg
 
 

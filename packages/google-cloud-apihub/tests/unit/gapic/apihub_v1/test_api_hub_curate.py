@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1291,8 +1307,8 @@ def test_api_hub_curate_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        curate_service.CreateCurationRequest,
-        dict,
+        curate_service.CreateCurationRequest(),
+        {},
     ],
 )
 def test_create_curation(request_type, transport: str = "grpc"):
@@ -1303,7 +1319,7 @@ def test_create_curation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_curation), "__call__") as call:
@@ -1364,10 +1380,11 @@ def test_create_curation_non_empty_request_with_auto_populated_field():
         client.create_curation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == curate_service.CreateCurationRequest(
+        request_msg = curate_service.CreateCurationRequest(
             parent="parent_value",
             curation_id="curation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_curation_use_cached_wrapped_rpc():
@@ -1448,9 +1465,14 @@ async def test_create_curation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_curation_async(
-    transport: str = "grpc_asyncio", request_type=curate_service.CreateCurationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        curate_service.CreateCurationRequest(),
+        {},
+    ],
+)
+async def test_create_curation_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCurateAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1458,7 +1480,7 @@ async def test_create_curation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_curation), "__call__") as call:
@@ -1495,11 +1517,6 @@ async def test_create_curation_async(
         == curate_service.Curation.ErrorCode.INTERNAL_ERROR
     )
     assert response.last_execution_error_message == "last_execution_error_message_value"
-
-
-@pytest.mark.asyncio
-async def test_create_curation_async_from_dict():
-    await test_create_curation_async(request_type=dict)
 
 
 def test_create_curation_field_headers():
@@ -1668,8 +1685,8 @@ async def test_create_curation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        curate_service.GetCurationRequest,
-        dict,
+        curate_service.GetCurationRequest(),
+        {},
     ],
 )
 def test_get_curation(request_type, transport: str = "grpc"):
@@ -1680,7 +1697,7 @@ def test_get_curation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_curation), "__call__") as call:
@@ -1740,9 +1757,10 @@ def test_get_curation_non_empty_request_with_auto_populated_field():
         client.get_curation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == curate_service.GetCurationRequest(
+        request_msg = curate_service.GetCurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_curation_use_cached_wrapped_rpc():
@@ -1823,9 +1841,14 @@ async def test_get_curation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_curation_async(
-    transport: str = "grpc_asyncio", request_type=curate_service.GetCurationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        curate_service.GetCurationRequest(),
+        {},
+    ],
+)
+async def test_get_curation_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCurateAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1833,7 +1856,7 @@ async def test_get_curation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_curation), "__call__") as call:
@@ -1870,11 +1893,6 @@ async def test_get_curation_async(
         == curate_service.Curation.ErrorCode.INTERNAL_ERROR
     )
     assert response.last_execution_error_message == "last_execution_error_message_value"
-
-
-@pytest.mark.asyncio
-async def test_get_curation_async_from_dict():
-    await test_get_curation_async(request_type=dict)
 
 
 def test_get_curation_field_headers():
@@ -2023,8 +2041,8 @@ async def test_get_curation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        curate_service.ListCurationsRequest,
-        dict,
+        curate_service.ListCurationsRequest(),
+        {},
     ],
 )
 def test_list_curations(request_type, transport: str = "grpc"):
@@ -2035,7 +2053,7 @@ def test_list_curations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_curations), "__call__") as call:
@@ -2081,11 +2099,12 @@ def test_list_curations_non_empty_request_with_auto_populated_field():
         client.list_curations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == curate_service.ListCurationsRequest(
+        request_msg = curate_service.ListCurationsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_curations_use_cached_wrapped_rpc():
@@ -2166,9 +2185,14 @@ async def test_list_curations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_curations_async(
-    transport: str = "grpc_asyncio", request_type=curate_service.ListCurationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        curate_service.ListCurationsRequest(),
+        {},
+    ],
+)
+async def test_list_curations_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCurateAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2176,7 +2200,7 @@ async def test_list_curations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_curations), "__call__") as call:
@@ -2197,11 +2221,6 @@ async def test_list_curations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCurationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_curations_async_from_dict():
-    await test_list_curations_async(request_type=dict)
 
 
 def test_list_curations_field_headers():
@@ -2540,8 +2559,8 @@ async def test_list_curations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        curate_service.UpdateCurationRequest,
-        dict,
+        curate_service.UpdateCurationRequest(),
+        {},
     ],
 )
 def test_update_curation(request_type, transport: str = "grpc"):
@@ -2552,7 +2571,7 @@ def test_update_curation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_curation), "__call__") as call:
@@ -2610,7 +2629,8 @@ def test_update_curation_non_empty_request_with_auto_populated_field():
         client.update_curation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == curate_service.UpdateCurationRequest()
+        request_msg = curate_service.UpdateCurationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_curation_use_cached_wrapped_rpc():
@@ -2691,9 +2711,14 @@ async def test_update_curation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_curation_async(
-    transport: str = "grpc_asyncio", request_type=curate_service.UpdateCurationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        curate_service.UpdateCurationRequest(),
+        {},
+    ],
+)
+async def test_update_curation_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCurateAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2701,7 +2726,7 @@ async def test_update_curation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_curation), "__call__") as call:
@@ -2738,11 +2763,6 @@ async def test_update_curation_async(
         == curate_service.Curation.ErrorCode.INTERNAL_ERROR
     )
     assert response.last_execution_error_message == "last_execution_error_message_value"
-
-
-@pytest.mark.asyncio
-async def test_update_curation_async_from_dict():
-    await test_update_curation_async(request_type=dict)
 
 
 def test_update_curation_field_headers():
@@ -2901,8 +2921,8 @@ async def test_update_curation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        curate_service.DeleteCurationRequest,
-        dict,
+        curate_service.DeleteCurationRequest(),
+        {},
     ],
 )
 def test_delete_curation(request_type, transport: str = "grpc"):
@@ -2913,7 +2933,7 @@ def test_delete_curation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_curation), "__call__") as call:
@@ -2954,9 +2974,10 @@ def test_delete_curation_non_empty_request_with_auto_populated_field():
         client.delete_curation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == curate_service.DeleteCurationRequest(
+        request_msg = curate_service.DeleteCurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_curation_use_cached_wrapped_rpc():
@@ -3037,9 +3058,14 @@ async def test_delete_curation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_curation_async(
-    transport: str = "grpc_asyncio", request_type=curate_service.DeleteCurationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        curate_service.DeleteCurationRequest(),
+        {},
+    ],
+)
+async def test_delete_curation_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCurateAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3047,7 +3073,7 @@ async def test_delete_curation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_curation), "__call__") as call:
@@ -3063,11 +3089,6 @@ async def test_delete_curation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_curation_async_from_dict():
-    await test_delete_curation_async(request_type=dict)
 
 
 def test_delete_curation_field_headers():
@@ -4314,7 +4335,6 @@ def test_create_curation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.CreateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4335,7 +4355,6 @@ def test_get_curation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.GetCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4356,7 +4375,6 @@ def test_list_curations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.ListCurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4377,7 +4395,6 @@ def test_update_curation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.UpdateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4398,7 +4415,6 @@ def test_delete_curation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.DeleteCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4444,7 +4460,6 @@ async def test_create_curation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.CreateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4476,7 +4491,6 @@ async def test_get_curation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.GetCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4503,7 +4517,6 @@ async def test_list_curations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.ListCurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4535,7 +4548,6 @@ async def test_update_curation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.UpdateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4558,7 +4570,6 @@ async def test_delete_curation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.DeleteCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5823,7 +5834,6 @@ def test_create_curation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.CreateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5843,7 +5853,6 @@ def test_get_curation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.GetCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5863,7 +5872,6 @@ def test_list_curations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.ListCurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5883,7 +5891,6 @@ def test_update_curation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.UpdateCurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5903,7 +5910,6 @@ def test_delete_curation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = curate_service.DeleteCurationRequest()
-
         assert args[0] == request_msg
 
 

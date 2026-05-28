@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -126,6 +127,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1391,8 +1407,8 @@ def test_app_connectors_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.ListAppConnectorsRequest,
-        dict,
+        app_connectors_service.ListAppConnectorsRequest(),
+        {},
     ],
 )
 def test_list_app_connectors(request_type, transport: str = "grpc"):
@@ -1403,7 +1419,7 @@ def test_list_app_connectors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1456,12 +1472,13 @@ def test_list_app_connectors_non_empty_request_with_auto_populated_field():
         client.list_app_connectors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ListAppConnectorsRequest(
+        request_msg = app_connectors_service.ListAppConnectorsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_app_connectors_use_cached_wrapped_rpc():
@@ -1546,10 +1563,14 @@ async def test_list_app_connectors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_app_connectors_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.ListAppConnectorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.ListAppConnectorsRequest(),
+        {},
+    ],
+)
+async def test_list_app_connectors_async(request_type, transport: str = "grpc_asyncio"):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1557,7 +1578,7 @@ async def test_list_app_connectors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1582,11 +1603,6 @@ async def test_list_app_connectors_async(
     assert isinstance(response, pagers.ListAppConnectorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_app_connectors_async_from_dict():
-    await test_list_app_connectors_async(request_type=dict)
 
 
 def test_list_app_connectors_field_headers():
@@ -1943,8 +1959,8 @@ async def test_list_app_connectors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.GetAppConnectorRequest,
-        dict,
+        app_connectors_service.GetAppConnectorRequest(),
+        {},
     ],
 )
 def test_get_app_connector(request_type, transport: str = "grpc"):
@@ -1955,7 +1971,7 @@ def test_get_app_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2009,9 +2025,10 @@ def test_get_app_connector_non_empty_request_with_auto_populated_field():
         client.get_app_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.GetAppConnectorRequest(
+        request_msg = app_connectors_service.GetAppConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_app_connector_use_cached_wrapped_rpc():
@@ -2094,10 +2111,14 @@ async def test_get_app_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_app_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.GetAppConnectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.GetAppConnectorRequest(),
+        {},
+    ],
+)
+async def test_get_app_connector_async(request_type, transport: str = "grpc_asyncio"):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2105,7 +2126,7 @@ async def test_get_app_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2134,11 +2155,6 @@ async def test_get_app_connector_async(
     assert response.display_name == "display_name_value"
     assert response.uid == "uid_value"
     assert response.state == app_connectors_service.AppConnector.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_app_connector_async_from_dict():
-    await test_get_app_connector_async(request_type=dict)
 
 
 def test_get_app_connector_field_headers():
@@ -2295,8 +2311,8 @@ async def test_get_app_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.CreateAppConnectorRequest,
-        dict,
+        app_connectors_service.CreateAppConnectorRequest(),
+        {},
     ],
 )
 def test_create_app_connector(request_type, transport: str = "grpc"):
@@ -2307,7 +2323,7 @@ def test_create_app_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2354,11 +2370,12 @@ def test_create_app_connector_non_empty_request_with_auto_populated_field():
         client.create_app_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.CreateAppConnectorRequest(
+        request_msg = app_connectors_service.CreateAppConnectorRequest(
             parent="parent_value",
             app_connector_id="app_connector_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_app_connector_use_cached_wrapped_rpc():
@@ -2453,9 +2470,15 @@ async def test_create_app_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.CreateAppConnectorRequest(),
+        {},
+    ],
+)
 async def test_create_app_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.CreateAppConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2464,7 +2487,7 @@ async def test_create_app_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2484,11 +2507,6 @@ async def test_create_app_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_app_connector_async_from_dict():
-    await test_create_app_connector_async(request_type=dict)
 
 
 def test_create_app_connector_field_headers():
@@ -2665,8 +2683,8 @@ async def test_create_app_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.UpdateAppConnectorRequest,
-        dict,
+        app_connectors_service.UpdateAppConnectorRequest(),
+        {},
     ],
 )
 def test_update_app_connector(request_type, transport: str = "grpc"):
@@ -2677,7 +2695,7 @@ def test_update_app_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2722,9 +2740,10 @@ def test_update_app_connector_non_empty_request_with_auto_populated_field():
         client.update_app_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.UpdateAppConnectorRequest(
+        request_msg = app_connectors_service.UpdateAppConnectorRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_app_connector_use_cached_wrapped_rpc():
@@ -2819,9 +2838,15 @@ async def test_update_app_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.UpdateAppConnectorRequest(),
+        {},
+    ],
+)
 async def test_update_app_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.UpdateAppConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2830,7 +2855,7 @@ async def test_update_app_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2850,11 +2875,6 @@ async def test_update_app_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_app_connector_async_from_dict():
-    await test_update_app_connector_async(request_type=dict)
 
 
 def test_update_app_connector_field_headers():
@@ -3021,8 +3041,8 @@ async def test_update_app_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.DeleteAppConnectorRequest,
-        dict,
+        app_connectors_service.DeleteAppConnectorRequest(),
+        {},
     ],
 )
 def test_delete_app_connector(request_type, transport: str = "grpc"):
@@ -3033,7 +3053,7 @@ def test_delete_app_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3079,10 +3099,11 @@ def test_delete_app_connector_non_empty_request_with_auto_populated_field():
         client.delete_app_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.DeleteAppConnectorRequest(
+        request_msg = app_connectors_service.DeleteAppConnectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_app_connector_use_cached_wrapped_rpc():
@@ -3177,9 +3198,15 @@ async def test_delete_app_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.DeleteAppConnectorRequest(),
+        {},
+    ],
+)
 async def test_delete_app_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.DeleteAppConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3188,7 +3215,7 @@ async def test_delete_app_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3208,11 +3235,6 @@ async def test_delete_app_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_app_connector_async_from_dict():
-    await test_delete_app_connector_async(request_type=dict)
 
 
 def test_delete_app_connector_field_headers():
@@ -3369,8 +3391,8 @@ async def test_delete_app_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        app_connectors_service.ReportStatusRequest,
-        dict,
+        app_connectors_service.ReportStatusRequest(),
+        {},
     ],
 )
 def test_report_status(request_type, transport: str = "grpc"):
@@ -3381,7 +3403,7 @@ def test_report_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.report_status), "__call__") as call:
@@ -3423,10 +3445,11 @@ def test_report_status_non_empty_request_with_auto_populated_field():
         client.report_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_connectors_service.ReportStatusRequest(
+        request_msg = app_connectors_service.ReportStatusRequest(
             app_connector="app_connector_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_report_status_use_cached_wrapped_rpc():
@@ -3517,10 +3540,14 @@ async def test_report_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_report_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=app_connectors_service.ReportStatusRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        app_connectors_service.ReportStatusRequest(),
+        {},
+    ],
+)
+async def test_report_status_async(request_type, transport: str = "grpc_asyncio"):
     client = AppConnectorsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3528,7 +3555,7 @@ async def test_report_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.report_status), "__call__") as call:
@@ -3546,11 +3573,6 @@ async def test_report_status_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_report_status_async_from_dict():
-    await test_report_status_async(request_type=dict)
 
 
 def test_report_status_field_headers():
@@ -5081,7 +5103,6 @@ def test_list_app_connectors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ListAppConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5104,7 +5125,6 @@ def test_get_app_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.GetAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5127,7 +5147,6 @@ def test_create_app_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.CreateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5150,7 +5169,6 @@ def test_update_app_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.UpdateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5173,7 +5191,6 @@ def test_delete_app_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.DeleteAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5194,7 +5211,6 @@ def test_report_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ReportStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -5238,7 +5254,6 @@ async def test_list_app_connectors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ListAppConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5270,7 +5285,6 @@ async def test_get_app_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.GetAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5297,7 +5311,6 @@ async def test_create_app_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.CreateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5324,7 +5337,6 @@ async def test_update_app_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.UpdateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5351,7 +5363,6 @@ async def test_delete_app_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.DeleteAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -5376,7 +5387,6 @@ async def test_report_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ReportStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -6958,7 +6968,6 @@ def test_list_app_connectors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ListAppConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6980,7 +6989,6 @@ def test_get_app_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.GetAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7002,7 +7010,6 @@ def test_create_app_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.CreateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7024,7 +7031,6 @@ def test_update_app_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.UpdateAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7046,7 +7052,6 @@ def test_delete_app_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.DeleteAppConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7066,7 +7071,6 @@ def test_report_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = app_connectors_service.ReportStatusRequest()
-
         assert args[0] == request_msg
 
 
