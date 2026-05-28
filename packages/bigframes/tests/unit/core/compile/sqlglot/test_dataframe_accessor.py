@@ -157,12 +157,11 @@ def test_ai_generate(monkeypatch):
     )
 
 
-def test_bigframes_ai_generate(monkeypatch):
+def test_bigframes_ai_generate(scalar_types_df: bpd.DataFrame, monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
     session = mock.create_autospec(bigframes.session.Session)
-    bf_df = mock.create_autospec(bpd.DataFrame)
     bf_series = mock.create_autospec(bpd.Series)
 
     def mock_generate(prompt, **kwargs):
@@ -172,7 +171,7 @@ def test_bigframes_ai_generate(monkeypatch):
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate", mock_generate)
 
-    result = bf_df.bigquery.ai.generate(
+    result = scalar_types_df.bigquery.ai.generate(
         bf_series,
         connection_id="conn",
         endpoint="endpoint",
@@ -215,12 +214,11 @@ def test_ai_generate_bool(monkeypatch):
     )
 
 
-def test_bigframes_ai_generate_bool(monkeypatch):
+def test_bigframes_ai_generate_bool(scalar_types_df: bpd.DataFrame, monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
     session = mock.create_autospec(bigframes.session.Session)
-    bf_df = mock.create_autospec(bpd.DataFrame)
     bf_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_bool(prompt, **kwargs):
@@ -230,7 +228,7 @@ def test_bigframes_ai_generate_bool(monkeypatch):
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_bool", mock_generate_bool)
 
-    result = bf_df.bigquery.ai.generate_bool(
+    result = scalar_types_df.bigquery.ai.generate_bool(
         bf_series,
         connection_id="conn",
         endpoint="endpoint",
@@ -272,12 +270,11 @@ def test_ai_generate_int(monkeypatch):
     )
 
 
-def test_bigframes_ai_generate_int(monkeypatch):
+def test_bigframes_ai_generate_int(scalar_types_df: bpd.DataFrame, monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
     session = mock.create_autospec(bigframes.session.Session)
-    bf_df = mock.create_autospec(bpd.DataFrame)
     bf_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_int(prompt, **kwargs):
@@ -287,7 +284,7 @@ def test_bigframes_ai_generate_int(monkeypatch):
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_int", mock_generate_int)
 
-    result = bf_df.bigquery.ai.generate_int(
+    result = scalar_types_df.bigquery.ai.generate_int(
         bf_series,
         connection_id="conn",
         endpoint="endpoint",
@@ -329,12 +326,11 @@ def test_ai_generate_double(monkeypatch):
     )
 
 
-def test_bigframes_ai_generate_double(monkeypatch):
+def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
     session = mock.create_autospec(bigframes.session.Session)
-    bf_df = mock.create_autospec(bpd.DataFrame)
     bf_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_double(prompt, **kwargs):
@@ -344,7 +340,7 @@ def test_bigframes_ai_generate_double(monkeypatch):
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_double", mock_generate_double)
 
-    result = bf_df.bigquery.ai.generate_double(
+    result = scalar_types_df.bigquery.ai.generate_double(
         bf_series,
         connection_id="conn",
         endpoint="endpoint",
