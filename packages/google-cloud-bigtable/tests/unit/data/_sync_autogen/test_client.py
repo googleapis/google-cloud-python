@@ -58,6 +58,21 @@ CrossSync._Sync_Impl.add_mapping("SwappableChannel", SwappableChannel)
 CrossSync._Sync_Impl.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @CrossSync._Sync_Impl.add_mapping_decorator("TestBigtableDataClient")
 class TestBigtableDataClient:
     @staticmethod
