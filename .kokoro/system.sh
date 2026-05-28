@@ -125,7 +125,8 @@ for path in `find 'packages' \
     library_type="${library_type:-UNKNOWN}"
   fi
 
-  # Automated GAPIC libraries bypass system tests in PRs because their generation is deterministic.
+  # System tests always run in release PRs, regardless of library type.
+  # Automated GAPIC libraries bypass system tests in non-release PRs because their generation is deterministic.
   # However, google-cloud-compute is included because its Discovery-based nature requires additional
   # verification.
   if [[ "${library_type}" != "GAPIC_AUTO" || "${package_name}" == "google-cloud-compute"* ]]; then
