@@ -11,6 +11,7 @@ from __future__ import absolute_import
 
 import os
 import pathlib
+import re
 import shutil
 
 import nox
@@ -37,6 +38,32 @@ UNIT_TEST_PYTHON_VERSIONS = [
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 
 SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
+
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "pytest",
+    "pytest-cov",
+    "coverage",
+]
+
+UNIT_TEST_EXTERNAL_DEPENDENCIES = [
+    "setuptools",
+    "mock-import",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation",
+]
+
+UNIT_TEST_DEPENDENCIES = [
+    "django~=5.2",
+    "sqlparse==0.3.1",
+]
+
+UNIT_TEST_MOCKSERVER_DEPENDENCIES = [
+    "django~=5.2",
+    "google-cloud-spanner>=3.55.0",
+    "sqlparse>=0.4.4",
+]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -86,21 +113,12 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, django_version="5.2"):
+def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install(
-        "setuptools",
-        "django~={}".format(django_version),
-        "mock",
-        "mock-import",
-        "pytest",
-        "pytest-cov",
-        "coverage",
-        "sqlparse==0.3.1",
-        "google-cloud-spanner>=3.13.0",
-        "opentelemetry-api==1.1.0",
-        "opentelemetry-sdk==1.1.0",
-        "opentelemetry-instrumentation==0.20b0",
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
     )
     session.install("-e", ".")
 
@@ -122,10 +140,6 @@ def default(session, django_version="5.2"):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    # TODO: Remove this check once support for Python 3.14 is added to Protobuf
-    if session.python == "3.14":
-        session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
-    print("Unit tests with django 5.2")
     default(session)
 
 
@@ -133,18 +147,9 @@ def unit(session):
 def mockserver(session):
     # Install all test dependencies, then install this package in-place.
     session.install(
-        "setuptools",
-        "django~=5.2",
-        "mock",
-        "mock-import",
-        "pytest",
-        "pytest-cov",
-        "coverage",
-        "sqlparse>=0.4.4",
-        "google-cloud-spanner>=3.55.0",
-        "opentelemetry-api==1.1.0",
-        "opentelemetry-sdk==1.1.0",
-        "opentelemetry-instrumentation==0.20b0",
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_MOCKSERVER_DEPENDENCIES,
     )
     session.install("-e", ".")
     session.run(
@@ -155,7 +160,7 @@ def mockserver(session):
     )
 
 
-def system_test(session, django_version="5.2"):
+def system_test(session):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -186,7 +191,7 @@ def system_test(session, django_version="5.2"):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install(
-        "django~={}".format(django_version),
+        "django~=5.2",
         "mock",
         "pytest",
         "google-cloud-testutils",
@@ -312,27 +317,148 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17047):
+    # Add typehints to this package.
+    session.skip("Typehints and thus mypy are not yet supported.")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+    )
+    session.install("-e", ".")
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
+        "google-cloud-spanner",
+    ]
+
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
+
+    session.run(
+        "py.test",
+        "--quiet",
+        "--cov=django_spanner",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease_deps(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add prerelease deps tests
-    session.skip("prerelease deps tests are not yet supported")
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+    )
+    session.install("-e", ".")
+
+    prerel_deps = [
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
+        "grpcio-status",
+        "protobuf",
+        "proto-plus",
+        "google-cloud-spanner",
+    ]
+
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    parsed_deps = {
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
+    }
+
+    local_paths = []
+    pypi_deps = []
+
+    for dep, pkg_name in parsed_deps.items():
+        if (deps_dir / pkg_name).exists():
+            local_paths.append(str(deps_dir / pkg_name))
+        else:
+            pypi_deps.append(dep)
+
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+    if pypi_deps:
+        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
+
+    package_namespaces = {
+        "google-api-core": "google.api_core",
+        "google-auth": "google.auth",
+        "grpcio": "grpc",
+        "protobuf": "google.protobuf",
+        "proto-plus": "proto",
+        "google-cloud-spanner": "google.cloud.spanner",
+    }
+
+    for dep, pkg_name in parsed_deps.items():
+        print(f"Installed {dep}")
+        version_namespace = package_namespaces.get(pkg_name)
+
+        if version_namespace:
+            session.run(
+                "python",
+                "-c",
+                f"import {version_namespace}; print({version_namespace}.__version__)",
+            )
+
+    session.run(
+        "py.test",
+        "--quiet",
+        "--cov=django_spanner",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session
