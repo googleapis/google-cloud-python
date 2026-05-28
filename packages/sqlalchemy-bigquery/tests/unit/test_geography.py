@@ -24,8 +24,10 @@ from .conftest import setup_table
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
-# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved. 
-@pytest.mark.skip(reason="Failing in CI with AssertionError. Tracking: [google-cloud-python/issues/17287")
+# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
+@pytest.mark.skip(
+    reason="Failing in CI with AssertionError. Tracking: [google-cloud-python/issues/17287"
+)
 def test_geoalchemy2_core(faux_conn, last_query):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geometry"""
     conn = faux_conn
