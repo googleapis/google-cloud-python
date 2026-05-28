@@ -68,8 +68,12 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than four hours."""
-    cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
+    # To prevent concurrent developers/Kokoro runs from accidentally deleting each other's
+    # active databases (which typically finish running within 5 minutes), we use a safety
+    # threshold. A 10-minute cutoff protects active databases while aggressively purging
+    # stale databases to avoid hitting Cloud Spanner's 100 database per instance limit.
+    """Delete test databases that are older than 10 minutes."""
+    cutoff = (int(time.time()) - 10 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
