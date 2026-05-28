@@ -1,0 +1,674 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+Automated Dependency Version Scanner
+Scans a repository for references to specific dependency versions.
+"""
+
+import argparse
+import csv
+import datetime
+import os
+import re
+import sys
+from typing import Dict, List, Tuple
+import yaml
+
+class ConfigManager:
+    """
+    Handles loading, validation, and interpolation of the regex configuration rules.
+    
+    Uses template-based regex configurations from a YAML file and interpolates them
+    with dependency properties and computed version segments (e.g., major, minor) to 
+    generate active regex search patterns dynamically.
+    """
+    
+    def __init__(self, config_path: str, dependency: str, version: str):
+        """
+        Initializes the configuration manager.
+        
+        Args:
+            config_path: Path to the YAML configuration file containing regex templates.
+            dependency: Name of the dependency to search for (e.g., "python", "protobuf").
+            version: Specific target version string to search for (e.g., "3.7", "4.25.8").
+        """
+        self.config_path = config_path
+        self.dependency = dependency
+        self.version = version
+        self.variables = self._compute_variables()
+        
+    def _compute_variables(self) -> Dict[str, str]:
+        """
+        Parses the version string and computes variables for template interpolation.
+        
+        Splits the version string by '.' and generates segments like major, minor,
+        patch, minor+1, and minor-1. These variables are used in regex templates
+        (e.g., `{minor_plus_one}` to search for Python 3.8 when EOLing 3.7).
+        
+        Examples:
+            If version is "3.7" and dependency is "python":
+                vars = {
+                    "name": "python",
+                    "version": "3.7",
+                    "major": "3",
+                    "minor": "7",
+                    "minor_plus_one": "8",
+                    "minor_minus_one": "6"
+                }
+            If version is "4.25.8" and dependency is "protobuf":
+                vars = {
+                    "name": "protobuf",
+                    "version": "4.25.8",
+                    "major": "4",
+                    "minor": "25",
+                    "patch": "8",
+                    "minor_plus_one": "26",
+                    "minor_minus_one": "24"
+                }
+                
+        Returns:
+            A dictionary mapping variable placeholder names to their resolved string values.
+        """
+        vars = {
+            "name": self.dependency,
+            "version": self.version,
+        }
+        
+        parts = self.version.split('.')
+        if len(parts) >= 1:
+            vars["major"] = parts[0]
+        if len(parts) >= 2:
+            vars["minor"] = parts[1]
+            try:
+                vars["minor_plus_one"] = str(int(parts[1]) + 1)
+            except ValueError:
+                vars["minor_plus_one"] = parts[1]
+            try:
+                vars["minor_minus_one"] = str(int(parts[1]) - 1)
+            except ValueError:
+                vars["minor_minus_one"] = parts[1]
+        if len(parts) >= 3:
+            vars["patch"] = parts[2]
+            
+        return vars
+        
+    def load_config(self) -> List[Dict[str, str]]:
+        """Load and resolve rules from config."""
+        try:
+            with open(self.config_path, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f)
+        except FileNotFoundError:
+            print(f"Error: Config file not found: {self.config_path}", file=sys.stderr)
+            sys.exit(1)
+        except PermissionError:
+            print(f"Error: Permission denied reading config file: {self.config_path}", file=sys.stderr)
+            sys.exit(1)
+        except yaml.YAMLError as e:
+            print(f"Error parsing config file: {e}", file=sys.stderr)
+            sys.exit(1)
+            
+        rules_list = config.get("rules", [])
+        resolved_rules = []
+        
+        for rule_group in rules_list:
+            name = rule_group.get("name")
+            applies_to = rule_group.get("applies_to", [])
+            
+            # Filter by dependency
+            if applies_to and self.dependency not in applies_to:
+                continue
+                
+            templates = rule_group.get("rules", [])
+            
+            for template in templates:
+                try:
+                    resolved_pattern = template.strip().format(**self.variables)
+                    resolved_rules.append({
+                        "name": name,
+                        "pattern": resolved_pattern
+                    })
+                except KeyError as e:
+                    print(f"Warning: Missing variable for interpolation in rule {name}: {e}", file=sys.stderr)
+                except ValueError as e:
+                    print(f"Warning: Invalid format string in rule {name}: {e}", file=sys.stderr)
+                
+        return resolved_rules
+
+def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> List[Dict[str, str]]:
+    """
+    Scan a single file for matching patterns.
+    
+    Args:
+        file_path: Path to the file to scan.
+        compiled_rules: A list of dictionaries containing 'name' and 'pattern' (compiled regex).
+        
+    Returns:
+        A list of dictionaries containing match details.
+    """
+    results = []
+            
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            skip_next = False
+            for line_num, line in enumerate(f, 1):
+                if skip_next:
+                    skip_next = False
+                    continue
+                if "version-scanner: ignore-next-line" in line:
+                    skip_next = True
+                    continue
+                if "version-scanner: ignore" in line:
+                    continue
+                for rule in compiled_rules:
+                    match = rule["pattern"].search(line)
+                    if match:
+                        results.append({
+                            "rule_name": rule["name"],
+                            "line_number": line_num,
+                            "matched_string": match.group(0).strip(),
+                            "context_line": line.strip()
+                        })
+    except IOError as e:
+        print(f"Warning: Could not read file {file_path}: {e}", file=sys.stderr)
+        
+    return results
+
+
+def format_match_for_csv(
+    match: Dict[str, str], 
+    github_repo: str = None, 
+    branch: str = "main"
+) -> Dict[str, str]:
+    """
+    Formats a raw match dictionary for clean CSV presentation and imports.
+    
+    Cleans long context lines by truncating them around the match location to prevent
+    extreme cell overflow in spreadsheets. Optionally transforms line numbers into 
+    clickable `=HYPERLINK(...)` formulas linking directly to the exact file and line
+    number in GitHub.
+    
+    Args:
+        match: A match dictionary containing 'file_path', 'repo_path', 'rule_name', 
+               'line_number', 'matched_string', and 'context_line'.
+        github_repo: Optional GitHub repository base URL (e.g., "https://github.com/user/repo").
+                     If provided, triggers the hyperlink generation.
+        branch: Optional branch name to build the GitHub blob URL (defaults to "main").
+        
+    Returns:
+        A copy of the match dictionary with formatted/truncated values, suitable for CSV writing.
+    """
+    formatted = match.copy()
+    
+    if github_repo:
+        # Use repo_path if available, fallback to file_path
+        file_path = match.get("repo_path", match.get("file_path", ""))
+        line_number = match.get("line_number", "")
+        
+        # Construct URL
+        url = f"{github_repo}/blob/{branch}/{file_path}#L{line_number}"
+        
+        # Format as Google Sheets formula
+        formatted["line_number"] = f'=HYPERLINK("{url}", "{line_number}")'
+        
+    context = formatted.get("context_line", "")
+    matched = formatted.get("matched_string", "")
+    
+    if len(context) > 500:
+        match_start = context.find(matched)
+        if match_start != -1:
+            start = max(0, match_start - 200)
+            end = min(len(context), match_start + len(matched) + 200)
+            
+            prefix = "..." if start > 0 else ""
+            suffix = "..." if end < len(context) else ""
+            
+            formatted["context_line"] = prefix + context[start:end] + suffix
+        else:
+            formatted["context_line"] = context[:500] + "..."
+            
+    return formatted
+
+
+def get_match_counts(matches: List[Dict[str, str]]) -> Tuple[Dict[str, int], Dict[str, int]]:
+    """
+    Aggregate matches by rule and by package.
+    """
+    rule_counts = {}
+    package_counts = {}
+    for m in matches:
+        r = m.get("rule_name")
+        p = m.get("package_name")
+        rule_counts[r] = rule_counts.get(r, 0) + 1
+        package_counts[p] = package_counts.get(p, 0) + 1
+    return rule_counts, package_counts
+
+
+def print_summary_table(rule_counts: Dict[str, int], package_counts: Dict[str, int]) -> None:
+    """
+    Print a summary table to the console.
+    """
+    print("\n=== Scan Summary ===")
+    print(f"{'Rule Name':<30} {'Matches':<10}")
+    print("-" * 42)
+    for rule, count in sorted(rule_counts.items(), key=lambda x: x[1], reverse=True):
+        print(f"{rule:<30} {count:<10}")
+        
+    print(f"\n{'Package Name':<40} {'Matches':<10}")
+    print("-" * 52)
+    sorted_packages = sorted(package_counts.items(), key=lambda x: x[1], reverse=True)
+    for pkg, count in sorted_packages[:10]:
+        display_name = pkg if pkg else '[Root/None]'
+        print(f"{display_name:<40} {count:<10}")
+        
+    if len(sorted_packages) > 10:
+        print(f'... and {len(sorted_packages) - 10} more packages.')
+
+
+def load_ignore_file(file_path: str) -> List[str]:
+    """
+    Read ignore paths from a file.
+    """
+    ignore_dirs = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    ignore_dirs.append(line)
+    except FileNotFoundError:
+        pass
+    return ignore_dirs
+
+
+def write_csv_report(
+    output_path: str, 
+    matches: List[Dict[str, str]], 
+    github_repo: str = None, 
+    branch: str = "main"
+) -> None:
+    """
+    Write the collected matches to a CSV file.
+    
+    Args:
+        output_path: Path to the output CSV file.
+        matches: A list of dictionaries containing match details.
+        github_repo: Optional GitHub repository URL base.
+        branch: GitHub branch for links (defaults to main).
+    """
+    fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
+    
+    try:
+        with open(output_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            
+            for match in matches:
+                formatted_match = format_match_for_csv(match, github_repo, branch)
+                # Ensure only specified fields are written
+                row = {field: formatted_match.get(field, "") for field in fieldnames}
+                writer.writerow(row)
+                
+        print(f"\nReport written to: {output_path}")
+    except IOError as e:
+        print(f"Error writing CSV report: {e}", file=sys.stderr)
+
+
+def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: str = None, branch: str = "main") -> str:
+    """
+    Upload matches to a Google Sheet in Drive.
+    """
+    print("\nUploading to Google Drive...")
+    try:
+        import google.auth
+        from googleapiclient.discovery import build
+    except ImportError:
+        print("Error: Google API client packages are missing. Please run 'pip install -r requirements.txt' to enable upload functionality.", file=sys.stderr)
+        return ""
+        
+    try:
+        credentials, project = google.auth.default(
+            scopes=['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
+        )
+        
+        service = build('sheets', 'v4', credentials=credentials)
+        
+        # Create a new spreadsheet
+        title = os.path.basename(csv_path).replace('.csv', '')
+        spreadsheet = {
+            'properties': {
+                'title': title
+            }
+        }
+        spreadsheet = service.spreadsheets().create(body=spreadsheet, fields='spreadsheetUrl,spreadsheetId').execute()
+        url = spreadsheet.get('spreadsheetUrl')
+        spreadsheet_id = spreadsheet.get('spreadsheetId')
+        
+        # Prepare data
+        values = [["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]]
+        for m in matches:
+            formatted_m = format_match_for_csv(m, github_repo=github_repo, branch=branch)
+            values.append([
+                formatted_m.get("file_path", ""),
+                formatted_m.get("package_name", ""),
+                formatted_m.get("rule_name", ""),
+                str(formatted_m.get("line_number", "")),
+                formatted_m.get("matched_string", ""),
+                formatted_m.get("context_line", "")
+            ])
+            
+        body = {
+            'values': values
+        }
+        
+        # Update values
+        service.spreadsheets().values().update(
+            spreadsheetId=spreadsheet_id,
+            range='Sheet1!A1',
+            valueInputOption='USER_ENTERED',
+            body=body
+        ).execute()
+        
+        print(f"Successfully uploaded to Google Sheet: {url}")
+        return url
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"Error uploading to Google Drive: {e}", file=sys.stderr)
+        return ""
+
+
+def read_package_file(file_path: str) -> List[str]:
+    """
+    Read package paths from a file.
+    
+    Args:
+        file_path: Path to the package file.
+        
+    Returns:
+        A list of package paths.
+    """
+    packages = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    packages.append(line)
+    except FileNotFoundError:
+        print(f"Error: Package file not found: {file_path}", file=sys.stderr)
+        sys.exit(1)
+    except PermissionError:
+        print(f"Error: Permission denied reading package file: {file_path}", file=sys.stderr)
+        sys.exit(1)
+    except IOError as e:
+        print(f"Error reading package file: {e}", file=sys.stderr)
+        sys.exit(1)
+    return packages
+
+
+def scan_repository(
+    root_path: str,
+    rules: List[Dict[str, str]],
+    target_packages: List[str] = None,
+    ignore_dirs: List[str] = None,
+    version_string: str = None
+) -> List[Dict[str, str]]:
+    """
+    Scans the repository directory tree applying resolved regex patterns to files.
+    
+    Walks the directory structure starting at the root path, checking filenames and
+    file contents line-by-line against compiled patterns. Supports case-insensitive
+    directory/file ignore patterns, dynamic package filter checks for layout-agnostic
+    subfolders, and filename-based version string matching.
+    
+    Args:
+        root_path: Absolute or relative path to the directory tree root to scan.
+        rules: A list of dictionaries containing 'name' (rule name) and 'pattern' 
+               (regex search pattern string).
+        target_packages: Optional list of specific subdirectory paths to restrict scanning
+                         (e.g., ['packages/pkg_a', 'generated/pkg_b']). If None or empty,
+                         performs a full recursive scan of the repository.
+        ignore_dirs: Optional list of directory names or glob-like files to ignore (case-insensitive).
+        version_string: Optional target version string (e.g. "3.7") to scan for in filenames.
+        
+    Returns:
+        A list of dictionaries detailing each match: 'file_path', 'repo_path',
+        'package_name', 'rule_name', 'line_number', 'matched_string', 'context_line'.
+    """
+    ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
+    results = []
+    
+    # Compile patterns once here
+    compiled_rules = []
+    for rule in rules:
+        try:
+            compiled_rules.append({
+                "name": rule["name"],
+                "pattern": re.compile(rule["pattern"], re.IGNORECASE)
+            })
+        except re.error as e:
+            print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
+            continue
+            
+    print(f"\nScanning repository: {root_path}")
+    if target_packages:
+        print(f"Filtering for packages: {target_packages}")
+        
+    for root, dirs, files in os.walk(root_path):
+        # Prune ignore directories (case-insensitive)
+        dirs[:] = [d for d in dirs if d.lower() not in ignore_lower]
+        
+        # Filter ignore files (case-insensitive)
+        files = [f for f in files if f.lower() not in ignore_lower]
+        
+        rel_root = os.path.relpath(root, root_path)
+        parts = rel_root.split(os.sep)
+        
+        # Layout-agnostic generic subdirectory filtering
+        if target_packages:
+            norm_targets = {os.path.normpath(tp) for tp in target_packages}
+            is_valid_path = False
+            for target in norm_targets:
+                if (rel_root == "." or 
+                    rel_root == target or 
+                    rel_root.startswith(target + os.sep) or 
+                    target.startswith(rel_root + os.sep)):
+                    is_valid_path = True
+                    break
+            if not is_valid_path:
+                # Skip searching this directory and all its descendants
+                dirs[:] = []
+                continue
+                
+        for file in files:
+            file_path = os.path.join(root, file)
+            matches = scan_file(file_path, compiled_rules)
+            
+            # Add filename match if applicable
+            if version_string and version_string in file:
+                matches.append({
+                    "rule_name": "filename_match",
+                    "line_number": 0,
+                    "matched_string": version_string,
+                    "context_line": f"Filename contains {version_string}"
+                })
+            
+            # Compute display path and package name
+            rel_file_path = os.path.relpath(file_path, root_path)
+            
+            package_name = ""
+            path_parts = rel_file_path.split(os.sep)
+            # Assume package name is the folder directly under standard package root directories
+            package_roots = {"packages", "generated", "handwritten", "third_party"}
+            if len(path_parts) >= 2 and path_parts[0] in package_roots:
+                package_name = path_parts[1]
+                
+            root_parts = os.path.abspath(root_path).split(os.sep)
+            if len(root_parts) >= 2:
+                prefix = os.path.join(root_parts[-2], root_parts[-1])
+                display_path = os.path.join(prefix, rel_file_path)
+            else:
+                display_path = rel_file_path
+                
+            for m in matches:
+                m["file_path"] = display_path
+                m["repo_path"] = rel_file_path
+                m["package_name"] = package_name
+                results.append(m)
+                
+    return results
+
+
+def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    default_config = os.path.join(script_dir, "regex_config.yaml")
+    
+    parser = argparse.ArgumentParser(
+        description="Scan repository for references to specific dependency versions."
+    )
+    
+    parser.add_argument(
+        "-d", "--dependency",
+        required=True,
+        help="Name of the dependency (e.g., python, protobuf)"
+    )
+    
+    parser.add_argument(
+        "-v", "--version",
+        required=True,
+        help="Specific version to search for (e.g., 3.7, 4.25.8)"
+    )
+    
+    parser.add_argument(
+        "-p", "--path",
+        default=".",
+        help="Root directory to scan (defaults to current directory)"
+    )
+    
+
+    
+    package_group = parser.add_mutually_exclusive_group()
+    
+    package_group.add_argument(
+        "--package",
+        help="Specific subdirectory filter (useful for monorepos)"
+    )
+    
+    package_group.add_argument(
+        "--package-file",
+        help="Path to a file containing a list of package directories to scan"
+    )
+    
+    parser.add_argument(
+        "--config",
+        default=default_config,
+        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)"
+    )
+    
+    parser.add_argument(
+        "-o", "--output",
+        help="Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)"
+    )
+    
+    parser.add_argument(
+        "--github-repo",
+        default="https://github.com/googleapis/google-cloud-python",
+        help="GitHub repository URL base (defaults to https://github.com/googleapis/google-cloud-python)"
+    )
+    
+    parser.add_argument(
+        "--branch",
+        default="main",
+        help="GitHub branch for links (defaults to main)"
+    )
+    
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="Upload results to a Google Sheet in Drive"
+    )
+    
+    args = parser.parse_args()
+    
+    # Resolve target packages if filtering is requested
+    target_packages = []
+    if args.package:
+        # If the folder exists under root path as-is, use it. Otherwise fallback to packages/ prefix.
+        if os.path.exists(os.path.join(args.path, args.package)):
+            target_packages.append(args.package)
+        else:
+            target_packages.append(os.path.join("packages", args.package))
+    elif args.package_file:
+        target_packages = read_package_file(args.package_file)
+        
+    print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
+    print(f"Root path: {args.path}")
+    print(f"Targets to scan:")
+    if target_packages:
+        for pkg in target_packages:
+            print(f"  - {os.path.join(args.path, pkg)}")
+    else:
+        print(f"  - {args.path} (all packages)")
+    print(f"Using config: {args.config}")
+    
+    # Load and resolve rules
+    config_manager = ConfigManager(args.config, args.dependency, args.version)
+    rules = config_manager.load_config()
+    
+    print(f"\nLoaded {len(rules)} rules:")
+    for rule in rules:
+        print(f"  - {rule['name']}: {rule['pattern']}")
+        
+
+            
+    # Load ignore file from script directory (Option A)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    ignore_file_path = os.path.join(script_dir, ".scannerignore")
+    ignore_dirs = load_ignore_file(ignore_file_path)
+    if ignore_dirs:
+        print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
+        
+    # Scan repository
+    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
+    
+    print(f"\nFound {len(all_matches)} matches.")
+    for m in all_matches[:10]: # Show first 10
+        print(f"  {m['file_path']}:{m['line_number']} [{m['rule_name']}] {m['matched_string']}")
+        
+    if len(all_matches) > 10:
+        print(f"  ... and {len(all_matches) - 10} more matches.")
+        
+    # Get and print summary counts
+    rule_counts, package_counts = get_match_counts(all_matches)
+    print_summary_table(rule_counts, package_counts)
+        
+    # Write report
+    if args.output:
+        output_path = args.output
+    else:
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        results_dir = os.path.join(script_dir, "results")
+        os.makedirs(results_dir, exist_ok=True)
+        output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
+        
+    write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+    
+    if args.upload:
+        upload_to_drive(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+
+if __name__ == "__main__":
+    main()

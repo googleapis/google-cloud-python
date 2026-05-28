@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.14.0
+version: v0.15.1-0.20260528141105-567c9bf1faa7
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -67,7 +67,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.33.0
+    version: 1.34.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -607,8 +607,6 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
-    skip_generate: true
-    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -2530,6 +2528,7 @@ libraries:
       library_type: CORE
   - name: sqlalchemy-bigquery
     version: 1.17.0
+    skip_release: true
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner

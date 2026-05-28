@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -111,6 +112,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -973,10 +989,8 @@ def test_cloud_redis_client_create_channel_credentials_file(client_class, transp
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({
-  }),
-  {
-  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 def test_list_instances(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1109,8 +1123,8 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.ListInstancesRequest({  }),
-  {  },
+  cloud_redis.ListInstancesRequest(),
+  {},
 ])
 async def test_list_instances_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -1484,10 +1498,8 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 def test_get_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -1668,8 +1680,8 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.GetInstanceRequest({  }),
-  {  },
+  cloud_redis.GetInstanceRequest(),
+  {},
 ])
 async def test_get_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -1899,10 +1911,8 @@ async def test_get_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 def test_create_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2040,8 +2050,8 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.CreateInstanceRequest({  }),
-  {  },
+  cloud_redis.CreateInstanceRequest(),
+  {},
 ])
 async def test_create_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2240,10 +2250,8 @@ async def test_create_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 def test_update_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2377,8 +2385,8 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.UpdateInstanceRequest({  }),
-  {  },
+  cloud_redis.UpdateInstanceRequest(),
+  {},
 ])
 async def test_update_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(
@@ -2567,10 +2575,8 @@ async def test_update_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({
-  }),
-  {
-  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 def test_delete_instance(request_type, transport: str = 'grpc'):
     client = CloudRedisClient(
@@ -2706,8 +2712,8 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  cloud_redis.DeleteInstanceRequest({  }),
-  {  },
+  cloud_redis.DeleteInstanceRequest(),
+  {},
 ])
 async def test_delete_instance_async(request_type, transport: str = 'grpc_asyncio'):
     client = CloudRedisAsyncClient(

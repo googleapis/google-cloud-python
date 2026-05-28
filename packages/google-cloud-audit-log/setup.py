@@ -60,6 +60,6 @@ setuptools.setup(
     license="Apache-2.0",
     packages=find_namespace_packages(exclude=("tests*", "testing*")),
     python_requires=">=3.9",
-    url="https://github.com/googleapis/python-audit-log",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log",
     include_package_data=True,
 )

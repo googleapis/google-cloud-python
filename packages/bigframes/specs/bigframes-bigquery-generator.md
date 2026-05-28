@@ -11,10 +11,9 @@ generates python submodules for the `bigframes.bigquery` module. When run
 without any arguments, it iterates through all yaml files at
 `packages/bigframes/scripts/data/sql-functions/**/*.yaml` to generate the code.
 
-The script at `packages/bigframes/scripts/check_bigframes_bigquery.py` iterates
-through all the same yaml files and checks that the functions have been included
-in the `bigframes.bigquery` module, as the `__init__.py` file requires manual
-updates.
+The script also generates a unit test that verifies that the functions have been
+included in the `bigframes.bigquery` module, which is important to check, as the
+`__init__.py` file requires manual updates.
 
 ## Running the generator
 

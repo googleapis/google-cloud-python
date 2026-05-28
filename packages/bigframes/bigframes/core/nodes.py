@@ -40,7 +40,6 @@ from bigframes.core.field import Field
 from bigframes.core.ordering import OrderingExpression, RowOrdering
 
 if typing.TYPE_CHECKING:
-    import bigframes.core.ordering as orderings
     import bigframes.session
 
 

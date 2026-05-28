@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -95,6 +96,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -946,10 +962,8 @@ def test_logging_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({
-  }),
-  {
-  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 def test_delete_log(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1075,8 +1089,8 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.DeleteLogRequest({  }),
-  {  },
+  logging.DeleteLogRequest(),
+  {},
 ])
 async def test_delete_log_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1251,10 +1265,8 @@ async def test_delete_log_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({
-  }),
-  {
-  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 def test_write_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1381,8 +1393,8 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.WriteLogEntriesRequest({  }),
-  {  },
+  logging.WriteLogEntriesRequest(),
+  {},
 ])
 async def test_write_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1526,10 +1538,8 @@ async def test_write_log_entries_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({
-  }),
-  {
-  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 def test_list_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -1662,8 +1672,8 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogEntriesRequest({  }),
-  {  },
+  logging.ListLogEntriesRequest(),
+  {},
 ])
 async def test_list_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -1988,10 +1998,8 @@ async def test_list_log_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({
-  }),
-  {
-  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 def test_list_monitored_resource_descriptors(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2120,8 +2128,8 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListMonitoredResourceDescriptorsRequest({  }),
-  {  },
+  logging.ListMonitoredResourceDescriptorsRequest(),
+  {},
 ])
 async def test_list_monitored_resource_descriptors_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2344,10 +2352,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({
-  }),
-  {
-  },
+  logging.ListLogsRequest(),
+  {},
 ])
 def test_list_logs(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2480,8 +2486,8 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.ListLogsRequest({  }),
-  {  },
+  logging.ListLogsRequest(),
+  {},
 ])
 async def test_list_logs_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(
@@ -2855,10 +2861,8 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({
-  }),
-  {
-  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 def test_tail_log_entries(request_type, transport: str = 'grpc'):
     client = LoggingServiceV2Client(
@@ -2956,8 +2960,8 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging.TailLogEntriesRequest({  }),
-  {  },
+  logging.TailLogEntriesRequest(),
+  {},
 ])
 async def test_tail_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = LoggingServiceV2AsyncClient(

@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Callable, Literal, Mapping, Optional, Tuple
+from typing import Literal, Mapping, Optional, Tuple
 
 import google.api_core.exceptions
 import google.cloud.bigquery.job as bq_job
@@ -24,15 +24,12 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.core.compile
-import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
-import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 import bigframes.core.events
-import bigframes.core.schema as schemata
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
 from bigframes import exceptions as bfe
 from bigframes.core import bq_data, compile, nodes
-from bigframes.core.compile.configs import CompileRequest, CompileResult
+from bigframes.core.compile.configs import CompileRequest
 from bigframes.session import execution_spec, executor, semi_executor
 
 _WRITE_DISPOSITIONS = {

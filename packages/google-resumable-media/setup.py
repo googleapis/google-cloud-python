@@ -41,7 +41,7 @@ setuptools.setup(
     author_email='googleapis-publisher@google.com',
     long_description=README,
     scripts=[],
-    url='https://github.com/googleapis/google-resumable-media-python',
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-resumable-media",
     packages=setuptools.find_namespace_packages(
         exclude=("tests*", "docs*")
     ),

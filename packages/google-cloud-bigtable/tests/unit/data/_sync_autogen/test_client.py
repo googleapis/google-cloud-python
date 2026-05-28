@@ -58,6 +58,21 @@ CrossSync._Sync_Impl.add_mapping("SwappableChannel", SwappableChannel)
 CrossSync._Sync_Impl.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @CrossSync._Sync_Impl.add_mapping_decorator("TestBigtableDataClient")
 class TestBigtableDataClient:
     @staticmethod
@@ -900,9 +915,12 @@ class TestBigtableDataClient:
     def test_configured_universe_domain_mismatched_credentials(self):
         """Test that configured universe domain errors with mismatched universe
         domain credentials."""
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(
