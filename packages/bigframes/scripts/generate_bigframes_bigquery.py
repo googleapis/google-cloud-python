@@ -582,7 +582,7 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     print(f"  Generated {bf_output_file}")
 
     # Render and write pandas
-    pd_output_file = pathlib.Path("bigframes/extensions/pandas/series_accessor.py")
+    pd_output_file = CODE_ROOT / "extensions" / "pandas" / "series_accessor.py"
     pd_output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(
         pd_output_file.parent, CODE_ROOT, templates["license"]
