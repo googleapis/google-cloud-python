@@ -554,9 +554,7 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     # Render and write core
     core_output_file = CODE_ROOT / "extensions" / "core" / "series_accessor.py"
     core_output_file.parent.mkdir(parents=True, exist_ok=True)
-    ensure_init_py(
-        core_output_file.parent, CODE_ROOT, templates["license"]
-    )
+    ensure_init_py(core_output_file.parent, CODE_ROOT, templates["license"])
     core_content = templates["core_series_accessor"].render(
         script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
@@ -569,9 +567,7 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     # Render and write bigframes
     bf_output_file = CODE_ROOT / "extensions" / "bigframes" / "series_accessor.py"
     bf_output_file.parent.mkdir(parents=True, exist_ok=True)
-    ensure_init_py(
-        bf_output_file.parent, CODE_ROOT, templates["license"]
-    )
+    ensure_init_py(bf_output_file.parent, CODE_ROOT, templates["license"])
     bf_content = templates["bigframes_series_accessor"].render(
         script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
@@ -584,9 +580,7 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     # Render and write pandas
     pd_output_file = CODE_ROOT / "extensions" / "pandas" / "series_accessor.py"
     pd_output_file.parent.mkdir(parents=True, exist_ok=True)
-    ensure_init_py(
-        pd_output_file.parent, CODE_ROOT, templates["license"]
-    )
+    ensure_init_py(pd_output_file.parent, CODE_ROOT, templates["license"])
     pd_content = templates["pandas_series_accessor"].render(
         script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
