@@ -29,14 +29,20 @@ import subprocess
 import jinja2
 import yaml
 
+SCRIPTS_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+PACKAGE_ROOT = SCRIPTS_DIRECTORY.parent
+CODE_ROOT = PACKAGE_ROOT / "bigframes"
+SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT)
+
 # Directory containing the YAML files
-DATA_DIR = pathlib.Path("scripts/data/sql-functions")
+DATA_DIR = SCRIPTS_DIRECTORY / "data" / "sql-functions"
 # Directory where the generated Python files will be placed
-OUTPUT_DIR = pathlib.Path("bigframes/operations/googlesql")
+OUTPUT_DIR = CODE_ROOT / "operations" / "googlesql"
 # Directory where the generated test files will be placed
-TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/generated")
+TEST_OUTPUT_DIR = PACKAGE_ROOT / "tests" / "unit" / "bigquery" / "generated"
 # Directory containing the Jinja2 templates
-TEMPLATE_DIR = pathlib.Path("scripts/templates")
+TEMPLATE_DIR = SCRIPTS_DIRECTORY / "templates"
+
 
 RUFF_COMMON_ARGS = [
     "--target-version=py310",
@@ -415,9 +421,10 @@ def process_yaml_file(yaml_file, templates):
     # Render and write
     output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(output_file.parent, OUTPUT_DIR.parent, templates["license"])
+    yaml_file_relative = yaml_file.relative_to(PACKAGE_ROOT)
     content = templates["operation"].render(
-        yaml_path=str(yaml_file),
-        script_path="scripts/generate_bigframes_bigquery.py",
+        yaml_path=yaml_file_relative,
+        script_path=SCRIPT_PATH_RELATIVE,
         ops=ops_list,
         functions=functions_list,
     )
@@ -438,8 +445,8 @@ def process_yaml_file(yaml_file, templates):
         test_output_file.parent, TEST_OUTPUT_DIR.parent, templates["license"]
     )
     test_content = templates["test_operation"].render(
-        yaml_path=str(yaml_file),
-        script_path="scripts/generate_bigframes_bigquery.py",
+        yaml_path=yaml_file_relative,
+        script_path=SCRIPT_PATH_RELATIVE,
         import_path=import_path,
         short_name=module_path.name,
         is_global=is_global,
@@ -545,13 +552,13 @@ def generate_series_accessors(functions: list[dict], templates: dict):
             )
 
     # Render and write core
-    core_output_file = pathlib.Path("bigframes/extensions/core/series_accessor.py")
+    core_output_file = CODE_ROOT / "extensions" / "core" / "series_accessor.py"
     core_output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(
-        core_output_file.parent, pathlib.Path("bigframes"), templates["license"]
+        core_output_file.parent, CODE_ROOT, templates["license"]
     )
     core_content = templates["core_series_accessor"].render(
-        script_path="scripts/generate_bigframes_bigquery.py",
+        script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
     )
     with open(core_output_file, "w") as f:
@@ -560,13 +567,13 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     print(f"  Generated {core_output_file}")
 
     # Render and write bigframes
-    bf_output_file = pathlib.Path("bigframes/extensions/bigframes/series_accessor.py")
+    bf_output_file = CODE_ROOT / "extensions" / "bigframes" / "series_accessor.py"
     bf_output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(
-        bf_output_file.parent, pathlib.Path("bigframes"), templates["license"]
+        bf_output_file.parent, CODE_ROOT, templates["license"]
     )
     bf_content = templates["bigframes_series_accessor"].render(
-        script_path="scripts/generate_bigframes_bigquery.py",
+        script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
     )
     with open(bf_output_file, "w") as f:
@@ -578,10 +585,10 @@ def generate_series_accessors(functions: list[dict], templates: dict):
     pd_output_file = pathlib.Path("bigframes/extensions/pandas/series_accessor.py")
     pd_output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(
-        pd_output_file.parent, pathlib.Path("bigframes"), templates["license"]
+        pd_output_file.parent, CODE_ROOT, templates["license"]
     )
     pd_content = templates["pandas_series_accessor"].render(
-        script_path="scripts/generate_bigframes_bigquery.py",
+        script_path=SCRIPT_PATH_RELATIVE,
         namespaces=ns_defs,
     )
     with open(pd_output_file, "w") as f:
