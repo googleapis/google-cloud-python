@@ -409,7 +409,7 @@ def system(session, test_type):
             _migration_test(session)
     finally:
         if os.path.exists("test.cfg"):
-            session.run("python", "drop_test_database.py", success_check=False)
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
