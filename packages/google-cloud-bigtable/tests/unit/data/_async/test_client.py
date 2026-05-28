@@ -78,6 +78,21 @@ else:
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @CrossSync.convert_class(
     sync_name="TestBigtableDataClient",
     add_mapping_for_name="TestBigtableDataClient",
