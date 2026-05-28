@@ -16,6 +16,7 @@
 
 import asyncio
 import copy
+import inspect
 import datetime
 import functools
 import logging
@@ -237,6 +238,15 @@ class _RegionalAccessBoundaryManager(object):
             credentials (google.auth.credentials.Credentials): The credentials to refresh.
             request (google.auth.transport.Request): The object used to make HTTP requests.
         """
+        # Async credentials do not support blocking lookups.
+        if inspect.iscoroutinefunction(credentials._lookup_regional_access_boundary):
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.warning(
+                    "Blocking Regional Access Boundary lookup is not supported for async credentials."
+                )
+            self.process_regional_access_boundary_info(None)
+            return
+
         try:
             # The fail_fast parameter is set to True to ensure we don't block the calling
             # thread for too long. This will do two things: 1) set a timeout to 3s
@@ -500,7 +510,12 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                     regional_access_boundary_info
                 )
 
-            self._worker_task = asyncio.create_task(_worker())
+            coro = _worker()
+            try:
+                self._worker_task = asyncio.create_task(coro)
+            except Exception:
+                coro.close()
+                raise
 
 
 def _get_domain() -> str:

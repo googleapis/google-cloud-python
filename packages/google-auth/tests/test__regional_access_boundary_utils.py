@@ -398,6 +398,21 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             assert creds._rab_manager._data.encoded_locations is None
             assert creds._rab_manager._data.cooldown_expiry is not None
 
+    def test_start_blocking_refresh_with_async_credentials(self):
+        creds = CredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+        ) as mock_lookup:
+            creds._rab_manager.start_blocking_refresh(creds, request)
+
+            mock_lookup.assert_not_called()
+            assert creds._rab_manager._data.encoded_locations is None
+            assert creds._rab_manager._data.cooldown_expiry is not None
+
     @mock.patch("copy.deepcopy")
     def test_start_refresh_deepcopy_failure(self, mock_deepcopy):
         mock_deepcopy.side_effect = Exception("deepcopy error")
