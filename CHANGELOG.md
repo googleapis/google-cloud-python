@@ -98,7 +98,7 @@ Changelogs
 - [google-cloud-financialservices==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-financialservices/CHANGELOG.md)
 - [google-cloud-functions==1.23.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions/CHANGELOG.md)
 - [google-cloud-gdchardwaremanagement==0.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gdchardwaremanagement/CHANGELOG.md)
-- [google-cloud-geminidataanalytics==0.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics/CHANGELOG.md)
+- [google-cloud-geminidataanalytics==0.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics/CHANGELOG.md)
 - [google-cloud-gke-backup==0.8.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-backup/CHANGELOG.md)
 - [google-cloud-gke-connect-gateway==0.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-connect-gateway/CHANGELOG.md)
 - [google-cloud-gke-hub==1.24.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-hub/CHANGELOG.md)

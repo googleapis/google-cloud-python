@@ -1150,7 +1150,7 @@ libraries:
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
-    version: 0.12.0
+    version: 0.13.0
     apis:
       - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
