@@ -184,7 +184,8 @@ class BigtableDataClient(ClientWithProject):
         )
         if (
             credentials
-            and credentials.universe_domain != self.universe_domain
+            and hasattr(credentials, "universe_domain")
+            and (credentials.universe_domain != self.universe_domain)
             and (self._emulator_host is None)
         ):
             raise ValueError(
