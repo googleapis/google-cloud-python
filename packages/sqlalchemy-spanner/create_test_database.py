@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import re
 import time
 
 from google.api_core import datetime_helpers
@@ -80,11 +81,16 @@ def delete_stale_test_databases():
     database_pbs = instance.list_databases()
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
-        # The emulator does not return a create_time for databases.
-        if database.create_time is None:
-            continue
-        create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
-        if create_time > cutoff:
+        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1779989493809")
+        # to be 100% independent of emulator metadata or GCP Client API create_time gaps!
+        create_time = None
+        match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
+        if match:
+            create_time = int(match.group(1))
+        elif database_pb.create_time is not None:
+            create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
+
+        if create_time is None or create_time > cutoff:
             continue
         try:
             database.drop()
