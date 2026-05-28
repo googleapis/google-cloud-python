@@ -56,5 +56,3 @@ Consider using [Google Cloud Customer Care](https://cloud.google.com/support/?hl
 -   Go to the correct repository, as identified above
     1.  Search for issues already opened (in this repository, those would be in <https://github.com/googleapis/google-cloud-python/issues>). If you find your problem already filed, just add any more context or details that seem appropriate.
     2.  If your problem has not been previously filed, file an issue. If you're filing  in this repository, choose either the [bug report](https://github.com/googleapis/google-cloud-python/issues/new?template=bug_report.yaml) or [feature request](https://github.com/googleapis/google-cloud-python/issues/new?template=feature_request.yaml) template, fill in the details, and submit the issue with an informative title!
-
-
