@@ -61,9 +61,6 @@ _MANAGED_FUNC_PYTHON_VERSION = "python-3.11"
 
 
 class FunctionClient:
-    # Wait time (in seconds) for an IAM binding to take effect after creation.
-    _iam_wait_seconds = 120
-
     # TODO(b/392707725): Convert all necessary parameters for cloud function
     # deployment into method parameters.
     def __init__(
@@ -151,6 +148,7 @@ class FunctionClient:
         routine_ref: bigquery.RoutineReference,
         udf_def: udf_def.RemoteFunctionConfig,
         maybe_reuse: bool,
+        try_create_connection: bool,
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
@@ -161,7 +159,8 @@ class FunctionClient:
                 logger.info(f"Remote function {str(routine_ref)} already exists.")
                 return
 
-        self._create_bq_connection(udf_def.connection_id, routine_ref.project)
+        if try_create_connection:
+            self._create_bq_connection(udf_def.connection_id, routine_ref.project)
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2

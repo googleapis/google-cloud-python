@@ -316,6 +316,7 @@ class Session(
             default_connection=self._bq_connection,
             location=self._location,
             session_id=self._session_id,
+            manage_connections=not self._skip_bq_connection_check,
         )
         # Session temp tables don't support specifying kms key, so use anon dataset if kms key specified
         self._session_resource_manager = (

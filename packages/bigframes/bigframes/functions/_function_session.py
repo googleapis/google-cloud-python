@@ -70,6 +70,7 @@ class FunctionSession:
         default_connection: str,
         location: str,
         session_id: str,
+        manage_connections: bool,
     ):
         self._temp_cloud_functions: set[str] = set()
         self._temp_remote_functions: set[bigquery.RoutineReference] = set()
@@ -87,6 +88,7 @@ class FunctionSession:
         self._default_connection: str = default_connection
         self._location: str = location
         self._session_id: str = session_id
+        self._manage_connections: bool = manage_connections
 
     @property
     def session_id(self) -> str:
@@ -619,6 +621,7 @@ class FunctionSession:
                 udf_def=remote_function_config,
                 routine_ref=routine_ref,
                 maybe_reuse=reuse,
+                try_create_connection=self._manage_connections,
             )
 
             udf_definition = udf_def.BigqueryUdf(
