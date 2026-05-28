@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.40.0...bigframes-v2.41.0) (2026-05-28)
+
+
+### Documentation
+
+* modernize multimodal tutorials and migrate legacy blob APIs (#16918) ([05d80c3cccc237480dc5f589b7768b57a147cb0e](https://github.com/googleapis/google-cloud-python/commit/05d80c3cccc237480dc5f589b7768b57a147cb0e))
+
+
+### Features
+
+* support pandas inputs in more bigframes.bigquery functions (#17224) ([d4d885547f99c08caabad5e715aecd8c6f1fb4d6](https://github.com/googleapis/google-cloud-python/commit/d4d885547f99c08caabad5e715aecd8c6f1fb4d6))
+* add more scalar array functions to `bigframes.bigquery` (#17213) ([4f8a6c81797204f4334c7251c244bc0b6bd568e2](https://github.com/googleapis/google-cloud-python/commit/4f8a6c81797204f4334c7251c244bc0b6bd568e2))
+* add `bigframes.bigquery.deterministic_decrypt*` and `bigframes.bigquery.deterministic_encrypt` functions (#17212) ([85f36725802f3e7ad16156ca9e957e61d57d3112](https://github.com/googleapis/google-cloud-python/commit/85f36725802f3e7ad16156ca9e957e61d57d3112))
+* JS 0.6.0, Py 0.8.0 (<a href="https://redirect.github.com/langchain-ai/langsmith-sdk/issues/2831">#2831</a>)</li> <li><a href="https://github.com/langchain-ai/langsmith-sdk/commit/ff180c04237511b341ed455cfbfe6cadd9a5eeab"><code>ff180c0</code></a> ([9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a](https://github.com/googleapis/google-cloud-python/commit/9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a))
+* Adds strands OTEL exporter (<a href="https://redirect.github.com/langchain-ai/langsmith-sdk/issues/2817">#2817</a>)</li> <li>Additional commits viewable in <a href="https://github.com/langchain-ai/langsmith-sdk/compare/v0.4.10...v0.8.0">compare view</a></li> </ul> </details> <br /> ([9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a](https://github.com/googleapis/google-cloud-python/commit/9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a))
+* add `bigframes.bigquery.aead.*` scalar functions (#17168) ([a7e4d048e254cdb723df0a47ccbd8d09aed00c7a](https://github.com/googleapis/google-cloud-python/commit/a7e4d048e254cdb723df0a47ccbd8d09aed00c7a))
+* complete deprecation and cleanup of multimodal blob APIs (#16618) ([3624f3bb102e7d599097975db5cdaee508c9549a](https://github.com/googleapis/google-cloud-python/commit/3624f3bb102e7d599097975db5cdaee508c9549a))
+* support output_mode for ai.classify (#17097) ([098c35c5a8383d1585848e10806f9914b2ef4f97](https://github.com/googleapis/google-cloud-python/commit/098c35c5a8383d1585848e10806f9914b2ef4f97))
+
+
+### Bug Fixes
+
+* bump mistune from 3.1.3 to 3.2.1 in /packages/bigframes (#17202) ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* use strict regex for image's height and width</li> <li><a href="https://github.com/lepture/mistune/commit/5fa092e3053b86f16e4c49b9d3ba0b7ab63f09ab"><code>5fa092e</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* escape xml for math plugin</li> <li><a href="https://github.com/lepture/mistune/commit/71ec9477ebfcf8dab0068804baf2c77461d77fbb"><code>71ec947</code></a> Merge pull request <a href="https://redirect.github.com/lepture/mistune/issues/440">#440</a> from lawrence3699/fix/image-alt-double-encoding</li> <li><a href="https://github.com/lepture/mistune/commit/0d6f3d850283d51e9c60e5a1b3c9343a18df3722"><code>0d6f3d8</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* remove double-encoding of image alt text</li> <li><a href="https://github.com/lepture/mistune/commit/2855622d7fe235c6c805716edff943b5945d1eea"><code>2855622</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* escape id of headings</li> <li><a href="https://github.com/lepture/mistune/commit/04880a004cb28318e5ebd7ee9e63c79fc9f9ed04"><code>04880a0</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* escape id of toc</li> <li><a href="https://github.com/lepture/mistune/commit/7bd57096715385062505b3f78972be9fa823d6d4"><code>7bd5709</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* handle escaped dollar signs in inline math (fixes <a href="https://redirect.github.com/lepture/mistune/issues/370">#370</a>)</li> <li><a href="https://github.com/lepture/mistune/commit/85eb54ff17da26327399bf188f9ff9b8fd515278"><code>85eb54f</code></a> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* update link reference</li> <li>Additional commits viewable in <a href="https://github.com/lepture/mistune/compare/v3.1.3...v3.2.1">compare view</a></li> </ul> </details> <br /> ([52f21788f76575036624c9163b63620a1bb92a83](https://github.com/googleapis/google-cloud-python/commit/52f21788f76575036624c9163b63620a1bb92a83))
+* cast JSON and nested struct columns to string for anywidget rendering (#17189) ([994a22d64856b436d196743d16c3fd1967b20784](https://github.com/googleapis/google-cloud-python/commit/994a22d64856b436d196743d16c3fd1967b20784))
+* bump langsmith from 0.4.10 to 0.8.0 in /packages/bigframes (#17210) ([9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a](https://github.com/googleapis/google-cloud-python/commit/9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a))
+* Pull Claude Agent SDK subagent runs from transcript, add tool span f...</li> <li><a href="https://github.com/langchain-ai/langsmith-sdk/commit/838e957d8027a8ff2e9e7cf8a10e874bfae328d7"><code>838e957</code></a> ([9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a](https://github.com/googleapis/google-cloud-python/commit/9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a))
+* fix RunTree ValidationError when inputs or outputs is a Pydantic Bas...</li> <li><a href="https://github.com/langchain-ai/langsmith-sdk/commit/8f5ef27c2d76dd62353b22f63b32a987e5d07407"><code>8f5ef27</code></a> ([9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a](https://github.com/googleapis/google-cloud-python/commit/9dd0c02c585f7fda34d6e2199ab2bc7c0b5a246a))
+* bump gdal from 3.8.4 to 3.13.0 in /packages/bigframes (#17204) ([900007bab07feb7580cb7e8a36a5d4ee4cce14ab](https://github.com/googleapis/google-cloud-python/commit/900007bab07feb7580cb7e8a36a5d4ee4cce14ab))
+* Respect display.progress_bar=None in background threads (#16715) ([07dd3315447d2feb6de8d53e0915798da9c04151](https://github.com/googleapis/google-cloud-python/commit/07dd3315447d2feb6de8d53e0915798da9c04151))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.39.0...bigframes-v2.40.0) (2026-05-13)
 
 
