@@ -1414,7 +1414,7 @@ def test_base_bigtable_table_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateTableRequest({}),
+        bigtable_table_admin.CreateTableRequest(),
         {},
     ],
 )
@@ -1563,7 +1563,7 @@ async def test_create_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateTableRequest({}),
+        bigtable_table_admin.CreateTableRequest(),
         {},
     ],
 )
@@ -1764,7 +1764,7 @@ async def test_create_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateTableFromSnapshotRequest({}),
+        bigtable_table_admin.CreateTableFromSnapshotRequest(),
         {},
     ],
 )
@@ -1927,7 +1927,7 @@ async def test_create_table_from_snapshot_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateTableFromSnapshotRequest({}),
+        bigtable_table_admin.CreateTableFromSnapshotRequest(),
         {},
     ],
 )
@@ -2137,7 +2137,7 @@ async def test_create_table_from_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListTablesRequest({}),
+        bigtable_table_admin.ListTablesRequest(),
         {},
     ],
 )
@@ -2282,7 +2282,7 @@ async def test_list_tables_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListTablesRequest({}),
+        bigtable_table_admin.ListTablesRequest(),
         {},
     ],
 )
@@ -2653,7 +2653,7 @@ async def test_list_tables_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetTableRequest({}),
+        bigtable_table_admin.GetTableRequest(),
         {},
     ],
 )
@@ -2798,7 +2798,7 @@ async def test_get_table_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetTableRequest({}),
+        bigtable_table_admin.GetTableRequest(),
         {},
     ],
 )
@@ -2979,7 +2979,7 @@ async def test_get_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateTableRequest({}),
+        bigtable_table_admin.UpdateTableRequest(),
         {},
     ],
 )
@@ -3125,7 +3125,7 @@ async def test_update_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateTableRequest({}),
+        bigtable_table_admin.UpdateTableRequest(),
         {},
     ],
 )
@@ -3313,7 +3313,7 @@ async def test_update_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteTableRequest({}),
+        bigtable_table_admin.DeleteTableRequest(),
         {},
     ],
 )
@@ -3453,7 +3453,7 @@ async def test_delete_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteTableRequest({}),
+        bigtable_table_admin.DeleteTableRequest(),
         {},
     ],
 )
@@ -3625,7 +3625,7 @@ async def test_delete_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UndeleteTableRequest({}),
+        bigtable_table_admin.UndeleteTableRequest(),
         {},
     ],
 )
@@ -3775,7 +3775,7 @@ async def test_undelete_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UndeleteTableRequest({}),
+        bigtable_table_admin.UndeleteTableRequest(),
         {},
     ],
 )
@@ -3953,7 +3953,7 @@ async def test_undelete_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateAuthorizedViewRequest({}),
+        bigtable_table_admin.CreateAuthorizedViewRequest(),
         {},
     ],
 )
@@ -4114,7 +4114,7 @@ async def test_create_authorized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateAuthorizedViewRequest({}),
+        bigtable_table_admin.CreateAuthorizedViewRequest(),
         {},
     ],
 )
@@ -4324,7 +4324,7 @@ async def test_create_authorized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListAuthorizedViewsRequest({}),
+        bigtable_table_admin.ListAuthorizedViewsRequest(),
         {},
     ],
 )
@@ -4478,7 +4478,7 @@ async def test_list_authorized_views_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListAuthorizedViewsRequest({}),
+        bigtable_table_admin.ListAuthorizedViewsRequest(),
         {},
     ],
 )
@@ -4869,7 +4869,7 @@ async def test_list_authorized_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetAuthorizedViewRequest({}),
+        bigtable_table_admin.GetAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5024,7 +5024,7 @@ async def test_get_authorized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetAuthorizedViewRequest({}),
+        bigtable_table_admin.GetAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5219,7 +5219,7 @@ async def test_get_authorized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateAuthorizedViewRequest({}),
+        bigtable_table_admin.UpdateAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5374,7 +5374,7 @@ async def test_update_authorized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateAuthorizedViewRequest({}),
+        bigtable_table_admin.UpdateAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5574,7 +5574,7 @@ async def test_update_authorized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteAuthorizedViewRequest({}),
+        bigtable_table_admin.DeleteAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5725,7 +5725,7 @@ async def test_delete_authorized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteAuthorizedViewRequest({}),
+        bigtable_table_admin.DeleteAuthorizedViewRequest(),
         {},
     ],
 )
@@ -5909,7 +5909,7 @@ async def test_delete_authorized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ModifyColumnFamiliesRequest({}),
+        bigtable_table_admin.ModifyColumnFamiliesRequest(),
         {},
     ],
 )
@@ -6065,7 +6065,7 @@ async def test_modify_column_families_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ModifyColumnFamiliesRequest({}),
+        bigtable_table_admin.ModifyColumnFamiliesRequest(),
         {},
     ],
 )
@@ -6288,7 +6288,7 @@ async def test_modify_column_families_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DropRowRangeRequest({}),
+        bigtable_table_admin.DropRowRangeRequest(),
         {},
     ],
 )
@@ -6428,7 +6428,7 @@ async def test_drop_row_range_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DropRowRangeRequest({}),
+        bigtable_table_admin.DropRowRangeRequest(),
         {},
     ],
 )
@@ -6520,7 +6520,7 @@ async def test_drop_row_range_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GenerateConsistencyTokenRequest({}),
+        bigtable_table_admin.GenerateConsistencyTokenRequest(),
         {},
     ],
 )
@@ -6672,7 +6672,7 @@ async def test_generate_consistency_token_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GenerateConsistencyTokenRequest({}),
+        bigtable_table_admin.GenerateConsistencyTokenRequest(),
         {},
     ],
 )
@@ -6865,7 +6865,7 @@ async def test_generate_consistency_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CheckConsistencyRequest({}),
+        bigtable_table_admin.CheckConsistencyRequest(),
         {},
     ],
 )
@@ -7016,7 +7016,7 @@ async def test_check_consistency_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CheckConsistencyRequest({}),
+        bigtable_table_admin.CheckConsistencyRequest(),
         {},
     ],
 )
@@ -7217,7 +7217,7 @@ async def test_check_consistency_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.SnapshotTableRequest({}),
+        bigtable_table_admin.SnapshotTableRequest(),
         {},
     ],
 )
@@ -7373,7 +7373,7 @@ async def test_snapshot_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.SnapshotTableRequest({}),
+        bigtable_table_admin.SnapshotTableRequest(),
         {},
     ],
 )
@@ -7581,7 +7581,7 @@ async def test_snapshot_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetSnapshotRequest({}),
+        bigtable_table_admin.GetSnapshotRequest(),
         {},
     ],
 )
@@ -7730,7 +7730,7 @@ async def test_get_snapshot_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetSnapshotRequest({}),
+        bigtable_table_admin.GetSnapshotRequest(),
         {},
     ],
 )
@@ -7913,7 +7913,7 @@ async def test_get_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListSnapshotsRequest({}),
+        bigtable_table_admin.ListSnapshotsRequest(),
         {},
     ],
 )
@@ -8058,7 +8058,7 @@ async def test_list_snapshots_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListSnapshotsRequest({}),
+        bigtable_table_admin.ListSnapshotsRequest(),
         {},
     ],
 )
@@ -8429,7 +8429,7 @@ async def test_list_snapshots_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteSnapshotRequest({}),
+        bigtable_table_admin.DeleteSnapshotRequest(),
         {},
     ],
 )
@@ -8569,7 +8569,7 @@ async def test_delete_snapshot_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteSnapshotRequest({}),
+        bigtable_table_admin.DeleteSnapshotRequest(),
         {},
     ],
 )
@@ -8741,7 +8741,7 @@ async def test_delete_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateBackupRequest({}),
+        bigtable_table_admin.CreateBackupRequest(),
         {},
     ],
 )
@@ -8893,7 +8893,7 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateBackupRequest({}),
+        bigtable_table_admin.CreateBackupRequest(),
         {},
     ],
 )
@@ -9091,7 +9091,7 @@ async def test_create_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetBackupRequest({}),
+        bigtable_table_admin.GetBackupRequest(),
         {},
     ],
 )
@@ -9242,7 +9242,7 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetBackupRequest({}),
+        bigtable_table_admin.GetBackupRequest(),
         {},
     ],
 )
@@ -9429,7 +9429,7 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateBackupRequest({}),
+        bigtable_table_admin.UpdateBackupRequest(),
         {},
     ],
 )
@@ -9578,7 +9578,7 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateBackupRequest({}),
+        bigtable_table_admin.UpdateBackupRequest(),
         {},
     ],
 )
@@ -9775,7 +9775,7 @@ async def test_update_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteBackupRequest({}),
+        bigtable_table_admin.DeleteBackupRequest(),
         {},
     ],
 )
@@ -9915,7 +9915,7 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteBackupRequest({}),
+        bigtable_table_admin.DeleteBackupRequest(),
         {},
     ],
 )
@@ -10087,7 +10087,7 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListBackupsRequest({}),
+        bigtable_table_admin.ListBackupsRequest(),
         {},
     ],
 )
@@ -10236,7 +10236,7 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListBackupsRequest({}),
+        bigtable_table_admin.ListBackupsRequest(),
         {},
     ],
 )
@@ -10607,7 +10607,7 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.RestoreTableRequest({}),
+        bigtable_table_admin.RestoreTableRequest(),
         {},
     ],
 )
@@ -10761,7 +10761,7 @@ async def test__restore_table_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.RestoreTableRequest({}),
+        bigtable_table_admin.RestoreTableRequest(),
         {},
     ],
 )
@@ -10857,7 +10857,7 @@ async def test__restore_table_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CopyBackupRequest({}),
+        bigtable_table_admin.CopyBackupRequest(),
         {},
     ],
 )
@@ -11011,7 +11011,7 @@ async def test_copy_backup_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CopyBackupRequest({}),
+        bigtable_table_admin.CopyBackupRequest(),
         {},
     ],
 )
@@ -11219,7 +11219,7 @@ async def test_copy_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest({}),
+        iam_policy_pb2.GetIamPolicyRequest(),
         {},
     ],
 )
@@ -11364,7 +11364,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest({}),
+        iam_policy_pb2.GetIamPolicyRequest(),
         {},
     ],
 )
@@ -11560,7 +11560,7 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest({}),
+        iam_policy_pb2.SetIamPolicyRequest(),
         {},
     ],
 )
@@ -11705,7 +11705,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest({}),
+        iam_policy_pb2.SetIamPolicyRequest(),
         {},
     ],
 )
@@ -11902,7 +11902,7 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest({}),
+        iam_policy_pb2.TestIamPermissionsRequest(),
         {},
     ],
 )
@@ -12053,7 +12053,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest({}),
+        iam_policy_pb2.TestIamPermissionsRequest(),
         {},
     ],
 )
@@ -12275,7 +12275,7 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateSchemaBundleRequest({}),
+        bigtable_table_admin.CreateSchemaBundleRequest(),
         {},
     ],
 )
@@ -12435,7 +12435,7 @@ async def test_create_schema_bundle_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.CreateSchemaBundleRequest({}),
+        bigtable_table_admin.CreateSchemaBundleRequest(),
         {},
     ],
 )
@@ -12645,7 +12645,7 @@ async def test_create_schema_bundle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateSchemaBundleRequest({}),
+        bigtable_table_admin.UpdateSchemaBundleRequest(),
         {},
     ],
 )
@@ -12799,7 +12799,7 @@ async def test_update_schema_bundle_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.UpdateSchemaBundleRequest({}),
+        bigtable_table_admin.UpdateSchemaBundleRequest(),
         {},
     ],
 )
@@ -12999,7 +12999,7 @@ async def test_update_schema_bundle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetSchemaBundleRequest({}),
+        bigtable_table_admin.GetSchemaBundleRequest(),
         {},
     ],
 )
@@ -13150,7 +13150,7 @@ async def test_get_schema_bundle_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.GetSchemaBundleRequest({}),
+        bigtable_table_admin.GetSchemaBundleRequest(),
         {},
     ],
 )
@@ -13339,7 +13339,7 @@ async def test_get_schema_bundle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListSchemaBundlesRequest({}),
+        bigtable_table_admin.ListSchemaBundlesRequest(),
         {},
     ],
 )
@@ -13492,7 +13492,7 @@ async def test_list_schema_bundles_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.ListSchemaBundlesRequest({}),
+        bigtable_table_admin.ListSchemaBundlesRequest(),
         {},
     ],
 )
@@ -13881,7 +13881,7 @@ async def test_list_schema_bundles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteSchemaBundleRequest({}),
+        bigtable_table_admin.DeleteSchemaBundleRequest(),
         {},
     ],
 )
@@ -14031,7 +14031,7 @@ async def test_delete_schema_bundle_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_table_admin.DeleteSchemaBundleRequest({}),
+        bigtable_table_admin.DeleteSchemaBundleRequest(),
         {},
     ],
 )

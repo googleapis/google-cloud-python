@@ -1276,7 +1276,7 @@ def test_bigtable_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadRowsRequest({}),
+        bigtable.ReadRowsRequest(),
         {},
     ],
 )
@@ -1421,7 +1421,7 @@ async def test_read_rows_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadRowsRequest({}),
+        bigtable.ReadRowsRequest(),
         {},
     ],
 )
@@ -1548,7 +1548,7 @@ async def test_read_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.SampleRowKeysRequest({}),
+        bigtable.SampleRowKeysRequest(),
         {},
     ],
 )
@@ -1695,7 +1695,7 @@ async def test_sample_row_keys_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.SampleRowKeysRequest({}),
+        bigtable.SampleRowKeysRequest(),
         {},
     ],
 )
@@ -1822,7 +1822,7 @@ async def test_sample_row_keys_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowRequest({}),
+        bigtable.MutateRowRequest(),
         {},
     ],
 )
@@ -1964,7 +1964,7 @@ async def test_mutate_row_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowRequest({}),
+        bigtable.MutateRowRequest(),
         {},
     ],
 )
@@ -2135,7 +2135,7 @@ async def test_mutate_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowsRequest({}),
+        bigtable.MutateRowsRequest(),
         {},
     ],
 )
@@ -2280,7 +2280,7 @@ async def test_mutate_rows_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.MutateRowsRequest({}),
+        bigtable.MutateRowsRequest(),
         {},
     ],
 )
@@ -2417,7 +2417,7 @@ async def test_mutate_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.CheckAndMutateRowRequest({}),
+        bigtable.CheckAndMutateRowRequest(),
         {},
     ],
 )
@@ -2572,7 +2572,7 @@ async def test_check_and_mutate_row_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.CheckAndMutateRowRequest({}),
+        bigtable.CheckAndMutateRowRequest(),
         {},
     ],
 )
@@ -2854,7 +2854,7 @@ async def test_check_and_mutate_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PingAndWarmRequest({}),
+        bigtable.PingAndWarmRequest(),
         {},
     ],
 )
@@ -2996,7 +2996,7 @@ async def test_ping_and_warm_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PingAndWarmRequest({}),
+        bigtable.PingAndWarmRequest(),
         {},
     ],
 )
@@ -3123,7 +3123,7 @@ async def test_ping_and_warm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadModifyWriteRowRequest({}),
+        bigtable.ReadModifyWriteRowRequest(),
         {},
     ],
 )
@@ -3276,7 +3276,7 @@ async def test_read_modify_write_row_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadModifyWriteRowRequest({}),
+        bigtable.ReadModifyWriteRowRequest(),
         {},
     ],
 )
@@ -3431,7 +3431,7 @@ async def test_read_modify_write_row_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.GenerateInitialChangeStreamPartitionsRequest({}),
+        bigtable.GenerateInitialChangeStreamPartitionsRequest(),
         {},
     ],
 )
@@ -3589,7 +3589,7 @@ async def test_generate_initial_change_stream_partitions_async_use_cached_wrappe
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.GenerateInitialChangeStreamPartitionsRequest({}),
+        bigtable.GenerateInitialChangeStreamPartitionsRequest(),
         {},
     ],
 )
@@ -3796,7 +3796,7 @@ async def test_generate_initial_change_stream_partitions_flattened_error_async()
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadChangeStreamRequest({}),
+        bigtable.ReadChangeStreamRequest(),
         {},
     ],
 )
@@ -3947,7 +3947,7 @@ async def test_read_change_stream_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ReadChangeStreamRequest({}),
+        bigtable.ReadChangeStreamRequest(),
         {},
     ],
 )
@@ -4146,7 +4146,7 @@ async def test_read_change_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PrepareQueryRequest({}),
+        bigtable.PrepareQueryRequest(),
         {},
     ],
 )
@@ -4293,7 +4293,7 @@ async def test_prepare_query_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.PrepareQueryRequest({}),
+        bigtable.PrepareQueryRequest(),
         {},
     ],
 )
@@ -4433,7 +4433,7 @@ async def test_prepare_query_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ExecuteQueryRequest({}),
+        bigtable.ExecuteQueryRequest(),
         {},
     ],
 )
@@ -4578,7 +4578,7 @@ async def test_execute_query_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable.ExecuteQueryRequest({}),
+        bigtable.ExecuteQueryRequest(),
         {},
     ],
 )

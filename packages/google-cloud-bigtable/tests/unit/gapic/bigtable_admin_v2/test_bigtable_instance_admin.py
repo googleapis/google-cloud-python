@@ -1412,7 +1412,7 @@ def test_bigtable_instance_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateInstanceRequest({}),
+        bigtable_instance_admin.CreateInstanceRequest(),
         {},
     ],
 )
@@ -1564,7 +1564,7 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateInstanceRequest({}),
+        bigtable_instance_admin.CreateInstanceRequest(),
         {},
     ],
 )
@@ -1772,7 +1772,7 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetInstanceRequest({}),
+        bigtable_instance_admin.GetInstanceRequest(),
         {},
     ],
 )
@@ -1927,7 +1927,7 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetInstanceRequest({}),
+        bigtable_instance_admin.GetInstanceRequest(),
         {},
     ],
 )
@@ -2116,7 +2116,7 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListInstancesRequest({}),
+        bigtable_instance_admin.ListInstancesRequest(),
         {},
     ],
 )
@@ -2264,7 +2264,7 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListInstancesRequest({}),
+        bigtable_instance_admin.ListInstancesRequest(),
         {},
     ],
 )
@@ -2447,7 +2447,7 @@ async def test_list_instances_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Instance({}),
+        instance.Instance(),
         {},
     ],
 )
@@ -2604,7 +2604,7 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Instance({}),
+        instance.Instance(),
         {},
     ],
 )
@@ -2713,7 +2713,7 @@ async def test_update_instance_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateInstanceRequest({}),
+        bigtable_instance_admin.PartialUpdateInstanceRequest(),
         {},
     ],
 )
@@ -2868,7 +2868,7 @@ async def test_partial_update_instance_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateInstanceRequest({}),
+        bigtable_instance_admin.PartialUpdateInstanceRequest(),
         {},
     ],
 )
@@ -3068,7 +3068,7 @@ async def test_partial_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteInstanceRequest({}),
+        bigtable_instance_admin.DeleteInstanceRequest(),
         {},
     ],
 )
@@ -3208,7 +3208,7 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteInstanceRequest({}),
+        bigtable_instance_admin.DeleteInstanceRequest(),
         {},
     ],
 )
@@ -3380,7 +3380,7 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateClusterRequest({}),
+        bigtable_instance_admin.CreateClusterRequest(),
         {},
     ],
 )
@@ -3532,7 +3532,7 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateClusterRequest({}),
+        bigtable_instance_admin.CreateClusterRequest(),
         {},
     ],
 )
@@ -3730,7 +3730,7 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetClusterRequest({}),
+        bigtable_instance_admin.GetClusterRequest(),
         {},
     ],
 )
@@ -3886,7 +3886,7 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetClusterRequest({}),
+        bigtable_instance_admin.GetClusterRequest(),
         {},
     ],
 )
@@ -4076,7 +4076,7 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListClustersRequest({}),
+        bigtable_instance_admin.ListClustersRequest(),
         {},
     ],
 )
@@ -4224,7 +4224,7 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListClustersRequest({}),
+        bigtable_instance_admin.ListClustersRequest(),
         {},
     ],
 )
@@ -4407,7 +4407,7 @@ async def test_list_clusters_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Cluster({}),
+        instance.Cluster(),
         {},
     ],
 )
@@ -4559,7 +4559,7 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.Cluster({}),
+        instance.Cluster(),
         {},
     ],
 )
@@ -4655,7 +4655,7 @@ async def test_update_cluster_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateClusterRequest({}),
+        bigtable_instance_admin.PartialUpdateClusterRequest(),
         {},
     ],
 )
@@ -4810,7 +4810,7 @@ async def test_partial_update_cluster_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.PartialUpdateClusterRequest({}),
+        bigtable_instance_admin.PartialUpdateClusterRequest(),
         {},
     ],
 )
@@ -5010,7 +5010,7 @@ async def test_partial_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteClusterRequest({}),
+        bigtable_instance_admin.DeleteClusterRequest(),
         {},
     ],
 )
@@ -5150,7 +5150,7 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteClusterRequest({}),
+        bigtable_instance_admin.DeleteClusterRequest(),
         {},
     ],
 )
@@ -5322,7 +5322,7 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateAppProfileRequest({}),
+        bigtable_instance_admin.CreateAppProfileRequest(),
         {},
     ],
 )
@@ -5480,7 +5480,7 @@ async def test_create_app_profile_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateAppProfileRequest({}),
+        bigtable_instance_admin.CreateAppProfileRequest(),
         {},
     ],
 )
@@ -5691,7 +5691,7 @@ async def test_create_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetAppProfileRequest({}),
+        bigtable_instance_admin.GetAppProfileRequest(),
         {},
     ],
 )
@@ -5839,7 +5839,7 @@ async def test_get_app_profile_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetAppProfileRequest({}),
+        bigtable_instance_admin.GetAppProfileRequest(),
         {},
     ],
 )
@@ -6020,7 +6020,7 @@ async def test_get_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListAppProfilesRequest({}),
+        bigtable_instance_admin.ListAppProfilesRequest(),
         {},
     ],
 )
@@ -6173,7 +6173,7 @@ async def test_list_app_profiles_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListAppProfilesRequest({}),
+        bigtable_instance_admin.ListAppProfilesRequest(),
         {},
     ],
 )
@@ -6564,7 +6564,7 @@ async def test_list_app_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateAppProfileRequest({}),
+        bigtable_instance_admin.UpdateAppProfileRequest(),
         {},
     ],
 )
@@ -6718,7 +6718,7 @@ async def test_update_app_profile_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateAppProfileRequest({}),
+        bigtable_instance_admin.UpdateAppProfileRequest(),
         {},
     ],
 )
@@ -6916,7 +6916,7 @@ async def test_update_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteAppProfileRequest({}),
+        bigtable_instance_admin.DeleteAppProfileRequest(),
         {},
     ],
 )
@@ -7064,7 +7064,7 @@ async def test_delete_app_profile_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteAppProfileRequest({}),
+        bigtable_instance_admin.DeleteAppProfileRequest(),
         {},
     ],
 )
@@ -7256,7 +7256,7 @@ async def test_delete_app_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest({}),
+        iam_policy_pb2.GetIamPolicyRequest(),
         {},
     ],
 )
@@ -7401,7 +7401,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest({}),
+        iam_policy_pb2.GetIamPolicyRequest(),
         {},
     ],
 )
@@ -7597,7 +7597,7 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest({}),
+        iam_policy_pb2.SetIamPolicyRequest(),
         {},
     ],
 )
@@ -7742,7 +7742,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest({}),
+        iam_policy_pb2.SetIamPolicyRequest(),
         {},
     ],
 )
@@ -7939,7 +7939,7 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest({}),
+        iam_policy_pb2.TestIamPermissionsRequest(),
         {},
     ],
 )
@@ -8090,7 +8090,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest({}),
+        iam_policy_pb2.TestIamPermissionsRequest(),
         {},
     ],
 )
@@ -8312,7 +8312,7 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListHotTabletsRequest({}),
+        bigtable_instance_admin.ListHotTabletsRequest(),
         {},
     ],
 )
@@ -8459,7 +8459,7 @@ async def test_list_hot_tablets_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListHotTabletsRequest({}),
+        bigtable_instance_admin.ListHotTabletsRequest(),
         {},
     ],
 )
@@ -8830,7 +8830,7 @@ async def test_list_hot_tablets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateLogicalViewRequest({}),
+        bigtable_instance_admin.CreateLogicalViewRequest(),
         {},
     ],
 )
@@ -8990,7 +8990,7 @@ async def test_create_logical_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateLogicalViewRequest({}),
+        bigtable_instance_admin.CreateLogicalViewRequest(),
         {},
     ],
 )
@@ -9198,7 +9198,7 @@ async def test_create_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetLogicalViewRequest({}),
+        bigtable_instance_admin.GetLogicalViewRequest(),
         {},
     ],
 )
@@ -9349,7 +9349,7 @@ async def test_get_logical_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetLogicalViewRequest({}),
+        bigtable_instance_admin.GetLogicalViewRequest(),
         {},
     ],
 )
@@ -9536,7 +9536,7 @@ async def test_get_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListLogicalViewsRequest({}),
+        bigtable_instance_admin.ListLogicalViewsRequest(),
         {},
     ],
 )
@@ -9689,7 +9689,7 @@ async def test_list_logical_views_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListLogicalViewsRequest({}),
+        bigtable_instance_admin.ListLogicalViewsRequest(),
         {},
     ],
 )
@@ -10078,7 +10078,7 @@ async def test_list_logical_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateLogicalViewRequest({}),
+        bigtable_instance_admin.UpdateLogicalViewRequest(),
         {},
     ],
 )
@@ -10232,7 +10232,7 @@ async def test_update_logical_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateLogicalViewRequest({}),
+        bigtable_instance_admin.UpdateLogicalViewRequest(),
         {},
     ],
 )
@@ -10430,7 +10430,7 @@ async def test_update_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteLogicalViewRequest({}),
+        bigtable_instance_admin.DeleteLogicalViewRequest(),
         {},
     ],
 )
@@ -10580,7 +10580,7 @@ async def test_delete_logical_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteLogicalViewRequest({}),
+        bigtable_instance_admin.DeleteLogicalViewRequest(),
         {},
     ],
 )
@@ -10762,7 +10762,7 @@ async def test_delete_logical_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateMaterializedViewRequest({}),
+        bigtable_instance_admin.CreateMaterializedViewRequest(),
         {},
     ],
 )
@@ -10923,7 +10923,7 @@ async def test_create_materialized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.CreateMaterializedViewRequest({}),
+        bigtable_instance_admin.CreateMaterializedViewRequest(),
         {},
     ],
 )
@@ -11133,7 +11133,7 @@ async def test_create_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetMaterializedViewRequest({}),
+        bigtable_instance_admin.GetMaterializedViewRequest(),
         {},
     ],
 )
@@ -11291,7 +11291,7 @@ async def test_get_materialized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.GetMaterializedViewRequest({}),
+        bigtable_instance_admin.GetMaterializedViewRequest(),
         {},
     ],
 )
@@ -11490,7 +11490,7 @@ async def test_get_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListMaterializedViewsRequest({}),
+        bigtable_instance_admin.ListMaterializedViewsRequest(),
         {},
     ],
 )
@@ -11644,7 +11644,7 @@ async def test_list_materialized_views_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.ListMaterializedViewsRequest({}),
+        bigtable_instance_admin.ListMaterializedViewsRequest(),
         {},
     ],
 )
@@ -12035,7 +12035,7 @@ async def test_list_materialized_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateMaterializedViewRequest({}),
+        bigtable_instance_admin.UpdateMaterializedViewRequest(),
         {},
     ],
 )
@@ -12190,7 +12190,7 @@ async def test_update_materialized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.UpdateMaterializedViewRequest({}),
+        bigtable_instance_admin.UpdateMaterializedViewRequest(),
         {},
     ],
 )
@@ -12390,7 +12390,7 @@ async def test_update_materialized_view_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteMaterializedViewRequest({}),
+        bigtable_instance_admin.DeleteMaterializedViewRequest(),
         {},
     ],
 )
@@ -12541,7 +12541,7 @@ async def test_delete_materialized_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        bigtable_instance_admin.DeleteMaterializedViewRequest({}),
+        bigtable_instance_admin.DeleteMaterializedViewRequest(),
         {},
     ],
 )
