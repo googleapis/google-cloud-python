@@ -317,11 +317,8 @@ def prerelease_deps(session, protobuf_implementation):
 
         version_namespace = package_namespaces.get(dep)
 
-<<<<<<< HEAD
-=======
     # Reuse the parsed names for logging and version verification
     for dep, pkg_name in prerel_deps:
->>>>>>> bbb07c3289e (wip)
         print(f"Installed {dep}")
         if version_namespace:
             session.run(
