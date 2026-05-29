@@ -38352,6 +38352,7 @@ def test_create_authz_policy_rest_call_success(request_type):
                                 "base_protocol_methods_option": 1,
                                 "methods": [{"name": "name_value", "params": {}}],
                             },
+                            "snis": {},
                         }
                     ],
                     "not_operations": {},
@@ -38359,6 +38360,7 @@ def test_create_authz_policy_rest_call_success(request_type):
                 "when": "when_value",
             }
         ],
+        "network_rules": {},
         "action": 1,
         "custom_provider": {
             "cloud_iap": {},
@@ -38618,6 +38620,7 @@ def test_update_authz_policy_rest_call_success(request_type):
                                 "base_protocol_methods_option": 1,
                                 "methods": [{"name": "name_value", "params": {}}],
                             },
+                            "snis": {},
                         }
                     ],
                     "not_operations": {},
@@ -38625,6 +38628,7 @@ def test_update_authz_policy_rest_call_success(request_type):
                 "when": "when_value",
             }
         ],
+        "network_rules": {},
         "action": 1,
         "custom_provider": {
             "cloud_iap": {},

@@ -7406,6 +7406,159 @@
           "fullName": "google.cloud.dataplex_v1.CatalogServiceAsyncClient",
           "shortName": "CatalogServiceAsyncClient"
         },
+        "fullName": "google.cloud.dataplex_v1.CatalogServiceAsyncClient.modify_entry",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.CatalogService.ModifyEntry",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.CatalogService",
+            "shortName": "CatalogService"
+          },
+          "shortName": "ModifyEntry"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ModifyEntryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entry",
+        "shortName": "modify_entry"
+      },
+      "description": "Sample for ModifyEntry",
+      "file": "dataplex_v1_generated_catalog_service_modify_entry_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_CatalogService_ModifyEntry_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_catalog_service_modify_entry_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.CatalogServiceClient",
+          "shortName": "CatalogServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.CatalogServiceClient.modify_entry",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.CatalogService.ModifyEntry",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.CatalogService",
+            "shortName": "CatalogService"
+          },
+          "shortName": "ModifyEntry"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ModifyEntryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entry",
+        "shortName": "modify_entry"
+      },
+      "description": "Sample for ModifyEntry",
+      "file": "dataplex_v1_generated_catalog_service_modify_entry_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_CatalogService_ModifyEntry_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_catalog_service_modify_entry_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.CatalogServiceAsyncClient",
+          "shortName": "CatalogServiceAsyncClient"
+        },
         "fullName": "google.cloud.dataplex_v1.CatalogServiceAsyncClient.search_entries",
         "method": {
           "fullName": "google.cloud.dataplex.v1.CatalogService.SearchEntries",
@@ -10730,6 +10883,175 @@
           "fullName": "google.cloud.dataplex_v1.DataProductServiceAsyncClient",
           "shortName": "DataProductServiceAsyncClient"
         },
+        "fullName": "google.cloud.dataplex_v1.DataProductServiceAsyncClient.request_data_product_access",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataProductService.RequestDataProductAccess",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataProductService",
+            "shortName": "DataProductService"
+          },
+          "shortName": "RequestDataProductAccess"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.RequestDataProductAccessRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "change_request",
+            "type": "google.cloud.dataplex_v1.types.ChangeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.RequestDataProductAccessResponse",
+        "shortName": "request_data_product_access"
+      },
+      "description": "Sample for RequestDataProductAccess",
+      "file": "dataplex_v1_generated_data_product_service_request_data_product_access_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataProductService_RequestDataProductAccess_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_product_service_request_data_product_access_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataProductServiceClient",
+          "shortName": "DataProductServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataProductServiceClient.request_data_product_access",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataProductService.RequestDataProductAccess",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataProductService",
+            "shortName": "DataProductService"
+          },
+          "shortName": "RequestDataProductAccess"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.RequestDataProductAccessRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "change_request",
+            "type": "google.cloud.dataplex_v1.types.ChangeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.RequestDataProductAccessResponse",
+        "shortName": "request_data_product_access"
+      },
+      "description": "Sample for RequestDataProductAccess",
+      "file": "dataplex_v1_generated_data_product_service_request_data_product_access_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataProductService_RequestDataProductAccess_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_product_service_request_data_product_access_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataProductServiceAsyncClient",
+          "shortName": "DataProductServiceAsyncClient"
+        },
         "fullName": "google.cloud.dataplex_v1.DataProductServiceAsyncClient.update_data_asset",
         "method": {
           "fullName": "google.cloud.dataplex.v1.DataProductService.UpdateDataAsset",
@@ -11068,6 +11390,167 @@
           "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
           "shortName": "DataScanServiceAsyncClient"
         },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.cancel_data_scan_job",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.CancelDataScanJob",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "CancelDataScanJob"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CancelDataScanJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.CancelDataScanJobResponse",
+        "shortName": "cancel_data_scan_job"
+      },
+      "description": "Sample for CancelDataScanJob",
+      "file": "dataplex_v1_generated_data_scan_service_cancel_data_scan_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_CancelDataScanJob_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_cancel_data_scan_job_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceClient",
+          "shortName": "DataScanServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataScanServiceClient.cancel_data_scan_job",
+        "method": {
+          "fullName": "google.cloud.dataplex.v1.DataScanService.CancelDataScanJob",
+          "service": {
+            "fullName": "google.cloud.dataplex.v1.DataScanService",
+            "shortName": "DataScanService"
+          },
+          "shortName": "CancelDataScanJob"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CancelDataScanJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.CancelDataScanJobResponse",
+        "shortName": "cancel_data_scan_job"
+      },
+      "description": "Sample for CancelDataScanJob",
+      "file": "dataplex_v1_generated_data_scan_service_cancel_data_scan_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataplex_v1_generated_DataScanService_CancelDataScanJob_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataplex_v1_generated_data_scan_service_cancel_data_scan_job_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient",
+          "shortName": "DataScanServiceAsyncClient"
+        },
         "fullName": "google.cloud.dataplex_v1.DataScanServiceAsyncClient.create_data_scan",
         "method": {
           "fullName": "google.cloud.dataplex.v1.DataScanService.CreateDataScan",
@@ -11117,12 +11600,12 @@
       "regionTag": "dataplex_v1_generated_DataScanService_CreateDataScan_async",
       "segments": [
         {
-          "end": 60,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -11132,18 +11615,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -11205,12 +11688,12 @@
       "regionTag": "dataplex_v1_generated_DataScanService_CreateDataScan_sync",
       "segments": [
         {
-          "end": 60,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
@@ -11220,18 +11703,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],

@@ -60,6 +60,7 @@ __protobuf__ = proto.module(
         "GetEntryRequest",
         "LookupEntryRequest",
         "LookupContextRequest",
+        "ModifyEntryRequest",
         "LookupContextResponse",
         "SearchEntriesRequest",
         "SearchEntriesResult",
@@ -726,7 +727,8 @@ class EntryType(proto.Message):
 
 
 class Aspect(proto.Message):
-    r"""An aspect is a single piece of metadata describing an entry.
+    r"""Represents a single piece of metadata describing an entry or
+    entry link.
 
     Attributes:
         aspect_type (str):
@@ -1822,8 +1824,10 @@ class GetEntryRequest(proto.Message):
             Required. The resource name of the Entry:
             ``projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}``.
         view (google.cloud.dataplex_v1.types.EntryView):
-            Optional. View to control which parts of an
-            entry the service should return.
+            Optional. View to control which parts of an entry the
+            service should return. **Please check the limitations on
+            returned aspects in the Entry view documentation. Amount of
+            returned aspects depends on the selected Entry View.**
         aspect_types (MutableSequence[str]):
             Optional. Limits the aspects returned to the
             provided aspect types. It only works for CUSTOM
@@ -1862,8 +1866,10 @@ class LookupEntryRequest(proto.Message):
             attributed in the following form:
             ``projects/{project}/locations/{location}``.
         view (google.cloud.dataplex_v1.types.EntryView):
-            Optional. View to control which parts of an
-            entry the service should return.
+            Optional. View to control which parts of an entry the
+            service should return. **Please check the limitations on
+            returned aspects in the Entry view documentation. Amount of
+            returned aspects depends on the selected Entry View.**
         aspect_types (MutableSequence[str]):
             Optional. Limits the aspects returned to the
             provided aspect types. It only works for CUSTOM
@@ -1909,15 +1915,28 @@ class LookupContextRequest(proto.Message):
             attributed in the following form:
             ``projects/{project}/locations/{location}``.
         resources (MutableSequence[str]):
-            Required. The entry names to lookup context for. The request
-            should have max 10 of those.
+            Required. The entry names to look up the context for. The
+            maximum number of resources for a request is limited to 10.
 
             Examples:
             ---------
 
-            projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+            ``projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}``
+        context (str):
+            Optional. The text representing contextual
+            information for which metadata context is being
+            requested.
         options (MutableMapping[str, str]):
             Optional. Allows to configure the context.
+
+            Supported options:
+
+            - ``format`` - The format of the context (one of ``yaml``,
+              ``xml``, ``json``, default is ``yaml``).
+            - ``context_budget`` - If provided, the output will be
+              intelligently truncated on a best-effort basis to contain
+              approximately the desired amount of characters. There is
+              no guarantee to achieve the specific amount.
     """
 
     name: str = proto.Field(
@@ -1928,10 +1947,81 @@ class LookupContextRequest(proto.Message):
         proto.STRING,
         number=2,
     )
+    context: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     options: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=4,
+    )
+
+
+class ModifyEntryRequest(proto.Message):
+    r"""Modify Entry request using permissions in the source system.
+
+    Attributes:
+        name (str):
+            Required. The project to which the request should be
+            attributed in the following form:
+            ``projects/{project}/locations/{location}``.
+        entry (google.cloud.dataplex_v1.types.Entry):
+            Required. The entry to modify.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Mask of fields to update. To update Aspects, the
+            update_mask must contain the value "aspects".
+
+            If the update_mask is empty, the service will update all
+            modifiable fields present in the request.
+        delete_missing_aspects (bool):
+            Optional. If set to true, any aspects not
+            specified in the request will be deleted. The
+            default is false.
+        aspect_keys (MutableSequence[str]):
+            Optional. The aspect keys which the service should modify.
+            It supports the following syntaxes:
+
+            - ``<aspect_type_reference>`` - matches an aspect of the
+              given type and empty path.
+            - ``<aspect_type_reference>@path`` - matches an aspect of
+              the given type and specified path. For example, to attach
+              an aspect to a field that is specified by the ``schema``
+              aspect, the path should have the format
+              ``Schema.<field_name>``.
+            - ``<aspect_type_reference>@*`` - matches aspects of the
+              given type for all paths.
+            - ``*@path`` - matches aspects of all types on the given
+              path.
+
+            The service will not remove existing aspects matching the
+            syntax unless ``delete_missing_aspects`` is set to true.
+
+            If this field is left empty, the service treats it as
+            specifying exactly those Aspects present in the request.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entry: "Entry" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Entry",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
+    )
+    delete_missing_aspects: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    aspect_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1940,7 +2030,8 @@ class LookupContextResponse(proto.Message):
 
     Attributes:
         context (str):
-            LLM generated context for the resources.
+            Pre-formatted block of text containing the
+            context for the requested resources.
     """
 
     context: str = proto.Field(

@@ -3135,6 +3135,7 @@ def test_get_recommendation(request_type, transport: str = "grpc"):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
         response = client.get_recommendation(request)
 
@@ -3152,6 +3153,7 @@ def test_get_recommendation(request_type, transport: str = "grpc"):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_get_recommendation_non_empty_request_with_auto_populated_field():
@@ -3297,6 +3299,7 @@ async def test_get_recommendation_async(request_type, transport: str = "grpc_asy
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         response = await client.get_recommendation(request)
@@ -3315,6 +3318,7 @@ async def test_get_recommendation_async(request_type, transport: str = "grpc_asy
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_get_recommendation_field_headers():
@@ -3497,6 +3501,7 @@ def test_mark_recommendation_dismissed(request_type, transport: str = "grpc"):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
         response = client.mark_recommendation_dismissed(request)
 
@@ -3514,6 +3519,7 @@ def test_mark_recommendation_dismissed(request_type, transport: str = "grpc"):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_dismissed_non_empty_request_with_auto_populated_field():
@@ -3664,6 +3670,7 @@ async def test_mark_recommendation_dismissed_async(
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         response = await client.mark_recommendation_dismissed(request)
@@ -3682,6 +3689,7 @@ async def test_mark_recommendation_dismissed_async(
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_dismissed_field_headers():
@@ -3778,6 +3786,7 @@ def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
         response = client.mark_recommendation_claimed(request)
 
@@ -3795,6 +3804,7 @@ def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_claimed_non_empty_request_with_auto_populated_field():
@@ -3945,6 +3955,7 @@ async def test_mark_recommendation_claimed_async(
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         response = await client.mark_recommendation_claimed(request)
@@ -3963,6 +3974,7 @@ async def test_mark_recommendation_claimed_async(
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_claimed_field_headers():
@@ -4165,6 +4177,7 @@ def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
         response = client.mark_recommendation_succeeded(request)
 
@@ -4182,6 +4195,7 @@ def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_succeeded_non_empty_request_with_auto_populated_field():
@@ -4332,6 +4346,7 @@ async def test_mark_recommendation_succeeded_async(
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         response = await client.mark_recommendation_succeeded(request)
@@ -4350,6 +4365,7 @@ async def test_mark_recommendation_succeeded_async(
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_succeeded_field_headers():
@@ -4552,6 +4568,7 @@ def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
         response = client.mark_recommendation_failed(request)
 
@@ -4569,6 +4586,7 @@ def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_failed_non_empty_request_with_auto_populated_field():
@@ -4719,6 +4737,7 @@ async def test_mark_recommendation_failed_async(
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         response = await client.mark_recommendation_failed(request)
@@ -4737,6 +4756,7 @@ async def test_mark_recommendation_failed_async(
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 def test_mark_recommendation_failed_field_headers():
@@ -9522,6 +9542,7 @@ async def test_get_recommendation_empty_call_grpc_asyncio():
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         await client.get_recommendation(request=None)
@@ -9555,6 +9576,7 @@ async def test_mark_recommendation_dismissed_empty_call_grpc_asyncio():
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         await client.mark_recommendation_dismissed(request=None)
@@ -9588,6 +9610,7 @@ async def test_mark_recommendation_claimed_empty_call_grpc_asyncio():
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         await client.mark_recommendation_claimed(request=None)
@@ -9621,6 +9644,7 @@ async def test_mark_recommendation_succeeded_empty_call_grpc_asyncio():
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         await client.mark_recommendation_succeeded(request=None)
@@ -9654,6 +9678,7 @@ async def test_mark_recommendation_failed_empty_call_grpc_asyncio():
                 priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
                 xor_group_id="xor_group_id_value",
+                target_resources=["target_resources_value"],
             )
         )
         await client.mark_recommendation_failed(request=None)
@@ -10416,6 +10441,7 @@ def test_get_recommendation_rest_call_success(request_type):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -10438,6 +10464,7 @@ def test_get_recommendation_rest_call_success(request_type):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10563,6 +10590,7 @@ def test_mark_recommendation_dismissed_rest_call_success(request_type):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -10585,6 +10613,7 @@ def test_mark_recommendation_dismissed_rest_call_success(request_type):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10710,6 +10739,7 @@ def test_mark_recommendation_claimed_rest_call_success(request_type):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -10732,6 +10762,7 @@ def test_mark_recommendation_claimed_rest_call_success(request_type):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10857,6 +10888,7 @@ def test_mark_recommendation_succeeded_rest_call_success(request_type):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -10879,6 +10911,7 @@ def test_mark_recommendation_succeeded_rest_call_success(request_type):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11004,6 +11037,7 @@ def test_mark_recommendation_failed_rest_call_success(request_type):
             priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
             xor_group_id="xor_group_id_value",
+            target_resources=["target_resources_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -11026,6 +11060,7 @@ def test_mark_recommendation_failed_rest_call_success(request_type):
     assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
     assert response.xor_group_id == "xor_group_id_value"
+    assert response.target_resources == ["target_resources_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

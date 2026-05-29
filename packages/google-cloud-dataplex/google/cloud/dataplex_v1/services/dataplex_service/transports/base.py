@@ -46,7 +46,12 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class DataplexServiceTransport(abc.ABC):
     """Abstract transport class for DataplexService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+        "https://www.googleapis.com/auth/dataplex.readonly",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 

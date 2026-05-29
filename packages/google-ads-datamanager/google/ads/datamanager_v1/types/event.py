@@ -22,7 +22,11 @@ import proto  # type: ignore
 
 from google.ads.datamanager_v1.types import cart_data as gad_cart_data
 from google.ads.datamanager_v1.types import consent as gad_consent
-from google.ads.datamanager_v1.types import device_info, experimental_field
+from google.ads.datamanager_v1.types import (
+    device_info,
+    encrypted_user_id,
+    experimental_field,
+)
 from google.ads.datamanager_v1.types import user_data as gad_user_data
 from google.ads.datamanager_v1.types import user_properties as gad_user_properties
 
@@ -112,6 +116,11 @@ class Event(proto.Message):
             with the event, for value-based conversions.
 
             This field is a member of `oneof`_ ``_conversion_value``.
+        conversion_count (float):
+            Optional. The conversion quantity associated
+            with the event, for counting-based conversions.
+
+            This field is a member of `oneof`_ ``_conversion_count``.
         event_source (google.ads.datamanager_v1.types.EventSource):
             Optional. Signal for where the event happened
             (web, app, in-store, etc.).
@@ -202,6 +211,11 @@ class Event(proto.Message):
     conversion_value: float = proto.Field(
         proto.DOUBLE,
         number=9,
+        optional=True,
+    )
+    conversion_count: float = proto.Field(
+        proto.DOUBLE,
+        number=23,
         optional=True,
     )
     event_source: "EventSource" = proto.Field(
@@ -300,6 +314,17 @@ class AdIdentifiers(proto.Message):
             advertisers. This would be IDFA on iOS, AdID on
             Android, or other platforms’ identifiers for
             advertisers.
+        dclid (str):
+            Optional. The display click ID associated
+            with this event.
+        impression_id (str):
+            Optional. The impression ID associated with
+            this event.
+        match_id (str):
+            Optional. The match ID field used to join
+            this event with a previous event.
+        encrypted_user_ids (MutableSequence[google.ads.datamanager_v1.types.EncryptedUserId]):
+            Optional. Any number of encrypted user IDs.
     """
 
     session_attributes: str = proto.Field(
@@ -326,6 +351,25 @@ class AdIdentifiers(proto.Message):
     mobile_device_id: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    dclid: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    impression_id: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    match_id: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    encrypted_user_ids: MutableSequence[encrypted_user_id.EncryptedUserId] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=encrypted_user_id.EncryptedUserId,
+        )
     )
 
 

@@ -9212,7 +9212,6 @@ def test_create_data_agent_rest_call_success(request_type):
                                         }
                                     ],
                                 },
-                                "location_boundary": "location_boundary_value",
                             }
                         ]
                     },
@@ -9237,6 +9236,7 @@ def test_create_data_agent_rest_call_success(request_type):
                 "options": {
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
@@ -9266,6 +9266,8 @@ def test_create_data_agent_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -9294,7 +9296,6 @@ def test_create_data_agent_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "routine_id": "routine_id_value",
-                                "boundary_location_id": "boundary_location_id_value",
                             },
                             "description": "description_value",
                         }
@@ -9548,7 +9549,6 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                                         }
                                     ],
                                 },
-                                "location_boundary": "location_boundary_value",
                             }
                         ]
                     },
@@ -9573,6 +9573,7 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                 "options": {
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
@@ -9602,6 +9603,8 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -9630,7 +9633,6 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "routine_id": "routine_id_value",
-                                "boundary_location_id": "boundary_location_id_value",
                             },
                             "description": "description_value",
                         }
@@ -9899,7 +9901,6 @@ def test_update_data_agent_rest_call_success(request_type):
                                         }
                                     ],
                                 },
-                                "location_boundary": "location_boundary_value",
                             }
                         ]
                     },
@@ -9924,6 +9925,7 @@ def test_update_data_agent_rest_call_success(request_type):
                 "options": {
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
@@ -9953,6 +9955,8 @@ def test_update_data_agent_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -9981,7 +9985,6 @@ def test_update_data_agent_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "routine_id": "routine_id_value",
-                                "boundary_location_id": "boundary_location_id_value",
                             },
                             "description": "description_value",
                         }
@@ -10239,7 +10242,6 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                                         }
                                     ],
                                 },
-                                "location_boundary": "location_boundary_value",
                             }
                         ]
                     },
@@ -10264,6 +10266,7 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                 "options": {
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
@@ -10293,6 +10296,8 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -10321,7 +10326,6 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "routine_id": "routine_id_value",
-                                "boundary_location_id": "boundary_location_id_value",
                             },
                             "description": "description_value",
                         }
