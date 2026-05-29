@@ -1494,9 +1494,10 @@ class TestDbApi:
         conn = connect(
             shared_instance.name,
             dbapi_database.name,
-            experimental_host=_helpers.EXPERIMENTAL_HOST
-            if _helpers.USE_EXPERIMENTAL_HOST
+            client_options={"api_endpoint": _helpers.SPANNER_OMNI}
+            if _helpers.USE_SPANNER_OMNI
             else None,
+            instance_type="omni" if _helpers.USE_SPANNER_OMNI else None,
             use_plain_text=_helpers.USE_PLAIN_TEXT,
             ca_certificate=_helpers.CA_CERTIFICATE,
             client_certificate=_helpers.CLIENT_CERTIFICATE,
