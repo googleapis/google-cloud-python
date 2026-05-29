@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - 'packages/gapic-generator/**'
-      - '.github/workflows/prerelease-radar.yml'
+      - '.github/workflows/experiment.yml'
 
 jobs:
   test-prerelease:
