@@ -19,16 +19,16 @@ import itertools
 from types import ModuleType
 from typing import Callable, Hashable, Mapping, Tuple
 
+import bigframes.operations.python_op_maps as python_op_maps
 from bigframes import dtypes
 from bigframes.core import identifiers
 from bigframes.core.expression import (
-    const,
     Expression,
     OpExpression,
     UnboundVariableExpression,
+    const,
 )
-from bigframes.operations import generic_ops, numeric_ops, NUMPY_TO_BINOP, NUMPY_TO_OP
-import bigframes.operations.python_op_maps as python_op_maps
+from bigframes.operations import NUMPY_TO_BINOP, NUMPY_TO_OP, generic_ops, numeric_ops
 
 _CALLABLE_TO_OP = {
     **NUMPY_TO_OP,
@@ -138,7 +138,7 @@ class Module(Expression):
 
     @property
     def output_type(self) -> dtypes.ExpressionType:
-        raise ValueError("Module expresion has not type")
+        raise ValueError("Module expression does not have a type.")
 
     def bind_variables(
         self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
@@ -185,7 +185,7 @@ class PyObject(Expression):
 
     @property
     def output_type(self) -> dtypes.ExpressionType:
-        raise ValueError("Module expresion has not type")
+        raise ValueError("PyObject expression does not have a type.")
 
     def bind_variables(
         self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
@@ -317,7 +317,9 @@ def resolve_py_exprs(expression: Expression, unpack_mode: bool = False) -> Expre
             if isinstance(expression.input, Module):
                 # resolves things like Math.pi
                 return PyObject(getattr(expression.input.module, expression.attr))
-            if not unpack_mode and isinstance(expression.input, UnboundVariableExpression):
+            if not unpack_mode and isinstance(
+                expression.input, UnboundVariableExpression
+            ):
                 return UnboundVariableExpression(expression.attr)
         return expression
 

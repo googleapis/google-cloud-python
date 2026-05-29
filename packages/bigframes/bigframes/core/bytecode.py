@@ -44,6 +44,23 @@ _COMPARE_OP_MAP = {
     ">=": operator.ge,
 }
 
+_OLD_BINARY_OP_MAP = {
+    "BINARY_ADD": operator.add,
+    "INPLACE_ADD": operator.add,
+    "BINARY_SUBTRACT": operator.sub,
+    "INPLACE_SUBTRACT": operator.sub,
+    "BINARY_MULTIPLY": operator.mul,
+    "INPLACE_MULTIPLY": operator.mul,
+    "BINARY_TRUE_DIVIDE": operator.truediv,
+    "INPLACE_TRUE_DIVIDE": operator.truediv,
+    "BINARY_FLOOR_DIVIDE": operator.floordiv,
+    "INPLACE_FLOOR_DIVIDE": operator.floordiv,
+    "BINARY_MODULO": operator.mod,
+    "INPLACE_MODULO": operator.mod,
+    "BINARY_POWER": operator.pow,
+    "INPLACE_POWER": operator.pow,
+}
+
 
 def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expression]:
     try:
@@ -54,6 +71,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
     stack = []
     globals_dict = func.__globals__
     import builtins
+
     builtins_dict = builtins.__dict__
 
     closure_dict = {}
@@ -71,39 +89,49 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
         if opname == "RESUME":
             continue
 
-        elif opname in ("LOAD_FAST", "LOAD_FAST_CHECK"):
-            stack.append(expression.UnboundVariableExpression(inst.argval))
-
         elif opname == "LOAD_FAST_LOAD_FAST":
             var1, var2 = inst.argval
             stack.append(expression.UnboundVariableExpression(var1))
             stack.append(expression.UnboundVariableExpression(var2))
 
-        elif opname == "LOAD_CONST":
+        elif opname.startswith("LOAD_FAST"):
+            stack.append(expression.UnboundVariableExpression(inst.argval))
+
+        elif opname in ("LOAD_CONST", "LOAD_SMALL_INT"):
             stack.append(py_exprs.PyObject(inst.argval))
 
         elif opname == "LOAD_GLOBAL":
             name = inst.argval
+            found = False
             val = None
             if name in closure_dict:
                 val = closure_dict[name]
+                found = True
             elif name in globals_dict:
                 val = globals_dict[name]
+                found = True
             elif name in builtins_dict:
                 val = builtins_dict[name]
+                found = True
 
-            if isinstance(val, ModuleType):
-                stack.append(py_exprs.Module(val))
-            elif val is not None:
-                stack.append(py_exprs.PyObject(val))
+            if found:
+                if isinstance(val, ModuleType):
+                    stack.append(py_exprs.Module(val))
+                else:
+                    stack.append(py_exprs.PyObject(val))
             else:
                 stack.append(expression.UnboundVariableExpression(name))
 
-        elif opname == "LOAD_ATTR":
+        elif opname in ("LOAD_ATTR", "LOAD_METHOD"):
             if not stack:
                 return None
             target = stack.pop()
             stack.append(py_exprs.GetAttr(target, inst.argval))
+            if opname == "LOAD_METHOD":
+                if isinstance(target, py_exprs.Module):
+                    stack.append(NullMarker)
+                else:
+                    stack.append(target)
 
         elif opname == "PUSH_NULL":
             stack.append(NullMarker)
@@ -116,42 +144,28 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
             op_symbol = inst.argrepr
             if not op_symbol and isinstance(inst.argval, str):
                 op_symbol = inst.argval
-            if op_symbol.endswith("="):
+            if op_symbol and op_symbol.endswith("="):
                 op_symbol = op_symbol[:-1]
 
             if op_symbol not in _BINARY_OP_MAP:
                 return None
-            stack.append(py_exprs.Call(py_exprs.PyObject(_BINARY_OP_MAP[op_symbol]), (left, right)))
+            stack.append(
+                py_exprs.Call(
+                    py_exprs.PyObject(_BINARY_OP_MAP[op_symbol]), (left, right)
+                )
+            )
 
         # Support older Python versions compatibility
-        elif opname in ("BINARY_ADD", "INPLACE_ADD"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.add), (left, right)))
-        elif opname in ("BINARY_SUBTRACT", "INPLACE_SUBTRACT"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.sub), (left, right)))
-        elif opname in ("BINARY_MULTIPLY", "INPLACE_MULTIPLY"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.mul), (left, right)))
-        elif opname in ("BINARY_TRUE_DIVIDE", "INPLACE_TRUE_DIVIDE"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.truediv), (left, right)))
-        elif opname in ("BINARY_FLOOR_DIVIDE", "INPLACE_FLOOR_DIVIDE"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.floordiv), (left, right)))
-        elif opname in ("BINARY_MODULO", "INPLACE_MODULO"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.mod), (left, right)))
-        elif opname in ("BINARY_POWER", "INPLACE_POWER"):
-            if len(stack) < 2: return None
-            right = stack.pop(); left = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.pow), (left, right)))
+        elif opname in _OLD_BINARY_OP_MAP:
+            if len(stack) < 2:
+                return None
+            right = stack.pop()
+            left = stack.pop()
+            stack.append(
+                py_exprs.Call(
+                    py_exprs.PyObject(_OLD_BINARY_OP_MAP[opname]), (left, right)
+                )
+            )
 
         elif opname == "COMPARE_OP":
             if len(stack) < 2:
@@ -161,13 +175,24 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
             op_symbol = inst.argval
             if op_symbol not in _COMPARE_OP_MAP:
                 return None
-            stack.append(py_exprs.Call(py_exprs.PyObject(_COMPARE_OP_MAP[op_symbol]), (left, right)))
+            stack.append(
+                py_exprs.Call(
+                    py_exprs.PyObject(_COMPARE_OP_MAP[op_symbol]), (left, right)
+                )
+            )
 
         elif opname in ("UNARY_NEGATIVE", "UNARY_INVERT"):
             if not stack:
                 return None
             target = stack.pop()
-            stack.append(py_exprs.Call(py_exprs.PyObject(operator.neg if opname == "UNARY_NEGATIVE" else operator.invert), (target,)))
+            stack.append(
+                py_exprs.Call(
+                    py_exprs.PyObject(
+                        operator.neg if opname == "UNARY_NEGATIVE" else operator.invert
+                    ),
+                    (target,),
+                )
+            )
 
         elif opname == "UNARY_POSITIVE":
             if not stack:
@@ -184,13 +209,20 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
             else:
                 return None
 
-        elif opname in ("CALL", "CALL_FUNCTION"):
+        elif opname in ("CALL", "CALL_FUNCTION", "CALL_METHOD"):
             num_args = inst.arg
             if len(stack) < num_args:
                 return None
             args = [stack.pop() for _ in range(num_args)][::-1]
             if stack and stack[-1] is NullMarker:
                 stack.pop()
+            elif (
+                stack
+                and stack[-1] is not NullMarker
+                and isinstance(stack[-1], expression.Expression)
+            ):
+                self_arg = stack.pop()
+                args = [self_arg] + args
             if not stack:
                 return None
             callable_expr = stack.pop()
