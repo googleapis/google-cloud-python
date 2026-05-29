@@ -56,7 +56,7 @@ def test_ai_forecast(monkeypatch):
     }
 
 
-def test_bigframes_ai_forecast(snapshot, monkeypatch):
+def test_bigframes_ai_forecast(monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
