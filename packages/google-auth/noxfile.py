@@ -127,7 +127,7 @@ def format(session):
         "--select",
         "I",
         "--fix",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,
     )
@@ -159,7 +159,7 @@ def mypy(session):
     session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(["install_deprecated_extras"], (True, False))
 def unit(session, install_deprecated_extras):
     # Install all test dependencies, then install this package in-place.
