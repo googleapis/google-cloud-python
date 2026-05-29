@@ -235,6 +235,7 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
     session.skip("This package does not have documentation in cloud.google.com")
 
+
 @nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
@@ -283,7 +284,7 @@ def prerelease_deps(session, protobuf_implementation):
         "cryptography",
         "pyasn1-modules",
         "requests",
-        "aiohttp", 
+        "aiohttp",
         "urllib3",
         "pyjwt",
         "pyopenssl",
@@ -303,6 +304,7 @@ def prerelease_deps(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
