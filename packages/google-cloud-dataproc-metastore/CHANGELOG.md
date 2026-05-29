@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc-metastore/#history
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.22.0...google-cloud-dataproc-metastore-v1.23.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.21.0...google-cloud-dataproc-metastore-v1.22.0) (2026-03-26)
 
 

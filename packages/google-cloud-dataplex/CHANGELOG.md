@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataplex/#history
 
+## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.19.0...google-cloud-dataplex-v2.20.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.18.0...google-cloud-dataplex-v2.19.0) (2026-05-06)
 
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.17.0...google-cloud-dataplex-v2.18.0) (2026-03-26)

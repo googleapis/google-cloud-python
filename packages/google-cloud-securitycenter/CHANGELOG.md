@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.44.0...google-cloud-securitycenter-v1.45.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [1.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.43.0...google-cloud-securitycenter-v1.44.0) (2026-03-26)
 
 

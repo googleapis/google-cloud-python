@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-maps-fleetengine/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.5.0...google-maps-fleetengine-v0.6.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-maps packages (#17073) ([bd31a8c7fd338723ac201ad1b5d0f2a1861f8925](https://github.com/googleapis/google-cloud-python/commit/bd31a8c7fd338723ac201ad1b5d0f2a1861f8925))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.4.0...google-maps-fleetengine-v0.5.0) (2026-03-26)
 
 

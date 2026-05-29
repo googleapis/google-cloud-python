@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-migration/#history
 
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.14.0...google-cloud-bigquery-migration-v0.15.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.13.0...google-cloud-bigquery-migration-v0.14.0) (2026-03-26)
 
 

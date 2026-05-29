@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.30.0...google-cloud-monitoring-v2.31.0) (2026-05-29)
+
+
+### Features
+
+* regenerate monitoring using generator v1.32.0 (#17165) ([042dc5c369138ca0d3c957c3234561aafa6bde78](https://github.com/googleapis/google-cloud-python/commit/042dc5c369138ca0d3c957c3234561aafa6bde78))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.29.1...google-cloud-monitoring-v2.30.0) (2026-03-26)
 
 

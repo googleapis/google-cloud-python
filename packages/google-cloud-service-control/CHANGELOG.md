@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-service-control/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.19.0...google-cloud-service-control-v1.20.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.18.0...google-cloud-service-control-v1.19.0) (2026-03-26)
 
 

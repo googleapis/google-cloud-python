@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-ai-generativelanguage/#history
 
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.11.0...google-ai-generativelanguage-v0.12.0) (2026-05-29)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.10.0...google-ai-generativelanguage-v0.11.0) (2026-03-26)
 
 
