@@ -280,15 +280,15 @@ def prerelease_deps(session, protobuf_implementation):
     # the `core_dependencies_from_source` list in the `core_deps_from_source`
     # nox session should also be updated.
     prerel_deps = [
-        "cryptography>=38.0.3",
-        "pyasn1-modules>=0.2.1",
-        "requests>=2.20.0,<3.0.0",
-        "aiohttp>=3.8.0,<3.10.0", 
+        "cryptography",
+        "pyasn1-modules",
+        "requests",
+        "aiohttp", 
         "urllib3",
-        "pyjwt>=2.0",
-        "pyopenssl<24.3.0",
-        "rsa>=3.1.4,<5",
-        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
+        "pyjwt",
+        "pyopenssl",
+        "rsa",
+        "grpcio",
     ]
 
     for dep in prerel_deps:
