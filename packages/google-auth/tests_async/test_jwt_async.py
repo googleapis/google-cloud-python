@@ -367,10 +367,11 @@ class TestOnDemandCredentials(object):
         with pytest.raises(exceptions.RefreshError):
             self.credentials.refresh(None)
 
-    def test_before_request(self):
+    @pytest.mark.asyncio
+    async def test_before_request(self):
         headers = {}
 
-        self.credentials.before_request(
+        await self.credentials.before_request(
             None, "GET", "http://example.com?a=1#3", headers
         )
 
@@ -380,7 +381,9 @@ class TestOnDemandCredentials(object):
         assert payload["aud"] == "http://example.com"
 
         # Making another request should re-use the same token.
-        self.credentials.before_request(None, "GET", "http://example.com?b=2", headers)
+        await self.credentials.before_request(
+            None, "GET", "http://example.com?b=2", headers
+        )
 
         _, new_token = headers["authorization"].split(" ")
 

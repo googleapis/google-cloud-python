@@ -44,6 +44,7 @@ change in minor releases.
 """
 
 from google.auth import _credentials_async
+from google.auth import _helpers
 from google.auth import jwt
 
 
@@ -173,3 +174,7 @@ class OnDemandCredentials(
 
     .. _grpc: http://www.grpc.io/
     """
+
+    @_helpers.copy_docstring(jwt.OnDemandCredentials)
+    async def before_request(self, request, method, url, headers):
+        super(OnDemandCredentials, self).before_request(request, method, url, headers)
