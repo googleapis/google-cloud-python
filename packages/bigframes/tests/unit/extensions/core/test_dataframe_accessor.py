@@ -19,7 +19,7 @@ import pandas as pd
 import bigframes.pandas as bpd
 
 
-def test_ai_forecast(snapshot, monkeypatch):
+def test_ai_forecast(monkeypatch):
     import bigframes.bigquery.ai
     import bigframes.session
 
@@ -32,8 +32,6 @@ def test_ai_forecast(snapshot, monkeypatch):
         result_df = mock.create_autospec(bpd.DataFrame)
         result_df.to_pandas.return_value = kwargs
         return result_df
-
-    import bigframes.bigquery.ai
 
     monkeypatch.setattr(bigframes.bigquery.ai, "forecast", mock_ai_forecast)
 
