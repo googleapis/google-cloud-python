@@ -97,21 +97,6 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
-@pytest.fixture(autouse=True)
-def set_event_loop():
-    try:
-        asyncio.get_running_loop()
-        yield
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        try:
-            yield
-        finally:
-            loop.close()
-            asyncio.set_event_loop(None)
-
-
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -128,6 +113,21 @@ def async_anonymous_credentials():
     if HAS_GOOGLE_AUTH_AIO:
         return ga_credentials_async.AnonymousCredentials()
     return ga_credentials.AnonymousCredentials()
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 @pytest.mark.parametrize(
