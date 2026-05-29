@@ -100,6 +100,7 @@ class Credentials(
             self._universe_domain_cached = True
 
         self._trust_boundary = trust_boundary
+        self._rab_disabled = False
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -152,6 +153,26 @@ class Credentials(
             new_exc = exceptions.RefreshError(caught_exc)
             raise new_exc from caught_exc
 
+    def _is_regional_access_boundary_lookup_required(self):
+        """Checks if a Regional Access Boundary lookup is required.
+
+        Returns:
+            bool: True if a Regional Access Boundary lookup is required, False otherwise.
+        """
+        if not super()._is_regional_access_boundary_lookup_required():
+            return False
+
+        if getattr(self, "_rab_disabled", False):
+            return False
+
+        # If the field is 'default', the actual value hasn't been fetched from the metadata
+        # server yet. Allow it to proceed so the actual value can be retrieved and checked
+        # during the URL construction.
+        if self.service_account_email == "default":
+            return True
+
+        return _metadata._is_email(self.service_account_email)
+
     def _build_regional_access_boundary_lookup_url(
         self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
     ):
@@ -196,6 +217,14 @@ class Credentials(
                     e,
                 )
                 return None
+
+        if not _metadata._is_email(self.service_account_email):
+            _LOGGER.info(
+                "Service account email '%s' is not a valid email. Skipping Regional Access Boundary lookup.",
+                self.service_account_email,
+            )
+            self._rab_disabled = True
+            return None
 
         return _regional_access_boundary_utils.get_service_account_rab_endpoint(
             self.service_account_email

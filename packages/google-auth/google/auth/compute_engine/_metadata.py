@@ -502,3 +502,20 @@ def get_service_account_token(request, service_account="default", scopes=None):
         seconds=token_json["expires_in"]
     )
     return token_json["access_token"], token_expiry
+
+
+def _is_email(email):
+    """Checks if the provided string is in an email format.
+
+    This is a simple check that ensures the candidate string is non-empty
+    and contains the '@' character.
+
+    Args:
+        email (str): The candidate string to check.
+
+    Returns:
+        bool: True if the string is non-empty and contains '@', False otherwise.
+    """
+    if not email:
+        return False
+    return "@" in email
