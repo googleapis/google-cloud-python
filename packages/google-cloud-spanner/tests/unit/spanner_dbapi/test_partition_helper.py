@@ -68,7 +68,7 @@ class TestPartitionHelper(unittest.TestCase):
             decoded.partition_result["query"]["sql"],
             "SELECT * FROM users WHERE age > %s",
         )
-        self.assertEqual(decoded.partition_result["query"]["params"], {"age": 21})
+        self.assertEqual(decoded.partition_result["query"]["params"], {"age": "21"})
 
         # Verify query options (restored to object)
         opts_obj = decoded.partition_result["query"]["query_options"]
@@ -136,14 +136,18 @@ class TestPartitionHelper(unittest.TestCase):
     def test_dynamic_partition_options_registered(self):
         # Dynamically verify that any Protobuf message class generated inside query_info or read_info
         # during partitioning is registered in _PROTO_CLASS_MAP.
-        from google.protobuf.message import Message
         from unittest.mock import MagicMock
+
+        from google.protobuf.message import Message
+
         from google.cloud.spanner_v1.database import BatchSnapshot
-        from google.cloud.spanner_v1.types import ExecuteSqlRequest, DirectedReadOptions
+        from google.cloud.spanner_v1.types import DirectedReadOptions, ExecuteSqlRequest
 
         db = MagicMock()
         db.observability_options = {}
-        db._instance._client._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        db._instance._client._query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1"
+        )
 
         snapshot = BatchSnapshot(db)
         snapshot._snapshot = MagicMock()
@@ -153,19 +157,24 @@ class TestPartitionHelper(unittest.TestCase):
         query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
         directed_read_options = DirectedReadOptions()
 
-        query_batches = list(snapshot.generate_query_batches(
-            sql="SELECT 1",
-            query_options=query_options,
-            directed_read_options=directed_read_options
-        ))
+        query_batches = list(
+            snapshot.generate_query_batches(
+                sql="SELECT 1",
+                query_options=query_options,
+                directed_read_options=directed_read_options,
+            )
+        )
 
         from google.cloud.spanner_v1.keyset import KeySet
-        read_batches = list(snapshot.generate_read_batches(
-            table="users",
-            columns=["name"],
-            keyset=KeySet(all_=True),
-            directed_read_options=directed_read_options
-        ))
+
+        read_batches = list(
+            snapshot.generate_read_batches(
+                table="users",
+                columns=["name"],
+                keyset=KeySet(all_=True),
+                directed_read_options=directed_read_options,
+            )
+        )
 
         discovered_protobuf_classes = set()
 
@@ -190,15 +199,17 @@ class TestPartitionHelper(unittest.TestCase):
                     registered_classes,
                     f"Protobuf class '{cls.__name__}' is generated in partition batch details "
                     f"but is not registered in partition_helper._PROTO_CLASS_MAP! "
-                    f"Please add it to _PROTO_CLASS_MAP to prevent silent deserialization failures."
+                    f"Please add it to _PROTO_CLASS_MAP to prevent silent deserialization failures.",
                 )
 
     def test_all_spanner_param_types_round_trip(self):
-        import uuid
         import datetime
         import decimal
-        from google.cloud.spanner_v1.data_types import Interval, JsonObject
+        import uuid
+
         from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
+        from google.cloud.spanner_v1.data_types import Interval, JsonObject
 
         complex_params = {
             "uuid_val": uuid.UUID("12345678-1234-5678-1234-567812345678"),
@@ -206,20 +217,25 @@ class TestPartitionHelper(unittest.TestCase):
             "decimal_val": decimal.Decimal("99999.99"),
             "interval_val": Interval(months=35, days=12, nanos=54321000),
             "json_val": JsonObject({"name": "Alice", "active": True}),
-            "timestamp_val": datetime.datetime(2026, 5, 12, 12, 34, 56, tzinfo=datetime.timezone.utc),
-            "timestamp_nanos_val": DatetimeWithNanoseconds(2026, 5, 12, 12, 34, 56, 123456, tzinfo=datetime.timezone.utc),
+            "timestamp_val": datetime.datetime(
+                2026, 5, 12, 12, 34, 56, tzinfo=datetime.timezone.utc
+            ),
+            "timestamp_nanos_val": DatetimeWithNanoseconds(
+                2026, 5, 12, 12, 34, 56, 123456, tzinfo=datetime.timezone.utc
+            ),
             "bytes_val": b"binary-data",
             "bool_val": True,
             "int_val": 100,
             "float_val": 123.45,
             "str_val": "hello-world",
-            "none_val": None
+            "none_val": None,
         }
 
         # DYNAMIC AST VERIFICATION OF CORE SDK SUPPORTED TYPES
         # Dynamically discover all classes checked by `isinstance` inside Spanner's `_make_value_pb`.
         import ast
         import inspect
+
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         source = inspect.getsource(_make_value_pb)
@@ -227,8 +243,16 @@ class TestPartitionHelper(unittest.TestCase):
 
         discovered_types = set()
         for node in ast.walk(tree):
-            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "isinstance":
-                if len(node.args) >= 2 and isinstance(node.args[0], ast.Name) and node.args[0].id == "value":
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id == "isinstance"
+            ):
+                if (
+                    len(node.args) >= 2
+                    and isinstance(node.args[0], ast.Name)
+                    and node.args[0].id == "value"
+                ):
                     type_arg = node.args[1]
                     if isinstance(type_arg, ast.Tuple):
                         for elt in type_arg.elts:
@@ -260,13 +284,55 @@ class TestPartitionHelper(unittest.TestCase):
                     test_param_class_names,
                     f"Spanner SDK parameter helper (_make_value_pb) supports type '{sdk_type}', "
                     f"but this type has not been implemented/mapped in the DB-API partition "
-                    f"helper tests! Please add a verification case for it."
+                    f"helper tests! Please add a verification case for it.",
                 )
 
-        # For each parameter type, try round-trip serialization
-        for key, val in complex_params.items():
-            with self.subTest(type_key=key):
-                serialized = partition_helper._serialize_value(val)
-                json_str = json.dumps(serialized)
-                deserialized = partition_helper._deserialize_value(json.loads(json_str))
-                self.assertEqual(deserialized, val, f"Round-trip failed for {key}! Original: {val}, Deserialized: {deserialized}")
+        # For each parameter type, try round-trip serialization through partition encode/decode
+        btid = BatchTransactionId(
+            transaction_id=b"test-txn",
+            session_id="session-123",
+            read_timestamp=None,
+        )
+        partition_result = {
+            "partition": b"token-123",
+            "query": {
+                "sql": "SELECT 1",
+                "params": complex_params,
+            },
+        }
+
+        encoded = partition_helper.encode_to_string(btid, partition_result)
+        decoded = partition_helper.decode_from_string(encoded)
+        deserialized_params = decoded.partition_result["query"]["params"]
+
+        # Verify the deserialized parameters are standard Spanner primitive representations:
+        self.assertEqual(deserialized_params["int_val"], "100")
+        self.assertEqual(
+            deserialized_params["uuid_val"], str(complex_params["uuid_val"])
+        )
+        self.assertEqual(
+            deserialized_params["date_val"], complex_params["date_val"].isoformat()
+        )
+        self.assertEqual(
+            deserialized_params["decimal_val"], str(complex_params["decimal_val"])
+        )
+        self.assertEqual(
+            deserialized_params["interval_val"], str(complex_params["interval_val"])
+        )
+        self.assertEqual(
+            deserialized_params["json_val"], complex_params["json_val"].serialize()
+        )
+        self.assertEqual(
+            deserialized_params["timestamp_val"], "2026-05-12T12:34:56.000000Z"
+        )
+        self.assertEqual(
+            deserialized_params["timestamp_nanos_val"], "2026-05-12T12:34:56.123456Z"
+        )
+
+        self.assertEqual(
+            deserialized_params["bytes_val"], b"binary-data".decode("utf-8")
+        )
+        self.assertEqual(deserialized_params["bool_val"], True)
+        self.assertEqual(deserialized_params["float_val"], 123.45)
+        self.assertEqual(deserialized_params["str_val"], "hello-world")
+        self.assertIsNone(deserialized_params["none_val"])

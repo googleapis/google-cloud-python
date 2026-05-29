@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+
 from google.cloud.spanner_dbapi.connection import Connection
-from google.cloud.spanner_v1.types import spanner as spanner_types
-from google.cloud.spanner_v1 import TypeCode
-from tests.mockserver_tests.mock_server_test_base import MockServerTestBase, add_single_result
 from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, Statement
+from google.cloud.spanner_v1 import TypeCode
+from google.cloud.spanner_v1.types import spanner as spanner_types
+from tests.mockserver_tests.mock_server_test_base import (
+    MockServerTestBase,
+    add_single_result,
+)
 
 
 class TestDbapiPartitionQuery(MockServerTestBase):
@@ -26,10 +29,12 @@ class TestDbapiPartitionQuery(MockServerTestBase):
 
         # 1. Set up mock results for PartitionQuery RPC in the mock servicer
         partition_response = spanner_types.PartitionResponse()
-        partition_response.partitions.extend([
-            spanner_types.Partition(partition_token=b"mock-token-1"),
-            spanner_types.Partition(partition_token=b"mock-token-2")
-        ])
+        partition_response.partitions.extend(
+            [
+                spanner_types.Partition(partition_token=b"mock-token-1"),
+                spanner_types.Partition(partition_token=b"mock-token-2"),
+            ]
+        )
         self.spanner_service.mock_spanner.add_partition_result(sql, partition_response)
 
         # 2. Set up mock results for ExecuteSql when executing the partitions
@@ -40,12 +45,16 @@ class TestDbapiPartitionQuery(MockServerTestBase):
         connection._read_only = True
 
         # Define partitioning parameters inside DB-API Statement
-        from google.cloud.spanner_dbapi.parsed_statement import StatementType, ClientSideStatementType
+        from google.cloud.spanner_dbapi.parsed_statement import (
+            ClientSideStatementType,
+            StatementType,
+        )
+
         parsed = ParsedStatement(
             statement_type=StatementType.CLIENT_SIDE,
             statement=Statement(sql),
             client_side_statement_type=ClientSideStatementType.PARTITION_QUERY,
-            client_side_statement_params=["SELECT name FROM users WHERE active = true"]
+            client_side_statement_params=["SELECT name FROM users WHERE active = true"],
         )
 
         # Generate serialized token strings (Base64 + GZip JSON)
@@ -64,8 +73,8 @@ class TestDbapiPartitionQuery(MockServerTestBase):
         self.assertIn("Bob", all_names)
 
     def test_partition_query_with_complex_parameters(self):
-        import decimal
         import datetime
+        import decimal
 
         sql = "SELECT name FROM users WHERE active = @active AND salary > @salary AND signup_time = @signup_time"
 
@@ -73,20 +82,23 @@ class TestDbapiPartitionQuery(MockServerTestBase):
         params = {
             "active": True,
             "salary": decimal.Decimal("75000.50"),
-            "signup_time": datetime.datetime(2026, 5, 10, 12, 34, 56, tzinfo=datetime.timezone.utc)
+            "signup_time": datetime.datetime(
+                2026, 5, 10, 12, 34, 56, tzinfo=datetime.timezone.utc
+            ),
         }
         from google.cloud.spanner_v1 import Type
+
         param_types = {
             "active": Type(code=TypeCode.BOOL),
             "salary": Type(code=TypeCode.NUMERIC),
-            "signup_time": Type(code=TypeCode.TIMESTAMP)
+            "signup_time": Type(code=TypeCode.TIMESTAMP),
         }
 
         # 1. Mock results for the partition generation RPC
         partition_response = spanner_types.PartitionResponse()
-        partition_response.partitions.extend([
-            spanner_types.Partition(partition_token=b"complex-mock-token-1")
-        ])
+        partition_response.partitions.extend(
+            [spanner_types.Partition(partition_token=b"complex-mock-token-1")]
+        )
         self.spanner_service.mock_spanner.add_partition_result(sql, partition_response)
 
         # 2. Mock results for execution of partition streaming SQL
@@ -96,12 +108,16 @@ class TestDbapiPartitionQuery(MockServerTestBase):
         connection = Connection(self.instance, self.database)
         connection._read_only = True
 
-        from google.cloud.spanner_dbapi.parsed_statement import StatementType, ClientSideStatementType
+        from google.cloud.spanner_dbapi.parsed_statement import (
+            ClientSideStatementType,
+            StatementType,
+        )
+
         parsed = ParsedStatement(
             statement_type=StatementType.CLIENT_SIDE,
             statement=Statement(sql, params=params, param_types=param_types),
             client_side_statement_type=ClientSideStatementType.PARTITION_QUERY,
-            client_side_statement_params=[sql]
+            client_side_statement_params=[sql],
         )
 
         # Execute partition generation - this serializes query parameters!

@@ -13,24 +13,26 @@
 # limitations under the License.
 
 import base64
+import copy
 import datetime
-import decimal
 import gzip
 import json
-import uuid
 from dataclasses import dataclass
-from google.cloud.spanner_v1.data_types import Interval, JsonObject
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 from google.protobuf.message import Message
+from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.spanner_v1 import BatchTransactionId
-from google.cloud.spanner_v1.types import ExecuteSqlRequest, DirectedReadOptions
+from google.cloud.spanner_v1._helpers import _make_value_pb
+from google.cloud.spanner_v1.types import DirectedReadOptions, ExecuteSqlRequest, Type
 
 _PROTO_CLASS_MAP = {
     "QueryOptions": ExecuteSqlRequest.QueryOptions,
     "DirectedReadOptions": DirectedReadOptions,
+    "Struct": Struct,
+    "Type": Type,
 }
 
 
@@ -39,14 +41,6 @@ def _serialize_value(val: Any) -> Any:
         return {"__type__": "bytes", "value": base64.b64encode(val).decode("utf-8")}
     elif isinstance(val, datetime.datetime):
         return {"__type__": "datetime", "value": val.isoformat()}
-    elif isinstance(val, datetime.date):
-        return {"__type__": "date", "value": val.isoformat()}
-    elif isinstance(val, decimal.Decimal):
-        return {"__type__": "decimal", "value": str(val)}
-    elif isinstance(val, uuid.UUID):
-        return {"__type__": "uuid", "value": str(val)}
-    elif isinstance(val, Interval):
-        return {"__type__": "interval", "value": str(val)}
     elif hasattr(val, "_pb"):
         return {
             "__type__": "protobuf",
@@ -59,8 +53,6 @@ def _serialize_value(val: Any) -> Any:
             "class": val.__class__.__name__,
             "value": MessageToDict(val, preserving_proto_field_name=True),
         }
-    elif isinstance(val, JsonObject):
-        return {"__type__": "json_object", "value": val.serialize()}
     elif isinstance(val, dict):
         return {k: _serialize_value(v) for k, v in val.items()}
     elif isinstance(val, list):
@@ -81,16 +73,6 @@ def _deserialize_value(val: Any) -> Any:
                 if dt_str.endswith("Z"):
                     dt_str = dt_str[:-1] + "+00:00"
                 return datetime.datetime.fromisoformat(dt_str)
-            elif t == "date":
-                return datetime.date.fromisoformat(val["value"])
-            elif t == "decimal":
-                return decimal.Decimal(val["value"])
-            elif t == "uuid":
-                return uuid.UUID(val["value"])
-            elif t == "interval":
-                return Interval.from_str(val["value"])
-            elif t == "json_object":
-                return JsonObject.from_str(val["value"])
             elif t == "tuple":
                 return tuple(_deserialize_value(x) for x in val["value"])
             elif t == "protobuf":
@@ -98,14 +80,31 @@ def _deserialize_value(val: Any) -> Any:
                 dict_val = val["value"]
                 if cls_name in _PROTO_CLASS_MAP:
                     cls = _PROTO_CLASS_MAP[cls_name]
-                    msg = cls()._pb
+                    msg = cls()._pb if hasattr(cls(), "_pb") else cls()
                     ParseDict(dict_val, msg)
-                    return cls(msg)
+                    return cls(msg) if hasattr(cls(), "_pb") else msg
                 return _deserialize_value(dict_val)
         return {k: _deserialize_value(v) for k, v in val.items()}
     elif isinstance(val, list):
         return [_deserialize_value(v) for v in val]
     return val
+
+
+def _unpack_value_pb(value):
+    which = value.WhichOneof("kind")
+    if which == "null_value":
+        return None
+    elif which == "number_value":
+        return value.number_value
+    elif which == "string_value":
+        return value.string_value
+    elif which == "bool_value":
+        return value.bool_value
+    elif which == "struct_value":
+        return {k: _unpack_value_pb(v) for k, v in value.struct_value.fields.items()}
+    elif which == "list_value":
+        return [_unpack_value_pb(v) for v in value.list_value.values]
+    return None
 
 
 def decode_from_string(encoded_partition_id):
@@ -120,10 +119,29 @@ def decode_from_string(encoded_partition_id):
         read_timestamp=_deserialize_value(btid_data["read_timestamp"]),
     )
     partition_result = _deserialize_value(data["partition_result"])
+
+    # Post-process query params back from Protobuf Struct to Python primitives
+    if "query" in partition_result and "params" in partition_result["query"]:
+        params_pb = partition_result["query"]["params"]
+        if params_pb:
+            partition_result["query"]["params"] = {
+                k: _unpack_value_pb(v) for k, v in params_pb.fields.items()
+            }
+
     return PartitionId(btid, partition_result)
 
 
 def encode_to_string(batch_transaction_id, partition_result):
+    # Copy to avoid modifying the caller's dictionary in connection.py
+    partition_result = copy.deepcopy(partition_result)
+
+    # Pre-process query params into a Protobuf Struct
+    if "query" in partition_result and "params" in partition_result["query"]:
+        params = partition_result["query"]["params"]
+        if params:
+            params_pb = Struct(fields={k: _make_value_pb(v) for k, v in params.items()})
+            partition_result["query"]["params"] = params_pb
+
     data = {
         "batch_transaction_id": {
             "transaction_id": _serialize_value(batch_transaction_id.transaction_id),
