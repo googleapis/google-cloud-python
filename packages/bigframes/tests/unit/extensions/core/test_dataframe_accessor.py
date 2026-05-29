@@ -16,13 +16,12 @@ import unittest.mock as mock
 
 import pandas as pd
 
+import bigframes.bigquery.ai
 import bigframes.pandas as bpd
+import bigframes.session
 
 
 def test_ai_forecast(monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
     session = mock.create_autospec(bigframes.session.Session)
     bf_df = mock.create_autospec(bpd.DataFrame)
     session.read_pandas.return_value = bf_df
@@ -57,9 +56,6 @@ def test_ai_forecast(monkeypatch):
 
 
 def test_bigframes_ai_forecast(monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
     session = mock.create_autospec(bigframes.session.Session)
     bf_df = mock.create_autospec(bpd.DataFrame)
 
@@ -83,8 +79,6 @@ def test_bigframes_ai_forecast(monkeypatch):
 
 
 def test_ai_generate(monkeypatch):
-    import bigframes.bigquery.ai
-
     def mock_generate(prompt, **kwargs):
         result_series = mock.create_autospec(bpd.Series)
         result_series.to_pandas.return_value = (prompt, kwargs)
@@ -115,15 +109,11 @@ def test_ai_generate(monkeypatch):
 
 
 def test_bigframes_ai_generate(scalar_types_df: bpd.DataFrame, monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
-    session = mock.create_autospec(bigframes.session.Session)
     bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
 
     def mock_generate(prompt, **kwargs):
         assert prompt is bf_series
-        result_series = mock.create_autospec(bpd.Series)
         return result_series
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate", mock_generate)
@@ -137,13 +127,10 @@ def test_bigframes_ai_generate(scalar_types_df: bpd.DataFrame, monkeypatch):
         output_schema={"res": "STRING"},
     )
 
-    session.read_pandas.assert_not_called()
-    assert result is not None
+    assert result is result_series
 
 
 def test_ai_generate_bool(monkeypatch):
-    import bigframes.bigquery.ai
-
     def mock_generate_bool(prompt, **kwargs):
         result_series = mock.create_autospec(bpd.Series)
         result_series.to_pandas.return_value = (prompt, kwargs)
@@ -172,15 +159,11 @@ def test_ai_generate_bool(monkeypatch):
 
 
 def test_bigframes_ai_generate_bool(scalar_types_df: bpd.DataFrame, monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
-    session = mock.create_autospec(bigframes.session.Session)
     bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_bool(prompt, **kwargs):
         assert prompt is bf_series
-        result_series = mock.create_autospec(bpd.Series)
         return result_series
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_bool", mock_generate_bool)
@@ -193,13 +176,10 @@ def test_bigframes_ai_generate_bool(scalar_types_df: bpd.DataFrame, monkeypatch)
         model_params={"temp": 0.5},
     )
 
-    session.read_pandas.assert_not_called()
-    assert result is not None
+    assert result is result_series
 
 
 def test_ai_generate_int(monkeypatch):
-    import bigframes.bigquery.ai
-
     def mock_generate_int(prompt, **kwargs):
         result_series = mock.create_autospec(bpd.Series)
         result_series.to_pandas.return_value = (prompt, kwargs)
@@ -228,15 +208,11 @@ def test_ai_generate_int(monkeypatch):
 
 
 def test_bigframes_ai_generate_int(scalar_types_df: bpd.DataFrame, monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
-    session = mock.create_autospec(bigframes.session.Session)
     bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_int(prompt, **kwargs):
         assert prompt is bf_series
-        result_series = mock.create_autospec(bpd.Series)
         return result_series
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_int", mock_generate_int)
@@ -249,13 +225,10 @@ def test_bigframes_ai_generate_int(scalar_types_df: bpd.DataFrame, monkeypatch):
         model_params={"temp": 0.5},
     )
 
-    session.read_pandas.assert_not_called()
-    assert result is not None
+    assert result is result_series
 
 
 def test_ai_generate_double(monkeypatch):
-    import bigframes.bigquery.ai
-
     def mock_generate_double(prompt, **kwargs):
         result_series = mock.create_autospec(bpd.Series)
         result_series.to_pandas.return_value = (prompt, kwargs)
@@ -284,15 +257,11 @@ def test_ai_generate_double(monkeypatch):
 
 
 def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatch):
-    import bigframes.bigquery.ai
-    import bigframes.session
-
-    session = mock.create_autospec(bigframes.session.Session)
     bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
 
     def mock_generate_double(prompt, **kwargs):
         assert prompt is bf_series
-        result_series = mock.create_autospec(bpd.Series)
         return result_series
 
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_double", mock_generate_double)
@@ -305,5 +274,4 @@ def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatc
         model_params={"temp": 0.5},
     )
 
-    session.read_pandas.assert_not_called()
-    assert result is not None
+    assert result is result_series
