@@ -281,15 +281,19 @@ def prerelease_deps(session, protobuf_implementation):
     # the `core_dependencies_from_source` list in the `core_deps_from_source`
     # nox session should also be updated.
     prerel_deps = [
-        "cryptography",
-        "pyasn1-modules",
-        "requests",
+        # Note: We use --no-deps below to prevent prerelease updates.
+        # However, aiohttp 3.10+ introduced aiohappyeyeballs as a strict requirement.
+        # We must manually inject it here so the aiohttp pre-release doesn't crash on import.
+        "aiohappyeyeballs",
         "aiohttp",
-        "urllib3",
+        "cryptography",
+        "grpcio",
+        "pyasn1-modules",
         "pyjwt",
         "pyopenssl",
+        "requests",
         "rsa",
-        "grpcio",
+        "urllib3",
     ]
 
     for dep in prerel_deps:
