@@ -4,7 +4,10 @@ on:
   pull_request:
     paths:
       - 'packages/gapic-generator/**'
-      - '.github/workflows/experiment.yml'
+      - '.github/workflows/prerelease-radar.yml'
+
+env:
+  SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
 
 jobs:
   test-prerelease:
@@ -29,6 +32,10 @@ jobs:
         with:
           version: "25.3"
 
+      - name: Clone Synthtool Templates
+        run: |
+          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
+
       - name: Install Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
@@ -37,8 +44,7 @@ jobs:
       - name: Generate Redis via Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
-          # Pass the target package path as a positional argument
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate packages/google-cloud-redis
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate redis
 
       - name: Install Nox
         run: |
