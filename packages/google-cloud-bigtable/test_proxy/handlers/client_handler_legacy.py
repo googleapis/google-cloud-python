@@ -230,6 +230,15 @@ class LegacyTestProxyClientHandler(client_handler.TestProxyClientHandlerAsync):
         table_id = request["table_name"].split("/")[-1]
         instance = self.client.instance(self.instance_id)
         table = instance.table(table_id)
-        response = list(table.sample_row_keys())
+        row_range = None
+        if "row_range" in request:
+            from google.cloud.bigtable.row_set import RowRange
+            rr_dict = request["row_range"]
+            start_key = rr_dict.get("start_key_closed") or rr_dict.get("start_key_open")
+            start_inclusive = "start_key_closed" in rr_dict
+            end_key = rr_dict.get("end_key_closed") or rr_dict.get("end_key_open")
+            end_inclusive = "end_key_closed" in rr_dict
+            row_range = RowRange(start_key, end_key, start_inclusive, end_inclusive)
+        response = list(table.sample_row_keys(row_range=row_range))
         tuple_response = [(s.row_key, s.offset_bytes) for s in response]
         return tuple_response

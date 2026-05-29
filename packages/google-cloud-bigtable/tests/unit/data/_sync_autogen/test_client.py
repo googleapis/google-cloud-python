@@ -208,10 +208,8 @@ class TestBigtableDataClient:
     def test__ping_and_warm_instances(self):
         """test ping and warm with mocked asyncio.gather"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = (
-            lambda *args: self._get_target_class()._execute_ping_and_warms(
-                client_mock, *args
-            )
+        client_mock._execute_ping_and_warms = lambda *args: (
+            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -254,10 +252,8 @@ class TestBigtableDataClient:
     def test__ping_and_warm_single_instance(self):
         """should be able to call ping and warm with single instance"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = (
-            lambda *args: self._get_target_class()._execute_ping_and_warms(
-                client_mock, *args
-            )
+        client_mock._execute_ping_and_warms = lambda *args: (
+            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -1326,11 +1322,11 @@ class TestReadRows:
 
     def _make_table(self, *args, **kwargs):
         client_mock = mock.Mock()
-        client_mock._register_instance.side_effect = (
-            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._register_instance.side_effect = lambda *args, **kwargs: (
+            CrossSync._Sync_Impl.yield_to_event_loop()
         )
-        client_mock._remove_instance_registration.side_effect = (
-            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._remove_instance_registration.side_effect = lambda *args, **kwargs: (
+            CrossSync._Sync_Impl.yield_to_event_loop()
         )
         kwargs["instance_id"] = kwargs.get(
             "instance_id", args[0] if args else "instance"
@@ -1792,9 +1788,8 @@ class TestReadRowsSharded:
                 with mock.patch.object(
                     table.client._gapic_client, "read_rows"
                 ) as read_rows:
-                    read_rows.side_effect = (
-                        lambda *args,
-                        **kwargs: CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
+                    read_rows.side_effect = lambda *args, **kwargs: (
+                        CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
                             [
                                 CrossSync._Sync_Impl.TestReadRows._make_chunk(row_key=k)
                                 for k in args[0].rows.row_keys
@@ -1997,6 +1992,26 @@ class TestSampleRowKeys:
                     assert result[0] == samples[0]
                     assert result[1] == samples[1]
                     assert result[2] == samples[2]
+
+    def test_sample_row_keys_w_row_range(self):
+        """Test that method returns the expected key samples when row_range is provided"""
+        samples = [(b"test_1", 0), (b"test_2", 100), (b"test_3", 200)]
+        from google.cloud.bigtable.data import RowRange
+
+        row_range = RowRange(start_key=b"a", end_key=b"b")
+        with self._make_client() as client:
+            with client.get_table("instance", "table") as table:
+                with mock.patch.object(
+                    table.client._gapic_client,
+                    "sample_row_keys",
+                    CrossSync._Sync_Impl.Mock(),
+                ) as sample_row_keys:
+                    sample_row_keys.return_value = self._make_gapic_stream(samples)
+                    result = table.sample_row_keys(row_range=row_range)
+                    assert len(result) == 3
+                    sample_row_keys.assert_called_once()
+                    called_request = sample_row_keys.call_args[1]["request"]
+                    assert called_request.row_range == row_range._to_pb()
 
     def test_sample_row_keys_bad_timeout(self):
         """should raise error if timeout is negative"""
@@ -2883,6 +2898,7 @@ class TestExecuteQuery:
             yield prepare_mock
 
     def _make_gapic_stream(self, sample_list: list["ExecuteQueryResponse" | Exception]):
+
         class MockStream:
             def __init__(self, sample_list):
                 self.sample_list = sample_list

@@ -739,7 +739,7 @@ class Table(object):
         )
         return retryable_mutate_rows(retry=retry)
 
-    def sample_row_keys(self):
+    def sample_row_keys(self, row_range=None):
         """Read a sample of row keys in the table.
 
         For example:
@@ -772,15 +772,19 @@ class Table(object):
         samples would require space roughly equal to the difference in their
         ``offset_bytes`` fields.
 
+        :type row_range: :class:`~google.cloud.bigtable.row_set.RowRange`
+        :param row_range: (Optional) Row range to restrict the sample to.
+
         :rtype: :class:`~google.cloud.exceptions.GrpcRendezvous`
         :returns: A cancel-able iterator. Can be consumed by calling ``next()``
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
         data_client = self._instance._client.table_data_client
-        response_iterator = data_client.sample_row_keys(
-            request={"table_name": self.name, "app_profile_id": self._app_profile_id}
-        )
+        request = {"table_name": self.name, "app_profile_id": self._app_profile_id}
+        if row_range is not None:
+            request["row_range"] = row_range.get_range_kwargs()
+        response_iterator = data_client.sample_row_keys(request=request)
 
         return response_iterator
 

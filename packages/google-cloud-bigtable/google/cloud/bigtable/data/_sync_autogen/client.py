@@ -84,7 +84,7 @@ from google.cloud.bigtable.data.execute_query.metadata import (
 from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
 from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
 from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 from google.cloud.bigtable.data.row import Row
 from google.cloud.bigtable.data.row_filters import (
     CellsRowLimitFilter,
@@ -1139,6 +1139,7 @@ class _DataApiTarget(abc.ABC):
     def sample_row_keys(
         self,
         *,
+        row_range: RowRange | None = None,
         operation_timeout: float | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         attempt_timeout: float | None | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         retryable_errors: Sequence[type[Exception]]
@@ -1155,6 +1156,8 @@ class _DataApiTarget(abc.ABC):
         row_keys, along with offset positions in the table
 
         Args:
+            row_range: the range of rows to sample. If not provided, samples the
+                entire table.
             operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.i
                 Defaults to the Table's default_operation_timeout
@@ -1187,7 +1190,9 @@ class _DataApiTarget(abc.ABC):
             def execute_rpc():
                 results = self.client._gapic_client.sample_row_keys(
                     request=SampleRowKeysRequest(
-                        app_profile_id=self.app_profile_id, **self._request_path
+                        app_profile_id=self.app_profile_id,
+                        row_range=row_range._to_pb() if row_range else None,
+                        **self._request_path,
                     ),
                     timeout=next(attempt_timeout_gen),
                     retry=None,
