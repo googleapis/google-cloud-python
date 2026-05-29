@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.6.0...db-dtypes-v1.7.0) (2026-05-29)
+
+
+### Features
+
+* support pandas 3.0 (#17177) ([2086b34d8b3418462c9bc89b96eac779a25a3afd](https://github.com/googleapis/google-cloud-python/commit/2086b34d8b3418462c9bc89b96eac779a25a3afd))
+
+
+### Bug Fixes
+
+* bump pyarrow from 13.0.0 to 14.0.1 in /packages/db-dtypes (#17182) ([49252da0f81c63ff7bc384dc3ddd92608e15f459](https://github.com/googleapis/google-cloud-python/commit/49252da0f81c63ff7bc384dc3ddd92608e15f459))
+* Drop support for Python <= 3.9 (#16966) ([66988617e67e9c923d8bcbd4034505ec9a20968f](https://github.com/googleapis/google-cloud-python/commit/66988617e67e9c923d8bcbd4034505ec9a20968f))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.5.1...db-dtypes-v1.6.0) (2026-05-06)
 
 

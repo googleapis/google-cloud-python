@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.30.0...google-cloud-datacatalog-v3.31.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.29.0...google-cloud-datacatalog-v3.30.0) (2026-03-26)
 
 

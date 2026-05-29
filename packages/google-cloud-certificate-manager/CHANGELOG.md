@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-certificate-manager/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.13.0...google-cloud-certificate-manager-v1.14.0) (2026-05-29)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.12.0...google-cloud-certificate-manager-v1.13.0) (2026-03-26)
 
 
