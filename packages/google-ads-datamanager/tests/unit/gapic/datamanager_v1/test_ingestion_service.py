@@ -64,6 +64,7 @@ from google.ads.datamanager_v1.types import (
     consent,
     destination,
     device_info,
+    encrypted_user_id,
     encryption_info,
     event,
     experimental_field,

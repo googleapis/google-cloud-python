@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "ConversationReference",
         "ClientManagedResourceContext",
         "Message",
+        "LookerSettings",
         "UserMessage",
         "SystemMessage",
         "TextMessage",
@@ -189,6 +190,10 @@ class ChatRequest(proto.Message):
             conversations and agents resources.
 
             This field is a member of `oneof`_ ``context_provider``.
+        looker_settings (google.cloud.geminidataanalytics_v1.types.LookerSettings):
+            Optional. Looker specific settings.
+
+            This field is a member of `oneof`_ ``datasource_settings``.
         parent (str):
             Required. The parent value for chat request. Pattern:
             ``projects/{project}/locations/{location}``
@@ -206,6 +211,11 @@ class ChatRequest(proto.Message):
         thinking_mode (google.cloud.geminidataanalytics_v1.types.ChatRequest.ThinkingMode):
             Optional. The thinking mode to use for the agent loop.
             Defaults to THINKING_MODE_UNSPECIFIED if not specified.
+        model (google.cloud.geminidataanalytics_v1.types.ChatRequest.Model):
+            Optional. The model to use for the agent loop
+            when processing the request. This setting only
+            has an effect when context.options.model is not
+            set.
     """
 
     class ThinkingMode(proto.Enum):
@@ -224,6 +234,23 @@ class ChatRequest(proto.Message):
         THINKING_MODE_UNSPECIFIED = 0
         FAST = 1
         THINKING = 2
+
+    class Model(proto.Enum):
+        r"""Model selection for the agent.
+
+        Values:
+            MODEL_UNSPECIFIED (0):
+                No model specified. The default model will be used.
+                Currently, this is ``gemini-3.0-flash-preview``.
+            LATEST_GA_MODEL (1):
+                Use the most up-to-date non-preview model. Currently, this
+                is ``gemini-2.5-flash``. This constrains the request level
+                settings. The default will change to ``gemini-2.5-flash``,
+                and setting ``thinking_mode`` will not be supported.
+        """
+
+        MODEL_UNSPECIFIED = 0
+        LATEST_GA_MODEL = 1
 
     inline_context: context.Context = proto.Field(
         proto.MESSAGE,
@@ -249,6 +276,12 @@ class ChatRequest(proto.Message):
         oneof="context_provider",
         message="ClientManagedResourceContext",
     )
+    looker_settings: "LookerSettings" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="datasource_settings",
+        message="LookerSettings",
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=3,
@@ -267,6 +300,11 @@ class ChatRequest(proto.Message):
         proto.ENUM,
         number=9,
         enum=ThinkingMode,
+    )
+    model: Model = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Model,
     )
 
 
@@ -421,6 +459,28 @@ class Message(proto.Message):
     message_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class LookerSettings(proto.Message):
+    r"""Message to hold Looker specific custom settings.
+
+    Attributes:
+        enable_dev_mode (bool):
+            Optional. Whether to operate in Looker's
+            Development Mode. If true, the API session will
+            be switched to the "dev" workspace, allowing
+            interaction with LookML changes in the user's
+            development branch. If false or unset, the
+            session remains in the default state (Production
+            Mode).
+            See
+            https://cloud.google.com/looker/docs/dev-mode-prod-mode.
+    """
+
+    enable_dev_mode: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 

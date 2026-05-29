@@ -315,6 +315,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_modify_entry(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_modify_entry(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_search_entries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -1724,6 +1732,48 @@ class CatalogServiceRestInterceptor:
         `post_lookup_entry_links` interceptor. The (possibly modified) response returned by
         `post_lookup_entry_links` will be passed to
         `post_lookup_entry_links_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_modify_entry(
+        self,
+        request: catalog.ModifyEntryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.ModifyEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for modify_entry
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_modify_entry(self, response: catalog.Entry) -> catalog.Entry:
+        """Post-rpc interceptor for modify_entry
+
+        DEPRECATED. Please use the `post_modify_entry_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_modify_entry` interceptor runs
+        before the `post_modify_entry_with_metadata` interceptor.
+        """
+        return response
+
+    def post_modify_entry_with_metadata(
+        self, response: catalog.Entry, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.Entry, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for modify_entry
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_modify_entry_with_metadata`
+        interceptor in new development instead of the `post_modify_entry` interceptor.
+        When both interceptors are used, this `post_modify_entry_with_metadata` interceptor runs after the
+        `post_modify_entry` interceptor. The (possibly modified) response returned by
+        `post_modify_entry` will be passed to
+        `post_modify_entry_with_metadata`.
         """
         return response, metadata
 
@@ -6833,6 +6883,160 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _ModifyEntry(
+        _BaseCatalogServiceRestTransport._BaseModifyEntry, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.ModifyEntry")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.ModifyEntryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.Entry:
+            r"""Call the modify entry method over HTTP.
+
+            Args:
+                request (~.catalog.ModifyEntryRequest):
+                    The request object. Modify Entry request using
+                permissions in the source system.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.Entry:
+                    An entry is a representation of a
+                data resource that can be described by
+                various metadata.
+
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseModifyEntry._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_modify_entry(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseModifyEntry._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseModifyEntry._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseModifyEntry._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.ModifyEntry",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "ModifyEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._ModifyEntry._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.Entry()
+            pb_resp = catalog.Entry.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_modify_entry(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_modify_entry_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.Entry.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.modify_entry",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "ModifyEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _SearchEntries(
         _BaseCatalogServiceRestTransport._BaseSearchEntries, CatalogServiceRestStub
     ):
@@ -8121,6 +8325,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupEntryLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def modify_entry(self) -> Callable[[catalog.ModifyEntryRequest], catalog.Entry]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ModifyEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_entries(

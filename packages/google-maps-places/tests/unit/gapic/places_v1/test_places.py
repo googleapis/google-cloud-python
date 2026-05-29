@@ -78,6 +78,7 @@ from google.maps.places_v1.types import (
     route_modifiers,
     routing_preference,
     routing_summary,
+    transit,
     travel_mode,
 )
 

@@ -75,6 +75,13 @@ from .routing_preference import (
 from .routing_summary import (
     RoutingSummary,
 )
+from .transit import (
+    TransitAgency,
+    TransitIcon,
+    TransitLine,
+    TransitStation,
+    TransitStop,
+)
 from .travel_mode import (
     TravelMode,
 )
@@ -108,5 +115,10 @@ __all__ = (
     "RouteModifiers",
     "RoutingPreference",
     "RoutingSummary",
+    "TransitAgency",
+    "TransitIcon",
+    "TransitLine",
+    "TransitStation",
+    "TransitStop",
     "TravelMode",
 )
