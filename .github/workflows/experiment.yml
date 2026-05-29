@@ -37,7 +37,8 @@ jobs:
       - name: Generate Redis via Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -packages=redis -output-dir=./workspace/redis
+          # Pass the target package path as a positional argument
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate packages/google-cloud-redis
 
       - name: Install Nox
         run: |
@@ -47,4 +48,5 @@ jobs:
       - name: Run Dynamic Prerelease Check
         run: |
           cd packages/gapic-generator
-          nox -s prerelease_deps -- ../../workspace/redis
+          # Point the Nox engine to the newly generated package directory
+          nox -s prerelease_deps -- ../google-cloud-redis
