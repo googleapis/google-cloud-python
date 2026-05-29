@@ -5512,7 +5512,7 @@ libraries:
       - packages/google-maps-geocode/docs/
     tag_format: '{id}-v{version}'
   - id: google-maps-mapmanagement
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/maps/mapmanagement/v2beta
