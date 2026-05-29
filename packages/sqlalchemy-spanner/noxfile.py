@@ -550,7 +550,6 @@ def cover(session):
 @nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
-    # NOTE: There is no docs directory, thus docs builds do not run.
     session.skip("There is no docs directory, thus docs builds do not run")
 
 
