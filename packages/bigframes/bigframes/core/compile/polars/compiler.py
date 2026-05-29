@@ -37,6 +37,8 @@ import bigframes.operations.frequency_ops as freq_ops
 import bigframes.operations.generic_ops as gen_ops
 import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
+import bigframes.operations.remote_function_ops as remote_function_ops
+import bigframes.operations.struct_ops as struct_ops
 import bigframes.operations.string_ops as string_ops
 from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
 from bigframes.core.compile.polars import lowering
@@ -122,7 +124,7 @@ if polars_installed:
                 ]
             )
         if bigframes.dtypes.is_array_like(dtype):
-            return pl.Array(
+            return pl.List(
                 inner=_bigframes_dtype_to_polars_dtype(
                     bigframes.dtypes.get_array_inner_type(dtype)
                 )
@@ -531,6 +533,35 @@ if polars_installed:
                 raise NotImplementedError(
                     f"Haven't implemented array aggregation: {op.aggregation}"
                 )
+
+        @compile_op.register(struct_ops.StructOp)
+        def _(self, op: struct_ops.StructOp, *inputs: pl.Expr) -> pl.Expr:
+            return pl.struct(**{col: inp for col, inp in zip(op.column_names, inputs)})
+
+        @compile_op.register(struct_ops.StructFieldOp)
+        def _(self, op: struct_ops.StructFieldOp, *inputs: pl.Expr) -> pl.Expr:
+            return inputs[0][op.name_or_index]
+
+        @compile_op.register(remote_function_ops.PythonUdfOp)
+        def _(self, op: ops.PythonUdfOp, *inputs: pl.Expr) -> pl.Expr:
+            from bigframes.functions import function_template
+
+            if op.function_def.signature.is_row_processor:
+                def handler(py_struct):
+                    code = op.function_def.code.to_callable()
+                    args = list(py_struct.values())
+                    series_arg = function_template.get_pd_series(py_struct)
+                    return code(series_arg, *args[1:])
+            else:
+                def handler(py_struct):
+                    code = op.function_def.code.to_callable()
+                    return code(*(field for field in py_struct.values()))
+                
+            return pl.struct(*inputs).map_elements(
+                handler,
+                return_dtype=_DTYPE_MAPPING[op.output_type()],
+                skip_nulls=False,
+            )
 
     @dataclasses.dataclass(frozen=True)
     class PolarsAggregateCompiler:

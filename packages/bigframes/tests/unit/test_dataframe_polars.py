@@ -1286,6 +1286,20 @@ def test_apply_series_scalar_callable(
 
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
+def test_df_map_with_udf(session):
+    df = bpd.DataFrame({"x": [1, 2, None, 4], "y": [5, None, 7, 8]}, dtype="Int64")
+    @session.udf()
+    def foo(row: pd.Series) -> int:
+        if row["x"] is None or row["y"] is None:
+            return -1
+        return row["x"] * row["y"]
+
+
+    bf_result = df.apply(foo, axis=1).to_pandas()
+    pd_result = pd.Series([2, 4, -1, 8])
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 
 def test_df_pipe(
     scalars_df_index,
