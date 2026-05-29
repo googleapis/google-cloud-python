@@ -44,7 +44,7 @@ jobs:
       - name: Generate Redis via Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate redis
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate google-cloud-redis
 
       - name: Install Nox
         run: |
