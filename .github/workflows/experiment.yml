@@ -31,6 +31,13 @@ jobs:
         uses: arduino/setup-protoc@v3
         with:
           version: "25.3"
+      
+      - name: Install pandoc
+        run: |
+          mkdir -p /tmp/pandoc
+          curl -fsSL --retry 5 -o /tmp/pandoc.tar.gz https://github.com/jgm/pandoc/releases/download/3.8.2/pandoc-3.8.2-linux-amd64.tar.gz
+          tar -xvf /tmp/pandoc.tar.gz -C /tmp/pandoc --strip-components=1
+          echo "/tmp/pandoc/bin" >> $GITHUB_PATH
 
       - name: Clone Synthtool Templates
         run: |
