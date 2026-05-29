@@ -421,8 +421,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -544,8 +543,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -672,8 +670,7 @@ class LineageAsyncClient:
             ),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1171,8 +1168,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1797,8 +1793,7 @@ class LineageAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._client._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

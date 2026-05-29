@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1295,8 +1311,8 @@ def test_saas_rollouts_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.ListRolloutsRequest,
-        dict,
+        rollouts_service.ListRolloutsRequest(),
+        {},
     ],
 )
 def test_list_rollouts(request_type, transport: str = "grpc"):
@@ -1307,7 +1323,7 @@ def test_list_rollouts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -1356,12 +1372,13 @@ def test_list_rollouts_non_empty_request_with_auto_populated_field():
         client.list_rollouts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.ListRolloutsRequest(
+        request_msg = rollouts_service.ListRolloutsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_rollouts_use_cached_wrapped_rpc():
@@ -1442,9 +1459,14 @@ async def test_list_rollouts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_rollouts_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.ListRolloutsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.ListRolloutsRequest(),
+        {},
+    ],
+)
+async def test_list_rollouts_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1452,7 +1474,7 @@ async def test_list_rollouts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -1475,11 +1497,6 @@ async def test_list_rollouts_async(
     assert isinstance(response, pagers.ListRolloutsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_rollouts_async_from_dict():
-    await test_list_rollouts_async(request_type=dict)
 
 
 def test_list_rollouts_field_headers():
@@ -1818,8 +1835,8 @@ async def test_list_rollouts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.GetRolloutRequest,
-        dict,
+        rollouts_service.GetRolloutRequest(),
+        {},
     ],
 )
 def test_get_rollout(request_type, transport: str = "grpc"):
@@ -1830,7 +1847,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout), "__call__") as call:
@@ -1899,9 +1916,10 @@ def test_get_rollout_non_empty_request_with_auto_populated_field():
         client.get_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.GetRolloutRequest(
+        request_msg = rollouts_service.GetRolloutRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_rollout_use_cached_wrapped_rpc():
@@ -1982,9 +2000,14 @@ async def test_get_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_rollout_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.GetRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.GetRolloutRequest(),
+        {},
+    ],
+)
+async def test_get_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1992,7 +2015,7 @@ async def test_get_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout), "__call__") as call:
@@ -2038,11 +2061,6 @@ async def test_get_rollout_async(
     assert response.rollout_kind == "rollout_kind_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_rollout_async_from_dict():
-    await test_get_rollout_async(request_type=dict)
 
 
 def test_get_rollout_field_headers():
@@ -2191,8 +2209,8 @@ async def test_get_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.CreateRolloutRequest,
-        dict,
+        rollouts_service.CreateRolloutRequest(),
+        {},
     ],
 )
 def test_create_rollout(request_type, transport: str = "grpc"):
@@ -2203,7 +2221,7 @@ def test_create_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rollout), "__call__") as call:
@@ -2274,11 +2292,12 @@ def test_create_rollout_non_empty_request_with_auto_populated_field():
         client.create_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.CreateRolloutRequest(
+        request_msg = rollouts_service.CreateRolloutRequest(
             parent="parent_value",
             rollout_id="rollout_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_rollout_use_cached_wrapped_rpc():
@@ -2359,9 +2378,14 @@ async def test_create_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_rollout_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.CreateRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.CreateRolloutRequest(),
+        {},
+    ],
+)
+async def test_create_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2369,7 +2393,7 @@ async def test_create_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rollout), "__call__") as call:
@@ -2415,11 +2439,6 @@ async def test_create_rollout_async(
     assert response.rollout_kind == "rollout_kind_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_rollout_async_from_dict():
-    await test_create_rollout_async(request_type=dict)
 
 
 def test_create_rollout_field_headers():
@@ -2588,8 +2607,8 @@ async def test_create_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.UpdateRolloutRequest,
-        dict,
+        rollouts_service.UpdateRolloutRequest(),
+        {},
     ],
 )
 def test_update_rollout(request_type, transport: str = "grpc"):
@@ -2600,7 +2619,7 @@ def test_update_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_rollout), "__call__") as call:
@@ -2669,9 +2688,10 @@ def test_update_rollout_non_empty_request_with_auto_populated_field():
         client.update_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.UpdateRolloutRequest(
+        request_msg = rollouts_service.UpdateRolloutRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_rollout_use_cached_wrapped_rpc():
@@ -2752,9 +2772,14 @@ async def test_update_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_rollout_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.UpdateRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.UpdateRolloutRequest(),
+        {},
+    ],
+)
+async def test_update_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2762,7 +2787,7 @@ async def test_update_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_rollout), "__call__") as call:
@@ -2808,11 +2833,6 @@ async def test_update_rollout_async(
     assert response.rollout_kind == "rollout_kind_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_rollout_async_from_dict():
-    await test_update_rollout_async(request_type=dict)
 
 
 def test_update_rollout_field_headers():
@@ -2971,8 +2991,8 @@ async def test_update_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.DeleteRolloutRequest,
-        dict,
+        rollouts_service.DeleteRolloutRequest(),
+        {},
     ],
 )
 def test_delete_rollout(request_type, transport: str = "grpc"):
@@ -2983,7 +3003,7 @@ def test_delete_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_rollout), "__call__") as call:
@@ -3026,11 +3046,12 @@ def test_delete_rollout_non_empty_request_with_auto_populated_field():
         client.delete_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.DeleteRolloutRequest(
+        request_msg = rollouts_service.DeleteRolloutRequest(
             name="name_value",
             etag="etag_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_rollout_use_cached_wrapped_rpc():
@@ -3111,9 +3132,14 @@ async def test_delete_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_rollout_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.DeleteRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.DeleteRolloutRequest(),
+        {},
+    ],
+)
+async def test_delete_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3121,7 +3147,7 @@ async def test_delete_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_rollout), "__call__") as call:
@@ -3137,11 +3163,6 @@ async def test_delete_rollout_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_rollout_async_from_dict():
-    await test_delete_rollout_async(request_type=dict)
 
 
 def test_delete_rollout_field_headers():
@@ -3286,8 +3307,8 @@ async def test_delete_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.ListRolloutKindsRequest,
-        dict,
+        rollouts_service.ListRolloutKindsRequest(),
+        {},
     ],
 )
 def test_list_rollout_kinds(request_type, transport: str = "grpc"):
@@ -3298,7 +3319,7 @@ def test_list_rollout_kinds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3351,12 +3372,13 @@ def test_list_rollout_kinds_non_empty_request_with_auto_populated_field():
         client.list_rollout_kinds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.ListRolloutKindsRequest(
+        request_msg = rollouts_service.ListRolloutKindsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_rollout_kinds_use_cached_wrapped_rpc():
@@ -3441,10 +3463,14 @@ async def test_list_rollout_kinds_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_rollout_kinds_async(
-    transport: str = "grpc_asyncio",
-    request_type=rollouts_service.ListRolloutKindsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.ListRolloutKindsRequest(),
+        {},
+    ],
+)
+async def test_list_rollout_kinds_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3452,7 +3478,7 @@ async def test_list_rollout_kinds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3477,11 +3503,6 @@ async def test_list_rollout_kinds_async(
     assert isinstance(response, pagers.ListRolloutKindsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_rollout_kinds_async_from_dict():
-    await test_list_rollout_kinds_async(request_type=dict)
 
 
 def test_list_rollout_kinds_field_headers():
@@ -3836,8 +3857,8 @@ async def test_list_rollout_kinds_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.GetRolloutKindRequest,
-        dict,
+        rollouts_service.GetRolloutKindRequest(),
+        {},
     ],
 )
 def test_get_rollout_kind(request_type, transport: str = "grpc"):
@@ -3848,7 +3869,7 @@ def test_get_rollout_kind(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout_kind), "__call__") as call:
@@ -3910,9 +3931,10 @@ def test_get_rollout_kind_non_empty_request_with_auto_populated_field():
         client.get_rollout_kind(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.GetRolloutKindRequest(
+        request_msg = rollouts_service.GetRolloutKindRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_rollout_kind_use_cached_wrapped_rpc():
@@ -3995,9 +4017,14 @@ async def test_get_rollout_kind_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_rollout_kind_async(
-    transport: str = "grpc_asyncio", request_type=rollouts_service.GetRolloutKindRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.GetRolloutKindRequest(),
+        {},
+    ],
+)
+async def test_get_rollout_kind_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4005,7 +4032,7 @@ async def test_get_rollout_kind_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout_kind), "__call__") as call:
@@ -4044,11 +4071,6 @@ async def test_get_rollout_kind_async(
     )
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_rollout_kind_async_from_dict():
-    await test_get_rollout_kind_async(request_type=dict)
 
 
 def test_get_rollout_kind_field_headers():
@@ -4197,8 +4219,8 @@ async def test_get_rollout_kind_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.CreateRolloutKindRequest,
-        dict,
+        rollouts_service.CreateRolloutKindRequest(),
+        {},
     ],
 )
 def test_create_rollout_kind(request_type, transport: str = "grpc"):
@@ -4209,7 +4231,7 @@ def test_create_rollout_kind(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4277,11 +4299,12 @@ def test_create_rollout_kind_non_empty_request_with_auto_populated_field():
         client.create_rollout_kind(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.CreateRolloutKindRequest(
+        request_msg = rollouts_service.CreateRolloutKindRequest(
             parent="parent_value",
             rollout_kind_id="rollout_kind_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_rollout_kind_use_cached_wrapped_rpc():
@@ -4366,10 +4389,14 @@ async def test_create_rollout_kind_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_rollout_kind_async(
-    transport: str = "grpc_asyncio",
-    request_type=rollouts_service.CreateRolloutKindRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.CreateRolloutKindRequest(),
+        {},
+    ],
+)
+async def test_create_rollout_kind_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4377,7 +4404,7 @@ async def test_create_rollout_kind_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4418,11 +4445,6 @@ async def test_create_rollout_kind_async(
     )
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_rollout_kind_async_from_dict():
-    await test_create_rollout_kind_async(request_type=dict)
 
 
 def test_create_rollout_kind_field_headers():
@@ -4599,8 +4621,8 @@ async def test_create_rollout_kind_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.UpdateRolloutKindRequest,
-        dict,
+        rollouts_service.UpdateRolloutKindRequest(),
+        {},
     ],
 )
 def test_update_rollout_kind(request_type, transport: str = "grpc"):
@@ -4611,7 +4633,7 @@ def test_update_rollout_kind(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4677,9 +4699,10 @@ def test_update_rollout_kind_non_empty_request_with_auto_populated_field():
         client.update_rollout_kind(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.UpdateRolloutKindRequest(
+        request_msg = rollouts_service.UpdateRolloutKindRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_rollout_kind_use_cached_wrapped_rpc():
@@ -4764,10 +4787,14 @@ async def test_update_rollout_kind_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_rollout_kind_async(
-    transport: str = "grpc_asyncio",
-    request_type=rollouts_service.UpdateRolloutKindRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.UpdateRolloutKindRequest(),
+        {},
+    ],
+)
+async def test_update_rollout_kind_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4775,7 +4802,7 @@ async def test_update_rollout_kind_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4816,11 +4843,6 @@ async def test_update_rollout_kind_async(
     )
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_rollout_kind_async_from_dict():
-    await test_update_rollout_kind_async(request_type=dict)
 
 
 def test_update_rollout_kind_field_headers():
@@ -4987,8 +5009,8 @@ async def test_update_rollout_kind_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rollouts_service.DeleteRolloutKindRequest,
-        dict,
+        rollouts_service.DeleteRolloutKindRequest(),
+        {},
     ],
 )
 def test_delete_rollout_kind(request_type, transport: str = "grpc"):
@@ -4999,7 +5021,7 @@ def test_delete_rollout_kind(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5046,11 +5068,12 @@ def test_delete_rollout_kind_non_empty_request_with_auto_populated_field():
         client.delete_rollout_kind(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rollouts_service.DeleteRolloutKindRequest(
+        request_msg = rollouts_service.DeleteRolloutKindRequest(
             name="name_value",
             etag="etag_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_rollout_kind_use_cached_wrapped_rpc():
@@ -5135,10 +5158,14 @@ async def test_delete_rollout_kind_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_rollout_kind_async(
-    transport: str = "grpc_asyncio",
-    request_type=rollouts_service.DeleteRolloutKindRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rollouts_service.DeleteRolloutKindRequest(),
+        {},
+    ],
+)
+async def test_delete_rollout_kind_async(request_type, transport: str = "grpc_asyncio"):
     client = SaasRolloutsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5146,7 +5173,7 @@ async def test_delete_rollout_kind_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5164,11 +5191,6 @@ async def test_delete_rollout_kind_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_rollout_kind_async_from_dict():
-    await test_delete_rollout_kind_async(request_type=dict)
 
 
 def test_delete_rollout_kind_field_headers():
@@ -7549,7 +7571,6 @@ def test_list_rollouts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7570,7 +7591,6 @@ def test_get_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7591,7 +7611,6 @@ def test_create_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7612,7 +7631,6 @@ def test_update_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7633,7 +7651,6 @@ def test_delete_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7656,7 +7673,6 @@ def test_list_rollout_kinds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutKindsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7677,7 +7693,6 @@ def test_get_rollout_kind_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -7700,7 +7715,6 @@ def test_create_rollout_kind_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -7723,7 +7737,6 @@ def test_update_rollout_kind_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -7746,7 +7759,6 @@ def test_delete_rollout_kind_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -7788,7 +7800,6 @@ async def test_list_rollouts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7825,7 +7836,6 @@ async def test_get_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7862,7 +7872,6 @@ async def test_create_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7899,7 +7908,6 @@ async def test_update_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7922,7 +7930,6 @@ async def test_delete_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -7952,7 +7959,6 @@ async def test_list_rollout_kinds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutKindsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7985,7 +7991,6 @@ async def test_get_rollout_kind_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -8020,7 +8025,6 @@ async def test_create_rollout_kind_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -8055,7 +8059,6 @@ async def test_update_rollout_kind_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -8080,7 +8083,6 @@ async def test_delete_rollout_kind_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -9999,7 +10001,6 @@ def test_list_rollouts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10019,7 +10020,6 @@ def test_get_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -10039,7 +10039,6 @@ def test_create_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -10059,7 +10058,6 @@ def test_update_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -10079,7 +10077,6 @@ def test_delete_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -10101,7 +10098,6 @@ def test_list_rollout_kinds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.ListRolloutKindsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10121,7 +10117,6 @@ def test_get_rollout_kind_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.GetRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -10143,7 +10138,6 @@ def test_create_rollout_kind_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.CreateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -10165,7 +10159,6 @@ def test_update_rollout_kind_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.UpdateRolloutKindRequest()
-
         assert args[0] == request_msg
 
 
@@ -10187,7 +10180,6 @@ def test_delete_rollout_kind_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rollouts_service.DeleteRolloutKindRequest()
-
         assert args[0] == request_msg
 
 

@@ -7,6 +7,6 @@
 google-api-core==2.17.1
 google-auth==2.14.1
 google-cloud-logging==3.9.0
-grpcio==1.44.0
+grpcio==1.59.0
 proto-plus==1.22.3
 protobuf==4.25.8

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -120,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1355,8 +1371,8 @@ def test_ingestion_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.IngestAudienceMembersRequest,
-        dict,
+        ingestion_service.IngestAudienceMembersRequest(),
+        {},
     ],
 )
 def test_ingest_audience_members(request_type, transport: str = "grpc"):
@@ -1367,7 +1383,7 @@ def test_ingest_audience_members(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1413,7 +1429,8 @@ def test_ingest_audience_members_non_empty_request_with_auto_populated_field():
         client.ingest_audience_members(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.IngestAudienceMembersRequest()
+        request_msg = ingestion_service.IngestAudienceMembersRequest()
+        assert args[0] == request_msg
 
 
 def test_ingest_audience_members_use_cached_wrapped_rpc():
@@ -1499,9 +1516,15 @@ async def test_ingest_audience_members_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ingestion_service.IngestAudienceMembersRequest(),
+        {},
+    ],
+)
 async def test_ingest_audience_members_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.IngestAudienceMembersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IngestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1510,7 +1533,7 @@ async def test_ingest_audience_members_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,16 +1558,11 @@ async def test_ingest_audience_members_async(
     assert response.request_id == "request_id_value"
 
 
-@pytest.mark.asyncio
-async def test_ingest_audience_members_async_from_dict():
-    await test_ingest_audience_members_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.RemoveAudienceMembersRequest,
-        dict,
+        ingestion_service.RemoveAudienceMembersRequest(),
+        {},
     ],
 )
 def test_remove_audience_members(request_type, transport: str = "grpc"):
@@ -1555,7 +1573,7 @@ def test_remove_audience_members(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1601,7 +1619,8 @@ def test_remove_audience_members_non_empty_request_with_auto_populated_field():
         client.remove_audience_members(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.RemoveAudienceMembersRequest()
+        request_msg = ingestion_service.RemoveAudienceMembersRequest()
+        assert args[0] == request_msg
 
 
 def test_remove_audience_members_use_cached_wrapped_rpc():
@@ -1687,9 +1706,15 @@ async def test_remove_audience_members_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ingestion_service.RemoveAudienceMembersRequest(),
+        {},
+    ],
+)
 async def test_remove_audience_members_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.RemoveAudienceMembersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IngestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1698,7 +1723,7 @@ async def test_remove_audience_members_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1723,16 +1748,11 @@ async def test_remove_audience_members_async(
     assert response.request_id == "request_id_value"
 
 
-@pytest.mark.asyncio
-async def test_remove_audience_members_async_from_dict():
-    await test_remove_audience_members_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.IngestEventsRequest,
-        dict,
+        ingestion_service.IngestEventsRequest(),
+        {},
     ],
 )
 def test_ingest_events(request_type, transport: str = "grpc"):
@@ -1743,7 +1763,7 @@ def test_ingest_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
@@ -1785,7 +1805,8 @@ def test_ingest_events_non_empty_request_with_auto_populated_field():
         client.ingest_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.IngestEventsRequest()
+        request_msg = ingestion_service.IngestEventsRequest()
+        assert args[0] == request_msg
 
 
 def test_ingest_events_use_cached_wrapped_rpc():
@@ -1866,9 +1887,14 @@ async def test_ingest_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_ingest_events_async(
-    transport: str = "grpc_asyncio", request_type=ingestion_service.IngestEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ingestion_service.IngestEventsRequest(),
+        {},
+    ],
+)
+async def test_ingest_events_async(request_type, transport: str = "grpc_asyncio"):
     client = IngestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1876,7 +1902,7 @@ async def test_ingest_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ingest_events), "__call__") as call:
@@ -1899,16 +1925,11 @@ async def test_ingest_events_async(
     assert response.request_id == "request_id_value"
 
 
-@pytest.mark.asyncio
-async def test_ingest_events_async_from_dict():
-    await test_ingest_events_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        ingestion_service.RetrieveRequestStatusRequest,
-        dict,
+        ingestion_service.RetrieveRequestStatusRequest(),
+        {},
     ],
 )
 def test_retrieve_request_status(request_type, transport: str = "grpc"):
@@ -1919,7 +1940,7 @@ def test_retrieve_request_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1964,9 +1985,10 @@ def test_retrieve_request_status_non_empty_request_with_auto_populated_field():
         client.retrieve_request_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ingestion_service.RetrieveRequestStatusRequest(
+        request_msg = ingestion_service.RetrieveRequestStatusRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_retrieve_request_status_use_cached_wrapped_rpc():
@@ -2052,9 +2074,15 @@ async def test_retrieve_request_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ingestion_service.RetrieveRequestStatusRequest(),
+        {},
+    ],
+)
 async def test_retrieve_request_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=ingestion_service.RetrieveRequestStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IngestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2063,7 +2091,7 @@ async def test_retrieve_request_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2083,11 +2111,6 @@ async def test_retrieve_request_status_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ingestion_service.RetrieveRequestStatusResponse)
-
-
-@pytest.mark.asyncio
-async def test_retrieve_request_status_async_from_dict():
-    await test_retrieve_request_status_async(request_type=dict)
 
 
 def test_ingest_audience_members_rest_use_cached_wrapped_rpc():
@@ -2739,7 +2762,6 @@ def test_ingest_audience_members_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -2762,7 +2784,6 @@ def test_remove_audience_members_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -2783,7 +2804,6 @@ def test_ingest_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2806,7 +2826,6 @@ def test_retrieve_request_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RetrieveRequestStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -2849,7 +2868,6 @@ async def test_ingest_audience_members_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -2878,7 +2896,6 @@ async def test_remove_audience_members_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -2905,7 +2922,6 @@ async def test_ingest_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2932,7 +2948,6 @@ async def test_retrieve_request_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RetrieveRequestStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -3509,7 +3524,6 @@ def test_ingest_audience_members_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -3531,7 +3545,6 @@ def test_remove_audience_members_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RemoveAudienceMembersRequest()
-
         assert args[0] == request_msg
 
 
@@ -3551,7 +3564,6 @@ def test_ingest_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.IngestEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3573,7 +3585,6 @@ def test_retrieve_request_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ingestion_service.RetrieveRequestStatusRequest()
-
         assert args[0] == request_msg
 
 

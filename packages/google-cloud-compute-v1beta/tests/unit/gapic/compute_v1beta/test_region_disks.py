@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -12091,7 +12107,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12111,7 +12126,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12131,7 +12145,6 @@ def test_create_snapshot_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateSnapshotRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12151,7 +12164,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12171,7 +12183,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12191,7 +12202,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12211,7 +12221,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12231,7 +12240,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRegionDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12253,7 +12261,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12273,7 +12280,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12293,7 +12299,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12313,7 +12318,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12335,7 +12339,6 @@ def test_start_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartAsyncReplicationRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12357,7 +12360,6 @@ def test_stop_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopAsyncReplicationRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12379,7 +12381,6 @@ def test_stop_group_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopGroupAsyncReplicationRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12401,7 +12402,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12421,7 +12421,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRegionDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -12441,7 +12440,6 @@ def test_update_kms_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateKmsKeyRegionDiskRequest()
-
         assert args[0] == request_msg
 
 

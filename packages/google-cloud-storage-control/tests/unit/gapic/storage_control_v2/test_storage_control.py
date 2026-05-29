@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -79,6 +80,9 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+_UUID4_RE = re.compile(
+    r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
+)
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -119,6 +123,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -490,6 +509,104 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
+
+
+def test__setup_request_id():
+    class MockRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    class MockProtoRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+        def HasField(self, key):
+            return hasattr(self, key)
+
+    # Test with proto3 optional field not in request
+    request = MockRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with proto3 optional field already in request
+    request = MockRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with non-proto3 optional field empty
+    request = MockRequest(request_id="")
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with non-proto3 optional field already set
+    request = MockRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert request.request_id == "already_set"
+
+    # Test with proto3 optional field not in request (MockProtoRequest)
+    request = MockProtoRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with proto3 optional field already in request (MockProtoRequest)
+    request = MockProtoRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with ValueError
+    class MockValueErrorRequest:
+        def HasField(self, key):
+            raise ValueError("Mismatched field")
+
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    request = MockValueErrorRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with dict and proto3 optional field not in request
+    request = {}
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request["request_id"],
+    )
+
+    # Test with dict and proto3 optional field already in request
+    request = {"request_id": "already_set"}
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request["request_id"] == "already_set"
+
+    # Test with dict and non-proto3 optional field empty
+    request = {"request_id": ""}
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request["request_id"],
+    )
+
+    # Test with dict and non-proto3 optional field already set
+    request = {"request_id": "already_set"}
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert request["request_id"] == "already_set"
 
 
 @pytest.mark.parametrize(
@@ -1330,8 +1447,15 @@ def test_storage_control_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_folder(request_type, transport: str = "grpc"):
@@ -1342,11 +1466,7 @@ def test_create_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1394,17 +1514,14 @@ def test_create_folder_non_empty_request_with_auto_populated_field():
         client.create_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateFolderRequest(
+        request_msg = storage_control.CreateFolderRequest(
             parent="parent_value",
             folder_id="folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_folder_use_cached_wrapped_rpc():
@@ -1485,9 +1602,21 @@ async def test_create_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.CreateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_create_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1495,11 +1624,7 @@ async def test_create_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1523,11 +1648,6 @@ async def test_create_folder_async(
     assert isinstance(response, storage_control.Folder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_create_folder_async_from_dict():
-    await test_create_folder_async(request_type=dict)
 
 
 def test_create_folder_flattened():
@@ -1635,8 +1755,15 @@ async def test_create_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_folder(request_type, transport: str = "grpc"):
@@ -1647,11 +1774,7 @@ def test_delete_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1693,16 +1816,13 @@ def test_delete_folder_non_empty_request_with_auto_populated_field():
         client.delete_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteFolderRequest(
+        request_msg = storage_control.DeleteFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_folder_use_cached_wrapped_rpc():
@@ -1783,9 +1903,21 @@ async def test_delete_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.DeleteFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_delete_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1793,11 +1925,7 @@ async def test_delete_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1814,11 +1942,6 @@ async def test_delete_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_async_from_dict():
-    await test_delete_folder_async(request_type=dict)
 
 
 def test_delete_folder_flattened():
@@ -1904,8 +2027,15 @@ async def test_delete_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_folder(request_type, transport: str = "grpc"):
@@ -1916,11 +2046,7 @@ def test_get_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1967,16 +2093,13 @@ def test_get_folder_non_empty_request_with_auto_populated_field():
         client.get_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetFolderRequest(
+        request_msg = storage_control.GetFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_folder_use_cached_wrapped_rpc():
@@ -2055,9 +2178,21 @@ async def test_get_folder_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.GetFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2065,11 +2200,7 @@ async def test_get_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -2093,11 +2224,6 @@ async def test_get_folder_async(
     assert isinstance(response, storage_control.Folder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_get_folder_async_from_dict():
-    await test_get_folder_async(request_type=dict)
 
 
 def test_get_folder_flattened():
@@ -2185,8 +2311,8 @@ async def test_get_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListFoldersRequest,
-        dict,
+        storage_control.ListFoldersRequest(),
+        {},
     ],
 )
 def test_list_folders(request_type, transport: str = "grpc"):
@@ -2197,7 +2323,7 @@ def test_list_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -2246,7 +2372,7 @@ def test_list_folders_non_empty_request_with_auto_populated_field():
         client.list_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.ListFoldersRequest(
+        request_msg = storage_control.ListFoldersRequest(
             parent="parent_value",
             page_token="page_token_value",
             prefix="prefix_value",
@@ -2254,6 +2380,7 @@ def test_list_folders_non_empty_request_with_auto_populated_field():
             lexicographic_start="lexicographic_start_value",
             lexicographic_end="lexicographic_end_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_folders_use_cached_wrapped_rpc():
@@ -2334,9 +2461,14 @@ async def test_list_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_folders_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.ListFoldersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListFoldersRequest(),
+        {},
+    ],
+)
+async def test_list_folders_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2344,7 +2476,7 @@ async def test_list_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -2365,11 +2497,6 @@ async def test_list_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_folders_async_from_dict():
-    await test_list_folders_async(request_type=dict)
 
 
 def test_list_folders_flattened():
@@ -2644,8 +2771,15 @@ async def test_list_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.RenameFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.RenameFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_rename_folder(request_type, transport: str = "grpc"):
@@ -2656,11 +2790,7 @@ def test_rename_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2703,17 +2833,14 @@ def test_rename_folder_non_empty_request_with_auto_populated_field():
         client.rename_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.RenameFolderRequest(
+        request_msg = storage_control.RenameFolderRequest(
             name="name_value",
             destination_folder_id="destination_folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_rename_folder_use_cached_wrapped_rpc():
@@ -2804,9 +2931,21 @@ async def test_rename_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rename_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.RenameFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.RenameFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_rename_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2814,11 +2953,7 @@ async def test_rename_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2837,11 +2972,6 @@ async def test_rename_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rename_folder_async_from_dict():
-    await test_rename_folder_async(request_type=dict)
 
 
 def test_rename_folder_flattened():
@@ -2939,8 +3069,15 @@ async def test_rename_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteFolderRecursiveRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRecursiveRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_folder_recursive(request_type, transport: str = "grpc"):
@@ -2951,11 +3088,7 @@ def test_delete_folder_recursive(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3001,16 +3134,13 @@ def test_delete_folder_recursive_non_empty_request_with_auto_populated_field():
         client.delete_folder_recursive(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteFolderRecursiveRequest(
+        request_msg = storage_control.DeleteFolderRecursiveRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_folder_recursive_use_cached_wrapped_rpc():
@@ -3106,9 +3236,22 @@ async def test_delete_folder_recursive_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRecursiveRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_delete_folder_recursive_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DeleteFolderRecursiveRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3117,11 +3260,7 @@ async def test_delete_folder_recursive_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3142,11 +3281,6 @@ async def test_delete_folder_recursive_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_recursive_async_from_dict():
-    await test_delete_folder_recursive_async(request_type=dict)
 
 
 def test_delete_folder_recursive_flattened():
@@ -3238,8 +3372,15 @@ async def test_delete_folder_recursive_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetStorageLayoutRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetStorageLayoutRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_storage_layout(request_type, transport: str = "grpc"):
@@ -3250,11 +3391,7 @@ def test_get_storage_layout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3308,17 +3445,14 @@ def test_get_storage_layout_non_empty_request_with_auto_populated_field():
         client.get_storage_layout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetStorageLayoutRequest(
+        request_msg = storage_control.GetStorageLayoutRequest(
             name="name_value",
             prefix="prefix_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_storage_layout_use_cached_wrapped_rpc():
@@ -3403,10 +3537,21 @@ async def test_get_storage_layout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_storage_layout_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetStorageLayoutRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetStorageLayoutRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_storage_layout_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3414,11 +3559,7 @@ async def test_get_storage_layout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3446,11 +3587,6 @@ async def test_get_storage_layout_async(
     assert response.name == "name_value"
     assert response.location == "location_value"
     assert response.location_type == "location_type_value"
-
-
-@pytest.mark.asyncio
-async def test_get_storage_layout_async_from_dict():
-    await test_get_storage_layout_async(request_type=dict)
 
 
 def test_get_storage_layout_flattened():
@@ -3542,8 +3678,15 @@ async def test_get_storage_layout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_managed_folder(request_type, transport: str = "grpc"):
@@ -3554,11 +3697,7 @@ def test_create_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3610,17 +3749,14 @@ def test_create_managed_folder_non_empty_request_with_auto_populated_field():
         client.create_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateManagedFolderRequest(
+        request_msg = storage_control.CreateManagedFolderRequest(
             parent="parent_value",
             managed_folder_id="managed_folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_managed_folder_use_cached_wrapped_rpc():
@@ -3706,9 +3842,22 @@ async def test_create_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_create_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.CreateManagedFolderRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3717,11 +3866,7 @@ async def test_create_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3747,11 +3892,6 @@ async def test_create_managed_folder_async(
     assert isinstance(response, storage_control.ManagedFolder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_create_managed_folder_async_from_dict():
-    await test_create_managed_folder_async(request_type=dict)
 
 
 def test_create_managed_folder_flattened():
@@ -3863,8 +4003,15 @@ async def test_create_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_managed_folder(request_type, transport: str = "grpc"):
@@ -3875,11 +4022,7 @@ def test_delete_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3925,16 +4068,13 @@ def test_delete_managed_folder_non_empty_request_with_auto_populated_field():
         client.delete_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteManagedFolderRequest(
+        request_msg = storage_control.DeleteManagedFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_managed_folder_use_cached_wrapped_rpc():
@@ -4020,9 +4160,22 @@ async def test_delete_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_delete_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DeleteManagedFolderRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4031,11 +4184,7 @@ async def test_delete_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4054,11 +4203,6 @@ async def test_delete_managed_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_managed_folder_async_from_dict():
-    await test_delete_managed_folder_async(request_type=dict)
 
 
 def test_delete_managed_folder_flattened():
@@ -4148,8 +4292,15 @@ async def test_delete_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_managed_folder(request_type, transport: str = "grpc"):
@@ -4160,11 +4311,7 @@ def test_get_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4215,16 +4362,13 @@ def test_get_managed_folder_non_empty_request_with_auto_populated_field():
         client.get_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetManagedFolderRequest(
+        request_msg = storage_control.GetManagedFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_managed_folder_use_cached_wrapped_rpc():
@@ -4309,10 +4453,21 @@ async def test_get_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetManagedFolderRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_managed_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4320,11 +4475,7 @@ async def test_get_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4350,11 +4501,6 @@ async def test_get_managed_folder_async(
     assert isinstance(response, storage_control.ManagedFolder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_get_managed_folder_async_from_dict():
-    await test_get_managed_folder_async(request_type=dict)
 
 
 def test_get_managed_folder_flattened():
@@ -4446,8 +4592,15 @@ async def test_get_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListManagedFoldersRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListManagedFoldersRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_list_managed_folders(request_type, transport: str = "grpc"):
@@ -4458,11 +4611,7 @@ def test_list_managed_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4513,18 +4662,15 @@ def test_list_managed_folders_non_empty_request_with_auto_populated_field():
         client.list_managed_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ListManagedFoldersRequest(
+        request_msg = storage_control.ListManagedFoldersRequest(
             parent="parent_value",
             page_token="page_token_value",
             prefix="prefix_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_list_managed_folders_use_cached_wrapped_rpc():
@@ -4609,9 +4755,22 @@ async def test_list_managed_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListManagedFoldersRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_list_managed_folders_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ListManagedFoldersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4620,11 +4779,7 @@ async def test_list_managed_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4648,11 +4803,6 @@ async def test_list_managed_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListManagedFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_managed_folders_async_from_dict():
-    await test_list_managed_folders_async(request_type=dict)
 
 
 def test_list_managed_folders_flattened():
@@ -4939,8 +5089,15 @@ async def test_list_managed_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_anywhere_cache(request_type, transport: str = "grpc"):
@@ -4951,11 +5108,7 @@ def test_create_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5001,16 +5154,13 @@ def test_create_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.create_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateAnywhereCacheRequest(
+        request_msg = storage_control.CreateAnywhereCacheRequest(
             parent="parent_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_anywhere_cache_use_cached_wrapped_rpc():
@@ -5106,9 +5256,22 @@ async def test_create_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_create_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.CreateAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5117,11 +5280,7 @@ async def test_create_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5142,11 +5301,6 @@ async def test_create_anywhere_cache_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_anywhere_cache_async_from_dict():
-    await test_create_anywhere_cache_async(request_type=dict)
 
 
 def test_create_anywhere_cache_flattened():
@@ -5248,8 +5402,15 @@ async def test_create_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.UpdateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_update_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5260,11 +5421,7 @@ def test_update_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5308,14 +5465,11 @@ def test_update_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.update_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest()
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.UpdateAnywhereCacheRequest()
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_update_anywhere_cache_use_cached_wrapped_rpc():
@@ -5411,9 +5565,22 @@ async def test_update_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.UpdateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_update_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5422,11 +5589,7 @@ async def test_update_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5447,11 +5610,6 @@ async def test_update_anywhere_cache_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_anywhere_cache_async_from_dict():
-    await test_update_anywhere_cache_async(request_type=dict)
 
 
 def test_update_anywhere_cache_flattened():
@@ -5553,8 +5711,15 @@ async def test_update_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DisableAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DisableAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5565,11 +5730,7 @@ def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5626,16 +5787,13 @@ def test_disable_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.disable_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DisableAnywhereCacheRequest(
+        request_msg = storage_control.DisableAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_disable_anywhere_cache_use_cached_wrapped_rpc():
@@ -5721,9 +5879,22 @@ async def test_disable_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DisableAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_disable_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DisableAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5732,11 +5903,7 @@ async def test_disable_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5768,11 +5935,6 @@ async def test_disable_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_disable_anywhere_cache_async_from_dict():
-    await test_disable_anywhere_cache_async(request_type=dict)
 
 
 def test_disable_anywhere_cache_flattened():
@@ -5864,8 +6026,15 @@ async def test_disable_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.PauseAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.PauseAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5876,11 +6045,7 @@ def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5937,16 +6102,13 @@ def test_pause_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.pause_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.PauseAnywhereCacheRequest(
+        request_msg = storage_control.PauseAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_pause_anywhere_cache_use_cached_wrapped_rpc():
@@ -6031,9 +6193,22 @@ async def test_pause_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.PauseAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_pause_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.PauseAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6042,11 +6217,7 @@ async def test_pause_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6078,11 +6249,6 @@ async def test_pause_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_pause_anywhere_cache_async_from_dict():
-    await test_pause_anywhere_cache_async(request_type=dict)
 
 
 def test_pause_anywhere_cache_flattened():
@@ -6174,8 +6340,15 @@ async def test_pause_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ResumeAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ResumeAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
@@ -6186,11 +6359,7 @@ def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6247,16 +6416,13 @@ def test_resume_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.resume_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ResumeAnywhereCacheRequest(
+        request_msg = storage_control.ResumeAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_resume_anywhere_cache_use_cached_wrapped_rpc():
@@ -6342,9 +6508,22 @@ async def test_resume_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ResumeAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_resume_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ResumeAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6353,11 +6532,7 @@ async def test_resume_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6389,11 +6564,6 @@ async def test_resume_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_resume_anywhere_cache_async_from_dict():
-    await test_resume_anywhere_cache_async(request_type=dict)
 
 
 def test_resume_anywhere_cache_flattened():
@@ -6485,8 +6655,15 @@ async def test_resume_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_anywhere_cache(request_type, transport: str = "grpc"):
@@ -6497,11 +6674,7 @@ def test_get_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6558,16 +6731,13 @@ def test_get_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.get_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetAnywhereCacheRequest(
+        request_msg = storage_control.GetAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_anywhere_cache_use_cached_wrapped_rpc():
@@ -6652,10 +6822,21 @@ async def test_get_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetAnywhereCacheRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_anywhere_cache_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6663,11 +6844,7 @@ async def test_get_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6699,11 +6876,6 @@ async def test_get_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_get_anywhere_cache_async_from_dict():
-    await test_get_anywhere_cache_async(request_type=dict)
 
 
 def test_get_anywhere_cache_flattened():
@@ -6795,8 +6967,15 @@ async def test_get_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListAnywhereCachesRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListAnywhereCachesRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_list_anywhere_caches(request_type, transport: str = "grpc"):
@@ -6807,11 +6986,7 @@ def test_list_anywhere_caches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6861,17 +7036,14 @@ def test_list_anywhere_caches_non_empty_request_with_auto_populated_field():
         client.list_anywhere_caches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ListAnywhereCachesRequest(
+        request_msg = storage_control.ListAnywhereCachesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_list_anywhere_caches_use_cached_wrapped_rpc():
@@ -6956,9 +7128,22 @@ async def test_list_anywhere_caches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListAnywhereCachesRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_list_anywhere_caches_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ListAnywhereCachesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6967,11 +7152,7 @@ async def test_list_anywhere_caches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6995,11 +7176,6 @@ async def test_list_anywhere_caches_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnywhereCachesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_anywhere_caches_async_from_dict():
-    await test_list_anywhere_caches_async(request_type=dict)
 
 
 def test_list_anywhere_caches_flattened():
@@ -7286,8 +7462,8 @@ async def test_list_anywhere_caches_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetProjectIntelligenceConfigRequest,
-        dict,
+        storage_control.GetProjectIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_project_intelligence_config(request_type, transport: str = "grpc"):
@@ -7298,7 +7474,7 @@ def test_get_project_intelligence_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7351,9 +7527,10 @@ def test_get_project_intelligence_config_non_empty_request_with_auto_populated_f
         client.get_project_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetProjectIntelligenceConfigRequest(
+        request_msg = storage_control.GetProjectIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_project_intelligence_config_use_cached_wrapped_rpc():
@@ -7439,9 +7616,15 @@ async def test_get_project_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetProjectIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_project_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetProjectIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7450,7 +7633,7 @@ async def test_get_project_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7478,11 +7661,6 @@ async def test_get_project_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_project_intelligence_config_async_from_dict():
-    await test_get_project_intelligence_config_async(request_type=dict)
 
 
 def test_get_project_intelligence_config_field_headers():
@@ -7639,8 +7817,8 @@ async def test_get_project_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateProjectIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateProjectIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_project_intelligence_config(request_type, transport: str = "grpc"):
@@ -7651,7 +7829,7 @@ def test_update_project_intelligence_config(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7702,7 +7880,8 @@ def test_update_project_intelligence_config_non_empty_request_with_auto_populate
         client.update_project_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateProjectIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_project_intelligence_config_use_cached_wrapped_rpc():
@@ -7788,9 +7967,15 @@ async def test_update_project_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateProjectIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_project_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateProjectIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7799,7 +7984,7 @@ async def test_update_project_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7827,11 +8012,6 @@ async def test_update_project_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_project_intelligence_config_async_from_dict():
-    await test_update_project_intelligence_config_async(request_type=dict)
 
 
 def test_update_project_intelligence_config_field_headers():
@@ -7998,8 +8178,8 @@ async def test_update_project_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetFolderIntelligenceConfigRequest,
-        dict,
+        storage_control.GetFolderIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_folder_intelligence_config(request_type, transport: str = "grpc"):
@@ -8010,7 +8190,7 @@ def test_get_folder_intelligence_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8063,9 +8243,10 @@ def test_get_folder_intelligence_config_non_empty_request_with_auto_populated_fi
         client.get_folder_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetFolderIntelligenceConfigRequest(
+        request_msg = storage_control.GetFolderIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_folder_intelligence_config_use_cached_wrapped_rpc():
@@ -8151,9 +8332,15 @@ async def test_get_folder_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetFolderIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_folder_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetFolderIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8162,7 +8349,7 @@ async def test_get_folder_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8190,11 +8377,6 @@ async def test_get_folder_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_folder_intelligence_config_async_from_dict():
-    await test_get_folder_intelligence_config_async(request_type=dict)
 
 
 def test_get_folder_intelligence_config_field_headers():
@@ -8351,8 +8533,8 @@ async def test_get_folder_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateFolderIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateFolderIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_folder_intelligence_config(request_type, transport: str = "grpc"):
@@ -8363,7 +8545,7 @@ def test_update_folder_intelligence_config(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8414,7 +8596,8 @@ def test_update_folder_intelligence_config_non_empty_request_with_auto_populated
         client.update_folder_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateFolderIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_folder_intelligence_config_use_cached_wrapped_rpc():
@@ -8500,9 +8683,15 @@ async def test_update_folder_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateFolderIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_folder_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateFolderIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8511,7 +8700,7 @@ async def test_update_folder_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8539,11 +8728,6 @@ async def test_update_folder_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_folder_intelligence_config_async_from_dict():
-    await test_update_folder_intelligence_config_async(request_type=dict)
 
 
 def test_update_folder_intelligence_config_field_headers():
@@ -8710,8 +8894,8 @@ async def test_update_folder_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetOrganizationIntelligenceConfigRequest,
-        dict,
+        storage_control.GetOrganizationIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_organization_intelligence_config(request_type, transport: str = "grpc"):
@@ -8722,7 +8906,7 @@ def test_get_organization_intelligence_config(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8775,9 +8959,10 @@ def test_get_organization_intelligence_config_non_empty_request_with_auto_popula
         client.get_organization_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetOrganizationIntelligenceConfigRequest(
+        request_msg = storage_control.GetOrganizationIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_intelligence_config_use_cached_wrapped_rpc():
@@ -8863,9 +9048,15 @@ async def test_get_organization_intelligence_config_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetOrganizationIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_organization_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetOrganizationIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8874,7 +9065,7 @@ async def test_get_organization_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8902,11 +9093,6 @@ async def test_get_organization_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_organization_intelligence_config_async_from_dict():
-    await test_get_organization_intelligence_config_async(request_type=dict)
 
 
 def test_get_organization_intelligence_config_field_headers():
@@ -9063,8 +9249,8 @@ async def test_get_organization_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateOrganizationIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateOrganizationIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_organization_intelligence_config(request_type, transport: str = "grpc"):
@@ -9075,7 +9261,7 @@ def test_update_organization_intelligence_config(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9126,7 +9312,8 @@ def test_update_organization_intelligence_config_non_empty_request_with_auto_pop
         client.update_organization_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateOrganizationIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_organization_intelligence_config_use_cached_wrapped_rpc():
@@ -9212,9 +9399,15 @@ async def test_update_organization_intelligence_config_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateOrganizationIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_organization_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateOrganizationIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9223,7 +9416,7 @@ async def test_update_organization_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9251,11 +9444,6 @@ async def test_update_organization_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_organization_intelligence_config_async_from_dict():
-    await test_update_organization_intelligence_config_async(request_type=dict)
 
 
 def test_update_organization_intelligence_config_field_headers():
@@ -9422,8 +9610,8 @@ async def test_update_organization_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -9434,7 +9622,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -9480,9 +9668,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -9563,9 +9752,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9573,7 +9767,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -9596,11 +9790,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_from_dict_foreign():
@@ -9703,8 +9892,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -9715,7 +9904,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -9761,9 +9950,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -9844,9 +10034,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9854,7 +10049,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -9877,11 +10072,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_from_dict_foreign():
@@ -9985,8 +10175,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -9997,7 +10187,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10045,9 +10235,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -10132,9 +10323,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10143,7 +10340,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10166,11 +10363,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_from_dict_foreign():
@@ -12087,15 +12279,10 @@ def test_create_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12115,15 +12302,10 @@ def test_delete_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12143,15 +12325,10 @@ def test_get_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12172,7 +12349,6 @@ def test_list_folders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12192,15 +12368,10 @@ def test_rename_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12222,15 +12393,10 @@ def test_delete_folder_recursive_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12252,15 +12418,10 @@ def test_get_storage_layout_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12282,15 +12443,10 @@ def test_create_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12312,15 +12468,10 @@ def test_delete_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12342,15 +12493,10 @@ def test_get_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12372,15 +12518,10 @@ def test_list_managed_folders_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12402,15 +12543,10 @@ def test_create_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12432,15 +12568,10 @@ def test_update_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12462,15 +12593,10 @@ def test_disable_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12492,15 +12618,10 @@ def test_pause_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12522,15 +12643,10 @@ def test_resume_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12552,15 +12668,10 @@ def test_get_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12582,15 +12693,10 @@ def test_list_anywhere_caches_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12613,7 +12719,6 @@ def test_get_project_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12636,7 +12741,6 @@ def test_update_project_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12659,7 +12763,6 @@ def test_get_folder_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12682,7 +12785,6 @@ def test_update_folder_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12705,7 +12807,6 @@ def test_get_organization_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12728,7 +12829,6 @@ def test_update_organization_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12749,7 +12849,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12770,7 +12869,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12793,7 +12891,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12811,15 +12908,10 @@ def test_create_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -12844,17 +12936,12 @@ def test_delete_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12877,17 +12964,12 @@ def test_get_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12911,7 +12993,6 @@ def test_list_folders_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -12936,17 +13017,12 @@ def test_rename_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12973,17 +13049,12 @@ def test_delete_folder_recursive_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13010,17 +13081,12 @@ def test_get_storage_layout_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13045,17 +13111,12 @@ def test_create_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13082,17 +13143,12 @@ def test_delete_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13119,17 +13175,12 @@ def test_get_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13154,15 +13205,10 @@ def test_list_managed_folders_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13187,17 +13233,12 @@ def test_create_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13226,17 +13267,12 @@ def test_update_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13263,17 +13299,12 @@ def test_disable_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13300,17 +13331,12 @@ def test_pause_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13337,17 +13363,12 @@ def test_resume_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13374,17 +13395,12 @@ def test_get_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13409,15 +13425,10 @@ def test_list_anywhere_caches_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13441,7 +13452,6 @@ def test_get_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13469,7 +13479,6 @@ def test_get_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13493,7 +13502,6 @@ def test_set_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13521,7 +13529,6 @@ def test_set_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13549,7 +13556,6 @@ def test_test_iam_permissions_routing_parameters_request_1_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13579,7 +13585,6 @@ def test_test_iam_permissions_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13611,7 +13616,6 @@ def test_test_iam_permissions_routing_parameters_request_3_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13657,15 +13661,10 @@ async def test_create_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13687,15 +13686,10 @@ async def test_delete_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13722,15 +13716,10 @@ async def test_get_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13757,7 +13746,6 @@ async def test_list_folders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13781,15 +13769,10 @@ async def test_rename_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13815,15 +13798,10 @@ async def test_delete_folder_recursive_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13853,15 +13831,10 @@ async def test_get_storage_layout_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13890,15 +13863,10 @@ async def test_create_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13922,15 +13890,10 @@ async def test_delete_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13959,15 +13922,10 @@ async def test_get_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13995,15 +13953,10 @@ async def test_list_managed_folders_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14029,15 +13982,10 @@ async def test_create_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14063,15 +14011,10 @@ async def test_update_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14103,15 +14046,10 @@ async def test_disable_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14143,15 +14081,10 @@ async def test_pause_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14183,15 +14116,10 @@ async def test_resume_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14223,15 +14151,10 @@ async def test_get_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14259,15 +14182,10 @@ async def test_list_anywhere_caches_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14297,7 +14215,6 @@ async def test_get_project_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14327,7 +14244,6 @@ async def test_update_project_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14357,7 +14273,6 @@ async def test_get_folder_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14387,7 +14302,6 @@ async def test_update_folder_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14417,7 +14331,6 @@ async def test_get_organization_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14447,7 +14360,6 @@ async def test_update_organization_intelligence_config_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14475,7 +14387,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14503,7 +14414,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14532,7 +14442,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14557,15 +14466,10 @@ async def test_create_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14592,17 +14496,12 @@ async def test_delete_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14634,17 +14533,12 @@ async def test_get_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14674,7 +14568,6 @@ async def test_list_folders_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14703,17 +14596,12 @@ async def test_rename_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14744,17 +14632,12 @@ async def test_delete_folder_recursive_routing_parameters_request_1_grpc_asyncio
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14789,17 +14672,12 @@ async def test_get_storage_layout_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14831,17 +14709,12 @@ async def test_create_managed_folder_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14870,17 +14743,12 @@ async def test_delete_managed_folder_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14914,17 +14782,12 @@ async def test_get_managed_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14955,15 +14818,10 @@ async def test_list_managed_folders_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14992,17 +14850,12 @@ async def test_create_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15035,17 +14888,12 @@ async def test_update_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15082,17 +14930,12 @@ async def test_disable_anywhere_cache_routing_parameters_request_1_grpc_asyncio(
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15129,17 +14972,12 @@ async def test_pause_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15176,17 +15014,12 @@ async def test_resume_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15223,17 +15056,12 @@ async def test_get_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15264,15 +15092,10 @@ async def test_list_anywhere_caches_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15303,7 +15126,6 @@ async def test_get_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15338,7 +15160,6 @@ async def test_get_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15369,7 +15190,6 @@ async def test_set_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15404,7 +15224,6 @@ async def test_set_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15438,7 +15257,6 @@ async def test_test_iam_permissions_routing_parameters_request_1_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15474,7 +15292,6 @@ async def test_test_iam_permissions_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15512,7 +15329,6 @@ async def test_test_iam_permissions_routing_parameters_request_3_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -16948,15 +16764,10 @@ def test_create_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -16975,15 +16786,10 @@ def test_delete_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17002,15 +16808,10 @@ def test_get_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17030,7 +16831,6 @@ def test_list_folders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17049,15 +16849,10 @@ def test_rename_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17078,15 +16873,10 @@ def test_delete_folder_recursive_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17107,15 +16897,10 @@ def test_get_storage_layout_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17136,15 +16921,10 @@ def test_create_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17165,15 +16945,10 @@ def test_delete_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17194,15 +16969,10 @@ def test_get_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17223,15 +16993,10 @@ def test_list_managed_folders_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17252,15 +17017,10 @@ def test_create_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17281,15 +17041,10 @@ def test_update_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17310,15 +17065,10 @@ def test_disable_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17339,15 +17089,10 @@ def test_pause_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17368,15 +17113,10 @@ def test_resume_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17397,15 +17137,10 @@ def test_get_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17426,15 +17161,10 @@ def test_list_anywhere_caches_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17456,7 +17186,6 @@ def test_get_project_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17478,7 +17207,6 @@ def test_update_project_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17500,7 +17228,6 @@ def test_get_folder_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17522,7 +17249,6 @@ def test_update_folder_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17544,7 +17270,6 @@ def test_get_organization_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17566,7 +17291,6 @@ def test_update_organization_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17586,7 +17310,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17606,7 +17329,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17628,7 +17350,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17645,15 +17366,10 @@ def test_create_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17677,17 +17393,12 @@ def test_delete_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17709,17 +17420,12 @@ def test_get_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17742,7 +17448,6 @@ def test_list_folders_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17766,17 +17471,12 @@ def test_rename_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17802,17 +17502,12 @@ def test_delete_folder_recursive_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17838,17 +17533,12 @@ def test_get_storage_layout_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17872,17 +17562,12 @@ def test_create_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17908,17 +17593,12 @@ def test_delete_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17944,17 +17624,12 @@ def test_get_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17978,15 +17653,10 @@ def test_list_managed_folders_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18010,17 +17680,12 @@ def test_create_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18048,17 +17713,12 @@ def test_update_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18084,17 +17744,12 @@ def test_disable_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18120,17 +17775,12 @@ def test_pause_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18156,17 +17806,12 @@ def test_resume_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18192,17 +17837,12 @@ def test_get_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18226,15 +17866,10 @@ def test_list_anywhere_caches_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.fullmatch(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18257,7 +17892,6 @@ def test_get_iam_policy_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18284,7 +17918,6 @@ def test_get_iam_policy_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18307,7 +17940,6 @@ def test_set_iam_policy_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18334,7 +17966,6 @@ def test_set_iam_policy_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18361,7 +17992,6 @@ def test_test_iam_permissions_routing_parameters_request_1_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18390,7 +18020,6 @@ def test_test_iam_permissions_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18421,7 +18050,6 @@ def test_test_iam_permissions_routing_parameters_request_3_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}

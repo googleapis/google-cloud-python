@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1350,8 +1366,8 @@ def test_error_stats_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        error_stats_service.ListGroupStatsRequest,
-        dict,
+        error_stats_service.ListGroupStatsRequest(),
+        {},
     ],
 )
 def test_list_group_stats(request_type, transport: str = "grpc"):
@@ -1362,7 +1378,7 @@ def test_list_group_stats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
@@ -1407,10 +1423,11 @@ def test_list_group_stats_non_empty_request_with_auto_populated_field():
         client.list_group_stats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListGroupStatsRequest(
+        request_msg = error_stats_service.ListGroupStatsRequest(
             project_name="project_name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_group_stats_use_cached_wrapped_rpc():
@@ -1493,10 +1510,14 @@ async def test_list_group_stats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_group_stats_async(
-    transport: str = "grpc_asyncio",
-    request_type=error_stats_service.ListGroupStatsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.ListGroupStatsRequest(),
+        {},
+    ],
+)
+async def test_list_group_stats_async(request_type, transport: str = "grpc_asyncio"):
     client = ErrorStatsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1504,7 +1525,7 @@ async def test_list_group_stats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
@@ -1525,11 +1546,6 @@ async def test_list_group_stats_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupStatsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_group_stats_async_from_dict():
-    await test_list_group_stats_async(request_type=dict)
 
 
 def test_list_group_stats_field_headers():
@@ -1892,8 +1908,8 @@ async def test_list_group_stats_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        error_stats_service.ListEventsRequest,
-        dict,
+        error_stats_service.ListEventsRequest(),
+        {},
     ],
 )
 def test_list_events(request_type, transport: str = "grpc"):
@@ -1904,7 +1920,7 @@ def test_list_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -1950,11 +1966,12 @@ def test_list_events_non_empty_request_with_auto_populated_field():
         client.list_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.ListEventsRequest(
+        request_msg = error_stats_service.ListEventsRequest(
             project_name="project_name_value",
             group_id="group_id_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_events_use_cached_wrapped_rpc():
@@ -2035,9 +2052,14 @@ async def test_list_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_events_async(
-    transport: str = "grpc_asyncio", request_type=error_stats_service.ListEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.ListEventsRequest(),
+        {},
+    ],
+)
+async def test_list_events_async(request_type, transport: str = "grpc_asyncio"):
     client = ErrorStatsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2045,7 +2067,7 @@ async def test_list_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -2066,11 +2088,6 @@ async def test_list_events_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_events_async_from_dict():
-    await test_list_events_async(request_type=dict)
 
 
 def test_list_events_field_headers():
@@ -2419,8 +2436,8 @@ async def test_list_events_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        error_stats_service.DeleteEventsRequest,
-        dict,
+        error_stats_service.DeleteEventsRequest(),
+        {},
     ],
 )
 def test_delete_events(request_type, transport: str = "grpc"):
@@ -2431,7 +2448,7 @@ def test_delete_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
@@ -2472,9 +2489,10 @@ def test_delete_events_non_empty_request_with_auto_populated_field():
         client.delete_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == error_stats_service.DeleteEventsRequest(
+        request_msg = error_stats_service.DeleteEventsRequest(
             project_name="project_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_events_use_cached_wrapped_rpc():
@@ -2555,10 +2573,14 @@ async def test_delete_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_events_async(
-    transport: str = "grpc_asyncio",
-    request_type=error_stats_service.DeleteEventsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        error_stats_service.DeleteEventsRequest(),
+        {},
+    ],
+)
+async def test_delete_events_async(request_type, transport: str = "grpc_asyncio"):
     client = ErrorStatsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2566,7 +2588,7 @@ async def test_delete_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
@@ -2584,11 +2606,6 @@ async def test_delete_events_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, error_stats_service.DeleteEventsResponse)
-
-
-@pytest.mark.asyncio
-async def test_delete_events_async_from_dict():
-    await test_delete_events_async(request_type=dict)
 
 
 def test_delete_events_field_headers():
@@ -3592,7 +3609,6 @@ def test_list_group_stats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListGroupStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3613,7 +3629,6 @@ def test_list_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3634,7 +3649,6 @@ def test_delete_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.DeleteEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3675,7 +3689,6 @@ async def test_list_group_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListGroupStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3702,7 +3715,6 @@ async def test_list_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3727,7 +3739,6 @@ async def test_delete_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.DeleteEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4166,7 +4177,6 @@ def test_list_group_stats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListGroupStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4186,7 +4196,6 @@ def test_list_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4206,7 +4215,6 @@ def test_delete_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = error_stats_service.DeleteEventsRequest()
-
         assert args[0] == request_msg
 
 

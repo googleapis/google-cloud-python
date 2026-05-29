@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -130,6 +131,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1359,8 +1375,8 @@ def test_data_scan_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.CreateDataScanRequest,
-        dict,
+        datascans.CreateDataScanRequest(),
+        {},
     ],
 )
 def test_create_data_scan(request_type, transport: str = "grpc"):
@@ -1371,7 +1387,7 @@ def test_create_data_scan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
@@ -1413,10 +1429,11 @@ def test_create_data_scan_non_empty_request_with_auto_populated_field():
         client.create_data_scan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.CreateDataScanRequest(
+        request_msg = datascans.CreateDataScanRequest(
             parent="parent_value",
             data_scan_id="data_scan_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_scan_use_cached_wrapped_rpc():
@@ -1509,9 +1526,14 @@ async def test_create_data_scan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_scan_async(
-    transport: str = "grpc_asyncio", request_type=datascans.CreateDataScanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.CreateDataScanRequest(),
+        {},
+    ],
+)
+async def test_create_data_scan_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1519,7 +1541,7 @@ async def test_create_data_scan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_data_scan), "__call__") as call:
@@ -1537,11 +1559,6 @@ async def test_create_data_scan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_data_scan_async_from_dict():
-    await test_create_data_scan_async(request_type=dict)
 
 
 def test_create_data_scan_field_headers():
@@ -1710,8 +1727,8 @@ async def test_create_data_scan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.UpdateDataScanRequest,
-        dict,
+        datascans.UpdateDataScanRequest(),
+        {},
     ],
 )
 def test_update_data_scan(request_type, transport: str = "grpc"):
@@ -1722,7 +1739,7 @@ def test_update_data_scan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
@@ -1761,7 +1778,8 @@ def test_update_data_scan_non_empty_request_with_auto_populated_field():
         client.update_data_scan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.UpdateDataScanRequest()
+        request_msg = datascans.UpdateDataScanRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_scan_use_cached_wrapped_rpc():
@@ -1854,9 +1872,14 @@ async def test_update_data_scan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_scan_async(
-    transport: str = "grpc_asyncio", request_type=datascans.UpdateDataScanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.UpdateDataScanRequest(),
+        {},
+    ],
+)
+async def test_update_data_scan_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1864,7 +1887,7 @@ async def test_update_data_scan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_data_scan), "__call__") as call:
@@ -1882,11 +1905,6 @@ async def test_update_data_scan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_data_scan_async_from_dict():
-    await test_update_data_scan_async(request_type=dict)
 
 
 def test_update_data_scan_field_headers():
@@ -2045,8 +2063,8 @@ async def test_update_data_scan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.DeleteDataScanRequest,
-        dict,
+        datascans.DeleteDataScanRequest(),
+        {},
     ],
 )
 def test_delete_data_scan(request_type, transport: str = "grpc"):
@@ -2057,7 +2075,7 @@ def test_delete_data_scan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
@@ -2098,9 +2116,10 @@ def test_delete_data_scan_non_empty_request_with_auto_populated_field():
         client.delete_data_scan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.DeleteDataScanRequest(
+        request_msg = datascans.DeleteDataScanRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_scan_use_cached_wrapped_rpc():
@@ -2193,9 +2212,14 @@ async def test_delete_data_scan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_scan_async(
-    transport: str = "grpc_asyncio", request_type=datascans.DeleteDataScanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.DeleteDataScanRequest(),
+        {},
+    ],
+)
+async def test_delete_data_scan_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2203,7 +2227,7 @@ async def test_delete_data_scan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_data_scan), "__call__") as call:
@@ -2221,11 +2245,6 @@ async def test_delete_data_scan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_data_scan_async_from_dict():
-    await test_delete_data_scan_async(request_type=dict)
 
 
 def test_delete_data_scan_field_headers():
@@ -2374,8 +2393,8 @@ async def test_delete_data_scan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.GetDataScanRequest,
-        dict,
+        datascans.GetDataScanRequest(),
+        {},
     ],
 )
 def test_get_data_scan(request_type, transport: str = "grpc"):
@@ -2386,7 +2405,7 @@ def test_get_data_scan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
@@ -2440,9 +2459,10 @@ def test_get_data_scan_non_empty_request_with_auto_populated_field():
         client.get_data_scan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanRequest(
+        request_msg = datascans.GetDataScanRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_scan_use_cached_wrapped_rpc():
@@ -2523,9 +2543,14 @@ async def test_get_data_scan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_scan_async(
-    transport: str = "grpc_asyncio", request_type=datascans.GetDataScanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GetDataScanRequest(),
+        {},
+    ],
+)
+async def test_get_data_scan_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2533,7 +2558,7 @@ async def test_get_data_scan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_scan), "__call__") as call:
@@ -2564,11 +2589,6 @@ async def test_get_data_scan_async(
     assert response.display_name == "display_name_value"
     assert response.state == resources.State.ACTIVE
     assert response.type_ == datascans.DataScanType.DATA_QUALITY
-
-
-@pytest.mark.asyncio
-async def test_get_data_scan_async_from_dict():
-    await test_get_data_scan_async(request_type=dict)
 
 
 def test_get_data_scan_field_headers():
@@ -2713,8 +2733,8 @@ async def test_get_data_scan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.ListDataScansRequest,
-        dict,
+        datascans.ListDataScansRequest(),
+        {},
     ],
 )
 def test_list_data_scans(request_type, transport: str = "grpc"):
@@ -2725,7 +2745,7 @@ def test_list_data_scans(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
@@ -2774,12 +2794,13 @@ def test_list_data_scans_non_empty_request_with_auto_populated_field():
         client.list_data_scans(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScansRequest(
+        request_msg = datascans.ListDataScansRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_scans_use_cached_wrapped_rpc():
@@ -2860,9 +2881,14 @@ async def test_list_data_scans_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_scans_async(
-    transport: str = "grpc_asyncio", request_type=datascans.ListDataScansRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.ListDataScansRequest(),
+        {},
+    ],
+)
+async def test_list_data_scans_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2870,7 +2896,7 @@ async def test_list_data_scans_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_scans), "__call__") as call:
@@ -2893,11 +2919,6 @@ async def test_list_data_scans_async(
     assert isinstance(response, pagers.ListDataScansAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_data_scans_async_from_dict():
-    await test_list_data_scans_async(request_type=dict)
 
 
 def test_list_data_scans_field_headers():
@@ -3236,8 +3257,8 @@ async def test_list_data_scans_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.RunDataScanRequest,
-        dict,
+        datascans.RunDataScanRequest(),
+        {},
     ],
 )
 def test_run_data_scan(request_type, transport: str = "grpc"):
@@ -3248,7 +3269,7 @@ def test_run_data_scan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
@@ -3289,9 +3310,10 @@ def test_run_data_scan_non_empty_request_with_auto_populated_field():
         client.run_data_scan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.RunDataScanRequest(
+        request_msg = datascans.RunDataScanRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_data_scan_use_cached_wrapped_rpc():
@@ -3372,9 +3394,14 @@ async def test_run_data_scan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_run_data_scan_async(
-    transport: str = "grpc_asyncio", request_type=datascans.RunDataScanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.RunDataScanRequest(),
+        {},
+    ],
+)
+async def test_run_data_scan_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3382,7 +3409,7 @@ async def test_run_data_scan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_data_scan), "__call__") as call:
@@ -3400,11 +3427,6 @@ async def test_run_data_scan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.RunDataScanResponse)
-
-
-@pytest.mark.asyncio
-async def test_run_data_scan_async_from_dict():
-    await test_run_data_scan_async(request_type=dict)
 
 
 def test_run_data_scan_field_headers():
@@ -3553,8 +3575,8 @@ async def test_run_data_scan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.GetDataScanJobRequest,
-        dict,
+        datascans.GetDataScanJobRequest(),
+        {},
     ],
 )
 def test_get_data_scan_job(request_type, transport: str = "grpc"):
@@ -3565,7 +3587,7 @@ def test_get_data_scan_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3621,9 +3643,10 @@ def test_get_data_scan_job_non_empty_request_with_auto_populated_field():
         client.get_data_scan_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GetDataScanJobRequest(
+        request_msg = datascans.GetDataScanJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_scan_job_use_cached_wrapped_rpc():
@@ -3706,9 +3729,14 @@ async def test_get_data_scan_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_scan_job_async(
-    transport: str = "grpc_asyncio", request_type=datascans.GetDataScanJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GetDataScanJobRequest(),
+        {},
+    ],
+)
+async def test_get_data_scan_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3716,7 +3744,7 @@ async def test_get_data_scan_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3747,11 +3775,6 @@ async def test_get_data_scan_job_async(
     assert response.state == datascans.DataScanJob.State.RUNNING
     assert response.message == "message_value"
     assert response.type_ == datascans.DataScanType.DATA_QUALITY
-
-
-@pytest.mark.asyncio
-async def test_get_data_scan_job_async_from_dict():
-    await test_get_data_scan_job_async(request_type=dict)
 
 
 def test_get_data_scan_job_field_headers():
@@ -3908,8 +3931,8 @@ async def test_get_data_scan_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.ListDataScanJobsRequest,
-        dict,
+        datascans.ListDataScanJobsRequest(),
+        {},
     ],
 )
 def test_list_data_scan_jobs(request_type, transport: str = "grpc"):
@@ -3920,7 +3943,7 @@ def test_list_data_scan_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3970,11 +3993,12 @@ def test_list_data_scan_jobs_non_empty_request_with_auto_populated_field():
         client.list_data_scan_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.ListDataScanJobsRequest(
+        request_msg = datascans.ListDataScanJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_scan_jobs_use_cached_wrapped_rpc():
@@ -4059,9 +4083,14 @@ async def test_list_data_scan_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_scan_jobs_async(
-    transport: str = "grpc_asyncio", request_type=datascans.ListDataScanJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.ListDataScanJobsRequest(),
+        {},
+    ],
+)
+async def test_list_data_scan_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4069,7 +4098,7 @@ async def test_list_data_scan_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4092,11 +4121,6 @@ async def test_list_data_scan_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataScanJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_scan_jobs_async_from_dict():
-    await test_list_data_scan_jobs_async(request_type=dict)
 
 
 def test_list_data_scan_jobs_field_headers():
@@ -4451,8 +4475,8 @@ async def test_list_data_scan_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        datascans.GenerateDataQualityRulesRequest,
-        dict,
+        datascans.GenerateDataQualityRulesRequest(),
+        {},
     ],
 )
 def test_generate_data_quality_rules(request_type, transport: str = "grpc"):
@@ -4463,7 +4487,7 @@ def test_generate_data_quality_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4508,9 +4532,10 @@ def test_generate_data_quality_rules_non_empty_request_with_auto_populated_field
         client.generate_data_quality_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datascans.GenerateDataQualityRulesRequest(
+        request_msg = datascans.GenerateDataQualityRulesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_data_quality_rules_use_cached_wrapped_rpc():
@@ -4596,9 +4621,15 @@ async def test_generate_data_quality_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GenerateDataQualityRulesRequest(),
+        {},
+    ],
+)
 async def test_generate_data_quality_rules_async(
-    transport: str = "grpc_asyncio",
-    request_type=datascans.GenerateDataQualityRulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataScanServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4607,7 +4638,7 @@ async def test_generate_data_quality_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4627,11 +4658,6 @@ async def test_generate_data_quality_rules_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datascans.GenerateDataQualityRulesResponse)
-
-
-@pytest.mark.asyncio
-async def test_generate_data_quality_rules_async_from_dict():
-    await test_generate_data_quality_rules_async(request_type=dict)
 
 
 def test_generate_data_quality_rules_field_headers():
@@ -6754,7 +6780,6 @@ def test_create_data_scan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.CreateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6775,7 +6800,6 @@ def test_update_data_scan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.UpdateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6796,7 +6820,6 @@ def test_delete_data_scan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.DeleteDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6817,7 +6840,6 @@ def test_get_data_scan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6838,7 +6860,6 @@ def test_list_data_scans_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScansRequest()
-
         assert args[0] == request_msg
 
 
@@ -6859,7 +6880,6 @@ def test_run_data_scan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.RunDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6882,7 +6902,6 @@ def test_get_data_scan_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6905,7 +6924,6 @@ def test_list_data_scan_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScanJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6928,7 +6946,6 @@ def test_generate_data_quality_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GenerateDataQualityRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6967,7 +6984,6 @@ async def test_create_data_scan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.CreateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -6992,7 +7008,6 @@ async def test_update_data_scan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.UpdateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -7017,7 +7032,6 @@ async def test_delete_data_scan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.DeleteDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -7049,7 +7063,6 @@ async def test_get_data_scan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -7077,7 +7090,6 @@ async def test_list_data_scans_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScansRequest()
-
         assert args[0] == request_msg
 
 
@@ -7102,7 +7114,6 @@ async def test_run_data_scan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.RunDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -7135,7 +7146,6 @@ async def test_get_data_scan_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7164,7 +7174,6 @@ async def test_list_data_scan_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScanJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7191,7 +7200,6 @@ async def test_generate_data_quality_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GenerateDataQualityRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9656,7 +9664,6 @@ def test_create_data_scan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.CreateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -9676,7 +9683,6 @@ def test_update_data_scan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.UpdateDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -9696,7 +9702,6 @@ def test_delete_data_scan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.DeleteDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -9716,7 +9721,6 @@ def test_get_data_scan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -9736,7 +9740,6 @@ def test_list_data_scans_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScansRequest()
-
         assert args[0] == request_msg
 
 
@@ -9756,7 +9759,6 @@ def test_run_data_scan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.RunDataScanRequest()
-
         assert args[0] == request_msg
 
 
@@ -9778,7 +9780,6 @@ def test_get_data_scan_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GetDataScanJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -9800,7 +9801,6 @@ def test_list_data_scan_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.ListDataScanJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9822,7 +9822,6 @@ def test_generate_data_quality_rules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datascans.GenerateDataQualityRulesRequest()
-
         assert args[0] == request_msg
 
 

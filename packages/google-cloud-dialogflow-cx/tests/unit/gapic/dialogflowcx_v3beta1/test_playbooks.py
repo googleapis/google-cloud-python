@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -130,6 +131,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1292,8 +1308,8 @@ def test_playbooks_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_playbook.CreatePlaybookRequest,
-        dict,
+        gcdc_playbook.CreatePlaybookRequest(),
+        {},
     ],
 )
 def test_create_playbook(request_type, transport: str = "grpc"):
@@ -1304,7 +1320,7 @@ def test_create_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_playbook), "__call__") as call:
@@ -1364,9 +1380,10 @@ def test_create_playbook_non_empty_request_with_auto_populated_field():
         client.create_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.CreatePlaybookRequest(
+        request_msg = gcdc_playbook.CreatePlaybookRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_playbook_use_cached_wrapped_rpc():
@@ -1447,9 +1464,14 @@ async def test_create_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_playbook_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_playbook.CreatePlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_playbook.CreatePlaybookRequest(),
+        {},
+    ],
+)
+async def test_create_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1457,7 +1479,7 @@ async def test_create_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_playbook), "__call__") as call:
@@ -1494,11 +1516,6 @@ async def test_create_playbook_async(
     assert response.referenced_tools == ["referenced_tools_value"]
     assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
-
-
-@pytest.mark.asyncio
-async def test_create_playbook_async_from_dict():
-    await test_create_playbook_async(request_type=dict)
 
 
 def test_create_playbook_field_headers():
@@ -1657,8 +1674,8 @@ async def test_create_playbook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.DeletePlaybookRequest,
-        dict,
+        playbook.DeletePlaybookRequest(),
+        {},
     ],
 )
 def test_delete_playbook(request_type, transport: str = "grpc"):
@@ -1669,7 +1686,7 @@ def test_delete_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_playbook), "__call__") as call:
@@ -1710,9 +1727,10 @@ def test_delete_playbook_non_empty_request_with_auto_populated_field():
         client.delete_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookRequest(
+        request_msg = playbook.DeletePlaybookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_playbook_use_cached_wrapped_rpc():
@@ -1793,9 +1811,14 @@ async def test_delete_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_playbook_async(
-    transport: str = "grpc_asyncio", request_type=playbook.DeletePlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.DeletePlaybookRequest(),
+        {},
+    ],
+)
+async def test_delete_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1803,7 +1826,7 @@ async def test_delete_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_playbook), "__call__") as call:
@@ -1819,11 +1842,6 @@ async def test_delete_playbook_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_playbook_async_from_dict():
-    await test_delete_playbook_async(request_type=dict)
 
 
 def test_delete_playbook_field_headers():
@@ -1968,8 +1986,8 @@ async def test_delete_playbook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.ListPlaybooksRequest,
-        dict,
+        playbook.ListPlaybooksRequest(),
+        {},
     ],
 )
 def test_list_playbooks(request_type, transport: str = "grpc"):
@@ -1980,7 +1998,7 @@ def test_list_playbooks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_playbooks), "__call__") as call:
@@ -2025,10 +2043,11 @@ def test_list_playbooks_non_empty_request_with_auto_populated_field():
         client.list_playbooks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybooksRequest(
+        request_msg = playbook.ListPlaybooksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_playbooks_use_cached_wrapped_rpc():
@@ -2109,9 +2128,14 @@ async def test_list_playbooks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_playbooks_async(
-    transport: str = "grpc_asyncio", request_type=playbook.ListPlaybooksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.ListPlaybooksRequest(),
+        {},
+    ],
+)
+async def test_list_playbooks_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2119,7 +2143,7 @@ async def test_list_playbooks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_playbooks), "__call__") as call:
@@ -2140,11 +2164,6 @@ async def test_list_playbooks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybooksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_playbooks_async_from_dict():
-    await test_list_playbooks_async(request_type=dict)
 
 
 def test_list_playbooks_field_headers():
@@ -2483,8 +2502,8 @@ async def test_list_playbooks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.GetPlaybookRequest,
-        dict,
+        playbook.GetPlaybookRequest(),
+        {},
     ],
 )
 def test_get_playbook(request_type, transport: str = "grpc"):
@@ -2495,7 +2514,7 @@ def test_get_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_playbook), "__call__") as call:
@@ -2555,9 +2574,10 @@ def test_get_playbook_non_empty_request_with_auto_populated_field():
         client.get_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookRequest(
+        request_msg = playbook.GetPlaybookRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_playbook_use_cached_wrapped_rpc():
@@ -2638,9 +2658,14 @@ async def test_get_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_playbook_async(
-    transport: str = "grpc_asyncio", request_type=playbook.GetPlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.GetPlaybookRequest(),
+        {},
+    ],
+)
+async def test_get_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2648,7 +2673,7 @@ async def test_get_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_playbook), "__call__") as call:
@@ -2685,11 +2710,6 @@ async def test_get_playbook_async(
     assert response.referenced_tools == ["referenced_tools_value"]
     assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == playbook.Playbook.PlaybookType.TASK
-
-
-@pytest.mark.asyncio
-async def test_get_playbook_async_from_dict():
-    await test_get_playbook_async(request_type=dict)
 
 
 def test_get_playbook_field_headers():
@@ -2834,8 +2854,8 @@ async def test_get_playbook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.ExportPlaybookRequest,
-        dict,
+        playbook.ExportPlaybookRequest(),
+        {},
     ],
 )
 def test_export_playbook(request_type, transport: str = "grpc"):
@@ -2846,7 +2866,7 @@ def test_export_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_playbook), "__call__") as call:
@@ -2888,10 +2908,11 @@ def test_export_playbook_non_empty_request_with_auto_populated_field():
         client.export_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ExportPlaybookRequest(
+        request_msg = playbook.ExportPlaybookRequest(
             name="name_value",
             playbook_uri="playbook_uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_playbook_use_cached_wrapped_rpc():
@@ -2982,9 +3003,14 @@ async def test_export_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_playbook_async(
-    transport: str = "grpc_asyncio", request_type=playbook.ExportPlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.ExportPlaybookRequest(),
+        {},
+    ],
+)
+async def test_export_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2992,7 +3018,7 @@ async def test_export_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_playbook), "__call__") as call:
@@ -3010,11 +3036,6 @@ async def test_export_playbook_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_playbook_async_from_dict():
-    await test_export_playbook_async(request_type=dict)
 
 
 def test_export_playbook_field_headers():
@@ -3081,8 +3102,8 @@ async def test_export_playbook_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.ImportPlaybookRequest,
-        dict,
+        playbook.ImportPlaybookRequest(),
+        {},
     ],
 )
 def test_import_playbook(request_type, transport: str = "grpc"):
@@ -3093,7 +3114,7 @@ def test_import_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_playbook), "__call__") as call:
@@ -3135,10 +3156,11 @@ def test_import_playbook_non_empty_request_with_auto_populated_field():
         client.import_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ImportPlaybookRequest(
+        request_msg = playbook.ImportPlaybookRequest(
             parent="parent_value",
             playbook_uri="playbook_uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_playbook_use_cached_wrapped_rpc():
@@ -3229,9 +3251,14 @@ async def test_import_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_playbook_async(
-    transport: str = "grpc_asyncio", request_type=playbook.ImportPlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.ImportPlaybookRequest(),
+        {},
+    ],
+)
+async def test_import_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3239,7 +3266,7 @@ async def test_import_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_playbook), "__call__") as call:
@@ -3257,11 +3284,6 @@ async def test_import_playbook_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_playbook_async_from_dict():
-    await test_import_playbook_async(request_type=dict)
 
 
 def test_import_playbook_field_headers():
@@ -3328,8 +3350,8 @@ async def test_import_playbook_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_playbook.UpdatePlaybookRequest,
-        dict,
+        gcdc_playbook.UpdatePlaybookRequest(),
+        {},
     ],
 )
 def test_update_playbook(request_type, transport: str = "grpc"):
@@ -3340,7 +3362,7 @@ def test_update_playbook(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_playbook), "__call__") as call:
@@ -3398,7 +3420,8 @@ def test_update_playbook_non_empty_request_with_auto_populated_field():
         client.update_playbook(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_playbook.UpdatePlaybookRequest()
+        request_msg = gcdc_playbook.UpdatePlaybookRequest()
+        assert args[0] == request_msg
 
 
 def test_update_playbook_use_cached_wrapped_rpc():
@@ -3479,9 +3502,14 @@ async def test_update_playbook_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_playbook_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_playbook.UpdatePlaybookRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_playbook.UpdatePlaybookRequest(),
+        {},
+    ],
+)
+async def test_update_playbook_async(request_type, transport: str = "grpc_asyncio"):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3489,7 +3517,7 @@ async def test_update_playbook_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_playbook), "__call__") as call:
@@ -3526,11 +3554,6 @@ async def test_update_playbook_async(
     assert response.referenced_tools == ["referenced_tools_value"]
     assert response.inline_actions == ["inline_actions_value"]
     assert response.playbook_type == gcdc_playbook.Playbook.PlaybookType.TASK
-
-
-@pytest.mark.asyncio
-async def test_update_playbook_async_from_dict():
-    await test_update_playbook_async(request_type=dict)
 
 
 def test_update_playbook_field_headers():
@@ -3689,8 +3712,8 @@ async def test_update_playbook_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.CreatePlaybookVersionRequest,
-        dict,
+        playbook.CreatePlaybookVersionRequest(),
+        {},
     ],
 )
 def test_create_playbook_version(request_type, transport: str = "grpc"):
@@ -3701,7 +3724,7 @@ def test_create_playbook_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3751,9 +3774,10 @@ def test_create_playbook_version_non_empty_request_with_auto_populated_field():
         client.create_playbook_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.CreatePlaybookVersionRequest(
+        request_msg = playbook.CreatePlaybookVersionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_playbook_version_use_cached_wrapped_rpc():
@@ -3839,8 +3863,15 @@ async def test_create_playbook_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.CreatePlaybookVersionRequest(),
+        {},
+    ],
+)
 async def test_create_playbook_version_async(
-    transport: str = "grpc_asyncio", request_type=playbook.CreatePlaybookVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3849,7 +3880,7 @@ async def test_create_playbook_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3874,11 +3905,6 @@ async def test_create_playbook_version_async(
     assert isinstance(response, playbook.PlaybookVersion)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_playbook_version_async_from_dict():
-    await test_create_playbook_version_async(request_type=dict)
 
 
 def test_create_playbook_version_field_headers():
@@ -4045,8 +4071,8 @@ async def test_create_playbook_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.GetPlaybookVersionRequest,
-        dict,
+        playbook.GetPlaybookVersionRequest(),
+        {},
     ],
 )
 def test_get_playbook_version(request_type, transport: str = "grpc"):
@@ -4057,7 +4083,7 @@ def test_get_playbook_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4107,9 +4133,10 @@ def test_get_playbook_version_non_empty_request_with_auto_populated_field():
         client.get_playbook_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.GetPlaybookVersionRequest(
+        request_msg = playbook.GetPlaybookVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_playbook_version_use_cached_wrapped_rpc():
@@ -4194,8 +4221,15 @@ async def test_get_playbook_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.GetPlaybookVersionRequest(),
+        {},
+    ],
+)
 async def test_get_playbook_version_async(
-    transport: str = "grpc_asyncio", request_type=playbook.GetPlaybookVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4204,7 +4238,7 @@ async def test_get_playbook_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4229,11 +4263,6 @@ async def test_get_playbook_version_async(
     assert isinstance(response, playbook.PlaybookVersion)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_playbook_version_async_from_dict():
-    await test_get_playbook_version_async(request_type=dict)
 
 
 def test_get_playbook_version_field_headers():
@@ -4390,8 +4419,8 @@ async def test_get_playbook_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.RestorePlaybookVersionRequest,
-        dict,
+        playbook.RestorePlaybookVersionRequest(),
+        {},
     ],
 )
 def test_restore_playbook_version(request_type, transport: str = "grpc"):
@@ -4402,7 +4431,7 @@ def test_restore_playbook_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4447,9 +4476,10 @@ def test_restore_playbook_version_non_empty_request_with_auto_populated_field():
         client.restore_playbook_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.RestorePlaybookVersionRequest(
+        request_msg = playbook.RestorePlaybookVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_playbook_version_use_cached_wrapped_rpc():
@@ -4535,8 +4565,15 @@ async def test_restore_playbook_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.RestorePlaybookVersionRequest(),
+        {},
+    ],
+)
 async def test_restore_playbook_version_async(
-    transport: str = "grpc_asyncio", request_type=playbook.RestorePlaybookVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4545,7 +4582,7 @@ async def test_restore_playbook_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4565,11 +4602,6 @@ async def test_restore_playbook_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, playbook.RestorePlaybookVersionResponse)
-
-
-@pytest.mark.asyncio
-async def test_restore_playbook_version_async_from_dict():
-    await test_restore_playbook_version_async(request_type=dict)
 
 
 def test_restore_playbook_version_field_headers():
@@ -4726,8 +4758,8 @@ async def test_restore_playbook_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.ListPlaybookVersionsRequest,
-        dict,
+        playbook.ListPlaybookVersionsRequest(),
+        {},
     ],
 )
 def test_list_playbook_versions(request_type, transport: str = "grpc"):
@@ -4738,7 +4770,7 @@ def test_list_playbook_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4787,10 +4819,11 @@ def test_list_playbook_versions_non_empty_request_with_auto_populated_field():
         client.list_playbook_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.ListPlaybookVersionsRequest(
+        request_msg = playbook.ListPlaybookVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_playbook_versions_use_cached_wrapped_rpc():
@@ -4876,8 +4909,15 @@ async def test_list_playbook_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.ListPlaybookVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_playbook_versions_async(
-    transport: str = "grpc_asyncio", request_type=playbook.ListPlaybookVersionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4886,7 +4926,7 @@ async def test_list_playbook_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4909,11 +4949,6 @@ async def test_list_playbook_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPlaybookVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_playbook_versions_async_from_dict():
-    await test_list_playbook_versions_async(request_type=dict)
 
 
 def test_list_playbook_versions_field_headers():
@@ -5268,8 +5303,8 @@ async def test_list_playbook_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        playbook.DeletePlaybookVersionRequest,
-        dict,
+        playbook.DeletePlaybookVersionRequest(),
+        {},
     ],
 )
 def test_delete_playbook_version(request_type, transport: str = "grpc"):
@@ -5280,7 +5315,7 @@ def test_delete_playbook_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5325,9 +5360,10 @@ def test_delete_playbook_version_non_empty_request_with_auto_populated_field():
         client.delete_playbook_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == playbook.DeletePlaybookVersionRequest(
+        request_msg = playbook.DeletePlaybookVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_playbook_version_use_cached_wrapped_rpc():
@@ -5413,8 +5449,15 @@ async def test_delete_playbook_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        playbook.DeletePlaybookVersionRequest(),
+        {},
+    ],
+)
 async def test_delete_playbook_version_async(
-    transport: str = "grpc_asyncio", request_type=playbook.DeletePlaybookVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PlaybooksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5423,7 +5466,7 @@ async def test_delete_playbook_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5441,11 +5484,6 @@ async def test_delete_playbook_version_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_playbook_version_async_from_dict():
-    await test_delete_playbook_version_async(request_type=dict)
 
 
 def test_delete_playbook_version_field_headers():
@@ -7951,7 +7989,6 @@ def test_create_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.CreatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -7972,7 +8009,6 @@ def test_delete_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -7993,7 +8029,6 @@ def test_list_playbooks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8014,7 +8049,6 @@ def test_get_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8035,7 +8069,6 @@ def test_export_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ExportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8056,7 +8089,6 @@ def test_import_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ImportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8077,7 +8109,6 @@ def test_update_playbook_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.UpdatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8100,7 +8131,6 @@ def test_create_playbook_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.CreatePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8123,7 +8153,6 @@ def test_get_playbook_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8146,7 +8175,6 @@ def test_restore_playbook_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.RestorePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8169,7 +8197,6 @@ def test_list_playbook_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybookVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8192,7 +8219,6 @@ def test_delete_playbook_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8241,7 +8267,6 @@ async def test_create_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.CreatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8264,7 +8289,6 @@ async def test_delete_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8291,7 +8315,6 @@ async def test_list_playbooks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8326,7 +8349,6 @@ async def test_get_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8351,7 +8373,6 @@ async def test_export_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ExportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8376,7 +8397,6 @@ async def test_import_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ImportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8411,7 +8431,6 @@ async def test_update_playbook_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.UpdatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -8441,7 +8460,6 @@ async def test_create_playbook_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.CreatePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8471,7 +8489,6 @@ async def test_get_playbook_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8498,7 +8515,6 @@ async def test_restore_playbook_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.RestorePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8527,7 +8543,6 @@ async def test_list_playbook_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybookVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8552,7 +8567,6 @@ async def test_delete_playbook_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11317,7 +11331,6 @@ def test_create_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.CreatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11337,7 +11350,6 @@ def test_delete_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11357,7 +11369,6 @@ def test_list_playbooks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybooksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11377,7 +11388,6 @@ def test_get_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11397,7 +11407,6 @@ def test_export_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ExportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11417,7 +11426,6 @@ def test_import_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ImportPlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11437,7 +11445,6 @@ def test_update_playbook_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_playbook.UpdatePlaybookRequest()
-
         assert args[0] == request_msg
 
 
@@ -11459,7 +11466,6 @@ def test_create_playbook_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.CreatePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11481,7 +11487,6 @@ def test_get_playbook_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.GetPlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11503,7 +11508,6 @@ def test_restore_playbook_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.RestorePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11525,7 +11529,6 @@ def test_list_playbook_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.ListPlaybookVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11547,7 +11550,6 @@ def test_delete_playbook_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = playbook.DeletePlaybookVersionRequest()
-
         assert args[0] == request_msg
 
 

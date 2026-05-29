@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -102,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -13060,7 +13076,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13080,7 +13095,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13100,7 +13114,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13120,7 +13133,6 @@ def test_bulk_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkSetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13140,7 +13152,6 @@ def test_create_snapshot_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateSnapshotDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13160,7 +13171,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13180,7 +13190,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13200,7 +13209,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13220,7 +13228,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13240,7 +13247,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13262,7 +13268,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13282,7 +13287,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13302,7 +13306,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13322,7 +13325,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13344,7 +13346,6 @@ def test_start_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13366,7 +13367,6 @@ def test_stop_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13388,7 +13388,6 @@ def test_stop_group_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopGroupAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13410,7 +13409,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13430,7 +13428,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13450,7 +13447,6 @@ def test_update_kms_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateKmsKeyDiskRequest()
-
         assert args[0] == request_msg
 
 

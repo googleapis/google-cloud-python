@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1317,8 +1333,8 @@ def test_rule_set_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        ruleset_service_request.CreateRuleSetRequest,
-        dict,
+        ruleset_service_request.CreateRuleSetRequest(),
+        {},
     ],
 )
 def test_create_rule_set(request_type, transport: str = "grpc"):
@@ -1329,7 +1345,7 @@ def test_create_rule_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rule_set), "__call__") as call:
@@ -1377,9 +1393,10 @@ def test_create_rule_set_non_empty_request_with_auto_populated_field():
         client.create_rule_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.CreateRuleSetRequest(
+        request_msg = ruleset_service_request.CreateRuleSetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_rule_set_use_cached_wrapped_rpc():
@@ -1460,10 +1477,14 @@ async def test_create_rule_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_rule_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=ruleset_service_request.CreateRuleSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ruleset_service_request.CreateRuleSetRequest(),
+        {},
+    ],
+)
+async def test_create_rule_set_async(request_type, transport: str = "grpc_asyncio"):
     client = RuleSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1471,7 +1492,7 @@ async def test_create_rule_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rule_set), "__call__") as call:
@@ -1496,11 +1517,6 @@ async def test_create_rule_set_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.source == "source_value"
-
-
-@pytest.mark.asyncio
-async def test_create_rule_set_async_from_dict():
-    await test_create_rule_set_async(request_type=dict)
 
 
 def test_create_rule_set_field_headers():
@@ -1655,8 +1671,8 @@ async def test_create_rule_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ruleset_service_request.GetRuleSetRequest,
-        dict,
+        ruleset_service_request.GetRuleSetRequest(),
+        {},
     ],
 )
 def test_get_rule_set(request_type, transport: str = "grpc"):
@@ -1667,7 +1683,7 @@ def test_get_rule_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rule_set), "__call__") as call:
@@ -1715,9 +1731,10 @@ def test_get_rule_set_non_empty_request_with_auto_populated_field():
         client.get_rule_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.GetRuleSetRequest(
+        request_msg = ruleset_service_request.GetRuleSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_rule_set_use_cached_wrapped_rpc():
@@ -1798,10 +1815,14 @@ async def test_get_rule_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_rule_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=ruleset_service_request.GetRuleSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ruleset_service_request.GetRuleSetRequest(),
+        {},
+    ],
+)
+async def test_get_rule_set_async(request_type, transport: str = "grpc_asyncio"):
     client = RuleSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1809,7 +1830,7 @@ async def test_get_rule_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rule_set), "__call__") as call:
@@ -1834,11 +1855,6 @@ async def test_get_rule_set_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.source == "source_value"
-
-
-@pytest.mark.asyncio
-async def test_get_rule_set_async_from_dict():
-    await test_get_rule_set_async(request_type=dict)
 
 
 def test_get_rule_set_field_headers():
@@ -1983,8 +1999,8 @@ async def test_get_rule_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ruleset_service_request.UpdateRuleSetRequest,
-        dict,
+        ruleset_service_request.UpdateRuleSetRequest(),
+        {},
     ],
 )
 def test_update_rule_set(request_type, transport: str = "grpc"):
@@ -1995,7 +2011,7 @@ def test_update_rule_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_rule_set), "__call__") as call:
@@ -2043,9 +2059,10 @@ def test_update_rule_set_non_empty_request_with_auto_populated_field():
         client.update_rule_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.UpdateRuleSetRequest(
+        request_msg = ruleset_service_request.UpdateRuleSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_rule_set_use_cached_wrapped_rpc():
@@ -2126,10 +2143,14 @@ async def test_update_rule_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_rule_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=ruleset_service_request.UpdateRuleSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ruleset_service_request.UpdateRuleSetRequest(),
+        {},
+    ],
+)
+async def test_update_rule_set_async(request_type, transport: str = "grpc_asyncio"):
     client = RuleSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2137,7 +2158,7 @@ async def test_update_rule_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_rule_set), "__call__") as call:
@@ -2162,11 +2183,6 @@ async def test_update_rule_set_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.source == "source_value"
-
-
-@pytest.mark.asyncio
-async def test_update_rule_set_async_from_dict():
-    await test_update_rule_set_async(request_type=dict)
 
 
 def test_update_rule_set_field_headers():
@@ -2321,8 +2337,8 @@ async def test_update_rule_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ruleset_service_request.DeleteRuleSetRequest,
-        dict,
+        ruleset_service_request.DeleteRuleSetRequest(),
+        {},
     ],
 )
 def test_delete_rule_set(request_type, transport: str = "grpc"):
@@ -2333,7 +2349,7 @@ def test_delete_rule_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_rule_set), "__call__") as call:
@@ -2374,9 +2390,10 @@ def test_delete_rule_set_non_empty_request_with_auto_populated_field():
         client.delete_rule_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.DeleteRuleSetRequest(
+        request_msg = ruleset_service_request.DeleteRuleSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_rule_set_use_cached_wrapped_rpc():
@@ -2457,10 +2474,14 @@ async def test_delete_rule_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_rule_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=ruleset_service_request.DeleteRuleSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ruleset_service_request.DeleteRuleSetRequest(),
+        {},
+    ],
+)
+async def test_delete_rule_set_async(request_type, transport: str = "grpc_asyncio"):
     client = RuleSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2468,7 +2489,7 @@ async def test_delete_rule_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_rule_set), "__call__") as call:
@@ -2484,11 +2505,6 @@ async def test_delete_rule_set_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_rule_set_async_from_dict():
-    await test_delete_rule_set_async(request_type=dict)
 
 
 def test_delete_rule_set_field_headers():
@@ -2633,8 +2649,8 @@ async def test_delete_rule_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ruleset_service_request.ListRuleSetsRequest,
-        dict,
+        ruleset_service_request.ListRuleSetsRequest(),
+        {},
     ],
 )
 def test_list_rule_sets(request_type, transport: str = "grpc"):
@@ -2645,7 +2661,7 @@ def test_list_rule_sets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rule_sets), "__call__") as call:
@@ -2690,10 +2706,11 @@ def test_list_rule_sets_non_empty_request_with_auto_populated_field():
         client.list_rule_sets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ruleset_service_request.ListRuleSetsRequest(
+        request_msg = ruleset_service_request.ListRuleSetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_rule_sets_use_cached_wrapped_rpc():
@@ -2774,10 +2791,14 @@ async def test_list_rule_sets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_rule_sets_async(
-    transport: str = "grpc_asyncio",
-    request_type=ruleset_service_request.ListRuleSetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ruleset_service_request.ListRuleSetsRequest(),
+        {},
+    ],
+)
+async def test_list_rule_sets_async(request_type, transport: str = "grpc_asyncio"):
     client = RuleSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2785,7 +2806,7 @@ async def test_list_rule_sets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rule_sets), "__call__") as call:
@@ -2806,11 +2827,6 @@ async def test_list_rule_sets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuleSetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_rule_sets_async_from_dict():
-    await test_list_rule_sets_async(request_type=dict)
 
 
 def test_list_rule_sets_field_headers():
@@ -4249,7 +4265,6 @@ def test_create_rule_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.CreateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4270,7 +4285,6 @@ def test_get_rule_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.GetRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4291,7 +4305,6 @@ def test_update_rule_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.UpdateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4312,7 +4325,6 @@ def test_delete_rule_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.DeleteRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4333,7 +4345,6 @@ def test_list_rule_sets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.ListRuleSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4376,7 +4387,6 @@ async def test_create_rule_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.CreateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4405,7 +4415,6 @@ async def test_get_rule_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.GetRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4434,7 +4443,6 @@ async def test_update_rule_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.UpdateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4457,7 +4465,6 @@ async def test_delete_rule_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.DeleteRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4484,7 +4491,6 @@ async def test_list_rule_sets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.ListRuleSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5363,7 +5369,6 @@ def test_create_rule_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.CreateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5383,7 +5388,6 @@ def test_get_rule_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.GetRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5403,7 +5407,6 @@ def test_update_rule_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.UpdateRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5423,7 +5426,6 @@ def test_delete_rule_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.DeleteRuleSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5443,7 +5445,6 @@ def test_list_rule_sets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ruleset_service_request.ListRuleSetsRequest()
-
         assert args[0] == request_msg
 
 

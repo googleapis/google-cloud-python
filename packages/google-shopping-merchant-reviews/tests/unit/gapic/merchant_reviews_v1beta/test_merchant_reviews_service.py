@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1381,8 +1397,8 @@ def test_merchant_reviews_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        merchantreviews.GetMerchantReviewRequest,
-        dict,
+        merchantreviews.GetMerchantReviewRequest(),
+        {},
     ],
 )
 def test_get_merchant_review(request_type, transport: str = "grpc"):
@@ -1393,7 +1409,7 @@ def test_get_merchant_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,9 +1461,10 @@ def test_get_merchant_review_non_empty_request_with_auto_populated_field():
         client.get_merchant_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == merchantreviews.GetMerchantReviewRequest(
+        request_msg = merchantreviews.GetMerchantReviewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_merchant_review_use_cached_wrapped_rpc():
@@ -1532,10 +1549,14 @@ async def test_get_merchant_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_merchant_review_async(
-    transport: str = "grpc_asyncio",
-    request_type=merchantreviews.GetMerchantReviewRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        merchantreviews.GetMerchantReviewRequest(),
+        {},
+    ],
+)
+async def test_get_merchant_review_async(request_type, transport: str = "grpc_asyncio"):
     client = MerchantReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1543,7 +1564,7 @@ async def test_get_merchant_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1570,11 +1591,6 @@ async def test_get_merchant_review_async(
     assert response.name == "name_value"
     assert response.merchant_review_id == "merchant_review_id_value"
     assert response.data_source == "data_source_value"
-
-
-@pytest.mark.asyncio
-async def test_get_merchant_review_async_from_dict():
-    await test_get_merchant_review_async(request_type=dict)
 
 
 def test_get_merchant_review_field_headers():
@@ -1731,8 +1747,8 @@ async def test_get_merchant_review_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        merchantreviews.ListMerchantReviewsRequest,
-        dict,
+        merchantreviews.ListMerchantReviewsRequest(),
+        {},
     ],
 )
 def test_list_merchant_reviews(request_type, transport: str = "grpc"):
@@ -1743,7 +1759,7 @@ def test_list_merchant_reviews(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1792,10 +1808,11 @@ def test_list_merchant_reviews_non_empty_request_with_auto_populated_field():
         client.list_merchant_reviews(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == merchantreviews.ListMerchantReviewsRequest(
+        request_msg = merchantreviews.ListMerchantReviewsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_merchant_reviews_use_cached_wrapped_rpc():
@@ -1881,9 +1898,15 @@ async def test_list_merchant_reviews_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        merchantreviews.ListMerchantReviewsRequest(),
+        {},
+    ],
+)
 async def test_list_merchant_reviews_async(
-    transport: str = "grpc_asyncio",
-    request_type=merchantreviews.ListMerchantReviewsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MerchantReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1892,7 +1915,7 @@ async def test_list_merchant_reviews_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1915,11 +1938,6 @@ async def test_list_merchant_reviews_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMerchantReviewsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_merchant_reviews_async_from_dict():
-    await test_list_merchant_reviews_async(request_type=dict)
 
 
 def test_list_merchant_reviews_field_headers():
@@ -2274,8 +2292,8 @@ async def test_list_merchant_reviews_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        merchantreviews.InsertMerchantReviewRequest,
-        dict,
+        merchantreviews.InsertMerchantReviewRequest(),
+        {},
     ],
 )
 def test_insert_merchant_review(request_type, transport: str = "grpc"):
@@ -2286,7 +2304,7 @@ def test_insert_merchant_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2339,10 +2357,11 @@ def test_insert_merchant_review_non_empty_request_with_auto_populated_field():
         client.insert_merchant_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == merchantreviews.InsertMerchantReviewRequest(
+        request_msg = merchantreviews.InsertMerchantReviewRequest(
             parent="parent_value",
             data_source="data_source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_insert_merchant_review_use_cached_wrapped_rpc():
@@ -2428,9 +2447,15 @@ async def test_insert_merchant_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        merchantreviews.InsertMerchantReviewRequest(),
+        {},
+    ],
+)
 async def test_insert_merchant_review_async(
-    transport: str = "grpc_asyncio",
-    request_type=merchantreviews.InsertMerchantReviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MerchantReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2439,7 +2464,7 @@ async def test_insert_merchant_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2466,11 +2491,6 @@ async def test_insert_merchant_review_async(
     assert response.name == "name_value"
     assert response.merchant_review_id == "merchant_review_id_value"
     assert response.data_source == "data_source_value"
-
-
-@pytest.mark.asyncio
-async def test_insert_merchant_review_async_from_dict():
-    await test_insert_merchant_review_async(request_type=dict)
 
 
 def test_insert_merchant_review_field_headers():
@@ -2541,8 +2561,8 @@ async def test_insert_merchant_review_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        merchantreviews.DeleteMerchantReviewRequest,
-        dict,
+        merchantreviews.DeleteMerchantReviewRequest(),
+        {},
     ],
 )
 def test_delete_merchant_review(request_type, transport: str = "grpc"):
@@ -2553,7 +2573,7 @@ def test_delete_merchant_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2598,9 +2618,10 @@ def test_delete_merchant_review_non_empty_request_with_auto_populated_field():
         client.delete_merchant_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == merchantreviews.DeleteMerchantReviewRequest(
+        request_msg = merchantreviews.DeleteMerchantReviewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_merchant_review_use_cached_wrapped_rpc():
@@ -2686,9 +2707,15 @@ async def test_delete_merchant_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        merchantreviews.DeleteMerchantReviewRequest(),
+        {},
+    ],
+)
 async def test_delete_merchant_review_async(
-    transport: str = "grpc_asyncio",
-    request_type=merchantreviews.DeleteMerchantReviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MerchantReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2697,7 +2724,7 @@ async def test_delete_merchant_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2715,11 +2742,6 @@ async def test_delete_merchant_review_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_merchant_review_async_from_dict():
-    await test_delete_merchant_review_async(request_type=dict)
 
 
 def test_delete_merchant_review_field_headers():
@@ -3765,7 +3787,6 @@ def test_get_merchant_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.GetMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3788,7 +3809,6 @@ def test_list_merchant_reviews_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.ListMerchantReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3811,7 +3831,6 @@ def test_insert_merchant_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.InsertMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3834,7 +3853,6 @@ def test_delete_merchant_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.DeleteMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3879,7 +3897,6 @@ async def test_get_merchant_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.GetMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3908,7 +3925,6 @@ async def test_list_merchant_reviews_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.ListMerchantReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3939,7 +3955,6 @@ async def test_insert_merchant_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.InsertMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3964,7 +3979,6 @@ async def test_delete_merchant_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.DeleteMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4637,7 +4651,6 @@ def test_get_merchant_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.GetMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4659,7 +4672,6 @@ def test_list_merchant_reviews_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.ListMerchantReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4681,7 +4693,6 @@ def test_insert_merchant_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.InsertMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4703,7 +4714,6 @@ def test_delete_merchant_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = merchantreviews.DeleteMerchantReviewRequest()
-
         assert args[0] == request_msg
 
 

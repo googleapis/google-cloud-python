@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -126,6 +127,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1260,8 +1276,8 @@ def test_places_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        places_service.SearchNearbyRequest,
-        dict,
+        places_service.SearchNearbyRequest(),
+        {},
     ],
 )
 def test_search_nearby(request_type, transport: str = "grpc"):
@@ -1272,7 +1288,7 @@ def test_search_nearby(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
@@ -1314,10 +1330,11 @@ def test_search_nearby_non_empty_request_with_auto_populated_field():
         client.search_nearby(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchNearbyRequest(
+        request_msg = places_service.SearchNearbyRequest(
             language_code="language_code_value",
             region_code="region_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_nearby_use_cached_wrapped_rpc():
@@ -1398,9 +1415,14 @@ async def test_search_nearby_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_nearby_async(
-    transport: str = "grpc_asyncio", request_type=places_service.SearchNearbyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.SearchNearbyRequest(),
+        {},
+    ],
+)
+async def test_search_nearby_async(request_type, transport: str = "grpc_asyncio"):
     client = PlacesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1408,7 +1430,7 @@ async def test_search_nearby_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
@@ -1428,16 +1450,11 @@ async def test_search_nearby_async(
     assert isinstance(response, places_service.SearchNearbyResponse)
 
 
-@pytest.mark.asyncio
-async def test_search_nearby_async_from_dict():
-    await test_search_nearby_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        places_service.SearchTextRequest,
-        dict,
+        places_service.SearchTextRequest(),
+        {},
     ],
 )
 def test_search_text(request_type, transport: str = "grpc"):
@@ -1448,7 +1465,7 @@ def test_search_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_text), "__call__") as call:
@@ -1492,12 +1509,13 @@ def test_search_text_non_empty_request_with_auto_populated_field():
         client.search_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.SearchTextRequest(
+        request_msg = places_service.SearchTextRequest(
             text_query="text_query_value",
             language_code="language_code_value",
             region_code="region_code_value",
             included_type="included_type_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_text_use_cached_wrapped_rpc():
@@ -1578,9 +1596,14 @@ async def test_search_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_text_async(
-    transport: str = "grpc_asyncio", request_type=places_service.SearchTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.SearchTextRequest(),
+        {},
+    ],
+)
+async def test_search_text_async(request_type, transport: str = "grpc_asyncio"):
     client = PlacesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1588,7 +1611,7 @@ async def test_search_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_text), "__call__") as call:
@@ -1608,16 +1631,11 @@ async def test_search_text_async(
     assert isinstance(response, places_service.SearchTextResponse)
 
 
-@pytest.mark.asyncio
-async def test_search_text_async_from_dict():
-    await test_search_text_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        places_service.GetPhotoMediaRequest,
-        dict,
+        places_service.GetPhotoMediaRequest(),
+        {},
     ],
 )
 def test_get_photo_media(request_type, transport: str = "grpc"):
@@ -1628,7 +1646,7 @@ def test_get_photo_media(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
@@ -1674,9 +1692,10 @@ def test_get_photo_media_non_empty_request_with_auto_populated_field():
         client.get_photo_media(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPhotoMediaRequest(
+        request_msg = places_service.GetPhotoMediaRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_photo_media_use_cached_wrapped_rpc():
@@ -1757,9 +1776,14 @@ async def test_get_photo_media_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_photo_media_async(
-    transport: str = "grpc_asyncio", request_type=places_service.GetPhotoMediaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.GetPhotoMediaRequest(),
+        {},
+    ],
+)
+async def test_get_photo_media_async(request_type, transport: str = "grpc_asyncio"):
     client = PlacesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1767,7 +1791,7 @@ async def test_get_photo_media_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
@@ -1790,11 +1814,6 @@ async def test_get_photo_media_async(
     assert isinstance(response, places_service.PhotoMedia)
     assert response.name == "name_value"
     assert response.photo_uri == "photo_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_photo_media_async_from_dict():
-    await test_get_photo_media_async(request_type=dict)
 
 
 def test_get_photo_media_field_headers():
@@ -1943,8 +1962,8 @@ async def test_get_photo_media_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        places_service.GetPlaceRequest,
-        dict,
+        places_service.GetPlaceRequest(),
+        {},
     ],
 )
 def test_get_place(request_type, transport: str = "grpc"):
@@ -1955,7 +1974,7 @@ def test_get_place(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_place), "__call__") as call:
@@ -2088,12 +2107,13 @@ def test_get_place_non_empty_request_with_auto_populated_field():
         client.get_place(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.GetPlaceRequest(
+        request_msg = places_service.GetPlaceRequest(
             name="name_value",
             language_code="language_code_value",
             region_code="region_code_value",
             session_token="session_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_place_use_cached_wrapped_rpc():
@@ -2172,9 +2192,14 @@ async def test_get_place_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_place_async(
-    transport: str = "grpc_asyncio", request_type=places_service.GetPlaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.GetPlaceRequest(),
+        {},
+    ],
+)
+async def test_get_place_async(request_type, transport: str = "grpc_asyncio"):
     client = PlacesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2182,7 +2207,7 @@ async def test_get_place_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_place), "__call__") as call:
@@ -2289,11 +2314,6 @@ async def test_get_place_async(
     assert response.pure_service_area_business is True
     assert response.moved_place == "moved_place_value"
     assert response.moved_place_id == "moved_place_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_place_async_from_dict():
-    await test_get_place_async(request_type=dict)
 
 
 def test_get_place_field_headers():
@@ -2438,8 +2458,8 @@ async def test_get_place_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        places_service.AutocompletePlacesRequest,
-        dict,
+        places_service.AutocompletePlacesRequest(),
+        {},
     ],
 )
 def test_autocomplete_places(request_type, transport: str = "grpc"):
@@ -2450,7 +2470,7 @@ def test_autocomplete_places(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2498,12 +2518,13 @@ def test_autocomplete_places_non_empty_request_with_auto_populated_field():
         client.autocomplete_places(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == places_service.AutocompletePlacesRequest(
+        request_msg = places_service.AutocompletePlacesRequest(
             input="input_value",
             language_code="language_code_value",
             region_code="region_code_value",
             session_token="session_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_autocomplete_places_use_cached_wrapped_rpc():
@@ -2588,10 +2609,14 @@ async def test_autocomplete_places_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_autocomplete_places_async(
-    transport: str = "grpc_asyncio",
-    request_type=places_service.AutocompletePlacesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.AutocompletePlacesRequest(),
+        {},
+    ],
+)
+async def test_autocomplete_places_async(request_type, transport: str = "grpc_asyncio"):
     client = PlacesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2599,7 +2624,7 @@ async def test_autocomplete_places_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2619,11 +2644,6 @@ async def test_autocomplete_places_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, places_service.AutocompletePlacesResponse)
-
-
-@pytest.mark.asyncio
-async def test_autocomplete_places_async_from_dict():
-    await test_autocomplete_places_async(request_type=dict)
 
 
 def test_search_nearby_rest_use_cached_wrapped_rpc():
@@ -3495,7 +3515,6 @@ def test_search_nearby_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchNearbyRequest()
-
         assert args[0] == request_msg
 
 
@@ -3516,7 +3535,6 @@ def test_search_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3537,7 +3555,6 @@ def test_get_photo_media_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPhotoMediaRequest()
-
         assert args[0] == request_msg
 
 
@@ -3558,7 +3575,6 @@ def test_get_place_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPlaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3581,7 +3597,6 @@ def test_autocomplete_places_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.AutocompletePlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3620,7 +3635,6 @@ async def test_search_nearby_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchNearbyRequest()
-
         assert args[0] == request_msg
 
 
@@ -3645,7 +3659,6 @@ async def test_search_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3673,7 +3686,6 @@ async def test_get_photo_media_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPhotoMediaRequest()
-
         assert args[0] == request_msg
 
 
@@ -3743,7 +3755,6 @@ async def test_get_place_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPlaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3770,7 +3781,6 @@ async def test_autocomplete_places_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.AutocompletePlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4519,7 +4529,6 @@ def test_search_nearby_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchNearbyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4539,7 +4548,6 @@ def test_search_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.SearchTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4559,7 +4567,6 @@ def test_get_photo_media_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPhotoMediaRequest()
-
         assert args[0] == request_msg
 
 
@@ -4579,7 +4586,6 @@ def test_get_place_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.GetPlaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4601,7 +4607,6 @@ def test_autocomplete_places_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = places_service.AutocompletePlacesRequest()
-
         assert args[0] == request_msg
 
 
