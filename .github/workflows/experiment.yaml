@@ -1,0 +1,50 @@
+name: Experiment centralized testing
+
+on:
+  pull_request:
+    paths:
+      - 'packages/gapic-generator/**'
+      - '.github/workflows/prerelease-radar.yml'
+
+jobs:
+  test-prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          allow-prereleases: true
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.x'
+
+      - name: Install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.3"
+
+      - name: Install Librarian
+        run: |
+          version=$(sed -n 's/^version: *//p' librarian.yaml)
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
+
+      - name: Generate Redis via Librarian
+        run: |
+          version=$(sed -n 's/^version: *//p' librarian.yaml)
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate -packages=redis -output-dir=./workspace/redis
+
+      - name: Install Nox
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install nox
+
+      - name: Run Dynamic Prerelease Check
+        run: |
+          cd packages/gapic-generator
+          nox -s prerelease_deps -- ../../workspace/redis
