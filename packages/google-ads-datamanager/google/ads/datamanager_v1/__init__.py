@@ -48,11 +48,20 @@ from .services.user_list_service import (
     UserListServiceClient,
 )
 from .types.age_range import AgeRange
-from .types.audience import AudienceMember, MobileData, PairData, PpidData, UserIdData
+from .types.audience import (
+    AudienceMember,
+    CompositeData,
+    IpData,
+    MobileData,
+    PairData,
+    PpidData,
+    UserIdData,
+)
 from .types.cart_data import CartData, Item, ItemCustomVariable
 from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
+from .types.encrypted_user_id import EncryptedUserId
 from .types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
 from .types.error import ErrorReason
 from .types.event import (
@@ -254,6 +263,7 @@ __all__ = (
     "AwsWrappedKeyInfo",
     "Baseline",
     "CartData",
+    "CompositeData",
     "Consent",
     "ConsentStatus",
     "ContactIdInfo",
@@ -270,6 +280,7 @@ __all__ = (
     "Destination",
     "DeviceInfo",
     "Encoding",
+    "EncryptedUserId",
     "EncryptionInfo",
     "ErrorCount",
     "ErrorInfo",
@@ -290,6 +301,7 @@ __all__ = (
     "IngestEventsResponse",
     "IngestedUserListInfo",
     "IngestionServiceClient",
+    "IpData",
     "Item",
     "ItemCustomVariable",
     "ItemParameter",

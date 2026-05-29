@@ -39,8 +39,10 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1899,6 +1901,8 @@ def test_get_saas(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -1913,6 +1917,8 @@ def test_get_saas(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2045,6 +2051,8 @@ async def test_get_saas_async(request_type, transport: str = "grpc_asyncio"):
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2060,6 +2068,8 @@ async def test_get_saas_async(request_type, transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2229,6 +2239,8 @@ def test_create_saas(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -2243,6 +2255,8 @@ def test_create_saas(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2381,6 +2395,8 @@ async def test_create_saas_async(request_type, transport: str = "grpc_asyncio"):
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2396,6 +2412,8 @@ async def test_create_saas_async(request_type, transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2585,6 +2603,8 @@ def test_update_saas(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -2599,6 +2619,8 @@ def test_update_saas(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -2733,6 +2755,8 @@ async def test_update_saas_async(request_type, transport: str = "grpc_asyncio"):
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -2748,6 +2772,8 @@ async def test_update_saas_async(request_type, transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -7566,8 +7592,11 @@ def test_get_unit(request_type, transport: str = "grpc"):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_unit(request)
 
@@ -7598,8 +7627,11 @@ def test_get_unit(request_type, transport: str = "grpc"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_unit_non_empty_request_with_auto_populated_field():
@@ -7739,8 +7771,11 @@ async def test_get_unit_async(request_type, transport: str = "grpc_asyncio"):
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_unit(request)
@@ -7772,8 +7807,11 @@ async def test_get_unit_async(request_type, transport: str = "grpc_asyncio"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_unit_field_headers():
@@ -7950,8 +7988,11 @@ def test_create_unit(request_type, transport: str = "grpc"):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.create_unit(request)
 
@@ -7982,8 +8023,11 @@ def test_create_unit(request_type, transport: str = "grpc"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_unit_non_empty_request_with_auto_populated_field():
@@ -8129,8 +8173,11 @@ async def test_create_unit_async(request_type, transport: str = "grpc_asyncio"):
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_unit(request)
@@ -8162,8 +8209,11 @@ async def test_create_unit_async(request_type, transport: str = "grpc_asyncio"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_unit_field_headers():
@@ -8360,8 +8410,11 @@ def test_update_unit(request_type, transport: str = "grpc"):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.update_unit(request)
 
@@ -8392,8 +8445,11 @@ def test_update_unit(request_type, transport: str = "grpc"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_unit_non_empty_request_with_auto_populated_field():
@@ -8535,8 +8591,11 @@ async def test_update_unit_async(request_type, transport: str = "grpc_asyncio"):
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_unit(request)
@@ -8568,8 +8627,11 @@ async def test_update_unit_async(request_type, transport: str = "grpc_asyncio"):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_unit_field_headers():
@@ -20093,6 +20155,8 @@ async def test_get_saas_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -20121,6 +20185,8 @@ async def test_create_saas_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -20149,6 +20215,8 @@ async def test_update_saas_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             deployments_resources.Saas(
                 name="name_value",
+                blueprint_repo="blueprint_repo_value",
+                state=deployments_resources.Saas.State.STATE_ACTIVE,
                 uid="uid_value",
                 etag="etag_value",
             )
@@ -20513,8 +20581,11 @@ async def test_get_unit_empty_call_grpc_asyncio():
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_unit(request=None)
@@ -20550,8 +20621,11 @@ async def test_create_unit_empty_call_grpc_asyncio():
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.create_unit(request=None)
@@ -20587,8 +20661,11 @@ async def test_update_unit_empty_call_grpc_asyncio():
                 state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
                 management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
                 system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+                application="application_value",
                 uid="uid_value",
                 etag="etag_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.update_unit(request=None)
@@ -21109,6 +21186,8 @@ def test_get_saas_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -21128,6 +21207,8 @@ def test_get_saas_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -21239,11 +21320,37 @@ def test_create_saas_rest_call_success(request_type):
     request_init["saas"] = {
         "name": "name_value",
         "locations": [{"name": "name_value"}],
+        "application_template": {
+            "application_template": "application_template_value",
+            "revision": "revision_value",
+            "sync_operation": "sync_operation_value",
+        },
+        "blueprint_repo": "blueprint_repo_value",
+        "state": 1,
+        "conditions": [
+            {
+                "status": 1,
+                "type_": 1,
+                "last_transition_time": {"seconds": 751, "nanos": 543},
+                "message": "message_value",
+                "reason": "reason_value",
+            }
+        ],
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
-        "create_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
         "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -21320,6 +21427,8 @@ def test_create_saas_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -21339,6 +21448,8 @@ def test_create_saas_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -21450,11 +21561,37 @@ def test_update_saas_rest_call_success(request_type):
     request_init["saas"] = {
         "name": "projects/sample1/locations/sample2/saas/sample3",
         "locations": [{"name": "name_value"}],
+        "application_template": {
+            "application_template": "application_template_value",
+            "revision": "revision_value",
+            "sync_operation": "sync_operation_value",
+        },
+        "blueprint_repo": "blueprint_repo_value",
+        "state": 1,
+        "conditions": [
+            {
+                "status": 1,
+                "type_": 1,
+                "last_transition_time": {"seconds": 751, "nanos": 543},
+                "message": "message_value",
+                "reason": "reason_value",
+            }
+        ],
+        "error": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
-        "create_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
         "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -21531,6 +21668,8 @@ def test_update_saas_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = deployments_resources.Saas(
             name="name_value",
+            blueprint_repo="blueprint_repo_value",
+            state=deployments_resources.Saas.State.STATE_ACTIVE,
             uid="uid_value",
             etag="etag_value",
         )
@@ -21550,6 +21689,8 @@ def test_update_saas_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, deployments_resources.Saas)
     assert response.name == "name_value"
+    assert response.blueprint_repo == "blueprint_repo_value"
+    assert response.state == deployments_resources.Saas.State.STATE_ACTIVE
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
 
@@ -22894,6 +23035,16 @@ def test_create_unit_kind_rest_call_success(request_type):
         ],
         "output_variable_mappings": {},
         "saas": "saas_value",
+        "application_template_component": {
+            "composite_ref": {
+                "application_template": "application_template_value",
+                "revision": "revision_value",
+                "sync_operation": "sync_operation_value",
+            },
+            "component": "component_value",
+            "revision": "revision_value",
+        },
+        "app_params": {"group": "group_value", "scope": {"type_": 1}},
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
@@ -23133,6 +23284,16 @@ def test_update_unit_kind_rest_call_success(request_type):
         ],
         "output_variable_mappings": {},
         "saas": "saas_value",
+        "application_template_component": {
+            "composite_ref": {
+                "application_template": "application_template_value",
+                "revision": "revision_value",
+                "sync_operation": "sync_operation_value",
+            },
+            "component": "component_value",
+            "revision": "revision_value",
+        },
+        "app_params": {"group": "group_value", "scope": {"type_": 1}},
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
@@ -23607,8 +23768,11 @@ def test_get_unit_rest_call_success(request_type):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -23644,8 +23808,11 @@ def test_get_unit_rest_call_success(request_type):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -23789,12 +23956,15 @@ def test_create_unit_rest_call_success(request_type):
         "management_mode": 1,
         "system_managed_state": 1,
         "system_cleanup_at": {},
+        "application": "application_value",
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23879,8 +24049,11 @@ def test_create_unit_rest_call_success(request_type):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -23916,8 +24089,11 @@ def test_create_unit_rest_call_success(request_type):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24065,12 +24241,15 @@ def test_update_unit_rest_call_success(request_type):
         "management_mode": 1,
         "system_managed_state": 1,
         "system_cleanup_at": {},
+        "application": "application_value",
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24155,8 +24334,11 @@ def test_update_unit_rest_call_success(request_type):
             state=deployments_resources.Unit.UnitState.UNIT_STATE_NOT_PROVISIONED,
             management_mode=deployments_resources.Unit.ManagementMode.MANAGEMENT_MODE_USER,
             system_managed_state=deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE,
+            application="application_value",
             uid="uid_value",
             etag="etag_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -24192,8 +24374,11 @@ def test_update_unit_rest_call_success(request_type):
         response.system_managed_state
         == deployments_resources.Unit.SystemManagedState.SYSTEM_MANAGED_STATE_ACTIVE
     )
+    assert response.application == "application_value"
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24738,6 +24923,7 @@ def test_create_unit_operation_rest_call_success(request_type):
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "delete_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25006,6 +25192,7 @@ def test_update_unit_operation_rest_call_success(request_type):
         "etag": "etag_value",
         "create_time": {},
         "update_time": {},
+        "delete_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25638,6 +25825,15 @@ def test_create_release_rest_call_success(request_type):
         ],
         "output_variables": {},
         "input_variable_defaults": {},
+        "application_template_component": {
+            "composite_ref": {
+                "application_template": "application_template_value",
+                "revision": "revision_value",
+                "sync_operation": "sync_operation_value",
+            },
+            "component": "component_value",
+            "revision": "revision_value",
+        },
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
@@ -25874,6 +26070,15 @@ def test_update_release_rest_call_success(request_type):
         ],
         "output_variables": {},
         "input_variable_defaults": {},
+        "application_template_component": {
+            "composite_ref": {
+                "application_template": "application_template_value",
+                "revision": "revision_value",
+                "sync_operation": "sync_operation_value",
+            },
+            "component": "component_value",
+            "revision": "revision_value",
+        },
         "labels": {},
         "annotations": {},
         "uid": "uid_value",
@@ -27413,6 +27618,99 @@ def test_saas_deployments_transport_channel_mtls_with_adc(transport_class):
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_application_path():
+    project = "squid"
+    location = "clam"
+    application = "whelk"
+    expected = (
+        "projects/{project}/locations/{location}/applications/{application}".format(
+            project=project,
+            location=location,
+            application=application,
+        )
+    )
+    actual = SaasDeploymentsClient.application_path(project, location, application)
+    assert expected == actual
+
+
+def test_parse_application_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "application": "nudibranch",
+    }
+    path = SaasDeploymentsClient.application_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SaasDeploymentsClient.parse_application_path(path)
+    assert expected == actual
+
+
+def test_application_template_path():
+    project = "cuttlefish"
+    location = "mussel"
+    space = "winkle"
+    applicationTemplate = "nautilus"
+    expected = "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{applicationTemplate}".format(
+        project=project,
+        location=location,
+        space=space,
+        applicationTemplate=applicationTemplate,
+    )
+    actual = SaasDeploymentsClient.application_template_path(
+        project, location, space, applicationTemplate
+    )
+    assert expected == actual
+
+
+def test_parse_application_template_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "space": "squid",
+        "applicationTemplate": "clam",
+    }
+    path = SaasDeploymentsClient.application_template_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SaasDeploymentsClient.parse_application_template_path(path)
+    assert expected == actual
+
+
+def test_application_template_revision_path():
+    project = "whelk"
+    location = "octopus"
+    space = "oyster"
+    application_template = "nudibranch"
+    revision = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/revisions/{revision}".format(
+        project=project,
+        location=location,
+        space=space,
+        application_template=application_template,
+        revision=revision,
+    )
+    actual = SaasDeploymentsClient.application_template_revision_path(
+        project, location, space, application_template, revision
+    )
+    assert expected == actual
+
+
+def test_parse_application_template_revision_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "space": "nautilus",
+        "application_template": "scallop",
+        "revision": "abalone",
+    }
+    path = SaasDeploymentsClient.application_template_revision_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SaasDeploymentsClient.parse_application_template_revision_path(path)
+    assert expected == actual
 
 
 def test_release_path():
