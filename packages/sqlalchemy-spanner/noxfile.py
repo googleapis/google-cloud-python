@@ -557,7 +557,6 @@ def docs(session):
 @nox.session(python="3.10")
 def docfx(session):
     """Build the docfx yaml files for this library."""
-    # NOTE: There is no docs directory, thus docfx builds do not run
     session.skip("There is no docs directory, thus docfx builds do not run")
 
 
