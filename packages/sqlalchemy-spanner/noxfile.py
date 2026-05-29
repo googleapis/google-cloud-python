@@ -98,6 +98,32 @@ UNIT_TEST_DEPENDENCIES = [
     "sqlalchemy>=2.0",
 ]
 
+SYSTEM_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
+
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-instrumentation",
+]
+
+MIGRATION_TEST_DEPENDENCIES = [
+    "pytest",
+    "alembic",
+]
+
+SQLALCHEMY_14_DEPENDENCIES = [
+    "sqlalchemy>=1.4,<2.0",
+]
+
+SQLALCHEMY_20_DEPENDENCIES = [
+    "sqlalchemy>=2.0",
+]
+
 UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
@@ -164,15 +190,14 @@ def compliance_test_14(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(
-        "pytest",
-        "pytest-cov",
-        "pytest-asyncio",
-    )
-
-    session.install("mock")
+    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
     session.install(".[tracing]")
-    session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
+    session.run(
+        "pip",
+        "install",
+        *SQLALCHEMY_14_DEPENDENCIES,
+        "--force-reinstall",
+    )
     session.run("python", "create_test_database.py")
     session.run(
         "py.test",
@@ -206,17 +231,11 @@ def compliance_test_20(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(
-        "pytest",
-        "pytest-cov",
-        "pytest-asyncio",
-    )
-
-    session.install("mock")
+    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
     session.install("-e", ".", "--force-reinstall")
     session.run("python", "create_test_database.py")
 
-    session.install(*UNIT_TEST_DEPENDENCIES)
+    session.install(*SQLALCHEMY_20_DEPENDENCIES)
 
     session.run(
         "py.test",
@@ -264,7 +283,12 @@ def mockserver(session):
 @nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def migration_test(session):
     """Test migrations with SQLAlchemy v1.4 and Alembic"""
-    session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
+    session.run(
+        "pip",
+        "install",
+        *SQLALCHEMY_14_DEPENDENCIES,
+        "--force-reinstall",
+    )
     _migration_test(session)
 
 
@@ -275,9 +299,8 @@ def _migration_test(session):
     import os
     import shutil
 
-    session.install("pytest")
+    session.install(*MIGRATION_TEST_DEPENDENCIES)
     session.install(".")
-    session.install("alembic")
 
     session.run("python", "create_test_database.py")
 
@@ -388,14 +411,11 @@ def system(session, test_type):
 
     try:
         if test_type == "system":
-            session.install("pytest", "pytest-cov", "pytest-asyncio")
-            session.install("mock")
+            session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
             session.install(".[tracing]")
-            session.install("opentelemetry-api")
-            session.install("opentelemetry-sdk")
-            session.install("opentelemetry-instrumentation")
+            session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES)
             session.run("python", "create_test_database.py")
-            session.install("sqlalchemy>=2.0")
+            session.install(*SQLALCHEMY_20_DEPENDENCIES)
             session.run(
                 "py.test", "--quiet", os.path.join("tests", "system"), *session.posargs
             )
