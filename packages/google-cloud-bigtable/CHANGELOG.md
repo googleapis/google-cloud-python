@@ -4,18 +4,6 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
-## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.38.0...google-cloud-bigtable-v2.39.0) (2026-05-29)
-
-
-### Features
-
-* add client side metric instrumentation to basic rpcs (#16712) ([636af26677af5be906220ad39d670e74daca58e0](https://github.com/googleapis/google-cloud-python/commit/636af26677af5be906220ad39d670e74daca58e0))
-
-
-### Bug Fixes
-
-* require Python 3.10+ (#17245) ([200b0d324df924c69c358203350fb01a08e41ad9](https://github.com/googleapis/google-cloud-python/commit/200b0d324df924c69c358203350fb01a08e41ad9))
-
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.37.0...google-cloud-bigtable-v2.38.0) (2026-05-07)
 
 
