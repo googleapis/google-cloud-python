@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-channel/#history
 
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.27.0...google-cloud-channel-v1.28.0) (2026-06-01)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
 ## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.26.0...google-cloud-channel-v1.27.0) (2026-03-26)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-apps-meet/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.4.0...google-apps-meet-v0.5.0) (2026-06-01)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.3.0...google-apps-meet-v0.4.0) (2026-03-26)
 
 

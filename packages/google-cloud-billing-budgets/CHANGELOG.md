@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-billing-budgets/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.20.0...google-cloud-billing-budgets-v1.21.0) (2026-06-01)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.19.0...google-cloud-billing-budgets-v1.20.0) (2026-03-26)
 
 

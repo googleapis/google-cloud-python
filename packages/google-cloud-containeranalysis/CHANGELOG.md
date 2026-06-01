@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-containeranalysis/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.21.0...google-cloud-containeranalysis-v2.22.0) (2026-06-01)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.20.0...google-cloud-containeranalysis-v2.21.0) (2026-03-26)
 
 

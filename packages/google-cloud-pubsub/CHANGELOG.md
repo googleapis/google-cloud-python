@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.38.0...google-cloud-pubsub-v2.39.0) (2026-06-01)
+
+
+### Features
+
+* regenerate pubsub library using gapic-generator v1.32.0 (#17167) ([01d3127d6c96cf87f52e1304eeb9f788226bf066](https://github.com/googleapis/google-cloud-python/commit/01d3127d6c96cf87f52e1304eeb9f788226bf066))
+
+
+### Bug Fixes
+
+* resolve issue with pubsub generation (#17219) ([b21c1d447e41d1be93da313e01e75646a942e607](https://github.com/googleapis/google-cloud-python/commit/b21c1d447e41d1be93da313e01e75646a942e607))
+
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.37.0...google-cloud-pubsub-v2.38.0) (2026-05-06)
 
 ## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.36.0...google-cloud-pubsub-v2.37.0) (2026-04-09)

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-servicehealth/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.4.0...google-cloud-servicehealth-v0.5.0) (2026-06-01)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.3.0...google-cloud-servicehealth-v0.4.0) (2026-03-26)
 
 

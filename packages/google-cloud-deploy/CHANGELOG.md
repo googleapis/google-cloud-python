@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-deploy/#history
 
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.10.0...google-cloud-deploy-v2.11.0) (2026-06-01)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
 ## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.9.0...google-cloud-deploy-v2.10.0) (2026-03-26)
 
 

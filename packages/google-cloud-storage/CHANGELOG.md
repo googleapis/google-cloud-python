@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.10.1...google-cloud-storage-v3.11.0) (2026-06-01)
+
+
+### Documentation
+
+* improve wording around `object_checksums` in bidi write object requests ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+* Updated documentation for `BidiReadObject`, `ReadObjectRequest`, and `ObjectContexts` ([1230e1743c1aac8d810864fb09f33aafec098a7d](https://github.com/googleapis/google-cloud-python/commit/1230e1743c1aac8d810864fb09f33aafec098a7d))
+
+
+### Features
+
+* Enhance Otel Span Attributes with BucketId and Location details for every Bucket/Blob operation ([a0da993d87eb7691e78690c0ca4316805a497749](https://github.com/googleapis/google-cloud-python/commit/a0da993d87eb7691e78690c0ca4316805a497749))
+* add object contexts in Python GCS SDK (#17039) ([15ec8bd7d8568e8981f8056374c49e758c51f6e2](https://github.com/googleapis/google-cloud-python/commit/15ec8bd7d8568e8981f8056374c49e758c51f6e2))
+* drop Python 3.7-3.9 support and regenerate (#17178) ([c804a93570c5f85f1a957df0e1f32b28d5752dbe](https://github.com/googleapis/google-cloud-python/commit/c804a93570c5f85f1a957df0e1f32b28d5752dbe))
+* Add delete_source_objects optional parameter to compose API (#17163) ([16ab4c269be673dd9d7ebefe804f5ed99789e0a0](https://github.com/googleapis/google-cloud-python/commit/16ab4c269be673dd9d7ebefe804f5ed99789e0a0))
+* add fixed-key metadata support in AAOW (#16817) ([28487f5cff2893a71a42a25a7939c9f9917b3a2b](https://github.com/googleapis/google-cloud-python/commit/28487f5cff2893a71a42a25a7939c9f9917b3a2b))
+* Add support for blob object in AAOW (#16577) ([32718318615a002f074ebd92208043b3d6ccbee9](https://github.com/googleapis/google-cloud-python/commit/32718318615a002f074ebd92208043b3d6ccbee9))
+* implement AsyncMultiRangeDownloader with multiplexed bidi-gRPC stream support (#16528) ([493df65bcdb028c1f10ccfeb529f4cc1a9c14c16](https://github.com/googleapis/google-cloud-python/commit/493df65bcdb028c1f10ccfeb529f4cc1a9c14c16))
+* populate the `persisted_data_checksums` field with object checksums on write object / query write status responses ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+* Added a new field `ComposeObjectRequest.delete_source_objects` field ([1230e1743c1aac8d810864fb09f33aafec098a7d](https://github.com/googleapis/google-cloud-python/commit/1230e1743c1aac8d810864fb09f33aafec098a7d))
+
+
+### Bug Fixes
+
+* propagate quota_project_id and api_endpoint in AsyncGrpcClient (#16731) ([b8b457aaad0c2593dae8762f70316729133ac1a8](https://github.com/googleapis/google-cloud-python/commit/b8b457aaad0c2593dae8762f70316729133ac1a8))
+* updates typing for python 3.8 ([87b7ba97c95587d213a9ebe91e41cc9e5316f392](https://github.com/googleapis/google-cloud-python/commit/87b7ba97c95587d213a9ebe91e41cc9e5316f392))
+
 ## [3.10.1](https://github.com/googleapis/python-storage/compare/v3.10.0...v3.10.1) (2026-03-23)
 
 
