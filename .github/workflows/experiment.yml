@@ -17,7 +17,7 @@ jobs:
       matrix:
         canary:
           - google-cloud-redis
-          - google-cloud-logging
+          - google-cloud-kms
           - google-cloud-speech
           - google-cloud-dialogflow
           - google-cloud-dataproc
