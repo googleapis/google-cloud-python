@@ -755,10 +755,13 @@ class Table(object):
 
         The elements in the iterator are a SampleRowKeys response and they have
         the properties ``offset_bytes`` and ``row_key``. They occur in sorted
-        order. The table might have contents before the first row key in the
-        list and after the last one, but a key containing the empty string
-        indicates "end of table" and will be the last response given, if
-        present.
+        order. The returned keys in the sorted stream sequence are restricted to the
+        ``row_range`` if specified in the request.
+        The table might have contents before the first row key in the
+        list and after the last one, but the ``end_key`` of the provided
+        ``row_range`` is always the last response given. If no ``row_range`` is
+        provided, a key containing the empty string will be the last response,
+        indicating "end of table".
 
         .. note::
 
@@ -768,12 +771,18 @@ class Table(object):
 
         The ``offset_bytes`` field on a response indicates the approximate
         total storage space used by all rows in the table which precede
-        ``row_key``. Buffering the contents of all rows between two subsequent
+        ``row_key`` (and if a row-range is specified in the request, which
+        follow what would have been the previous sample before the row-range
+        start). Buffering the contents of all rows between two subsequent
         samples would require space roughly equal to the difference in their
         ``offset_bytes`` fields.
 
         :type row_range: :class:`~google.cloud.bigtable.row_set.RowRange`
-        :param row_range: (Optional) Row range to restrict the sample to.
+        :param row_range:
+            (Optional) Row range to restrict the sample to. If a ``row_range`` is
+            provided, the returned samples will be restricted to the specified
+            range. The output will always return the end key in the range as the
+            last sample returned.
 
         :rtype: :class:`~google.cloud.exceptions.GrpcRendezvous`
         :returns: A cancel-able iterator. Can be consumed by calling ``next()``

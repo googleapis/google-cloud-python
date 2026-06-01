@@ -1995,7 +1995,7 @@ class TestSampleRowKeys:
 
     def test_sample_row_keys_w_row_range(self):
         """Test that method returns the expected key samples when row_range is provided"""
-        samples = [(b"test_1", 0), (b"test_2", 100), (b"test_3", 200)]
+        samples = [(b"a_key1", 100), (b"b", 200)]
         from google.cloud.bigtable.data import RowRange
 
         row_range = RowRange(start_key=b"a", end_key=b"b")
@@ -2008,7 +2008,9 @@ class TestSampleRowKeys:
                 ) as sample_row_keys:
                     sample_row_keys.return_value = self._make_gapic_stream(samples)
                     result = table.sample_row_keys(row_range=row_range)
-                    assert len(result) == 3
+                    assert len(result) == 2
+                    assert result[0] == samples[0]
+                    assert result[1] == samples[1]
                     sample_row_keys.assert_called_once()
                     called_request = sample_row_keys.call_args[1]["request"]
                     assert called_request.row_range == row_range._to_pb()
