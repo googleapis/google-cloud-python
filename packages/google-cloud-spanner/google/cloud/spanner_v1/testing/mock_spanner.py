@@ -36,15 +36,20 @@ class MockSpanner:
     def __init__(self):
         self.results = {}
         self.execute_streaming_sql_results = {}
+        self.partition_results = {}
         self.errors = {}
 
     def clear_results(self):
         self.results = {}
         self.execute_streaming_sql_results = {}
+        self.partition_results = {}
         self.errors = {}
 
     def add_result(self, sql: str, result: result_set.ResultSet):
         self.results[sql.lower().strip()] = result
+
+    def add_partition_result(self, sql: str, result: spanner.PartitionResponse):
+        self.partition_results[sql.lower().strip()] = result
 
     def add_execute_streaming_sql_results(
         self, sql: str, partial_result_sets: list[result_set.PartialResultSet]
@@ -55,6 +60,12 @@ class MockSpanner:
         result = self.results.get(sql.lower().strip())
         if result is None:
             raise ValueError(f"No result found for {sql}")
+        return result
+
+    def get_partition_result(self, sql: str) -> spanner.PartitionResponse:
+        result = self.partition_results.get(sql.lower().strip())
+        if result is None:
+            return spanner.PartitionResponse()
         return result
 
     def add_error(self, method: str, error: _Status):
@@ -300,11 +311,12 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
 
     def PartitionQuery(self, request, context):
         self._requests.append(request)
-        return spanner.PartitionResponse()
+        return self.mock_spanner.get_partition_result(request.sql)
 
     def PartitionRead(self, request, context):
         self._requests.append(request)
-        return spanner.PartitionResponse()
+        # For reads, look up by target table name
+        return self.mock_spanner.get_partition_result(request.table)
 
     def BatchWrite(self, request, context):
         self._requests.append(request)
