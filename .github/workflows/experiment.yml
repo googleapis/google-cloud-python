@@ -67,8 +67,14 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install nox
 
-      - name: Run Dynamic Prerelease Check
+      - name: Run Prerelease Check
         run: |
           cd packages/gapic-generator
           # Point the Nox engine to the newly generated package directory
           nox -s prerelease_deps -- ../${{ matrix.canary }}
+
+      - name: Run Unit Tests
+        run: |
+          # Library check: Execute directly from the generated package directory
+          cd packages/${{ matrix.canary }}
+          nox -s unit-3.14
