@@ -81,6 +81,6 @@ jobs:
 
       - name: Run Prerelease and Core Deps
         run: |
-          cd packages/gapic-generator
+          cd packages/${{ matrix.canary }}
           # Point the Nox engine to the newly generated package directory
           nox -s prerelease_deps core_deps_from_source -- ../${{ matrix.canary }}
