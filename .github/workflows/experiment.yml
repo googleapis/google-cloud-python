@@ -10,7 +10,7 @@ env:
   SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
 
 jobs:
-  test-prerelease:
+  test-canary:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -67,14 +67,20 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install nox
 
-      - name: Run Prerelease Check
-        run: |
-          cd packages/gapic-generator
-          # Point the Nox engine to the newly generated package directory
-          nox -s prerelease_deps -- ../${{ matrix.canary }}
-
       - name: Run Unit Tests
         run: |
           # Library check: Execute directly from the generated package directory
           cd packages/${{ matrix.canary }}
           nox -s unit-3.14
+
+      - name: Run lint and and mypy
+        run: |
+          # Library check: Execute directly from the generated package directory
+          cd packages/${{ matrix.canary }}
+          nox -s mypy lint
+
+      - name: Run Prerelease and Core Deps
+        run: |
+          cd packages/gapic-generator
+          # Point the Nox engine to the newly generated package directory
+          nox -s prerelease_deps core_deps_from_source -- ../${{ matrix.canary }}
