@@ -12,6 +12,15 @@ env:
 jobs:
   test-prerelease:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        canary:
+          - google-cloud-redis
+          - google-cloud-logging
+          - google-cloud-speech
+          - google-cloud-dialogflow
+          - google-cloud-dataproc
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -48,10 +57,10 @@ jobs:
           version=$(sed -n 's/^version: *//p' librarian.yaml)
           go run "github.com/googleapis/librarian/cmd/librarian@${version}" install
 
-      - name: Generate Redis via Librarian
+      - name: Generate Canary via Librarian
         run: |
           version=$(sed -n 's/^version: *//p' librarian.yaml)
-          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate google-cloud-redis
+          go run "github.com/googleapis/librarian/cmd/librarian@${version}" generate ${{ matrix.canary }}
 
       - name: Install Nox
         run: |
@@ -62,4 +71,4 @@ jobs:
         run: |
           cd packages/gapic-generator
           # Point the Nox engine to the newly generated package directory
-          nox -s prerelease_deps -- ../google-cloud-redis
+          nox -s prerelease_deps -- ../${{ matrix.canary }}
