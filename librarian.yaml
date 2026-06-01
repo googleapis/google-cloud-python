@@ -510,6 +510,7 @@ libraries:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.41.0
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -607,6 +608,7 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
