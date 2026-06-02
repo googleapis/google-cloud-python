@@ -81,6 +81,15 @@ http_archive(
     strip_prefix = "protobuf-%s" % _protobuf_version,
     urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.tar.gz" % _protobuf_version],
 )
+
+# Define a version of Abseil that still contains the `:if_constexpr` target
+http_archive(
+    name = "com_google_absl",
+    sha256 = "371cd4ae271616ba34ed20275cc84bc6066551b99709ec52856230f8ca752e50",
+    strip_prefix = "abseil-cpp-20230802.1",
+    urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.1.tar.gz"],
+)
+
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
