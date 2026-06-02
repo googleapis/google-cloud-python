@@ -51,6 +51,7 @@ from pandas.api import extensions as pd_ext
 import bigframes.core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.col
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.core.indexers
@@ -2042,17 +2043,10 @@ class Series:
 
         if isinstance(func, bigframes.functions.Udf):
             # We are working with bigquery function at this point
-            if args:
-                result_series = self._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), args
-                )
-                # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-                # `name`. Manually reassigning it here as a temporary fix.
-                result_series.name = self.name
-            else:
-                result_series = self._apply_unary_op(
-                    ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
-                )
+            result_series = self._apply_nary_op(ops.func_to_op(func), args)
+            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+            # `name`. Manually reassigning it here as a temporary fix.
+            result_series.name = self.name
 
             return result_series
 
@@ -2102,9 +2096,11 @@ class Series:
             )
 
         if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_binary_op(
-                other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
-            )
+            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+            if hasattr(other, "name") and other.name != self._name:  # type: ignore
+                result_series.name = None
+            else:
+                result_series.name = self.name
             return result_series
 
         bf_op = python_ops.python_callable_to_op(func)
@@ -2710,7 +2706,7 @@ class Series:
         assert isinstance(right, ex.DerefOp)
         return block.get_binary_stat(left.id.name, right.id.name, stat)
 
-    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp]
+    AlignedExprT = Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
 
     @typing.overload
     def _align(
@@ -2764,16 +2760,20 @@ class Series:
 
     def _align_n(
         self,
-        others: typing.Sequence[typing.Union[Series, scalars.Scalar]],
+        others: typing.Sequence[
+            typing.Union[Series, bigframes.core.col.Expression, scalars.Scalar]
+        ],
         how="outer",
         ignore_self=False,
         cast_scalars: bool = False,
     ) -> tuple[
-        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp]],
+        typing.Sequence[Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]],
         blocks.Block,
     ]:
         if ignore_self:
-            value_ids: List[Union[ex.ScalarConstantExpression, ex.DerefOp]] = []
+            value_ids: List[
+                Union[ex.ScalarConstantExpression, ex.DerefOp, ex.OmittedArg]
+            ] = []
         else:
             value_ids = [ex.deref(self._value_column)]
 
@@ -2798,6 +2798,17 @@ class Series:
                     *remapped_value_ids,  # type: ignore
                     ex.deref(get_column_right[other._value_column]),
                 ]
+            elif isinstance(other, bigframes.core.col.Expression):
+                if isinstance(other._value, ex.OmittedArg):
+                    value_ids = [*value_ids, other._value]
+                    continue
+
+                label_to_col_ref = {
+                    label: ex.deref(id) for id, label in block.col_id_to_label.items()
+                }
+                resolved_expr = other._value.bind_variables(label_to_col_ref)
+                block = block.project_block_exprs([resolved_expr], labels=[None])
+                value_ids = [*value_ids, ex.deref(block.value_columns[-1])]
             else:
                 # Will throw if can't interpret as scalar.
                 dtype = typing.cast(bigframes.dtypes.Dtype, self._dtype)

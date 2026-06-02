@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -20644,7 +20660,6 @@ def test_abandon_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AbandonInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20664,7 +20679,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20686,7 +20700,6 @@ def test_apply_updates_to_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20710,7 +20723,6 @@ def test_configure_accelerator_topologies_unary_empty_call_rest():
         request_msg = (
             compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20730,7 +20742,6 @@ def test_create_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20750,7 +20761,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20770,7 +20780,6 @@ def test_delete_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20792,7 +20801,6 @@ def test_delete_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20812,7 +20820,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20836,7 +20843,6 @@ def test_get_available_accelerator_topologies_empty_call_rest():
         request_msg = (
             compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20856,7 +20862,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20876,7 +20881,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20896,7 +20900,6 @@ def test_list_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListErrorsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20918,7 +20921,6 @@ def test_list_managed_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListManagedInstancesInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20940,7 +20942,6 @@ def test_list_per_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPerInstanceConfigsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20960,7 +20961,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20982,7 +20982,6 @@ def test_patch_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21004,7 +21003,6 @@ def test_recreate_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RecreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21024,7 +21022,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21044,7 +21041,6 @@ def test_resize_advanced_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeAdvancedInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21064,7 +21060,6 @@ def test_resume_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21086,7 +21081,6 @@ def test_set_auto_healing_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetAutoHealingPoliciesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21108,7 +21102,6 @@ def test_set_instance_template_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetInstanceTemplateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21128,7 +21121,6 @@ def test_set_target_pools_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetPoolsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21148,7 +21140,6 @@ def test_start_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21168,7 +21159,6 @@ def test_stop_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21190,7 +21180,6 @@ def test_suspend_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21212,7 +21201,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21232,7 +21220,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21254,7 +21241,6 @@ def test_update_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 

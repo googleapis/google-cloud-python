@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
-import re
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
@@ -110,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1375,8 +1390,8 @@ def test_reference_list_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        reference_list.GetReferenceListRequest,
-        dict,
+        reference_list.GetReferenceListRequest(),
+        {},
     ],
 )
 def test_get_reference_list(request_type, transport: str = "grpc"):
@@ -1387,7 +1402,7 @@ def test_get_reference_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1448,9 +1463,10 @@ def test_get_reference_list_non_empty_request_with_auto_populated_field():
         client.get_reference_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reference_list.GetReferenceListRequest(
+        request_msg = reference_list.GetReferenceListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_reference_list_use_cached_wrapped_rpc():
@@ -1535,9 +1551,14 @@ async def test_get_reference_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_reference_list_async(
-    transport: str = "grpc_asyncio", request_type=reference_list.GetReferenceListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reference_list.GetReferenceListRequest(),
+        {},
+    ],
+)
+async def test_get_reference_list_async(request_type, transport: str = "grpc_asyncio"):
     client = ReferenceListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1545,7 +1566,7 @@ async def test_get_reference_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1581,11 +1602,6 @@ async def test_get_reference_list_async(
         == reference_list.ReferenceListSyntaxType.REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
     )
     assert response.rule_associations_count == 2479
-
-
-@pytest.mark.asyncio
-async def test_get_reference_list_async_from_dict():
-    await test_get_reference_list_async(request_type=dict)
 
 
 def test_get_reference_list_field_headers():
@@ -1742,8 +1758,8 @@ async def test_get_reference_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reference_list.ListReferenceListsRequest,
-        dict,
+        reference_list.ListReferenceListsRequest(),
+        {},
     ],
 )
 def test_list_reference_lists(request_type, transport: str = "grpc"):
@@ -1754,7 +1770,7 @@ def test_list_reference_lists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1803,10 +1819,11 @@ def test_list_reference_lists_non_empty_request_with_auto_populated_field():
         client.list_reference_lists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reference_list.ListReferenceListsRequest(
+        request_msg = reference_list.ListReferenceListsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_reference_lists_use_cached_wrapped_rpc():
@@ -1891,9 +1908,15 @@ async def test_list_reference_lists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reference_list.ListReferenceListsRequest(),
+        {},
+    ],
+)
 async def test_list_reference_lists_async(
-    transport: str = "grpc_asyncio",
-    request_type=reference_list.ListReferenceListsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReferenceListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1902,7 +1925,7 @@ async def test_list_reference_lists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1925,11 +1948,6 @@ async def test_list_reference_lists_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReferenceListsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_reference_lists_async_from_dict():
-    await test_list_reference_lists_async(request_type=dict)
 
 
 def test_list_reference_lists_field_headers():
@@ -2284,8 +2302,8 @@ async def test_list_reference_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_reference_list.CreateReferenceListRequest,
-        dict,
+        gcc_reference_list.CreateReferenceListRequest(),
+        {},
     ],
 )
 def test_create_reference_list(request_type, transport: str = "grpc"):
@@ -2296,7 +2314,7 @@ def test_create_reference_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2358,10 +2376,11 @@ def test_create_reference_list_non_empty_request_with_auto_populated_field():
         client.create_reference_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_reference_list.CreateReferenceListRequest(
+        request_msg = gcc_reference_list.CreateReferenceListRequest(
             parent="parent_value",
             reference_list_id="reference_list_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_reference_list_use_cached_wrapped_rpc():
@@ -2447,9 +2466,15 @@ async def test_create_reference_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_reference_list.CreateReferenceListRequest(),
+        {},
+    ],
+)
 async def test_create_reference_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_reference_list.CreateReferenceListRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReferenceListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2458,7 +2483,7 @@ async def test_create_reference_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2494,11 +2519,6 @@ async def test_create_reference_list_async(
         == gcc_reference_list.ReferenceListSyntaxType.REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
     )
     assert response.rule_associations_count == 2479
-
-
-@pytest.mark.asyncio
-async def test_create_reference_list_async_from_dict():
-    await test_create_reference_list_async(request_type=dict)
 
 
 def test_create_reference_list_field_headers():
@@ -2675,8 +2695,8 @@ async def test_create_reference_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_reference_list.UpdateReferenceListRequest,
-        dict,
+        gcc_reference_list.UpdateReferenceListRequest(),
+        {},
     ],
 )
 def test_update_reference_list(request_type, transport: str = "grpc"):
@@ -2687,7 +2707,7 @@ def test_update_reference_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2746,7 +2766,8 @@ def test_update_reference_list_non_empty_request_with_auto_populated_field():
         client.update_reference_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_reference_list.UpdateReferenceListRequest()
+        request_msg = gcc_reference_list.UpdateReferenceListRequest()
+        assert args[0] == request_msg
 
 
 def test_update_reference_list_use_cached_wrapped_rpc():
@@ -2832,9 +2853,15 @@ async def test_update_reference_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_reference_list.UpdateReferenceListRequest(),
+        {},
+    ],
+)
 async def test_update_reference_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_reference_list.UpdateReferenceListRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ReferenceListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2843,7 +2870,7 @@ async def test_update_reference_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2879,11 +2906,6 @@ async def test_update_reference_list_async(
         == gcc_reference_list.ReferenceListSyntaxType.REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING
     )
     assert response.rule_associations_count == 2479
-
-
-@pytest.mark.asyncio
-async def test_update_reference_list_async_from_dict():
-    await test_update_reference_list_async(request_type=dict)
 
 
 def test_update_reference_list_field_headers():
@@ -4025,7 +4047,6 @@ def test_get_reference_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.GetReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4048,7 +4069,6 @@ def test_list_reference_lists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.ListReferenceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4071,7 +4091,6 @@ def test_create_reference_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.CreateReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4094,7 +4113,6 @@ def test_update_reference_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.UpdateReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4142,7 +4160,6 @@ async def test_get_reference_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.GetReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4171,7 +4188,6 @@ async def test_list_reference_lists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.ListReferenceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4205,7 +4221,6 @@ async def test_create_reference_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.CreateReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4239,7 +4254,6 @@ async def test_update_reference_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.UpdateReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5296,7 +5310,6 @@ def test_get_reference_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.GetReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5318,7 +5331,6 @@ def test_list_reference_lists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reference_list.ListReferenceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5340,7 +5352,6 @@ def test_create_reference_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.CreateReferenceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5362,7 +5373,6 @@ def test_update_reference_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.UpdateReferenceListRequest()
-
         assert args[0] == request_msg
 
 

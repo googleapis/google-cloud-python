@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1344,8 +1360,8 @@ def test_templates_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        templates.CreateJobFromTemplateRequest,
-        dict,
+        templates.CreateJobFromTemplateRequest(),
+        {},
     ],
 )
 def test_create_job_from_template(request_type, transport: str = "grpc"):
@@ -1356,7 +1372,7 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1437,12 +1453,13 @@ def test_create_job_from_template_non_empty_request_with_auto_populated_field():
         client.create_job_from_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.CreateJobFromTemplateRequest(
+        request_msg = templates.CreateJobFromTemplateRequest(
             project_id="project_id_value",
             job_name="job_name_value",
             gcs_path="gcs_path_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_job_from_template_use_cached_wrapped_rpc():
@@ -1528,8 +1545,15 @@ async def test_create_job_from_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.CreateJobFromTemplateRequest(),
+        {},
+    ],
+)
 async def test_create_job_from_template_async(
-    transport: str = "grpc_asyncio", request_type=templates.CreateJobFromTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TemplatesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1538,7 +1562,7 @@ async def test_create_job_from_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1591,11 +1615,6 @@ async def test_create_job_from_template_async(
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
     assert response.pausable is True
-
-
-@pytest.mark.asyncio
-async def test_create_job_from_template_async_from_dict():
-    await test_create_job_from_template_async(request_type=dict)
 
 
 def test_create_job_from_template_field_headers():
@@ -1666,8 +1685,8 @@ async def test_create_job_from_template_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        templates.LaunchTemplateRequest,
-        dict,
+        templates.LaunchTemplateRequest(),
+        {},
     ],
 )
 def test_launch_template(request_type, transport: str = "grpc"):
@@ -1678,7 +1697,7 @@ def test_launch_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
@@ -1721,11 +1740,12 @@ def test_launch_template_non_empty_request_with_auto_populated_field():
         client.launch_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.LaunchTemplateRequest(
+        request_msg = templates.LaunchTemplateRequest(
             project_id="project_id_value",
             gcs_path="gcs_path_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_launch_template_use_cached_wrapped_rpc():
@@ -1806,9 +1826,14 @@ async def test_launch_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_launch_template_async(
-    transport: str = "grpc_asyncio", request_type=templates.LaunchTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.LaunchTemplateRequest(),
+        {},
+    ],
+)
+async def test_launch_template_async(request_type, transport: str = "grpc_asyncio"):
     client = TemplatesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1816,7 +1841,7 @@ async def test_launch_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
@@ -1834,11 +1859,6 @@ async def test_launch_template_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.LaunchTemplateResponse)
-
-
-@pytest.mark.asyncio
-async def test_launch_template_async_from_dict():
-    await test_launch_template_async(request_type=dict)
 
 
 def test_launch_template_field_headers():
@@ -1907,8 +1927,8 @@ async def test_launch_template_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        templates.GetTemplateRequest,
-        dict,
+        templates.GetTemplateRequest(),
+        {},
     ],
 )
 def test_get_template(request_type, transport: str = "grpc"):
@@ -1919,7 +1939,7 @@ def test_get_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -1965,11 +1985,12 @@ def test_get_template_non_empty_request_with_auto_populated_field():
         client.get_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.GetTemplateRequest(
+        request_msg = templates.GetTemplateRequest(
             project_id="project_id_value",
             gcs_path="gcs_path_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_template_use_cached_wrapped_rpc():
@@ -2050,9 +2071,14 @@ async def test_get_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_template_async(
-    transport: str = "grpc_asyncio", request_type=templates.GetTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.GetTemplateRequest(),
+        {},
+    ],
+)
+async def test_get_template_async(request_type, transport: str = "grpc_asyncio"):
     client = TemplatesServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2060,7 +2086,7 @@ async def test_get_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -2081,11 +2107,6 @@ async def test_get_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.GetTemplateResponse)
     assert response.template_type == templates.GetTemplateResponse.TemplateType.LEGACY
-
-
-@pytest.mark.asyncio
-async def test_get_template_async_from_dict():
-    await test_get_template_async(request_type=dict)
 
 
 def test_get_template_field_headers():
@@ -2389,7 +2410,6 @@ def test_create_job_from_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.CreateJobFromTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -2410,7 +2430,6 @@ def test_launch_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.LaunchTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -2431,7 +2450,6 @@ def test_get_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -2489,7 +2507,6 @@ async def test_create_job_from_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.CreateJobFromTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -2514,7 +2531,6 @@ async def test_launch_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.LaunchTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -2541,7 +2557,6 @@ async def test_get_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3095,7 +3110,6 @@ def test_create_job_from_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.CreateJobFromTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3115,7 +3129,6 @@ def test_launch_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.LaunchTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3135,7 +3148,6 @@ def test_get_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = templates.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 

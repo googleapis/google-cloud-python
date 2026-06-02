@@ -24,13 +24,15 @@ import os
 import warnings
 
 import google.api_core.client_options
-from google.api_core import exceptions as api_exceptions, page_iterator
+from google.api_core import exceptions as api_exceptions
+from google.api_core import page_iterator
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 
+from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._helpers import (
     _DEFAULT_SCHEME,
     _DEFAULT_UNIVERSE_DOMAIN,
@@ -45,7 +47,6 @@ from google.cloud.storage._helpers import (
     _virtual_hosted_style_base_url,
     create_trace_span_helper,
 )
-from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 from google.cloud.storage._http import Connection
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import (

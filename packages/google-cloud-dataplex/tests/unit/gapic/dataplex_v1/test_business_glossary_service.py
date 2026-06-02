@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1376,7 +1392,12 @@ def test_business_glossary_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -1390,8 +1411,8 @@ def test_business_glossary_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.CreateGlossaryRequest,
-        dict,
+        business_glossary.CreateGlossaryRequest(),
+        {},
     ],
 )
 def test_create_glossary(request_type, transport: str = "grpc"):
@@ -1402,7 +1423,7 @@ def test_create_glossary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
@@ -1444,10 +1465,11 @@ def test_create_glossary_non_empty_request_with_auto_populated_field():
         client.create_glossary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.CreateGlossaryRequest(
+        request_msg = business_glossary.CreateGlossaryRequest(
             parent="parent_value",
             glossary_id="glossary_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_glossary_use_cached_wrapped_rpc():
@@ -1538,10 +1560,14 @@ async def test_create_glossary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_glossary_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.CreateGlossaryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.CreateGlossaryRequest(),
+        {},
+    ],
+)
+async def test_create_glossary_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1549,7 +1575,7 @@ async def test_create_glossary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
@@ -1567,11 +1593,6 @@ async def test_create_glossary_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_glossary_async_from_dict():
-    await test_create_glossary_async(request_type=dict)
 
 
 def test_create_glossary_field_headers():
@@ -1740,8 +1761,8 @@ async def test_create_glossary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.UpdateGlossaryRequest,
-        dict,
+        business_glossary.UpdateGlossaryRequest(),
+        {},
     ],
 )
 def test_update_glossary(request_type, transport: str = "grpc"):
@@ -1752,7 +1773,7 @@ def test_update_glossary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
@@ -1791,7 +1812,8 @@ def test_update_glossary_non_empty_request_with_auto_populated_field():
         client.update_glossary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.UpdateGlossaryRequest()
+        request_msg = business_glossary.UpdateGlossaryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_glossary_use_cached_wrapped_rpc():
@@ -1882,10 +1904,14 @@ async def test_update_glossary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_glossary_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.UpdateGlossaryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.UpdateGlossaryRequest(),
+        {},
+    ],
+)
+async def test_update_glossary_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1893,7 +1919,7 @@ async def test_update_glossary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
@@ -1911,11 +1937,6 @@ async def test_update_glossary_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_glossary_async_from_dict():
-    await test_update_glossary_async(request_type=dict)
 
 
 def test_update_glossary_field_headers():
@@ -2074,8 +2095,8 @@ async def test_update_glossary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.DeleteGlossaryRequest,
-        dict,
+        business_glossary.DeleteGlossaryRequest(),
+        {},
     ],
 )
 def test_delete_glossary(request_type, transport: str = "grpc"):
@@ -2086,7 +2107,7 @@ def test_delete_glossary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
@@ -2128,10 +2149,11 @@ def test_delete_glossary_non_empty_request_with_auto_populated_field():
         client.delete_glossary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.DeleteGlossaryRequest(
+        request_msg = business_glossary.DeleteGlossaryRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_glossary_use_cached_wrapped_rpc():
@@ -2222,10 +2244,14 @@ async def test_delete_glossary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_glossary_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.DeleteGlossaryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.DeleteGlossaryRequest(),
+        {},
+    ],
+)
+async def test_delete_glossary_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2233,7 +2259,7 @@ async def test_delete_glossary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
@@ -2251,11 +2277,6 @@ async def test_delete_glossary_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_glossary_async_from_dict():
-    await test_delete_glossary_async(request_type=dict)
 
 
 def test_delete_glossary_field_headers():
@@ -2404,8 +2425,8 @@ async def test_delete_glossary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.GetGlossaryRequest,
-        dict,
+        business_glossary.GetGlossaryRequest(),
+        {},
     ],
 )
 def test_get_glossary(request_type, transport: str = "grpc"):
@@ -2416,7 +2437,7 @@ def test_get_glossary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
@@ -2472,9 +2493,10 @@ def test_get_glossary_non_empty_request_with_auto_populated_field():
         client.get_glossary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.GetGlossaryRequest(
+        request_msg = business_glossary.GetGlossaryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_glossary_use_cached_wrapped_rpc():
@@ -2555,9 +2577,14 @@ async def test_get_glossary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_glossary_async(
-    transport: str = "grpc_asyncio", request_type=business_glossary.GetGlossaryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.GetGlossaryRequest(),
+        {},
+    ],
+)
+async def test_get_glossary_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2565,7 +2592,7 @@ async def test_get_glossary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
@@ -2598,11 +2625,6 @@ async def test_get_glossary_async(
     assert response.term_count == 1088
     assert response.category_count == 1510
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_glossary_async_from_dict():
-    await test_get_glossary_async(request_type=dict)
 
 
 def test_get_glossary_field_headers():
@@ -2751,8 +2773,8 @@ async def test_get_glossary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.ListGlossariesRequest,
-        dict,
+        business_glossary.ListGlossariesRequest(),
+        {},
     ],
 )
 def test_list_glossaries(request_type, transport: str = "grpc"):
@@ -2763,7 +2785,7 @@ def test_list_glossaries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
@@ -2812,12 +2834,13 @@ def test_list_glossaries_non_empty_request_with_auto_populated_field():
         client.list_glossaries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.ListGlossariesRequest(
+        request_msg = business_glossary.ListGlossariesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_glossaries_use_cached_wrapped_rpc():
@@ -2898,10 +2921,14 @@ async def test_list_glossaries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_glossaries_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.ListGlossariesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.ListGlossariesRequest(),
+        {},
+    ],
+)
+async def test_list_glossaries_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2909,7 +2936,7 @@ async def test_list_glossaries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
@@ -2932,11 +2959,6 @@ async def test_list_glossaries_async(
     assert isinstance(response, pagers.ListGlossariesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_glossaries_async_from_dict():
-    await test_list_glossaries_async(request_type=dict)
 
 
 def test_list_glossaries_field_headers():
@@ -3275,8 +3297,8 @@ async def test_list_glossaries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.CreateGlossaryCategoryRequest,
-        dict,
+        business_glossary.CreateGlossaryCategoryRequest(),
+        {},
     ],
 )
 def test_create_glossary_category(request_type, transport: str = "grpc"):
@@ -3287,7 +3309,7 @@ def test_create_glossary_category(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3344,10 +3366,11 @@ def test_create_glossary_category_non_empty_request_with_auto_populated_field():
         client.create_glossary_category(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.CreateGlossaryCategoryRequest(
+        request_msg = business_glossary.CreateGlossaryCategoryRequest(
             parent="parent_value",
             category_id="category_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_glossary_category_use_cached_wrapped_rpc():
@@ -3433,9 +3456,15 @@ async def test_create_glossary_category_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.CreateGlossaryCategoryRequest(),
+        {},
+    ],
+)
 async def test_create_glossary_category_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.CreateGlossaryCategoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3444,7 +3473,7 @@ async def test_create_glossary_category_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3475,11 +3504,6 @@ async def test_create_glossary_category_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_create_glossary_category_async_from_dict():
-    await test_create_glossary_category_async(request_type=dict)
 
 
 def test_create_glossary_category_field_headers():
@@ -3656,8 +3680,8 @@ async def test_create_glossary_category_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.UpdateGlossaryCategoryRequest,
-        dict,
+        business_glossary.UpdateGlossaryCategoryRequest(),
+        {},
     ],
 )
 def test_update_glossary_category(request_type, transport: str = "grpc"):
@@ -3668,7 +3692,7 @@ def test_update_glossary_category(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3722,7 +3746,8 @@ def test_update_glossary_category_non_empty_request_with_auto_populated_field():
         client.update_glossary_category(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.UpdateGlossaryCategoryRequest()
+        request_msg = business_glossary.UpdateGlossaryCategoryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_glossary_category_use_cached_wrapped_rpc():
@@ -3808,9 +3833,15 @@ async def test_update_glossary_category_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.UpdateGlossaryCategoryRequest(),
+        {},
+    ],
+)
 async def test_update_glossary_category_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.UpdateGlossaryCategoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3819,7 +3850,7 @@ async def test_update_glossary_category_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3850,11 +3881,6 @@ async def test_update_glossary_category_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_update_glossary_category_async_from_dict():
-    await test_update_glossary_category_async(request_type=dict)
 
 
 def test_update_glossary_category_field_headers():
@@ -4021,8 +4047,8 @@ async def test_update_glossary_category_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.DeleteGlossaryCategoryRequest,
-        dict,
+        business_glossary.DeleteGlossaryCategoryRequest(),
+        {},
     ],
 )
 def test_delete_glossary_category(request_type, transport: str = "grpc"):
@@ -4033,7 +4059,7 @@ def test_delete_glossary_category(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4078,9 +4104,10 @@ def test_delete_glossary_category_non_empty_request_with_auto_populated_field():
         client.delete_glossary_category(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.DeleteGlossaryCategoryRequest(
+        request_msg = business_glossary.DeleteGlossaryCategoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_glossary_category_use_cached_wrapped_rpc():
@@ -4166,9 +4193,15 @@ async def test_delete_glossary_category_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.DeleteGlossaryCategoryRequest(),
+        {},
+    ],
+)
 async def test_delete_glossary_category_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.DeleteGlossaryCategoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4177,7 +4210,7 @@ async def test_delete_glossary_category_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4195,11 +4228,6 @@ async def test_delete_glossary_category_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_glossary_category_async_from_dict():
-    await test_delete_glossary_category_async(request_type=dict)
 
 
 def test_delete_glossary_category_field_headers():
@@ -4352,8 +4380,8 @@ async def test_delete_glossary_category_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.GetGlossaryCategoryRequest,
-        dict,
+        business_glossary.GetGlossaryCategoryRequest(),
+        {},
     ],
 )
 def test_get_glossary_category(request_type, transport: str = "grpc"):
@@ -4364,7 +4392,7 @@ def test_get_glossary_category(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4420,9 +4448,10 @@ def test_get_glossary_category_non_empty_request_with_auto_populated_field():
         client.get_glossary_category(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.GetGlossaryCategoryRequest(
+        request_msg = business_glossary.GetGlossaryCategoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_glossary_category_use_cached_wrapped_rpc():
@@ -4508,9 +4537,15 @@ async def test_get_glossary_category_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.GetGlossaryCategoryRequest(),
+        {},
+    ],
+)
 async def test_get_glossary_category_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.GetGlossaryCategoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4519,7 +4554,7 @@ async def test_get_glossary_category_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4550,11 +4585,6 @@ async def test_get_glossary_category_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_get_glossary_category_async_from_dict():
-    await test_get_glossary_category_async(request_type=dict)
 
 
 def test_get_glossary_category_field_headers():
@@ -4711,8 +4741,8 @@ async def test_get_glossary_category_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.ListGlossaryCategoriesRequest,
-        dict,
+        business_glossary.ListGlossaryCategoriesRequest(),
+        {},
     ],
 )
 def test_list_glossary_categories(request_type, transport: str = "grpc"):
@@ -4723,7 +4753,7 @@ def test_list_glossary_categories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4776,12 +4806,13 @@ def test_list_glossary_categories_non_empty_request_with_auto_populated_field():
         client.list_glossary_categories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.ListGlossaryCategoriesRequest(
+        request_msg = business_glossary.ListGlossaryCategoriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_glossary_categories_use_cached_wrapped_rpc():
@@ -4867,9 +4898,15 @@ async def test_list_glossary_categories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.ListGlossaryCategoriesRequest(),
+        {},
+    ],
+)
 async def test_list_glossary_categories_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.ListGlossaryCategoriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4878,7 +4915,7 @@ async def test_list_glossary_categories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4903,11 +4940,6 @@ async def test_list_glossary_categories_async(
     assert isinstance(response, pagers.ListGlossaryCategoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_glossary_categories_async_from_dict():
-    await test_list_glossary_categories_async(request_type=dict)
 
 
 def test_list_glossary_categories_field_headers():
@@ -5264,8 +5296,8 @@ async def test_list_glossary_categories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.CreateGlossaryTermRequest,
-        dict,
+        business_glossary.CreateGlossaryTermRequest(),
+        {},
     ],
 )
 def test_create_glossary_term(request_type, transport: str = "grpc"):
@@ -5276,7 +5308,7 @@ def test_create_glossary_term(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5333,10 +5365,11 @@ def test_create_glossary_term_non_empty_request_with_auto_populated_field():
         client.create_glossary_term(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.CreateGlossaryTermRequest(
+        request_msg = business_glossary.CreateGlossaryTermRequest(
             parent="parent_value",
             term_id="term_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_glossary_term_use_cached_wrapped_rpc():
@@ -5421,9 +5454,15 @@ async def test_create_glossary_term_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.CreateGlossaryTermRequest(),
+        {},
+    ],
+)
 async def test_create_glossary_term_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.CreateGlossaryTermRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5432,7 +5471,7 @@ async def test_create_glossary_term_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5463,11 +5502,6 @@ async def test_create_glossary_term_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_create_glossary_term_async_from_dict():
-    await test_create_glossary_term_async(request_type=dict)
 
 
 def test_create_glossary_term_field_headers():
@@ -5644,8 +5678,8 @@ async def test_create_glossary_term_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.UpdateGlossaryTermRequest,
-        dict,
+        business_glossary.UpdateGlossaryTermRequest(),
+        {},
     ],
 )
 def test_update_glossary_term(request_type, transport: str = "grpc"):
@@ -5656,7 +5690,7 @@ def test_update_glossary_term(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5710,7 +5744,8 @@ def test_update_glossary_term_non_empty_request_with_auto_populated_field():
         client.update_glossary_term(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.UpdateGlossaryTermRequest()
+        request_msg = business_glossary.UpdateGlossaryTermRequest()
+        assert args[0] == request_msg
 
 
 def test_update_glossary_term_use_cached_wrapped_rpc():
@@ -5795,9 +5830,15 @@ async def test_update_glossary_term_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.UpdateGlossaryTermRequest(),
+        {},
+    ],
+)
 async def test_update_glossary_term_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.UpdateGlossaryTermRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5806,7 +5847,7 @@ async def test_update_glossary_term_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5837,11 +5878,6 @@ async def test_update_glossary_term_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_update_glossary_term_async_from_dict():
-    await test_update_glossary_term_async(request_type=dict)
 
 
 def test_update_glossary_term_field_headers():
@@ -6008,8 +6044,8 @@ async def test_update_glossary_term_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.DeleteGlossaryTermRequest,
-        dict,
+        business_glossary.DeleteGlossaryTermRequest(),
+        {},
     ],
 )
 def test_delete_glossary_term(request_type, transport: str = "grpc"):
@@ -6020,7 +6056,7 @@ def test_delete_glossary_term(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6065,9 +6101,10 @@ def test_delete_glossary_term_non_empty_request_with_auto_populated_field():
         client.delete_glossary_term(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.DeleteGlossaryTermRequest(
+        request_msg = business_glossary.DeleteGlossaryTermRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_glossary_term_use_cached_wrapped_rpc():
@@ -6152,9 +6189,15 @@ async def test_delete_glossary_term_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.DeleteGlossaryTermRequest(),
+        {},
+    ],
+)
 async def test_delete_glossary_term_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.DeleteGlossaryTermRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6163,7 +6206,7 @@ async def test_delete_glossary_term_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6181,11 +6224,6 @@ async def test_delete_glossary_term_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_glossary_term_async_from_dict():
-    await test_delete_glossary_term_async(request_type=dict)
 
 
 def test_delete_glossary_term_field_headers():
@@ -6338,8 +6376,8 @@ async def test_delete_glossary_term_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.GetGlossaryTermRequest,
-        dict,
+        business_glossary.GetGlossaryTermRequest(),
+        {},
     ],
 )
 def test_get_glossary_term(request_type, transport: str = "grpc"):
@@ -6350,7 +6388,7 @@ def test_get_glossary_term(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6406,9 +6444,10 @@ def test_get_glossary_term_non_empty_request_with_auto_populated_field():
         client.get_glossary_term(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.GetGlossaryTermRequest(
+        request_msg = business_glossary.GetGlossaryTermRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_glossary_term_use_cached_wrapped_rpc():
@@ -6491,10 +6530,14 @@ async def test_get_glossary_term_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_glossary_term_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.GetGlossaryTermRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.GetGlossaryTermRequest(),
+        {},
+    ],
+)
+async def test_get_glossary_term_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6502,7 +6545,7 @@ async def test_get_glossary_term_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6533,11 +6576,6 @@ async def test_get_glossary_term_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_get_glossary_term_async_from_dict():
-    await test_get_glossary_term_async(request_type=dict)
 
 
 def test_get_glossary_term_field_headers():
@@ -6694,8 +6732,8 @@ async def test_get_glossary_term_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        business_glossary.ListGlossaryTermsRequest,
-        dict,
+        business_glossary.ListGlossaryTermsRequest(),
+        {},
     ],
 )
 def test_list_glossary_terms(request_type, transport: str = "grpc"):
@@ -6706,7 +6744,7 @@ def test_list_glossary_terms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6759,12 +6797,13 @@ def test_list_glossary_terms_non_empty_request_with_auto_populated_field():
         client.list_glossary_terms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == business_glossary.ListGlossaryTermsRequest(
+        request_msg = business_glossary.ListGlossaryTermsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_glossary_terms_use_cached_wrapped_rpc():
@@ -6849,10 +6888,14 @@ async def test_list_glossary_terms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_glossary_terms_async(
-    transport: str = "grpc_asyncio",
-    request_type=business_glossary.ListGlossaryTermsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        business_glossary.ListGlossaryTermsRequest(),
+        {},
+    ],
+)
+async def test_list_glossary_terms_async(request_type, transport: str = "grpc_asyncio"):
     client = BusinessGlossaryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6860,7 +6903,7 @@ async def test_list_glossary_terms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6885,11 +6928,6 @@ async def test_list_glossary_terms_async(
     assert isinstance(response, pagers.ListGlossaryTermsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_glossary_terms_async_from_dict():
-    await test_list_glossary_terms_async(request_type=dict)
 
 
 def test_list_glossary_terms_field_headers():
@@ -10478,7 +10516,6 @@ def test_create_glossary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10499,7 +10536,6 @@ def test_update_glossary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10520,7 +10556,6 @@ def test_delete_glossary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10541,7 +10576,6 @@ def test_get_glossary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10562,7 +10596,6 @@ def test_list_glossaries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossariesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10585,7 +10618,6 @@ def test_create_glossary_category_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10608,7 +10640,6 @@ def test_update_glossary_category_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10631,7 +10662,6 @@ def test_delete_glossary_category_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10654,7 +10684,6 @@ def test_get_glossary_category_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10677,7 +10706,6 @@ def test_list_glossary_categories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryCategoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10700,7 +10728,6 @@ def test_create_glossary_term_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -10723,7 +10750,6 @@ def test_update_glossary_term_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -10746,7 +10772,6 @@ def test_delete_glossary_term_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -10769,7 +10794,6 @@ def test_get_glossary_term_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -10792,7 +10816,6 @@ def test_list_glossary_terms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10831,7 +10854,6 @@ async def test_create_glossary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10856,7 +10878,6 @@ async def test_update_glossary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10881,7 +10902,6 @@ async def test_delete_glossary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10914,7 +10934,6 @@ async def test_get_glossary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10942,7 +10961,6 @@ async def test_list_glossaries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossariesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10975,7 +10993,6 @@ async def test_create_glossary_category_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11008,7 +11025,6 @@ async def test_update_glossary_category_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11033,7 +11049,6 @@ async def test_delete_glossary_category_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11066,7 +11081,6 @@ async def test_get_glossary_category_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11096,7 +11110,6 @@ async def test_list_glossary_categories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryCategoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11129,7 +11142,6 @@ async def test_create_glossary_term_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -11162,7 +11174,6 @@ async def test_update_glossary_term_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -11187,7 +11198,6 @@ async def test_delete_glossary_term_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -11220,7 +11230,6 @@ async def test_get_glossary_term_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -11250,7 +11259,6 @@ async def test_list_glossary_terms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14365,7 +14373,6 @@ def test_create_glossary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14385,7 +14392,6 @@ def test_update_glossary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14405,7 +14411,6 @@ def test_delete_glossary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14425,7 +14430,6 @@ def test_get_glossary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14445,7 +14449,6 @@ def test_list_glossaries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossariesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14467,7 +14470,6 @@ def test_create_glossary_category_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14489,7 +14491,6 @@ def test_update_glossary_category_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14511,7 +14512,6 @@ def test_delete_glossary_category_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14533,7 +14533,6 @@ def test_get_glossary_category_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryCategoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14555,7 +14554,6 @@ def test_list_glossary_categories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryCategoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14577,7 +14575,6 @@ def test_create_glossary_term_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.CreateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -14599,7 +14596,6 @@ def test_update_glossary_term_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.UpdateGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -14621,7 +14617,6 @@ def test_delete_glossary_term_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.DeleteGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -14643,7 +14638,6 @@ def test_get_glossary_term_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.GetGlossaryTermRequest()
-
         assert args[0] == request_msg
 
 
@@ -14665,7 +14659,6 @@ def test_list_glossary_terms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = business_glossary.ListGlossaryTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14784,7 +14777,12 @@ def test_business_glossary_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -14810,7 +14808,12 @@ def test_business_glossary_service_auth_adc():
         BusinessGlossaryServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id=None,
         )
 
@@ -14830,7 +14833,12 @@ def test_business_glossary_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -14885,7 +14893,12 @@ def test_business_glossary_service_transport_create_channel(
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,

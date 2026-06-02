@@ -137,16 +137,12 @@ tasklet, properly yielding when appropriate::
         print(emp.name, emp.age)
 """
 
-import typing
 import functools
 import logging
+import typing
 
+from google.cloud.ndb import _options, exceptions, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
-
 
 __all__ = [
     "QueryOptions",
@@ -651,8 +647,9 @@ class FilterNode(Node):
         if opsymbol == _IN_OP:
             if not isinstance(value, (list, tuple, set, frozenset)):
                 raise TypeError(
-                    "in expected a list, tuple or set of values; "
-                    "received {!r}".format(value)
+                    "in expected a list, tuple or set of values; received {!r}".format(
+                        value
+                    )
                 )
             nodes = [FilterNode(name, _EQ_OP, sub_value) for sub_value in value]
             if not nodes:
@@ -1145,8 +1142,8 @@ def _query_options(wrapped):
     @functools.wraps(wrapped)
     def wrapper(self, *args, **kwargs):
         # Avoid circular import in Python 2.7
-        from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
+        from google.cloud.ndb import context as context_module
 
         # Maybe we already did this (in the case of X calling X_async)
         if "_options" in kwargs:
@@ -1355,8 +1352,9 @@ class Query(object):
 
             if not isinstance(default_options, QueryOptions):
                 raise TypeError(
-                    "default_options must be QueryOptions or None; "
-                    "received {}".format(default_options)
+                    "default_options must be QueryOptions or None; received {}".format(
+                        default_options
+                    )
                 )
 
             # Not sure why we're doing all this checking just for this one
@@ -1392,12 +1390,12 @@ class Query(object):
                 if isinstance(ancestor, ParameterizedFunction):
                     if ancestor.func != "key":
                         raise TypeError(
-                            "ancestor cannot be a GQL function" "other than Key"
+                            "ancestor cannot be a GQL function other than Key"
                         )
             else:
                 if not isinstance(ancestor, model.Key):
                     raise TypeError(
-                        "ancestor must be a Key; " "received {}".format(ancestor)
+                        "ancestor must be a Key; received {}".format(ancestor)
                     )
                 if not ancestor.id():
                     raise ValueError("ancestor cannot be an incomplete key")
@@ -1424,8 +1422,7 @@ class Query(object):
         if filters is not None:
             if not isinstance(filters, Node):
                 raise TypeError(
-                    "filters must be a query Node or None; "
-                    "received {}".format(filters)
+                    "filters must be a query Node or None; received {}".format(filters)
                 )
         if order_by is not None and orders is not None:
             raise TypeError(
@@ -1437,8 +1434,9 @@ class Query(object):
         if order_by is not None:
             if not isinstance(order_by, (list, tuple)):
                 raise TypeError(
-                    "order must be a list, a tuple or None; "
-                    "received {}".format(order_by)
+                    "order must be a list, a tuple or None; received {}".format(
+                        order_by
+                    )
                 )
             order_by = self._to_property_orders(order_by)
 
@@ -1459,8 +1457,9 @@ class Query(object):
                 raise TypeError("projection argument cannot be empty")
             if not isinstance(projection, (tuple, list)):
                 raise TypeError(
-                    "projection must be a tuple, list or None; "
-                    "received {}".format(projection)
+                    "projection must be a tuple, list or None; received {}".format(
+                        projection
+                    )
                 )
             projection = _to_property_names(projection)
             _check_properties(self.kind, projection)
@@ -1480,8 +1479,9 @@ class Query(object):
                 raise TypeError("distinct_on argument cannot be empty")
             if not isinstance(distinct_on, (tuple, list)):
                 raise TypeError(
-                    "distinct_on must be a tuple, list or None; "
-                    "received {}".format(distinct_on)
+                    "distinct_on must be a tuple, list or None; received {}".format(
+                        distinct_on
+                    )
                 )
             distinct_on = _to_property_names(distinct_on)
             _check_properties(self.kind, distinct_on)
@@ -2371,7 +2371,7 @@ def _to_property_names(properties):
             fixed.append(prop._name)
         else:
             raise TypeError(
-                "Unexpected property {}; " "should be string or Property".format(prop)
+                "Unexpected property {}; should be string or Property".format(prop)
             )
     return fixed
 

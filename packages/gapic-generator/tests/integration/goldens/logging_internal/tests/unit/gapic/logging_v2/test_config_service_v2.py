@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -94,6 +95,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -944,10 +960,8 @@ def test_base_config_service_v2_client_create_channel_credentials_file(client_cl
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListBucketsRequest({
-  }),
-  {
-  },
+  logging_config.ListBucketsRequest(),
+  {},
 ])
 def test_list_buckets(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -1078,8 +1092,8 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListBucketsRequest({  }),
-  {  },
+  logging_config.ListBucketsRequest(),
+  {},
 ])
 async def test_list_buckets_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -1451,10 +1465,8 @@ async def test_list_buckets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetBucketRequest({
-  }),
-  {
-  },
+  logging_config.GetBucketRequest(),
+  {},
 ])
 def test_get_bucket(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -1595,8 +1607,8 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetBucketRequest({  }),
-  {  },
+  logging_config.GetBucketRequest(),
+  {},
 ])
 async def test_get_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -1704,10 +1716,8 @@ async def test_get_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({
-  }),
-  {
-  },
+  logging_config.CreateBucketRequest(),
+  {},
 ])
 def test_create_bucket_async(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -1845,8 +1855,8 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(transport: str =
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({  }),
-  {  },
+  logging_config.CreateBucketRequest(),
+  {},
 ])
 async def test_create_bucket_async_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -1941,10 +1951,8 @@ async def test_create_bucket_async_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({
-  }),
-  {
-  },
+  logging_config.UpdateBucketRequest(),
+  {},
 ])
 def test_update_bucket_async(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -2080,8 +2088,8 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(transport: str =
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({  }),
-  {  },
+  logging_config.UpdateBucketRequest(),
+  {},
 ])
 async def test_update_bucket_async_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -2176,10 +2184,8 @@ async def test_update_bucket_async_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({
-  }),
-  {
-  },
+  logging_config.CreateBucketRequest(),
+  {},
 ])
 def test_create_bucket(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -2322,8 +2328,8 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateBucketRequest({  }),
-  {  },
+  logging_config.CreateBucketRequest(),
+  {},
 ])
 async def test_create_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -2431,10 +2437,8 @@ async def test_create_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({
-  }),
-  {
-  },
+  logging_config.UpdateBucketRequest(),
+  {},
 ])
 def test_update_bucket(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -2575,8 +2579,8 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateBucketRequest({  }),
-  {  },
+  logging_config.UpdateBucketRequest(),
+  {},
 ])
 async def test_update_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -2684,10 +2688,8 @@ async def test_update_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteBucketRequest({
-  }),
-  {
-  },
+  logging_config.DeleteBucketRequest(),
+  {},
 ])
 def test_delete_bucket(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -2813,8 +2815,8 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteBucketRequest({  }),
-  {  },
+  logging_config.DeleteBucketRequest(),
+  {},
 ])
 async def test_delete_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -2907,10 +2909,8 @@ async def test_delete_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UndeleteBucketRequest({
-  }),
-  {
-  },
+  logging_config.UndeleteBucketRequest(),
+  {},
 ])
 def test_undelete_bucket(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -3036,8 +3036,8 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(transport: str = "gr
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UndeleteBucketRequest({  }),
-  {  },
+  logging_config.UndeleteBucketRequest(),
+  {},
 ])
 async def test_undelete_bucket_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -3130,10 +3130,8 @@ async def test_undelete_bucket_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListViewsRequest({
-  }),
-  {
-  },
+  logging_config.ListViewsRequest(),
+  {},
 ])
 def test__list_views(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -3264,8 +3262,8 @@ async def test__list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListViewsRequest({  }),
-  {  },
+  logging_config.ListViewsRequest(),
+  {},
 ])
 async def test__list_views_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -3637,10 +3635,8 @@ async def test__list_views_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetViewRequest({
-  }),
-  {
-  },
+  logging_config.GetViewRequest(),
+  {},
 ])
 def test__get_view(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -3773,8 +3769,8 @@ async def test__get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetViewRequest({  }),
-  {  },
+  logging_config.GetViewRequest(),
+  {},
 ])
 async def test__get_view_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -3874,10 +3870,8 @@ async def test__get_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateViewRequest({
-  }),
-  {
-  },
+  logging_config.CreateViewRequest(),
+  {},
 ])
 def test__create_view(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -4012,8 +4006,8 @@ async def test__create_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateViewRequest({  }),
-  {  },
+  logging_config.CreateViewRequest(),
+  {},
 ])
 async def test__create_view_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -4113,10 +4107,8 @@ async def test__create_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateViewRequest({
-  }),
-  {
-  },
+  logging_config.UpdateViewRequest(),
+  {},
 ])
 def test__update_view(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -4249,8 +4241,8 @@ async def test__update_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateViewRequest({  }),
-  {  },
+  logging_config.UpdateViewRequest(),
+  {},
 ])
 async def test__update_view_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -4350,10 +4342,8 @@ async def test__update_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteViewRequest({
-  }),
-  {
-  },
+  logging_config.DeleteViewRequest(),
+  {},
 ])
 def test__delete_view(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -4479,8 +4469,8 @@ async def test__delete_view_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteViewRequest({  }),
-  {  },
+  logging_config.DeleteViewRequest(),
+  {},
 ])
 async def test__delete_view_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -4573,10 +4563,8 @@ async def test__delete_view_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListSinksRequest({
-  }),
-  {
-  },
+  logging_config.ListSinksRequest(),
+  {},
 ])
 def test__list_sinks(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -4707,8 +4695,8 @@ async def test__list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListSinksRequest({  }),
-  {  },
+  logging_config.ListSinksRequest(),
+  {},
 ])
 async def test__list_sinks_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -5080,10 +5068,8 @@ async def test__list_sinks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSinkRequest({
-  }),
-  {
-  },
+  logging_config.GetSinkRequest(),
+  {},
 ])
 def test__get_sink(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -5226,8 +5212,8 @@ async def test__get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSinkRequest({  }),
-  {  },
+  logging_config.GetSinkRequest(),
+  {},
 ])
 async def test__get_sink_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -5419,10 +5405,8 @@ async def test__get_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateSinkRequest({
-  }),
-  {
-  },
+  logging_config.CreateSinkRequest(),
+  {},
 ])
 def test__create_sink(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -5565,8 +5549,8 @@ async def test__create_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateSinkRequest({  }),
-  {  },
+  logging_config.CreateSinkRequest(),
+  {},
 ])
 async def test__create_sink_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -5768,10 +5752,8 @@ async def test__create_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSinkRequest({
-  }),
-  {
-  },
+  logging_config.UpdateSinkRequest(),
+  {},
 ])
 def test__update_sink(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -5914,8 +5896,8 @@ async def test__update_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSinkRequest({  }),
-  {  },
+  logging_config.UpdateSinkRequest(),
+  {},
 ])
 async def test__update_sink_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -6127,10 +6109,8 @@ async def test__update_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteSinkRequest({
-  }),
-  {
-  },
+  logging_config.DeleteSinkRequest(),
+  {},
 ])
 def test__delete_sink(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -6256,8 +6236,8 @@ async def test__delete_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteSinkRequest({  }),
-  {  },
+  logging_config.DeleteSinkRequest(),
+  {},
 ])
 async def test__delete_sink_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -6432,10 +6412,8 @@ async def test__delete_sink_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateLinkRequest({
-  }),
-  {
-  },
+  logging_config.CreateLinkRequest(),
+  {},
 ])
 def test__create_link(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -6573,8 +6551,8 @@ async def test__create_link_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateLinkRequest({  }),
-  {  },
+  logging_config.CreateLinkRequest(),
+  {},
 ])
 async def test__create_link_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -6773,10 +6751,8 @@ async def test__create_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteLinkRequest({
-  }),
-  {
-  },
+  logging_config.DeleteLinkRequest(),
+  {},
 ])
 def test__delete_link(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -6912,8 +6888,8 @@ async def test__delete_link_async_use_cached_wrapped_rpc(transport: str = "grpc_
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteLinkRequest({  }),
-  {  },
+  logging_config.DeleteLinkRequest(),
+  {},
 ])
 async def test__delete_link_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -7092,10 +7068,8 @@ async def test__delete_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListLinksRequest({
-  }),
-  {
-  },
+  logging_config.ListLinksRequest(),
+  {},
 ])
 def test__list_links(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -7226,8 +7200,8 @@ async def test__list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_a
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListLinksRequest({  }),
-  {  },
+  logging_config.ListLinksRequest(),
+  {},
 ])
 async def test__list_links_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -7599,10 +7573,8 @@ async def test__list_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetLinkRequest({
-  }),
-  {
-  },
+  logging_config.GetLinkRequest(),
+  {},
 ])
 def test__get_link(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -7735,8 +7707,8 @@ async def test__get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetLinkRequest({  }),
-  {  },
+  logging_config.GetLinkRequest(),
+  {},
 ])
 async def test__get_link_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -7918,10 +7890,8 @@ async def test__get_link_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListExclusionsRequest({
-  }),
-  {
-  },
+  logging_config.ListExclusionsRequest(),
+  {},
 ])
 def test__list_exclusions(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -8052,8 +8022,8 @@ async def test__list_exclusions_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.ListExclusionsRequest({  }),
-  {  },
+  logging_config.ListExclusionsRequest(),
+  {},
 ])
 async def test__list_exclusions_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -8425,10 +8395,8 @@ async def test__list_exclusions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetExclusionRequest({
-  }),
-  {
-  },
+  logging_config.GetExclusionRequest(),
+  {},
 ])
 def test__get_exclusion(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -8563,8 +8531,8 @@ async def test__get_exclusion_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetExclusionRequest({  }),
-  {  },
+  logging_config.GetExclusionRequest(),
+  {},
 ])
 async def test__get_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -8748,10 +8716,8 @@ async def test__get_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateExclusionRequest({
-  }),
-  {
-  },
+  logging_config.CreateExclusionRequest(),
+  {},
 ])
 def test__create_exclusion(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -8886,8 +8852,8 @@ async def test__create_exclusion_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CreateExclusionRequest({  }),
-  {  },
+  logging_config.CreateExclusionRequest(),
+  {},
 ])
 async def test__create_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -9081,10 +9047,8 @@ async def test__create_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateExclusionRequest({
-  }),
-  {
-  },
+  logging_config.UpdateExclusionRequest(),
+  {},
 ])
 def test__update_exclusion(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -9219,8 +9183,8 @@ async def test__update_exclusion_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateExclusionRequest({  }),
-  {  },
+  logging_config.UpdateExclusionRequest(),
+  {},
 ])
 async def test__update_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -9424,10 +9388,8 @@ async def test__update_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteExclusionRequest({
-  }),
-  {
-  },
+  logging_config.DeleteExclusionRequest(),
+  {},
 ])
 def test__delete_exclusion(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -9553,8 +9515,8 @@ async def test__delete_exclusion_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.DeleteExclusionRequest({  }),
-  {  },
+  logging_config.DeleteExclusionRequest(),
+  {},
 ])
 async def test__delete_exclusion_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -9729,10 +9691,8 @@ async def test__delete_exclusion_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetCmekSettingsRequest({
-  }),
-  {
-  },
+  logging_config.GetCmekSettingsRequest(),
+  {},
 ])
 def test__get_cmek_settings(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -9867,8 +9827,8 @@ async def test__get_cmek_settings_async_use_cached_wrapped_rpc(transport: str = 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetCmekSettingsRequest({  }),
-  {  },
+  logging_config.GetCmekSettingsRequest(),
+  {},
 ])
 async def test__get_cmek_settings_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -9970,10 +9930,8 @@ async def test__get_cmek_settings_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateCmekSettingsRequest({
-  }),
-  {
-  },
+  logging_config.UpdateCmekSettingsRequest(),
+  {},
 ])
 def test__update_cmek_settings(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -10108,8 +10066,8 @@ async def test__update_cmek_settings_async_use_cached_wrapped_rpc(transport: str
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateCmekSettingsRequest({  }),
-  {  },
+  logging_config.UpdateCmekSettingsRequest(),
+  {},
 ])
 async def test__update_cmek_settings_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -10211,10 +10169,8 @@ async def test__update_cmek_settings_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSettingsRequest({
-  }),
-  {
-  },
+  logging_config.GetSettingsRequest(),
+  {},
 ])
 def test__get_settings(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -10351,8 +10307,8 @@ async def test__get_settings_async_use_cached_wrapped_rpc(transport: str = "grpc
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.GetSettingsRequest({  }),
-  {  },
+  logging_config.GetSettingsRequest(),
+  {},
 ])
 async def test__get_settings_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -10538,10 +10494,8 @@ async def test__get_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSettingsRequest({
-  }),
-  {
-  },
+  logging_config.UpdateSettingsRequest(),
+  {},
 ])
 def test__update_settings(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -10678,8 +10632,8 @@ async def test__update_settings_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.UpdateSettingsRequest({  }),
-  {  },
+  logging_config.UpdateSettingsRequest(),
+  {},
 ])
 async def test__update_settings_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(
@@ -10875,10 +10829,8 @@ async def test__update_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_config.CopyLogEntriesRequest({
-  }),
-  {
-  },
+  logging_config.CopyLogEntriesRequest(),
+  {},
 ])
 def test__copy_log_entries(request_type, transport: str = 'grpc'):
     client = BaseConfigServiceV2Client(
@@ -11018,8 +10970,8 @@ async def test__copy_log_entries_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_config.CopyLogEntriesRequest({  }),
-  {  },
+  logging_config.CopyLogEntriesRequest(),
+  {},
 ])
 async def test__copy_log_entries_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseConfigServiceV2AsyncClient(

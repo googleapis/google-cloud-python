@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
-import re
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
@@ -109,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1310,8 +1325,8 @@ def test_entity_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity.GetWatchlistRequest,
-        dict,
+        entity.GetWatchlistRequest(),
+        {},
     ],
 )
 def test_get_watchlist(request_type, transport: str = "grpc"):
@@ -1322,7 +1337,7 @@ def test_get_watchlist(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_watchlist), "__call__") as call:
@@ -1372,9 +1387,10 @@ def test_get_watchlist_non_empty_request_with_auto_populated_field():
         client.get_watchlist(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity.GetWatchlistRequest(
+        request_msg = entity.GetWatchlistRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_watchlist_use_cached_wrapped_rpc():
@@ -1455,9 +1471,14 @@ async def test_get_watchlist_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_watchlist_async(
-    transport: str = "grpc_asyncio", request_type=entity.GetWatchlistRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity.GetWatchlistRequest(),
+        {},
+    ],
+)
+async def test_get_watchlist_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1465,7 +1486,7 @@ async def test_get_watchlist_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_watchlist), "__call__") as call:
@@ -1492,11 +1513,6 @@ async def test_get_watchlist_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert math.isclose(response.multiplying_factor, 0.1948, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_get_watchlist_async_from_dict():
-    await test_get_watchlist_async(request_type=dict)
 
 
 def test_get_watchlist_field_headers():
@@ -1641,8 +1657,8 @@ async def test_get_watchlist_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity.ListWatchlistsRequest,
-        dict,
+        entity.ListWatchlistsRequest(),
+        {},
     ],
 )
 def test_list_watchlists(request_type, transport: str = "grpc"):
@@ -1653,7 +1669,7 @@ def test_list_watchlists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_watchlists), "__call__") as call:
@@ -1699,11 +1715,12 @@ def test_list_watchlists_non_empty_request_with_auto_populated_field():
         client.list_watchlists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity.ListWatchlistsRequest(
+        request_msg = entity.ListWatchlistsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_watchlists_use_cached_wrapped_rpc():
@@ -1784,9 +1801,14 @@ async def test_list_watchlists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_watchlists_async(
-    transport: str = "grpc_asyncio", request_type=entity.ListWatchlistsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity.ListWatchlistsRequest(),
+        {},
+    ],
+)
+async def test_list_watchlists_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1794,7 +1816,7 @@ async def test_list_watchlists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_watchlists), "__call__") as call:
@@ -1815,11 +1837,6 @@ async def test_list_watchlists_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWatchlistsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_watchlists_async_from_dict():
-    await test_list_watchlists_async(request_type=dict)
 
 
 def test_list_watchlists_field_headers():
@@ -2158,8 +2175,8 @@ async def test_list_watchlists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity.CreateWatchlistRequest,
-        dict,
+        entity.CreateWatchlistRequest(),
+        {},
     ],
 )
 def test_create_watchlist(request_type, transport: str = "grpc"):
@@ -2170,7 +2187,7 @@ def test_create_watchlist(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_watchlist), "__call__") as call:
@@ -2221,10 +2238,11 @@ def test_create_watchlist_non_empty_request_with_auto_populated_field():
         client.create_watchlist(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity.CreateWatchlistRequest(
+        request_msg = entity.CreateWatchlistRequest(
             parent="parent_value",
             watchlist_id="watchlist_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_watchlist_use_cached_wrapped_rpc():
@@ -2307,9 +2325,14 @@ async def test_create_watchlist_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_watchlist_async(
-    transport: str = "grpc_asyncio", request_type=entity.CreateWatchlistRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity.CreateWatchlistRequest(),
+        {},
+    ],
+)
+async def test_create_watchlist_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2317,7 +2340,7 @@ async def test_create_watchlist_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_watchlist), "__call__") as call:
@@ -2344,11 +2367,6 @@ async def test_create_watchlist_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert math.isclose(response.multiplying_factor, 0.1948, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_create_watchlist_async_from_dict():
-    await test_create_watchlist_async(request_type=dict)
 
 
 def test_create_watchlist_field_headers():
@@ -2513,8 +2531,8 @@ async def test_create_watchlist_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity.UpdateWatchlistRequest,
-        dict,
+        entity.UpdateWatchlistRequest(),
+        {},
     ],
 )
 def test_update_watchlist(request_type, transport: str = "grpc"):
@@ -2525,7 +2543,7 @@ def test_update_watchlist(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_watchlist), "__call__") as call:
@@ -2573,7 +2591,8 @@ def test_update_watchlist_non_empty_request_with_auto_populated_field():
         client.update_watchlist(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity.UpdateWatchlistRequest()
+        request_msg = entity.UpdateWatchlistRequest()
+        assert args[0] == request_msg
 
 
 def test_update_watchlist_use_cached_wrapped_rpc():
@@ -2656,9 +2675,14 @@ async def test_update_watchlist_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_watchlist_async(
-    transport: str = "grpc_asyncio", request_type=entity.UpdateWatchlistRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity.UpdateWatchlistRequest(),
+        {},
+    ],
+)
+async def test_update_watchlist_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2666,7 +2690,7 @@ async def test_update_watchlist_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_watchlist), "__call__") as call:
@@ -2693,11 +2717,6 @@ async def test_update_watchlist_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert math.isclose(response.multiplying_factor, 0.1948, rel_tol=1e-6)
-
-
-@pytest.mark.asyncio
-async def test_update_watchlist_async_from_dict():
-    await test_update_watchlist_async(request_type=dict)
 
 
 def test_update_watchlist_field_headers():
@@ -2852,8 +2871,8 @@ async def test_update_watchlist_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity.DeleteWatchlistRequest,
-        dict,
+        entity.DeleteWatchlistRequest(),
+        {},
     ],
 )
 def test_delete_watchlist(request_type, transport: str = "grpc"):
@@ -2864,7 +2883,7 @@ def test_delete_watchlist(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_watchlist), "__call__") as call:
@@ -2905,9 +2924,10 @@ def test_delete_watchlist_non_empty_request_with_auto_populated_field():
         client.delete_watchlist(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity.DeleteWatchlistRequest(
+        request_msg = entity.DeleteWatchlistRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_watchlist_use_cached_wrapped_rpc():
@@ -2990,9 +3010,14 @@ async def test_delete_watchlist_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_watchlist_async(
-    transport: str = "grpc_asyncio", request_type=entity.DeleteWatchlistRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity.DeleteWatchlistRequest(),
+        {},
+    ],
+)
+async def test_delete_watchlist_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3000,7 +3025,7 @@ async def test_delete_watchlist_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_watchlist), "__call__") as call:
@@ -3016,11 +3041,6 @@ async def test_delete_watchlist_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_watchlist_async_from_dict():
-    await test_delete_watchlist_async(request_type=dict)
 
 
 def test_delete_watchlist_field_headers():
@@ -4295,7 +4315,6 @@ def test_get_watchlist_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.GetWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4316,7 +4335,6 @@ def test_list_watchlists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.ListWatchlistsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4337,7 +4355,6 @@ def test_create_watchlist_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.CreateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4358,7 +4375,6 @@ def test_update_watchlist_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.UpdateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4379,7 +4395,6 @@ def test_delete_watchlist_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.DeleteWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4423,7 +4438,6 @@ async def test_get_watchlist_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.GetWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4450,7 +4464,6 @@ async def test_list_watchlists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.ListWatchlistsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4480,7 +4493,6 @@ async def test_create_watchlist_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.CreateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4510,7 +4522,6 @@ async def test_update_watchlist_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.UpdateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -4533,7 +4544,6 @@ async def test_delete_watchlist_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.DeleteWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -5639,7 +5649,6 @@ def test_get_watchlist_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.GetWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -5659,7 +5668,6 @@ def test_list_watchlists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.ListWatchlistsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5679,7 +5687,6 @@ def test_create_watchlist_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.CreateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -5699,7 +5706,6 @@ def test_update_watchlist_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.UpdateWatchlistRequest()
-
         assert args[0] == request_msg
 
 
@@ -5719,7 +5725,6 @@ def test_delete_watchlist_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity.DeleteWatchlistRequest()
-
         assert args[0] == request_msg
 
 

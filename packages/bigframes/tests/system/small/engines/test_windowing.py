@@ -13,19 +13,17 @@
 # limitations under the License.
 
 import pytest
-from google.cloud import bigquery
 
 import bigframes.operations.aggregations as agg_ops
 from bigframes.core import (
     agg_expressions,
     array_value,
-    events,
     expression,
     identifiers,
     nodes,
     window_spec,
 )
-from bigframes.session import direct_gbq_execution, polars_executor
+from bigframes.session import polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")

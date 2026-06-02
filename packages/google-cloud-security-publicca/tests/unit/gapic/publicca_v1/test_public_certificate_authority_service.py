@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -104,6 +105,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1445,8 +1461,8 @@ def test_public_certificate_authority_service_client_create_channel_credentials_
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateExternalAccountKeyRequest,
-        dict,
+        service.CreateExternalAccountKeyRequest(),
+        {},
     ],
 )
 def test_create_external_account_key(request_type, transport: str = "grpc"):
@@ -1457,7 +1473,7 @@ def test_create_external_account_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1509,9 +1525,10 @@ def test_create_external_account_key_non_empty_request_with_auto_populated_field
         client.create_external_account_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateExternalAccountKeyRequest(
+        request_msg = service.CreateExternalAccountKeyRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_external_account_key_use_cached_wrapped_rpc():
@@ -1597,9 +1614,15 @@ async def test_create_external_account_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateExternalAccountKeyRequest(),
+        {},
+    ],
+)
 async def test_create_external_account_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateExternalAccountKeyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PublicCertificateAuthorityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1608,7 +1631,7 @@ async def test_create_external_account_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1635,11 +1658,6 @@ async def test_create_external_account_key_async(
     assert response.name == "name_value"
     assert response.key_id == "key_id_value"
     assert response.b64_mac_key == b"b64_mac_key_blob"
-
-
-@pytest.mark.asyncio
-async def test_create_external_account_key_async_from_dict():
-    await test_create_external_account_key_async(request_type=dict)
 
 
 def test_create_external_account_key_field_headers():
@@ -2122,7 +2140,6 @@ def test_create_external_account_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateExternalAccountKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -2167,7 +2184,6 @@ async def test_create_external_account_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateExternalAccountKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -2418,7 +2434,6 @@ def test_create_external_account_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateExternalAccountKeyRequest()
-
         assert args[0] == request_msg
 
 

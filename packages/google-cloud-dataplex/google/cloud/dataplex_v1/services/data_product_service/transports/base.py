@@ -45,7 +45,12 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class DataProductServiceTransport(abc.ABC):
     """Abstract transport class for DataProductService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+        "https://www.googleapis.com/auth/dataplex.readonly",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 
@@ -170,6 +175,11 @@ class DataProductServiceTransport(abc.ABC):
             ),
             self.update_data_product: gapic_v1.method.wrap_method(
                 self.update_data_product,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.request_data_product_access: gapic_v1.method.wrap_method(
+                self.request_data_product_access,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -304,6 +314,18 @@ class DataProductServiceTransport(abc.ABC):
     ) -> Callable[
         [data_products.UpdateDataProductRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def request_data_product_access(
+        self,
+    ) -> Callable[
+        [data_products.RequestDataProductAccessRequest],
+        Union[
+            data_products.RequestDataProductAccessResponse,
+            Awaitable[data_products.RequestDataProductAccessResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -4694,12 +4694,14 @@ class DataFrame:
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        # TODO(shobs): Support **kwargs
-        return self._apply_unary_op(
-            ops.RemoteFunctionOp(
-                function_def=func.udf_def, apply_on_null=(na_action is None)
+        expr = ops.func_to_op(func).as_expr(ex.free_var("input"))
+        if na_action == "ignore":
+            # True case, predicate, False case
+            expr = ops.where_op.as_expr(
+                expr, ops.notnull_op.as_expr(ex.free_var("input")), ex.const(None)
             )
-        )
+
+        return DataFrame(self._block.multi_apply_unary_op(expr))
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
         # In Bigframes BigQuery function, DataFrame '.apply' method is specifically
@@ -4770,17 +4772,11 @@ class DataFrame:
                 )
 
                 # Apply the function
-                if args:
-                    result_series = rows_as_json_series._apply_nary_op(
-                        ops.NaryRemoteFunctionOp(function_def=func.udf_def),
-                        list(args),
-                    )
-                else:
-                    result_series = rows_as_json_series._apply_unary_op(
-                        ops.RemoteFunctionOp(
-                            function_def=func.udf_def, apply_on_null=True
-                        )
-                    )
+                result_series = rows_as_json_series._apply_nary_op(
+                    ops.func_to_op(func),
+                    list(args),
+                )
+
             else:
                 # This is a special case where we are providing not-pandas-like
                 # extension. If the bigquery function can take one or more
@@ -4838,7 +4834,7 @@ class DataFrame:
                 series_list = [self[col] for col in self.columns]
                 op_list = series_list[1:] + list(args)
                 result_series = series_list[0]._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), op_list
+                    ops.func_to_op(func), op_list
                 )
             result_series.name = None
 

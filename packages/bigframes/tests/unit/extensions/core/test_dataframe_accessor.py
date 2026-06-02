@@ -1,0 +1,277 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import unittest.mock as mock
+
+import pandas as pd
+
+import bigframes.bigquery.ai
+import bigframes.pandas as bpd
+import bigframes.session
+
+
+def test_ai_forecast(monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_df = mock.create_autospec(bpd.DataFrame)
+    session.read_pandas.return_value = bf_df
+
+    def mock_ai_forecast(df, **kwargs):
+        assert df is bf_df
+        result_df = mock.create_autospec(bpd.DataFrame)
+        result_df.to_pandas.return_value = kwargs
+        return result_df
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "forecast", mock_ai_forecast)
+
+    df = pd.DataFrame({"date": ["2020-01-01"], "value": [1.0]})
+    result = df.bigquery.ai.forecast(
+        timestamp_col="date",
+        data_col="value",
+        horizon=5,
+        session=session,
+    )
+
+    session.read_pandas.assert_called_once()
+    assert result == {
+        "timestamp_col": "date",
+        "data_col": "value",
+        "model": "TimesFM 2.0",
+        "id_cols": None,
+        "horizon": 5,
+        "confidence_level": 0.95,
+        "context_window": None,
+        "output_historical_time_series": False,
+    }
+
+
+def test_bigframes_ai_forecast(monkeypatch):
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_df = mock.create_autospec(bpd.DataFrame)
+
+    def mock_ai_forecast(df, **kwargs):
+        assert df is bf_df
+        result_df = mock.create_autospec(bpd.DataFrame)
+        return result_df
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "forecast", mock_ai_forecast)
+
+    result = bf_df.bigquery.ai.forecast(
+        timestamp_col="date",
+        data_col="value",
+        horizon=5,
+        session=session,
+    )
+
+    session.read_pandas.assert_not_called()
+    # BigFrames accessor returns the bf_df directly without calling to_pandas
+    assert result is not None
+
+
+def test_ai_generate(monkeypatch):
+    def mock_generate(prompt, **kwargs):
+        result_series = mock.create_autospec(bpd.Series)
+        result_series.to_pandas.return_value = (prompt, kwargs)
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate", mock_generate)
+
+    df = pd.DataFrame({"text_input": ["Is this a positive review?"]})
+    result = df.bigquery.ai.generate(
+        df["text_input"],
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+        output_schema={"res": "STRING"},
+    )
+
+    assert result == (
+        df["text_input"],
+        {
+            "connection_id": "conn",
+            "endpoint": "endpoint",
+            "request_type": "dedicated",
+            "model_params": {"temp": 0.5},
+            "output_schema": {"res": "STRING"},
+        },
+    )
+
+
+def test_bigframes_ai_generate(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    def mock_generate(prompt, **kwargs):
+        assert prompt is bf_series
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate", mock_generate)
+
+    result = scalar_types_df.bigquery.ai.generate(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+        output_schema={"res": "STRING"},
+    )
+
+    assert result is result_series
+
+
+def test_ai_generate_bool(monkeypatch):
+    def mock_generate_bool(prompt, **kwargs):
+        result_series = mock.create_autospec(bpd.Series)
+        result_series.to_pandas.return_value = (prompt, kwargs)
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_bool", mock_generate_bool)
+
+    df = pd.DataFrame({"text_input": ["Is this a positive review?"]})
+    result = df.bigquery.ai.generate_bool(
+        df["text_input"],
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result == (
+        df["text_input"],
+        {
+            "connection_id": "conn",
+            "endpoint": "endpoint",
+            "request_type": "dedicated",
+            "model_params": {"temp": 0.5},
+        },
+    )
+
+
+def test_bigframes_ai_generate_bool(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    def mock_generate_bool(prompt, **kwargs):
+        assert prompt is bf_series
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_bool", mock_generate_bool)
+
+    result = scalar_types_df.bigquery.ai.generate_bool(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result is result_series
+
+
+def test_ai_generate_int(monkeypatch):
+    def mock_generate_int(prompt, **kwargs):
+        result_series = mock.create_autospec(bpd.Series)
+        result_series.to_pandas.return_value = (prompt, kwargs)
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_int", mock_generate_int)
+
+    df = pd.DataFrame({"text_input": ["How many legs?"]})
+    result = df.bigquery.ai.generate_int(
+        df["text_input"],
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result == (
+        df["text_input"],
+        {
+            "connection_id": "conn",
+            "endpoint": "endpoint",
+            "request_type": "dedicated",
+            "model_params": {"temp": 0.5},
+        },
+    )
+
+
+def test_bigframes_ai_generate_int(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    def mock_generate_int(prompt, **kwargs):
+        assert prompt is bf_series
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_int", mock_generate_int)
+
+    result = scalar_types_df.bigquery.ai.generate_int(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result is result_series
+
+
+def test_ai_generate_double(monkeypatch):
+    def mock_generate_double(prompt, **kwargs):
+        result_series = mock.create_autospec(bpd.Series)
+        result_series.to_pandas.return_value = (prompt, kwargs)
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_double", mock_generate_double)
+
+    df = pd.DataFrame({"text_input": ["How tall?"]})
+    result = df.bigquery.ai.generate_double(
+        df["text_input"],
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result == (
+        df["text_input"],
+        {
+            "connection_id": "conn",
+            "endpoint": "endpoint",
+            "request_type": "dedicated",
+            "model_params": {"temp": 0.5},
+        },
+    )
+
+
+def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    def mock_generate_double(prompt, **kwargs):
+        assert prompt is bf_series
+        return result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "generate_double", mock_generate_double)
+
+    result = scalar_types_df.bigquery.ai.generate_double(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        request_type="dedicated",
+        model_params={"temp": 0.5},
+    )
+
+    assert result is result_series

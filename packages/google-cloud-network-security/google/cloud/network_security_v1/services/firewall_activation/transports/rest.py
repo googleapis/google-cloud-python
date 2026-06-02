@@ -94,6 +94,14 @@ class FirewallActivationRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_project_firewall_endpoint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_project_firewall_endpoint(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_firewall_endpoint(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -107,6 +115,14 @@ class FirewallActivationRestInterceptor:
                 return request, metadata
 
             def post_delete_firewall_endpoint_association(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_project_firewall_endpoint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_project_firewall_endpoint(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -126,6 +142,14 @@ class FirewallActivationRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_project_firewall_endpoint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_project_firewall_endpoint(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_firewall_endpoint_associations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -142,6 +166,14 @@ class FirewallActivationRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_project_firewall_endpoints(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_project_firewall_endpoints(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_firewall_endpoint(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -155,6 +187,14 @@ class FirewallActivationRestInterceptor:
                 return request, metadata
 
             def post_update_firewall_endpoint_association(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_project_firewall_endpoint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_project_firewall_endpoint(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -262,6 +302,55 @@ class FirewallActivationRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_project_firewall_endpoint(
+        self,
+        request: firewall_activation.CreateFirewallEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.CreateFirewallEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_project_firewall_endpoint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallActivation server.
+        """
+        return request, metadata
+
+    def post_create_project_firewall_endpoint(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_project_firewall_endpoint
+
+        DEPRECATED. Please use the `post_create_project_firewall_endpoint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirewallActivation server but before
+        it is returned to user code. This `post_create_project_firewall_endpoint` interceptor runs
+        before the `post_create_project_firewall_endpoint_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_project_firewall_endpoint_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_project_firewall_endpoint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirewallActivation server but before it is returned to user code.
+
+        We recommend only using this `post_create_project_firewall_endpoint_with_metadata`
+        interceptor in new development instead of the `post_create_project_firewall_endpoint` interceptor.
+        When both interceptors are used, this `post_create_project_firewall_endpoint_with_metadata` interceptor runs after the
+        `post_create_project_firewall_endpoint` interceptor. The (possibly modified) response returned by
+        `post_create_project_firewall_endpoint` will be passed to
+        `post_create_project_firewall_endpoint_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_firewall_endpoint(
         self,
         request: firewall_activation.DeleteFirewallEndpointRequest,
@@ -357,6 +446,55 @@ class FirewallActivationRestInterceptor:
         `post_delete_firewall_endpoint_association` interceptor. The (possibly modified) response returned by
         `post_delete_firewall_endpoint_association` will be passed to
         `post_delete_firewall_endpoint_association_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_project_firewall_endpoint(
+        self,
+        request: firewall_activation.DeleteFirewallEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.DeleteFirewallEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_project_firewall_endpoint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallActivation server.
+        """
+        return request, metadata
+
+    def post_delete_project_firewall_endpoint(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_project_firewall_endpoint
+
+        DEPRECATED. Please use the `post_delete_project_firewall_endpoint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirewallActivation server but before
+        it is returned to user code. This `post_delete_project_firewall_endpoint` interceptor runs
+        before the `post_delete_project_firewall_endpoint_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_project_firewall_endpoint_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_project_firewall_endpoint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirewallActivation server but before it is returned to user code.
+
+        We recommend only using this `post_delete_project_firewall_endpoint_with_metadata`
+        interceptor in new development instead of the `post_delete_project_firewall_endpoint` interceptor.
+        When both interceptors are used, this `post_delete_project_firewall_endpoint_with_metadata` interceptor runs after the
+        `post_delete_project_firewall_endpoint` interceptor. The (possibly modified) response returned by
+        `post_delete_project_firewall_endpoint` will be passed to
+        `post_delete_project_firewall_endpoint_with_metadata`.
         """
         return response, metadata
 
@@ -460,6 +598,57 @@ class FirewallActivationRestInterceptor:
         `post_get_firewall_endpoint_association` interceptor. The (possibly modified) response returned by
         `post_get_firewall_endpoint_association` will be passed to
         `post_get_firewall_endpoint_association_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_project_firewall_endpoint(
+        self,
+        request: firewall_activation.GetFirewallEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.GetFirewallEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_project_firewall_endpoint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallActivation server.
+        """
+        return request, metadata
+
+    def post_get_project_firewall_endpoint(
+        self, response: firewall_activation.FirewallEndpoint
+    ) -> firewall_activation.FirewallEndpoint:
+        """Post-rpc interceptor for get_project_firewall_endpoint
+
+        DEPRECATED. Please use the `post_get_project_firewall_endpoint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirewallActivation server but before
+        it is returned to user code. This `post_get_project_firewall_endpoint` interceptor runs
+        before the `post_get_project_firewall_endpoint_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_project_firewall_endpoint_with_metadata(
+        self,
+        response: firewall_activation.FirewallEndpoint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.FirewallEndpoint, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_project_firewall_endpoint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirewallActivation server but before it is returned to user code.
+
+        We recommend only using this `post_get_project_firewall_endpoint_with_metadata`
+        interceptor in new development instead of the `post_get_project_firewall_endpoint` interceptor.
+        When both interceptors are used, this `post_get_project_firewall_endpoint_with_metadata` interceptor runs after the
+        `post_get_project_firewall_endpoint` interceptor. The (possibly modified) response returned by
+        `post_get_project_firewall_endpoint` will be passed to
+        `post_get_project_firewall_endpoint_with_metadata`.
         """
         return response, metadata
 
@@ -567,6 +756,58 @@ class FirewallActivationRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_project_firewall_endpoints(
+        self,
+        request: firewall_activation.ListFirewallEndpointsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.ListFirewallEndpointsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_project_firewall_endpoints
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallActivation server.
+        """
+        return request, metadata
+
+    def post_list_project_firewall_endpoints(
+        self, response: firewall_activation.ListFirewallEndpointsResponse
+    ) -> firewall_activation.ListFirewallEndpointsResponse:
+        """Post-rpc interceptor for list_project_firewall_endpoints
+
+        DEPRECATED. Please use the `post_list_project_firewall_endpoints_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirewallActivation server but before
+        it is returned to user code. This `post_list_project_firewall_endpoints` interceptor runs
+        before the `post_list_project_firewall_endpoints_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_project_firewall_endpoints_with_metadata(
+        self,
+        response: firewall_activation.ListFirewallEndpointsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.ListFirewallEndpointsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_project_firewall_endpoints
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirewallActivation server but before it is returned to user code.
+
+        We recommend only using this `post_list_project_firewall_endpoints_with_metadata`
+        interceptor in new development instead of the `post_list_project_firewall_endpoints` interceptor.
+        When both interceptors are used, this `post_list_project_firewall_endpoints_with_metadata` interceptor runs after the
+        `post_list_project_firewall_endpoints` interceptor. The (possibly modified) response returned by
+        `post_list_project_firewall_endpoints` will be passed to
+        `post_list_project_firewall_endpoints_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_firewall_endpoint(
         self,
         request: firewall_activation.UpdateFirewallEndpointRequest,
@@ -662,6 +903,55 @@ class FirewallActivationRestInterceptor:
         `post_update_firewall_endpoint_association` interceptor. The (possibly modified) response returned by
         `post_update_firewall_endpoint_association` will be passed to
         `post_update_firewall_endpoint_association_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_project_firewall_endpoint(
+        self,
+        request: firewall_activation.UpdateFirewallEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firewall_activation.UpdateFirewallEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_project_firewall_endpoint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallActivation server.
+        """
+        return request, metadata
+
+    def post_update_project_firewall_endpoint(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_project_firewall_endpoint
+
+        DEPRECATED. Please use the `post_update_project_firewall_endpoint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirewallActivation server but before
+        it is returned to user code. This `post_update_project_firewall_endpoint` interceptor runs
+        before the `post_update_project_firewall_endpoint_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_project_firewall_endpoint_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_project_firewall_endpoint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirewallActivation server but before it is returned to user code.
+
+        We recommend only using this `post_update_project_firewall_endpoint_with_metadata`
+        interceptor in new development instead of the `post_update_project_firewall_endpoint` interceptor.
+        When both interceptors are used, this `post_update_project_firewall_endpoint_with_metadata` interceptor runs after the
+        `post_update_project_firewall_endpoint` interceptor. The (possibly modified) response returned by
+        `post_update_project_firewall_endpoint` will be passed to
+        `post_update_project_firewall_endpoint_with_metadata`.
         """
         return response, metadata
 
@@ -1361,6 +1651,161 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
+    class _CreateProjectFirewallEndpoint(
+        _BaseFirewallActivationRestTransport._BaseCreateProjectFirewallEndpoint,
+        FirewallActivationRestStub,
+    ):
+        def __hash__(self):
+            return hash("FirewallActivationRestTransport.CreateProjectFirewallEndpoint")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firewall_activation.CreateFirewallEndpointRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create project firewall
+            endpoint method over HTTP.
+
+                Args:
+                    request (~.firewall_activation.CreateFirewallEndpointRequest):
+                        The request object. Message for creating a Endpoint
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseFirewallActivationRestTransport._BaseCreateProjectFirewallEndpoint._get_http_options()
+
+            request, metadata = self._interceptor.pre_create_project_firewall_endpoint(
+                request, metadata
+            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseCreateProjectFirewallEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirewallActivationRestTransport._BaseCreateProjectFirewallEndpoint._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirewallActivationRestTransport._BaseCreateProjectFirewallEndpoint._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1.FirewallActivationClient.CreateProjectFirewallEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "CreateProjectFirewallEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirewallActivationRestTransport._CreateProjectFirewallEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_project_firewall_endpoint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_create_project_firewall_endpoint_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1.FirewallActivationClient.create_project_firewall_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "CreateProjectFirewallEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteFirewallEndpoint(
         _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint,
         FirewallActivationRestStub,
@@ -1656,6 +2101,155 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     extra={
                         "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
                         "rpcName": "DeleteFirewallEndpointAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteProjectFirewallEndpoint(
+        _BaseFirewallActivationRestTransport._BaseDeleteProjectFirewallEndpoint,
+        FirewallActivationRestStub,
+    ):
+        def __hash__(self):
+            return hash("FirewallActivationRestTransport.DeleteProjectFirewallEndpoint")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firewall_activation.DeleteFirewallEndpointRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete project firewall
+            endpoint method over HTTP.
+
+                Args:
+                    request (~.firewall_activation.DeleteFirewallEndpointRequest):
+                        The request object. Message for deleting a Endpoint
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteProjectFirewallEndpoint._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_project_firewall_endpoint(
+                request, metadata
+            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteProjectFirewallEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirewallActivationRestTransport._BaseDeleteProjectFirewallEndpoint._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1.FirewallActivationClient.DeleteProjectFirewallEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "DeleteProjectFirewallEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirewallActivationRestTransport._DeleteProjectFirewallEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_project_firewall_endpoint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_delete_project_firewall_endpoint_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1.FirewallActivationClient.delete_project_firewall_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "DeleteProjectFirewallEndpoint",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1959,6 +2553,156 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     extra={
                         "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
                         "rpcName": "GetFirewallEndpointAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetProjectFirewallEndpoint(
+        _BaseFirewallActivationRestTransport._BaseGetProjectFirewallEndpoint,
+        FirewallActivationRestStub,
+    ):
+        def __hash__(self):
+            return hash("FirewallActivationRestTransport.GetProjectFirewallEndpoint")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firewall_activation.GetFirewallEndpointRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> firewall_activation.FirewallEndpoint:
+            r"""Call the get project firewall
+            endpoint method over HTTP.
+
+                Args:
+                    request (~.firewall_activation.GetFirewallEndpointRequest):
+                        The request object. Message for getting a Endpoint
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.firewall_activation.FirewallEndpoint:
+                        Message describing Endpoint object.
+            """
+
+            http_options = _BaseFirewallActivationRestTransport._BaseGetProjectFirewallEndpoint._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_project_firewall_endpoint(
+                request, metadata
+            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseGetProjectFirewallEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirewallActivationRestTransport._BaseGetProjectFirewallEndpoint._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1.FirewallActivationClient.GetProjectFirewallEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "GetProjectFirewallEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirewallActivationRestTransport._GetProjectFirewallEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = firewall_activation.FirewallEndpoint()
+            pb_resp = firewall_activation.FirewallEndpoint.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_project_firewall_endpoint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_get_project_firewall_endpoint_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = firewall_activation.FirewallEndpoint.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1.FirewallActivationClient.get_project_firewall_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "GetProjectFirewallEndpoint",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2278,6 +3022,161 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
+    class _ListProjectFirewallEndpoints(
+        _BaseFirewallActivationRestTransport._BaseListProjectFirewallEndpoints,
+        FirewallActivationRestStub,
+    ):
+        def __hash__(self):
+            return hash("FirewallActivationRestTransport.ListProjectFirewallEndpoints")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firewall_activation.ListFirewallEndpointsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> firewall_activation.ListFirewallEndpointsResponse:
+            r"""Call the list project firewall
+            endpoints method over HTTP.
+
+                Args:
+                    request (~.firewall_activation.ListFirewallEndpointsRequest):
+                        The request object. Message for requesting list of
+                    Endpoints
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.firewall_activation.ListFirewallEndpointsResponse:
+                        Message for response to listing
+                    Endpoints
+
+            """
+
+            http_options = _BaseFirewallActivationRestTransport._BaseListProjectFirewallEndpoints._get_http_options()
+
+            request, metadata = self._interceptor.pre_list_project_firewall_endpoints(
+                request, metadata
+            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseListProjectFirewallEndpoints._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirewallActivationRestTransport._BaseListProjectFirewallEndpoints._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1.FirewallActivationClient.ListProjectFirewallEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "ListProjectFirewallEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirewallActivationRestTransport._ListProjectFirewallEndpoints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = firewall_activation.ListFirewallEndpointsResponse()
+            pb_resp = firewall_activation.ListFirewallEndpointsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_project_firewall_endpoints(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_list_project_firewall_endpoints_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        firewall_activation.ListFirewallEndpointsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1.FirewallActivationClient.list_project_firewall_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "ListProjectFirewallEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateFirewallEndpoint(
         _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint,
         FirewallActivationRestStub,
@@ -2591,6 +3490,161 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 )
             return resp
 
+    class _UpdateProjectFirewallEndpoint(
+        _BaseFirewallActivationRestTransport._BaseUpdateProjectFirewallEndpoint,
+        FirewallActivationRestStub,
+    ):
+        def __hash__(self):
+            return hash("FirewallActivationRestTransport.UpdateProjectFirewallEndpoint")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firewall_activation.UpdateFirewallEndpointRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update project firewall
+            endpoint method over HTTP.
+
+                Args:
+                    request (~.firewall_activation.UpdateFirewallEndpointRequest):
+                        The request object. Message for updating a Endpoint
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseFirewallActivationRestTransport._BaseUpdateProjectFirewallEndpoint._get_http_options()
+
+            request, metadata = self._interceptor.pre_update_project_firewall_endpoint(
+                request, metadata
+            )
+            transcoded_request = _BaseFirewallActivationRestTransport._BaseUpdateProjectFirewallEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirewallActivationRestTransport._BaseUpdateProjectFirewallEndpoint._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirewallActivationRestTransport._BaseUpdateProjectFirewallEndpoint._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1.FirewallActivationClient.UpdateProjectFirewallEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "UpdateProjectFirewallEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirewallActivationRestTransport._UpdateProjectFirewallEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_project_firewall_endpoint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_update_project_firewall_endpoint_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1.FirewallActivationClient.update_project_firewall_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1.FirewallActivation",
+                        "rpcName": "UpdateProjectFirewallEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_firewall_endpoint(
         self,
@@ -2613,6 +3667,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def create_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.CreateFirewallEndpointRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateProjectFirewallEndpoint(
             self._session, self._host, self._interceptor
         )  # type: ignore
 
@@ -2642,6 +3708,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
         )  # type: ignore
 
     @property
+    def delete_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.DeleteFirewallEndpointRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteProjectFirewallEndpoint(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def get_firewall_endpoint(
         self,
     ) -> Callable[
@@ -2662,6 +3740,19 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def get_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.GetFirewallEndpointRequest],
+        firewall_activation.FirewallEndpoint,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetProjectFirewallEndpoint(
             self._session, self._host, self._interceptor
         )  # type: ignore
 
@@ -2690,6 +3781,19 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
         return self._ListFirewallEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_project_firewall_endpoints(
+        self,
+    ) -> Callable[
+        [firewall_activation.ListFirewallEndpointsRequest],
+        firewall_activation.ListFirewallEndpointsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListProjectFirewallEndpoints(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def update_firewall_endpoint(
         self,
     ) -> Callable[
@@ -2711,6 +3815,18 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def update_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.UpdateFirewallEndpointRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateProjectFirewallEndpoint(
             self._session, self._host, self._interceptor
         )  # type: ignore
 

@@ -247,6 +247,7 @@ class BigtableDataClientAsync(ClientWithProject):
         )
         if (
             credentials
+            and hasattr(credentials, "universe_domain")
             and credentials.universe_domain != self.universe_domain
             and self._emulator_host is None
         ):

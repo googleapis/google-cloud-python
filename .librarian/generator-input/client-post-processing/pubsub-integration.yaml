@@ -516,7 +516,7 @@ replacements:
 
   - paths:
       - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
-    before: 'grpcio==1.44.0'
+    before: 'grpcio==1.59.0'
     after: 'grpcio==1.51.3'
     count: 1
 

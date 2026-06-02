@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "UnitVariable",
         "UnitCondition",
         "UnitOperationCondition",
+        "SaasCondition",
         "Aggregate",
     },
 )
@@ -114,7 +115,8 @@ class UnitVariable(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Enumeration of variable types.
+        r"""Enumeration of variable types. ``STRUCT`` and ``LIST`` values should
+        be JSON-encoded strings.
 
         Values:
             TYPE_UNSPECIFIED (0):
@@ -125,12 +127,18 @@ class UnitVariable(proto.Message):
                 Variable type is int.
             BOOL (3):
                 Variable type is bool.
+            STRUCT (4):
+                Variable type is struct.
+            LIST (5):
+                Variable type is list.
         """
 
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INT = 2
         BOOL = 3
+        STRUCT = 4
+        LIST = 5
 
     variable: str = proto.Field(
         proto.STRING,
@@ -294,6 +302,13 @@ class UnitOperationCondition(proto.Message):
             TYPE_APP_COMPONENTS_REGISTERED (7):
                 Indicates if services and workloads have been
                 registered with AppHub.
+            TYPE_WORKLOAD_SUCCEEDED (8):
+                Indicates if the UnitOperation's core
+                workload execution completed successfully.
+                The workload is the core execution operation
+                performed for a UnitOperation (e.g.,
+                provisioning, updating, or deprovisioning
+                resources) excluding post-operation checks.
         """
 
         TYPE_UNSPECIFIED = 0
@@ -303,6 +318,7 @@ class UnitOperationCondition(proto.Message):
         TYPE_CANCELLED = 5
         TYPE_APP_CREATED = 6
         TYPE_APP_COMPONENTS_REGISTERED = 7
+        TYPE_WORKLOAD_SUCCEEDED = 8
 
     status: Status = proto.Field(
         proto.ENUM,
@@ -312,6 +328,85 @@ class UnitOperationCondition(proto.Message):
     type_: Type = proto.Field(
         proto.ENUM,
         number=2,
+        enum=Type,
+    )
+    last_transition_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    reason: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SaasCondition(proto.Message):
+    r"""SaasCondition describes the status of a Saas.
+
+    Attributes:
+        status (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.SaasCondition.Status):
+            Required. Status of the condition.
+        type_ (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.SaasCondition.Type):
+            Required. Type of the condition.
+        last_transition_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. Last time the condition transited
+            from one status to another.
+        message (str):
+            Required. Human readable message indicating
+            details about the last transition.
+        reason (str):
+            Required. Brief reason for the condition's
+            last transition.
+    """
+
+    class Status(proto.Enum):
+        r"""Enumeration of condition statuses.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Condition status is unspecified.
+            STATUS_UNKNOWN (1):
+                Condition is unknown.
+            STATUS_TRUE (2):
+                Condition is true.
+            STATUS_FALSE (3):
+                Condition is false.
+        """
+
+        STATUS_UNSPECIFIED = 0
+        STATUS_UNKNOWN = 1
+        STATUS_TRUE = 2
+        STATUS_FALSE = 3
+
+    class Type(proto.Enum):
+        r"""Enumeration of condition types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Condition type is unspecified.
+            TYPE_READY (1):
+                Condition type is ready.
+            TYPE_SYNCHRONIZED (2):
+                Condition type is synchronized.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        TYPE_READY = 1
+        TYPE_SYNCHRONIZED = 2
+
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Status,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=6,
         enum=Type,
     )
     last_transition_time: timestamp_pb2.Timestamp = proto.Field(

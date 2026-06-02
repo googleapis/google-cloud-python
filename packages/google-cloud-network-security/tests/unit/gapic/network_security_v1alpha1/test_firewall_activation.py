@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1366,8 +1382,8 @@ def test_firewall_activation_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.ListFirewallEndpointsRequest,
-        dict,
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
     ],
 )
 def test_list_firewall_endpoints(request_type, transport: str = "grpc"):
@@ -1378,7 +1394,7 @@ def test_list_firewall_endpoints(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1431,12 +1447,13 @@ def test_list_firewall_endpoints_non_empty_request_with_auto_populated_field():
         client.list_firewall_endpoints(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.ListFirewallEndpointsRequest(
+        request_msg = firewall_activation.ListFirewallEndpointsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_firewall_endpoints_use_cached_wrapped_rpc():
@@ -1522,9 +1539,15 @@ async def test_list_firewall_endpoints_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
+    ],
+)
 async def test_list_firewall_endpoints_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.ListFirewallEndpointsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1533,7 +1556,7 @@ async def test_list_firewall_endpoints_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1558,11 +1581,6 @@ async def test_list_firewall_endpoints_async(
     assert isinstance(response, pagers.ListFirewallEndpointsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_firewall_endpoints_async_from_dict():
-    await test_list_firewall_endpoints_async(request_type=dict)
 
 
 def test_list_firewall_endpoints_field_headers():
@@ -1919,8 +1937,8 @@ async def test_list_firewall_endpoints_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.GetFirewallEndpointRequest,
-        dict,
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_get_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -1931,7 +1949,7 @@ def test_get_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1993,9 +2011,10 @@ def test_get_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.get_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.GetFirewallEndpointRequest(
+        request_msg = firewall_activation.GetFirewallEndpointRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2081,9 +2100,15 @@ async def test_get_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_get_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.GetFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2092,7 +2117,7 @@ async def test_get_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2129,11 +2154,6 @@ async def test_get_firewall_endpoint_async(
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
     assert response.billing_project_id == "billing_project_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_firewall_endpoint_async_from_dict():
-    await test_get_firewall_endpoint_async(request_type=dict)
 
 
 def test_get_firewall_endpoint_field_headers():
@@ -2290,8 +2310,8 @@ async def test_get_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.CreateFirewallEndpointRequest,
-        dict,
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_create_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -2302,7 +2322,7 @@ def test_create_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2349,11 +2369,12 @@ def test_create_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.create_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.CreateFirewallEndpointRequest(
+        request_msg = firewall_activation.CreateFirewallEndpointRequest(
             parent="parent_value",
             firewall_endpoint_id="firewall_endpoint_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2449,9 +2470,15 @@ async def test_create_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_create_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.CreateFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2460,7 +2487,7 @@ async def test_create_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2480,11 +2507,6 @@ async def test_create_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_firewall_endpoint_async_from_dict():
-    await test_create_firewall_endpoint_async(request_type=dict)
 
 
 def test_create_firewall_endpoint_field_headers():
@@ -2661,8 +2683,8 @@ async def test_create_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.DeleteFirewallEndpointRequest,
-        dict,
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_delete_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -2673,7 +2695,7 @@ def test_delete_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2719,10 +2741,11 @@ def test_delete_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.delete_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.DeleteFirewallEndpointRequest(
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2818,9 +2841,15 @@ async def test_delete_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_delete_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.DeleteFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2829,7 +2858,7 @@ async def test_delete_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2849,11 +2878,6 @@ async def test_delete_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_firewall_endpoint_async_from_dict():
-    await test_delete_firewall_endpoint_async(request_type=dict)
 
 
 def test_delete_firewall_endpoint_field_headers():
@@ -3010,8 +3034,8 @@ async def test_delete_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.UpdateFirewallEndpointRequest,
-        dict,
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_update_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -3022,7 +3046,7 @@ def test_update_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3067,9 +3091,10 @@ def test_update_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.update_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.UpdateFirewallEndpointRequest(
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_firewall_endpoint_use_cached_wrapped_rpc():
@@ -3165,9 +3190,15 @@ async def test_update_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_update_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.UpdateFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3176,7 +3207,7 @@ async def test_update_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3196,11 +3227,6 @@ async def test_update_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_firewall_endpoint_async_from_dict():
-    await test_update_firewall_endpoint_async(request_type=dict)
 
 
 def test_update_firewall_endpoint_field_headers():
@@ -3367,8 +3393,8 @@ async def test_update_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.ListFirewallEndpointAssociationsRequest,
-        dict,
+        firewall_activation.ListFirewallEndpointAssociationsRequest(),
+        {},
     ],
 )
 def test_list_firewall_endpoint_associations(request_type, transport: str = "grpc"):
@@ -3379,7 +3405,7 @@ def test_list_firewall_endpoint_associations(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3434,12 +3460,13 @@ def test_list_firewall_endpoint_associations_non_empty_request_with_auto_populat
         client.list_firewall_endpoint_associations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.ListFirewallEndpointAssociationsRequest(
+        request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_firewall_endpoint_associations_use_cached_wrapped_rpc():
@@ -3525,9 +3552,15 @@ async def test_list_firewall_endpoint_associations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointAssociationsRequest(),
+        {},
+    ],
+)
 async def test_list_firewall_endpoint_associations_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.ListFirewallEndpointAssociationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3536,7 +3569,7 @@ async def test_list_firewall_endpoint_associations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3561,11 +3594,6 @@ async def test_list_firewall_endpoint_associations_async(
     assert isinstance(response, pagers.ListFirewallEndpointAssociationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_firewall_endpoint_associations_async_from_dict():
-    await test_list_firewall_endpoint_associations_async(request_type=dict)
 
 
 def test_list_firewall_endpoint_associations_field_headers():
@@ -3936,8 +3964,8 @@ async def test_list_firewall_endpoint_associations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.GetFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.GetFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_get_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -3948,7 +3976,7 @@ def test_get_firewall_endpoint_association(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4010,9 +4038,10 @@ def test_get_firewall_endpoint_association_non_empty_request_with_auto_populated
         client.get_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.GetFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.GetFirewallEndpointAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4098,9 +4127,15 @@ async def test_get_firewall_endpoint_association_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_get_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.GetFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4109,7 +4144,7 @@ async def test_get_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4146,11 +4181,6 @@ async def test_get_firewall_endpoint_association_async(
     assert response.tls_inspection_policy == "tls_inspection_policy_value"
     assert response.reconciling is True
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_firewall_endpoint_association_async_from_dict():
-    await test_get_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_get_firewall_endpoint_association_field_headers():
@@ -4307,8 +4337,8 @@ async def test_get_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.CreateFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.CreateFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_create_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -4319,7 +4349,7 @@ def test_create_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4366,11 +4396,12 @@ def test_create_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.create_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.CreateFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest(
             parent="parent_value",
             firewall_endpoint_association_id="firewall_endpoint_association_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4466,9 +4497,15 @@ async def test_create_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_create_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.CreateFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4477,7 +4514,7 @@ async def test_create_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4497,11 +4534,6 @@ async def test_create_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_firewall_endpoint_association_async_from_dict():
-    await test_create_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_create_firewall_endpoint_association_field_headers():
@@ -4686,8 +4718,8 @@ async def test_create_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.DeleteFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.DeleteFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_delete_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -4698,7 +4730,7 @@ def test_delete_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4744,10 +4776,11 @@ def test_delete_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.delete_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.DeleteFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4843,9 +4876,15 @@ async def test_delete_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_delete_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.DeleteFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4854,7 +4893,7 @@ async def test_delete_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4874,11 +4913,6 @@ async def test_delete_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_firewall_endpoint_association_async_from_dict():
-    await test_delete_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_delete_firewall_endpoint_association_field_headers():
@@ -5035,8 +5069,8 @@ async def test_delete_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.UpdateFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.UpdateFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_update_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -5047,7 +5081,7 @@ def test_update_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5092,9 +5126,10 @@ def test_update_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.update_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.UpdateFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -5190,9 +5225,15 @@ async def test_update_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_update_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.UpdateFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5201,7 +5242,7 @@ async def test_update_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5221,11 +5262,6 @@ async def test_update_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_firewall_endpoint_association_async_from_dict():
-    await test_update_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_update_firewall_endpoint_association_field_headers():
@@ -7679,7 +7715,6 @@ def test_list_firewall_endpoints_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7702,7 +7737,6 @@ def test_get_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -7725,7 +7759,6 @@ def test_create_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -7748,7 +7781,6 @@ def test_delete_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -7771,7 +7803,6 @@ def test_update_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -7796,7 +7827,6 @@ def test_list_firewall_endpoint_associations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7819,7 +7849,6 @@ def test_get_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7842,7 +7871,6 @@ def test_create_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7865,7 +7893,6 @@ def test_delete_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7888,7 +7915,6 @@ def test_update_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7932,7 +7958,6 @@ async def test_list_firewall_endpoints_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7968,7 +7993,6 @@ async def test_get_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -7995,7 +8019,6 @@ async def test_create_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -8022,7 +8045,6 @@ async def test_delete_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -8049,7 +8071,6 @@ async def test_update_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -8079,7 +8100,6 @@ async def test_list_firewall_endpoint_associations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8114,7 +8134,6 @@ async def test_get_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8141,7 +8160,6 @@ async def test_create_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8168,7 +8186,6 @@ async def test_delete_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8195,7 +8212,6 @@ async def test_update_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10546,7 +10562,6 @@ def test_list_firewall_endpoints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10568,7 +10583,6 @@ def test_get_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -10590,7 +10604,6 @@ def test_create_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -10612,7 +10625,6 @@ def test_delete_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -10634,7 +10646,6 @@ def test_update_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -10656,7 +10667,6 @@ def test_list_firewall_endpoint_associations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10678,7 +10688,6 @@ def test_get_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10700,7 +10709,6 @@ def test_create_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10722,7 +10730,6 @@ def test_delete_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10744,7 +10751,6 @@ def test_update_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 

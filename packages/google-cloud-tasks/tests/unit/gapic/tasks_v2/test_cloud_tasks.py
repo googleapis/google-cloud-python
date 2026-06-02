@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1280,8 +1296,8 @@ def test_cloud_tasks_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.ListQueuesRequest,
-        dict,
+        cloudtasks.ListQueuesRequest(),
+        {},
     ],
 )
 def test_list_queues(request_type, transport: str = "grpc"):
@@ -1292,7 +1308,7 @@ def test_list_queues(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -1338,11 +1354,12 @@ def test_list_queues_non_empty_request_with_auto_populated_field():
         client.list_queues(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.ListQueuesRequest(
+        request_msg = cloudtasks.ListQueuesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_queues_use_cached_wrapped_rpc():
@@ -1423,9 +1440,14 @@ async def test_list_queues_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_queues_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.ListQueuesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ListQueuesRequest(),
+        {},
+    ],
+)
+async def test_list_queues_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1433,7 +1455,7 @@ async def test_list_queues_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -1454,11 +1476,6 @@ async def test_list_queues_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQueuesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_queues_async_from_dict():
-    await test_list_queues_async(request_type=dict)
 
 
 def test_list_queues_field_headers():
@@ -1797,8 +1814,8 @@ async def test_list_queues_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.GetQueueRequest,
-        dict,
+        cloudtasks.GetQueueRequest(),
+        {},
     ],
 )
 def test_get_queue(request_type, transport: str = "grpc"):
@@ -1809,7 +1826,7 @@ def test_get_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1855,9 +1872,10 @@ def test_get_queue_non_empty_request_with_auto_populated_field():
         client.get_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.GetQueueRequest(
+        request_msg = cloudtasks.GetQueueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_queue_use_cached_wrapped_rpc():
@@ -1936,9 +1954,14 @@ async def test_get_queue_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.GetQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.GetQueueRequest(),
+        {},
+    ],
+)
+async def test_get_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1946,7 +1969,7 @@ async def test_get_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1969,11 +1992,6 @@ async def test_get_queue_async(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_get_queue_async_from_dict():
-    await test_get_queue_async(request_type=dict)
 
 
 def test_get_queue_field_headers():
@@ -2118,8 +2136,8 @@ async def test_get_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.CreateQueueRequest,
-        dict,
+        cloudtasks.CreateQueueRequest(),
+        {},
     ],
 )
 def test_create_queue(request_type, transport: str = "grpc"):
@@ -2130,7 +2148,7 @@ def test_create_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -2176,9 +2194,10 @@ def test_create_queue_non_empty_request_with_auto_populated_field():
         client.create_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.CreateQueueRequest(
+        request_msg = cloudtasks.CreateQueueRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_queue_use_cached_wrapped_rpc():
@@ -2259,9 +2278,14 @@ async def test_create_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.CreateQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.CreateQueueRequest(),
+        {},
+    ],
+)
+async def test_create_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2269,7 +2293,7 @@ async def test_create_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -2292,11 +2316,6 @@ async def test_create_queue_async(
     assert isinstance(response, gct_queue.Queue)
     assert response.name == "name_value"
     assert response.state == gct_queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_create_queue_async_from_dict():
-    await test_create_queue_async(request_type=dict)
 
 
 def test_create_queue_field_headers():
@@ -2451,8 +2470,8 @@ async def test_create_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.UpdateQueueRequest,
-        dict,
+        cloudtasks.UpdateQueueRequest(),
+        {},
     ],
 )
 def test_update_queue(request_type, transport: str = "grpc"):
@@ -2463,7 +2482,7 @@ def test_update_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -2507,7 +2526,8 @@ def test_update_queue_non_empty_request_with_auto_populated_field():
         client.update_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.UpdateQueueRequest()
+        request_msg = cloudtasks.UpdateQueueRequest()
+        assert args[0] == request_msg
 
 
 def test_update_queue_use_cached_wrapped_rpc():
@@ -2588,9 +2608,14 @@ async def test_update_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.UpdateQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.UpdateQueueRequest(),
+        {},
+    ],
+)
+async def test_update_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2598,7 +2623,7 @@ async def test_update_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -2621,11 +2646,6 @@ async def test_update_queue_async(
     assert isinstance(response, gct_queue.Queue)
     assert response.name == "name_value"
     assert response.state == gct_queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_update_queue_async_from_dict():
-    await test_update_queue_async(request_type=dict)
 
 
 def test_update_queue_field_headers():
@@ -2780,8 +2800,8 @@ async def test_update_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.DeleteQueueRequest,
-        dict,
+        cloudtasks.DeleteQueueRequest(),
+        {},
     ],
 )
 def test_delete_queue(request_type, transport: str = "grpc"):
@@ -2792,7 +2812,7 @@ def test_delete_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -2833,9 +2853,10 @@ def test_delete_queue_non_empty_request_with_auto_populated_field():
         client.delete_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.DeleteQueueRequest(
+        request_msg = cloudtasks.DeleteQueueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_queue_use_cached_wrapped_rpc():
@@ -2916,9 +2937,14 @@ async def test_delete_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.DeleteQueueRequest(),
+        {},
+    ],
+)
+async def test_delete_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2926,7 +2952,7 @@ async def test_delete_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -2942,11 +2968,6 @@ async def test_delete_queue_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_queue_async_from_dict():
-    await test_delete_queue_async(request_type=dict)
 
 
 def test_delete_queue_field_headers():
@@ -3091,8 +3112,8 @@ async def test_delete_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.PurgeQueueRequest,
-        dict,
+        cloudtasks.PurgeQueueRequest(),
+        {},
     ],
 )
 def test_purge_queue(request_type, transport: str = "grpc"):
@@ -3103,7 +3124,7 @@ def test_purge_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -3149,9 +3170,10 @@ def test_purge_queue_non_empty_request_with_auto_populated_field():
         client.purge_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.PurgeQueueRequest(
+        request_msg = cloudtasks.PurgeQueueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_purge_queue_use_cached_wrapped_rpc():
@@ -3232,9 +3254,14 @@ async def test_purge_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_purge_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.PurgeQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.PurgeQueueRequest(),
+        {},
+    ],
+)
+async def test_purge_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3242,7 +3269,7 @@ async def test_purge_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -3265,11 +3292,6 @@ async def test_purge_queue_async(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_purge_queue_async_from_dict():
-    await test_purge_queue_async(request_type=dict)
 
 
 def test_purge_queue_field_headers():
@@ -3414,8 +3436,8 @@ async def test_purge_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.PauseQueueRequest,
-        dict,
+        cloudtasks.PauseQueueRequest(),
+        {},
     ],
 )
 def test_pause_queue(request_type, transport: str = "grpc"):
@@ -3426,7 +3448,7 @@ def test_pause_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -3472,9 +3494,10 @@ def test_pause_queue_non_empty_request_with_auto_populated_field():
         client.pause_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.PauseQueueRequest(
+        request_msg = cloudtasks.PauseQueueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_queue_use_cached_wrapped_rpc():
@@ -3555,9 +3578,14 @@ async def test_pause_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_pause_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.PauseQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.PauseQueueRequest(),
+        {},
+    ],
+)
+async def test_pause_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3565,7 +3593,7 @@ async def test_pause_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -3588,11 +3616,6 @@ async def test_pause_queue_async(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_pause_queue_async_from_dict():
-    await test_pause_queue_async(request_type=dict)
 
 
 def test_pause_queue_field_headers():
@@ -3737,8 +3760,8 @@ async def test_pause_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.ResumeQueueRequest,
-        dict,
+        cloudtasks.ResumeQueueRequest(),
+        {},
     ],
 )
 def test_resume_queue(request_type, transport: str = "grpc"):
@@ -3749,7 +3772,7 @@ def test_resume_queue(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -3795,9 +3818,10 @@ def test_resume_queue_non_empty_request_with_auto_populated_field():
         client.resume_queue(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.ResumeQueueRequest(
+        request_msg = cloudtasks.ResumeQueueRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_queue_use_cached_wrapped_rpc():
@@ -3878,9 +3902,14 @@ async def test_resume_queue_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resume_queue_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.ResumeQueueRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ResumeQueueRequest(),
+        {},
+    ],
+)
+async def test_resume_queue_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3888,7 +3917,7 @@ async def test_resume_queue_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -3911,11 +3940,6 @@ async def test_resume_queue_async(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_resume_queue_async_from_dict():
-    await test_resume_queue_async(request_type=dict)
 
 
 def test_resume_queue_field_headers():
@@ -4060,8 +4084,8 @@ async def test_resume_queue_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -4072,7 +4096,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4118,9 +4142,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -4201,9 +4226,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4211,7 +4241,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4234,11 +4264,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -4400,8 +4425,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -4412,7 +4437,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4458,9 +4483,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -4541,9 +4567,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4551,7 +4582,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4574,11 +4605,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -4741,8 +4767,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -4753,7 +4779,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4801,9 +4827,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -4888,9 +4915,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4899,7 +4932,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4922,11 +4955,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -5112,8 +5140,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.ListTasksRequest,
-        dict,
+        cloudtasks.ListTasksRequest(),
+        {},
     ],
 )
 def test_list_tasks(request_type, transport: str = "grpc"):
@@ -5124,7 +5152,7 @@ def test_list_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -5169,10 +5197,11 @@ def test_list_tasks_non_empty_request_with_auto_populated_field():
         client.list_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.ListTasksRequest(
+        request_msg = cloudtasks.ListTasksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tasks_use_cached_wrapped_rpc():
@@ -5251,9 +5280,14 @@ async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.ListTasksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ListTasksRequest(),
+        {},
+    ],
+)
+async def test_list_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5261,7 +5295,7 @@ async def test_list_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -5282,11 +5316,6 @@ async def test_list_tasks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTasksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tasks_async_from_dict():
-    await test_list_tasks_async(request_type=dict)
 
 
 def test_list_tasks_field_headers():
@@ -5625,8 +5654,8 @@ async def test_list_tasks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.GetTaskRequest,
-        dict,
+        cloudtasks.GetTaskRequest(),
+        {},
     ],
 )
 def test_get_task(request_type, transport: str = "grpc"):
@@ -5637,7 +5666,7 @@ def test_get_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -5687,9 +5716,10 @@ def test_get_task_non_empty_request_with_auto_populated_field():
         client.get_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.GetTaskRequest(
+        request_msg = cloudtasks.GetTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_task_use_cached_wrapped_rpc():
@@ -5768,9 +5798,14 @@ async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_task_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.GetTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.GetTaskRequest(),
+        {},
+    ],
+)
+async def test_get_task_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5778,7 +5813,7 @@ async def test_get_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -5805,11 +5840,6 @@ async def test_get_task_async(
     assert response.dispatch_count == 1496
     assert response.response_count == 1527
     assert response.view == task.Task.View.BASIC
-
-
-@pytest.mark.asyncio
-async def test_get_task_async_from_dict():
-    await test_get_task_async(request_type=dict)
 
 
 def test_get_task_field_headers():
@@ -5954,8 +5984,8 @@ async def test_get_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.CreateTaskRequest,
-        dict,
+        cloudtasks.CreateTaskRequest(),
+        {},
     ],
 )
 def test_create_task(request_type, transport: str = "grpc"):
@@ -5966,7 +5996,7 @@ def test_create_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -6016,9 +6046,10 @@ def test_create_task_non_empty_request_with_auto_populated_field():
         client.create_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.CreateTaskRequest(
+        request_msg = cloudtasks.CreateTaskRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_task_use_cached_wrapped_rpc():
@@ -6099,9 +6130,14 @@ async def test_create_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_task_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.CreateTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.CreateTaskRequest(),
+        {},
+    ],
+)
+async def test_create_task_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6109,7 +6145,7 @@ async def test_create_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -6136,11 +6172,6 @@ async def test_create_task_async(
     assert response.dispatch_count == 1496
     assert response.response_count == 1527
     assert response.view == gct_task.Task.View.BASIC
-
-
-@pytest.mark.asyncio
-async def test_create_task_async_from_dict():
-    await test_create_task_async(request_type=dict)
 
 
 def test_create_task_field_headers():
@@ -6295,8 +6326,8 @@ async def test_create_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.DeleteTaskRequest,
-        dict,
+        cloudtasks.DeleteTaskRequest(),
+        {},
     ],
 )
 def test_delete_task(request_type, transport: str = "grpc"):
@@ -6307,7 +6338,7 @@ def test_delete_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -6348,9 +6379,10 @@ def test_delete_task_non_empty_request_with_auto_populated_field():
         client.delete_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.DeleteTaskRequest(
+        request_msg = cloudtasks.DeleteTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_task_use_cached_wrapped_rpc():
@@ -6431,9 +6463,14 @@ async def test_delete_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_task_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.DeleteTaskRequest(),
+        {},
+    ],
+)
+async def test_delete_task_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6441,7 +6478,7 @@ async def test_delete_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -6457,11 +6494,6 @@ async def test_delete_task_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_task_async_from_dict():
-    await test_delete_task_async(request_type=dict)
 
 
 def test_delete_task_field_headers():
@@ -6606,8 +6638,8 @@ async def test_delete_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudtasks.RunTaskRequest,
-        dict,
+        cloudtasks.RunTaskRequest(),
+        {},
     ],
 )
 def test_run_task(request_type, transport: str = "grpc"):
@@ -6618,7 +6650,7 @@ def test_run_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -6668,9 +6700,10 @@ def test_run_task_non_empty_request_with_auto_populated_field():
         client.run_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudtasks.RunTaskRequest(
+        request_msg = cloudtasks.RunTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_task_use_cached_wrapped_rpc():
@@ -6749,9 +6782,14 @@ async def test_run_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_run_task_async(
-    transport: str = "grpc_asyncio", request_type=cloudtasks.RunTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.RunTaskRequest(),
+        {},
+    ],
+)
+async def test_run_task_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudTasksAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6759,7 +6797,7 @@ async def test_run_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -6786,11 +6824,6 @@ async def test_run_task_async(
     assert response.dispatch_count == 1496
     assert response.response_count == 1527
     assert response.view == task.Task.View.BASIC
-
-
-@pytest.mark.asyncio
-async def test_run_task_async_from_dict():
-    await test_run_task_async(request_type=dict)
 
 
 def test_run_task_field_headers():
@@ -10078,7 +10111,6 @@ def test_list_queues_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListQueuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10099,7 +10131,6 @@ def test_get_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10120,7 +10151,6 @@ def test_create_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10141,7 +10171,6 @@ def test_update_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.UpdateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10162,7 +10191,6 @@ def test_delete_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10183,7 +10211,6 @@ def test_purge_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PurgeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10204,7 +10231,6 @@ def test_pause_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PauseQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10225,7 +10251,6 @@ def test_resume_queue_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ResumeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10246,7 +10271,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10267,7 +10291,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10290,7 +10313,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10311,7 +10333,6 @@ def test_list_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -10332,7 +10353,6 @@ def test_get_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10353,7 +10373,6 @@ def test_create_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10374,7 +10393,6 @@ def test_delete_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10395,7 +10413,6 @@ def test_run_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.RunTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10436,7 +10453,6 @@ async def test_list_queues_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListQueuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10464,7 +10480,6 @@ async def test_get_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10492,7 +10507,6 @@ async def test_create_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10520,7 +10534,6 @@ async def test_update_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.UpdateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10543,7 +10556,6 @@ async def test_delete_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10571,7 +10583,6 @@ async def test_purge_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PurgeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10599,7 +10610,6 @@ async def test_pause_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PauseQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10627,7 +10637,6 @@ async def test_resume_queue_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ResumeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -10655,7 +10664,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10683,7 +10691,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10712,7 +10719,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10739,7 +10745,6 @@ async def test_list_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -10769,7 +10774,6 @@ async def test_get_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10799,7 +10803,6 @@ async def test_create_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10822,7 +10825,6 @@ async def test_delete_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10852,7 +10854,6 @@ async def test_run_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.RunTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13217,7 +13218,6 @@ def test_list_queues_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListQueuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13237,7 +13237,6 @@ def test_get_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13257,7 +13256,6 @@ def test_create_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13277,7 +13275,6 @@ def test_update_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.UpdateQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13297,7 +13294,6 @@ def test_delete_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13317,7 +13313,6 @@ def test_purge_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PurgeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13337,7 +13332,6 @@ def test_pause_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.PauseQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13357,7 +13351,6 @@ def test_resume_queue_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ResumeQueueRequest()
-
         assert args[0] == request_msg
 
 
@@ -13377,7 +13370,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13397,7 +13389,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -13419,7 +13410,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13439,7 +13429,6 @@ def test_list_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13459,7 +13448,6 @@ def test_get_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13479,7 +13467,6 @@ def test_create_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13499,7 +13486,6 @@ def test_delete_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13519,7 +13505,6 @@ def test_run_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudtasks.RunTaskRequest()
-
         assert args[0] == request_msg
 
 

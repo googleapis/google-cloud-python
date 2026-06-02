@@ -15,11 +15,35 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Generic, Iterable, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Generic,
+    Iterable,
+    List,
+    Literal,
+    Mapping,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 if TYPE_CHECKING:
+    import pandas as pd
+
     import bigframes.dataframe
+    import bigframes.series
     import bigframes.session
+
+    PROMPT_TYPE = Union[
+        str,
+        bigframes.series.Series,
+        pd.Series,
+        List[Union[str, bigframes.series.Series, pd.Series]],
+        Tuple[Union[str, bigframes.series.Series, pd.Series], ...],
+    ]
+else:
+    PROMPT_TYPE = Any
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -83,6 +107,112 @@ class AIAccessor(AbstractBigQueryDataFrameAccessor[T, S]):
             output_historical_time_series=output_historical_time_series,
         )
         return self._to_dataframe(result)
+
+    def generate(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+        output_schema: Mapping[str, str] | None = None,
+    ) -> S:
+        """
+        Returns the AI analysis based on the prompt, which can be any combination of text and unstructured data.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.generate(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            request_type=request_type,
+            model_params=model_params,
+            output_schema=output_schema,
+        )
+        return self._to_series(result)
+
+    def generate_bool(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+    ) -> S:
+        """
+        Returns the AI analysis based on the prompt, which can be any combination of text and unstructured data.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_bool`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.generate_bool(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            request_type=request_type,
+            model_params=model_params,
+        )
+        return self._to_series(result)
+
+    def generate_int(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+    ) -> S:
+        """
+        Returns the AI analysis based on the prompt, which can be any combination of text and unstructured data.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_int`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.generate_int(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            request_type=request_type,
+            model_params=model_params,
+        )
+        return self._to_series(result)
+
+    def generate_double(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        request_type: Literal["dedicated", "shared", "unspecified"] | None = None,
+        model_params: Mapping[Any, Any] | None = None,
+    ) -> S:
+        """
+        Returns the AI analysis based on the prompt, which can be any combination of text and unstructured data.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_double`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.generate_double(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            request_type=request_type,
+            model_params=model_params,
+        )
+        return self._to_series(result)
 
 
 class BigQueryDataFrameAccessor(AbstractBigQueryDataFrameAccessor[T, S]):

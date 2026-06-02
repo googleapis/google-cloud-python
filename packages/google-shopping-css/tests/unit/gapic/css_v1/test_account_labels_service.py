@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1370,8 +1386,8 @@ def test_account_labels_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        accounts_labels.ListAccountLabelsRequest,
-        dict,
+        accounts_labels.ListAccountLabelsRequest(),
+        {},
     ],
 )
 def test_list_account_labels(request_type, transport: str = "grpc"):
@@ -1382,7 +1398,7 @@ def test_list_account_labels(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1431,10 +1447,11 @@ def test_list_account_labels_non_empty_request_with_auto_populated_field():
         client.list_account_labels(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.ListAccountLabelsRequest(
+        request_msg = accounts_labels.ListAccountLabelsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_account_labels_use_cached_wrapped_rpc():
@@ -1519,10 +1536,14 @@ async def test_list_account_labels_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_account_labels_async(
-    transport: str = "grpc_asyncio",
-    request_type=accounts_labels.ListAccountLabelsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accounts_labels.ListAccountLabelsRequest(),
+        {},
+    ],
+)
+async def test_list_account_labels_async(request_type, transport: str = "grpc_asyncio"):
     client = AccountLabelsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1530,7 +1551,7 @@ async def test_list_account_labels_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1553,11 +1574,6 @@ async def test_list_account_labels_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAccountLabelsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_account_labels_async_from_dict():
-    await test_list_account_labels_async(request_type=dict)
 
 
 def test_list_account_labels_field_headers():
@@ -1912,8 +1928,8 @@ async def test_list_account_labels_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accounts_labels.CreateAccountLabelRequest,
-        dict,
+        accounts_labels.CreateAccountLabelRequest(),
+        {},
     ],
 )
 def test_create_account_label(request_type, transport: str = "grpc"):
@@ -1924,7 +1940,7 @@ def test_create_account_label(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1982,9 +1998,10 @@ def test_create_account_label_non_empty_request_with_auto_populated_field():
         client.create_account_label(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.CreateAccountLabelRequest(
+        request_msg = accounts_labels.CreateAccountLabelRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_account_label_use_cached_wrapped_rpc():
@@ -2069,9 +2086,15 @@ async def test_create_account_label_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accounts_labels.CreateAccountLabelRequest(),
+        {},
+    ],
+)
 async def test_create_account_label_async(
-    transport: str = "grpc_asyncio",
-    request_type=accounts_labels.CreateAccountLabelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccountLabelsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2080,7 +2103,7 @@ async def test_create_account_label_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2113,11 +2136,6 @@ async def test_create_account_label_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.label_type == accounts_labels.AccountLabel.LabelType.MANUAL
-
-
-@pytest.mark.asyncio
-async def test_create_account_label_async_from_dict():
-    await test_create_account_label_async(request_type=dict)
 
 
 def test_create_account_label_field_headers():
@@ -2284,8 +2302,8 @@ async def test_create_account_label_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accounts_labels.UpdateAccountLabelRequest,
-        dict,
+        accounts_labels.UpdateAccountLabelRequest(),
+        {},
     ],
 )
 def test_update_account_label(request_type, transport: str = "grpc"):
@@ -2296,7 +2314,7 @@ def test_update_account_label(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2352,7 +2370,8 @@ def test_update_account_label_non_empty_request_with_auto_populated_field():
         client.update_account_label(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.UpdateAccountLabelRequest()
+        request_msg = accounts_labels.UpdateAccountLabelRequest()
+        assert args[0] == request_msg
 
 
 def test_update_account_label_use_cached_wrapped_rpc():
@@ -2437,9 +2456,15 @@ async def test_update_account_label_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accounts_labels.UpdateAccountLabelRequest(),
+        {},
+    ],
+)
 async def test_update_account_label_async(
-    transport: str = "grpc_asyncio",
-    request_type=accounts_labels.UpdateAccountLabelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccountLabelsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2448,7 +2473,7 @@ async def test_update_account_label_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2481,11 +2506,6 @@ async def test_update_account_label_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.label_type == accounts_labels.AccountLabel.LabelType.MANUAL
-
-
-@pytest.mark.asyncio
-async def test_update_account_label_async_from_dict():
-    await test_update_account_label_async(request_type=dict)
 
 
 def test_update_account_label_field_headers():
@@ -2642,8 +2662,8 @@ async def test_update_account_label_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        accounts_labels.DeleteAccountLabelRequest,
-        dict,
+        accounts_labels.DeleteAccountLabelRequest(),
+        {},
     ],
 )
 def test_delete_account_label(request_type, transport: str = "grpc"):
@@ -2654,7 +2674,7 @@ def test_delete_account_label(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2699,9 +2719,10 @@ def test_delete_account_label_non_empty_request_with_auto_populated_field():
         client.delete_account_label(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.DeleteAccountLabelRequest(
+        request_msg = accounts_labels.DeleteAccountLabelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_account_label_use_cached_wrapped_rpc():
@@ -2786,9 +2807,15 @@ async def test_delete_account_label_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accounts_labels.DeleteAccountLabelRequest(),
+        {},
+    ],
+)
 async def test_delete_account_label_async(
-    transport: str = "grpc_asyncio",
-    request_type=accounts_labels.DeleteAccountLabelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AccountLabelsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2797,7 +2824,7 @@ async def test_delete_account_label_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2815,11 +2842,6 @@ async def test_delete_account_label_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_account_label_async_from_dict():
-    await test_delete_account_label_async(request_type=dict)
 
 
 def test_delete_account_label_field_headers():
@@ -3895,7 +3917,6 @@ def test_list_account_labels_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.ListAccountLabelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3918,7 +3939,6 @@ def test_create_account_label_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.CreateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -3941,7 +3961,6 @@ def test_update_account_label_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.UpdateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -3964,7 +3983,6 @@ def test_delete_account_label_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.DeleteAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4007,7 +4025,6 @@ async def test_list_account_labels_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.ListAccountLabelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4041,7 +4058,6 @@ async def test_create_account_label_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.CreateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4075,7 +4091,6 @@ async def test_update_account_label_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.UpdateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4100,7 +4115,6 @@ async def test_delete_account_label_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.DeleteAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4818,7 +4832,6 @@ def test_list_account_labels_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.ListAccountLabelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4840,7 +4853,6 @@ def test_create_account_label_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.CreateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4862,7 +4874,6 @@ def test_update_account_label_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.UpdateAccountLabelRequest()
-
         assert args[0] == request_msg
 
 
@@ -4884,7 +4895,6 @@ def test_delete_account_label_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = accounts_labels.DeleteAccountLabelRequest()
-
         assert args[0] == request_msg
 
 

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import asyncio
 import re
-import sys
 
 import grpc
 import mock
@@ -77,6 +76,21 @@ else:
     CrossSync.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 @CrossSync.convert_class(
@@ -258,9 +272,6 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.drop
     @CrossSync.pytest
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8), reason="Task.name requires python3.8 or higher"
-    )
     async def test__start_background_channel_refresh_task_names(self):
         # if tasks exist, should do nothing
         client = self._make_client(project="project-id", use_emulator=False)
@@ -1110,9 +1121,12 @@ class TestBigtableDataClientAsync:
         """Test that configured universe domain errors with mismatched universe
         domain credentials.
         """
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(

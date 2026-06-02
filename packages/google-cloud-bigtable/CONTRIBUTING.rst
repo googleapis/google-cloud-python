@@ -143,12 +143,12 @@ Running System Tests
    $ nox -s system
 
    # Run a single system test
-   $ nox -s system-3.14 -- -k <name of test>
+   $ nox -s system-3.12 -- -k <name of test>
 
 
   .. note::
 
-      System tests are only configured to run under Python 3.9.
+      System tests are only configured to run under Python 3.12.
       For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -239,7 +239,7 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-bigtable/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version 3.7.
+We also explicitly decided to support Python 3 beginning with version 3.10.
 Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3

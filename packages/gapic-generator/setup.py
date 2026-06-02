@@ -21,24 +21,24 @@ import setuptools
 
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
-url = "https://github.com/googleapis/gapic-generator-python"
-version = "1.33.0"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/gapic-generator"
+version = "1.34.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "googleapis-common-protos >= 1.55.0",
-    "grpcio >= 1.24.3",
+    "google-api-core[grpc] >= 2.24.2, < 3.0.0",
+    "googleapis-common-protos >= 1.55.0, < 2.0.0",
+    "grpcio >= 1.24.3, < 2.0.0",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
     "jinja2 >= 2.11",
-    "protobuf >= 4.25.8, < 8.0.0",
+    "protobuf >= 6.33.5, < 8.0.0",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
-    "grpc-google-iam-v1 >= 0.14.0, < 1.0.0",
+    "grpc-google-iam-v1 >= 0.14.2, < 1.0.0",
     "libcst >= 0.4.9, < 2.0.0",
     "inflection >= 0.5.1, < 1.0.0",
 ]

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -124,6 +125,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1391,8 +1407,8 @@ def test_cloud_functions_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.ListFunctionsRequest,
-        dict,
+        functions.ListFunctionsRequest(),
+        {},
     ],
 )
 def test_list_functions(request_type, transport: str = "grpc"):
@@ -1403,7 +1419,7 @@ def test_list_functions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
@@ -1450,10 +1466,11 @@ def test_list_functions_non_empty_request_with_auto_populated_field():
         client.list_functions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.ListFunctionsRequest(
+        request_msg = functions.ListFunctionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_functions_use_cached_wrapped_rpc():
@@ -1534,9 +1551,14 @@ async def test_list_functions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_functions_async(
-    transport: str = "grpc_asyncio", request_type=functions.ListFunctionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.ListFunctionsRequest(),
+        {},
+    ],
+)
+async def test_list_functions_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1544,7 +1566,7 @@ async def test_list_functions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
@@ -1567,11 +1589,6 @@ async def test_list_functions_async(
     assert isinstance(response, pagers.ListFunctionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_functions_async_from_dict():
-    await test_list_functions_async(request_type=dict)
 
 
 def test_list_functions_field_headers():
@@ -1828,8 +1845,8 @@ async def test_list_functions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.GetFunctionRequest,
-        dict,
+        functions.GetFunctionRequest(),
+        {},
     ],
 )
 def test_get_function(request_type, transport: str = "grpc"):
@@ -1840,7 +1857,7 @@ def test_get_function(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_function), "__call__") as call:
@@ -1935,9 +1952,10 @@ def test_get_function_non_empty_request_with_auto_populated_field():
         client.get_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.GetFunctionRequest(
+        request_msg = functions.GetFunctionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_function_use_cached_wrapped_rpc():
@@ -2018,9 +2036,14 @@ async def test_get_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.GetFunctionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GetFunctionRequest(),
+        {},
+    ],
+)
+async def test_get_function_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2028,7 +2051,7 @@ async def test_get_function_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_function), "__call__") as call:
@@ -2099,11 +2122,6 @@ async def test_get_function_async(
         == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
     )
     assert response.build_service_account == "build_service_account_value"
-
-
-@pytest.mark.asyncio
-async def test_get_function_async_from_dict():
-    await test_get_function_async(request_type=dict)
 
 
 def test_get_function_field_headers():
@@ -2252,8 +2270,8 @@ async def test_get_function_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.CreateFunctionRequest,
-        dict,
+        functions.CreateFunctionRequest(),
+        {},
     ],
 )
 def test_create_function(request_type, transport: str = "grpc"):
@@ -2264,7 +2282,7 @@ def test_create_function(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
@@ -2305,9 +2323,10 @@ def test_create_function_non_empty_request_with_auto_populated_field():
         client.create_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.CreateFunctionRequest(
+        request_msg = functions.CreateFunctionRequest(
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_function_use_cached_wrapped_rpc():
@@ -2398,9 +2417,14 @@ async def test_create_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.CreateFunctionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.CreateFunctionRequest(),
+        {},
+    ],
+)
+async def test_create_function_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2408,7 +2432,7 @@ async def test_create_function_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_function), "__call__") as call:
@@ -2426,11 +2450,6 @@ async def test_create_function_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_function_async_from_dict():
-    await test_create_function_async(request_type=dict)
 
 
 def test_create_function_field_headers():
@@ -2589,8 +2608,8 @@ async def test_create_function_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.UpdateFunctionRequest,
-        dict,
+        functions.UpdateFunctionRequest(),
+        {},
     ],
 )
 def test_update_function(request_type, transport: str = "grpc"):
@@ -2601,7 +2620,7 @@ def test_update_function(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
@@ -2640,7 +2659,8 @@ def test_update_function_non_empty_request_with_auto_populated_field():
         client.update_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.UpdateFunctionRequest()
+        request_msg = functions.UpdateFunctionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_function_use_cached_wrapped_rpc():
@@ -2731,9 +2751,14 @@ async def test_update_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.UpdateFunctionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.UpdateFunctionRequest(),
+        {},
+    ],
+)
+async def test_update_function_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2741,7 +2766,7 @@ async def test_update_function_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_function), "__call__") as call:
@@ -2759,11 +2784,6 @@ async def test_update_function_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_function_async_from_dict():
-    await test_update_function_async(request_type=dict)
 
 
 def test_update_function_field_headers():
@@ -2912,8 +2932,8 @@ async def test_update_function_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.DeleteFunctionRequest,
-        dict,
+        functions.DeleteFunctionRequest(),
+        {},
     ],
 )
 def test_delete_function(request_type, transport: str = "grpc"):
@@ -2924,7 +2944,7 @@ def test_delete_function(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
@@ -2965,9 +2985,10 @@ def test_delete_function_non_empty_request_with_auto_populated_field():
         client.delete_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.DeleteFunctionRequest(
+        request_msg = functions.DeleteFunctionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_function_use_cached_wrapped_rpc():
@@ -3058,9 +3079,14 @@ async def test_delete_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.DeleteFunctionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.DeleteFunctionRequest(),
+        {},
+    ],
+)
+async def test_delete_function_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3068,7 +3094,7 @@ async def test_delete_function_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
@@ -3086,11 +3112,6 @@ async def test_delete_function_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_function_async_from_dict():
-    await test_delete_function_async(request_type=dict)
 
 
 def test_delete_function_field_headers():
@@ -3239,8 +3260,8 @@ async def test_delete_function_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.CallFunctionRequest,
-        dict,
+        functions.CallFunctionRequest(),
+        {},
     ],
 )
 def test_call_function(request_type, transport: str = "grpc"):
@@ -3251,7 +3272,7 @@ def test_call_function(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.call_function), "__call__") as call:
@@ -3300,10 +3321,11 @@ def test_call_function_non_empty_request_with_auto_populated_field():
         client.call_function(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.CallFunctionRequest(
+        request_msg = functions.CallFunctionRequest(
             name="name_value",
             data="data_value",
         )
+        assert args[0] == request_msg
 
 
 def test_call_function_use_cached_wrapped_rpc():
@@ -3384,9 +3406,14 @@ async def test_call_function_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_call_function_async(
-    transport: str = "grpc_asyncio", request_type=functions.CallFunctionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.CallFunctionRequest(),
+        {},
+    ],
+)
+async def test_call_function_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3394,7 +3421,7 @@ async def test_call_function_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.call_function), "__call__") as call:
@@ -3419,11 +3446,6 @@ async def test_call_function_async(
     assert response.execution_id == "execution_id_value"
     assert response.result == "result_value"
     assert response.error == "error_value"
-
-
-@pytest.mark.asyncio
-async def test_call_function_async_from_dict():
-    await test_call_function_async(request_type=dict)
 
 
 def test_call_function_field_headers():
@@ -3582,8 +3604,8 @@ async def test_call_function_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.GenerateUploadUrlRequest,
-        dict,
+        functions.GenerateUploadUrlRequest(),
+        {},
     ],
 )
 def test_generate_upload_url(request_type, transport: str = "grpc"):
@@ -3594,7 +3616,7 @@ def test_generate_upload_url(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3643,10 +3665,11 @@ def test_generate_upload_url_non_empty_request_with_auto_populated_field():
         client.generate_upload_url(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.GenerateUploadUrlRequest(
+        request_msg = functions.GenerateUploadUrlRequest(
             parent="parent_value",
             kms_key_name="kms_key_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_upload_url_use_cached_wrapped_rpc():
@@ -3731,9 +3754,14 @@ async def test_generate_upload_url_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_upload_url_async(
-    transport: str = "grpc_asyncio", request_type=functions.GenerateUploadUrlRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GenerateUploadUrlRequest(),
+        {},
+    ],
+)
+async def test_generate_upload_url_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3741,7 +3769,7 @@ async def test_generate_upload_url_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3764,11 +3792,6 @@ async def test_generate_upload_url_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.GenerateUploadUrlResponse)
     assert response.upload_url == "upload_url_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_upload_url_async_from_dict():
-    await test_generate_upload_url_async(request_type=dict)
 
 
 def test_generate_upload_url_field_headers():
@@ -3839,8 +3862,8 @@ async def test_generate_upload_url_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        functions.GenerateDownloadUrlRequest,
-        dict,
+        functions.GenerateDownloadUrlRequest(),
+        {},
     ],
 )
 def test_generate_download_url(request_type, transport: str = "grpc"):
@@ -3851,7 +3874,7 @@ def test_generate_download_url(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3899,9 +3922,10 @@ def test_generate_download_url_non_empty_request_with_auto_populated_field():
         client.generate_download_url(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == functions.GenerateDownloadUrlRequest(
+        request_msg = functions.GenerateDownloadUrlRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_download_url_use_cached_wrapped_rpc():
@@ -3987,8 +4011,15 @@ async def test_generate_download_url_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        functions.GenerateDownloadUrlRequest(),
+        {},
+    ],
+)
 async def test_generate_download_url_async(
-    transport: str = "grpc_asyncio", request_type=functions.GenerateDownloadUrlRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3997,7 +4028,7 @@ async def test_generate_download_url_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4020,11 +4051,6 @@ async def test_generate_download_url_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.GenerateDownloadUrlResponse)
     assert response.download_url == "download_url_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_download_url_async_from_dict():
-    await test_generate_download_url_async(request_type=dict)
 
 
 def test_generate_download_url_field_headers():
@@ -4095,8 +4121,8 @@ async def test_generate_download_url_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -4107,7 +4133,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4153,9 +4179,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -4236,9 +4263,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4246,7 +4278,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4269,11 +4301,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -4356,8 +4383,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -4368,7 +4395,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4414,9 +4441,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -4497,9 +4525,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4507,7 +4540,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4530,11 +4563,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -4616,8 +4644,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -4628,7 +4656,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4676,9 +4704,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -4763,9 +4792,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudFunctionsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4774,7 +4809,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4797,11 +4832,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -6486,7 +6516,6 @@ def test_list_functions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.ListFunctionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6507,7 +6536,6 @@ def test_get_function_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GetFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6528,7 +6556,6 @@ def test_create_function_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CreateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6549,7 +6576,6 @@ def test_update_function_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.UpdateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6570,7 +6596,6 @@ def test_delete_function_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.DeleteFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6591,7 +6616,6 @@ def test_call_function_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CallFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6614,7 +6638,6 @@ def test_generate_upload_url_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateUploadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6637,7 +6660,6 @@ def test_generate_download_url_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6658,7 +6680,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6679,7 +6700,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6702,7 +6722,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6744,7 +6763,6 @@ async def test_list_functions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.ListFunctionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6792,7 +6810,6 @@ async def test_get_function_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GetFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6817,7 +6834,6 @@ async def test_create_function_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CreateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6842,7 +6858,6 @@ async def test_update_function_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.UpdateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6867,7 +6882,6 @@ async def test_delete_function_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.DeleteFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6896,7 +6910,6 @@ async def test_call_function_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CallFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6925,7 +6938,6 @@ async def test_generate_upload_url_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateUploadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6954,7 +6966,6 @@ async def test_generate_download_url_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -6982,7 +6993,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7010,7 +7020,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7039,7 +7048,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8982,7 +8990,6 @@ def test_list_functions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.ListFunctionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9002,7 +9009,6 @@ def test_get_function_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GetFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9022,7 +9028,6 @@ def test_create_function_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CreateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9042,7 +9047,6 @@ def test_update_function_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.UpdateFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9062,7 +9066,6 @@ def test_delete_function_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.DeleteFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9082,7 +9085,6 @@ def test_call_function_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.CallFunctionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9104,7 +9106,6 @@ def test_generate_upload_url_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateUploadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -9126,7 +9127,6 @@ def test_generate_download_url_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = functions.GenerateDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -9146,7 +9146,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9166,7 +9165,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9188,7 +9186,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 

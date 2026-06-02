@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -19947,7 +19963,6 @@ def test_abandon_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AbandonInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19967,7 +19982,6 @@ def test_adopt_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AdoptInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19989,7 +20003,6 @@ def test_apply_updates_to_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20009,7 +20022,6 @@ def test_create_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20029,7 +20041,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20049,7 +20060,6 @@ def test_delete_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20073,7 +20083,6 @@ def test_delete_per_instance_configs_unary_empty_call_rest():
         request_msg = (
             compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20093,7 +20102,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20113,7 +20121,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20133,7 +20140,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20153,7 +20159,6 @@ def test_list_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListErrorsRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20175,7 +20180,6 @@ def test_list_managed_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListManagedInstancesRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20197,7 +20201,6 @@ def test_list_per_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20217,7 +20220,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20239,7 +20241,6 @@ def test_patch_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20261,7 +20262,6 @@ def test_recreate_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RecreateInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20281,7 +20281,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20301,7 +20300,6 @@ def test_resize_advanced_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeAdvancedRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20321,7 +20319,6 @@ def test_resume_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20343,7 +20340,6 @@ def test_set_auto_healing_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetAutoHealingPoliciesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20365,7 +20361,6 @@ def test_set_instance_template_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20385,7 +20380,6 @@ def test_set_target_pools_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetPoolsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20405,7 +20399,6 @@ def test_start_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20425,7 +20418,6 @@ def test_stop_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20447,7 +20439,6 @@ def test_suspend_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20469,7 +20460,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20489,7 +20479,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20513,7 +20502,6 @@ def test_update_per_instance_configs_unary_empty_call_rest():
         request_msg = (
             compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 

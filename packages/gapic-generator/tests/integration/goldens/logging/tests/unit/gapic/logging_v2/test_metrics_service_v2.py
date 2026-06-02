@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -93,6 +94,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -944,10 +960,8 @@ def test_metrics_service_v2_client_create_channel_credentials_file(client_class,
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest({
-  }),
-  {
-  },
+  logging_metrics.ListLogMetricsRequest(),
+  {},
 ])
 def test_list_log_metrics(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -1078,8 +1092,8 @@ async def test_list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "g
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest({  }),
-  {  },
+  logging_metrics.ListLogMetricsRequest(),
+  {},
 ])
 async def test_list_log_metrics_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -1451,10 +1465,8 @@ async def test_list_log_metrics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest({
-  }),
-  {
-  },
+  logging_metrics.GetLogMetricRequest(),
+  {},
 ])
 def test_get_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -1595,8 +1607,8 @@ async def test_get_log_metric_async_use_cached_wrapped_rpc(transport: str = "grp
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest({  }),
-  {  },
+  logging_metrics.GetLogMetricRequest(),
+  {},
 ])
 async def test_get_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -1786,10 +1798,8 @@ async def test_get_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest({
-  }),
-  {
-  },
+  logging_metrics.CreateLogMetricRequest(),
+  {},
 ])
 def test_create_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -1930,8 +1940,8 @@ async def test_create_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest({  }),
-  {  },
+  logging_metrics.CreateLogMetricRequest(),
+  {},
 ])
 async def test_create_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -2131,10 +2141,8 @@ async def test_create_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest({
-  }),
-  {
-  },
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
 ])
 def test_update_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -2275,8 +2283,8 @@ async def test_update_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest({  }),
-  {  },
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
 ])
 async def test_update_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(
@@ -2476,10 +2484,8 @@ async def test_update_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest({
-  }),
-  {
-  },
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
 ])
 def test_delete_log_metric(request_type, transport: str = 'grpc'):
     client = MetricsServiceV2Client(
@@ -2605,8 +2611,8 @@ async def test_delete_log_metric_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest({  }),
-  {  },
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
 ])
 async def test_delete_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = MetricsServiceV2AsyncClient(

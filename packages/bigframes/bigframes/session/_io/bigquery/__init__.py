@@ -355,7 +355,7 @@ def start_query_job_optional(
     # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
     # version 3.36.0 or later.
     job_retry: google.api_core.retry.Retry = (third_party_gcb_retry.DEFAULT_JOB_RETRY),  # noqa: E501
-    publisher: bigframes.core.events.Publisher,
+    publisher: Optional[bigframes.core.events.Publisher] = None,
     session=None,
 ) -> google.cloud.bigquery.table.RowIterator:
     """
@@ -373,7 +373,9 @@ def start_query_job_optional(
             project=project,
             api_timeout=timeout,
             job_retry=job_retry,
-            callback=create_bq_event_callback(publisher),
+            callback=create_bq_event_callback(publisher)
+            if publisher
+            else lambda _: None,
         )
         if metrics is not None:
             metrics.count_job_stats(row_iterator=results_iterator)
