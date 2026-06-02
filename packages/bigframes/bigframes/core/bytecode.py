@@ -101,6 +101,10 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
             stack.append(py_exprs.PyObject(inst.argval))
 
         elif opname == "LOAD_GLOBAL":
+            # In Python 3.11+, the lowest bit of inst.arg indicates that a NULL
+            # should be pushed before the global variable.
+            if inst.arg is not None and (inst.arg & 1):
+                stack.append(NullMarker)
             name = inst.argval
             found = False
             val = None
@@ -214,6 +218,11 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
             if len(stack) < num_args:
                 return None
             args = [stack.pop() for _ in range(num_args)][::-1]
+            # In Python 3.11, LOAD_GLOBAL with NULL push puts NullMarker below the global.
+            # If NullMarker is below the callable on the stack, swap them to match
+            # the expected layout [callable, NullMarker].
+            if len(stack) >= 2 and stack[-2] is NullMarker:
+                stack[-1], stack[-2] = stack[-2], stack[-1]
             if stack and stack[-1] is NullMarker:
                 stack.pop()
             elif (
