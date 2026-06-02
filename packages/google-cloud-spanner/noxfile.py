@@ -753,8 +753,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
-    session.skip("Mypy is not yet supported")
-
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
