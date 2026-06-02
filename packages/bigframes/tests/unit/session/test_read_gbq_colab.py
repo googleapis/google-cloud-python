@@ -208,13 +208,9 @@ def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
     session._metrics.jobs.extend([job1, job2])
 
     with mock.patch(
-        "IPython.core.interactiveshell.InteractiveShell.initialized", return_value=True
+        "bigframes.core.utils.get_ipython_execution_count", return_value=20
     ):
-        with mock.patch(
-            "IPython.core.interactiveshell.InteractiveShell.instance"
-        ) as mock_instance:
-            mock_instance.return_value.execution_count = 20
-            history = session.execution_history(all_cells=False).to_dataframe()
+        history = session.execution_history(all_cells=False).to_dataframe()
 
     assert len(history) == 1
     assert history.iloc[0]["job_id"] == "job_2"
