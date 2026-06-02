@@ -77,7 +77,7 @@ jobs:
         run: |
           # Library check: Execute directly from the generated package directory
           cd packages/${{ matrix.canary }}
-          nox -s mypy lint
+          nox -s mypy-3.14 lint
 
       - name: Run Prerelease and Core Deps
         run: |
