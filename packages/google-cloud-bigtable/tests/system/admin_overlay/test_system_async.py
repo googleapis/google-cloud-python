@@ -89,32 +89,32 @@ async def instance_admin_client(admin_overlay_project_id):
 
 
 @CrossSync.convert
-@CrossSync.pytest_fixture(scope="session")
+@CrossSync.pytest_fixture(scope="function")
 async def instances_to_delete(instance_admin_client):
     instances = []
 
     try:
         yield instances
     finally:
-        for instance in instances:
+        for instance in reversed(instances):
             try:
                 await instance_admin_client.delete_instance(name=instance.name)
-            except exceptions.NotFound:
+            except Exception:
                 pass
 
 
 @CrossSync.convert
-@CrossSync.pytest_fixture(scope="session")
+@CrossSync.pytest_fixture(scope="function")
 async def backups_to_delete(table_admin_client):
     backups = []
 
     try:
         yield backups
     finally:
-        for backup in backups:
+        for backup in reversed(backups):
             try:
                 await table_admin_client.delete_backup(name=backup.name)
-            except exceptions.NotFound:
+            except Exception:
                 pass
 
 
@@ -169,14 +169,45 @@ async def create_instance(
 
         # add to cleanup list before waiting for result, in case of timeout
         instance_name = instance_admin_client.instance_path(project_id, instance_id)
-        instances_to_delete.append(admin_v2.Instance(name=instance_name))
+        instance_placeholder = admin_v2.Instance(name=instance_name)
+        instances_to_delete.append(instance_placeholder)
 
-        instance = await operation.result()
+        try:
+            instance = await operation.result()
 
-        # replace with full instance object
-        instances_to_delete[-1] = instance
+            # replace with full instance object
+            instances_to_delete[-1] = instance
 
-    # Create a table within the instance
+            # Create a table within the instance
+            create_table_request = admin_v2.CreateTableRequest(
+                parent=instance_admin_client.instance_path(project_id, instance_id),
+                table_id=TEST_TABLE_NAME,
+                table=admin_v2.Table(
+                    column_families={
+                        TEST_COLUMMN_FAMILY_NAME: admin_v2.ColumnFamily(),
+                    }
+                ),
+            )
+
+            table = await table_admin_client.create_table(create_table_request)
+
+            # Populate with dummy data
+            await populate_table(
+                table_admin_client, data_client, instance, table, INITIAL_CELL_VALUE
+            )
+
+            return instance, table
+        except Exception:
+            # cleanup immediately on failure
+            try:
+                await instance_admin_client.delete_instance(name=instance_name)
+            except Exception:
+                pass
+            if instance_placeholder in instances_to_delete:
+                instances_to_delete.remove(instance_placeholder)
+            raise
+
+    # Create a table within the instance (emulator case)
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -260,16 +291,26 @@ async def create_backup(
     )
 
     # add to cleanup list before waiting for result, in case of timeout
-    backups_to_delete.append(
-        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
-    )
+    backup_name = f"{cluster_name}/backups/{backup_id}"
+    backup_placeholder = admin_v2.Backup(name=backup_name)
+    backups_to_delete.append(backup_placeholder)
 
-    backup = await operation.result()
+    try:
+        backup = await operation.result()
 
-    # replace with full backup object
-    backups_to_delete[-1] = backup
+        # replace with full backup object
+        backups_to_delete[-1] = backup
 
-    return backup
+        return backup
+    except Exception:
+        # cleanup immediately on failure
+        try:
+            await table_admin_client.delete_backup(name=backup_name)
+        except Exception:
+            pass
+        if backup_placeholder in backups_to_delete:
+            backups_to_delete.remove(backup_placeholder)
+        raise
 
 
 @CrossSync.convert

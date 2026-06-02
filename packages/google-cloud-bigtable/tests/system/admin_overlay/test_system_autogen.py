@@ -20,7 +20,6 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
-from google.api_core import exceptions
 from google.api_core import operation as api_core_operation
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
@@ -73,29 +72,29 @@ def instance_admin_client(admin_overlay_project_id):
         yield client
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def instances_to_delete(instance_admin_client):
     instances = []
     try:
         yield instances
     finally:
-        for instance in instances:
+        for instance in reversed(instances):
             try:
                 instance_admin_client.delete_instance(name=instance.name)
-            except exceptions.NotFound:
+            except Exception:
                 pass
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def backups_to_delete(table_admin_client):
     backups = []
     try:
         yield backups
     finally:
-        for backup in backups:
+        for backup in reversed(backups):
             try:
                 table_admin_client.delete_backup(name=backup.name)
-            except exceptions.NotFound:
+            except Exception:
                 pass
 
 
@@ -135,9 +134,31 @@ def create_instance(
         )
         operation = instance_admin_client.create_instance(create_instance_request)
         instance_name = instance_admin_client.instance_path(project_id, instance_id)
-        instances_to_delete.append(admin_v2.Instance(name=instance_name))
-        instance = operation.result()
-        instances_to_delete[-1] = instance
+        instance_placeholder = admin_v2.Instance(name=instance_name)
+        instances_to_delete.append(instance_placeholder)
+        try:
+            instance = operation.result()
+            instances_to_delete[-1] = instance
+            create_table_request = admin_v2.CreateTableRequest(
+                parent=instance_admin_client.instance_path(project_id, instance_id),
+                table_id=TEST_TABLE_NAME,
+                table=admin_v2.Table(
+                    column_families={TEST_COLUMMN_FAMILY_NAME: admin_v2.ColumnFamily()}
+                ),
+            )
+            table = table_admin_client.create_table(create_table_request)
+            populate_table(
+                table_admin_client, data_client, instance, table, INITIAL_CELL_VALUE
+            )
+            return (instance, table)
+        except Exception:
+            try:
+                instance_admin_client.delete_instance(name=instance_name)
+            except Exception:
+                pass
+            if instance_placeholder in instances_to_delete:
+                instances_to_delete.remove(instance_placeholder)
+            raise
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -198,12 +219,21 @@ def create_backup(
             ),
         )
     )
-    backups_to_delete.append(
-        admin_v2.Backup(name=f"{cluster_name}/backups/{backup_id}")
-    )
-    backup = operation.result()
-    backups_to_delete[-1] = backup
-    return backup
+    backup_name = f"{cluster_name}/backups/{backup_id}"
+    backup_placeholder = admin_v2.Backup(name=backup_name)
+    backups_to_delete.append(backup_placeholder)
+    try:
+        backup = operation.result()
+        backups_to_delete[-1] = backup
+        return backup
+    except Exception:
+        try:
+            table_admin_client.delete_backup(name=backup_name)
+        except Exception:
+            pass
+        if backup_placeholder in backups_to_delete:
+            backups_to_delete.remove(backup_placeholder)
+        raise
 
 
 def assert_table_cell_value_equal_to(
