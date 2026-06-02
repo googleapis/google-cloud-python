@@ -1390,7 +1390,7 @@ class Query(object):
                 if isinstance(ancestor, ParameterizedFunction):
                     if ancestor.func != "key":
                         raise TypeError(
-                            "ancestor cannot be a GQL functionother than Key"
+                            "ancestor cannot be a GQL function other than Key"
                         )
             else:
                 if not isinstance(ancestor, model.Key):
