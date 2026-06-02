@@ -136,29 +136,8 @@ def create_instance(
         instance_name = instance_admin_client.instance_path(project_id, instance_id)
         instance_placeholder = admin_v2.Instance(name=instance_name)
         instances_to_delete.append(instance_placeholder)
-        try:
-            instance = operation.result()
-            instances_to_delete[-1] = instance
-            create_table_request = admin_v2.CreateTableRequest(
-                parent=instance_admin_client.instance_path(project_id, instance_id),
-                table_id=TEST_TABLE_NAME,
-                table=admin_v2.Table(
-                    column_families={TEST_COLUMMN_FAMILY_NAME: admin_v2.ColumnFamily()}
-                ),
-            )
-            table = table_admin_client.create_table(create_table_request)
-            populate_table(
-                table_admin_client, data_client, instance, table, INITIAL_CELL_VALUE
-            )
-            return (instance, table)
-        except Exception:
-            try:
-                instance_admin_client.delete_instance(name=instance_name)
-            except Exception:
-                pass
-            if instance_placeholder in instances_to_delete:
-                instances_to_delete.remove(instance_placeholder)
-            raise
+        instance = operation.result()
+        instances_to_delete[-1] = instance
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -222,18 +201,9 @@ def create_backup(
     backup_name = f"{cluster_name}/backups/{backup_id}"
     backup_placeholder = admin_v2.Backup(name=backup_name)
     backups_to_delete.append(backup_placeholder)
-    try:
-        backup = operation.result()
-        backups_to_delete[-1] = backup
-        return backup
-    except Exception:
-        try:
-            table_admin_client.delete_backup(name=backup_name)
-        except Exception:
-            pass
-        if backup_placeholder in backups_to_delete:
-            backups_to_delete.remove(backup_placeholder)
-        raise
+    backup = operation.result()
+    backups_to_delete[-1] = backup
+    return backup
 
 
 def assert_table_cell_value_equal_to(
