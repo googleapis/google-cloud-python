@@ -47,8 +47,8 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.26.1, <2.0.0",
     "protobuf >= 6.33.5, < 8.0.0",
-    "google-cloud-access-context-manager >= 0.2.0, <1.0.0",
-    "google-cloud-os-config >= 1.13.0, <2.0.0",
+    "google-cloud-access-context-manager >= 0.2.2, <1.0.0",
+    "google-cloud-os-config >= 1.20.1, <2.0.0",
     "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
 ]
 extras = {
