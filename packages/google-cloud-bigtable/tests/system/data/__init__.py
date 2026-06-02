@@ -34,6 +34,14 @@ class SystemTestRunner:
     used by standard system tests, and metrics tests
     """
 
+    @pytest.fixture(scope="session", autouse=True)
+    def cleanup_old_instances(self, project_id):
+        """
+        Automatically deletes any test instances older than 1 day.
+        """
+        from tests.system.utils import clear_stale_instances
+        clear_stale_instances(project_id, "python-bigtable-tests", older_than_days=1)
+
     @pytest.fixture(scope="session")
     def init_table_id(self):
         """
