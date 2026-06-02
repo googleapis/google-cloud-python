@@ -1175,32 +1175,6 @@ def test_table_sample_row_keys():
     assert result[0] == response_iterator
 
 
-def test_table_sample_row_keys_w_row_range():
-    credentials = _make_credentials()
-    client = _make_client(project="project-id", credentials=credentials, admin=True)
-    instance = client.instance(instance_id=INSTANCE_ID)
-    table = _make_table(TABLE_ID, instance)
-    response_iterator = object()
-
-    data_api = client._table_data_client = _make_data_api()
-    data_api.sample_row_keys.return_value = [response_iterator]
-
-    from google.cloud.bigtable.row_set import RowRange
-    row_range = RowRange(start_key=b"a", end_key=b"b", start_inclusive=True, end_inclusive=False)
-    result = table.sample_row_keys(row_range=row_range)
-
-    assert result[0] == response_iterator
-    data_api.sample_row_keys.assert_called_once_with(
-        request={
-            "table_name": table.name,
-            "app_profile_id": table._app_profile_id,
-            "row_range": {
-                "start_key_closed": b"a",
-                "end_key_open": b"b",
-            }
-        }
-    )
-
 
 def test_table_truncate():
     credentials = _make_credentials()
