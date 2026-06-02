@@ -221,6 +221,7 @@ libraries:
       default_version: v1alpha1
   - name: google-auth
     version: 2.53.0
+    skip_release: true
     python:
       library_type: AUTH
   - name: google-auth-httplib2
