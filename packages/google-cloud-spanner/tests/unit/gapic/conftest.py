@@ -12,7 +12,6 @@ def provide_loop_to_sync_grpc_tests():
     """
     try:
         asyncio.get_running_loop()
-        yield
     except RuntimeError:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -21,3 +20,5 @@ def provide_loop_to_sync_grpc_tests():
         finally:
             loop.close()
             asyncio.set_event_loop(None)
+    else:
+        yield

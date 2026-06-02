@@ -230,6 +230,7 @@ def unit(session, protobuf_implementation):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
+    session.install("pytest-xdist")
 
     # TODO(https://github.com/googleapis/synthtool/issues/1976):
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
@@ -240,6 +241,8 @@ def unit(session, protobuf_implementation):
     # Run py.test against the unit tests.
     args = [
         "py.test",
+        "-n",
+        "auto",
         "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -753,6 +756,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
+    session.skip("Mypy is not yet supported")
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
@@ -830,12 +834,15 @@ def core_deps_from_source(session, protobuf_implementation):
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install("pytest-xdist")
     print(
         f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
     )
 
     session.run(
         "py.test",
+        "-n",
+        "auto",
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,

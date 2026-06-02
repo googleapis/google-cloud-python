@@ -60,7 +60,17 @@ dependencies = [
     "google-cloud-monitoring >= 2.16.0",
     "mmh3 >= 4.1.0",
 ]
-extras = {"libcst": "libcst >= 0.2.5"}
+extras = {
+    "libcst": "libcst >= 0.2.5",
+    "test": [
+        "pytest",
+        "mock",
+        "asyncmock",
+        "pytest-cov",
+        "pytest-asyncio",
+        "pytest-xdist",
+    ],
+}
 
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner"
 

@@ -131,7 +131,21 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
                                 self.assertIsNotNone(ia_api)
                                 self.assertIsNotNone(da_api)
 
-    def test_initialize_metrics_double_check(self):
+    # Safety shield mocks: We intercept the OpenTelemetry metric classes at the client module namespace level
+    # to prevent instantiating real exporter objects. This prevents spawning live background worker threads
+    # that periodically wake up and trigger 401 credential errors inside unauthenticated unit test runs.
+    @mock.patch("google.cloud.spanner_v1._async.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1._async.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1._async.client.MeterProvider")
+    # Global state reset: Temporarily override the module's process-wide global boolean _metrics_monitor_initialized
+    # to False so that the client enters the initialization logic instead of returning early.
+    @mock.patch(
+        "google.cloud.spanner_v1._async.client._metrics_monitor_initialized",
+        False,
+    )
+    def test_initialize_metrics_double_check(
+        self, mock_provider, mock_reader, mock_exporter
+    ):
         # coverage for line 143->exit
         from google.cloud.spanner_v1._async import client as MUT
 
@@ -147,15 +161,17 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
             def __exit__(self, *args):
                 return original_lock.__exit__(*args)
 
+        # Concurrency race condition simulator: Replace the process synchronization lock with our custom SettingLock.
+        # When this lock enters, it toggles _metrics_monitor_initialized to True to simulate another thread
+        # completing metrics setup while this thread was waiting for the lock.
         with mock.patch(
-            "google.cloud.spanner_v1._async.client._metrics_monitor_initialized", False
+            "google.cloud.spanner_v1._async.client._metrics_monitor_lock",
+            SettingLock(),
         ):
-            with mock.patch(
-                "google.cloud.spanner_v1._async.client._metrics_monitor_lock",
-                SettingLock(),
-            ):
-                MUT._initialize_metrics("project", self.credentials)
-                self.assertTrue(MUT._metrics_monitor_initialized)
+            # Trigger the initialization function and verify Spanner's double-checked lock safely
+            # checks the flag again and aborts cleanly to prevent dual-registration.
+            MUT._initialize_metrics("project", self.credentials)
+            self.assertTrue(MUT._metrics_monitor_initialized)
 
     def test_default_transaction_options_validation(self):
         # coverage for line 344

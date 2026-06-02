@@ -329,7 +329,7 @@ class Test_make_value_pb(unittest.TestCase):
             decimal.Decimal("1E-9"),
         ]
         for value in cases:
-            with self.subTest(value=value):
+            with self.subTest(value=str(value)):
                 value_pb = self._callFUT(value)
                 self.assertIsInstance(value_pb, Value)
                 self.assertEqual(value_pb.string_value, str(value))
@@ -371,7 +371,7 @@ class Test_make_value_pb(unittest.TestCase):
         ]
 
         for value, err_msg in cases:
-            with self.subTest(value=value, err_msg=err_msg):
+            with self.subTest(value=str(value), err_msg=err_msg):
                 self.assertRaisesRegex(
                     ValueError,
                     err_msg,

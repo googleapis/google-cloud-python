@@ -67,10 +67,8 @@ def patched_client(monkeypatch):
 
     with (
         patch("google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceClient"),
-        patch(
-            "google.cloud.spanner_v1.metrics.metrics_exporter.CloudMonitoringMetricsExporter"
-        ),
-        patch("opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"),
+        patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter"),
+        patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader"),
     ):
         client = Client(
             project="test",

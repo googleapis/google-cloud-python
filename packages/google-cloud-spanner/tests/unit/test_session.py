@@ -1714,9 +1714,18 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
+        import threading
+
+        main_thread = threading.current_thread()
+        _results = [1, 1.5]
+
         # retry once w/ timeout_secs=1
-        def _time(_results=[1, 1.5]):
-            return _results.pop(0)
+        def _time():
+            if threading.current_thread() is main_thread:
+                if len(_results) > 1:
+                    return _results.pop(0)
+                return _results[0]
+            return 1.0
 
         with mock.patch("time.time", _time):
             with mock.patch("time.sleep") as sleep_mock:
@@ -1783,9 +1792,18 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
+        import threading
+
+        main_thread = threading.current_thread()
+        _results = [1, 2, 4, 8]
+
         # retry several times to check backoff
-        def _time(_results=[1, 2, 4, 8]):
-            return _results.pop(0)
+        def _time():
+            if threading.current_thread() is main_thread:
+                if len(_results) > 1:
+                    return _results.pop(0)
+                return _results[0]
+            return 1.0
 
         with (
             mock.patch("time.time", _time),
