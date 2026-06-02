@@ -21,7 +21,7 @@ name = "grpc-google-iam-v1"
 version = "0.14.4"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = { text = "Apache 2.0" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 description = "IAM API client library"
 readme = "README.rst"
 classifiers = [
@@ -30,7 +30,6 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -40,7 +39,7 @@ classifiers = [
   "Topic :: Internet",
 ]
 dependencies = [
-  "grpcio >= 1.44.0, < 2.0.0",
+  "grpcio >= 1.59.0, < 2.0.0",
   "googleapis-common-protos[grpc] >= 1.63.2, < 2.0.0",
   "protobuf >= 4.25.8, < 8.0.0",
 ]

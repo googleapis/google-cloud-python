@@ -279,8 +279,6 @@ def install_systemtest_dependencies(session, with_extras, *constraints):
 @nox.parametrize("with_extras", [True, False])
 def system(session, with_extras):
     """Run the system test suite."""
-    if session.python == "3.9":
-        session.skip("Python 3.9 is not supported.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
