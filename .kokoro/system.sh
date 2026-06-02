@@ -54,16 +54,12 @@ run_package_test() {
     "google-auth")
       # Copy files needed for google-auth system tests
       mkdir -p "${package_path}/system_tests/data"
-      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
-      SA_EMAIL=$(grep -o '"client_email": "[^"]*"' "${KOKORO_GFILE_DIR}/google-auth-service-account.json" | cut -d'"' -f4)
-      EPHEMERAL_KEY="${KOKORO_GFILE_DIR}/ephemeral.json"
-      echo "Ephemeral Key SA Email: ${SA_EMAIL}"
-      gcloud iam service-accounts keys create "${EPHEMERAL_KEY}" --iam-account="${SA_EMAIL}" --project="${PROJECT_ID}"
-      cp "${EPHEMERAL_KEY}" "${package_path}/system_tests/data/service_account.json"
-      GOOGLE_APPLICATION_CREDENTIALS="${EPHEMERAL_KEY}"
+      cp "${KOKORO_GFILE_DIR}/google-auth-service-account.json" "${package_path}/system_tests/data/service_account.json"
       cp "${KOKORO_GFILE_DIR}/google-auth-authorized-user.json" "${package_path}/system_tests/data/authorized_user.json"
       cp "${KOKORO_GFILE_DIR}/google-auth-impersonated-service-account.json" "${package_path}/system_tests/data/impersonated_service_account.json"
 
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
       NOX_FILE="system_tests/noxfile.py"
       NOX_SESSION=""
       ;;
