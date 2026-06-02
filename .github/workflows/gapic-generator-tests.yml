@@ -195,7 +195,7 @@ jobs:
 
       - name: Run Bazel Integration Tests
         env:
-          USE_BAZEL_VERSION: 6.4.0
+          USE_BAZEL_VERSION: 7.7.1
         run: |
           # We need to move into the package directory if the 
           # WORKSPACE file is located there.
