@@ -196,7 +196,10 @@ def _consume_literal(sql_template: str, current_idx: int, literal_text: str) -> 
         elif _is_escaped_close_brace(sql_template, current_idx, literal_text[lit_idx]):
             current_idx += 2
             lit_idx += 1
-        elif current_idx < len(sql_template) and sql_template[current_idx] == literal_text[lit_idx]:
+        elif (
+            current_idx < len(sql_template)
+            and sql_template[current_idx] == literal_text[lit_idx]
+        ):
             current_idx += 1
             lit_idx += 1
         else:

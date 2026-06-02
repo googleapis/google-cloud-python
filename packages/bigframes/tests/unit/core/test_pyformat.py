@@ -176,6 +176,28 @@ AND active = {active}
     assert "   3: AND active = {active}" in err_msg
 
 
+def test_pyformat_with_malformed_template_raises_valueerror(session):
+    pyformat_args: Dict[str, Any] = {}
+
+    # Case 1: Single '{' (unmatched)
+    sql_1 = "SELECT {foo"
+    with pytest.raises(ValueError) as exc_info:
+        pyformat.pyformat(sql_1, pyformat_args=pyformat_args, session=session)
+    err_msg_1 = str(exc_info.value)
+    assert "Failed to parse SQL template" in err_msg_1
+    assert "Did you mean to escape '{' and '}'" in err_msg_1
+    assert "expected '}' before end of string" in err_msg_1
+
+    # Case 2: Single '}' (unmatched)
+    sql_2 = "SELECT foo}"
+    with pytest.raises(ValueError) as exc_info:
+        pyformat.pyformat(sql_2, pyformat_args=pyformat_args, session=session)
+    err_msg_2 = str(exc_info.value)
+    assert "Failed to parse SQL template" in err_msg_2
+    assert "Did you mean to escape '{' and '}'" in err_msg_2
+    assert "Single '}' encountered in format string" in err_msg_2
+
+
 def test_pyformat_with_no_variables(session):
     pyformat_args: Dict[str, Any] = {}
     sql = "SELECT '{{escaped curly brackets}}'"
