@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1272,8 +1288,8 @@ def test_text_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        text_service.GenerateTextRequest,
-        dict,
+        text_service.GenerateTextRequest(),
+        {},
     ],
 )
 def test_generate_text(request_type, transport: str = "grpc"):
@@ -1284,7 +1300,7 @@ def test_generate_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_text), "__call__") as call:
@@ -1325,9 +1341,10 @@ def test_generate_text_non_empty_request_with_auto_populated_field():
         client.generate_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == text_service.GenerateTextRequest(
+        request_msg = text_service.GenerateTextRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_text_use_cached_wrapped_rpc():
@@ -1408,9 +1425,14 @@ async def test_generate_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_text_async(
-    transport: str = "grpc_asyncio", request_type=text_service.GenerateTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        text_service.GenerateTextRequest(),
+        {},
+    ],
+)
+async def test_generate_text_async(request_type, transport: str = "grpc_asyncio"):
     client = TextServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1418,7 +1440,7 @@ async def test_generate_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_text), "__call__") as call:
@@ -1436,11 +1458,6 @@ async def test_generate_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, text_service.GenerateTextResponse)
-
-
-@pytest.mark.asyncio
-async def test_generate_text_async_from_dict():
-    await test_generate_text_async(request_type=dict)
 
 
 def test_generate_text_field_headers():
@@ -1641,8 +1658,8 @@ async def test_generate_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        text_service.EmbedTextRequest,
-        dict,
+        text_service.EmbedTextRequest(),
+        {},
     ],
 )
 def test_embed_text(request_type, transport: str = "grpc"):
@@ -1653,7 +1670,7 @@ def test_embed_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.embed_text), "__call__") as call:
@@ -1695,10 +1712,11 @@ def test_embed_text_non_empty_request_with_auto_populated_field():
         client.embed_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == text_service.EmbedTextRequest(
+        request_msg = text_service.EmbedTextRequest(
             model="model_value",
             text="text_value",
         )
+        assert args[0] == request_msg
 
 
 def test_embed_text_use_cached_wrapped_rpc():
@@ -1777,9 +1795,14 @@ async def test_embed_text_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_embed_text_async(
-    transport: str = "grpc_asyncio", request_type=text_service.EmbedTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        text_service.EmbedTextRequest(),
+        {},
+    ],
+)
+async def test_embed_text_async(request_type, transport: str = "grpc_asyncio"):
     client = TextServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1787,7 +1810,7 @@ async def test_embed_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.embed_text), "__call__") as call:
@@ -1805,11 +1828,6 @@ async def test_embed_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, text_service.EmbedTextResponse)
-
-
-@pytest.mark.asyncio
-async def test_embed_text_async_from_dict():
-    await test_embed_text_async(request_type=dict)
 
 
 def test_embed_text_field_headers():
@@ -1968,8 +1986,8 @@ async def test_embed_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        text_service.BatchEmbedTextRequest,
-        dict,
+        text_service.BatchEmbedTextRequest(),
+        {},
     ],
 )
 def test_batch_embed_text(request_type, transport: str = "grpc"):
@@ -1980,7 +1998,7 @@ def test_batch_embed_text(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_embed_text), "__call__") as call:
@@ -2021,9 +2039,10 @@ def test_batch_embed_text_non_empty_request_with_auto_populated_field():
         client.batch_embed_text(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == text_service.BatchEmbedTextRequest(
+        request_msg = text_service.BatchEmbedTextRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_embed_text_use_cached_wrapped_rpc():
@@ -2106,9 +2125,14 @@ async def test_batch_embed_text_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_embed_text_async(
-    transport: str = "grpc_asyncio", request_type=text_service.BatchEmbedTextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        text_service.BatchEmbedTextRequest(),
+        {},
+    ],
+)
+async def test_batch_embed_text_async(request_type, transport: str = "grpc_asyncio"):
     client = TextServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2116,7 +2140,7 @@ async def test_batch_embed_text_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_embed_text), "__call__") as call:
@@ -2134,11 +2158,6 @@ async def test_batch_embed_text_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, text_service.BatchEmbedTextResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_embed_text_async_from_dict():
-    await test_batch_embed_text_async(request_type=dict)
 
 
 def test_batch_embed_text_field_headers():
@@ -2297,8 +2316,8 @@ async def test_batch_embed_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        text_service.CountTextTokensRequest,
-        dict,
+        text_service.CountTextTokensRequest(),
+        {},
     ],
 )
 def test_count_text_tokens(request_type, transport: str = "grpc"):
@@ -2309,7 +2328,7 @@ def test_count_text_tokens(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2357,9 +2376,10 @@ def test_count_text_tokens_non_empty_request_with_auto_populated_field():
         client.count_text_tokens(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == text_service.CountTextTokensRequest(
+        request_msg = text_service.CountTextTokensRequest(
             model="model_value",
         )
+        assert args[0] == request_msg
 
 
 def test_count_text_tokens_use_cached_wrapped_rpc():
@@ -2442,9 +2462,14 @@ async def test_count_text_tokens_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_count_text_tokens_async(
-    transport: str = "grpc_asyncio", request_type=text_service.CountTextTokensRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        text_service.CountTextTokensRequest(),
+        {},
+    ],
+)
+async def test_count_text_tokens_async(request_type, transport: str = "grpc_asyncio"):
     client = TextServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2452,7 +2477,7 @@ async def test_count_text_tokens_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2475,11 +2500,6 @@ async def test_count_text_tokens_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, text_service.CountTextTokensResponse)
     assert response.token_count == 1193
-
-
-@pytest.mark.asyncio
-async def test_count_text_tokens_async_from_dict():
-    await test_count_text_tokens_async(request_type=dict)
 
 
 def test_count_text_tokens_field_headers():
@@ -3536,7 +3556,6 @@ def test_generate_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.GenerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3557,7 +3576,6 @@ def test_embed_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.EmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3578,7 +3596,6 @@ def test_batch_embed_text_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.BatchEmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3601,7 +3618,6 @@ def test_count_text_tokens_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.CountTextTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -3640,7 +3656,6 @@ async def test_generate_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.GenerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3665,7 +3680,6 @@ async def test_embed_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.EmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3690,7 +3704,6 @@ async def test_batch_embed_text_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.BatchEmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -3719,7 +3732,6 @@ async def test_count_text_tokens_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.CountTextTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -4273,7 +4285,6 @@ def test_generate_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.GenerateTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4293,7 +4304,6 @@ def test_embed_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.EmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4313,7 +4323,6 @@ def test_batch_embed_text_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.BatchEmbedTextRequest()
-
         assert args[0] == request_msg
 
 
@@ -4335,7 +4344,6 @@ def test_count_text_tokens_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = text_service.CountTextTokensRequest()
-
         assert args[0] == request_msg
 
 

@@ -74,7 +74,7 @@ from google.iam.v1 import (
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.data_product_service import pagers
-from google.cloud.dataplex_v1.types import data_products, service
+from google.cloud.dataplex_v1.types import approval_workflow, data_products, service
 
 from .transports.base import DEFAULT_CLIENT_INFO, DataProductServiceTransport
 from .transports.grpc import DataProductServiceGrpcTransport
@@ -241,6 +241,28 @@ class DataProductServiceClient(metaclass=DataProductServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def change_request_path(
+        project: str,
+        location: str,
+        change_request: str,
+    ) -> str:
+        """Returns a fully-qualified change_request string."""
+        return "projects/{project}/locations/{location}/changeRequests/{change_request}".format(
+            project=project,
+            location=location,
+            change_request=change_request,
+        )
+
+    @staticmethod
+    def parse_change_request_path(path: str) -> Dict[str, str]:
+        """Parses a change_request path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/changeRequests/(?P<change_request>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def data_asset_path(
         project: str,
         location: str,
@@ -282,6 +304,148 @@ class DataProductServiceClient(metaclass=DataProductServiceClientMeta):
         """Parses a data_product path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataProducts/(?P<data_product>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def entry_path(
+        project: str,
+        location: str,
+        entry_group: str,
+        entry: str,
+    ) -> str:
+        """Returns a fully-qualified entry string."""
+        return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}".format(
+            project=project,
+            location=location,
+            entry_group=entry_group,
+            entry=entry,
+        )
+
+    @staticmethod
+    def parse_entry_path(path: str) -> Dict[str, str]:
+        """Parses a entry path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryGroups/(?P<entry_group>.+?)/entries/(?P<entry>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def entry_group_path(
+        project: str,
+        location: str,
+        entry_group: str,
+    ) -> str:
+        """Returns a fully-qualified entry_group string."""
+        return (
+            "projects/{project}/locations/{location}/entryGroups/{entry_group}".format(
+                project=project,
+                location=location,
+                entry_group=entry_group,
+            )
+        )
+
+    @staticmethod
+    def parse_entry_group_path(path: str) -> Dict[str, str]:
+        """Parses a entry_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryGroups/(?P<entry_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def entry_link_path(
+        project: str,
+        location: str,
+        entry_group: str,
+        entry_link: str,
+    ) -> str:
+        """Returns a fully-qualified entry_link string."""
+        return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entryLinks/{entry_link}".format(
+            project=project,
+            location=location,
+            entry_group=entry_group,
+            entry_link=entry_link,
+        )
+
+    @staticmethod
+    def parse_entry_link_path(path: str) -> Dict[str, str]:
+        """Parses a entry_link path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryGroups/(?P<entry_group>.+?)/entryLinks/(?P<entry_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def glossary_path(
+        project: str,
+        location: str,
+        glossary: str,
+    ) -> str:
+        """Returns a fully-qualified glossary string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}".format(
+            project=project,
+            location=location,
+            glossary=glossary,
+        )
+
+    @staticmethod
+    def parse_glossary_path(path: str) -> Dict[str, str]:
+        """Parses a glossary path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def glossary_category_path(
+        project: str,
+        location: str,
+        glossary: str,
+        glossary_category: str,
+    ) -> str:
+        """Returns a fully-qualified glossary_category string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}".format(
+            project=project,
+            location=location,
+            glossary=glossary,
+            glossary_category=glossary_category,
+        )
+
+    @staticmethod
+    def parse_glossary_category_path(path: str) -> Dict[str, str]:
+        """Parses a glossary_category path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)/categories/(?P<glossary_category>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def glossary_term_path(
+        project: str,
+        location: str,
+        glossary: str,
+        glossary_term: str,
+    ) -> str:
+        """Returns a fully-qualified glossary_term string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}".format(
+            project=project,
+            location=location,
+            glossary=glossary,
+            glossary_term=glossary_term,
+        )
+
+    @staticmethod
+    def parse_glossary_term_path(path: str) -> Dict[str, str]:
+        """Parses a glossary_term path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)/terms/(?P<glossary_term>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1435,6 +1599,137 @@ class DataProductServiceClient(metaclass=DataProductServiceClientMeta):
             self._transport.operations_client,
             data_products.DataProduct,
             metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def request_data_product_access(
+        self,
+        request: Optional[
+            Union[data_products.RequestDataProductAccessRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        change_request: Optional[approval_workflow.ChangeRequest] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> data_products.RequestDataProductAccessResponse:
+        r"""Requests access to a data product. This will trigger
+        an access approval workflow, and the requester will need
+        to wait for the approval to be granted before they will
+        be able to access the data product assets.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_request_data_product_access():
+                # Create a client
+                client = dataplex_v1.DataProductServiceClient()
+
+                # Initialize request argument(s)
+                change_request = dataplex_v1.ChangeRequest()
+                change_request.create_entry.parent = "parent_value"
+                change_request.create_entry.entry_id = "entry_id_value"
+                change_request.create_entry.entry.entry_type = "entry_type_value"
+
+                request = dataplex_v1.RequestDataProductAccessRequest(
+                    parent="parent_value",
+                    change_request=change_request,
+                )
+
+                # Make the request
+                response = client.request_data_product_access(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.RequestDataProductAccessRequest, dict]):
+                The request object. Message for requesting access to a
+                Data Product.
+            parent (str):
+                Required. The resource name of the data product. Format:
+                projects/{project_number}/locations/{location_id}/dataProducts/{data_product_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            change_request (google.cloud.dataplex_v1.types.ChangeRequest):
+                Required. The change request for the
+                data product access request.
+
+                This corresponds to the ``change_request`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.RequestDataProductAccessResponse:
+                Response message for requesting
+                access to a Data Product.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, change_request]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_products.RequestDataProductAccessRequest):
+            request = data_products.RequestDataProductAccessRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if change_request is not None:
+                request.change_request = change_request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.request_data_product_access
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

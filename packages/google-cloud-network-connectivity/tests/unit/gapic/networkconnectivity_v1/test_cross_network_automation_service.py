@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1402,8 +1418,8 @@ def test_cross_network_automation_service_client_create_channel_credentials_file
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.ListServiceConnectionMapsRequest,
-        dict,
+        cross_network_automation.ListServiceConnectionMapsRequest(),
+        {},
     ],
 )
 def test_list_service_connection_maps(request_type, transport: str = "grpc"):
@@ -1414,7 +1430,7 @@ def test_list_service_connection_maps(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1467,12 +1483,13 @@ def test_list_service_connection_maps_non_empty_request_with_auto_populated_fiel
         client.list_service_connection_maps(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.ListServiceConnectionMapsRequest(
+        request_msg = cross_network_automation.ListServiceConnectionMapsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_service_connection_maps_use_cached_wrapped_rpc():
@@ -1558,9 +1575,15 @@ async def test_list_service_connection_maps_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.ListServiceConnectionMapsRequest(),
+        {},
+    ],
+)
 async def test_list_service_connection_maps_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.ListServiceConnectionMapsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1569,7 +1592,7 @@ async def test_list_service_connection_maps_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1594,11 +1617,6 @@ async def test_list_service_connection_maps_async(
     assert isinstance(response, pagers.ListServiceConnectionMapsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_service_connection_maps_async_from_dict():
-    await test_list_service_connection_maps_async(request_type=dict)
 
 
 def test_list_service_connection_maps_field_headers():
@@ -1963,8 +1981,8 @@ async def test_list_service_connection_maps_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.GetServiceConnectionMapRequest,
-        dict,
+        cross_network_automation.GetServiceConnectionMapRequest(),
+        {},
     ],
 )
 def test_get_service_connection_map(request_type, transport: str = "grpc"):
@@ -1975,7 +1993,7 @@ def test_get_service_connection_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2035,9 +2053,10 @@ def test_get_service_connection_map_non_empty_request_with_auto_populated_field(
         client.get_service_connection_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.GetServiceConnectionMapRequest(
+        request_msg = cross_network_automation.GetServiceConnectionMapRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_connection_map_use_cached_wrapped_rpc():
@@ -2123,9 +2142,15 @@ async def test_get_service_connection_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.GetServiceConnectionMapRequest(),
+        {},
+    ],
+)
 async def test_get_service_connection_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.GetServiceConnectionMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2134,7 +2159,7 @@ async def test_get_service_connection_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2169,11 +2194,6 @@ async def test_get_service_connection_map_async(
     assert response.infrastructure == cross_network_automation.Infrastructure.PSC
     assert response.token == "token_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_service_connection_map_async_from_dict():
-    await test_get_service_connection_map_async(request_type=dict)
 
 
 def test_get_service_connection_map_field_headers():
@@ -2330,8 +2350,8 @@ async def test_get_service_connection_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.CreateServiceConnectionMapRequest,
-        dict,
+        cross_network_automation.CreateServiceConnectionMapRequest(),
+        {},
     ],
 )
 def test_create_service_connection_map(request_type, transport: str = "grpc"):
@@ -2342,7 +2362,7 @@ def test_create_service_connection_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2389,11 +2409,12 @@ def test_create_service_connection_map_non_empty_request_with_auto_populated_fie
         client.create_service_connection_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.CreateServiceConnectionMapRequest(
+        request_msg = cross_network_automation.CreateServiceConnectionMapRequest(
             parent="parent_value",
             service_connection_map_id="service_connection_map_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_connection_map_use_cached_wrapped_rpc():
@@ -2489,9 +2510,15 @@ async def test_create_service_connection_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.CreateServiceConnectionMapRequest(),
+        {},
+    ],
+)
 async def test_create_service_connection_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.CreateServiceConnectionMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2500,7 +2527,7 @@ async def test_create_service_connection_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2520,11 +2547,6 @@ async def test_create_service_connection_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_service_connection_map_async_from_dict():
-    await test_create_service_connection_map_async(request_type=dict)
 
 
 def test_create_service_connection_map_field_headers():
@@ -2709,8 +2731,8 @@ async def test_create_service_connection_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.UpdateServiceConnectionMapRequest,
-        dict,
+        cross_network_automation.UpdateServiceConnectionMapRequest(),
+        {},
     ],
 )
 def test_update_service_connection_map(request_type, transport: str = "grpc"):
@@ -2721,7 +2743,7 @@ def test_update_service_connection_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2766,9 +2788,10 @@ def test_update_service_connection_map_non_empty_request_with_auto_populated_fie
         client.update_service_connection_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.UpdateServiceConnectionMapRequest(
+        request_msg = cross_network_automation.UpdateServiceConnectionMapRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_service_connection_map_use_cached_wrapped_rpc():
@@ -2864,9 +2887,15 @@ async def test_update_service_connection_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.UpdateServiceConnectionMapRequest(),
+        {},
+    ],
+)
 async def test_update_service_connection_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.UpdateServiceConnectionMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2875,7 +2904,7 @@ async def test_update_service_connection_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2895,11 +2924,6 @@ async def test_update_service_connection_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_service_connection_map_async_from_dict():
-    await test_update_service_connection_map_async(request_type=dict)
 
 
 def test_update_service_connection_map_field_headers():
@@ -3074,8 +3098,8 @@ async def test_update_service_connection_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.DeleteServiceConnectionMapRequest,
-        dict,
+        cross_network_automation.DeleteServiceConnectionMapRequest(),
+        {},
     ],
 )
 def test_delete_service_connection_map(request_type, transport: str = "grpc"):
@@ -3086,7 +3110,7 @@ def test_delete_service_connection_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3133,11 +3157,12 @@ def test_delete_service_connection_map_non_empty_request_with_auto_populated_fie
         client.delete_service_connection_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.DeleteServiceConnectionMapRequest(
+        request_msg = cross_network_automation.DeleteServiceConnectionMapRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_connection_map_use_cached_wrapped_rpc():
@@ -3233,9 +3258,15 @@ async def test_delete_service_connection_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.DeleteServiceConnectionMapRequest(),
+        {},
+    ],
+)
 async def test_delete_service_connection_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.DeleteServiceConnectionMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3244,7 +3275,7 @@ async def test_delete_service_connection_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3264,11 +3295,6 @@ async def test_delete_service_connection_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_connection_map_async_from_dict():
-    await test_delete_service_connection_map_async(request_type=dict)
 
 
 def test_delete_service_connection_map_field_headers():
@@ -3425,8 +3451,8 @@ async def test_delete_service_connection_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.ListServiceConnectionPoliciesRequest,
-        dict,
+        cross_network_automation.ListServiceConnectionPoliciesRequest(),
+        {},
     ],
 )
 def test_list_service_connection_policies(request_type, transport: str = "grpc"):
@@ -3437,7 +3463,7 @@ def test_list_service_connection_policies(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3492,12 +3518,13 @@ def test_list_service_connection_policies_non_empty_request_with_auto_populated_
         client.list_service_connection_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.ListServiceConnectionPoliciesRequest(
+        request_msg = cross_network_automation.ListServiceConnectionPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_service_connection_policies_use_cached_wrapped_rpc():
@@ -3583,9 +3610,15 @@ async def test_list_service_connection_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.ListServiceConnectionPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_service_connection_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.ListServiceConnectionPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3594,7 +3627,7 @@ async def test_list_service_connection_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3619,11 +3652,6 @@ async def test_list_service_connection_policies_async(
     assert isinstance(response, pagers.ListServiceConnectionPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_service_connection_policies_async_from_dict():
-    await test_list_service_connection_policies_async(request_type=dict)
 
 
 def test_list_service_connection_policies_field_headers():
@@ -3994,8 +4022,8 @@ async def test_list_service_connection_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.GetServiceConnectionPolicyRequest,
-        dict,
+        cross_network_automation.GetServiceConnectionPolicyRequest(),
+        {},
     ],
 )
 def test_get_service_connection_policy(request_type, transport: str = "grpc"):
@@ -4006,7 +4034,7 @@ def test_get_service_connection_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4064,9 +4092,10 @@ def test_get_service_connection_policy_non_empty_request_with_auto_populated_fie
         client.get_service_connection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.GetServiceConnectionPolicyRequest(
+        request_msg = cross_network_automation.GetServiceConnectionPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_connection_policy_use_cached_wrapped_rpc():
@@ -4152,9 +4181,15 @@ async def test_get_service_connection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.GetServiceConnectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_service_connection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.GetServiceConnectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4163,7 +4198,7 @@ async def test_get_service_connection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4196,11 +4231,6 @@ async def test_get_service_connection_policy_async(
     assert response.service_class == "service_class_value"
     assert response.infrastructure == cross_network_automation.Infrastructure.PSC
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_service_connection_policy_async_from_dict():
-    await test_get_service_connection_policy_async(request_type=dict)
 
 
 def test_get_service_connection_policy_field_headers():
@@ -4357,8 +4387,8 @@ async def test_get_service_connection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.CreateServiceConnectionPolicyRequest,
-        dict,
+        cross_network_automation.CreateServiceConnectionPolicyRequest(),
+        {},
     ],
 )
 def test_create_service_connection_policy(request_type, transport: str = "grpc"):
@@ -4369,7 +4399,7 @@ def test_create_service_connection_policy(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4416,11 +4446,12 @@ def test_create_service_connection_policy_non_empty_request_with_auto_populated_
         client.create_service_connection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.CreateServiceConnectionPolicyRequest(
+        request_msg = cross_network_automation.CreateServiceConnectionPolicyRequest(
             parent="parent_value",
             service_connection_policy_id="service_connection_policy_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_connection_policy_use_cached_wrapped_rpc():
@@ -4516,9 +4547,15 @@ async def test_create_service_connection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.CreateServiceConnectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_service_connection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.CreateServiceConnectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4527,7 +4564,7 @@ async def test_create_service_connection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4547,11 +4584,6 @@ async def test_create_service_connection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_service_connection_policy_async_from_dict():
-    await test_create_service_connection_policy_async(request_type=dict)
 
 
 def test_create_service_connection_policy_field_headers():
@@ -4736,8 +4768,8 @@ async def test_create_service_connection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.UpdateServiceConnectionPolicyRequest,
-        dict,
+        cross_network_automation.UpdateServiceConnectionPolicyRequest(),
+        {},
     ],
 )
 def test_update_service_connection_policy(request_type, transport: str = "grpc"):
@@ -4748,7 +4780,7 @@ def test_update_service_connection_policy(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4793,9 +4825,10 @@ def test_update_service_connection_policy_non_empty_request_with_auto_populated_
         client.update_service_connection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.UpdateServiceConnectionPolicyRequest(
+        request_msg = cross_network_automation.UpdateServiceConnectionPolicyRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_service_connection_policy_use_cached_wrapped_rpc():
@@ -4891,9 +4924,15 @@ async def test_update_service_connection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.UpdateServiceConnectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_service_connection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.UpdateServiceConnectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4902,7 +4941,7 @@ async def test_update_service_connection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4922,11 +4961,6 @@ async def test_update_service_connection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_service_connection_policy_async_from_dict():
-    await test_update_service_connection_policy_async(request_type=dict)
 
 
 def test_update_service_connection_policy_field_headers():
@@ -5101,8 +5135,8 @@ async def test_update_service_connection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.DeleteServiceConnectionPolicyRequest,
-        dict,
+        cross_network_automation.DeleteServiceConnectionPolicyRequest(),
+        {},
     ],
 )
 def test_delete_service_connection_policy(request_type, transport: str = "grpc"):
@@ -5113,7 +5147,7 @@ def test_delete_service_connection_policy(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5160,11 +5194,12 @@ def test_delete_service_connection_policy_non_empty_request_with_auto_populated_
         client.delete_service_connection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.DeleteServiceConnectionPolicyRequest(
+        request_msg = cross_network_automation.DeleteServiceConnectionPolicyRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_connection_policy_use_cached_wrapped_rpc():
@@ -5260,9 +5295,15 @@ async def test_delete_service_connection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.DeleteServiceConnectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_service_connection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.DeleteServiceConnectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5271,7 +5312,7 @@ async def test_delete_service_connection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5291,11 +5332,6 @@ async def test_delete_service_connection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_connection_policy_async_from_dict():
-    await test_delete_service_connection_policy_async(request_type=dict)
 
 
 def test_delete_service_connection_policy_field_headers():
@@ -5452,8 +5488,8 @@ async def test_delete_service_connection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.ListServiceClassesRequest,
-        dict,
+        cross_network_automation.ListServiceClassesRequest(),
+        {},
     ],
 )
 def test_list_service_classes(request_type, transport: str = "grpc"):
@@ -5464,7 +5500,7 @@ def test_list_service_classes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5517,12 +5553,13 @@ def test_list_service_classes_non_empty_request_with_auto_populated_field():
         client.list_service_classes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.ListServiceClassesRequest(
+        request_msg = cross_network_automation.ListServiceClassesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_service_classes_use_cached_wrapped_rpc():
@@ -5607,9 +5644,15 @@ async def test_list_service_classes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.ListServiceClassesRequest(),
+        {},
+    ],
+)
 async def test_list_service_classes_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.ListServiceClassesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5618,7 +5661,7 @@ async def test_list_service_classes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5643,11 +5686,6 @@ async def test_list_service_classes_async(
     assert isinstance(response, pagers.ListServiceClassesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_service_classes_async_from_dict():
-    await test_list_service_classes_async(request_type=dict)
 
 
 def test_list_service_classes_field_headers():
@@ -6006,8 +6044,8 @@ async def test_list_service_classes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.GetServiceClassRequest,
-        dict,
+        cross_network_automation.GetServiceClassRequest(),
+        {},
     ],
 )
 def test_get_service_class(request_type, transport: str = "grpc"):
@@ -6018,7 +6056,7 @@ def test_get_service_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6072,9 +6110,10 @@ def test_get_service_class_non_empty_request_with_auto_populated_field():
         client.get_service_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.GetServiceClassRequest(
+        request_msg = cross_network_automation.GetServiceClassRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_class_use_cached_wrapped_rpc():
@@ -6157,10 +6196,14 @@ async def test_get_service_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.GetServiceClassRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.GetServiceClassRequest(),
+        {},
+    ],
+)
+async def test_get_service_class_async(request_type, transport: str = "grpc_asyncio"):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6168,7 +6211,7 @@ async def test_get_service_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6197,11 +6240,6 @@ async def test_get_service_class_async(
     assert response.service_class == "service_class_value"
     assert response.description == "description_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_service_class_async_from_dict():
-    await test_get_service_class_async(request_type=dict)
 
 
 def test_get_service_class_field_headers():
@@ -6358,8 +6396,8 @@ async def test_get_service_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.UpdateServiceClassRequest,
-        dict,
+        cross_network_automation.UpdateServiceClassRequest(),
+        {},
     ],
 )
 def test_update_service_class(request_type, transport: str = "grpc"):
@@ -6370,7 +6408,7 @@ def test_update_service_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6415,9 +6453,10 @@ def test_update_service_class_non_empty_request_with_auto_populated_field():
         client.update_service_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.UpdateServiceClassRequest(
+        request_msg = cross_network_automation.UpdateServiceClassRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_service_class_use_cached_wrapped_rpc():
@@ -6512,9 +6551,15 @@ async def test_update_service_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.UpdateServiceClassRequest(),
+        {},
+    ],
+)
 async def test_update_service_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.UpdateServiceClassRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6523,7 +6568,7 @@ async def test_update_service_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6543,11 +6588,6 @@ async def test_update_service_class_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_service_class_async_from_dict():
-    await test_update_service_class_async(request_type=dict)
 
 
 def test_update_service_class_field_headers():
@@ -6714,8 +6754,8 @@ async def test_update_service_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.DeleteServiceClassRequest,
-        dict,
+        cross_network_automation.DeleteServiceClassRequest(),
+        {},
     ],
 )
 def test_delete_service_class(request_type, transport: str = "grpc"):
@@ -6726,7 +6766,7 @@ def test_delete_service_class(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6773,11 +6813,12 @@ def test_delete_service_class_non_empty_request_with_auto_populated_field():
         client.delete_service_class(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.DeleteServiceClassRequest(
+        request_msg = cross_network_automation.DeleteServiceClassRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_class_use_cached_wrapped_rpc():
@@ -6872,9 +6913,15 @@ async def test_delete_service_class_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.DeleteServiceClassRequest(),
+        {},
+    ],
+)
 async def test_delete_service_class_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.DeleteServiceClassRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6883,7 +6930,7 @@ async def test_delete_service_class_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6903,11 +6950,6 @@ async def test_delete_service_class_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_class_async_from_dict():
-    await test_delete_service_class_async(request_type=dict)
 
 
 def test_delete_service_class_field_headers():
@@ -7064,8 +7106,8 @@ async def test_delete_service_class_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.GetServiceConnectionTokenRequest,
-        dict,
+        cross_network_automation.GetServiceConnectionTokenRequest(),
+        {},
     ],
 )
 def test_get_service_connection_token(request_type, transport: str = "grpc"):
@@ -7076,7 +7118,7 @@ def test_get_service_connection_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7132,9 +7174,10 @@ def test_get_service_connection_token_non_empty_request_with_auto_populated_fiel
         client.get_service_connection_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.GetServiceConnectionTokenRequest(
+        request_msg = cross_network_automation.GetServiceConnectionTokenRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_connection_token_use_cached_wrapped_rpc():
@@ -7220,9 +7263,15 @@ async def test_get_service_connection_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.GetServiceConnectionTokenRequest(),
+        {},
+    ],
+)
 async def test_get_service_connection_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.GetServiceConnectionTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7231,7 +7280,7 @@ async def test_get_service_connection_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7262,11 +7311,6 @@ async def test_get_service_connection_token_async(
     assert response.network == "network_value"
     assert response.token == "token_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_service_connection_token_async_from_dict():
-    await test_get_service_connection_token_async(request_type=dict)
 
 
 def test_get_service_connection_token_field_headers():
@@ -7423,8 +7467,8 @@ async def test_get_service_connection_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.ListServiceConnectionTokensRequest,
-        dict,
+        cross_network_automation.ListServiceConnectionTokensRequest(),
+        {},
     ],
 )
 def test_list_service_connection_tokens(request_type, transport: str = "grpc"):
@@ -7435,7 +7479,7 @@ def test_list_service_connection_tokens(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7490,12 +7534,13 @@ def test_list_service_connection_tokens_non_empty_request_with_auto_populated_fi
         client.list_service_connection_tokens(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.ListServiceConnectionTokensRequest(
+        request_msg = cross_network_automation.ListServiceConnectionTokensRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_service_connection_tokens_use_cached_wrapped_rpc():
@@ -7581,9 +7626,15 @@ async def test_list_service_connection_tokens_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.ListServiceConnectionTokensRequest(),
+        {},
+    ],
+)
 async def test_list_service_connection_tokens_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.ListServiceConnectionTokensRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7592,7 +7643,7 @@ async def test_list_service_connection_tokens_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7617,11 +7668,6 @@ async def test_list_service_connection_tokens_async(
     assert isinstance(response, pagers.ListServiceConnectionTokensAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_service_connection_tokens_async_from_dict():
-    await test_list_service_connection_tokens_async(request_type=dict)
 
 
 def test_list_service_connection_tokens_field_headers():
@@ -7992,8 +8038,8 @@ async def test_list_service_connection_tokens_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.CreateServiceConnectionTokenRequest,
-        dict,
+        cross_network_automation.CreateServiceConnectionTokenRequest(),
+        {},
     ],
 )
 def test_create_service_connection_token(request_type, transport: str = "grpc"):
@@ -8004,7 +8050,7 @@ def test_create_service_connection_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8051,11 +8097,12 @@ def test_create_service_connection_token_non_empty_request_with_auto_populated_f
         client.create_service_connection_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.CreateServiceConnectionTokenRequest(
+        request_msg = cross_network_automation.CreateServiceConnectionTokenRequest(
             parent="parent_value",
             service_connection_token_id="service_connection_token_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_connection_token_use_cached_wrapped_rpc():
@@ -8151,9 +8198,15 @@ async def test_create_service_connection_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.CreateServiceConnectionTokenRequest(),
+        {},
+    ],
+)
 async def test_create_service_connection_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.CreateServiceConnectionTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8162,7 +8215,7 @@ async def test_create_service_connection_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8182,11 +8235,6 @@ async def test_create_service_connection_token_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_service_connection_token_async_from_dict():
-    await test_create_service_connection_token_async(request_type=dict)
 
 
 def test_create_service_connection_token_field_headers():
@@ -8371,8 +8419,8 @@ async def test_create_service_connection_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cross_network_automation.DeleteServiceConnectionTokenRequest,
-        dict,
+        cross_network_automation.DeleteServiceConnectionTokenRequest(),
+        {},
     ],
 )
 def test_delete_service_connection_token(request_type, transport: str = "grpc"):
@@ -8383,7 +8431,7 @@ def test_delete_service_connection_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8430,11 +8478,12 @@ def test_delete_service_connection_token_non_empty_request_with_auto_populated_f
         client.delete_service_connection_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cross_network_automation.DeleteServiceConnectionTokenRequest(
+        request_msg = cross_network_automation.DeleteServiceConnectionTokenRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_connection_token_use_cached_wrapped_rpc():
@@ -8530,9 +8579,15 @@ async def test_delete_service_connection_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cross_network_automation.DeleteServiceConnectionTokenRequest(),
+        {},
+    ],
+)
 async def test_delete_service_connection_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=cross_network_automation.DeleteServiceConnectionTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CrossNetworkAutomationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8541,7 +8596,7 @@ async def test_delete_service_connection_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8561,11 +8616,6 @@ async def test_delete_service_connection_token_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_connection_token_async_from_dict():
-    await test_delete_service_connection_token_async(request_type=dict)
 
 
 def test_delete_service_connection_token_field_headers():
@@ -8843,7 +8893,6 @@ def test_list_service_connection_maps_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionMapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8866,7 +8915,6 @@ def test_get_service_connection_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -8889,7 +8937,6 @@ def test_create_service_connection_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -8912,7 +8959,6 @@ def test_update_service_connection_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -8935,7 +8981,6 @@ def test_delete_service_connection_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -8960,7 +9005,6 @@ def test_list_service_connection_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8983,7 +9027,6 @@ def test_get_service_connection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9006,7 +9049,6 @@ def test_create_service_connection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9029,7 +9071,6 @@ def test_update_service_connection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9052,7 +9093,6 @@ def test_delete_service_connection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9075,7 +9115,6 @@ def test_list_service_classes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceClassesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9098,7 +9137,6 @@ def test_get_service_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9121,7 +9159,6 @@ def test_update_service_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9144,7 +9181,6 @@ def test_delete_service_class_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9167,7 +9203,6 @@ def test_get_service_connection_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -9192,7 +9227,6 @@ def test_list_service_connection_tokens_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -9215,7 +9249,6 @@ def test_create_service_connection_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -9238,7 +9271,6 @@ def test_delete_service_connection_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -9282,7 +9314,6 @@ async def test_list_service_connection_maps_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionMapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9317,7 +9348,6 @@ async def test_get_service_connection_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9344,7 +9374,6 @@ async def test_create_service_connection_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9371,7 +9400,6 @@ async def test_update_service_connection_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9398,7 +9426,6 @@ async def test_delete_service_connection_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9428,7 +9455,6 @@ async def test_list_service_connection_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9462,7 +9488,6 @@ async def test_get_service_connection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9489,7 +9514,6 @@ async def test_create_service_connection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9516,7 +9540,6 @@ async def test_update_service_connection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9543,7 +9566,6 @@ async def test_delete_service_connection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9573,7 +9595,6 @@ async def test_list_service_classes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceClassesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9605,7 +9626,6 @@ async def test_get_service_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9632,7 +9652,6 @@ async def test_update_service_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.UpdateServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9659,7 +9678,6 @@ async def test_delete_service_class_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceClassRequest()
-
         assert args[0] == request_msg
 
 
@@ -9692,7 +9710,6 @@ async def test_get_service_connection_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.GetServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -9722,7 +9739,6 @@ async def test_list_service_connection_tokens_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.ListServiceConnectionTokensRequest()
-
         assert args[0] == request_msg
 
 
@@ -9749,7 +9765,6 @@ async def test_create_service_connection_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.CreateServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -9776,7 +9791,6 @@ async def test_delete_service_connection_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cross_network_automation.DeleteServiceConnectionTokenRequest()
-
         assert args[0] == request_msg
 
 

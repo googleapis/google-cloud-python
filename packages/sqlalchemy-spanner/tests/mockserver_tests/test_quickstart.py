@@ -14,14 +14,15 @@
 
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_v1 import (
-    ResultSet,
-    ResultSetStats,
+    CommitRequest,
     CreateSessionRequest,
     ExecuteBatchDmlRequest,
-    CommitRequest,
+    ResultSet,
+    ResultSetStats,
 )
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
+
 from tests.mockserver_tests.mock_server_test_base import MockServerTestBase, add_result
 
 
@@ -71,7 +72,7 @@ LIMIT 1""",
         )
 
     def test_insert_data(self):
-        from tests.mockserver_tests.quickstart_model import User, Address
+        from tests.mockserver_tests.quickstart_model import Address, User
 
         # TODO: Use auto-generated primary keys.
         update_count = ResultSet(

@@ -18,6 +18,8 @@ from .age_range import (
 )
 from .audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -39,6 +41,9 @@ from .destination import (
 )
 from .device_info import (
     DeviceInfo,
+)
+from .encrypted_user_id import (
+    EncryptedUserId,
 )
 from .encryption_info import (
     AwsWrappedKeyInfo,
@@ -180,6 +185,8 @@ from .user_properties import (
 __all__ = (
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
@@ -193,6 +200,7 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",

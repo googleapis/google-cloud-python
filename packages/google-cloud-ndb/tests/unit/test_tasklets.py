@@ -16,11 +16,8 @@ from unittest import mock
 
 import pytest
 
+from google.cloud.ndb import _eventloop, _remote, exceptions, tasklets
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _remote
-from google.cloud.ndb import tasklets
 
 from . import utils
 
@@ -451,8 +448,9 @@ class Test_MultiFuture:
         this, that = (tasklets.Future("this"), tasklets.Future("that"))
         future = tasklets._MultiFuture((this, that))
         assert repr(future) == (
-            "_MultiFuture(Future('this') <{}>,"
-            " Future('that') <{}>) <{}>".format(id(this), id(that), id(future))
+            "_MultiFuture(Future('this') <{}>, Future('that') <{}>) <{}>".format(
+                id(this), id(that), id(future)
+            )
         )
 
     @staticmethod

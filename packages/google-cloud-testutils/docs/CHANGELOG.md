@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.8.0...google-cloud-testutils-v1.9.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* support != exclusion constraints in lower-bound-checker (#17269) ([65da31654ad41065132fecbcf7646e0f2b336256](https://github.com/googleapis/google-cloud-python/commit/65da31654ad41065132fecbcf7646e0f2b336256))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.7.1...google-cloud-testutils-v1.8.0) (2026-05-06)
 
 

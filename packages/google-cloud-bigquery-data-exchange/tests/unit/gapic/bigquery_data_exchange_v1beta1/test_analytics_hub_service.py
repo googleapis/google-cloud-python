@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1337,8 +1353,8 @@ def test_analytics_hub_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.ListDataExchangesRequest,
-        dict,
+        dataexchange.ListDataExchangesRequest(),
+        {},
     ],
 )
 def test_list_data_exchanges(request_type, transport: str = "grpc"):
@@ -1349,7 +1365,7 @@ def test_list_data_exchanges(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1398,10 +1414,11 @@ def test_list_data_exchanges_non_empty_request_with_auto_populated_field():
         client.list_data_exchanges(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListDataExchangesRequest(
+        request_msg = dataexchange.ListDataExchangesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_exchanges_use_cached_wrapped_rpc():
@@ -1486,9 +1503,14 @@ async def test_list_data_exchanges_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_exchanges_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.ListDataExchangesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.ListDataExchangesRequest(),
+        {},
+    ],
+)
+async def test_list_data_exchanges_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1496,7 +1518,7 @@ async def test_list_data_exchanges_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1519,11 +1541,6 @@ async def test_list_data_exchanges_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataExchangesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_exchanges_async_from_dict():
-    await test_list_data_exchanges_async(request_type=dict)
 
 
 def test_list_data_exchanges_field_headers():
@@ -1878,8 +1895,8 @@ async def test_list_data_exchanges_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.ListOrgDataExchangesRequest,
-        dict,
+        dataexchange.ListOrgDataExchangesRequest(),
+        {},
     ],
 )
 def test_list_org_data_exchanges(request_type, transport: str = "grpc"):
@@ -1890,7 +1907,7 @@ def test_list_org_data_exchanges(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1939,10 +1956,11 @@ def test_list_org_data_exchanges_non_empty_request_with_auto_populated_field():
         client.list_org_data_exchanges(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListOrgDataExchangesRequest(
+        request_msg = dataexchange.ListOrgDataExchangesRequest(
             organization="organization_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_org_data_exchanges_use_cached_wrapped_rpc():
@@ -2028,9 +2046,15 @@ async def test_list_org_data_exchanges_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.ListOrgDataExchangesRequest(),
+        {},
+    ],
+)
 async def test_list_org_data_exchanges_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataexchange.ListOrgDataExchangesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2039,7 +2063,7 @@ async def test_list_org_data_exchanges_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2062,11 +2086,6 @@ async def test_list_org_data_exchanges_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrgDataExchangesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_org_data_exchanges_async_from_dict():
-    await test_list_org_data_exchanges_async(request_type=dict)
 
 
 def test_list_org_data_exchanges_field_headers():
@@ -2421,8 +2440,8 @@ async def test_list_org_data_exchanges_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.GetDataExchangeRequest,
-        dict,
+        dataexchange.GetDataExchangeRequest(),
+        {},
     ],
 )
 def test_get_data_exchange(request_type, transport: str = "grpc"):
@@ -2433,7 +2452,7 @@ def test_get_data_exchange(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2493,9 +2512,10 @@ def test_get_data_exchange_non_empty_request_with_auto_populated_field():
         client.get_data_exchange(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetDataExchangeRequest(
+        request_msg = dataexchange.GetDataExchangeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_exchange_use_cached_wrapped_rpc():
@@ -2578,9 +2598,14 @@ async def test_get_data_exchange_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_exchange_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.GetDataExchangeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.GetDataExchangeRequest(),
+        {},
+    ],
+)
+async def test_get_data_exchange_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2588,7 +2613,7 @@ async def test_get_data_exchange_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2623,11 +2648,6 @@ async def test_get_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_data_exchange_async_from_dict():
-    await test_get_data_exchange_async(request_type=dict)
 
 
 def test_get_data_exchange_field_headers():
@@ -2784,8 +2804,8 @@ async def test_get_data_exchange_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.CreateDataExchangeRequest,
-        dict,
+        dataexchange.CreateDataExchangeRequest(),
+        {},
     ],
 )
 def test_create_data_exchange(request_type, transport: str = "grpc"):
@@ -2796,7 +2816,7 @@ def test_create_data_exchange(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2857,10 +2877,11 @@ def test_create_data_exchange_non_empty_request_with_auto_populated_field():
         client.create_data_exchange(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateDataExchangeRequest(
+        request_msg = dataexchange.CreateDataExchangeRequest(
             parent="parent_value",
             data_exchange_id="data_exchange_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_exchange_use_cached_wrapped_rpc():
@@ -2945,8 +2966,15 @@ async def test_create_data_exchange_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.CreateDataExchangeRequest(),
+        {},
+    ],
+)
 async def test_create_data_exchange_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.CreateDataExchangeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2955,7 +2983,7 @@ async def test_create_data_exchange_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2990,11 +3018,6 @@ async def test_create_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
-
-
-@pytest.mark.asyncio
-async def test_create_data_exchange_async_from_dict():
-    await test_create_data_exchange_async(request_type=dict)
 
 
 def test_create_data_exchange_field_headers():
@@ -3161,8 +3184,8 @@ async def test_create_data_exchange_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.UpdateDataExchangeRequest,
-        dict,
+        dataexchange.UpdateDataExchangeRequest(),
+        {},
     ],
 )
 def test_update_data_exchange(request_type, transport: str = "grpc"):
@@ -3173,7 +3196,7 @@ def test_update_data_exchange(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3231,7 +3254,8 @@ def test_update_data_exchange_non_empty_request_with_auto_populated_field():
         client.update_data_exchange(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateDataExchangeRequest()
+        request_msg = dataexchange.UpdateDataExchangeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_exchange_use_cached_wrapped_rpc():
@@ -3316,8 +3340,15 @@ async def test_update_data_exchange_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.UpdateDataExchangeRequest(),
+        {},
+    ],
+)
 async def test_update_data_exchange_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.UpdateDataExchangeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3326,7 +3357,7 @@ async def test_update_data_exchange_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3361,11 +3392,6 @@ async def test_update_data_exchange_async(
     assert response.documentation == "documentation_value"
     assert response.listing_count == 1410
     assert response.icon == b"icon_blob"
-
-
-@pytest.mark.asyncio
-async def test_update_data_exchange_async_from_dict():
-    await test_update_data_exchange_async(request_type=dict)
 
 
 def test_update_data_exchange_field_headers():
@@ -3532,8 +3558,8 @@ async def test_update_data_exchange_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.DeleteDataExchangeRequest,
-        dict,
+        dataexchange.DeleteDataExchangeRequest(),
+        {},
     ],
 )
 def test_delete_data_exchange(request_type, transport: str = "grpc"):
@@ -3544,7 +3570,7 @@ def test_delete_data_exchange(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3589,9 +3615,10 @@ def test_delete_data_exchange_non_empty_request_with_auto_populated_field():
         client.delete_data_exchange(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteDataExchangeRequest(
+        request_msg = dataexchange.DeleteDataExchangeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_exchange_use_cached_wrapped_rpc():
@@ -3676,8 +3703,15 @@ async def test_delete_data_exchange_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.DeleteDataExchangeRequest(),
+        {},
+    ],
+)
 async def test_delete_data_exchange_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.DeleteDataExchangeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3686,7 +3720,7 @@ async def test_delete_data_exchange_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3704,11 +3738,6 @@ async def test_delete_data_exchange_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_exchange_async_from_dict():
-    await test_delete_data_exchange_async(request_type=dict)
 
 
 def test_delete_data_exchange_field_headers():
@@ -3861,8 +3890,8 @@ async def test_delete_data_exchange_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.ListListingsRequest,
-        dict,
+        dataexchange.ListListingsRequest(),
+        {},
     ],
 )
 def test_list_listings(request_type, transport: str = "grpc"):
@@ -3873,7 +3902,7 @@ def test_list_listings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
@@ -3918,10 +3947,11 @@ def test_list_listings_non_empty_request_with_auto_populated_field():
         client.list_listings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.ListListingsRequest(
+        request_msg = dataexchange.ListListingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_listings_use_cached_wrapped_rpc():
@@ -4002,9 +4032,14 @@ async def test_list_listings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_listings_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.ListListingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.ListListingsRequest(),
+        {},
+    ],
+)
+async def test_list_listings_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4012,7 +4047,7 @@ async def test_list_listings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_listings), "__call__") as call:
@@ -4033,11 +4068,6 @@ async def test_list_listings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListListingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_listings_async_from_dict():
-    await test_list_listings_async(request_type=dict)
 
 
 def test_list_listings_field_headers():
@@ -4376,8 +4406,8 @@ async def test_list_listings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.GetListingRequest,
-        dict,
+        dataexchange.GetListingRequest(),
+        {},
     ],
 )
 def test_get_listing(request_type, transport: str = "grpc"):
@@ -4388,7 +4418,7 @@ def test_get_listing(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
@@ -4448,9 +4478,10 @@ def test_get_listing_non_empty_request_with_auto_populated_field():
         client.get_listing(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.GetListingRequest(
+        request_msg = dataexchange.GetListingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_listing_use_cached_wrapped_rpc():
@@ -4531,9 +4562,14 @@ async def test_get_listing_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_listing_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.GetListingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.GetListingRequest(),
+        {},
+    ],
+)
+async def test_get_listing_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4541,7 +4577,7 @@ async def test_get_listing_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_listing), "__call__") as call:
@@ -4578,11 +4614,6 @@ async def test_get_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
-
-
-@pytest.mark.asyncio
-async def test_get_listing_async_from_dict():
-    await test_get_listing_async(request_type=dict)
 
 
 def test_get_listing_field_headers():
@@ -4731,8 +4762,8 @@ async def test_get_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.CreateListingRequest,
-        dict,
+        dataexchange.CreateListingRequest(),
+        {},
     ],
 )
 def test_create_listing(request_type, transport: str = "grpc"):
@@ -4743,7 +4774,7 @@ def test_create_listing(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
@@ -4804,10 +4835,11 @@ def test_create_listing_non_empty_request_with_auto_populated_field():
         client.create_listing(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.CreateListingRequest(
+        request_msg = dataexchange.CreateListingRequest(
             parent="parent_value",
             listing_id="listing_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_listing_use_cached_wrapped_rpc():
@@ -4888,9 +4920,14 @@ async def test_create_listing_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_listing_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.CreateListingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.CreateListingRequest(),
+        {},
+    ],
+)
+async def test_create_listing_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4898,7 +4935,7 @@ async def test_create_listing_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_listing), "__call__") as call:
@@ -4935,11 +4972,6 @@ async def test_create_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
-
-
-@pytest.mark.asyncio
-async def test_create_listing_async_from_dict():
-    await test_create_listing_async(request_type=dict)
 
 
 def test_create_listing_field_headers():
@@ -5122,8 +5154,8 @@ async def test_create_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.UpdateListingRequest,
-        dict,
+        dataexchange.UpdateListingRequest(),
+        {},
     ],
 )
 def test_update_listing(request_type, transport: str = "grpc"):
@@ -5134,7 +5166,7 @@ def test_update_listing(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
@@ -5192,7 +5224,8 @@ def test_update_listing_non_empty_request_with_auto_populated_field():
         client.update_listing(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.UpdateListingRequest()
+        request_msg = dataexchange.UpdateListingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_listing_use_cached_wrapped_rpc():
@@ -5273,9 +5306,14 @@ async def test_update_listing_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_listing_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.UpdateListingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.UpdateListingRequest(),
+        {},
+    ],
+)
+async def test_update_listing_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5283,7 +5321,7 @@ async def test_update_listing_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_listing), "__call__") as call:
@@ -5320,11 +5358,6 @@ async def test_update_listing_async(
     assert response.icon == b"icon_blob"
     assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
-
-
-@pytest.mark.asyncio
-async def test_update_listing_async_from_dict():
-    await test_update_listing_async(request_type=dict)
 
 
 def test_update_listing_field_headers():
@@ -5507,8 +5540,8 @@ async def test_update_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.DeleteListingRequest,
-        dict,
+        dataexchange.DeleteListingRequest(),
+        {},
     ],
 )
 def test_delete_listing(request_type, transport: str = "grpc"):
@@ -5519,7 +5552,7 @@ def test_delete_listing(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
@@ -5560,9 +5593,10 @@ def test_delete_listing_non_empty_request_with_auto_populated_field():
         client.delete_listing(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.DeleteListingRequest(
+        request_msg = dataexchange.DeleteListingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_listing_use_cached_wrapped_rpc():
@@ -5643,9 +5677,14 @@ async def test_delete_listing_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_listing_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.DeleteListingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.DeleteListingRequest(),
+        {},
+    ],
+)
+async def test_delete_listing_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5653,7 +5692,7 @@ async def test_delete_listing_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_listing), "__call__") as call:
@@ -5669,11 +5708,6 @@ async def test_delete_listing_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_listing_async_from_dict():
-    await test_delete_listing_async(request_type=dict)
 
 
 def test_delete_listing_field_headers():
@@ -5818,8 +5852,8 @@ async def test_delete_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataexchange.SubscribeListingRequest,
-        dict,
+        dataexchange.SubscribeListingRequest(),
+        {},
     ],
 )
 def test_subscribe_listing(request_type, transport: str = "grpc"):
@@ -5830,7 +5864,7 @@ def test_subscribe_listing(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5875,9 +5909,10 @@ def test_subscribe_listing_non_empty_request_with_auto_populated_field():
         client.subscribe_listing(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataexchange.SubscribeListingRequest(
+        request_msg = dataexchange.SubscribeListingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_subscribe_listing_use_cached_wrapped_rpc():
@@ -5960,9 +5995,14 @@ async def test_subscribe_listing_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_subscribe_listing_async(
-    transport: str = "grpc_asyncio", request_type=dataexchange.SubscribeListingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataexchange.SubscribeListingRequest(),
+        {},
+    ],
+)
+async def test_subscribe_listing_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5970,7 +6010,7 @@ async def test_subscribe_listing_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5990,11 +6030,6 @@ async def test_subscribe_listing_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataexchange.SubscribeListingResponse)
-
-
-@pytest.mark.asyncio
-async def test_subscribe_listing_async_from_dict():
-    await test_subscribe_listing_async(request_type=dict)
 
 
 def test_subscribe_listing_field_headers():
@@ -6151,8 +6186,8 @@ async def test_subscribe_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -6163,7 +6198,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6209,9 +6244,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -6292,9 +6328,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6302,7 +6343,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6325,11 +6366,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -6411,8 +6447,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -6423,7 +6459,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6469,9 +6505,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -6552,9 +6589,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6562,7 +6604,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6585,11 +6627,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -6672,8 +6709,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -6684,7 +6721,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6732,9 +6769,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -6819,9 +6857,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnalyticsHubServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6830,7 +6874,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6853,11 +6897,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -7068,7 +7107,6 @@ def test_list_data_exchanges_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListDataExchangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7091,7 +7129,6 @@ def test_list_org_data_exchanges_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListOrgDataExchangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7114,7 +7151,6 @@ def test_get_data_exchange_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.GetDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7137,7 +7173,6 @@ def test_create_data_exchange_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.CreateDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7160,7 +7195,6 @@ def test_update_data_exchange_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.UpdateDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7183,7 +7217,6 @@ def test_delete_data_exchange_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.DeleteDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7204,7 +7237,6 @@ def test_list_listings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListListingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7225,7 +7257,6 @@ def test_get_listing_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.GetListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7246,7 +7277,6 @@ def test_create_listing_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.CreateListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7267,7 +7297,6 @@ def test_update_listing_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.UpdateListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7288,7 +7317,6 @@ def test_delete_listing_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.DeleteListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7311,7 +7339,6 @@ def test_subscribe_listing_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.SubscribeListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7332,7 +7359,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7353,7 +7379,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7376,7 +7401,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7419,7 +7443,6 @@ async def test_list_data_exchanges_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListDataExchangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7448,7 +7471,6 @@ async def test_list_org_data_exchanges_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListOrgDataExchangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7483,7 +7505,6 @@ async def test_get_data_exchange_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.GetDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7518,7 +7539,6 @@ async def test_create_data_exchange_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.CreateDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7553,7 +7573,6 @@ async def test_update_data_exchange_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.UpdateDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7578,7 +7597,6 @@ async def test_delete_data_exchange_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.DeleteDataExchangeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7605,7 +7623,6 @@ async def test_list_listings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.ListListingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7640,7 +7657,6 @@ async def test_get_listing_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.GetListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7675,7 +7691,6 @@ async def test_create_listing_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.CreateListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7710,7 +7725,6 @@ async def test_update_listing_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.UpdateListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7733,7 +7747,6 @@ async def test_delete_listing_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.DeleteListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7760,7 +7773,6 @@ async def test_subscribe_listing_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataexchange.SubscribeListingRequest()
-
         assert args[0] == request_msg
 
 
@@ -7788,7 +7800,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7816,7 +7827,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7845,7 +7855,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 

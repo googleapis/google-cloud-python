@@ -35,7 +35,7 @@ class InsightTypeConfig(proto.Message):
 
     Attributes:
         name (str):
-            Name of insight type config. Eg,
+            Identifier. Name of insight type config. Eg,
             projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config
         insight_type_generation_config (google.cloud.recommender_v1.types.InsightTypeGenerationConfig):
             InsightTypeGenerationConfig which configures

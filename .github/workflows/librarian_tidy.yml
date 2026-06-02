@@ -2,8 +2,6 @@ name: librarian tidy
 
 on:
   pull_request:
-    paths:
-      - 'librarian.yaml'
 
 permissions:
   contents: read
@@ -14,19 +12,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      - name: Install Go
-        uses: actions/setup-go@v6
+      - uses: dorny/paths-filter@v4
+        id: changes
         with:
-          go-version: '1.26.x'
+          filters: |
+            librarian:
+              - 'librarian.yaml'
+
+      -  uses: googleapis/librarian@main
 
       - name: Run librarian tidy
-        run: |
-          V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)
-          go run github.com/googleapis/librarian/cmd/librarian@${V} tidy
-          git diff
+        if: steps.changes.outputs.librarian == 'true'
+        run: librarian tidy
 
       - name: Check for diff
+        if: steps.changes.outputs.librarian == 'true'
         run: |
           if ! git diff --exit-code; then
             V=$(go run github.com/googleapis/librarian/cmd/librarian@latest config get version)

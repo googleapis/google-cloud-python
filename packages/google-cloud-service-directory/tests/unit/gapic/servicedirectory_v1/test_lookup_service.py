@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1306,8 +1322,8 @@ def test_lookup_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        lookup_service.ResolveServiceRequest,
-        dict,
+        lookup_service.ResolveServiceRequest(),
+        {},
     ],
 )
 def test_resolve_service(request_type, transport: str = "grpc"):
@@ -1318,7 +1334,7 @@ def test_resolve_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resolve_service), "__call__") as call:
@@ -1360,10 +1376,11 @@ def test_resolve_service_non_empty_request_with_auto_populated_field():
         client.resolve_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lookup_service.ResolveServiceRequest(
+        request_msg = lookup_service.ResolveServiceRequest(
             name="name_value",
             endpoint_filter="endpoint_filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resolve_service_use_cached_wrapped_rpc():
@@ -1444,9 +1461,14 @@ async def test_resolve_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resolve_service_async(
-    transport: str = "grpc_asyncio", request_type=lookup_service.ResolveServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lookup_service.ResolveServiceRequest(),
+        {},
+    ],
+)
+async def test_resolve_service_async(request_type, transport: str = "grpc_asyncio"):
     client = LookupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1454,7 +1476,7 @@ async def test_resolve_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resolve_service), "__call__") as call:
@@ -1472,11 +1494,6 @@ async def test_resolve_service_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, lookup_service.ResolveServiceResponse)
-
-
-@pytest.mark.asyncio
-async def test_resolve_service_async_from_dict():
-    await test_resolve_service_async(request_type=dict)
 
 
 def test_resolve_service_field_headers():
@@ -1784,7 +1801,6 @@ def test_resolve_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lookup_service.ResolveServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -1823,7 +1839,6 @@ async def test_resolve_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lookup_service.ResolveServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -2116,7 +2131,6 @@ def test_resolve_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lookup_service.ResolveServiceRequest()
-
         assert args[0] == request_msg
 
 

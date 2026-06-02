@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1278,8 +1294,8 @@ def test_dlp_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.InspectContentRequest,
-        dict,
+        dlp.InspectContentRequest(),
+        {},
     ],
 )
 def test_inspect_content(request_type, transport: str = "grpc"):
@@ -1290,7 +1306,7 @@ def test_inspect_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
@@ -1333,11 +1349,12 @@ def test_inspect_content_non_empty_request_with_auto_populated_field():
         client.inspect_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.InspectContentRequest(
+        request_msg = dlp.InspectContentRequest(
             parent="parent_value",
             inspect_template_name="inspect_template_name_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_inspect_content_use_cached_wrapped_rpc():
@@ -1418,9 +1435,14 @@ async def test_inspect_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_inspect_content_async(
-    transport: str = "grpc_asyncio", request_type=dlp.InspectContentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.InspectContentRequest(),
+        {},
+    ],
+)
+async def test_inspect_content_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1428,7 +1450,7 @@ async def test_inspect_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
@@ -1446,11 +1468,6 @@ async def test_inspect_content_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_inspect_content_async_from_dict():
-    await test_inspect_content_async(request_type=dict)
 
 
 def test_inspect_content_field_headers():
@@ -1517,8 +1534,8 @@ async def test_inspect_content_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.RedactImageRequest,
-        dict,
+        dlp.RedactImageRequest(),
+        {},
     ],
 )
 def test_redact_image(request_type, transport: str = "grpc"):
@@ -1529,7 +1546,7 @@ def test_redact_image(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
@@ -1578,12 +1595,13 @@ def test_redact_image_non_empty_request_with_auto_populated_field():
         client.redact_image(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.RedactImageRequest(
+        request_msg = dlp.RedactImageRequest(
             parent="parent_value",
             location_id="location_id_value",
             inspect_template="inspect_template_value",
             deidentify_template="deidentify_template_value",
         )
+        assert args[0] == request_msg
 
 
 def test_redact_image_use_cached_wrapped_rpc():
@@ -1664,9 +1682,14 @@ async def test_redact_image_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_redact_image_async(
-    transport: str = "grpc_asyncio", request_type=dlp.RedactImageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.RedactImageRequest(),
+        {},
+    ],
+)
+async def test_redact_image_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1674,7 +1697,7 @@ async def test_redact_image_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
@@ -1697,11 +1720,6 @@ async def test_redact_image_async(
     assert isinstance(response, dlp.RedactImageResponse)
     assert response.redacted_image == b"redacted_image_blob"
     assert response.extracted_text == "extracted_text_value"
-
-
-@pytest.mark.asyncio
-async def test_redact_image_async_from_dict():
-    await test_redact_image_async(request_type=dict)
 
 
 def test_redact_image_field_headers():
@@ -1768,8 +1786,8 @@ async def test_redact_image_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeidentifyContentRequest,
-        dict,
+        dlp.DeidentifyContentRequest(),
+        {},
     ],
 )
 def test_deidentify_content(request_type, transport: str = "grpc"):
@@ -1780,7 +1798,7 @@ def test_deidentify_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1828,12 +1846,13 @@ def test_deidentify_content_non_empty_request_with_auto_populated_field():
         client.deidentify_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeidentifyContentRequest(
+        request_msg = dlp.DeidentifyContentRequest(
             parent="parent_value",
             inspect_template_name="inspect_template_name_value",
             deidentify_template_name="deidentify_template_name_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_deidentify_content_use_cached_wrapped_rpc():
@@ -1918,9 +1937,14 @@ async def test_deidentify_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_deidentify_content_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeidentifyContentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeidentifyContentRequest(),
+        {},
+    ],
+)
+async def test_deidentify_content_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1928,7 +1952,7 @@ async def test_deidentify_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1948,11 +1972,6 @@ async def test_deidentify_content_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_deidentify_content_async_from_dict():
-    await test_deidentify_content_async(request_type=dict)
 
 
 def test_deidentify_content_field_headers():
@@ -2023,8 +2042,8 @@ async def test_deidentify_content_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ReidentifyContentRequest,
-        dict,
+        dlp.ReidentifyContentRequest(),
+        {},
     ],
 )
 def test_reidentify_content(request_type, transport: str = "grpc"):
@@ -2035,7 +2054,7 @@ def test_reidentify_content(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2083,12 +2102,13 @@ def test_reidentify_content_non_empty_request_with_auto_populated_field():
         client.reidentify_content(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ReidentifyContentRequest(
+        request_msg = dlp.ReidentifyContentRequest(
             parent="parent_value",
             inspect_template_name="inspect_template_name_value",
             reidentify_template_name="reidentify_template_name_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reidentify_content_use_cached_wrapped_rpc():
@@ -2173,9 +2193,14 @@ async def test_reidentify_content_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reidentify_content_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ReidentifyContentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ReidentifyContentRequest(),
+        {},
+    ],
+)
+async def test_reidentify_content_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2183,7 +2208,7 @@ async def test_reidentify_content_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2203,11 +2228,6 @@ async def test_reidentify_content_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ReidentifyContentResponse)
-
-
-@pytest.mark.asyncio
-async def test_reidentify_content_async_from_dict():
-    await test_reidentify_content_async(request_type=dict)
 
 
 def test_reidentify_content_field_headers():
@@ -2278,8 +2298,8 @@ async def test_reidentify_content_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListInfoTypesRequest,
-        dict,
+        dlp.ListInfoTypesRequest(),
+        {},
     ],
 )
 def test_list_info_types(request_type, transport: str = "grpc"):
@@ -2290,7 +2310,7 @@ def test_list_info_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
@@ -2334,12 +2354,13 @@ def test_list_info_types_non_empty_request_with_auto_populated_field():
         client.list_info_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInfoTypesRequest(
+        request_msg = dlp.ListInfoTypesRequest(
             parent="parent_value",
             language_code="language_code_value",
             filter="filter_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_info_types_use_cached_wrapped_rpc():
@@ -2420,9 +2441,14 @@ async def test_list_info_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_info_types_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListInfoTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListInfoTypesRequest(),
+        {},
+    ],
+)
+async def test_list_info_types_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2430,7 +2456,7 @@ async def test_list_info_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
@@ -2448,11 +2474,6 @@ async def test_list_info_types_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ListInfoTypesResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_info_types_async_from_dict():
-    await test_list_info_types_async(request_type=dict)
 
 
 def test_list_info_types_flattened():
@@ -2540,8 +2561,8 @@ async def test_list_info_types_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateInspectTemplateRequest,
-        dict,
+        dlp.CreateInspectTemplateRequest(),
+        {},
     ],
 )
 def test_create_inspect_template(request_type, transport: str = "grpc"):
@@ -2552,7 +2573,7 @@ def test_create_inspect_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2606,11 +2627,12 @@ def test_create_inspect_template_non_empty_request_with_auto_populated_field():
         client.create_inspect_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateInspectTemplateRequest(
+        request_msg = dlp.CreateInspectTemplateRequest(
             parent="parent_value",
             template_id="template_id_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_inspect_template_use_cached_wrapped_rpc():
@@ -2696,8 +2718,15 @@ async def test_create_inspect_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateInspectTemplateRequest(),
+        {},
+    ],
+)
 async def test_create_inspect_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateInspectTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2706,7 +2735,7 @@ async def test_create_inspect_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2733,11 +2762,6 @@ async def test_create_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_inspect_template_async_from_dict():
-    await test_create_inspect_template_async(request_type=dict)
 
 
 def test_create_inspect_template_field_headers():
@@ -2900,8 +2924,8 @@ async def test_create_inspect_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateInspectTemplateRequest,
-        dict,
+        dlp.UpdateInspectTemplateRequest(),
+        {},
     ],
 )
 def test_update_inspect_template(request_type, transport: str = "grpc"):
@@ -2912,7 +2936,7 @@ def test_update_inspect_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2964,9 +2988,10 @@ def test_update_inspect_template_non_empty_request_with_auto_populated_field():
         client.update_inspect_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateInspectTemplateRequest(
+        request_msg = dlp.UpdateInspectTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_inspect_template_use_cached_wrapped_rpc():
@@ -3052,8 +3077,15 @@ async def test_update_inspect_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateInspectTemplateRequest(),
+        {},
+    ],
+)
 async def test_update_inspect_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateInspectTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3062,7 +3094,7 @@ async def test_update_inspect_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3089,11 +3121,6 @@ async def test_update_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_inspect_template_async_from_dict():
-    await test_update_inspect_template_async(request_type=dict)
 
 
 def test_update_inspect_template_field_headers():
@@ -3266,8 +3293,8 @@ async def test_update_inspect_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetInspectTemplateRequest,
-        dict,
+        dlp.GetInspectTemplateRequest(),
+        {},
     ],
 )
 def test_get_inspect_template(request_type, transport: str = "grpc"):
@@ -3278,7 +3305,7 @@ def test_get_inspect_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3330,9 +3357,10 @@ def test_get_inspect_template_non_empty_request_with_auto_populated_field():
         client.get_inspect_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetInspectTemplateRequest(
+        request_msg = dlp.GetInspectTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_inspect_template_use_cached_wrapped_rpc():
@@ -3417,8 +3445,15 @@ async def test_get_inspect_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetInspectTemplateRequest(),
+        {},
+    ],
+)
 async def test_get_inspect_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetInspectTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3427,7 +3462,7 @@ async def test_get_inspect_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3454,11 +3489,6 @@ async def test_get_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_inspect_template_async_from_dict():
-    await test_get_inspect_template_async(request_type=dict)
 
 
 def test_get_inspect_template_field_headers():
@@ -3611,8 +3641,8 @@ async def test_get_inspect_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListInspectTemplatesRequest,
-        dict,
+        dlp.ListInspectTemplatesRequest(),
+        {},
     ],
 )
 def test_list_inspect_templates(request_type, transport: str = "grpc"):
@@ -3623,7 +3653,7 @@ def test_list_inspect_templates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3674,12 +3704,13 @@ def test_list_inspect_templates_non_empty_request_with_auto_populated_field():
         client.list_inspect_templates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInspectTemplatesRequest(
+        request_msg = dlp.ListInspectTemplatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_inspect_templates_use_cached_wrapped_rpc():
@@ -3765,8 +3796,15 @@ async def test_list_inspect_templates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListInspectTemplatesRequest(),
+        {},
+    ],
+)
 async def test_list_inspect_templates_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListInspectTemplatesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3775,7 +3813,7 @@ async def test_list_inspect_templates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3798,11 +3836,6 @@ async def test_list_inspect_templates_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInspectTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_inspect_templates_async_from_dict():
-    await test_list_inspect_templates_async(request_type=dict)
 
 
 def test_list_inspect_templates_field_headers():
@@ -4157,8 +4190,8 @@ async def test_list_inspect_templates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteInspectTemplateRequest,
-        dict,
+        dlp.DeleteInspectTemplateRequest(),
+        {},
     ],
 )
 def test_delete_inspect_template(request_type, transport: str = "grpc"):
@@ -4169,7 +4202,7 @@ def test_delete_inspect_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4214,9 +4247,10 @@ def test_delete_inspect_template_non_empty_request_with_auto_populated_field():
         client.delete_inspect_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteInspectTemplateRequest(
+        request_msg = dlp.DeleteInspectTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_inspect_template_use_cached_wrapped_rpc():
@@ -4302,8 +4336,15 @@ async def test_delete_inspect_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteInspectTemplateRequest(),
+        {},
+    ],
+)
 async def test_delete_inspect_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteInspectTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4312,7 +4353,7 @@ async def test_delete_inspect_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4330,11 +4371,6 @@ async def test_delete_inspect_template_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_inspect_template_async_from_dict():
-    await test_delete_inspect_template_async(request_type=dict)
 
 
 def test_delete_inspect_template_field_headers():
@@ -4487,8 +4523,8 @@ async def test_delete_inspect_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateDeidentifyTemplateRequest,
-        dict,
+        dlp.CreateDeidentifyTemplateRequest(),
+        {},
     ],
 )
 def test_create_deidentify_template(request_type, transport: str = "grpc"):
@@ -4499,7 +4535,7 @@ def test_create_deidentify_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4553,11 +4589,12 @@ def test_create_deidentify_template_non_empty_request_with_auto_populated_field(
         client.create_deidentify_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDeidentifyTemplateRequest(
+        request_msg = dlp.CreateDeidentifyTemplateRequest(
             parent="parent_value",
             template_id="template_id_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_deidentify_template_use_cached_wrapped_rpc():
@@ -4643,8 +4680,15 @@ async def test_create_deidentify_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDeidentifyTemplateRequest(),
+        {},
+    ],
+)
 async def test_create_deidentify_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateDeidentifyTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4653,7 +4697,7 @@ async def test_create_deidentify_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4680,11 +4724,6 @@ async def test_create_deidentify_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_deidentify_template_async_from_dict():
-    await test_create_deidentify_template_async(request_type=dict)
 
 
 def test_create_deidentify_template_field_headers():
@@ -4851,8 +4890,8 @@ async def test_create_deidentify_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateDeidentifyTemplateRequest,
-        dict,
+        dlp.UpdateDeidentifyTemplateRequest(),
+        {},
     ],
 )
 def test_update_deidentify_template(request_type, transport: str = "grpc"):
@@ -4863,7 +4902,7 @@ def test_update_deidentify_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4915,9 +4954,10 @@ def test_update_deidentify_template_non_empty_request_with_auto_populated_field(
         client.update_deidentify_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDeidentifyTemplateRequest(
+        request_msg = dlp.UpdateDeidentifyTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_deidentify_template_use_cached_wrapped_rpc():
@@ -5003,8 +5043,15 @@ async def test_update_deidentify_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateDeidentifyTemplateRequest(),
+        {},
+    ],
+)
 async def test_update_deidentify_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateDeidentifyTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5013,7 +5060,7 @@ async def test_update_deidentify_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5040,11 +5087,6 @@ async def test_update_deidentify_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_deidentify_template_async_from_dict():
-    await test_update_deidentify_template_async(request_type=dict)
 
 
 def test_update_deidentify_template_field_headers():
@@ -5221,8 +5263,8 @@ async def test_update_deidentify_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetDeidentifyTemplateRequest,
-        dict,
+        dlp.GetDeidentifyTemplateRequest(),
+        {},
     ],
 )
 def test_get_deidentify_template(request_type, transport: str = "grpc"):
@@ -5233,7 +5275,7 @@ def test_get_deidentify_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5285,9 +5327,10 @@ def test_get_deidentify_template_non_empty_request_with_auto_populated_field():
         client.get_deidentify_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDeidentifyTemplateRequest(
+        request_msg = dlp.GetDeidentifyTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_deidentify_template_use_cached_wrapped_rpc():
@@ -5373,8 +5416,15 @@ async def test_get_deidentify_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDeidentifyTemplateRequest(),
+        {},
+    ],
+)
 async def test_get_deidentify_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetDeidentifyTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5383,7 +5433,7 @@ async def test_get_deidentify_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5410,11 +5460,6 @@ async def test_get_deidentify_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_deidentify_template_async_from_dict():
-    await test_get_deidentify_template_async(request_type=dict)
 
 
 def test_get_deidentify_template_field_headers():
@@ -5571,8 +5616,8 @@ async def test_get_deidentify_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListDeidentifyTemplatesRequest,
-        dict,
+        dlp.ListDeidentifyTemplatesRequest(),
+        {},
     ],
 )
 def test_list_deidentify_templates(request_type, transport: str = "grpc"):
@@ -5583,7 +5628,7 @@ def test_list_deidentify_templates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5634,12 +5679,13 @@ def test_list_deidentify_templates_non_empty_request_with_auto_populated_field()
         client.list_deidentify_templates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDeidentifyTemplatesRequest(
+        request_msg = dlp.ListDeidentifyTemplatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_deidentify_templates_use_cached_wrapped_rpc():
@@ -5725,8 +5771,15 @@ async def test_list_deidentify_templates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDeidentifyTemplatesRequest(),
+        {},
+    ],
+)
 async def test_list_deidentify_templates_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListDeidentifyTemplatesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5735,7 +5788,7 @@ async def test_list_deidentify_templates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5758,11 +5811,6 @@ async def test_list_deidentify_templates_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeidentifyTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_deidentify_templates_async_from_dict():
-    await test_list_deidentify_templates_async(request_type=dict)
 
 
 def test_list_deidentify_templates_field_headers():
@@ -6119,8 +6167,8 @@ async def test_list_deidentify_templates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteDeidentifyTemplateRequest,
-        dict,
+        dlp.DeleteDeidentifyTemplateRequest(),
+        {},
     ],
 )
 def test_delete_deidentify_template(request_type, transport: str = "grpc"):
@@ -6131,7 +6179,7 @@ def test_delete_deidentify_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6176,9 +6224,10 @@ def test_delete_deidentify_template_non_empty_request_with_auto_populated_field(
         client.delete_deidentify_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDeidentifyTemplateRequest(
+        request_msg = dlp.DeleteDeidentifyTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_deidentify_template_use_cached_wrapped_rpc():
@@ -6264,8 +6313,15 @@ async def test_delete_deidentify_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDeidentifyTemplateRequest(),
+        {},
+    ],
+)
 async def test_delete_deidentify_template_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteDeidentifyTemplateRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6274,7 +6330,7 @@ async def test_delete_deidentify_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6292,11 +6348,6 @@ async def test_delete_deidentify_template_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_deidentify_template_async_from_dict():
-    await test_delete_deidentify_template_async(request_type=dict)
 
 
 def test_delete_deidentify_template_field_headers():
@@ -6449,8 +6500,8 @@ async def test_delete_deidentify_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateJobTriggerRequest,
-        dict,
+        dlp.CreateJobTriggerRequest(),
+        {},
     ],
 )
 def test_create_job_trigger(request_type, transport: str = "grpc"):
@@ -6461,7 +6512,7 @@ def test_create_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6517,11 +6568,12 @@ def test_create_job_trigger_non_empty_request_with_auto_populated_field():
         client.create_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateJobTriggerRequest(
+        request_msg = dlp.CreateJobTriggerRequest(
             parent="parent_value",
             trigger_id="trigger_id_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_job_trigger_use_cached_wrapped_rpc():
@@ -6606,9 +6658,14 @@ async def test_create_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateJobTriggerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateJobTriggerRequest(),
+        {},
+    ],
+)
+async def test_create_job_trigger_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6616,7 +6673,7 @@ async def test_create_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6645,11 +6702,6 @@ async def test_create_job_trigger_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-@pytest.mark.asyncio
-async def test_create_job_trigger_async_from_dict():
-    await test_create_job_trigger_async(request_type=dict)
 
 
 def test_create_job_trigger_field_headers():
@@ -6812,8 +6864,8 @@ async def test_create_job_trigger_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateJobTriggerRequest,
-        dict,
+        dlp.UpdateJobTriggerRequest(),
+        {},
     ],
 )
 def test_update_job_trigger(request_type, transport: str = "grpc"):
@@ -6824,7 +6876,7 @@ def test_update_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6878,9 +6930,10 @@ def test_update_job_trigger_non_empty_request_with_auto_populated_field():
         client.update_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateJobTriggerRequest(
+        request_msg = dlp.UpdateJobTriggerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_job_trigger_use_cached_wrapped_rpc():
@@ -6965,9 +7018,14 @@ async def test_update_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateJobTriggerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateJobTriggerRequest(),
+        {},
+    ],
+)
+async def test_update_job_trigger_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6975,7 +7033,7 @@ async def test_update_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7004,11 +7062,6 @@ async def test_update_job_trigger_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-@pytest.mark.asyncio
-async def test_update_job_trigger_async_from_dict():
-    await test_update_job_trigger_async(request_type=dict)
 
 
 def test_update_job_trigger_field_headers():
@@ -7181,8 +7234,8 @@ async def test_update_job_trigger_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.HybridInspectJobTriggerRequest,
-        dict,
+        dlp.HybridInspectJobTriggerRequest(),
+        {},
     ],
 )
 def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
@@ -7193,7 +7246,7 @@ def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7238,9 +7291,10 @@ def test_hybrid_inspect_job_trigger_non_empty_request_with_auto_populated_field(
         client.hybrid_inspect_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectJobTriggerRequest(
+        request_msg = dlp.HybridInspectJobTriggerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_hybrid_inspect_job_trigger_use_cached_wrapped_rpc():
@@ -7326,8 +7380,15 @@ async def test_hybrid_inspect_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.HybridInspectJobTriggerRequest(),
+        {},
+    ],
+)
 async def test_hybrid_inspect_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.HybridInspectJobTriggerRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7336,7 +7397,7 @@ async def test_hybrid_inspect_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7356,11 +7417,6 @@ async def test_hybrid_inspect_job_trigger_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-@pytest.mark.asyncio
-async def test_hybrid_inspect_job_trigger_async_from_dict():
-    await test_hybrid_inspect_job_trigger_async(request_type=dict)
 
 
 def test_hybrid_inspect_job_trigger_field_headers():
@@ -7517,8 +7573,8 @@ async def test_hybrid_inspect_job_trigger_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetJobTriggerRequest,
-        dict,
+        dlp.GetJobTriggerRequest(),
+        {},
     ],
 )
 def test_get_job_trigger(request_type, transport: str = "grpc"):
@@ -7529,7 +7585,7 @@ def test_get_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
@@ -7579,9 +7635,10 @@ def test_get_job_trigger_non_empty_request_with_auto_populated_field():
         client.get_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetJobTriggerRequest(
+        request_msg = dlp.GetJobTriggerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_job_trigger_use_cached_wrapped_rpc():
@@ -7662,9 +7719,14 @@ async def test_get_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetJobTriggerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetJobTriggerRequest(),
+        {},
+    ],
+)
+async def test_get_job_trigger_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7672,7 +7734,7 @@ async def test_get_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
@@ -7699,11 +7761,6 @@ async def test_get_job_trigger_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-@pytest.mark.asyncio
-async def test_get_job_trigger_async_from_dict():
-    await test_get_job_trigger_async(request_type=dict)
 
 
 def test_get_job_trigger_field_headers():
@@ -7848,8 +7905,8 @@ async def test_get_job_trigger_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListJobTriggersRequest,
-        dict,
+        dlp.ListJobTriggersRequest(),
+        {},
     ],
 )
 def test_list_job_triggers(request_type, transport: str = "grpc"):
@@ -7860,7 +7917,7 @@ def test_list_job_triggers(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7912,13 +7969,14 @@ def test_list_job_triggers_non_empty_request_with_auto_populated_field():
         client.list_job_triggers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListJobTriggersRequest(
+        request_msg = dlp.ListJobTriggersRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_job_triggers_use_cached_wrapped_rpc():
@@ -8001,9 +8059,14 @@ async def test_list_job_triggers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_job_triggers_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListJobTriggersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListJobTriggersRequest(),
+        {},
+    ],
+)
+async def test_list_job_triggers_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8011,7 +8074,7 @@ async def test_list_job_triggers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8034,11 +8097,6 @@ async def test_list_job_triggers_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTriggersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_job_triggers_async_from_dict():
-    await test_list_job_triggers_async(request_type=dict)
 
 
 def test_list_job_triggers_field_headers():
@@ -8393,8 +8451,8 @@ async def test_list_job_triggers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteJobTriggerRequest,
-        dict,
+        dlp.DeleteJobTriggerRequest(),
+        {},
     ],
 )
 def test_delete_job_trigger(request_type, transport: str = "grpc"):
@@ -8405,7 +8463,7 @@ def test_delete_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8450,9 +8508,10 @@ def test_delete_job_trigger_non_empty_request_with_auto_populated_field():
         client.delete_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteJobTriggerRequest(
+        request_msg = dlp.DeleteJobTriggerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_job_trigger_use_cached_wrapped_rpc():
@@ -8537,9 +8596,14 @@ async def test_delete_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteJobTriggerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteJobTriggerRequest(),
+        {},
+    ],
+)
+async def test_delete_job_trigger_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8547,7 +8611,7 @@ async def test_delete_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8565,11 +8629,6 @@ async def test_delete_job_trigger_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_job_trigger_async_from_dict():
-    await test_delete_job_trigger_async(request_type=dict)
 
 
 def test_delete_job_trigger_field_headers():
@@ -8722,8 +8781,8 @@ async def test_delete_job_trigger_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ActivateJobTriggerRequest,
-        dict,
+        dlp.ActivateJobTriggerRequest(),
+        {},
     ],
 )
 def test_activate_job_trigger(request_type, transport: str = "grpc"):
@@ -8734,7 +8793,7 @@ def test_activate_job_trigger(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8788,9 +8847,10 @@ def test_activate_job_trigger_non_empty_request_with_auto_populated_field():
         client.activate_job_trigger(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ActivateJobTriggerRequest(
+        request_msg = dlp.ActivateJobTriggerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_activate_job_trigger_use_cached_wrapped_rpc():
@@ -8875,8 +8935,15 @@ async def test_activate_job_trigger_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ActivateJobTriggerRequest(),
+        {},
+    ],
+)
 async def test_activate_job_trigger_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ActivateJobTriggerRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8885,7 +8952,7 @@ async def test_activate_job_trigger_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8914,11 +8981,6 @@ async def test_activate_job_trigger_async(
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-@pytest.mark.asyncio
-async def test_activate_job_trigger_async_from_dict():
-    await test_activate_job_trigger_async(request_type=dict)
 
 
 def test_activate_job_trigger_field_headers():
@@ -8987,8 +9049,8 @@ async def test_activate_job_trigger_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateDiscoveryConfigRequest,
-        dict,
+        dlp.CreateDiscoveryConfigRequest(),
+        {},
     ],
 )
 def test_create_discovery_config(request_type, transport: str = "grpc"):
@@ -8999,7 +9061,7 @@ def test_create_discovery_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9054,10 +9116,11 @@ def test_create_discovery_config_non_empty_request_with_auto_populated_field():
         client.create_discovery_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDiscoveryConfigRequest(
+        request_msg = dlp.CreateDiscoveryConfigRequest(
             parent="parent_value",
             config_id="config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_discovery_config_use_cached_wrapped_rpc():
@@ -9143,8 +9206,15 @@ async def test_create_discovery_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDiscoveryConfigRequest(),
+        {},
+    ],
+)
 async def test_create_discovery_config_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateDiscoveryConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9153,7 +9223,7 @@ async def test_create_discovery_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9182,11 +9252,6 @@ async def test_create_discovery_config_async(
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_create_discovery_config_async_from_dict():
-    await test_create_discovery_config_async(request_type=dict)
 
 
 def test_create_discovery_config_field_headers():
@@ -9349,8 +9414,8 @@ async def test_create_discovery_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateDiscoveryConfigRequest,
-        dict,
+        dlp.UpdateDiscoveryConfigRequest(),
+        {},
     ],
 )
 def test_update_discovery_config(request_type, transport: str = "grpc"):
@@ -9361,7 +9426,7 @@ def test_update_discovery_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9415,9 +9480,10 @@ def test_update_discovery_config_non_empty_request_with_auto_populated_field():
         client.update_discovery_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDiscoveryConfigRequest(
+        request_msg = dlp.UpdateDiscoveryConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_discovery_config_use_cached_wrapped_rpc():
@@ -9503,8 +9569,15 @@ async def test_update_discovery_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateDiscoveryConfigRequest(),
+        {},
+    ],
+)
 async def test_update_discovery_config_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateDiscoveryConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9513,7 +9586,7 @@ async def test_update_discovery_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9542,11 +9615,6 @@ async def test_update_discovery_config_async(
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_update_discovery_config_async_from_dict():
-    await test_update_discovery_config_async(request_type=dict)
 
 
 def test_update_discovery_config_field_headers():
@@ -9719,8 +9787,8 @@ async def test_update_discovery_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetDiscoveryConfigRequest,
-        dict,
+        dlp.GetDiscoveryConfigRequest(),
+        {},
     ],
 )
 def test_get_discovery_config(request_type, transport: str = "grpc"):
@@ -9731,7 +9799,7 @@ def test_get_discovery_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9785,9 +9853,10 @@ def test_get_discovery_config_non_empty_request_with_auto_populated_field():
         client.get_discovery_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDiscoveryConfigRequest(
+        request_msg = dlp.GetDiscoveryConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_discovery_config_use_cached_wrapped_rpc():
@@ -9872,8 +9941,15 @@ async def test_get_discovery_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDiscoveryConfigRequest(),
+        {},
+    ],
+)
 async def test_get_discovery_config_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetDiscoveryConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9882,7 +9958,7 @@ async def test_get_discovery_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9911,11 +9987,6 @@ async def test_get_discovery_config_async(
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_get_discovery_config_async_from_dict():
-    await test_get_discovery_config_async(request_type=dict)
 
 
 def test_get_discovery_config_field_headers():
@@ -10068,8 +10139,8 @@ async def test_get_discovery_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListDiscoveryConfigsRequest,
-        dict,
+        dlp.ListDiscoveryConfigsRequest(),
+        {},
     ],
 )
 def test_list_discovery_configs(request_type, transport: str = "grpc"):
@@ -10080,7 +10151,7 @@ def test_list_discovery_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10130,11 +10201,12 @@ def test_list_discovery_configs_non_empty_request_with_auto_populated_field():
         client.list_discovery_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDiscoveryConfigsRequest(
+        request_msg = dlp.ListDiscoveryConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_discovery_configs_use_cached_wrapped_rpc():
@@ -10220,8 +10292,15 @@ async def test_list_discovery_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDiscoveryConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_discovery_configs_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListDiscoveryConfigsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10230,7 +10309,7 @@ async def test_list_discovery_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10253,11 +10332,6 @@ async def test_list_discovery_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveryConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_discovery_configs_async_from_dict():
-    await test_list_discovery_configs_async(request_type=dict)
 
 
 def test_list_discovery_configs_field_headers():
@@ -10612,8 +10686,8 @@ async def test_list_discovery_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteDiscoveryConfigRequest,
-        dict,
+        dlp.DeleteDiscoveryConfigRequest(),
+        {},
     ],
 )
 def test_delete_discovery_config(request_type, transport: str = "grpc"):
@@ -10624,7 +10698,7 @@ def test_delete_discovery_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10669,9 +10743,10 @@ def test_delete_discovery_config_non_empty_request_with_auto_populated_field():
         client.delete_discovery_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDiscoveryConfigRequest(
+        request_msg = dlp.DeleteDiscoveryConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_discovery_config_use_cached_wrapped_rpc():
@@ -10757,8 +10832,15 @@ async def test_delete_discovery_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDiscoveryConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_discovery_config_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteDiscoveryConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10767,7 +10849,7 @@ async def test_delete_discovery_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10785,11 +10867,6 @@ async def test_delete_discovery_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_discovery_config_async_from_dict():
-    await test_delete_discovery_config_async(request_type=dict)
 
 
 def test_delete_discovery_config_field_headers():
@@ -10942,8 +11019,8 @@ async def test_delete_discovery_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateDlpJobRequest,
-        dict,
+        dlp.CreateDlpJobRequest(),
+        {},
     ],
 )
 def test_create_dlp_job(request_type, transport: str = "grpc"):
@@ -10954,7 +11031,7 @@ def test_create_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
@@ -11006,11 +11083,12 @@ def test_create_dlp_job_non_empty_request_with_auto_populated_field():
         client.create_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDlpJobRequest(
+        request_msg = dlp.CreateDlpJobRequest(
             parent="parent_value",
             job_id="job_id_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dlp_job_use_cached_wrapped_rpc():
@@ -11091,9 +11169,14 @@ async def test_create_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateDlpJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDlpJobRequest(),
+        {},
+    ],
+)
+async def test_create_dlp_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11101,7 +11184,7 @@ async def test_create_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
@@ -11128,11 +11211,6 @@ async def test_create_dlp_job_async(
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_dlp_job_async_from_dict():
-    await test_create_dlp_job_async(request_type=dict)
 
 
 def test_create_dlp_job_field_headers():
@@ -11347,8 +11425,8 @@ async def test_create_dlp_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListDlpJobsRequest,
-        dict,
+        dlp.ListDlpJobsRequest(),
+        {},
     ],
 )
 def test_list_dlp_jobs(request_type, transport: str = "grpc"):
@@ -11359,7 +11437,7 @@ def test_list_dlp_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
@@ -11407,13 +11485,14 @@ def test_list_dlp_jobs_non_empty_request_with_auto_populated_field():
         client.list_dlp_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDlpJobsRequest(
+        request_msg = dlp.ListDlpJobsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
             order_by="order_by_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_dlp_jobs_use_cached_wrapped_rpc():
@@ -11494,9 +11573,14 @@ async def test_list_dlp_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_dlp_jobs_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListDlpJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDlpJobsRequest(),
+        {},
+    ],
+)
+async def test_list_dlp_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11504,7 +11588,7 @@ async def test_list_dlp_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
@@ -11525,11 +11609,6 @@ async def test_list_dlp_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDlpJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_dlp_jobs_async_from_dict():
-    await test_list_dlp_jobs_async(request_type=dict)
 
 
 def test_list_dlp_jobs_field_headers():
@@ -11868,8 +11947,8 @@ async def test_list_dlp_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetDlpJobRequest,
-        dict,
+        dlp.GetDlpJobRequest(),
+        {},
     ],
 )
 def test_get_dlp_job(request_type, transport: str = "grpc"):
@@ -11880,7 +11959,7 @@ def test_get_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
@@ -11930,9 +12009,10 @@ def test_get_dlp_job_non_empty_request_with_auto_populated_field():
         client.get_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDlpJobRequest(
+        request_msg = dlp.GetDlpJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dlp_job_use_cached_wrapped_rpc():
@@ -12013,9 +12093,14 @@ async def test_get_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetDlpJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDlpJobRequest(),
+        {},
+    ],
+)
+async def test_get_dlp_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12023,7 +12108,7 @@ async def test_get_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
@@ -12050,11 +12135,6 @@ async def test_get_dlp_job_async(
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dlp_job_async_from_dict():
-    await test_get_dlp_job_async(request_type=dict)
 
 
 def test_get_dlp_job_field_headers():
@@ -12199,8 +12279,8 @@ async def test_get_dlp_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteDlpJobRequest,
-        dict,
+        dlp.DeleteDlpJobRequest(),
+        {},
     ],
 )
 def test_delete_dlp_job(request_type, transport: str = "grpc"):
@@ -12211,7 +12291,7 @@ def test_delete_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
@@ -12252,9 +12332,10 @@ def test_delete_dlp_job_non_empty_request_with_auto_populated_field():
         client.delete_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDlpJobRequest(
+        request_msg = dlp.DeleteDlpJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dlp_job_use_cached_wrapped_rpc():
@@ -12335,9 +12416,14 @@ async def test_delete_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteDlpJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDlpJobRequest(),
+        {},
+    ],
+)
+async def test_delete_dlp_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12345,7 +12431,7 @@ async def test_delete_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
@@ -12361,11 +12447,6 @@ async def test_delete_dlp_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_dlp_job_async_from_dict():
-    await test_delete_dlp_job_async(request_type=dict)
 
 
 def test_delete_dlp_job_field_headers():
@@ -12510,8 +12591,8 @@ async def test_delete_dlp_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CancelDlpJobRequest,
-        dict,
+        dlp.CancelDlpJobRequest(),
+        {},
     ],
 )
 def test_cancel_dlp_job(request_type, transport: str = "grpc"):
@@ -12522,7 +12603,7 @@ def test_cancel_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
@@ -12563,9 +12644,10 @@ def test_cancel_dlp_job_non_empty_request_with_auto_populated_field():
         client.cancel_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CancelDlpJobRequest(
+        request_msg = dlp.CancelDlpJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_dlp_job_use_cached_wrapped_rpc():
@@ -12646,9 +12728,14 @@ async def test_cancel_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CancelDlpJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CancelDlpJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_dlp_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12656,7 +12743,7 @@ async def test_cancel_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
@@ -12672,11 +12759,6 @@ async def test_cancel_dlp_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_cancel_dlp_job_async_from_dict():
-    await test_cancel_dlp_job_async(request_type=dict)
 
 
 def test_cancel_dlp_job_field_headers():
@@ -12741,8 +12823,8 @@ async def test_cancel_dlp_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateStoredInfoTypeRequest,
-        dict,
+        dlp.CreateStoredInfoTypeRequest(),
+        {},
     ],
 )
 def test_create_stored_info_type(request_type, transport: str = "grpc"):
@@ -12753,7 +12835,7 @@ def test_create_stored_info_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12803,11 +12885,12 @@ def test_create_stored_info_type_non_empty_request_with_auto_populated_field():
         client.create_stored_info_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateStoredInfoTypeRequest(
+        request_msg = dlp.CreateStoredInfoTypeRequest(
             parent="parent_value",
             stored_info_type_id="stored_info_type_id_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_stored_info_type_use_cached_wrapped_rpc():
@@ -12893,8 +12976,15 @@ async def test_create_stored_info_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateStoredInfoTypeRequest(),
+        {},
+    ],
+)
 async def test_create_stored_info_type_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateStoredInfoTypeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12903,7 +12993,7 @@ async def test_create_stored_info_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12926,11 +13016,6 @@ async def test_create_stored_info_type_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_stored_info_type_async_from_dict():
-    await test_create_stored_info_type_async(request_type=dict)
 
 
 def test_create_stored_info_type_field_headers():
@@ -13093,8 +13178,8 @@ async def test_create_stored_info_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateStoredInfoTypeRequest,
-        dict,
+        dlp.UpdateStoredInfoTypeRequest(),
+        {},
     ],
 )
 def test_update_stored_info_type(request_type, transport: str = "grpc"):
@@ -13105,7 +13190,7 @@ def test_update_stored_info_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13153,9 +13238,10 @@ def test_update_stored_info_type_non_empty_request_with_auto_populated_field():
         client.update_stored_info_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateStoredInfoTypeRequest(
+        request_msg = dlp.UpdateStoredInfoTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_stored_info_type_use_cached_wrapped_rpc():
@@ -13241,8 +13327,15 @@ async def test_update_stored_info_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateStoredInfoTypeRequest(),
+        {},
+    ],
+)
 async def test_update_stored_info_type_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateStoredInfoTypeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13251,7 +13344,7 @@ async def test_update_stored_info_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13274,11 +13367,6 @@ async def test_update_stored_info_type_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_stored_info_type_async_from_dict():
-    await test_update_stored_info_type_async(request_type=dict)
 
 
 def test_update_stored_info_type_field_headers():
@@ -13451,8 +13539,8 @@ async def test_update_stored_info_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetStoredInfoTypeRequest,
-        dict,
+        dlp.GetStoredInfoTypeRequest(),
+        {},
     ],
 )
 def test_get_stored_info_type(request_type, transport: str = "grpc"):
@@ -13463,7 +13551,7 @@ def test_get_stored_info_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13511,9 +13599,10 @@ def test_get_stored_info_type_non_empty_request_with_auto_populated_field():
         client.get_stored_info_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetStoredInfoTypeRequest(
+        request_msg = dlp.GetStoredInfoTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_stored_info_type_use_cached_wrapped_rpc():
@@ -13598,8 +13687,15 @@ async def test_get_stored_info_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetStoredInfoTypeRequest(),
+        {},
+    ],
+)
 async def test_get_stored_info_type_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetStoredInfoTypeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13608,7 +13704,7 @@ async def test_get_stored_info_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13631,11 +13727,6 @@ async def test_get_stored_info_type_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_stored_info_type_async_from_dict():
-    await test_get_stored_info_type_async(request_type=dict)
 
 
 def test_get_stored_info_type_field_headers():
@@ -13788,8 +13879,8 @@ async def test_get_stored_info_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListStoredInfoTypesRequest,
-        dict,
+        dlp.ListStoredInfoTypesRequest(),
+        {},
     ],
 )
 def test_list_stored_info_types(request_type, transport: str = "grpc"):
@@ -13800,7 +13891,7 @@ def test_list_stored_info_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13851,12 +13942,13 @@ def test_list_stored_info_types_non_empty_request_with_auto_populated_field():
         client.list_stored_info_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListStoredInfoTypesRequest(
+        request_msg = dlp.ListStoredInfoTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             location_id="location_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_stored_info_types_use_cached_wrapped_rpc():
@@ -13942,8 +14034,15 @@ async def test_list_stored_info_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListStoredInfoTypesRequest(),
+        {},
+    ],
+)
 async def test_list_stored_info_types_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListStoredInfoTypesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13952,7 +14051,7 @@ async def test_list_stored_info_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13975,11 +14074,6 @@ async def test_list_stored_info_types_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoredInfoTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_stored_info_types_async_from_dict():
-    await test_list_stored_info_types_async(request_type=dict)
 
 
 def test_list_stored_info_types_field_headers():
@@ -14334,8 +14428,8 @@ async def test_list_stored_info_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteStoredInfoTypeRequest,
-        dict,
+        dlp.DeleteStoredInfoTypeRequest(),
+        {},
     ],
 )
 def test_delete_stored_info_type(request_type, transport: str = "grpc"):
@@ -14346,7 +14440,7 @@ def test_delete_stored_info_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14391,9 +14485,10 @@ def test_delete_stored_info_type_non_empty_request_with_auto_populated_field():
         client.delete_stored_info_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteStoredInfoTypeRequest(
+        request_msg = dlp.DeleteStoredInfoTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_stored_info_type_use_cached_wrapped_rpc():
@@ -14479,8 +14574,15 @@ async def test_delete_stored_info_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteStoredInfoTypeRequest(),
+        {},
+    ],
+)
 async def test_delete_stored_info_type_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteStoredInfoTypeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14489,7 +14591,7 @@ async def test_delete_stored_info_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14507,11 +14609,6 @@ async def test_delete_stored_info_type_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_stored_info_type_async_from_dict():
-    await test_delete_stored_info_type_async(request_type=dict)
 
 
 def test_delete_stored_info_type_field_headers():
@@ -14664,8 +14761,8 @@ async def test_delete_stored_info_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListProjectDataProfilesRequest,
-        dict,
+        dlp.ListProjectDataProfilesRequest(),
+        {},
     ],
 )
 def test_list_project_data_profiles(request_type, transport: str = "grpc"):
@@ -14676,7 +14773,7 @@ def test_list_project_data_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14727,12 +14824,13 @@ def test_list_project_data_profiles_non_empty_request_with_auto_populated_field(
         client.list_project_data_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListProjectDataProfilesRequest(
+        request_msg = dlp.ListProjectDataProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_project_data_profiles_use_cached_wrapped_rpc():
@@ -14818,8 +14916,15 @@ async def test_list_project_data_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListProjectDataProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_project_data_profiles_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListProjectDataProfilesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14828,7 +14933,7 @@ async def test_list_project_data_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14851,11 +14956,6 @@ async def test_list_project_data_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProjectDataProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_project_data_profiles_async_from_dict():
-    await test_list_project_data_profiles_async(request_type=dict)
 
 
 def test_list_project_data_profiles_field_headers():
@@ -15212,8 +15312,8 @@ async def test_list_project_data_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListTableDataProfilesRequest,
-        dict,
+        dlp.ListTableDataProfilesRequest(),
+        {},
     ],
 )
 def test_list_table_data_profiles(request_type, transport: str = "grpc"):
@@ -15224,7 +15324,7 @@ def test_list_table_data_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15275,12 +15375,13 @@ def test_list_table_data_profiles_non_empty_request_with_auto_populated_field():
         client.list_table_data_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListTableDataProfilesRequest(
+        request_msg = dlp.ListTableDataProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_table_data_profiles_use_cached_wrapped_rpc():
@@ -15366,8 +15467,15 @@ async def test_list_table_data_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListTableDataProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_table_data_profiles_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListTableDataProfilesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15376,7 +15484,7 @@ async def test_list_table_data_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15399,11 +15507,6 @@ async def test_list_table_data_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTableDataProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_table_data_profiles_async_from_dict():
-    await test_list_table_data_profiles_async(request_type=dict)
 
 
 def test_list_table_data_profiles_field_headers():
@@ -15760,8 +15863,8 @@ async def test_list_table_data_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListColumnDataProfilesRequest,
-        dict,
+        dlp.ListColumnDataProfilesRequest(),
+        {},
     ],
 )
 def test_list_column_data_profiles(request_type, transport: str = "grpc"):
@@ -15772,7 +15875,7 @@ def test_list_column_data_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15823,12 +15926,13 @@ def test_list_column_data_profiles_non_empty_request_with_auto_populated_field()
         client.list_column_data_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListColumnDataProfilesRequest(
+        request_msg = dlp.ListColumnDataProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_column_data_profiles_use_cached_wrapped_rpc():
@@ -15914,8 +16018,15 @@ async def test_list_column_data_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListColumnDataProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_column_data_profiles_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListColumnDataProfilesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15924,7 +16035,7 @@ async def test_list_column_data_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15947,11 +16058,6 @@ async def test_list_column_data_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListColumnDataProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_column_data_profiles_async_from_dict():
-    await test_list_column_data_profiles_async(request_type=dict)
 
 
 def test_list_column_data_profiles_field_headers():
@@ -16308,8 +16414,8 @@ async def test_list_column_data_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetProjectDataProfileRequest,
-        dict,
+        dlp.GetProjectDataProfileRequest(),
+        {},
     ],
 )
 def test_get_project_data_profile(request_type, transport: str = "grpc"):
@@ -16320,7 +16426,7 @@ def test_get_project_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16374,9 +16480,10 @@ def test_get_project_data_profile_non_empty_request_with_auto_populated_field():
         client.get_project_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetProjectDataProfileRequest(
+        request_msg = dlp.GetProjectDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_project_data_profile_use_cached_wrapped_rpc():
@@ -16462,8 +16569,15 @@ async def test_get_project_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetProjectDataProfileRequest(),
+        {},
+    ],
+)
 async def test_get_project_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetProjectDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16472,7 +16586,7 @@ async def test_get_project_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16501,11 +16615,6 @@ async def test_get_project_data_profile_async(
     assert response.project_id == "project_id_value"
     assert response.table_data_profile_count == 2521
     assert response.file_store_data_profile_count == 3069
-
-
-@pytest.mark.asyncio
-async def test_get_project_data_profile_async_from_dict():
-    await test_get_project_data_profile_async(request_type=dict)
 
 
 def test_get_project_data_profile_field_headers():
@@ -16662,8 +16771,8 @@ async def test_get_project_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListFileStoreDataProfilesRequest,
-        dict,
+        dlp.ListFileStoreDataProfilesRequest(),
+        {},
     ],
 )
 def test_list_file_store_data_profiles(request_type, transport: str = "grpc"):
@@ -16674,7 +16783,7 @@ def test_list_file_store_data_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16725,12 +16834,13 @@ def test_list_file_store_data_profiles_non_empty_request_with_auto_populated_fie
         client.list_file_store_data_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListFileStoreDataProfilesRequest(
+        request_msg = dlp.ListFileStoreDataProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_file_store_data_profiles_use_cached_wrapped_rpc():
@@ -16816,8 +16926,15 @@ async def test_list_file_store_data_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListFileStoreDataProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_file_store_data_profiles_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListFileStoreDataProfilesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16826,7 +16943,7 @@ async def test_list_file_store_data_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16849,11 +16966,6 @@ async def test_list_file_store_data_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFileStoreDataProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_file_store_data_profiles_async_from_dict():
-    await test_list_file_store_data_profiles_async(request_type=dict)
 
 
 def test_list_file_store_data_profiles_field_headers():
@@ -17212,8 +17324,8 @@ async def test_list_file_store_data_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetFileStoreDataProfileRequest,
-        dict,
+        dlp.GetFileStoreDataProfileRequest(),
+        {},
     ],
 )
 def test_get_file_store_data_profile(request_type, transport: str = "grpc"):
@@ -17224,7 +17336,7 @@ def test_get_file_store_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17295,9 +17407,10 @@ def test_get_file_store_data_profile_non_empty_request_with_auto_populated_field
         client.get_file_store_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetFileStoreDataProfileRequest(
+        request_msg = dlp.GetFileStoreDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_file_store_data_profile_use_cached_wrapped_rpc():
@@ -17383,8 +17496,15 @@ async def test_get_file_store_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetFileStoreDataProfileRequest(),
+        {},
+    ],
+)
 async def test_get_file_store_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetFileStoreDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17393,7 +17513,7 @@ async def test_get_file_store_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17439,11 +17559,6 @@ async def test_get_file_store_data_profile_async(
         == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
     )
     assert response.file_store_is_empty is True
-
-
-@pytest.mark.asyncio
-async def test_get_file_store_data_profile_async_from_dict():
-    await test_get_file_store_data_profile_async(request_type=dict)
 
 
 def test_get_file_store_data_profile_field_headers():
@@ -17600,8 +17715,8 @@ async def test_get_file_store_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteFileStoreDataProfileRequest,
-        dict,
+        dlp.DeleteFileStoreDataProfileRequest(),
+        {},
     ],
 )
 def test_delete_file_store_data_profile(request_type, transport: str = "grpc"):
@@ -17612,7 +17727,7 @@ def test_delete_file_store_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17657,9 +17772,10 @@ def test_delete_file_store_data_profile_non_empty_request_with_auto_populated_fi
         client.delete_file_store_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteFileStoreDataProfileRequest(
+        request_msg = dlp.DeleteFileStoreDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_file_store_data_profile_use_cached_wrapped_rpc():
@@ -17745,8 +17861,15 @@ async def test_delete_file_store_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteFileStoreDataProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_file_store_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteFileStoreDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17755,7 +17878,7 @@ async def test_delete_file_store_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17773,11 +17896,6 @@ async def test_delete_file_store_data_profile_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_file_store_data_profile_async_from_dict():
-    await test_delete_file_store_data_profile_async(request_type=dict)
 
 
 def test_delete_file_store_data_profile_field_headers():
@@ -17930,8 +18048,8 @@ async def test_delete_file_store_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetTableDataProfileRequest,
-        dict,
+        dlp.GetTableDataProfileRequest(),
+        {},
     ],
 )
 def test_get_table_data_profile(request_type, transport: str = "grpc"):
@@ -17942,7 +18060,7 @@ def test_get_table_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18019,9 +18137,10 @@ def test_get_table_data_profile_non_empty_request_with_auto_populated_field():
         client.get_table_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetTableDataProfileRequest(
+        request_msg = dlp.GetTableDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_table_data_profile_use_cached_wrapped_rpc():
@@ -18107,8 +18226,15 @@ async def test_get_table_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetTableDataProfileRequest(),
+        {},
+    ],
+)
 async def test_get_table_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetTableDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18117,7 +18243,7 @@ async def test_get_table_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18169,11 +18295,6 @@ async def test_get_table_data_profile_async(
         response.resource_visibility
         == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
     )
-
-
-@pytest.mark.asyncio
-async def test_get_table_data_profile_async_from_dict():
-    await test_get_table_data_profile_async(request_type=dict)
 
 
 def test_get_table_data_profile_field_headers():
@@ -18330,8 +18451,8 @@ async def test_get_table_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetColumnDataProfileRequest,
-        dict,
+        dlp.GetColumnDataProfileRequest(),
+        {},
     ],
 )
 def test_get_column_data_profile(request_type, transport: str = "grpc"):
@@ -18342,7 +18463,7 @@ def test_get_column_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18425,9 +18546,10 @@ def test_get_column_data_profile_non_empty_request_with_auto_populated_field():
         client.get_column_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetColumnDataProfileRequest(
+        request_msg = dlp.GetColumnDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_column_data_profile_use_cached_wrapped_rpc():
@@ -18513,8 +18635,15 @@ async def test_get_column_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetColumnDataProfileRequest(),
+        {},
+    ],
+)
 async def test_get_column_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetColumnDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18523,7 +18652,7 @@ async def test_get_column_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18581,11 +18710,6 @@ async def test_get_column_data_profile_async(
         response.policy_state
         == dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED
     )
-
-
-@pytest.mark.asyncio
-async def test_get_column_data_profile_async_from_dict():
-    await test_get_column_data_profile_async(request_type=dict)
 
 
 def test_get_column_data_profile_field_headers():
@@ -18742,8 +18866,8 @@ async def test_get_column_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteTableDataProfileRequest,
-        dict,
+        dlp.DeleteTableDataProfileRequest(),
+        {},
     ],
 )
 def test_delete_table_data_profile(request_type, transport: str = "grpc"):
@@ -18754,7 +18878,7 @@ def test_delete_table_data_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18799,9 +18923,10 @@ def test_delete_table_data_profile_non_empty_request_with_auto_populated_field()
         client.delete_table_data_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteTableDataProfileRequest(
+        request_msg = dlp.DeleteTableDataProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_table_data_profile_use_cached_wrapped_rpc():
@@ -18887,8 +19012,15 @@ async def test_delete_table_data_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteTableDataProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_table_data_profile_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteTableDataProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18897,7 +19029,7 @@ async def test_delete_table_data_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18915,11 +19047,6 @@ async def test_delete_table_data_profile_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_table_data_profile_async_from_dict():
-    await test_delete_table_data_profile_async(request_type=dict)
 
 
 def test_delete_table_data_profile_field_headers():
@@ -19072,8 +19199,8 @@ async def test_delete_table_data_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.HybridInspectDlpJobRequest,
-        dict,
+        dlp.HybridInspectDlpJobRequest(),
+        {},
     ],
 )
 def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
@@ -19084,7 +19211,7 @@ def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19129,9 +19256,10 @@ def test_hybrid_inspect_dlp_job_non_empty_request_with_auto_populated_field():
         client.hybrid_inspect_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectDlpJobRequest(
+        request_msg = dlp.HybridInspectDlpJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_hybrid_inspect_dlp_job_use_cached_wrapped_rpc():
@@ -19217,8 +19345,15 @@ async def test_hybrid_inspect_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.HybridInspectDlpJobRequest(),
+        {},
+    ],
+)
 async def test_hybrid_inspect_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.HybridInspectDlpJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19227,7 +19362,7 @@ async def test_hybrid_inspect_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19247,11 +19382,6 @@ async def test_hybrid_inspect_dlp_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-@pytest.mark.asyncio
-async def test_hybrid_inspect_dlp_job_async_from_dict():
-    await test_hybrid_inspect_dlp_job_async(request_type=dict)
 
 
 def test_hybrid_inspect_dlp_job_field_headers():
@@ -19408,8 +19538,8 @@ async def test_hybrid_inspect_dlp_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.FinishDlpJobRequest,
-        dict,
+        dlp.FinishDlpJobRequest(),
+        {},
     ],
 )
 def test_finish_dlp_job(request_type, transport: str = "grpc"):
@@ -19420,7 +19550,7 @@ def test_finish_dlp_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
@@ -19461,9 +19591,10 @@ def test_finish_dlp_job_non_empty_request_with_auto_populated_field():
         client.finish_dlp_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.FinishDlpJobRequest(
+        request_msg = dlp.FinishDlpJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_finish_dlp_job_use_cached_wrapped_rpc():
@@ -19544,9 +19675,14 @@ async def test_finish_dlp_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_finish_dlp_job_async(
-    transport: str = "grpc_asyncio", request_type=dlp.FinishDlpJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.FinishDlpJobRequest(),
+        {},
+    ],
+)
+async def test_finish_dlp_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19554,7 +19690,7 @@ async def test_finish_dlp_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
@@ -19570,11 +19706,6 @@ async def test_finish_dlp_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_finish_dlp_job_async_from_dict():
-    await test_finish_dlp_job_async(request_type=dict)
 
 
 def test_finish_dlp_job_field_headers():
@@ -19639,8 +19770,8 @@ async def test_finish_dlp_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.CreateConnectionRequest,
-        dict,
+        dlp.CreateConnectionRequest(),
+        {},
     ],
 )
 def test_create_connection(request_type, transport: str = "grpc"):
@@ -19651,7 +19782,7 @@ def test_create_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19701,9 +19832,10 @@ def test_create_connection_non_empty_request_with_auto_populated_field():
         client.create_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateConnectionRequest(
+        request_msg = dlp.CreateConnectionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connection_use_cached_wrapped_rpc():
@@ -19786,9 +19918,14 @@ async def test_create_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_connection_async(
-    transport: str = "grpc_asyncio", request_type=dlp.CreateConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateConnectionRequest(),
+        {},
+    ],
+)
+async def test_create_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19796,7 +19933,7 @@ async def test_create_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19821,11 +19958,6 @@ async def test_create_connection_async(
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-@pytest.mark.asyncio
-async def test_create_connection_async_from_dict():
-    await test_create_connection_async(request_type=dict)
 
 
 def test_create_connection_field_headers():
@@ -19988,8 +20120,8 @@ async def test_create_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.GetConnectionRequest,
-        dict,
+        dlp.GetConnectionRequest(),
+        {},
     ],
 )
 def test_get_connection(request_type, transport: str = "grpc"):
@@ -20000,7 +20132,7 @@ def test_get_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
@@ -20046,9 +20178,10 @@ def test_get_connection_non_empty_request_with_auto_populated_field():
         client.get_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetConnectionRequest(
+        request_msg = dlp.GetConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connection_use_cached_wrapped_rpc():
@@ -20129,9 +20262,14 @@ async def test_get_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_connection_async(
-    transport: str = "grpc_asyncio", request_type=dlp.GetConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetConnectionRequest(),
+        {},
+    ],
+)
+async def test_get_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20139,7 +20277,7 @@ async def test_get_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
@@ -20162,11 +20300,6 @@ async def test_get_connection_async(
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-@pytest.mark.asyncio
-async def test_get_connection_async_from_dict():
-    await test_get_connection_async(request_type=dict)
 
 
 def test_get_connection_field_headers():
@@ -20311,8 +20444,8 @@ async def test_get_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.ListConnectionsRequest,
-        dict,
+        dlp.ListConnectionsRequest(),
+        {},
     ],
 )
 def test_list_connections(request_type, transport: str = "grpc"):
@@ -20323,7 +20456,7 @@ def test_list_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
@@ -20369,11 +20502,12 @@ def test_list_connections_non_empty_request_with_auto_populated_field():
         client.list_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListConnectionsRequest(
+        request_msg = dlp.ListConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connections_use_cached_wrapped_rpc():
@@ -20456,9 +20590,14 @@ async def test_list_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_connections_async(
-    transport: str = "grpc_asyncio", request_type=dlp.ListConnectionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListConnectionsRequest(),
+        {},
+    ],
+)
+async def test_list_connections_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20466,7 +20605,7 @@ async def test_list_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
@@ -20487,11 +20626,6 @@ async def test_list_connections_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_connections_async_from_dict():
-    await test_list_connections_async(request_type=dict)
 
 
 def test_list_connections_field_headers():
@@ -20830,8 +20964,8 @@ async def test_list_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.SearchConnectionsRequest,
-        dict,
+        dlp.SearchConnectionsRequest(),
+        {},
     ],
 )
 def test_search_connections(request_type, transport: str = "grpc"):
@@ -20842,7 +20976,7 @@ def test_search_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20892,11 +21026,12 @@ def test_search_connections_non_empty_request_with_auto_populated_field():
         client.search_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.SearchConnectionsRequest(
+        request_msg = dlp.SearchConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_connections_use_cached_wrapped_rpc():
@@ -20981,9 +21116,14 @@ async def test_search_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_connections_async(
-    transport: str = "grpc_asyncio", request_type=dlp.SearchConnectionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.SearchConnectionsRequest(),
+        {},
+    ],
+)
+async def test_search_connections_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20991,7 +21131,7 @@ async def test_search_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21014,11 +21154,6 @@ async def test_search_connections_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_connections_async_from_dict():
-    await test_search_connections_async(request_type=dict)
 
 
 def test_search_connections_field_headers():
@@ -21373,8 +21508,8 @@ async def test_search_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.DeleteConnectionRequest,
-        dict,
+        dlp.DeleteConnectionRequest(),
+        {},
     ],
 )
 def test_delete_connection(request_type, transport: str = "grpc"):
@@ -21385,7 +21520,7 @@ def test_delete_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21430,9 +21565,10 @@ def test_delete_connection_non_empty_request_with_auto_populated_field():
         client.delete_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteConnectionRequest(
+        request_msg = dlp.DeleteConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connection_use_cached_wrapped_rpc():
@@ -21515,9 +21651,14 @@ async def test_delete_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_connection_async(
-    transport: str = "grpc_asyncio", request_type=dlp.DeleteConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteConnectionRequest(),
+        {},
+    ],
+)
+async def test_delete_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21525,7 +21666,7 @@ async def test_delete_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21543,11 +21684,6 @@ async def test_delete_connection_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_connection_async_from_dict():
-    await test_delete_connection_async(request_type=dict)
 
 
 def test_delete_connection_field_headers():
@@ -21700,8 +21836,8 @@ async def test_delete_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dlp.UpdateConnectionRequest,
-        dict,
+        dlp.UpdateConnectionRequest(),
+        {},
     ],
 )
 def test_update_connection(request_type, transport: str = "grpc"):
@@ -21712,7 +21848,7 @@ def test_update_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21762,9 +21898,10 @@ def test_update_connection_non_empty_request_with_auto_populated_field():
         client.update_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateConnectionRequest(
+        request_msg = dlp.UpdateConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_connection_use_cached_wrapped_rpc():
@@ -21847,9 +21984,14 @@ async def test_update_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_connection_async(
-    transport: str = "grpc_asyncio", request_type=dlp.UpdateConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateConnectionRequest(),
+        {},
+    ],
+)
+async def test_update_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DlpServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21857,7 +21999,7 @@ async def test_update_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21882,11 +22024,6 @@ async def test_update_connection_async(
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-@pytest.mark.asyncio
-async def test_update_connection_async_from_dict():
-    await test_update_connection_async(request_type=dict)
 
 
 def test_update_connection_field_headers():
@@ -32443,7 +32580,6 @@ def test_inspect_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.InspectContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32464,7 +32600,6 @@ def test_redact_image_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.RedactImageRequest()
-
         assert args[0] == request_msg
 
 
@@ -32487,7 +32622,6 @@ def test_deidentify_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32510,7 +32644,6 @@ def test_reidentify_content_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ReidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32531,7 +32664,6 @@ def test_list_info_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32554,7 +32686,6 @@ def test_create_inspect_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32577,7 +32708,6 @@ def test_update_inspect_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32600,7 +32730,6 @@ def test_get_inspect_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32623,7 +32752,6 @@ def test_list_inspect_templates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInspectTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32646,7 +32774,6 @@ def test_delete_inspect_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32669,7 +32796,6 @@ def test_create_deidentify_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32692,7 +32818,6 @@ def test_update_deidentify_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32715,7 +32840,6 @@ def test_get_deidentify_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32738,7 +32862,6 @@ def test_list_deidentify_templates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDeidentifyTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32761,7 +32884,6 @@ def test_delete_deidentify_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -32784,7 +32906,6 @@ def test_create_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32807,7 +32928,6 @@ def test_update_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32830,7 +32950,6 @@ def test_hybrid_inspect_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32851,7 +32970,6 @@ def test_get_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32874,7 +32992,6 @@ def test_list_job_triggers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListJobTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -32897,7 +33014,6 @@ def test_delete_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32920,7 +33036,6 @@ def test_activate_job_trigger_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ActivateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -32943,7 +33058,6 @@ def test_create_discovery_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -32966,7 +33080,6 @@ def test_update_discovery_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -32989,7 +33102,6 @@ def test_get_discovery_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -33012,7 +33124,6 @@ def test_list_discovery_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDiscoveryConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33035,7 +33146,6 @@ def test_delete_discovery_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -33056,7 +33166,6 @@ def test_create_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33077,7 +33186,6 @@ def test_list_dlp_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDlpJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33098,7 +33206,6 @@ def test_get_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33119,7 +33226,6 @@ def test_delete_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33140,7 +33246,6 @@ def test_cancel_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CancelDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33163,7 +33268,6 @@ def test_create_stored_info_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -33186,7 +33290,6 @@ def test_update_stored_info_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -33209,7 +33312,6 @@ def test_get_stored_info_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -33232,7 +33334,6 @@ def test_list_stored_info_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListStoredInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33255,7 +33356,6 @@ def test_delete_stored_info_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -33278,7 +33378,6 @@ def test_list_project_data_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListProjectDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33301,7 +33400,6 @@ def test_list_table_data_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListTableDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33324,7 +33422,6 @@ def test_list_column_data_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListColumnDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33347,7 +33444,6 @@ def test_get_project_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetProjectDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33370,7 +33466,6 @@ def test_list_file_store_data_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListFileStoreDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33393,7 +33488,6 @@ def test_get_file_store_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33416,7 +33510,6 @@ def test_delete_file_store_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33439,7 +33532,6 @@ def test_get_table_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33462,7 +33554,6 @@ def test_get_column_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetColumnDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33485,7 +33576,6 @@ def test_delete_table_data_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -33508,7 +33598,6 @@ def test_hybrid_inspect_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33529,7 +33618,6 @@ def test_finish_dlp_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.FinishDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -33552,7 +33640,6 @@ def test_create_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -33573,7 +33660,6 @@ def test_get_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -33594,7 +33680,6 @@ def test_list_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33617,7 +33702,6 @@ def test_search_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.SearchConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -33640,7 +33724,6 @@ def test_delete_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -33663,7 +33746,6 @@ def test_update_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -33702,7 +33784,6 @@ async def test_inspect_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.InspectContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -33730,7 +33811,6 @@ async def test_redact_image_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.RedactImageRequest()
-
         assert args[0] == request_msg
 
 
@@ -33757,7 +33837,6 @@ async def test_deidentify_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -33784,7 +33863,6 @@ async def test_reidentify_content_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ReidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -33809,7 +33887,6 @@ async def test_list_info_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33840,7 +33917,6 @@ async def test_create_inspect_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -33871,7 +33947,6 @@ async def test_update_inspect_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -33902,7 +33977,6 @@ async def test_get_inspect_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -33931,7 +34005,6 @@ async def test_list_inspect_templates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInspectTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -33956,7 +34029,6 @@ async def test_delete_inspect_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -33987,7 +34059,6 @@ async def test_create_deidentify_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -34018,7 +34089,6 @@ async def test_update_deidentify_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -34049,7 +34119,6 @@ async def test_get_deidentify_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -34078,7 +34147,6 @@ async def test_list_deidentify_templates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDeidentifyTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34103,7 +34171,6 @@ async def test_delete_deidentify_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -34135,7 +34202,6 @@ async def test_create_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34167,7 +34233,6 @@ async def test_update_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34194,7 +34259,6 @@ async def test_hybrid_inspect_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34224,7 +34288,6 @@ async def test_get_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34253,7 +34316,6 @@ async def test_list_job_triggers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListJobTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -34278,7 +34340,6 @@ async def test_delete_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34310,7 +34371,6 @@ async def test_activate_job_trigger_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ActivateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -34342,7 +34402,6 @@ async def test_create_discovery_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -34374,7 +34433,6 @@ async def test_update_discovery_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -34406,7 +34464,6 @@ async def test_get_discovery_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -34435,7 +34492,6 @@ async def test_list_discovery_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDiscoveryConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34460,7 +34516,6 @@ async def test_delete_discovery_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -34490,7 +34545,6 @@ async def test_create_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -34517,7 +34571,6 @@ async def test_list_dlp_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDlpJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34547,7 +34600,6 @@ async def test_get_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -34570,7 +34622,6 @@ async def test_delete_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -34593,7 +34644,6 @@ async def test_cancel_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CancelDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -34622,7 +34672,6 @@ async def test_create_stored_info_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -34651,7 +34700,6 @@ async def test_update_stored_info_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -34680,7 +34728,6 @@ async def test_get_stored_info_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -34709,7 +34756,6 @@ async def test_list_stored_info_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListStoredInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34734,7 +34780,6 @@ async def test_delete_stored_info_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -34763,7 +34808,6 @@ async def test_list_project_data_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListProjectDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34792,7 +34836,6 @@ async def test_list_table_data_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListTableDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34821,7 +34864,6 @@ async def test_list_column_data_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListColumnDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34853,7 +34895,6 @@ async def test_get_project_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetProjectDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -34882,7 +34923,6 @@ async def test_list_file_store_data_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListFileStoreDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34921,7 +34961,6 @@ async def test_get_file_store_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -34946,7 +34985,6 @@ async def test_delete_file_store_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -34988,7 +35026,6 @@ async def test_get_table_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -35030,7 +35067,6 @@ async def test_get_column_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetColumnDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -35055,7 +35091,6 @@ async def test_delete_table_data_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -35082,7 +35117,6 @@ async def test_hybrid_inspect_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -35105,7 +35139,6 @@ async def test_finish_dlp_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.FinishDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -35135,7 +35168,6 @@ async def test_create_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35163,7 +35195,6 @@ async def test_get_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35190,7 +35221,6 @@ async def test_list_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35219,7 +35249,6 @@ async def test_search_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.SearchConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35244,7 +35273,6 @@ async def test_delete_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35274,7 +35302,6 @@ async def test_update_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -42412,7 +42439,6 @@ def test_inspect_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.InspectContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -42432,7 +42458,6 @@ def test_redact_image_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.RedactImageRequest()
-
         assert args[0] == request_msg
 
 
@@ -42454,7 +42479,6 @@ def test_deidentify_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -42476,7 +42500,6 @@ def test_reidentify_content_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ReidentifyContentRequest()
-
         assert args[0] == request_msg
 
 
@@ -42496,7 +42519,6 @@ def test_list_info_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42518,7 +42540,6 @@ def test_create_inspect_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42540,7 +42561,6 @@ def test_update_inspect_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42562,7 +42582,6 @@ def test_get_inspect_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42584,7 +42603,6 @@ def test_list_inspect_templates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListInspectTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42606,7 +42624,6 @@ def test_delete_inspect_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteInspectTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42628,7 +42645,6 @@ def test_create_deidentify_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42650,7 +42666,6 @@ def test_update_deidentify_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42672,7 +42687,6 @@ def test_get_deidentify_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42694,7 +42708,6 @@ def test_list_deidentify_templates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDeidentifyTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42716,7 +42729,6 @@ def test_delete_deidentify_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDeidentifyTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -42738,7 +42750,6 @@ def test_create_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42760,7 +42771,6 @@ def test_update_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42782,7 +42792,6 @@ def test_hybrid_inspect_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42802,7 +42811,6 @@ def test_get_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42824,7 +42832,6 @@ def test_list_job_triggers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListJobTriggersRequest()
-
         assert args[0] == request_msg
 
 
@@ -42846,7 +42853,6 @@ def test_delete_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42868,7 +42874,6 @@ def test_activate_job_trigger_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ActivateJobTriggerRequest()
-
         assert args[0] == request_msg
 
 
@@ -42890,7 +42895,6 @@ def test_create_discovery_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42912,7 +42916,6 @@ def test_update_discovery_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42934,7 +42937,6 @@ def test_get_discovery_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42956,7 +42958,6 @@ def test_list_discovery_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDiscoveryConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42978,7 +42979,6 @@ def test_delete_discovery_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDiscoveryConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42998,7 +42998,6 @@ def test_create_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43018,7 +43017,6 @@ def test_list_dlp_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListDlpJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43038,7 +43036,6 @@ def test_get_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43058,7 +43055,6 @@ def test_delete_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43078,7 +43074,6 @@ def test_cancel_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CancelDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43100,7 +43095,6 @@ def test_create_stored_info_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -43122,7 +43116,6 @@ def test_update_stored_info_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -43144,7 +43137,6 @@ def test_get_stored_info_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -43166,7 +43158,6 @@ def test_list_stored_info_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListStoredInfoTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43188,7 +43179,6 @@ def test_delete_stored_info_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteStoredInfoTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -43210,7 +43200,6 @@ def test_list_project_data_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListProjectDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43232,7 +43221,6 @@ def test_list_table_data_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListTableDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43254,7 +43242,6 @@ def test_list_column_data_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListColumnDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43276,7 +43263,6 @@ def test_get_project_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetProjectDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43298,7 +43284,6 @@ def test_list_file_store_data_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListFileStoreDataProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43320,7 +43305,6 @@ def test_get_file_store_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43342,7 +43326,6 @@ def test_delete_file_store_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteFileStoreDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43364,7 +43347,6 @@ def test_get_table_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43386,7 +43368,6 @@ def test_get_column_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetColumnDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43408,7 +43389,6 @@ def test_delete_table_data_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteTableDataProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43430,7 +43410,6 @@ def test_hybrid_inspect_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.HybridInspectDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43450,7 +43429,6 @@ def test_finish_dlp_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.FinishDlpJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -43472,7 +43450,6 @@ def test_create_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -43492,7 +43469,6 @@ def test_get_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -43512,7 +43488,6 @@ def test_list_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43534,7 +43509,6 @@ def test_search_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.SearchConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43556,7 +43530,6 @@ def test_delete_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -43578,7 +43551,6 @@ def test_update_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dlp.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 

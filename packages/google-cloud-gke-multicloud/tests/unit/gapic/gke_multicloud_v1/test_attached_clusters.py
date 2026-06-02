@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1352,8 +1368,8 @@ def test_attached_clusters_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.CreateAttachedClusterRequest,
-        dict,
+        attached_service.CreateAttachedClusterRequest(),
+        {},
     ],
 )
 def test_create_attached_cluster(request_type, transport: str = "grpc"):
@@ -1364,7 +1380,7 @@ def test_create_attached_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1410,10 +1426,11 @@ def test_create_attached_cluster_non_empty_request_with_auto_populated_field():
         client.create_attached_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.CreateAttachedClusterRequest(
+        request_msg = attached_service.CreateAttachedClusterRequest(
             parent="parent_value",
             attached_cluster_id="attached_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_attached_cluster_use_cached_wrapped_rpc():
@@ -1509,9 +1526,15 @@ async def test_create_attached_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.CreateAttachedClusterRequest(),
+        {},
+    ],
+)
 async def test_create_attached_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.CreateAttachedClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1520,7 +1543,7 @@ async def test_create_attached_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1540,11 +1563,6 @@ async def test_create_attached_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_attached_cluster_async_from_dict():
-    await test_create_attached_cluster_async(request_type=dict)
 
 
 def test_create_attached_cluster_field_headers():
@@ -1721,8 +1739,8 @@ async def test_create_attached_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.UpdateAttachedClusterRequest,
-        dict,
+        attached_service.UpdateAttachedClusterRequest(),
+        {},
     ],
 )
 def test_update_attached_cluster(request_type, transport: str = "grpc"):
@@ -1733,7 +1751,7 @@ def test_update_attached_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1776,7 +1794,8 @@ def test_update_attached_cluster_non_empty_request_with_auto_populated_field():
         client.update_attached_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.UpdateAttachedClusterRequest()
+        request_msg = attached_service.UpdateAttachedClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_attached_cluster_use_cached_wrapped_rpc():
@@ -1872,9 +1891,15 @@ async def test_update_attached_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.UpdateAttachedClusterRequest(),
+        {},
+    ],
+)
 async def test_update_attached_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.UpdateAttachedClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1883,7 +1908,7 @@ async def test_update_attached_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1903,11 +1928,6 @@ async def test_update_attached_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_attached_cluster_async_from_dict():
-    await test_update_attached_cluster_async(request_type=dict)
 
 
 def test_update_attached_cluster_field_headers():
@@ -2074,8 +2094,8 @@ async def test_update_attached_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.ImportAttachedClusterRequest,
-        dict,
+        attached_service.ImportAttachedClusterRequest(),
+        {},
     ],
 )
 def test_import_attached_cluster(request_type, transport: str = "grpc"):
@@ -2086,7 +2106,7 @@ def test_import_attached_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2134,12 +2154,13 @@ def test_import_attached_cluster_non_empty_request_with_auto_populated_field():
         client.import_attached_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.ImportAttachedClusterRequest(
+        request_msg = attached_service.ImportAttachedClusterRequest(
             parent="parent_value",
             fleet_membership="fleet_membership_value",
             platform_version="platform_version_value",
             distribution="distribution_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_attached_cluster_use_cached_wrapped_rpc():
@@ -2235,9 +2256,15 @@ async def test_import_attached_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.ImportAttachedClusterRequest(),
+        {},
+    ],
+)
 async def test_import_attached_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.ImportAttachedClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2246,7 +2273,7 @@ async def test_import_attached_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2266,11 +2293,6 @@ async def test_import_attached_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_attached_cluster_async_from_dict():
-    await test_import_attached_cluster_async(request_type=dict)
 
 
 def test_import_attached_cluster_field_headers():
@@ -2437,8 +2459,8 @@ async def test_import_attached_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.GetAttachedClusterRequest,
-        dict,
+        attached_service.GetAttachedClusterRequest(),
+        {},
     ],
 )
 def test_get_attached_cluster(request_type, transport: str = "grpc"):
@@ -2449,7 +2471,7 @@ def test_get_attached_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2515,9 +2537,10 @@ def test_get_attached_cluster_non_empty_request_with_auto_populated_field():
         client.get_attached_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.GetAttachedClusterRequest(
+        request_msg = attached_service.GetAttachedClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_attached_cluster_use_cached_wrapped_rpc():
@@ -2602,9 +2625,15 @@ async def test_get_attached_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GetAttachedClusterRequest(),
+        {},
+    ],
+)
 async def test_get_attached_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.GetAttachedClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2613,7 +2642,7 @@ async def test_get_attached_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2654,11 +2683,6 @@ async def test_get_attached_cluster_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.kubernetes_version == "kubernetes_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_attached_cluster_async_from_dict():
-    await test_get_attached_cluster_async(request_type=dict)
 
 
 def test_get_attached_cluster_field_headers():
@@ -2815,8 +2839,8 @@ async def test_get_attached_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.ListAttachedClustersRequest,
-        dict,
+        attached_service.ListAttachedClustersRequest(),
+        {},
     ],
 )
 def test_list_attached_clusters(request_type, transport: str = "grpc"):
@@ -2827,7 +2851,7 @@ def test_list_attached_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2876,10 +2900,11 @@ def test_list_attached_clusters_non_empty_request_with_auto_populated_field():
         client.list_attached_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.ListAttachedClustersRequest(
+        request_msg = attached_service.ListAttachedClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_attached_clusters_use_cached_wrapped_rpc():
@@ -2965,9 +2990,15 @@ async def test_list_attached_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.ListAttachedClustersRequest(),
+        {},
+    ],
+)
 async def test_list_attached_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.ListAttachedClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2976,7 +3007,7 @@ async def test_list_attached_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2999,11 +3030,6 @@ async def test_list_attached_clusters_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAttachedClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_attached_clusters_async_from_dict():
-    await test_list_attached_clusters_async(request_type=dict)
 
 
 def test_list_attached_clusters_field_headers():
@@ -3358,8 +3384,8 @@ async def test_list_attached_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.DeleteAttachedClusterRequest,
-        dict,
+        attached_service.DeleteAttachedClusterRequest(),
+        {},
     ],
 )
 def test_delete_attached_cluster(request_type, transport: str = "grpc"):
@@ -3370,7 +3396,7 @@ def test_delete_attached_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3416,10 +3442,11 @@ def test_delete_attached_cluster_non_empty_request_with_auto_populated_field():
         client.delete_attached_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.DeleteAttachedClusterRequest(
+        request_msg = attached_service.DeleteAttachedClusterRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_attached_cluster_use_cached_wrapped_rpc():
@@ -3515,9 +3542,15 @@ async def test_delete_attached_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.DeleteAttachedClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_attached_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.DeleteAttachedClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3526,7 +3559,7 @@ async def test_delete_attached_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3546,11 +3579,6 @@ async def test_delete_attached_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_attached_cluster_async_from_dict():
-    await test_delete_attached_cluster_async(request_type=dict)
 
 
 def test_delete_attached_cluster_field_headers():
@@ -3707,8 +3735,8 @@ async def test_delete_attached_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.GetAttachedServerConfigRequest,
-        dict,
+        attached_service.GetAttachedServerConfigRequest(),
+        {},
     ],
 )
 def test_get_attached_server_config(request_type, transport: str = "grpc"):
@@ -3719,7 +3747,7 @@ def test_get_attached_server_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3767,9 +3795,10 @@ def test_get_attached_server_config_non_empty_request_with_auto_populated_field(
         client.get_attached_server_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.GetAttachedServerConfigRequest(
+        request_msg = attached_service.GetAttachedServerConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_attached_server_config_use_cached_wrapped_rpc():
@@ -3855,9 +3884,15 @@ async def test_get_attached_server_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GetAttachedServerConfigRequest(),
+        {},
+    ],
+)
 async def test_get_attached_server_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.GetAttachedServerConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3866,7 +3901,7 @@ async def test_get_attached_server_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3889,11 +3924,6 @@ async def test_get_attached_server_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, attached_resources.AttachedServerConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_attached_server_config_async_from_dict():
-    await test_get_attached_server_config_async(request_type=dict)
 
 
 def test_get_attached_server_config_field_headers():
@@ -4050,8 +4080,8 @@ async def test_get_attached_server_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.GenerateAttachedClusterInstallManifestRequest,
-        dict,
+        attached_service.GenerateAttachedClusterInstallManifestRequest(),
+        {},
     ],
 )
 def test_generate_attached_cluster_install_manifest(
@@ -4064,7 +4094,7 @@ def test_generate_attached_cluster_install_manifest(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4118,13 +4148,12 @@ def test_generate_attached_cluster_install_manifest_non_empty_request_with_auto_
         client.generate_attached_cluster_install_manifest(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == attached_service.GenerateAttachedClusterInstallManifestRequest(
+        request_msg = attached_service.GenerateAttachedClusterInstallManifestRequest(
             parent="parent_value",
             attached_cluster_id="attached_cluster_id_value",
             platform_version="platform_version_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_attached_cluster_install_manifest_use_cached_wrapped_rpc():
@@ -4210,9 +4239,15 @@ async def test_generate_attached_cluster_install_manifest_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GenerateAttachedClusterInstallManifestRequest(),
+        {},
+    ],
+)
 async def test_generate_attached_cluster_install_manifest_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.GenerateAttachedClusterInstallManifestRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4221,7 +4256,7 @@ async def test_generate_attached_cluster_install_manifest_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4246,11 +4281,6 @@ async def test_generate_attached_cluster_install_manifest_async(
         response, attached_service.GenerateAttachedClusterInstallManifestResponse
     )
     assert response.manifest == "manifest_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_attached_cluster_install_manifest_async_from_dict():
-    await test_generate_attached_cluster_install_manifest_async(request_type=dict)
 
 
 def test_generate_attached_cluster_install_manifest_field_headers():
@@ -4423,8 +4453,8 @@ async def test_generate_attached_cluster_install_manifest_flattened_error_async(
 @pytest.mark.parametrize(
     "request_type",
     [
-        attached_service.GenerateAttachedClusterAgentTokenRequest,
-        dict,
+        attached_service.GenerateAttachedClusterAgentTokenRequest(),
+        {},
     ],
 )
 def test_generate_attached_cluster_agent_token(request_type, transport: str = "grpc"):
@@ -4435,7 +4465,7 @@ def test_generate_attached_cluster_agent_token(request_type, transport: str = "g
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4497,7 +4527,7 @@ def test_generate_attached_cluster_agent_token_non_empty_request_with_auto_popul
         client.generate_attached_cluster_agent_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attached_service.GenerateAttachedClusterAgentTokenRequest(
+        request_msg = attached_service.GenerateAttachedClusterAgentTokenRequest(
             attached_cluster="attached_cluster_value",
             subject_token="subject_token_value",
             subject_token_type="subject_token_type_value",
@@ -4508,6 +4538,7 @@ def test_generate_attached_cluster_agent_token_non_empty_request_with_auto_popul
             requested_token_type="requested_token_type_value",
             options="options_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_attached_cluster_agent_token_use_cached_wrapped_rpc():
@@ -4593,9 +4624,15 @@ async def test_generate_attached_cluster_agent_token_async_use_cached_wrapped_rp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GenerateAttachedClusterAgentTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_attached_cluster_agent_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=attached_service.GenerateAttachedClusterAgentTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AttachedClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4604,7 +4641,7 @@ async def test_generate_attached_cluster_agent_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4633,11 +4670,6 @@ async def test_generate_attached_cluster_agent_token_async(
     assert response.access_token == "access_token_value"
     assert response.expires_in == 1078
     assert response.token_type == "token_type_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_attached_cluster_agent_token_async_from_dict():
-    await test_generate_attached_cluster_agent_token_async(request_type=dict)
 
 
 def test_generate_attached_cluster_agent_token_field_headers():
@@ -6703,7 +6735,6 @@ def test_create_attached_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.CreateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6726,7 +6757,6 @@ def test_update_attached_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.UpdateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6749,7 +6779,6 @@ def test_import_attached_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ImportAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6772,7 +6801,6 @@ def test_get_attached_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6795,7 +6823,6 @@ def test_list_attached_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ListAttachedClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -6818,7 +6845,6 @@ def test_delete_attached_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.DeleteAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6841,7 +6867,6 @@ def test_get_attached_server_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6866,7 +6891,6 @@ def test_generate_attached_cluster_install_manifest_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterInstallManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -6889,7 +6913,6 @@ def test_generate_attached_cluster_agent_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -6930,7 +6953,6 @@ async def test_create_attached_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.CreateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6957,7 +6979,6 @@ async def test_update_attached_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.UpdateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6984,7 +7005,6 @@ async def test_import_attached_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ImportAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -7022,7 +7042,6 @@ async def test_get_attached_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -7051,7 +7070,6 @@ async def test_list_attached_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ListAttachedClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -7078,7 +7096,6 @@ async def test_delete_attached_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.DeleteAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -7107,7 +7124,6 @@ async def test_get_attached_server_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7136,7 +7152,6 @@ async def test_generate_attached_cluster_install_manifest_empty_call_grpc_asynci
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterInstallManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -7167,7 +7182,6 @@ async def test_generate_attached_cluster_agent_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -8935,7 +8949,6 @@ def test_create_attached_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.CreateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -8957,7 +8970,6 @@ def test_update_attached_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.UpdateAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -8979,7 +8991,6 @@ def test_import_attached_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ImportAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9001,7 +9012,6 @@ def test_get_attached_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9023,7 +9033,6 @@ def test_list_attached_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.ListAttachedClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9045,7 +9054,6 @@ def test_delete_attached_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.DeleteAttachedClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -9067,7 +9075,6 @@ def test_get_attached_server_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GetAttachedServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9089,7 +9096,6 @@ def test_generate_attached_cluster_install_manifest_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterInstallManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -9111,7 +9117,6 @@ def test_generate_attached_cluster_agent_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attached_service.GenerateAttachedClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 

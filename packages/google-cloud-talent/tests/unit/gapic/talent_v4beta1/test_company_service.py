@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1318,8 +1334,8 @@ def test_company_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        company_service.CreateCompanyRequest,
-        dict,
+        company_service.CreateCompanyRequest(),
+        {},
     ],
 )
 def test_create_company(request_type, transport: str = "grpc"):
@@ -1330,7 +1346,7 @@ def test_create_company(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_company), "__call__") as call:
@@ -1400,9 +1416,10 @@ def test_create_company_non_empty_request_with_auto_populated_field():
         client.create_company(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.CreateCompanyRequest(
+        request_msg = company_service.CreateCompanyRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_company_use_cached_wrapped_rpc():
@@ -1483,9 +1500,14 @@ async def test_create_company_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_company_async(
-    transport: str = "grpc_asyncio", request_type=company_service.CreateCompanyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.CreateCompanyRequest(),
+        {},
+    ],
+)
+async def test_create_company_async(request_type, transport: str = "grpc_asyncio"):
     client = CompanyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1493,7 +1515,7 @@ async def test_create_company_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_company), "__call__") as call:
@@ -1540,11 +1562,6 @@ async def test_create_company_async(
         "keyword_searchable_job_custom_attributes_value"
     ]
     assert response.suspended is True
-
-
-@pytest.mark.asyncio
-async def test_create_company_async_from_dict():
-    await test_create_company_async(request_type=dict)
 
 
 def test_create_company_field_headers():
@@ -1699,8 +1716,8 @@ async def test_create_company_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        company_service.GetCompanyRequest,
-        dict,
+        company_service.GetCompanyRequest(),
+        {},
     ],
 )
 def test_get_company(request_type, transport: str = "grpc"):
@@ -1711,7 +1728,7 @@ def test_get_company(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_company), "__call__") as call:
@@ -1781,9 +1798,10 @@ def test_get_company_non_empty_request_with_auto_populated_field():
         client.get_company(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.GetCompanyRequest(
+        request_msg = company_service.GetCompanyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_company_use_cached_wrapped_rpc():
@@ -1864,9 +1882,14 @@ async def test_get_company_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_company_async(
-    transport: str = "grpc_asyncio", request_type=company_service.GetCompanyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.GetCompanyRequest(),
+        {},
+    ],
+)
+async def test_get_company_async(request_type, transport: str = "grpc_asyncio"):
     client = CompanyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1874,7 +1897,7 @@ async def test_get_company_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_company), "__call__") as call:
@@ -1921,11 +1944,6 @@ async def test_get_company_async(
         "keyword_searchable_job_custom_attributes_value"
     ]
     assert response.suspended is True
-
-
-@pytest.mark.asyncio
-async def test_get_company_async_from_dict():
-    await test_get_company_async(request_type=dict)
 
 
 def test_get_company_field_headers():
@@ -2070,8 +2088,8 @@ async def test_get_company_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        company_service.UpdateCompanyRequest,
-        dict,
+        company_service.UpdateCompanyRequest(),
+        {},
     ],
 )
 def test_update_company(request_type, transport: str = "grpc"):
@@ -2082,7 +2100,7 @@ def test_update_company(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_company), "__call__") as call:
@@ -2150,7 +2168,8 @@ def test_update_company_non_empty_request_with_auto_populated_field():
         client.update_company(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.UpdateCompanyRequest()
+        request_msg = company_service.UpdateCompanyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_company_use_cached_wrapped_rpc():
@@ -2231,9 +2250,14 @@ async def test_update_company_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_company_async(
-    transport: str = "grpc_asyncio", request_type=company_service.UpdateCompanyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.UpdateCompanyRequest(),
+        {},
+    ],
+)
+async def test_update_company_async(request_type, transport: str = "grpc_asyncio"):
     client = CompanyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2241,7 +2265,7 @@ async def test_update_company_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_company), "__call__") as call:
@@ -2288,11 +2312,6 @@ async def test_update_company_async(
         "keyword_searchable_job_custom_attributes_value"
     ]
     assert response.suspended is True
-
-
-@pytest.mark.asyncio
-async def test_update_company_async_from_dict():
-    await test_update_company_async(request_type=dict)
 
 
 def test_update_company_field_headers():
@@ -2437,8 +2456,8 @@ async def test_update_company_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        company_service.DeleteCompanyRequest,
-        dict,
+        company_service.DeleteCompanyRequest(),
+        {},
     ],
 )
 def test_delete_company(request_type, transport: str = "grpc"):
@@ -2449,7 +2468,7 @@ def test_delete_company(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_company), "__call__") as call:
@@ -2490,9 +2509,10 @@ def test_delete_company_non_empty_request_with_auto_populated_field():
         client.delete_company(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.DeleteCompanyRequest(
+        request_msg = company_service.DeleteCompanyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_company_use_cached_wrapped_rpc():
@@ -2573,9 +2593,14 @@ async def test_delete_company_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_company_async(
-    transport: str = "grpc_asyncio", request_type=company_service.DeleteCompanyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.DeleteCompanyRequest(),
+        {},
+    ],
+)
+async def test_delete_company_async(request_type, transport: str = "grpc_asyncio"):
     client = CompanyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2583,7 +2608,7 @@ async def test_delete_company_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_company), "__call__") as call:
@@ -2599,11 +2624,6 @@ async def test_delete_company_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_company_async_from_dict():
-    await test_delete_company_async(request_type=dict)
 
 
 def test_delete_company_field_headers():
@@ -2748,8 +2768,8 @@ async def test_delete_company_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        company_service.ListCompaniesRequest,
-        dict,
+        company_service.ListCompaniesRequest(),
+        {},
     ],
 )
 def test_list_companies(request_type, transport: str = "grpc"):
@@ -2760,7 +2780,7 @@ def test_list_companies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_companies), "__call__") as call:
@@ -2805,10 +2825,11 @@ def test_list_companies_non_empty_request_with_auto_populated_field():
         client.list_companies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.ListCompaniesRequest(
+        request_msg = company_service.ListCompaniesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_companies_use_cached_wrapped_rpc():
@@ -2889,9 +2910,14 @@ async def test_list_companies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_companies_async(
-    transport: str = "grpc_asyncio", request_type=company_service.ListCompaniesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        company_service.ListCompaniesRequest(),
+        {},
+    ],
+)
+async def test_list_companies_async(request_type, transport: str = "grpc_asyncio"):
     client = CompanyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2899,7 +2925,7 @@ async def test_list_companies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_companies), "__call__") as call:
@@ -2920,11 +2946,6 @@ async def test_list_companies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompaniesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_companies_async_from_dict():
-    await test_list_companies_async(request_type=dict)
 
 
 def test_list_companies_field_headers():
@@ -4357,7 +4378,6 @@ def test_create_company_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.CreateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4378,7 +4398,6 @@ def test_get_company_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.GetCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4399,7 +4418,6 @@ def test_update_company_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.UpdateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4420,7 +4438,6 @@ def test_delete_company_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.DeleteCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4441,7 +4458,6 @@ def test_list_companies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.ListCompaniesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4495,7 +4511,6 @@ async def test_create_company_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.CreateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4535,7 +4550,6 @@ async def test_get_company_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.GetCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4575,7 +4589,6 @@ async def test_update_company_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.UpdateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4598,7 +4611,6 @@ async def test_delete_company_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.DeleteCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4625,7 +4637,6 @@ async def test_list_companies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.ListCompaniesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5440,7 +5451,6 @@ def test_create_company_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.CreateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5460,7 +5470,6 @@ def test_get_company_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.GetCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5480,7 +5489,6 @@ def test_update_company_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.UpdateCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5500,7 +5508,6 @@ def test_delete_company_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.DeleteCompanyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5520,7 +5527,6 @@ def test_list_companies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = company_service.ListCompaniesRequest()
-
         assert args[0] == request_msg
 
 

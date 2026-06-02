@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -102,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -8585,7 +8601,6 @@ def test_add_peering_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddPeeringNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8607,7 +8622,6 @@ def test_cancel_request_remove_peering_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CancelRequestRemovePeeringNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8627,7 +8641,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8647,7 +8660,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8669,7 +8681,6 @@ def test_get_effective_firewalls_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetEffectiveFirewallsNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8689,7 +8700,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8709,7 +8719,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8731,7 +8740,6 @@ def test_list_peering_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPeeringRoutesNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8751,7 +8759,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8771,7 +8778,6 @@ def test_remove_peering_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemovePeeringNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8793,7 +8799,6 @@ def test_request_remove_peering_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RequestRemovePeeringNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8815,7 +8820,6 @@ def test_switch_to_custom_mode_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SwitchToCustomModeNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -8835,7 +8839,6 @@ def test_update_peering_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdatePeeringNetworkRequest()
-
         assert args[0] == request_msg
 
 

@@ -1093,14 +1093,14 @@ class Block:
 
     def multi_apply_unary_op(
         self,
-        op: Union[ops.UnaryOp, ex.Expression],
+        op: Union[ops.UnaryOp, ops.NaryOp, ex.Expression],
     ) -> Block:
-        if isinstance(op, ops.UnaryOp):
+        if isinstance(op, (ops.UnaryOp, ops.NaryOp)):
             input_varname = guid.generate_guid()
             expr = op.as_expr(ex.free_var(input_varname))
         else:
             input_varnames = op.free_variables
-            assert len(input_varnames) == 1
+            assert len(set(input_varnames)) == 1
             expr = op
             input_varname = input_varnames[0]
 

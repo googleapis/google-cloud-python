@@ -13,30 +13,31 @@
 # limitations under the License.
 
 import datetime
-from typing import Optional, List
+from typing import List, Optional
 
 from sqlalchemy import (
-    String,
+    ARRAY,
+    JSON,
+    BigInteger,
+    Boolean,
     Computed,
     Date,
-    LargeBinary,
-    Integer,
-    Numeric,
-    ForeignKey,
-    JSON,
-    Boolean,
     DateTime,
-    BigInteger,
-    ARRAY,
+    ForeignKey,
     ForeignKeyConstraint,
-    Sequence,
-    TextClause,
     Index,
+    Integer,
+    LargeBinary,
+    Numeric,
     PickleType,
-    text,
+    Sequence,
+    String,
+    TextClause,
     event,
+    text,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerPickleType
 
 

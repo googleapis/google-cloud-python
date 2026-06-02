@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bare-metal-solution/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.13.0...google-cloud-bare-metal-solution-v1.14.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.12.0...google-cloud-bare-metal-solution-v1.13.0) (2026-03-26)
 
 

@@ -17,10 +17,10 @@
 import functools
 import itertools
 
-from google.api_core import retry as core_retry
 from google.api_core import exceptions as core_exceptions
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import tasklets
+from google.api_core import retry as core_retry
+
+from google.cloud.ndb import exceptions, tasklets
 
 _DEFAULT_INITIAL_DELAY = 1.0  # seconds
 _DEFAULT_MAXIMUM_DELAY = 60.0  # seconds
