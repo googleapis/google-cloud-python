@@ -90,23 +90,6 @@ def _deserialize_value(val: Any) -> Any:
     return val
 
 
-def _unpack_value_pb(value):
-    which = value.WhichOneof("kind")
-    if which == "null_value":
-        return None
-    elif which == "number_value":
-        return value.number_value
-    elif which == "string_value":
-        return value.string_value
-    elif which == "bool_value":
-        return value.bool_value
-    elif which == "struct_value":
-        return {k: _unpack_value_pb(v) for k, v in value.struct_value.fields.items()}
-    elif which == "list_value":
-        return [_unpack_value_pb(v) for v in value.list_value.values]
-    return None
-
-
 def decode_from_string(encoded_partition_id):
     gzip_bytes = base64.b64decode(bytes(encoded_partition_id, "utf-8"))
     partition_id_bytes = gzip.decompress(gzip_bytes)
@@ -124,9 +107,7 @@ def decode_from_string(encoded_partition_id):
     if "query" in partition_result and "params" in partition_result["query"]:
         params_pb = partition_result["query"]["params"]
         if params_pb:
-            partition_result["query"]["params"] = {
-                k: _unpack_value_pb(v) for k, v in params_pb.fields.items()
-            }
+            partition_result["query"]["params"] = MessageToDict(params_pb)
 
     return PartitionId(btid, partition_result)
 
