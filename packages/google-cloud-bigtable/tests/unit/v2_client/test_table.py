@@ -1175,7 +1175,6 @@ def test_table_sample_row_keys():
     assert result[0] == response_iterator
 
 
-
 def test_table_truncate():
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)

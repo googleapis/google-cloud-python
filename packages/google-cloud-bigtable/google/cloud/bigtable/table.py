@@ -757,7 +757,8 @@ class Table(object):
         the properties ``offset_bytes`` and ``row_key``. They occur in sorted
         order. The table might have contents before the first row key in the
         list and after the last one, but a key containing the empty string
-        indicates "end of table" and will be the last response given, if present.
+        indicates "end of table" and will be the last response given, if
+        present.
 
         .. note::
 
