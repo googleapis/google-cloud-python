@@ -85,7 +85,7 @@ http_archive(
 # Define a version of Abseil that still contains the `:if_constexpr` target
 http_archive(
     name = "com_google_absl",
-    sha256 = "371cd4ae271616ba34ed20275cc84bc6066551b99709ec52856230f8ca752e50",
+    sha256 = "987ce98f02eefbaf930d6e38ab16aa05737234d7afbab2d5c4ea7adbe50c28ed",
     strip_prefix = "abseil-cpp-20230802.1",
     urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.1.tar.gz"],
 )
