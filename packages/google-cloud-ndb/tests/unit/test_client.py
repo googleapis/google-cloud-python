@@ -13,18 +13,17 @@
 # limitations under the License.
 
 import contextlib
-import pytest
-
 from unittest import mock
 
-from google.auth import credentials
+import pytest
 from google.api_core.client_options import ClientOptions
-from google.cloud import environment_vars
+from google.auth import credentials
 from google.cloud.datastore import _http
 
+from google.cloud import environment_vars
+from google.cloud.ndb import _eventloop
 from google.cloud.ndb import client as client_module
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _eventloop
 
 
 @contextlib.contextmanager
