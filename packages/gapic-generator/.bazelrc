@@ -1,2 +1,5 @@
 # New protobuf requires C++17
 build --repo_env=BAZEL_CXXOPTS="-std=c++17"
+
+# Disable SFrame generation to avoid linker errors with newer GCC/binutils
+build --copt=-Wa,--gsframe=no
