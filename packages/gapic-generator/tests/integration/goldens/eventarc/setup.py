@@ -45,8 +45,7 @@ dependencies = [
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "grpcio >= 1.59.0, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-    "proto-plus >= 1.22.3, <2.0.0",
-    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
+    "proto-plus >= 1.26.1, <2.0.0",
     "protobuf >= 6.33.5, < 8.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
