@@ -401,9 +401,7 @@ def test_ai_classify_multi_model(session, bq_connection):
     )
 
     image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
-    result = bbq.ai.classify(image_runtime, ["photo", "cartoon"]).to_pandas(
-        allow_large_results=True
-    )
+    result = bbq.ai.classify(image_runtime, ["photo", "cartoon"])
 
     assert len(result) == len(df)
     assert result.dtype == dtypes.STRING_DTYPE
