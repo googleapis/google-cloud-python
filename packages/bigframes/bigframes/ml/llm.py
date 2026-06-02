@@ -496,7 +496,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             warnings.warn(msg, category=exceptions.PreviewWarning)
 
         if model_name is None:
-            model_name = "gemini-2.0-flash-001"
+            model_name = "gemini-2.5-pro"
             msg = exceptions.format_message(_REMOVE_DEFAULT_MODEL_WARNING)
             warnings.warn(msg, category=FutureWarning, stacklevel=2)
 
@@ -522,15 +522,19 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 )
             )
             warnings.warn(msg)
-        if self.model_name.startswith("gemini-1.5"):
+        if (
+            self.model_name.startswith("gemini-2.0")
+            or self.model_name.startswith("gemini-1.5")
+            or self.model_name in ("gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro-preview-05-06")
+        ):
             msg = exceptions.format_message(
                 _MODEL_DEPRECATE_WARNING.format(
                     model_name=self.model_name,
-                    new_model_name="gemini-2.5-X",
+                    new_model_name="gemini-2.5-pro",
                     link="https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator",
                 )
             )
-            warnings.warn(msg)
+            warnings.warn(msg, category=exceptions.ApiDeprecationWarning)
 
         options = {"endpoint": self.model_name}
 
