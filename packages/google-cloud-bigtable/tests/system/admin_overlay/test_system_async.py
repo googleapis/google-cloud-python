@@ -17,7 +17,6 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pytest
-from google.api_core import exceptions
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud import bigtable_admin_v2 as admin_v2
