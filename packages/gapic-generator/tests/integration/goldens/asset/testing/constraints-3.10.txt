@@ -11,4 +11,4 @@ proto-plus==1.26.1
 protobuf==6.33.5
 google-cloud-access-context-manager==0.2.0
 google-cloud-os-config==1.13.0
-grpc-google-iam-v1==0.14.0
+grpc-google-iam-v1==0.14.2
