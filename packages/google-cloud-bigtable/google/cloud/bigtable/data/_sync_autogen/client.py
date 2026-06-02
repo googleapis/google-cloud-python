@@ -1191,7 +1191,7 @@ class _DataApiTarget(abc.ABC):
                 results = self.client._gapic_client.sample_row_keys(
                     request=SampleRowKeysRequest(
                         app_profile_id=self.app_profile_id,
-                        row_range=row_range._to_pb() if row_range else None,
+                        row_range=row_range._to_pb() if row_range is not None else None,
                         **self._request_path,
                     ),
                     timeout=next(attempt_timeout_gen),
