@@ -8,11 +8,11 @@
 # pinning their versions to their lower bounds.
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
-google-api-core==2.21.0
+google-api-core==2.24.2
 google-auth==2.35.0
 grpcio==1.59.0
 proto-plus==1.22.3
-protobuf==4.25.8
+protobuf==6.33.5
 {% for package_tuple, package_info in pypi_packages.items() %}
 {# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own constraints file. #}
 {% if api.naming.warehouse_package_name != package_info.package_name %}
