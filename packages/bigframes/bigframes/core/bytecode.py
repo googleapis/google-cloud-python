@@ -86,7 +86,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
     for inst in instructions:
         opname = inst.opname
 
-        if opname == "RESUME":
+        if opname in ("RESUME", "PRECALL"):
             continue
 
         elif opname == "LOAD_FAST_LOAD_FAST":
