@@ -2402,6 +2402,7 @@ class TestSampleRowKeysAsync:
             (b"b", 200),
         ]
         from google.cloud.bigtable.data import RowRange
+
         row_range = RowRange(start_key=b"a", end_key=b"b")
         async with self._make_client() as client:
             async with client.get_table("instance", "table") as table:
