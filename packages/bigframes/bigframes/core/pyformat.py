@@ -254,8 +254,8 @@ def _find_all_field_positions(sql_template: str) -> dict[tuple[str, int], int]:
     """
     formatter = string.Formatter()
     current_idx = 0
-    seen_counts = {}
-    positions = {}
+    seen_counts: dict[str, int] = {}
+    positions: dict[tuple[str, int], int] = {}
 
     for literal_text, field_name, _, _ in formatter.parse(sql_template):
         current_idx = _consume_literal(sql_template, current_idx, literal_text)
@@ -342,8 +342,8 @@ def pyformat(
     """
     fields = _parse_fields(sql_template)
 
-    format_kwargs = {}
-    seen_counts = {}
+    format_kwargs: dict[str, str] = {}
+    seen_counts: dict[str, int] = {}
     for name in fields:
         seen_counts[name] = seen_counts.get(name, 0) + 1
         try:
