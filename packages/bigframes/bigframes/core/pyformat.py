@@ -196,7 +196,7 @@ def _consume_literal(sql_template: str, current_idx: int, literal_text: str) -> 
         elif _is_escaped_close_brace(sql_template, current_idx, literal_text[lit_idx]):
             current_idx += 2
             lit_idx += 1
-        elif sql_template[current_idx] == literal_text[lit_idx]:
+        elif current_idx < len(sql_template) and sql_template[current_idx] == literal_text[lit_idx]:
             current_idx += 1
             lit_idx += 1
         else:
@@ -340,7 +340,14 @@ def pyformat(
             if a referenced variable is not found (KeyError is caught and raised
             as ValueError with context).
     """
-    fields = _parse_fields(sql_template)
+    try:
+        fields = _parse_fields(sql_template)
+    except ValueError as e:
+        raise ValueError(
+            "Failed to parse SQL template. "
+            "Did you mean to escape '{' and '}' by doubling them?\n"
+            f"Error details: {e}"
+        ) from e
 
     format_kwargs: dict[str, str] = {}
     seen_counts: dict[str, int] = {}
