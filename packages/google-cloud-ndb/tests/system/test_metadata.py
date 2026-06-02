@@ -15,14 +15,13 @@
 """
 System tests for metadata.
 """
-import pytest
 
 from importlib import reload
 
-from google.cloud import ndb
-
+import pytest
 from test_utils import retry
 
+from google.cloud import ndb
 
 _retry_assertion_errors = retry.RetryErrors(AssertionError)
 
