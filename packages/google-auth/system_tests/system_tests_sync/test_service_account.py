@@ -52,6 +52,8 @@ def test_iam_signer(http_request, credentials):
     )
 
     # Verify iamcredentials signer.
+    print(f"\nDEBUG: Service Account Email: {credentials.service_account_email}")
+    print(f"DEBUG: Key ID: {credentials.signer.key_id}")
     signer = iam.Signer(
         http_request,
         credentials,
