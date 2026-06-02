@@ -72,6 +72,19 @@ def instance_admin_client(admin_overlay_project_id):
         yield client
 
 
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_old_instances(admin_overlay_project_id):
+    """Automatically deletes any test instances older than 1 day.
+
+    This fixture runs once per test session and helps prevent resource leakage
+    by cleaning up instances that failed to be deleted during previous test runs."""
+    from tests.system.utils import clear_stale_instances
+
+    from .conftest import INSTANCE_PREFIX
+
+    clear_stale_instances(admin_overlay_project_id, INSTANCE_PREFIX, older_than_days=1)
+
+
 @pytest.fixture(scope="function")
 def instances_to_delete(instance_admin_client):
     instances = []
