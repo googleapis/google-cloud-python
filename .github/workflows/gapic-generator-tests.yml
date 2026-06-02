@@ -194,6 +194,8 @@ jobs:
           key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
 
       - name: Run Bazel Integration Tests
+        env:
+          USE_BAZEL_VERSION: 6.4.0
         run: |
           # We need to move into the package directory if the 
           # WORKSPACE file is located there.
