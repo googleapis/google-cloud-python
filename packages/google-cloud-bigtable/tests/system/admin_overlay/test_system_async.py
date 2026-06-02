@@ -97,6 +97,7 @@ async def cleanup_old_instances(admin_overlay_project_id):
     by cleaning up instances that failed to be deleted during previous test runs.
     """
     from tests.system.utils import clear_stale_instances
+
     from .conftest import INSTANCE_PREFIX
 
     clear_stale_instances(admin_overlay_project_id, INSTANCE_PREFIX, older_than_days=1)

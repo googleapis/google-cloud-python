@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 from datetime import datetime, timedelta, timezone
 
 from google.api_core.exceptions import NotFound
+
 from google.cloud import bigtable_admin_v2 as admin_v2
 
 

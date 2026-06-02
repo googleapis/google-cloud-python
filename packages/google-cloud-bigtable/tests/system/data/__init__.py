@@ -40,6 +40,7 @@ class SystemTestRunner:
         Automatically deletes any test instances older than 1 day.
         """
         from tests.system.utils import clear_stale_instances
+
         clear_stale_instances(project_id, "python-bigtable-tests", older_than_days=1)
 
     @pytest.fixture(scope="session")
