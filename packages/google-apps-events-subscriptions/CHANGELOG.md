@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-apps-events-subscriptions/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.5.0...google-apps-events-subscriptions-v0.6.0) (2026-06-02)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.4.0...google-apps-events-subscriptions-v0.5.0) (2026-03-26)
 
 
