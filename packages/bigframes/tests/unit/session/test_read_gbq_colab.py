@@ -207,8 +207,12 @@ def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
     )
     session._metrics.jobs.extend([job1, job2])
 
-    with mock.patch("IPython.core.interactiveshell.InteractiveShell.initialized", return_value=True):
-        with mock.patch("IPython.core.interactiveshell.InteractiveShell.instance") as mock_instance:
+    with mock.patch(
+        "IPython.core.interactiveshell.InteractiveShell.initialized", return_value=True
+    ):
+        with mock.patch(
+            "IPython.core.interactiveshell.InteractiveShell.instance"
+        ) as mock_instance:
             mock_instance.return_value.execution_count = 20
             history = session.execution_history(all_cells=False).to_dataframe()
 

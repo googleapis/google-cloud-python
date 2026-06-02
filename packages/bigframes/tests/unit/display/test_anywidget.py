@@ -179,8 +179,12 @@ def test_page_size_change_resets_sort(mock_df):
 
 def test_cell_execution_count_propagation(mock_df):
     """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
-    with mock.patch("IPython.core.interactiveshell.InteractiveShell.initialized", return_value=True):
-        with mock.patch("IPython.core.interactiveshell.InteractiveShell.instance") as mock_instance:
+    with mock.patch(
+        "IPython.core.interactiveshell.InteractiveShell.initialized", return_value=True
+    ):
+        with mock.patch(
+            "IPython.core.interactiveshell.InteractiveShell.instance"
+        ) as mock_instance:
             mock_instance.return_value.execution_count = 42
             with bigframes.option_context("display.render_mode", "anywidget"):
                 widget = TableWidget(mock_df)
