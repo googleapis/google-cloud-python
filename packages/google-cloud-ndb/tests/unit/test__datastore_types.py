@@ -16,8 +16,7 @@ from unittest import mock
 
 import pytest
 
-from google.cloud.ndb import _datastore_types
-from google.cloud.ndb import exceptions
+from google.cloud.ndb import _datastore_types, exceptions
 
 
 class TestBlobKey:
