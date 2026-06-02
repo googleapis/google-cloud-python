@@ -524,19 +524,15 @@ class Session(
             ]
 
         elif not all_cells:
-            try:
-                import IPython
+            from bigframes.core.utils import get_ipython_execution_count
 
-                ipy = IPython.get_ipython()
-                if ipy is not None and hasattr(ipy, "execution_count"):
-                    current_count = ipy.execution_count
-                    jobs = [
-                        job
-                        for job in jobs
-                        if job.get("cell_execution_count") == current_count
-                    ]
-            except (ImportError, NameError):
-                pass
+            current_count = get_ipython_execution_count()
+            if current_count is not None:
+                jobs = [
+                    job
+                    for job in jobs
+                    if job.get("cell_execution_count") == current_count
+                ]
 
         return _ExecutionHistory(jobs)
 
