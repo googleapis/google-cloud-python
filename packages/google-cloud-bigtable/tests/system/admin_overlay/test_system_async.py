@@ -99,8 +99,8 @@ async def instances_to_delete(instance_admin_client):
         for instance in reversed(instances):
             try:
                 await instance_admin_client.delete_instance(name=instance.name)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Failed to delete instance {instance.name}: {e}")
 
 
 @CrossSync.convert
@@ -114,8 +114,8 @@ async def backups_to_delete(table_admin_client):
         for backup in reversed(backups):
             try:
                 await table_admin_client.delete_backup(name=backup.name)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Failed to delete backup {backup.name}: {e}")
 
 
 @CrossSync.convert

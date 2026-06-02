@@ -128,8 +128,8 @@ class SystemTestRunner:
                     admin_client.instance_admin_client.delete_instance(
                         name=f"projects/{project_id}/instances/{instance_id}"
                     )
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(f"Failed to delete instance {instance_id}: {e}")
 
     @pytest.fixture(scope="session")
     def column_split_config(self):
@@ -195,8 +195,8 @@ class SystemTestRunner:
                 admin_client.table_admin_client.delete_table(
                     name=f"{parent_path}/tables/{init_table_id}"
                 )
-            except Exception:
-                print(f"Failed to delete table {init_table_id}")
+            except Exception as e:
+                print(f"Failed to delete table {init_table_id}: {e}")
 
     @pytest.fixture(scope="session")
     def authorized_view_id(
@@ -256,8 +256,8 @@ class SystemTestRunner:
                     admin_client.table_admin_client.delete_authorized_view(
                         name=new_path
                     )
-                except Exception:
-                    print(f"Failed to delete view {new_view_id}")
+                except Exception as e:
+                    print(f"Failed to delete view {new_view_id}: {e}")
 
     @pytest.fixture(scope="session")
     def project_id(self, client):

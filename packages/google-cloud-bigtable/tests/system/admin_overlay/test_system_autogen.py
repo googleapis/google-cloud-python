@@ -81,8 +81,8 @@ def instances_to_delete(instance_admin_client):
         for instance in reversed(instances):
             try:
                 instance_admin_client.delete_instance(name=instance.name)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Failed to delete instance {instance.name}: {e}")
 
 
 @pytest.fixture(scope="function")
@@ -94,8 +94,8 @@ def backups_to_delete(table_admin_client):
         for backup in reversed(backups):
             try:
                 table_admin_client.delete_backup(name=backup.name)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Failed to delete backup {backup.name}: {e}")
 
 
 def create_instance(
