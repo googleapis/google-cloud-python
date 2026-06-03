@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import sys
 from abc import abstractmethod
 from typing import Any, Generic, Optional, TypeVar
 
-import sys
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.rules as rlz
