@@ -22,6 +22,10 @@ import bigframes.session
 
 pytest.importorskip("pytest_snapshot")
 
+# Only test on the latest pandas since column naming behavior is slightly
+# different across versions, e.g. unnamed vs 0 for unnamed Series.
+pytest.importorskip("pandas", minversion="3.0.0")
+
 
 def test_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot, monkeypatch):
     session = mock.create_autospec(bigframes.session.Session)
@@ -42,7 +46,7 @@ def test_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot, monkeypatch):
     )
 
     session.read_pandas.assert_called_once()
-    snapshot.assert_match(result, "out.sql")
+    snapshot.assert_match(result.strip() + "\n", "out.sql")
 
 
 def test_bigframes_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot):
@@ -57,4 +61,4 @@ def test_bigframes_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot):
     session.read_pandas.assert_not_called()
     # Bigframes implementation returns a bigframes.series.Series
     sql, _, _ = result.to_frame()._to_sql_query(include_index=True)
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql.strip() + "\n", "out.sql")

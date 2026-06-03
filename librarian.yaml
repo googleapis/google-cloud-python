@@ -22,6 +22,13 @@ default:
   output: packages
   tag_format: '{name}-v{version}'
   python:
+    allowed_namespaces:
+      - google.ads
+      - google.apps
+      - google.cloud
+      - google.maps
+      - google.shopping
+      - google.devicesandservices
     common_gapic_paths:
       - samples/generated_samples
       - tests/unit/gapic
@@ -2197,6 +2204,13 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
+  - name: google-devicesandservices-health
+    version: 0.0.0
+    apis:
+      - path: google/devicesandservices/health/v4
+    copyright_year: "2026"
+    python:
+      default_version: v4
   - name: google-geo-type
     version: 0.7.0
     apis:
