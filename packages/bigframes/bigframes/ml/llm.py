@@ -525,7 +525,12 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         if (
             self.model_name.startswith("gemini-2.0")
             or self.model_name.startswith("gemini-1.5")
-            or self.model_name in ("gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro-preview-05-06")
+            or self.model_name
+            in (
+                "gemini-2.5-flash",
+                "gemini-2.5-flash-lite",
+                "gemini-2.5-pro-preview-05-06",
+            )
         ):
             msg = exceptions.format_message(
                 _MODEL_DEPRECATE_WARNING.format(
