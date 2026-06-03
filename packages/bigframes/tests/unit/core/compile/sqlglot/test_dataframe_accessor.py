@@ -22,6 +22,10 @@ import bigframes.session
 
 pytest.importorskip("pytest_snapshot")
 
+# Only test on the latest pandas since column naming behavior is slightly
+# different across versions, e.g. unnamed vs 0 for unnamed Series.
+pytest.importorskip("pandas", minversion="3.0.0")
+
 
 def test_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot, monkeypatch):
     session = mock.create_autospec(bigframes.session.Session)

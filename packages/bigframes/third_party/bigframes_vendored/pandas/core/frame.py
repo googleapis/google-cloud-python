@@ -4833,7 +4833,8 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame(data)
             >>> df.resample(rule="7s", on = "timestamp_col", origin="start").min()
-                                int64_col  int64_too
+                                 int64_col  int64_too
+            timestamp_col
             2021-01-01 13:00:00          0         10
             2021-01-01 13:00:07          7         17
             2021-01-01 13:00:14         14         24
@@ -6647,7 +6648,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.columns
-            Index(['NewName', 'NewAge', 'NewLocation'], dtype='object')
+            Index(['NewName', 'NewAge', 'NewLocation'], dtype='str')
 
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
