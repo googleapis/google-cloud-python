@@ -23,14 +23,13 @@ import uuid
 
 import pytest
 import pytz
-
 import test_utils.system
-
 from google.api_core import exceptions as core_exceptions
-from google.cloud import ndb
 from google.cloud.datastore import key as ds_key_module
 
-from . import KIND, eventually, equals, length_equals
+from google.cloud import ndb
+
+from . import KIND, equals, eventually, length_equals
 
 
 @pytest.mark.usefixtures("client_context")
@@ -1097,14 +1096,14 @@ def test_query_legacy_structured_property(ds_entity):
     ds_entity(
         KIND,
         entity_id,
-        **{"foo": 1, "bar.one": "pish", "bar.two": "posh", "bar.three": "pash"}
+        **{"foo": 1, "bar.one": "pish", "bar.two": "posh", "bar.three": "pash"},
     )
 
     entity_id = test_utils.system.unique_resource_id()
     ds_entity(
         KIND,
         entity_id,
-        **{"foo": 2, "bar.one": "pish", "bar.two": "posh", "bar.three": "push"}
+        **{"foo": 2, "bar.one": "pish", "bar.two": "posh", "bar.three": "push"},
     )
 
     entity_id = test_utils.system.unique_resource_id()
@@ -1116,7 +1115,7 @@ def test_query_legacy_structured_property(ds_entity):
             "bar.one": "pish",
             "bar.two": "moppish",
             "bar.three": "pass the peas",
-        }
+        },
     )
 
     eventually(SomeKind.query().fetch, length_equals(3))
@@ -1647,7 +1646,7 @@ def test_query_legacy_repeated_structured_property(ds_entity):
             "bar.one": ["pish", "bish"],
             "bar.two": ["posh", "bosh"],
             "bar.three": ["pash", "bash"],
-        }
+        },
     )
 
     entity_id = test_utils.system.unique_resource_id()
@@ -1659,7 +1658,7 @@ def test_query_legacy_repeated_structured_property(ds_entity):
             "bar.one": ["bish", "pish"],
             "bar.two": ["bosh", "posh"],
             "bar.three": ["bass", "pass"],
-        }
+        },
     )
 
     entity_id = test_utils.system.unique_resource_id()
@@ -1671,7 +1670,7 @@ def test_query_legacy_repeated_structured_property(ds_entity):
             "bar.one": ["pish", "bish"],
             "bar.two": ["fosh", "posh"],
             "bar.three": ["fash", "bash"],
-        }
+        },
     )
 
     eventually(SomeKind.query().fetch, length_equals(3))
@@ -1710,7 +1709,7 @@ def test_query_legacy_repeated_structured_property_with_name(ds_entity):
             "b.one": ["pish", "bish"],
             "b.two": ["posh", "bosh"],
             "b.three": ["pash", "bash"],
-        }
+        },
     )
 
     eventually(SomeKind.query().fetch, length_equals(1))

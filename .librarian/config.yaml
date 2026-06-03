@@ -41,8 +41,5 @@ libraries:
   # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
   - id: "google-cloud-bigtable"
     release_blocked: true
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/17334)
-  - id: "google-auth"
-    release_blocked: true
 
 

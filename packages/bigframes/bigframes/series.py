@@ -760,6 +760,7 @@ class Series:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> Iterable[pandas.Series]:
         """Stream Series results to an iterable of pandas Series.
 
@@ -812,6 +813,7 @@ class Series:
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
         return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 

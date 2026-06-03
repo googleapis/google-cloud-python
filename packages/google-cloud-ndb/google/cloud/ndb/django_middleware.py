@@ -20,7 +20,6 @@ To use Django middleware with NDB, follow the steps in
 https://cloud.google.com/appengine/docs/standard/python3/migrating-to-cloud-ndb#using_a_runtime_context_with_django
 """
 
-
 __all__ = ["NdbDjangoMiddleware"]
 
 
