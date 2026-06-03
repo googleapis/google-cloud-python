@@ -1989,6 +1989,10 @@ class Block:
                 )
             level = level or 0
             col_id = self.index.resolve_level(level)[0]
+            if isinstance(level, int):
+                resample_label = self.index.names[level]
+            else:
+                resample_label = level
             # Reset index to make the resampling level a column, then drop all other index columns.
             # This simplifies processing by focusing solely on the column required for resampling.
             block = self.reset_index(drop=False)
@@ -2007,6 +2011,7 @@ class Block:
                 raise KeyError(f"The grouper name {on} is not found")
 
             col_id = matches[0]
+            resample_label = on
             block = self
         if level is None:
             dtype = self._column_type(col_id)
@@ -2099,6 +2104,7 @@ class Block:
             block.value_columns[0],
             block.value_columns[1],
             op=ops.IntegerLabelToDatetimeOp(freq=freq, label=label, origin=origin),
+            result_label=resample_label,
         )
 
         # After multiple merges, the columns:
