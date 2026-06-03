@@ -243,7 +243,6 @@ class Series:
         return bigframes.core.indexers.LocSeriesIndexer(self)
 
     @property
-    @validations.requires_ordering()
     def iloc(self) -> bigframes.core.indexers.IlocSeriesIndexer:
         return bigframes.core.indexers.IlocSeriesIndexer(self)
 

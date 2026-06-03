@@ -28,6 +28,7 @@ import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
+import bigframes.core.validations as validations
 import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
@@ -102,6 +103,18 @@ class IlocSeriesIndexer:
 
         Other key types are not yet supported.
         """
+        requires_ordering = True
+        if (
+            isinstance(key, slice)
+            and (key.start is None or key.start == 0)
+            and (key.step is None or key.step == 1)
+            and key.stop is None
+        ):
+            requires_ordering = False
+
+        if requires_ordering:
+            validations.enforce_ordered(self._series, "iloc")
+
         return _iloc_getitem_series_or_dataframe(self._series, key)
 
 
@@ -244,7 +257,112 @@ class ILocDataFrameIndexer:
 
         Other key types are not yet supported.
         """
+        requires_ordering = True
+        if isinstance(key, tuple):
+            if len(key) > 0:
+                row_indexer = key[0]
+                if (
+                    isinstance(row_indexer, slice)
+                    and (row_indexer.start is None or row_indexer.start == 0)
+                    and (row_indexer.step is None or row_indexer.step == 1)
+                    and row_indexer.stop is None
+                ):
+                    requires_ordering = False
+        else:
+            if (
+                isinstance(key, slice)
+                and (key.start is None or key.start == 0)
+                and (key.step is None or key.step == 1)
+                and key.stop is None
+            ):
+                requires_ordering = False
+
+        if requires_ordering:
+            validations.enforce_ordered(self._dataframe, "iloc")
+
         return _iloc_getitem_series_or_dataframe(self._dataframe, key)
+
+    def __setitem__(
+        self,
+        key: Tuple[
+            slice, Union[int, typing.Sequence[int], slice, typing.Sequence[bool]]
+        ],
+        value: Union[
+            bigframes.dataframe.SingleItemValue, bigframes.dataframe.DataFrame
+        ],
+    ):
+        if not (
+            isinstance(key, tuple)
+            and len(key) == 2
+            and isinstance(key[0], slice)
+            and (key[0].start is None or key[0].start == 0)
+            and (key[0].step is None or key[0].step == 1)
+            and key[0].stop is None
+        ):
+            raise NotImplementedError(
+                "Only DataFrame.iloc[:, col_indexer] = value is supported."
+            )
+
+        col_indexer = key[1]
+        n_cols = len(self._dataframe.columns)
+
+        if isinstance(col_indexer, bool):
+            raise TypeError(
+                "pos must be integer or slice or list-like of integers/booleans"
+            )
+
+        if isinstance(col_indexer, int):
+            col_offset = col_indexer
+            if col_offset < 0:
+                col_offset += n_cols
+            if col_offset < 0 or col_offset >= n_cols:
+                raise IndexError("single positional indexer is out-of-bounds")
+
+            col_label = self._dataframe.columns[col_offset]
+            df = self._dataframe.assign(**{col_label: value})
+            self._dataframe._set_block(df._get_block())
+
+        elif isinstance(col_indexer, slice):
+            col_offsets = list(range(*col_indexer.indices(n_cols)))
+            col_labels = [self._dataframe.columns[idx] for idx in col_offsets]
+            if not col_labels:
+                return
+            df = self._dataframe._assign_multi_items(col_labels, value)
+            self._dataframe._set_block(df._get_block())
+
+        elif pd.api.types.is_list_like(col_indexer):
+            col_indexer_list = list(col_indexer)
+
+            if len(col_indexer_list) > 0 and all(
+                isinstance(x, bool) for x in col_indexer_list
+            ):
+                if len(col_indexer_list) != n_cols:
+                    raise ValueError(
+                        f"Boolean index has wrong length: {len(col_indexer_list)} instead of {n_cols}"
+                    )
+                col_offsets = [i for i, val in enumerate(col_indexer_list) if val]
+            else:
+                col_offsets = []
+                for idx in col_indexer_list:
+                    if isinstance(idx, bool):
+                        raise TypeError("pos list must contain only integers")
+                    if not isinstance(idx, int):
+                        raise TypeError("pos list must contain only integers")
+                    if idx < 0:
+                        idx += n_cols
+                    if idx < 0 or idx >= n_cols:
+                        raise IndexError("positional indexer is out-of-bounds")
+                    col_offsets.append(idx)
+
+            col_labels = [self._dataframe.columns[idx] for idx in col_offsets]
+            if not col_labels:
+                return
+            df = self._dataframe._assign_multi_items(col_labels, value)
+            self._dataframe._set_block(df._get_block())
+        else:
+            raise TypeError(
+                "pos must be integer or slice or list-like of integers/booleans"
+            )
 
 
 class IatDataFrameIndexer:
@@ -470,8 +588,11 @@ def _iloc_getitem_series_or_dataframe(
 
         # len(key) == 2
         df = typing.cast(bigframes.dataframe.DataFrame, series_or_dataframe)
-        if isinstance(key[1], int):
+        if isinstance(key[0], int) and isinstance(key[1], int):
             return df.iat[key]
+        elif isinstance(key[1], int):
+            col_label = df.columns[key[1]]
+            return df[col_label].iloc[key[0]]
         elif isinstance(key[1], list):
             columns = df.columns[key[1]]
             return _iloc_getitem_series_or_dataframe(df[columns], key[0])

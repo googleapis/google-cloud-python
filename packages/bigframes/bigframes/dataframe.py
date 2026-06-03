@@ -317,7 +317,6 @@ class DataFrame:
         return indexers.LocDataFrameIndexer(self)
 
     @property
-    @validations.requires_ordering()
     def iloc(self) -> indexers.ILocDataFrameIndexer:
         return indexers.ILocDataFrameIndexer(self)
 
@@ -821,22 +820,25 @@ class DataFrame:
 
     def _get_display_df(self) -> DataFrame:
         """Process ObjectRef and JSON/nested JSON columns for display."""
+        import bigframes.bigquery as bbq
+
         df = self
         # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
         # columns. Pre-serialize them to string format to bypass this limit.
         # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
-        # types correctly.
-        json_cols = [
-            col
-            for col in df.columns
+        # types correctly. Use the offset so that we can handle duplicate and
+        # non-string column names.
+        json_col_indexes = [
+            col_index
+            for col_index, col in enumerate(df.columns)
             if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
         ]
-        if json_cols:
-            op = ops.SqlScalarOp(
-                _output_type=bigframes.dtypes.STRING_DTYPE,
-                sql_template="TO_JSON_STRING({0})",
+        if json_col_indexes:
+            df._block.apply_analytic
+            df.iloc[:, json_col_indexes] = cast(
+                DataFrame,
+                df.iloc[:, json_col_indexes].apply(bbq.to_json_string),  # type: ignore
             )
-            df = df.assign(**{col: df[col]._apply_unary_op(op) for col in json_cols})
         return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
