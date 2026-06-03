@@ -75,6 +75,7 @@ extras = {
         "pytest-snapshot",
         "google-cloud-bigtable >=2.24.0",
         "google-cloud-pubsub >=2.21.4",
+        "tzdata",
     ],
     # used for local engine
     "polars": ["polars >= 1.21.0"],
