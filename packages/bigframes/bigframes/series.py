@@ -41,7 +41,7 @@ from typing import (
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
-import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.job
 import numpy
 import pandas
 import pyarrow as pa
@@ -80,6 +80,7 @@ from bigframes.core.logging import log_adapter
 from bigframes.core.window import rolling
 
 if typing.TYPE_CHECKING:
+    import bigframes.extensions.bigframes.series_accessor as series_bigquery_accessor
     import bigframes.geopandas.geoseries
     import bigframes.operations.datetimes as datetimes
     import bigframes.operations.strings as strings
@@ -118,7 +119,7 @@ class Series:
         *,
         session: Optional[bigframes.session.Session] = None,
     ):
-        self._query_job: Optional[bigquery.QueryJob] = None
+        self._query_job: Optional[google.cloud.bigquery.job.QueryJob] = None
         import bigframes.pandas
 
         # Ignore object dtype if provided, as it provides no additional
@@ -301,7 +302,26 @@ class Series:
         return self.index
 
     @property
-    def query_job(self) -> Optional[bigquery.QueryJob]:
+    def bigquery(
+        self,
+    ) -> series_bigquery_accessor.BigframesBigQuerySeriesAccessor:
+        """
+        Accessor for BigQuery functionality.
+
+        Returns:
+            bigframes.extensions.core.series_accessor.BigQuerySeriesAccessor:
+                Accessor that exposes BigQuery functionality on a Series,
+                with method names closer to SQL.
+        """
+        # Import the accessor here to avoid circular imports.
+        import bigframes.extensions.bigframes.series_accessor
+
+        return bigframes.extensions.bigframes.series_accessor.BigframesBigQuerySeriesAccessor(
+            self
+        )
+
+    @property
+    def query_job(self) -> Optional[google.cloud.bigquery.job.QueryJob]:
         """BigQuery job metadata for the most recent query.
 
         Returns:
@@ -355,7 +375,9 @@ class Series:
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
+    def _set_internal_query_job(
+        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
+    ):
         self._query_job = query_job
 
     def __len__(self):
@@ -817,7 +839,7 @@ class Series:
         )
         return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 
-    def _compute_dry_run(self) -> bigquery.QueryJob:
+    def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
         _, query_job = self._block._compute_dry_run((self._value_column,))
         return query_job
 
