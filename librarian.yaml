@@ -29,6 +29,7 @@ default:
       - google.maps
       - google.shopping
       - google.devicesandservices
+      - google.developers
     common_gapic_paths:
       - samples/generated_samples
       - tests/unit/gapic
@@ -2218,6 +2219,13 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
+  - name: google-developers-knowledge
+    version: 0.0.0
+    apis:
+      - path: google/developers/knowledge/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-devicesandservices-health
     version: 0.0.0
     apis:
