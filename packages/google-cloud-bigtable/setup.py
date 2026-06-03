@@ -50,7 +50,7 @@ dependencies = [
     "protobuf >= 4.25.8, < 8.0.0",
     "google-cloud-core >= 2.0.0, <3.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
-    "google-crc32c>=1.6.0, <2.0.0dev",
+    "google-crc32c>=1.6.0, < 2.0.0",
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",

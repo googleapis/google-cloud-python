@@ -374,7 +374,7 @@ replacements:
       - "packages/google-cloud-pubsub/setup.py"
     before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
     after: |-
-      \g<1>\g<2>\g<1>"grpcio-status >= 1.59.0",
+      \g<1>\g<2>\g<1>"grpcio-status >= 1.59.0, < 2.0.0",
       \g<1>"grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
       \g<1>"opentelemetry-api >= 1.27.0",
       \g<1>"opentelemetry-sdk >= 1.27.0",
