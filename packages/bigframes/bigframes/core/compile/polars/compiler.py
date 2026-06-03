@@ -184,7 +184,11 @@ if polars_installed:
 
             op = expression.op
 
-            # Workaround for Polars panic on nulls in timezone-aware datetimes for certain ops.
+            # Polars panics on nulls from pandas objects in timezone-aware
+            # datetimes for certain ops. Convert to timezone-naive temporarily
+            # to avoid this issue.
+            # TODO(tswast): Remove workaround when
+            # https://github.com/pola-rs/polars/issues/27862 has been fixed.
             is_problematic_op = type(op) in (
                 date_ops.YearOp,
                 date_ops.QuarterOp,
@@ -198,7 +202,9 @@ if polars_installed:
                 if (
                     input_expr.is_resolved
                     and isinstance(input_expr.output_type, pd.ArrowDtype)
-                    and isinstance(input_expr.output_type.pyarrow_dtype, pa.TimestampType)
+                    and isinstance(
+                        input_expr.output_type.pyarrow_dtype, pa.TimestampType
+                    )
                     and input_expr.output_type.pyarrow_dtype.tz is not None
                 ):
                     tz_str = input_expr.output_type.pyarrow_dtype.tz
@@ -212,7 +218,7 @@ if polars_installed:
                         except Exception:
                             dummy_tz = datetime.timezone.utc
 
-                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)
+                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)  # type: ignore
 
                     compiled_input = self.compile_expression(input_expr)
                     filled_input = compiled_input.fill_null(dummy_val)
