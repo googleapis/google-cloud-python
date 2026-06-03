@@ -6451,6 +6451,8 @@ def test_update_job_rest_call_success(request_type):
                 "state": 1,
                 "progress": 0.885,
                 "tracking_url": "tracking_url_value",
+                "vcore_seconds": 1389,
+                "memory_mb_seconds": 1813,
             }
         ],
         "driver_output_resource_uri": "driver_output_resource_uri_value",

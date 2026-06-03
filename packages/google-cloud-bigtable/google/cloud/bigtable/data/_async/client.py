@@ -1286,12 +1286,15 @@ class _DataApiTargetAsync(abc.ABC):
 
         # limit the number of concurrent requests using a semaphore
         concurrency_sem = CrossSync.Semaphore(_CONCURRENCY_LIMIT)
+        # lock to ensure rpc_timeout_generator is thread-safe in sync version
+        gen_lock = CrossSync.Semaphore(1)
 
         @CrossSync.convert
         async def read_rows_with_semaphore(query):
             async with concurrency_sem:
-                # calculate new timeout based on time left in overall operation
-                shard_timeout = next(rpc_timeout_generator)
+                async with gen_lock:
+                    # calculate new timeout based on time left in overall operation
+                    shard_timeout = next(rpc_timeout_generator)
                 if shard_timeout <= 0:
                     raise DeadlineExceeded(
                         "Operation timeout exceeded before starting query"
