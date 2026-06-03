@@ -61,7 +61,7 @@ def generate(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> country = bpd.Series(["Japan", "Canada"])
-        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only"))
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")) # doctest: +ELLIPSIS
         0    {'result': 'Tokyo', 'full_response': '{"cand...
         1    {'result': 'Ottawa', 'full_response': '{"can...
         dtype: struct<result: string, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
@@ -231,8 +231,8 @@ def generate_int(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
-        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?"))
+        >>> animal = bpd.Series(["Ostrich", "Rabbit", "Spider"])
+        >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?")) # doctest: +ELLIPSIS
         0    {'result': 2, 'full_response': '{"candidates":...
         1    {'result': 4, 'full_response': '{"candidates":...
         2    {'result': 8, 'full_response': '{"candidates":...
@@ -305,8 +305,8 @@ def generate_double(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
-        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?"))
+        >>> animal = bpd.Series(["Ostrich", "Rabbit", "Spider"])
+        >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?")) # doctest: +ELLIPSIS
         0    {'result': 2.0, 'full_response': '{"candidates...
         1    {'result': 4.0, 'full_response': '{"candidates...
         2    {'result': 8.0, 'full_response': '{"candidates...
@@ -383,7 +383,7 @@ def generate_embedding(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> df = bpd.DataFrame({"content": ["apple", "bear", "pear"]})
-        >>> bbq.ai.generate_embedding(
+        >>> bbq.ai.generate_embedding( # doctest: +SKIP
         ...     "project.dataset.model_name",
         ...     df
         ... )
@@ -486,7 +486,7 @@ def generate_text(
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> df = bpd.DataFrame({"prompt": ["write a poem about apples"]})
-        >>> bbq.ai.generate_text(
+        >>> bbq.ai.generate_text( # doctest: +SKIP
         ...     "project.dataset.model_name",
         ...     df
         ... )
@@ -601,7 +601,7 @@ def generate_table(
         >>> # the necessary columns for the model's prompt. For example, a
         >>> # DataFrame with a 'prompt' column for text classification.
         >>> df = bpd.DataFrame({'prompt': ["some text to classify"]})
-        >>> result = bbq.ai.generate_table(
+        >>> result = bbq.ai.generate_table( # doctest: +SKIP
         ...     "project.dataset.model_name",
         ...     data=df,
         ...     output_schema="category STRING"
@@ -708,12 +708,14 @@ def embed(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bbq.ai.embed("dog", endpoint="text-embedding-005")
+        >>> bbq.ai.embed("dog", endpoint="text-embedding-005") # doctest: +ELLIPSIS
         0    {'result': array([ 1.78243860e-03, -1.10658340...
+        dtype: struct<result: list<item: double>, status: string>[pyarrow]
 
         >>> s = bpd.Series(['dog'])
-        >>> bbq.ai.embed(s, endpoint='text-embedding-005')
+        >>> bbq.ai.embed(s, endpoint='text-embedding-005') # doctest: +ELLIPSIS
         0    {'result': array([ 1.78243860e-03, -1.10658340...
+        dtype: struct<result: list<item: double>, status: string>[pyarrow]
 
     Args:
         content (str | Series):
@@ -1004,6 +1006,7 @@ def similarity(
         >>> bbq.ai.similarity(df['word'], 'glad', endpoint='text-embedding-005')
         0    0.916601
         1    0.660579
+        Name: word, dtype: Float64
 
     Args:
         content1 (str | Series):
@@ -1082,8 +1085,8 @@ def forecast(
         >>> df = pd.DataFrame({"value": [1, 2, 3], "time": pd.to_datetime(["2020-01-01", "2020-01-02", "2020-01-03"])})
         >>> bpd.options.display.progress_bar = None
         >>> forecasted_pandas_df = df.bigquery.ai.forecast(data_col="value", timestamp_col="time", horizon=2)
-        >>> type(forecasted_pandas_df)
-        <class 'pandas.core.frame.DataFrame'>
+        >>> type(forecasted_pandas_df) # doctest: +ELLIPSIS
+        <class 'pandas...DataFrame'>
 
         Forecast using a BigFrames DataFrame:
 

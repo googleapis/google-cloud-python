@@ -2472,7 +2472,9 @@ class Series:
 
         self_df = self.to_frame(name="series")
         result_df = self_df.join(map_df, on="series")
-        return result_df[self.name]
+        result = cast(Series, result_df[self.name])
+        result.name = self.name
+        return result
 
     @validations.requires_ordering()
     def sample(
@@ -2698,7 +2700,7 @@ class Series:
             others, ignore_self=ignore_self, cast_scalars=False
         )
         block, result_id = block.project_expr(op.as_expr(*values))
-        return Series(block.select_column(result_id))
+        return Series(block.select_column(result_id).with_column_labels([None]))
 
     def _apply_binary_aggregation(
         self, other: Series, stat: agg_ops.BinaryAggregateOp
