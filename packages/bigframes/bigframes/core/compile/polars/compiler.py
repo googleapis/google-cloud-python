@@ -214,11 +214,11 @@ if polars_installed:
                         try:
                             from zoneinfo import ZoneInfo
 
-                            dummy_tz = ZoneInfo(tz_str)
+                            dummy_tz = ZoneInfo(tz_str)  # type: ignore
                         except Exception:
                             dummy_tz = datetime.timezone.utc
 
-                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)  # type: ignore
+                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)
 
                     compiled_input = self.compile_expression(input_expr)
                     filled_input = compiled_input.fill_null(dummy_val)
