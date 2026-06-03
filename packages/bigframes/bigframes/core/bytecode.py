@@ -87,7 +87,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
         if opname in ("RESUME", "PRECALL"):
             continue
 
-        elif opname == "LOAD_FAST_LOAD_FAST":
+        elif opname in ("LOAD_FAST_LOAD_FAST", "LOAD_FAST_BORROW_LOAD_FAST_BORROW"):
             var1, var2 = inst.argval
             stack.append(expression.UnboundVariableExpression(var1))
             stack.append(expression.UnboundVariableExpression(var2))
