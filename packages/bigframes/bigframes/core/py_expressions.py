@@ -53,7 +53,7 @@ class GetAttr(Expression):
         return self.input.column_references
 
     @property
-    def free_variables(self) -> set[str]:
+    def free_variables(self) -> set[Hashable]:
         return self.input.free_variables
 
     @property
@@ -92,7 +92,9 @@ class GetAttr(Expression):
         return self
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> GetAttr:
         return GetAttr(
             self.input.bind_variables(
@@ -141,7 +143,9 @@ class Module(Expression):
         raise ValueError("Module expression does not have a type.")
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         return self
 
@@ -188,7 +192,9 @@ class PyObject(Expression):
         raise ValueError("PyObject expression does not have a type.")
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         return self
 
@@ -227,7 +233,7 @@ class Call(Expression):
         )
 
     @property
-    def free_variables(self) -> set[str]:
+    def free_variables(self) -> set[Hashable]:
         return set(
             itertools.chain.from_iterable(
                 map(lambda x: x.free_variables, self.children)
@@ -271,7 +277,9 @@ class Call(Expression):
         )
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Call:
         return Call(
             callable=self.callable.bind_variables(
@@ -348,7 +356,7 @@ def resolve_call(call: Call) -> Expression:
                 return OpExpression(op, call.inputs)
     elif isinstance(callable, PyObject):
         if callable.value in python_op_maps.PYTHON_TO_BIGFRAMES:
-            op = python_op_maps.PYTHON_TO_BIGFRAMES[callable.value]
+            op = python_op_maps.PYTHON_TO_BIGFRAMES[callable.value]  # type: ignore
             return OpExpression(op, call.inputs)
         if callable.value in _BUILTIN_CALLABLES:
             return OpExpression(_BUILTIN_CALLABLES[callable.value], call.inputs)

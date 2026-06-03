@@ -21,11 +21,6 @@ from typing import Callable
 import bigframes.core.py_expressions as py_exprs
 from bigframes.core import expression
 
-
-class NullMarker:
-    pass
-
-
 _BINARY_OP_MAP = {
     "+": operator.add,
     "-": operator.sub,
@@ -63,10 +58,13 @@ _OLD_BINARY_OP_MAP = {
 }
 
 
+_NULL = py_exprs.PyObject(None)
+
+
 def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     instructions = list(dis.get_instructions(func))
 
-    stack = []
+    stack: list[expression.Expression] = []
     globals_dict = func.__globals__
     import builtins
 
@@ -102,7 +100,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
             # In Python 3.11+, the lowest bit of inst.arg indicates that a NULL
             # should be pushed before the global variable.
             if sys.version_info >= (3, 11) and inst.arg is not None and (inst.arg & 1):
-                stack.append(NullMarker)
+                stack.append(_NULL)
             name = inst.argval
             found = False
             val = None
@@ -131,12 +129,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
             stack.append(py_exprs.GetAttr(target, inst.argval))
             if opname == "LOAD_METHOD":
                 if isinstance(target, py_exprs.Module):
-                    stack.append(NullMarker)
+                    stack.append(_NULL)
                 else:
                     stack.append(target)
 
         elif opname == "PUSH_NULL":
-            stack.append(NullMarker)
+            stack.append(_NULL)
 
         elif opname == "BINARY_OP":
             if len(stack) < 2:
@@ -160,7 +158,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
         # Support older Python versions compatibility
         elif opname in _OLD_BINARY_OP_MAP:
             if len(stack) < 2:
-                return None
+                raise ValueError("Stack has < 2 elements")
             right = stack.pop()
             left = stack.pop()
             stack.append(
@@ -213,19 +211,20 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
 
         elif opname in ("CALL", "CALL_FUNCTION", "CALL_METHOD"):
             num_args = inst.arg
+            assert num_args is not None
             if len(stack) < num_args:
                 raise ValueError("Stack has < 2 elements")
             args = [stack.pop() for _ in range(num_args)][::-1]
-            # In Python 3.11, LOAD_GLOBAL with NULL push puts NullMarker below the global.
-            # If NullMarker is below the callable on the stack, swap them to match
-            # the expected layout [callable, NullMarker].
-            if len(stack) >= 2 and stack[-2] is NullMarker:
+            # In Python 3.11, LOAD_GLOBAL with NULL push puts NULL below the global.
+            # If NULL is below the callable on the stack, swap them to match
+            # the expected layout [callable, NULL].
+            if len(stack) >= 2 and stack[-2] == _NULL:
                 stack[-1], stack[-2] = stack[-2], stack[-1]
-            if stack and stack[-1] is NullMarker:
+            if stack and stack[-1] == _NULL:
                 stack.pop()
             elif (
                 stack
-                and stack[-1] is not NullMarker
+                and stack[-1] != _NULL
                 and isinstance(stack[-1], expression.Expression)
             ):
                 self_arg = stack.pop()
