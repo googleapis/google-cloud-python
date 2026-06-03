@@ -19,8 +19,9 @@ Cloud Spanner.
 """
 
 import asyncio
-from google.cloud.spanner_v1 import AsyncClient
-from google.cloud.spanner_v1 import KeySet
+
+from google.cloud.spanner_v1 import AsyncClient, KeySet
+
 
 # [START spanner_async_create_client]
 async def async_create_client(instance_id, database_id):
@@ -31,6 +32,8 @@ async def async_create_client(instance_id, database_id):
 
     print("Async Spanner client instantiated successfully.")
     return database
+
+
 # [END spanner_async_create_client]
 
 
@@ -48,6 +51,8 @@ async def async_query_data(instance_id, database_id):
 
         async for row in results:
             print("SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
+
+
 # [END spanner_async_query_data]
 
 
@@ -68,6 +73,8 @@ async def async_insert_data(instance_id, database_id):
 
     await database.run_in_transaction(insert_singers)
     print("Async DML Insert transaction complete.")
+
+
 # [END spanner_async_insert_data]
 
 
@@ -84,7 +91,9 @@ async def async_read_write_transaction(instance_id, database_id):
             "SELECT SingerId, FirstName, LastName FROM Singers WHERE SingerId = 12"
         )
         async for row in results:
-            print("Before Update - SingerId: {}, FirstName: {}, LastName: {}".format(*row))
+            print(
+                "Before Update - SingerId: {}, FirstName: {}, LastName: {}".format(*row)
+            )
 
         # Update LastName
         await transaction.execute_update(
@@ -93,6 +102,8 @@ async def async_read_write_transaction(instance_id, database_id):
 
     await database.run_in_transaction(update_singer_lastname)
     print("Async read-write transaction complete.")
+
+
 # [END spanner_async_read_write_transaction]
 
 
@@ -114,4 +125,6 @@ async def async_read_only_transaction(instance_id, database_id):
 
         async for row in results:
             print("Read Row - SingerId: {}, FirstName: {}, LastName: {}".format(*row))
+
+
 # [END spanner_async_read_only_transaction]
