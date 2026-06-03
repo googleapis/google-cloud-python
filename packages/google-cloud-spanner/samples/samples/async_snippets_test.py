@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import pytest
+
 import async_snippets
+
 
 @pytest.fixture(scope="module")
 def database_ddl():
@@ -30,14 +32,16 @@ def database_ddl():
             AlbumId      INT64 NOT NULL,
             AlbumTitle   STRING(MAX)
         ) PRIMARY KEY (SingerId, AlbumId),
-        INTERLEAVE IN PARENT Singers ON DELETE CASCADE"""
+        INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
     ]
 
 
 @pytest.mark.asyncio
 async def test_async_snippets_flow(capsys, instance_id, sample_database):
     # 1. Test Async Spanner Client Creation
-    db = await async_snippets.async_create_client(instance_id, sample_database.database_id)
+    db = await async_snippets.async_create_client(
+        instance_id, sample_database.database_id
+    )
     assert db is not None
     out, _ = capsys.readouterr()
     assert "Async Spanner client instantiated successfully." in out
@@ -65,13 +69,17 @@ async def test_async_snippets_flow(capsys, instance_id, sample_database):
     assert "SingerId: 13, AlbumId: 2, AlbumTitle: Go, Go, Go" in out
 
     # 5. Test Async Read-Write Transaction
-    await async_snippets.async_read_write_transaction(instance_id, sample_database.database_id)
+    await async_snippets.async_read_write_transaction(
+        instance_id, sample_database.database_id
+    )
     out, _ = capsys.readouterr()
     assert "Before Update - SingerId: 12, FirstName: Melissa, LastName: Garcia" in out
     assert "Async read-write transaction complete." in out
 
     # 6. Test Async Read-Only Transaction
-    await async_snippets.async_read_only_transaction(instance_id, sample_database.database_id)
+    await async_snippets.async_read_only_transaction(
+        instance_id, sample_database.database_id
+    )
     out, _ = capsys.readouterr()
     assert "Read Row - SingerId: 12, FirstName: Melissa, LastName: Jackson" in out
     assert "Read Row - SingerId: 13, FirstName: Russell, LastName: Morales" in out
