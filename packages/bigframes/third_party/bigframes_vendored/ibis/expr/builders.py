@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import sys
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 import bigframes_vendored.ibis
@@ -19,7 +20,10 @@ from bigframes_vendored.ibis.common.selectors import Selector  # noqa: TCH001
 from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
 
 class Builder(Concrete):

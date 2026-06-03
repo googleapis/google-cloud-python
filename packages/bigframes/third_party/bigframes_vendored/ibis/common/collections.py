@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import collections.abc
+import sys
 from abc import abstractmethod
 from itertools import tee
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
@@ -12,7 +13,10 @@ from bigframes_vendored.ibis.common.exceptions import ConflictingValuesError
 from public import public
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
 K = TypeVar("K", bound=collections.abc.Hashable)
 V = TypeVar("V")

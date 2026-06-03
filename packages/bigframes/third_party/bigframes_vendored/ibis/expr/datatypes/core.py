@@ -5,6 +5,7 @@ from __future__ import annotations
 import datetime as pydatetime
 import decimal as pydecimal
 import numbers
+import sys
 import uuid as pyuuid
 from abc import abstractmethod
 from collections.abc import Iterable, Iterator, Mapping, Sequence
@@ -29,7 +30,11 @@ from bigframes_vendored.ibis.common.grounds import Concrete, Singleton
 from bigframes_vendored.ibis.common.patterns import Coercible, CoercionError
 from bigframes_vendored.ibis.common.temporal import IntervalUnit, TimestampUnit
 from public import public
-from typing_extensions import Self
+
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 
 @lazy_singledispatch

@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Generic, Optional
+from typing import Any, Generic, Optional, TypeVar
 
+import sys
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.rules as rlz
@@ -15,7 +16,11 @@ from bigframes_vendored.ibis.common.patterns import Coercible, CoercionError
 from bigframes_vendored.ibis.common.typing import DefaultTypeVars
 from bigframes_vendored.ibis.util import is_iterable
 from public import public
-from typing_extensions import Any, Self, TypeVar
+
+if sys.version_info >= (3, 11):
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 
 @public

@@ -33,6 +33,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TypeGuard,
     TypeVar,
     Union,
     cast,
@@ -45,7 +46,6 @@ import google.cloud.bigquery as bigquery
 import numpy
 import pandas
 import pyarrow as pa
-import typing_extensions
 from pandas.api import extensions as pd_ext
 
 import bigframes.core
@@ -2825,5 +2825,5 @@ class Series:
             )
 
 
-def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:
+def _is_list_like(obj: typing.Any) -> TypeGuard[typing.Sequence]:
     return pandas.api.types.is_list_like(obj)

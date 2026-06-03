@@ -69,7 +69,7 @@ from ._decorators import (
 from ._mapping_meta import MappingMeta
 
 if TYPE_CHECKING:
-    from typing_extensions import TypeAlias
+    from typing import TypeAlias
 
 T = TypeVar("T")
 

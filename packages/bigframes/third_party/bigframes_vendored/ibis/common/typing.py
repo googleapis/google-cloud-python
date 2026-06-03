@@ -7,26 +7,23 @@ import re
 import sys
 from abc import abstractmethod
 from itertools import zip_longest
-from typing import TYPE_CHECKING, Any, Optional, TypeVar, Union, get_args, get_origin
+from typing import TYPE_CHECKING, Any, Optional, TypeVar, get_args, get_origin
 from typing import get_type_hints as _get_type_hints
 
 from bigframes_vendored.ibis.common.bases import Abstract
 from bigframes_vendored.ibis.common.caching import memoize
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
-if sys.version_info >= (3, 10):
-    from types import UnionType
-    from typing import TypeAlias
+from types import UnionType
+from typing import TypeAlias
 
-    # Keep this alias in sync with unittest.case._ClassInfo
-    _ClassInfo: TypeAlias = type | UnionType | tuple["_ClassInfo", ...]
-else:
-    from typing_extensions import TypeAlias
-
-    UnionType = object()
-    _ClassInfo: TypeAlias = Union[type, tuple["_ClassInfo", ...]]
+# Keep this alias in sync with unittest.case._ClassInfo
+_ClassInfo: TypeAlias = type | UnionType | tuple["_ClassInfo", ...]
 
 
 T = TypeVar("T")

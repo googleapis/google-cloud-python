@@ -43,7 +43,11 @@ from bigframes_vendored.sqlglot.tokens import Token, TokenError
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot._typing import E, Lit
     from bigframes_vendored.sqlglot.dialects.dialect import DialectType
-    from typing_extensions import Self
+
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
     Q = t.TypeVar("Q", bound="Query")
     S = t.TypeVar("S", bound="SetOperation")

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import collections.abc
+import sys
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Any
 from weakref import WeakValueDictionary
@@ -10,7 +11,10 @@ from weakref import WeakValueDictionary
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
-    from typing_extensions import Self
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
 
 class AbstractMeta(type):

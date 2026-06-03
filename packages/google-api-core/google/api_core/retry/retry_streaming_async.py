@@ -43,10 +43,7 @@ from google.api_core.retry import RetryFailureReason
 
 
 if TYPE_CHECKING:
-    if sys.version_info >= (3, 10):
-        from typing import ParamSpec
-    else:
-        from typing_extensions import ParamSpec
+    from typing import ParamSpec
 
     _P = ParamSpec("_P")  # target function call parameters
     _Y = TypeVar("_Y")  # yielded values

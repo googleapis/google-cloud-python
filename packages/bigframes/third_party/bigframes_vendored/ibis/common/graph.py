@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import itertools
+import sys
 from abc import abstractmethod
 from collections import deque
 from collections.abc import Callable, Iterable, Iterator, KeysView, Mapping, Sequence
@@ -16,7 +17,10 @@ from bigframes_vendored.ibis.common.typing import _ClassInfo
 from bigframes_vendored.ibis.util import experimental, promote_list
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
+    if sys.version_info >= (3, 11):
+        from typing import Self
+    else:
+        from typing_extensions import Self
 
     N = TypeVar("N")
 

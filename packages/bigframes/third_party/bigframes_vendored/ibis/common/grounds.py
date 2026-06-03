@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import contextlib
+import sys
 from copy import copy
 from typing import Any, ClassVar, Union, get_origin
 
@@ -23,7 +24,11 @@ from bigframes_vendored.ibis.common.bases import (  # noqa: F401
 from bigframes_vendored.ibis.common.collections import FrozenDict  # noqa: TCH001
 from bigframes_vendored.ibis.common.patterns import Pattern
 from bigframes_vendored.ibis.common.typing import evaluate_annotations
-from typing_extensions import Self, dataclass_transform
+
+if sys.version_info >= (3, 11):
+    from typing import Self, dataclass_transform
+else:
+    from typing_extensions import Self, dataclass_transform
 
 
 class AnnotableMeta(AbstractMeta):

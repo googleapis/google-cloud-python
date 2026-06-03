@@ -16,12 +16,11 @@ import functools
 import re
 import typing
 import warnings
-from typing import Hashable, Iterable, List
+from typing import Hashable, Iterable, List, TypeGuard
 
 import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import numpy as np
 import pandas as pd
-import typing_extensions
 
 import bigframes.exceptions as bfe
 
@@ -29,7 +28,7 @@ UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"
 
 
-def is_gcs_path(value) -> typing_extensions.TypeGuard[str]:
+def is_gcs_path(value) -> TypeGuard[str]:
     return isinstance(value, str) and value.startswith("gs://")
 
 
@@ -43,11 +42,11 @@ def get_axis_number(axis: typing.Union[str, int]) -> typing.Literal[0, 1]:
 
 def is_list_like(
     obj: typing.Any, allow_sets: bool = True
-) -> typing_extensions.TypeGuard[typing.Sequence]:
+) -> TypeGuard[typing.Sequence]:
     return pd.api.types.is_list_like(obj, allow_sets=allow_sets)
 
 
-def is_dict_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Mapping]:
+def is_dict_like(obj: typing.Any) -> TypeGuard[typing.Mapping]:
     return pd.api.types.is_dict_like(obj)
 
 

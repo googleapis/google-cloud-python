@@ -24,10 +24,7 @@ import google.protobuf.message
 import sys
 import typing
 
-if sys.version_info >= (3, 10):
-    import typing as typing_extensions
-else:
-    import typing_extensions
+import typing as typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
