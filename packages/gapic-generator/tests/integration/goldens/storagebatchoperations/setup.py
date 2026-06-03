@@ -30,7 +30,7 @@ version = None
 
 with open(os.path.join(package_root, 'google/cloud/storagebatchoperations/gapic_version.py')) as fp:
     version_candidates = re.findall(
-        r"(?<=\")\d+\.\d+\.\d+(?:-[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*)?(?=\")",
+        r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
         fp.read(),
     )
     assert (len(version_candidates) == 1)
