@@ -94,10 +94,13 @@ def _normalize_all_nulls(col: pd.Series) -> pd.Series:
     if pd_types.is_float_dtype(col.dtype):
         col = col.astype("float64").astype("Float64")
     elif col.dtype == "object":
-        try:
-            col = col.astype("Float64")
-        except (TypeError, ValueError, SystemError):
+        if any(isinstance(x, decimal.Decimal) for x in col):
             pass
+        else:
+            try:
+                col = col.astype("Float64")
+            except (TypeError, ValueError, SystemError):
+                pass
     return col
 
 
@@ -122,6 +125,7 @@ def assert_frame_equal(
     downcast_object: bool = True,
     **kwargs,
 ):
+
     if ignore_order:
         # Sort by a column to get consistent results.
         if left.index.name != "rowindex":
@@ -146,6 +150,7 @@ def assert_frame_equal(
         right = right.apply(_normalize_all_nulls)
         left.index = _normalize_index_nulls(left.index)
         right.index = _normalize_index_nulls(right.index)
+
 
     pd.testing.assert_frame_equal(left, right, **kwargs)
 
