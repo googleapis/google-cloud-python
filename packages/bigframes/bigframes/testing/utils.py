@@ -93,6 +93,11 @@ def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwar
 def _normalize_all_nulls(col: pd.Series) -> pd.Series:
     if pd_types.is_float_dtype(col.dtype):
         col = col.astype("float64").astype("Float64")
+    elif col.dtype == "object":
+        try:
+            col = col.astype("Float64")
+        except (TypeError, ValueError, SystemError):
+            pass
     return col
 
 
