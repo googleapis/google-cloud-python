@@ -14,6 +14,8 @@
 
 import math
 
+import pytest
+
 import bigframes.core.expression as ex
 import bigframes.operations as ops
 from bigframes.core.bytecode import dis_to_expr
@@ -72,8 +74,8 @@ def test_dis_to_expr_unsupported():
             res += val
         return res
 
-    expr = dis_to_expr(func_with_loop, unpack_mode=False)
-    assert expr is None
+    with pytest.raises(ValueError):
+        dis_to_expr(func_with_loop, unpack_mode=False)
 
 
 global_none_val = None

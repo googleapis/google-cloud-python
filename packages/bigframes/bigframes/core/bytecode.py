@@ -14,8 +14,9 @@
 
 import dis
 import operator
+import sys
 from types import ModuleType
-from typing import Callable, Optional
+from typing import Callable
 
 import bigframes.core.py_expressions as py_exprs
 from bigframes.core import expression
@@ -62,11 +63,8 @@ _OLD_BINARY_OP_MAP = {
 }
 
 
-def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expression]:
-    try:
-        instructions = list(dis.get_instructions(func))
-    except Exception:
-        return None
+def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
+    instructions = list(dis.get_instructions(func))
 
     stack = []
     globals_dict = func.__globals__
@@ -103,7 +101,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
         elif opname == "LOAD_GLOBAL":
             # In Python 3.11+, the lowest bit of inst.arg indicates that a NULL
             # should be pushed before the global variable.
-            if inst.arg is not None and (inst.arg & 1):
+            if sys.version_info >= (3, 11) and inst.arg is not None and (inst.arg & 1):
                 stack.append(NullMarker)
             name = inst.argval
             found = False
@@ -128,7 +126,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
 
         elif opname in ("LOAD_ATTR", "LOAD_METHOD"):
             if not stack:
-                return None
+                raise ValueError("Stack is empty")
             target = stack.pop()
             stack.append(py_exprs.GetAttr(target, inst.argval))
             if opname == "LOAD_METHOD":
@@ -142,7 +140,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
 
         elif opname == "BINARY_OP":
             if len(stack) < 2:
-                return None
+                raise ValueError("Stack is empty")
             right = stack.pop()
             left = stack.pop()
             op_symbol = inst.argrepr
@@ -152,7 +150,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
                 op_symbol = op_symbol[:-1]
 
             if op_symbol not in _BINARY_OP_MAP:
-                return None
+                raise ValueError(f"Unsupported binary operator: {op_symbol}")
             stack.append(
                 py_exprs.Call(
                     py_exprs.PyObject(_BINARY_OP_MAP[op_symbol]), (left, right)
@@ -173,12 +171,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
 
         elif opname == "COMPARE_OP":
             if len(stack) < 2:
-                return None
+                raise ValueError("Stack has < 2 elements")
             right = stack.pop()
             left = stack.pop()
             op_symbol = inst.argval
             if op_symbol not in _COMPARE_OP_MAP:
-                return None
+                raise ValueError(f"Unsupported compare operator: {op_symbol}")
             stack.append(
                 py_exprs.Call(
                     py_exprs.PyObject(_COMPARE_OP_MAP[op_symbol]), (left, right)
@@ -187,7 +185,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
 
         elif opname in ("UNARY_NEGATIVE", "UNARY_INVERT"):
             if not stack:
-                return None
+                raise ValueError("Stack is empty")
             target = stack.pop()
             stack.append(
                 py_exprs.Call(
@@ -200,23 +198,23 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
 
         elif opname == "UNARY_POSITIVE":
             if not stack:
-                return None
+                raise ValueError("Stack is empty")
             target = stack.pop()
             stack.append(py_exprs.Call(py_exprs.PyObject(operator.pos), (target,)))
 
         elif opname == "CALL_INTRINSIC_1":
             if inst.argrepr == "INTRINSIC_UNARY_POSITIVE":
                 if not stack:
-                    return None
+                    raise ValueError("Stack is empty")
                 target = stack.pop()
                 stack.append(py_exprs.Call(py_exprs.PyObject(operator.pos), (target,)))
             else:
-                return None
+                raise ValueError(f"Unsupported intrinsic: {inst.argrepr}")
 
         elif opname in ("CALL", "CALL_FUNCTION", "CALL_METHOD"):
             num_args = inst.arg
             if len(stack) < num_args:
-                return None
+                raise ValueError("Stack has < 2 elements")
             args = [stack.pop() for _ in range(num_args)][::-1]
             # In Python 3.11, LOAD_GLOBAL with NULL push puts NullMarker below the global.
             # If NullMarker is below the callable on the stack, swap them to match
@@ -233,13 +231,13 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
                 self_arg = stack.pop()
                 args = [self_arg] + args
             if not stack:
-                return None
+                raise ValueError("Stack is empty")
             callable_expr = stack.pop()
             stack.append(py_exprs.Call(callable_expr, tuple(args)))
 
         elif opname == "RETURN_VALUE":
             if not stack:
-                return None
+                raise ValueError("Stack is empty")
             return stack[-1]
 
         elif opname in ("STORE_FAST", "POP_TOP"):
@@ -247,14 +245,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> Optional[expression.Expressi
                 stack.pop()
 
         else:
-            return None
+            raise ValueError(f"Unsupported opcode: {opname}")
 
-    return None
+    raise ValueError("No return value found")
 
 
-def dis_to_expr(
-    func: Callable, unpack_mode: bool = False
-) -> Optional[expression.Expression]:
+def dis_to_expr(func: Callable, unpack_mode: bool = False) -> expression.Expression:
     """
     Try to convert a python function to a BigQuery expression.
 
@@ -262,12 +258,7 @@ def dis_to_expr(
     python argument (e.g. row.col1), or as separate arguments (e.g. col1).
 
     This is "best effort" - if the function contains operations that cannot
-    be converted to BigQuery expressions, it will return None.
+    be converted to BigQuery expressions, it will raise an Exception.
     """
-    try:
-        py_expr = _compile_bytecode_to_py_expr(func)
-        if py_expr is None:
-            return None
-        return py_exprs.resolve_py_exprs(py_expr, unpack_mode=unpack_mode)
-    except Exception:
-        return None
+    py_expr = _compile_bytecode_to_py_expr(func)
+    return py_exprs.resolve_py_exprs(py_expr, unpack_mode=unpack_mode)
