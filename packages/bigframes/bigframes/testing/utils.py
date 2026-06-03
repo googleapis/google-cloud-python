@@ -125,7 +125,6 @@ def assert_frame_equal(
     downcast_object: bool = True,
     **kwargs,
 ):
-
     if ignore_order:
         # Sort by a column to get consistent results.
         if left.index.name != "rowindex":
@@ -150,7 +149,6 @@ def assert_frame_equal(
         right = right.apply(_normalize_all_nulls)
         left.index = _normalize_index_nulls(left.index)
         right.index = _normalize_index_nulls(right.index)
-
 
     pd.testing.assert_frame_equal(left, right, **kwargs)
 
