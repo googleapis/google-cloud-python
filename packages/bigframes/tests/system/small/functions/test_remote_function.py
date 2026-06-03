@@ -468,7 +468,12 @@ def test_dataframe_applymap(
 
     pd_int64_df = scalars_pandas_df[int64_cols]
     pd_int64_df_filtered = pd_int64_df.dropna()
-    pd_result = pd_int64_df_filtered.applymap(add_one)
+
+    # TODO(swast): Remove when pandas 2.1.x+ is the minimum supported.
+    if hasattr(pd_int64_df_filtered, "applymap"):
+        pd_result = pd_int64_df_filtered.applymap(add_one)
+    else:
+        pd_result = pd_int64_df_filtered.map(add_one)
     # TODO(shobs): Figure why pandas .applymap() changes the dtype, i.e.
     # pd_int64_df_filtered.dtype is Int64Dtype()
     # pd_int64_df_filtered.applymap(lambda x: x).dtype is int64.
@@ -503,7 +508,13 @@ def test_dataframe_applymap_explicit_filter(
 
     pd_int64_df = scalars_pandas_df[int64_cols]
     pd_int64_df_filtered = pd_int64_df[pd_int64_df["int64_col"].notnull()]
-    pd_result = pd_int64_df_filtered.applymap(add_one)
+
+    # TODO(swast): Remove when pandas 2.1.x+ is the minimum supported.
+    if hasattr(pd_int64_df_filtered, "applymap"):
+        pd_result = pd_int64_df_filtered.applymap(add_one)
+    else:
+        pd_result = pd_int64_df_filtered.map(add_one)
+
     # TODO(shobs): Figure why pandas .applymap() changes the dtype, i.e.
     # pd_int64_df_filtered.dtype is Int64Dtype()
     # pd_int64_df_filtered.applymap(lambda x: x).dtype is int64.
@@ -536,7 +547,13 @@ def test_dataframe_applymap_na_ignore(
     bf_result = bf_int64_df.applymap(remote_add_one, na_action="ignore").to_pandas()
 
     pd_int64_df = scalars_pandas_df[int64_cols]
-    pd_result = pd_int64_df.applymap(add_one, na_action="ignore")
+
+    # TODO(swast): Remove when pandas 2.1.x+ is the minimum supported.
+    if hasattr(pd_int64_df, "applymap"):
+        pd_result = pd_int64_df.applymap(add_one, na_action="ignore")
+    else:
+        pd_result = pd_int64_df.map(add_one, na_action="ignore")
+
     # TODO(shobs): Figure why pandas .applymap() changes the dtype, i.e.
     # pd_int64_df_filtered.dtype is Int64Dtype()
     # pd_int64_df_filtered.applymap(lambda x: x).dtype is int64.
