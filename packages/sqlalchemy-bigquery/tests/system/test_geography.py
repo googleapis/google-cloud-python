@@ -31,7 +31,9 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     - Bigquery doesn't have ST_BUFFER
     """
-
+    pytest.skip(
+        "Test is skipped due to https://github.com/googleapis/google-cloud-python/issues/17287"
+    )
     # Connect to the DB
 
     from sqlalchemy import create_engine
@@ -144,7 +146,9 @@ def test_geoalchemy2_orm(bigquery_dataset):
 
     https://geoalchemy-2.readthedocs.io/en/latest/orm_tutorial.html
     """
-
+    pytest.skip(
+        "Test is skipped due to https://github.com/googleapis/google-cloud-python/issues/17287"
+    )
     # Connect to the DB
 
     from sqlalchemy import create_engine
@@ -255,6 +259,9 @@ def test_geoalchemy2_orm(bigquery_dataset):
 
 
 def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
+    pytest.skip(
+        "Test is skipped due to https://github.com/googleapis/google-cloud-python/issues/17287"
+    )
     from sqlalchemy import create_engine
 
     engine = create_engine(f"bigquery:///{bigquery_dataset}")
