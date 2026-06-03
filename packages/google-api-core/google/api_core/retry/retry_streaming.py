@@ -29,7 +29,6 @@ from typing import (
     TYPE_CHECKING,
 )
 
-import sys
 import time
 import functools
 

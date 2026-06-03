@@ -57,7 +57,6 @@ a ``retry`` parameter that allows you to configure the behavior:
 from __future__ import annotations
 
 import functools
-import sys
 import time
 import inspect
 import warnings

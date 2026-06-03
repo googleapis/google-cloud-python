@@ -76,8 +76,6 @@ from google.api_core.retry.retry_base import if_exception_type  # noqa
 from google.api_core.retry.retry_base import if_transient_error  # noqa
 
 if TYPE_CHECKING:
-    import sys
-
     from typing import ParamSpec
 
     _P = ParamSpec("_P")  # target function call parameters
