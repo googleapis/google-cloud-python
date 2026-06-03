@@ -16,7 +16,6 @@ import pytest
 
 import bigframes.core.expression as ex
 import bigframes.pandas as bpd
-from bigframes import operations as ops
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")
@@ -30,7 +29,7 @@ def test_float_literals(scalar_types_df: bpd.DataFrame, snapshot):
         "nan": ex.const(float("nan")),
         "neg_zero": ex.const(-0.0),
         "0.00001": ex.const(0.00001),
-        "1E-10": ex.const(1E-10),
+        "1E-10": ex.const(1e-10),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")

@@ -35,7 +35,17 @@ def test_is_in(scalar_types_df: bpd.DataFrame, snapshot):
             int_col
         ),
         "strings": ops.IsInOp(values=("1.0", "2.0")).as_expr(int_col),
-        "mixed": ops.IsInOp(values=("1.0", 2.5, 3, 1e-10, float("inf"), float("nan"), 0,)).as_expr(int_col),
+        "mixed": ops.IsInOp(
+            values=(
+                "1.0",
+                2.5,
+                3,
+                1e-10,
+                float("inf"),
+                float("nan"),
+                0,
+            )
+        ).as_expr(int_col),
         "empty": ops.IsInOp(values=()).as_expr(int_col),
         "empty_wo_match_nulls": ops.IsInOp(values=(), match_nulls=False).as_expr(
             int_col
