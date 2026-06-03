@@ -5386,6 +5386,22 @@ libraries:
       - packages/google-crc32c/README.rst
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
+  - id: google-devicesandservices-health
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/devicesandservices/health/v4
+    source_roots:
+      - packages/google-devicesandservices-health
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-devicesandservices-health/.repo-metadata.json
+      - packages/google-devicesandservices-health/noxfile.py
+      - packages/google-devicesandservices-health/tests/
+      - packages/google-devicesandservices-health/README.rst
+      - packages/google-devicesandservices-health/docs/
+    tag_format: '{id}-v{version}'
   - id: google-geo-type
     version: 0.7.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
