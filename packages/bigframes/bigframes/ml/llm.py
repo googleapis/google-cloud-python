@@ -523,8 +523,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             )
             warnings.warn(msg)
         if (
-            self.model_name.startswith("gemini-2.0")
-            or self.model_name.startswith("gemini-1.5")
+            self.model_name.startswith(("gemini-2.0", "gemini-1.5"))
             or self.model_name
             in (
                 "gemini-2.5-flash",
