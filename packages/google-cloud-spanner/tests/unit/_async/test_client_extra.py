@@ -34,7 +34,8 @@ class TestClientExtra(unittest.IsolatedAsyncioTestCase):
             use_plain_text=True,
         )
         self.assertEqual(client.project, "default")
-        self.assertEqual(client._experimental_host, "experimental.host")
+        self.assertEqual(client.instance_type, "omni")
+        self.assertEqual(client._host, "experimental.host")
         self.assertTrue(client._use_plain_text)
 
     async def test_experimental_host_apis(self):

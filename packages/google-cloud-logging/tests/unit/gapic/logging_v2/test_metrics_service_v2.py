@@ -1334,7 +1334,7 @@ def test_metrics_service_v2_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.ListLogMetricsRequest({}),
+        logging_metrics.ListLogMetricsRequest(),
         {},
     ],
 )
@@ -1481,7 +1481,7 @@ async def test_list_log_metrics_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.ListLogMetricsRequest({}),
+        logging_metrics.ListLogMetricsRequest(),
         {},
     ],
 )
@@ -1852,7 +1852,7 @@ async def test_list_log_metrics_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.GetLogMetricRequest({}),
+        logging_metrics.GetLogMetricRequest(),
         {},
     ],
 )
@@ -2007,7 +2007,7 @@ async def test_get_log_metric_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.GetLogMetricRequest({}),
+        logging_metrics.GetLogMetricRequest(),
         {},
     ],
 )
@@ -2200,7 +2200,7 @@ async def test_get_log_metric_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.CreateLogMetricRequest({}),
+        logging_metrics.CreateLogMetricRequest(),
         {},
     ],
 )
@@ -2361,7 +2361,7 @@ async def test_create_log_metric_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.CreateLogMetricRequest({}),
+        logging_metrics.CreateLogMetricRequest(),
         {},
     ],
 )
@@ -2574,7 +2574,7 @@ async def test_create_log_metric_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.UpdateLogMetricRequest({}),
+        logging_metrics.UpdateLogMetricRequest(),
         {},
     ],
 )
@@ -2735,7 +2735,7 @@ async def test_update_log_metric_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.UpdateLogMetricRequest({}),
+        logging_metrics.UpdateLogMetricRequest(),
         {},
     ],
 )
@@ -2948,7 +2948,7 @@ async def test_update_log_metric_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.DeleteLogMetricRequest({}),
+        logging_metrics.DeleteLogMetricRequest(),
         {},
     ],
 )
@@ -3094,7 +3094,7 @@ async def test_delete_log_metric_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_metrics.DeleteLogMetricRequest({}),
+        logging_metrics.DeleteLogMetricRequest(),
         {},
     ],
 )

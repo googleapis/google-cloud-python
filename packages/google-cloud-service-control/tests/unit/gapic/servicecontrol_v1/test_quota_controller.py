@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1340,8 +1356,8 @@ def test_quota_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        quota_controller.AllocateQuotaRequest,
-        dict,
+        quota_controller.AllocateQuotaRequest(),
+        {},
     ],
 )
 def test_allocate_quota(request_type, transport: str = "grpc"):
@@ -1352,7 +1368,7 @@ def test_allocate_quota(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
@@ -1399,10 +1415,11 @@ def test_allocate_quota_non_empty_request_with_auto_populated_field():
         client.allocate_quota(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == quota_controller.AllocateQuotaRequest(
+        request_msg = quota_controller.AllocateQuotaRequest(
             service_name="service_name_value",
             service_config_id="service_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_allocate_quota_use_cached_wrapped_rpc():
@@ -1483,9 +1500,14 @@ async def test_allocate_quota_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_allocate_quota_async(
-    transport: str = "grpc_asyncio", request_type=quota_controller.AllocateQuotaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        quota_controller.AllocateQuotaRequest(),
+        {},
+    ],
+)
+async def test_allocate_quota_async(request_type, transport: str = "grpc_asyncio"):
     client = QuotaControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1493,7 +1515,7 @@ async def test_allocate_quota_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
@@ -1516,11 +1538,6 @@ async def test_allocate_quota_async(
     assert isinstance(response, quota_controller.AllocateQuotaResponse)
     assert response.operation_id == "operation_id_value"
     assert response.service_config_id == "service_config_id_value"
-
-
-@pytest.mark.asyncio
-async def test_allocate_quota_async_from_dict():
-    await test_allocate_quota_async(request_type=dict)
 
 
 def test_allocate_quota_field_headers():
@@ -1743,7 +1760,6 @@ def test_allocate_quota_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_controller.AllocateQuotaRequest()
-
         assert args[0] == request_msg
 
 
@@ -1785,7 +1801,6 @@ async def test_allocate_quota_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_controller.AllocateQuotaRequest()
-
         assert args[0] == request_msg
 
 
@@ -1957,7 +1972,6 @@ def test_allocate_quota_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_controller.AllocateQuotaRequest()
-
         assert args[0] == request_msg
 
 

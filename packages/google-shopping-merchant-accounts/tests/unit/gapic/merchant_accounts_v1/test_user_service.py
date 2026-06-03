@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1274,8 +1290,8 @@ def test_user_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        user.GetUserRequest,
-        dict,
+        user.GetUserRequest(),
+        {},
     ],
 )
 def test_get_user(request_type, transport: str = "grpc"):
@@ -1286,7 +1302,7 @@ def test_get_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user), "__call__") as call:
@@ -1334,9 +1350,10 @@ def test_get_user_non_empty_request_with_auto_populated_field():
         client.get_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user.GetUserRequest(
+        request_msg = user.GetUserRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_user_use_cached_wrapped_rpc():
@@ -1415,9 +1432,14 @@ async def test_get_user_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_user_async(
-    transport: str = "grpc_asyncio", request_type=user.GetUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user.GetUserRequest(),
+        {},
+    ],
+)
+async def test_get_user_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1425,7 +1447,7 @@ async def test_get_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user), "__call__") as call:
@@ -1450,11 +1472,6 @@ async def test_get_user_async(
     assert response.name == "name_value"
     assert response.state == user.User.State.PENDING
     assert response.access_rights == [accessright.AccessRight.STANDARD]
-
-
-@pytest.mark.asyncio
-async def test_get_user_async_from_dict():
-    await test_get_user_async(request_type=dict)
 
 
 def test_get_user_field_headers():
@@ -1599,8 +1616,8 @@ async def test_get_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsma_user.CreateUserRequest,
-        dict,
+        gsma_user.CreateUserRequest(),
+        {},
     ],
 )
 def test_create_user(request_type, transport: str = "grpc"):
@@ -1611,7 +1628,7 @@ def test_create_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user), "__call__") as call:
@@ -1660,10 +1677,11 @@ def test_create_user_non_empty_request_with_auto_populated_field():
         client.create_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsma_user.CreateUserRequest(
+        request_msg = gsma_user.CreateUserRequest(
             parent="parent_value",
             user_id="user_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_user_use_cached_wrapped_rpc():
@@ -1744,9 +1762,14 @@ async def test_create_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_user_async(
-    transport: str = "grpc_asyncio", request_type=gsma_user.CreateUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsma_user.CreateUserRequest(),
+        {},
+    ],
+)
+async def test_create_user_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1754,7 +1777,7 @@ async def test_create_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user), "__call__") as call:
@@ -1779,11 +1802,6 @@ async def test_create_user_async(
     assert response.name == "name_value"
     assert response.state == gsma_user.User.State.PENDING
     assert response.access_rights == [accessright.AccessRight.STANDARD]
-
-
-@pytest.mark.asyncio
-async def test_create_user_async_from_dict():
-    await test_create_user_async(request_type=dict)
 
 
 def test_create_user_field_headers():
@@ -1948,8 +1966,8 @@ async def test_create_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user.DeleteUserRequest,
-        dict,
+        user.DeleteUserRequest(),
+        {},
     ],
 )
 def test_delete_user(request_type, transport: str = "grpc"):
@@ -1960,7 +1978,7 @@ def test_delete_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -2001,9 +2019,10 @@ def test_delete_user_non_empty_request_with_auto_populated_field():
         client.delete_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user.DeleteUserRequest(
+        request_msg = user.DeleteUserRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_user_use_cached_wrapped_rpc():
@@ -2084,9 +2103,14 @@ async def test_delete_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_user_async(
-    transport: str = "grpc_asyncio", request_type=user.DeleteUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user.DeleteUserRequest(),
+        {},
+    ],
+)
+async def test_delete_user_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2094,7 +2118,7 @@ async def test_delete_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -2110,11 +2134,6 @@ async def test_delete_user_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_user_async_from_dict():
-    await test_delete_user_async(request_type=dict)
 
 
 def test_delete_user_field_headers():
@@ -2259,8 +2278,8 @@ async def test_delete_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsma_user.UpdateUserRequest,
-        dict,
+        gsma_user.UpdateUserRequest(),
+        {},
     ],
 )
 def test_update_user(request_type, transport: str = "grpc"):
@@ -2271,7 +2290,7 @@ def test_update_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user), "__call__") as call:
@@ -2317,7 +2336,8 @@ def test_update_user_non_empty_request_with_auto_populated_field():
         client.update_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsma_user.UpdateUserRequest()
+        request_msg = gsma_user.UpdateUserRequest()
+        assert args[0] == request_msg
 
 
 def test_update_user_use_cached_wrapped_rpc():
@@ -2398,9 +2418,14 @@ async def test_update_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_user_async(
-    transport: str = "grpc_asyncio", request_type=gsma_user.UpdateUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsma_user.UpdateUserRequest(),
+        {},
+    ],
+)
+async def test_update_user_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2408,7 +2433,7 @@ async def test_update_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user), "__call__") as call:
@@ -2433,11 +2458,6 @@ async def test_update_user_async(
     assert response.name == "name_value"
     assert response.state == gsma_user.User.State.PENDING
     assert response.access_rights == [accessright.AccessRight.STANDARD]
-
-
-@pytest.mark.asyncio
-async def test_update_user_async_from_dict():
-    await test_update_user_async(request_type=dict)
 
 
 def test_update_user_field_headers():
@@ -2592,8 +2612,8 @@ async def test_update_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user.ListUsersRequest,
-        dict,
+        user.ListUsersRequest(),
+        {},
     ],
 )
 def test_list_users(request_type, transport: str = "grpc"):
@@ -2604,7 +2624,7 @@ def test_list_users(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -2649,10 +2669,11 @@ def test_list_users_non_empty_request_with_auto_populated_field():
         client.list_users(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user.ListUsersRequest(
+        request_msg = user.ListUsersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_users_use_cached_wrapped_rpc():
@@ -2731,9 +2752,14 @@ async def test_list_users_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_users_async(
-    transport: str = "grpc_asyncio", request_type=user.ListUsersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user.ListUsersRequest(),
+        {},
+    ],
+)
+async def test_list_users_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2741,7 +2767,7 @@ async def test_list_users_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -2762,11 +2788,6 @@ async def test_list_users_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUsersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_users_async_from_dict():
-    await test_list_users_async(request_type=dict)
 
 
 def test_list_users_field_headers():
@@ -3105,8 +3126,8 @@ async def test_list_users_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user.VerifySelfRequest,
-        dict,
+        user.VerifySelfRequest(),
+        {},
     ],
 )
 def test_verify_self(request_type, transport: str = "grpc"):
@@ -3117,7 +3138,7 @@ def test_verify_self(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.verify_self), "__call__") as call:
@@ -3165,9 +3186,10 @@ def test_verify_self_non_empty_request_with_auto_populated_field():
         client.verify_self(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user.VerifySelfRequest(
+        request_msg = user.VerifySelfRequest(
             account="account_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_self_use_cached_wrapped_rpc():
@@ -3248,9 +3270,14 @@ async def test_verify_self_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_verify_self_async(
-    transport: str = "grpc_asyncio", request_type=user.VerifySelfRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user.VerifySelfRequest(),
+        {},
+    ],
+)
+async def test_verify_self_async(request_type, transport: str = "grpc_asyncio"):
     client = UserServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3258,7 +3285,7 @@ async def test_verify_self_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.verify_self), "__call__") as call:
@@ -3283,11 +3310,6 @@ async def test_verify_self_async(
     assert response.name == "name_value"
     assert response.state == user.User.State.PENDING
     assert response.access_rights == [accessright.AccessRight.STANDARD]
-
-
-@pytest.mark.asyncio
-async def test_verify_self_async_from_dict():
-    await test_verify_self_async(request_type=dict)
 
 
 def test_verify_self_field_headers():
@@ -4699,7 +4721,6 @@ def test_get_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4720,7 +4741,6 @@ def test_create_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4741,7 +4761,6 @@ def test_delete_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4762,7 +4781,6 @@ def test_update_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4783,7 +4801,6 @@ def test_list_users_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -4804,7 +4821,6 @@ def test_verify_self_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.VerifySelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -4847,7 +4863,6 @@ async def test_get_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4876,7 +4891,6 @@ async def test_create_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4899,7 +4913,6 @@ async def test_delete_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4928,7 +4941,6 @@ async def test_update_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -4955,7 +4967,6 @@ async def test_list_users_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -4984,7 +4995,6 @@ async def test_verify_self_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.VerifySelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -5908,7 +5918,6 @@ def test_get_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -5928,7 +5937,6 @@ def test_create_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -5948,7 +5956,6 @@ def test_delete_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -5968,7 +5975,6 @@ def test_update_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_user.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -5988,7 +5994,6 @@ def test_list_users_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -6008,7 +6013,6 @@ def test_verify_self_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user.VerifySelfRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1311,8 +1327,8 @@ def test_database_center_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryProductsRequest,
-        dict,
+        service.QueryProductsRequest(),
+        {},
     ],
 )
 def test_query_products(request_type, transport: str = "grpc"):
@@ -1323,7 +1339,7 @@ def test_query_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_products), "__call__") as call:
@@ -1370,10 +1386,11 @@ def test_query_products_non_empty_request_with_auto_populated_field():
         client.query_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryProductsRequest(
+        request_msg = service.QueryProductsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_products_use_cached_wrapped_rpc():
@@ -1454,9 +1471,14 @@ async def test_query_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_products_async(
-    transport: str = "grpc_asyncio", request_type=service.QueryProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryProductsRequest(),
+        {},
+    ],
+)
+async def test_query_products_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1464,7 +1486,7 @@ async def test_query_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_products), "__call__") as call:
@@ -1487,11 +1509,6 @@ async def test_query_products_async(
     assert isinstance(response, pagers.QueryProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_products_async_from_dict():
-    await test_query_products_async(request_type=dict)
 
 
 def test_query_products_pager(transport_name: str = "grpc"):
@@ -1684,8 +1701,8 @@ async def test_query_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AggregateFleetRequest,
-        dict,
+        service.AggregateFleetRequest(),
+        {},
     ],
 )
 def test_aggregate_fleet(request_type, transport: str = "grpc"):
@@ -1696,7 +1713,7 @@ def test_aggregate_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_fleet), "__call__") as call:
@@ -1750,13 +1767,14 @@ def test_aggregate_fleet_non_empty_request_with_auto_populated_field():
         client.aggregate_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AggregateFleetRequest(
+        request_msg = service.AggregateFleetRequest(
             parent="parent_value",
             filter="filter_value",
             group_by="group_by_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_fleet_use_cached_wrapped_rpc():
@@ -1837,9 +1855,14 @@ async def test_aggregate_fleet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_aggregate_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.AggregateFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateFleetRequest(),
+        {},
+    ],
+)
+async def test_aggregate_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1847,7 +1870,7 @@ async def test_aggregate_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_fleet), "__call__") as call:
@@ -1874,11 +1897,6 @@ async def test_aggregate_fleet_async(
     assert response.resource_total_count == 2163
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_aggregate_fleet_async_from_dict():
-    await test_aggregate_fleet_async(request_type=dict)
 
 
 def test_aggregate_fleet_pager(transport_name: str = "grpc"):
@@ -2071,8 +2089,8 @@ async def test_aggregate_fleet_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryDatabaseResourceGroupsRequest,
-        dict,
+        service.QueryDatabaseResourceGroupsRequest(),
+        {},
     ],
 )
 def test_query_database_resource_groups(request_type, transport: str = "grpc"):
@@ -2083,7 +2101,7 @@ def test_query_database_resource_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2136,12 +2154,13 @@ def test_query_database_resource_groups_non_empty_request_with_auto_populated_fi
         client.query_database_resource_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryDatabaseResourceGroupsRequest(
+        request_msg = service.QueryDatabaseResourceGroupsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_database_resource_groups_use_cached_wrapped_rpc():
@@ -2227,9 +2246,15 @@ async def test_query_database_resource_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryDatabaseResourceGroupsRequest(),
+        {},
+    ],
+)
 async def test_query_database_resource_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.QueryDatabaseResourceGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2238,7 +2263,7 @@ async def test_query_database_resource_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2263,11 +2288,6 @@ async def test_query_database_resource_groups_async(
     assert isinstance(response, pagers.QueryDatabaseResourceGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_database_resource_groups_async_from_dict():
-    await test_query_database_resource_groups_async(request_type=dict)
 
 
 def test_query_database_resource_groups_pager(transport_name: str = "grpc"):
@@ -2472,8 +2492,8 @@ async def test_query_database_resource_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AggregateIssueStatsRequest,
-        dict,
+        service.AggregateIssueStatsRequest(),
+        {},
     ],
 )
 def test_aggregate_issue_stats(request_type, transport: str = "grpc"):
@@ -2484,7 +2504,7 @@ def test_aggregate_issue_stats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2537,10 +2557,11 @@ def test_aggregate_issue_stats_non_empty_request_with_auto_populated_field():
         client.aggregate_issue_stats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AggregateIssueStatsRequest(
+        request_msg = service.AggregateIssueStatsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_issue_stats_use_cached_wrapped_rpc():
@@ -2626,8 +2647,15 @@ async def test_aggregate_issue_stats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateIssueStatsRequest(),
+        {},
+    ],
+)
 async def test_aggregate_issue_stats_async(
-    transport: str = "grpc_asyncio", request_type=service.AggregateIssueStatsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2636,7 +2664,7 @@ async def test_aggregate_issue_stats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2665,16 +2693,11 @@ async def test_aggregate_issue_stats_async(
     assert response.unreachable == ["unreachable_value"]
 
 
-@pytest.mark.asyncio
-async def test_aggregate_issue_stats_async_from_dict():
-    await test_aggregate_issue_stats_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AggregateQueryStatsRequest,
-        dict,
+        service.AggregateQueryStatsRequest(),
+        {},
     ],
 )
 def test_aggregate_query_stats(request_type, transport: str = "grpc"):
@@ -2685,7 +2708,7 @@ def test_aggregate_query_stats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2738,12 +2761,13 @@ def test_aggregate_query_stats_non_empty_request_with_auto_populated_field():
         client.aggregate_query_stats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AggregateQueryStatsRequest(
+        request_msg = service.AggregateQueryStatsRequest(
             parent="parent_value",
             order_by="order_by_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_query_stats_use_cached_wrapped_rpc():
@@ -2829,8 +2853,15 @@ async def test_aggregate_query_stats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AggregateQueryStatsRequest(),
+        {},
+    ],
+)
 async def test_aggregate_query_stats_async(
-    transport: str = "grpc_asyncio", request_type=service.AggregateQueryStatsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2839,7 +2870,7 @@ async def test_aggregate_query_stats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2864,11 +2895,6 @@ async def test_aggregate_query_stats_async(
     assert isinstance(response, pagers.AggregateQueryStatsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_aggregate_query_stats_async_from_dict():
-    await test_aggregate_query_stats_async(request_type=dict)
 
 
 def test_aggregate_query_stats_field_headers():
@@ -3137,8 +3163,8 @@ async def test_aggregate_query_stats_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.QueryIssuesRequest,
-        dict,
+        service.QueryIssuesRequest(),
+        {},
     ],
 )
 def test_query_issues(request_type, transport: str = "grpc"):
@@ -3149,7 +3175,7 @@ def test_query_issues(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
@@ -3198,12 +3224,13 @@ def test_query_issues_non_empty_request_with_auto_populated_field():
         client.query_issues(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.QueryIssuesRequest(
+        request_msg = service.QueryIssuesRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_issues_use_cached_wrapped_rpc():
@@ -3284,9 +3311,14 @@ async def test_query_issues_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_issues_async(
-    transport: str = "grpc_asyncio", request_type=service.QueryIssuesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryIssuesRequest(),
+        {},
+    ],
+)
+async def test_query_issues_async(request_type, transport: str = "grpc_asyncio"):
     client = DatabaseCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3294,7 +3326,7 @@ async def test_query_issues_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
@@ -3317,11 +3349,6 @@ async def test_query_issues_async(
     assert isinstance(response, pagers.QueryIssuesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_query_issues_async_from_dict():
-    await test_query_issues_async(request_type=dict)
 
 
 def test_query_issues_flattened():
@@ -4880,7 +4907,6 @@ def test_query_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4901,7 +4927,6 @@ def test_aggregate_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4924,7 +4949,6 @@ def test_query_database_resource_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4947,7 +4971,6 @@ def test_aggregate_issue_stats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4970,7 +4993,6 @@ def test_aggregate_query_stats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateQueryStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4991,7 +5013,6 @@ def test_query_issues_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5033,7 +5054,6 @@ async def test_query_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5063,7 +5083,6 @@ async def test_aggregate_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5093,7 +5112,6 @@ async def test_query_database_resource_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5124,7 +5142,6 @@ async def test_aggregate_issue_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5154,7 +5171,6 @@ async def test_aggregate_query_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateQueryStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5182,7 +5198,6 @@ async def test_query_issues_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6030,7 +6045,6 @@ def test_query_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6050,7 +6064,6 @@ def test_aggregate_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -6072,7 +6085,6 @@ def test_query_database_resource_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryDatabaseResourceGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6094,7 +6106,6 @@ def test_aggregate_issue_stats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6116,7 +6127,6 @@ def test_aggregate_query_stats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateQueryStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6136,7 +6146,6 @@ def test_query_issues_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.QueryIssuesRequest()
-
         assert args[0] == request_msg
 
 

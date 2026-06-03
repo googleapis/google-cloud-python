@@ -2065,17 +2065,10 @@ class Series:
 
         if isinstance(func, bigframes.functions.Udf):
             # We are working with bigquery function at this point
-            if args:
-                result_series = self._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), args
-                )
-                # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-                # `name`. Manually reassigning it here as a temporary fix.
-                result_series.name = self.name
-            else:
-                result_series = self._apply_unary_op(
-                    ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
-                )
+            result_series = self._apply_nary_op(ops.func_to_op(func), args)
+            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+            # `name`. Manually reassigning it here as a temporary fix.
+            result_series.name = self.name
 
             return result_series
 
@@ -2125,9 +2118,11 @@ class Series:
             )
 
         if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_binary_op(
-                other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
-            )
+            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+            if hasattr(other, "name") and other.name != self._name:  # type: ignore
+                result_series.name = None
+            else:
+                result_series.name = self.name
             return result_series
 
         bf_op = python_ops.python_callable_to_op(func)

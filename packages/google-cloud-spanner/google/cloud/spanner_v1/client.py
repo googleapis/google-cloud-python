@@ -150,6 +150,12 @@ def _initialize_metrics(project, credentials):
                     )
 
 
+class InstanceType:
+    CLOUD = "cloud"
+    OMNI = "omni"
+    EMULATOR = "emulator"
+
+
 class Client(ClientWithProject):
     """Client for interacting with Cloud Spanner API.
 
@@ -222,9 +228,11 @@ class Client(ClientWithProject):
     :param default_transaction_options: (Optional) Default options to use for all transactions.
 
     :type experimental_host: str
-    :param experimental_host: (Optional) The endpoint for a spanner experimental host deployment.
-        This is intended only for experimental host spanner endpoints.
-        If set, this will override the `api_endpoint` in `client_options`.
+    :param experimental_host: (Deprecated) Use `client_options` with `api_endpoint` and `instance_type="omni"` instead.
+
+    :type instance_type: str
+    :param instance_type: (Optional) The type of Spanner instance to connect to.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type="omni".
 
     :type disable_builtin_metrics: bool
     :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
@@ -258,9 +266,9 @@ class Client(ClientWithProject):
         ca_certificate=None,
         client_certificate=None,
         client_key=None,
+        instance_type=None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
-        self._experimental_host = experimental_host
         self._use_plain_text = use_plain_text
         self._ca_certificate = ca_certificate
         self._client_certificate = client_certificate
@@ -271,9 +279,38 @@ class Client(ClientWithProject):
             )
         else:
             self._client_options = client_options
+
+        host_endpoint = None
+        if experimental_host is not None:
+            warnings.warn(
+                "experimental_host is deprecated. Please use client_options with api_endpoint instead, along with instance_type='omni'.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            instance_type = "omni"
+            host_endpoint = experimental_host
+
+        if instance_type is not None:
+            instance_type = instance_type.lower()
+            if instance_type not in ("cloud", "omni"):
+                raise ValueError("instance_type must be one of 'cloud' or 'omni'")
+        self._instance_type = instance_type
+
         if self._emulator_host:
             credentials = AnonymousCredentials()
-        elif self._experimental_host:
+        elif self._instance_type == "omni":
+            if not host_endpoint:
+                if self._client_options:
+                    if hasattr(self._client_options, "api_endpoint"):
+                        host_endpoint = self._client_options.api_endpoint
+                    elif isinstance(self._client_options, dict):
+                        host_endpoint = self._client_options.get("api_endpoint")
+
+            if not host_endpoint:
+                raise ValueError(
+                    "Host must be set for connecting to Spanner Omni instances"
+                )
+
             project = "default"
             self._use_plain_text = use_plain_text
             self._ca_certificate = ca_certificate
@@ -323,8 +360,8 @@ class Client(ClientWithProject):
         self._host = "spanner.googleapis.com"
         if self._emulator_host:
             self._host = self._emulator_host
-        elif self._experimental_host:
-            self._host = self._experimental_host
+        elif self._instance_type == "omni":
+            self._host = host_endpoint
         elif self._client_options and self._client_options.api_endpoint:
             self._host = self._client_options.api_endpoint
         if _get_spanner_log_client_options_env():
@@ -357,6 +394,14 @@ class Client(ClientWithProject):
         return self._credentials
 
     @property
+    def instance_type(self):
+        """Getter for client's instance type.
+
+        :rtype: str
+        :returns: The instance type of the client."""
+        return self._instance_type
+
+    @property
     def project_name(self):
         """Project name to be used with Spanner APIs.
 
@@ -386,14 +431,14 @@ class Client(ClientWithProject):
                     client_options=self._client_options,
                     transport=transport,
                 )
-            elif self._experimental_host:
+            elif self._instance_type == "omni":
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
-                transport = _create_experimental_host_transport_sync(
+                transport = _create_spanner_omni_transport_sync(
                     InstanceAdminGrpcTransport,
-                    self._experimental_host,
+                    self._host,
                     self._use_plain_text,
                     self._ca_certificate,
                     self._client_certificate,
@@ -424,14 +469,14 @@ class Client(ClientWithProject):
                     client_options=self._client_options,
                     transport=transport,
                 )
-            elif self._experimental_host:
+            elif self._instance_type == "omni":
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
-                transport = _create_experimental_host_transport_sync(
+                transport = _create_spanner_omni_transport_sync(
                     DatabaseAdminGrpcTransport,
-                    self._experimental_host,
+                    self._host,
                     self._use_plain_text,
                     self._ca_certificate,
                     self._client_certificate,
@@ -574,7 +619,6 @@ class Client(ClientWithProject):
             self._emulator_host,
             labels,
             processing_units,
-            self._experimental_host,
         )
 
     def list_instances(self, filter_="", page_size=None):

@@ -33,6 +33,8 @@ ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -241,40 +243,76 @@ def _run_emulator(session, emulator_args):
     emulator.wait(timeout=2)
 
 
-def run_black(session, use_check=False):
-    args = ["black"]
-    if use_check:
-        args.append("--check")
-
-    args.extend(
-        [
-            get_path("docs"),
-            get_path("noxfile.py"),
-            get_path("google"),
-            get_path("tests"),
-        ]
-    )
-
-    session.run(*args)
-
-
 @nox.session(py=DEFAULT_INTERPRETER)
 def lint(session):
     """Run linters.
+
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    run_black(session, use_check=True)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
-    # Install all dependencies.
-    session.install(BLACK_VERSION)
-    # Run ``black``.
-    run_black(session)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_INTERPRETER)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
 
 
 @nox.session(py="3.10")

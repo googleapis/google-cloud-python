@@ -38,7 +38,7 @@ class Insight(proto.Message):
 
     Attributes:
         name (str):
-            Name of the insight.
+            Identifier. Name of the insight.
         description (str):
             Free-form human readable summary in English.
             The maximum length is 500 characters.

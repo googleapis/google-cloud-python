@@ -13,9 +13,8 @@
 # limitations under the License.
 
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
-from sqlalchemy import create_engine, text
-
 from sample_helper import run_sample
+from sqlalchemy import create_engine, text
 
 
 # Shows how to use Partitioned DML using SQLAlchemy and Spanner.

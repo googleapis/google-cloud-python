@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1388,8 +1404,8 @@ def test_security_center_management_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
-        dict,
+        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_effective_security_health_analytics_custom_modules(
@@ -1402,7 +1418,7 @@ def test_list_effective_security_health_analytics_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1457,13 +1473,11 @@ def test_list_effective_security_health_analytics_custom_modules_non_empty_reque
         client.list_effective_security_health_analytics_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-                parent="parent_value",
-                page_token="page_token_value",
-            )
+        request_msg = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_effective_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
@@ -1549,9 +1563,15 @@ async def test_list_effective_security_health_analytics_custom_modules_async_use
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_effective_security_health_analytics_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1560,7 +1580,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1588,13 +1608,6 @@ async def test_list_effective_security_health_analytics_custom_modules_async(
         response, pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_effective_security_health_analytics_custom_modules_async_from_dict():
-    await test_list_effective_security_health_analytics_custom_modules_async(
-        request_type=dict
-    )
 
 
 def test_list_effective_security_health_analytics_custom_modules_field_headers():
@@ -1983,8 +1996,8 @@ async def test_list_effective_security_health_analytics_custom_modules_async_pag
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_get_effective_security_health_analytics_custom_module(
@@ -1997,7 +2010,7 @@ def test_get_effective_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2057,12 +2070,10 @@ def test_get_effective_security_health_analytics_custom_module_non_empty_request
         client.get_effective_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
-                name="name_value",
-            )
+        request_msg = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_effective_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -2148,9 +2159,15 @@ async def test_get_effective_security_health_analytics_custom_module_async_use_c
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_get_effective_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2159,7 +2176,7 @@ async def test_get_effective_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2195,13 +2212,6 @@ async def test_get_effective_security_health_analytics_custom_module_async(
         == security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
     )
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_effective_security_health_analytics_custom_module_async_from_dict():
-    await test_get_effective_security_health_analytics_custom_module_async(
-        request_type=dict
-    )
 
 
 def test_get_effective_security_health_analytics_custom_module_field_headers():
@@ -2368,8 +2378,8 @@ async def test_get_effective_security_health_analytics_custom_module_flattened_e
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
-        dict,
+        security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_security_health_analytics_custom_modules(
@@ -2382,7 +2392,7 @@ def test_list_security_health_analytics_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2437,12 +2447,13 @@ def test_list_security_health_analytics_custom_modules_non_empty_request_with_au
         client.list_security_health_analytics_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        request_msg = (
+            security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
@@ -2528,9 +2539,15 @@ async def test_list_security_health_analytics_custom_modules_async_use_cached_wr
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_security_health_analytics_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2539,7 +2556,7 @@ async def test_list_security_health_analytics_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2566,11 +2583,6 @@ async def test_list_security_health_analytics_custom_modules_async(
         response, pagers.ListSecurityHealthAnalyticsCustomModulesAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_security_health_analytics_custom_modules_async_from_dict():
-    await test_list_security_health_analytics_custom_modules_async(request_type=dict)
 
 
 def test_list_security_health_analytics_custom_modules_field_headers():
@@ -2949,8 +2961,8 @@ async def test_list_security_health_analytics_custom_modules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
-        dict,
+        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_descendant_security_health_analytics_custom_modules(
@@ -2963,7 +2975,7 @@ def test_list_descendant_security_health_analytics_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3018,13 +3030,11 @@ def test_list_descendant_security_health_analytics_custom_modules_non_empty_requ
         client.list_descendant_security_health_analytics_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
-                parent="parent_value",
-                page_token="page_token_value",
-            )
+        request_msg = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_descendant_security_health_analytics_custom_modules_use_cached_wrapped_rpc():
@@ -3110,9 +3120,15 @@ async def test_list_descendant_security_health_analytics_custom_modules_async_us
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_descendant_security_health_analytics_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3121,7 +3137,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3151,13 +3167,6 @@ async def test_list_descendant_security_health_analytics_custom_modules_async(
         response, pagers.ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_descendant_security_health_analytics_custom_modules_async_from_dict():
-    await test_list_descendant_security_health_analytics_custom_modules_async(
-        request_type=dict
-    )
 
 
 def test_list_descendant_security_health_analytics_custom_modules_field_headers():
@@ -3546,8 +3555,8 @@ async def test_list_descendant_security_health_analytics_custom_modules_async_pa
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_get_security_health_analytics_custom_module(
@@ -3560,7 +3569,7 @@ def test_get_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3623,11 +3632,12 @@ def test_get_security_health_analytics_custom_module_non_empty_request_with_auto
         client.get_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
-            name="name_value",
+        request_msg = (
+            security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -3713,9 +3723,15 @@ async def test_get_security_health_analytics_custom_module_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_get_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3724,7 +3740,7 @@ async def test_get_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3762,11 +3778,6 @@ async def test_get_security_health_analytics_custom_module_async(
     )
     assert response.last_editor == "last_editor_value"
     assert response.ancestor_module == "ancestor_module_value"
-
-
-@pytest.mark.asyncio
-async def test_get_security_health_analytics_custom_module_async_from_dict():
-    await test_get_security_health_analytics_custom_module_async(request_type=dict)
 
 
 def test_get_security_health_analytics_custom_module_field_headers():
@@ -3929,8 +3940,8 @@ async def test_get_security_health_analytics_custom_module_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_create_security_health_analytics_custom_module(
@@ -3943,7 +3954,7 @@ def test_create_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4008,12 +4019,12 @@ def test_create_security_health_analytics_custom_module_non_empty_request_with_a
         client.create_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
+        request_msg = (
+            security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(
                 parent="parent_value",
             )
         )
+        assert args[0] == request_msg
 
 
 def test_create_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -4099,9 +4110,15 @@ async def test_create_security_health_analytics_custom_module_async_use_cached_w
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_create_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4110,7 +4127,7 @@ async def test_create_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4147,11 +4164,6 @@ async def test_create_security_health_analytics_custom_module_async(
     )
     assert response.last_editor == "last_editor_value"
     assert response.ancestor_module == "ancestor_module_value"
-
-
-@pytest.mark.asyncio
-async def test_create_security_health_analytics_custom_module_async_from_dict():
-    await test_create_security_health_analytics_custom_module_async(request_type=dict)
 
 
 def test_create_security_health_analytics_custom_module_field_headers():
@@ -4344,8 +4356,8 @@ async def test_create_security_health_analytics_custom_module_flattened_error_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_update_security_health_analytics_custom_module(
@@ -4358,7 +4370,7 @@ def test_update_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4421,10 +4433,8 @@ def test_update_security_health_analytics_custom_module_non_empty_request_with_a
         client.update_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request_msg = security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        assert args[0] == request_msg
 
 
 def test_update_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -4510,9 +4520,15 @@ async def test_update_security_health_analytics_custom_module_async_use_cached_w
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_update_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4521,7 +4537,7 @@ async def test_update_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4558,11 +4574,6 @@ async def test_update_security_health_analytics_custom_module_async(
     )
     assert response.last_editor == "last_editor_value"
     assert response.ancestor_module == "ancestor_module_value"
-
-
-@pytest.mark.asyncio
-async def test_update_security_health_analytics_custom_module_async_from_dict():
-    await test_update_security_health_analytics_custom_module_async(request_type=dict)
 
 
 def test_update_security_health_analytics_custom_module_field_headers():
@@ -4755,8 +4766,8 @@ async def test_update_security_health_analytics_custom_module_flattened_error_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_delete_security_health_analytics_custom_module(
@@ -4769,7 +4780,7 @@ def test_delete_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4818,12 +4829,12 @@ def test_delete_security_health_analytics_custom_module_non_empty_request_with_a
         client.delete_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
+        request_msg = (
+            security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(
                 name="name_value",
             )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -4909,9 +4920,15 @@ async def test_delete_security_health_analytics_custom_module_async_use_cached_w
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_delete_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4920,7 +4937,7 @@ async def test_delete_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4939,11 +4956,6 @@ async def test_delete_security_health_analytics_custom_module_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_security_health_analytics_custom_module_async_from_dict():
-    await test_delete_security_health_analytics_custom_module_async(request_type=dict)
 
 
 def test_delete_security_health_analytics_custom_module_field_headers():
@@ -5104,8 +5116,8 @@ async def test_delete_security_health_analytics_custom_module_flattened_error_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
-        dict,
+        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
     ],
 )
 def test_simulate_security_health_analytics_custom_module(
@@ -5118,7 +5130,7 @@ def test_simulate_security_health_analytics_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5170,12 +5182,10 @@ def test_simulate_security_health_analytics_custom_module_non_empty_request_with
         client.simulate_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
-                parent="parent_value",
-            )
+        request_msg = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(
+            parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_simulate_security_health_analytics_custom_module_use_cached_wrapped_rpc():
@@ -5261,9 +5271,15 @@ async def test_simulate_security_health_analytics_custom_module_async_use_cached
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_simulate_security_health_analytics_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5272,7 +5288,7 @@ async def test_simulate_security_health_analytics_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5298,11 +5314,6 @@ async def test_simulate_security_health_analytics_custom_module_async(
         response,
         security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
     )
-
-
-@pytest.mark.asyncio
-async def test_simulate_security_health_analytics_custom_module_async_from_dict():
-    await test_simulate_security_health_analytics_custom_module_async(request_type=dict)
 
 
 def test_simulate_security_health_analytics_custom_module_field_headers():
@@ -5511,8 +5522,8 @@ async def test_simulate_security_health_analytics_custom_module_flattened_error_
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
-        dict,
+        security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_effective_event_threat_detection_custom_modules(
@@ -5525,7 +5536,7 @@ def test_list_effective_event_threat_detection_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5578,13 +5589,11 @@ def test_list_effective_event_threat_detection_custom_modules_non_empty_request_
         client.list_effective_event_threat_detection_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
-                parent="parent_value",
-                page_token="page_token_value",
-            )
+        request_msg = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_effective_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
@@ -5670,9 +5679,15 @@ async def test_list_effective_event_threat_detection_custom_modules_async_use_ca
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_effective_event_threat_detection_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5681,7 +5696,7 @@ async def test_list_effective_event_threat_detection_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5709,13 +5724,6 @@ async def test_list_effective_event_threat_detection_custom_modules_async(
         response, pagers.ListEffectiveEventThreatDetectionCustomModulesAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_effective_event_threat_detection_custom_modules_async_from_dict():
-    await test_list_effective_event_threat_detection_custom_modules_async(
-        request_type=dict
-    )
 
 
 def test_list_effective_event_threat_detection_custom_modules_field_headers():
@@ -6100,8 +6108,8 @@ async def test_list_effective_event_threat_detection_custom_modules_async_pages(
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_get_effective_event_threat_detection_custom_module(
@@ -6114,7 +6122,7 @@ def test_get_effective_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6179,12 +6187,10 @@ def test_get_effective_event_threat_detection_custom_module_non_empty_request_wi
         client.get_effective_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
-                name="name_value",
-            )
+        request_msg = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(
+            name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_effective_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -6270,9 +6276,15 @@ async def test_get_effective_event_threat_detection_custom_module_async_use_cach
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_get_effective_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6281,7 +6293,7 @@ async def test_get_effective_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6320,13 +6332,6 @@ async def test_get_effective_event_threat_detection_custom_module_async(
     assert response.type_ == "type__value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_effective_event_threat_detection_custom_module_async_from_dict():
-    await test_get_effective_event_threat_detection_custom_module_async(
-        request_type=dict
-    )
 
 
 def test_get_effective_event_threat_detection_custom_module_field_headers():
@@ -6497,8 +6502,8 @@ async def test_get_effective_event_threat_detection_custom_module_flattened_erro
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListEventThreatDetectionCustomModulesRequest,
-        dict,
+        security_center_management.ListEventThreatDetectionCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_event_threat_detection_custom_modules(
@@ -6511,7 +6516,7 @@ def test_list_event_threat_detection_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6564,12 +6569,13 @@ def test_list_event_threat_detection_custom_modules_non_empty_request_with_auto_
         client.list_event_threat_detection_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.ListEventThreatDetectionCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        request_msg = (
+            security_center_management.ListEventThreatDetectionCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
@@ -6655,9 +6661,15 @@ async def test_list_event_threat_detection_custom_modules_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListEventThreatDetectionCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_event_threat_detection_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListEventThreatDetectionCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6666,7 +6678,7 @@ async def test_list_event_threat_detection_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6691,11 +6703,6 @@ async def test_list_event_threat_detection_custom_modules_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventThreatDetectionCustomModulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_event_threat_detection_custom_modules_async_from_dict():
-    await test_list_event_threat_detection_custom_modules_async(request_type=dict)
 
 
 def test_list_event_threat_detection_custom_modules_field_headers():
@@ -7068,8 +7075,8 @@ async def test_list_event_threat_detection_custom_modules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
-        dict,
+        security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(),
+        {},
     ],
 )
 def test_list_descendant_event_threat_detection_custom_modules(
@@ -7082,7 +7089,7 @@ def test_list_descendant_event_threat_detection_custom_modules(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7135,13 +7142,11 @@ def test_list_descendant_event_threat_detection_custom_modules_non_empty_request
         client.list_descendant_event_threat_detection_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
-                parent="parent_value",
-                page_token="page_token_value",
-            )
+        request_msg = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_descendant_event_threat_detection_custom_modules_use_cached_wrapped_rpc():
@@ -7227,9 +7232,15 @@ async def test_list_descendant_event_threat_detection_custom_modules_async_use_c
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest(),
+        {},
+    ],
+)
 async def test_list_descendant_event_threat_detection_custom_modules_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7238,7 +7249,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7266,13 +7277,6 @@ async def test_list_descendant_event_threat_detection_custom_modules_async(
         response, pagers.ListDescendantEventThreatDetectionCustomModulesAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_descendant_event_threat_detection_custom_modules_async_from_dict():
-    await test_list_descendant_event_threat_detection_custom_modules_async(
-        request_type=dict
-    )
 
 
 def test_list_descendant_event_threat_detection_custom_modules_field_headers():
@@ -7655,8 +7659,8 @@ async def test_list_descendant_event_threat_detection_custom_modules_async_pages
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.GetEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.GetEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_get_event_threat_detection_custom_module(
@@ -7669,7 +7673,7 @@ def test_get_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7736,11 +7740,12 @@ def test_get_event_threat_detection_custom_module_non_empty_request_with_auto_po
         client.get_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.GetEventThreatDetectionCustomModuleRequest(
-            name="name_value",
+        request_msg = (
+            security_center_management.GetEventThreatDetectionCustomModuleRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -7826,9 +7831,15 @@ async def test_get_event_threat_detection_custom_module_async_use_cached_wrapped
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.GetEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_get_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.GetEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7837,7 +7848,7 @@ async def test_get_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7879,11 +7890,6 @@ async def test_get_event_threat_detection_custom_module_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.last_editor == "last_editor_value"
-
-
-@pytest.mark.asyncio
-async def test_get_event_threat_detection_custom_module_async_from_dict():
-    await test_get_event_threat_detection_custom_module_async(request_type=dict)
 
 
 def test_get_event_threat_detection_custom_module_field_headers():
@@ -8046,8 +8052,8 @@ async def test_get_event_threat_detection_custom_module_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.CreateEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.CreateEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_create_event_threat_detection_custom_module(
@@ -8060,7 +8066,7 @@ def test_create_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8127,11 +8133,12 @@ def test_create_event_threat_detection_custom_module_non_empty_request_with_auto
         client.create_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.CreateEventThreatDetectionCustomModuleRequest(
-            parent="parent_value",
+        request_msg = (
+            security_center_management.CreateEventThreatDetectionCustomModuleRequest(
+                parent="parent_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_create_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -8217,9 +8224,15 @@ async def test_create_event_threat_detection_custom_module_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.CreateEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_create_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.CreateEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8228,7 +8241,7 @@ async def test_create_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8270,11 +8283,6 @@ async def test_create_event_threat_detection_custom_module_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.last_editor == "last_editor_value"
-
-
-@pytest.mark.asyncio
-async def test_create_event_threat_detection_custom_module_async_from_dict():
-    await test_create_event_threat_detection_custom_module_async(request_type=dict)
 
 
 def test_create_event_threat_detection_custom_module_field_headers():
@@ -8459,8 +8467,8 @@ async def test_create_event_threat_detection_custom_module_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.UpdateEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_update_event_threat_detection_custom_module(
@@ -8473,7 +8481,7 @@ def test_update_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8538,10 +8546,10 @@ def test_update_event_threat_detection_custom_module_non_empty_request_with_auto
         client.update_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
+        request_msg = (
+            security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -8627,9 +8635,15 @@ async def test_update_event_threat_detection_custom_module_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.UpdateEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_update_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8638,7 +8652,7 @@ async def test_update_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8680,11 +8694,6 @@ async def test_update_event_threat_detection_custom_module_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.last_editor == "last_editor_value"
-
-
-@pytest.mark.asyncio
-async def test_update_event_threat_detection_custom_module_async_from_dict():
-    await test_update_event_threat_detection_custom_module_async(request_type=dict)
 
 
 def test_update_event_threat_detection_custom_module_field_headers():
@@ -8869,8 +8878,8 @@ async def test_update_event_threat_detection_custom_module_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.DeleteEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_delete_event_threat_detection_custom_module(
@@ -8883,7 +8892,7 @@ def test_delete_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8930,11 +8939,12 @@ def test_delete_event_threat_detection_custom_module_non_empty_request_with_auto
         client.delete_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
-            name="name_value",
+        request_msg = (
+            security_center_management.DeleteEventThreatDetectionCustomModuleRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -9020,9 +9030,15 @@ async def test_delete_event_threat_detection_custom_module_async_use_cached_wrap
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.DeleteEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_delete_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9031,7 +9047,7 @@ async def test_delete_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9051,11 +9067,6 @@ async def test_delete_event_threat_detection_custom_module_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_event_threat_detection_custom_module_async_from_dict():
-    await test_delete_event_threat_detection_custom_module_async(request_type=dict)
 
 
 def test_delete_event_threat_detection_custom_module_field_headers():
@@ -9208,8 +9219,8 @@ async def test_delete_event_threat_detection_custom_module_flattened_error_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
-        dict,
+        security_center_management.ValidateEventThreatDetectionCustomModuleRequest(),
+        {},
     ],
 )
 def test_validate_event_threat_detection_custom_module(
@@ -9222,7 +9233,7 @@ def test_validate_event_threat_detection_custom_module(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9276,13 +9287,14 @@ def test_validate_event_threat_detection_custom_module_non_empty_request_with_au
         client.validate_event_threat_detection_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
-            parent="parent_value",
-            raw_text="raw_text_value",
-            type_="type__value",
+        request_msg = (
+            security_center_management.ValidateEventThreatDetectionCustomModuleRequest(
+                parent="parent_value",
+                raw_text="raw_text_value",
+                type_="type__value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_validate_event_threat_detection_custom_module_use_cached_wrapped_rpc():
@@ -9368,9 +9380,15 @@ async def test_validate_event_threat_detection_custom_module_async_use_cached_wr
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ValidateEventThreatDetectionCustomModuleRequest(),
+        {},
+    ],
+)
 async def test_validate_event_threat_detection_custom_module_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9379,7 +9397,7 @@ async def test_validate_event_threat_detection_custom_module_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9404,11 +9422,6 @@ async def test_validate_event_threat_detection_custom_module_async(
         response,
         security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
     )
-
-
-@pytest.mark.asyncio
-async def test_validate_event_threat_detection_custom_module_async_from_dict():
-    await test_validate_event_threat_detection_custom_module_async(request_type=dict)
 
 
 def test_validate_event_threat_detection_custom_module_field_headers():
@@ -9483,8 +9496,8 @@ async def test_validate_event_threat_detection_custom_module_field_headers_async
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.GetSecurityCenterServiceRequest,
-        dict,
+        security_center_management.GetSecurityCenterServiceRequest(),
+        {},
     ],
 )
 def test_get_security_center_service(request_type, transport: str = "grpc"):
@@ -9495,7 +9508,7 @@ def test_get_security_center_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9553,9 +9566,10 @@ def test_get_security_center_service_non_empty_request_with_auto_populated_field
         client.get_security_center_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_center_management.GetSecurityCenterServiceRequest(
+        request_msg = security_center_management.GetSecurityCenterServiceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_security_center_service_use_cached_wrapped_rpc():
@@ -9641,9 +9655,15 @@ async def test_get_security_center_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.GetSecurityCenterServiceRequest(),
+        {},
+    ],
+)
 async def test_get_security_center_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.GetSecurityCenterServiceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9652,7 +9672,7 @@ async def test_get_security_center_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9685,11 +9705,6 @@ async def test_get_security_center_service_async(
         response.effective_enablement_state
         == security_center_management.SecurityCenterService.EnablementState.INHERITED
     )
-
-
-@pytest.mark.asyncio
-async def test_get_security_center_service_async_from_dict():
-    await test_get_security_center_service_async(request_type=dict)
 
 
 def test_get_security_center_service_field_headers():
@@ -9846,8 +9861,8 @@ async def test_get_security_center_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.ListSecurityCenterServicesRequest,
-        dict,
+        security_center_management.ListSecurityCenterServicesRequest(),
+        {},
     ],
 )
 def test_list_security_center_services(request_type, transport: str = "grpc"):
@@ -9858,7 +9873,7 @@ def test_list_security_center_services(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9909,10 +9924,11 @@ def test_list_security_center_services_non_empty_request_with_auto_populated_fie
         client.list_security_center_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_center_management.ListSecurityCenterServicesRequest(
+        request_msg = security_center_management.ListSecurityCenterServicesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_security_center_services_use_cached_wrapped_rpc():
@@ -9998,9 +10014,15 @@ async def test_list_security_center_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.ListSecurityCenterServicesRequest(),
+        {},
+    ],
+)
 async def test_list_security_center_services_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.ListSecurityCenterServicesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10009,7 +10031,7 @@ async def test_list_security_center_services_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10032,11 +10054,6 @@ async def test_list_security_center_services_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecurityCenterServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_security_center_services_async_from_dict():
-    await test_list_security_center_services_async(request_type=dict)
 
 
 def test_list_security_center_services_field_headers():
@@ -10407,8 +10424,8 @@ async def test_list_security_center_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_center_management.UpdateSecurityCenterServiceRequest,
-        dict,
+        security_center_management.UpdateSecurityCenterServiceRequest(),
+        {},
     ],
 )
 def test_update_security_center_service(request_type, transport: str = "grpc"):
@@ -10419,7 +10436,7 @@ def test_update_security_center_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10475,9 +10492,8 @@ def test_update_security_center_service_non_empty_request_with_auto_populated_fi
         client.update_security_center_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == security_center_management.UpdateSecurityCenterServiceRequest()
-        )
+        request_msg = security_center_management.UpdateSecurityCenterServiceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_security_center_service_use_cached_wrapped_rpc():
@@ -10563,9 +10579,15 @@ async def test_update_security_center_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_center_management.UpdateSecurityCenterServiceRequest(),
+        {},
+    ],
+)
 async def test_update_security_center_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_center_management.UpdateSecurityCenterServiceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10574,7 +10596,7 @@ async def test_update_security_center_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10607,11 +10629,6 @@ async def test_update_security_center_service_async(
         response.effective_enablement_state
         == security_center_management.SecurityCenterService.EnablementState.INHERITED
     )
-
-
-@pytest.mark.asyncio
-async def test_update_security_center_service_async_from_dict():
-    await test_update_security_center_service_async(request_type=dict)
 
 
 def test_update_security_center_service_field_headers():
@@ -15777,7 +15794,6 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call_grpc
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15803,7 +15819,6 @@ def test_get_effective_security_health_analytics_custom_module_empty_call_grpc()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -15828,7 +15843,6 @@ def test_list_security_health_analytics_custom_modules_empty_call_grpc():
         request_msg = (
             security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -15852,7 +15866,6 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call_grp
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15879,7 +15892,6 @@ def test_get_security_health_analytics_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -15905,7 +15917,6 @@ def test_create_security_health_analytics_custom_module_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -15931,7 +15942,6 @@ def test_update_security_health_analytics_custom_module_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -15955,7 +15965,6 @@ def test_delete_security_health_analytics_custom_module_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -15979,7 +15988,6 @@ def test_simulate_security_health_analytics_custom_module_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16003,7 +16011,6 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16029,7 +16036,6 @@ def test_get_effective_event_threat_detection_custom_module_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16056,7 +16062,6 @@ def test_list_event_threat_detection_custom_modules_empty_call_grpc():
         request_msg = (
             security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16080,7 +16085,6 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call_grpc()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16107,7 +16111,6 @@ def test_get_event_threat_detection_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16134,7 +16137,6 @@ def test_create_event_threat_detection_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16161,7 +16163,6 @@ def test_update_event_threat_detection_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16186,7 +16187,6 @@ def test_delete_event_threat_detection_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16211,7 +16211,6 @@ def test_validate_event_threat_detection_custom_module_empty_call_grpc():
         request_msg = (
             security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16234,7 +16233,6 @@ def test_get_security_center_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16259,7 +16257,6 @@ def test_list_security_center_services_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListSecurityCenterServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16282,7 +16279,6 @@ def test_update_security_center_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16328,7 +16324,6 @@ async def test_list_effective_security_health_analytics_custom_modules_empty_cal
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16360,7 +16355,6 @@ async def test_get_effective_security_health_analytics_custom_module_empty_call_
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16391,7 +16385,6 @@ async def test_list_security_health_analytics_custom_modules_empty_call_grpc_asy
         request_msg = (
             security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16423,7 +16416,6 @@ async def test_list_descendant_security_health_analytics_custom_modules_empty_ca
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16458,7 +16450,6 @@ async def test_get_security_health_analytics_custom_module_empty_call_grpc_async
         request_msg = (
             security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16492,7 +16483,6 @@ async def test_create_security_health_analytics_custom_module_empty_call_grpc_as
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16526,7 +16516,6 @@ async def test_update_security_health_analytics_custom_module_empty_call_grpc_as
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16552,7 +16541,6 @@ async def test_delete_security_health_analytics_custom_module_empty_call_grpc_as
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16580,7 +16568,6 @@ async def test_simulate_security_health_analytics_custom_module_empty_call_grpc_
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16610,7 +16597,6 @@ async def test_list_effective_event_threat_detection_custom_modules_empty_call_g
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16644,7 +16630,6 @@ async def test_get_effective_event_threat_detection_custom_module_empty_call_grp
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16675,7 +16660,6 @@ async def test_list_event_threat_detection_custom_modules_empty_call_grpc_asynci
         request_msg = (
             security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16705,7 +16689,6 @@ async def test_list_descendant_event_threat_detection_custom_modules_empty_call_
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16742,7 +16725,6 @@ async def test_get_event_threat_detection_custom_module_empty_call_grpc_asyncio(
         request_msg = (
             security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16779,7 +16761,6 @@ async def test_create_event_threat_detection_custom_module_empty_call_grpc_async
         request_msg = (
             security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16816,7 +16797,6 @@ async def test_update_event_threat_detection_custom_module_empty_call_grpc_async
         request_msg = (
             security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16843,7 +16823,6 @@ async def test_delete_event_threat_detection_custom_module_empty_call_grpc_async
         request_msg = (
             security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16872,7 +16851,6 @@ async def test_validate_event_threat_detection_custom_module_empty_call_grpc_asy
         request_msg = (
             security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -16903,7 +16881,6 @@ async def test_get_security_center_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16932,7 +16909,6 @@ async def test_list_security_center_services_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListSecurityCenterServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16963,7 +16939,6 @@ async def test_update_security_center_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -20774,7 +20749,6 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call_rest
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -20797,7 +20771,6 @@ def test_get_effective_security_health_analytics_custom_module_empty_call_rest()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -20821,7 +20794,6 @@ def test_list_security_health_analytics_custom_modules_empty_call_rest():
         request_msg = (
             security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20844,7 +20816,6 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call_res
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -20868,7 +20839,6 @@ def test_get_security_health_analytics_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20891,7 +20861,6 @@ def test_create_security_health_analytics_custom_module_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -20914,7 +20883,6 @@ def test_update_security_health_analytics_custom_module_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -20937,7 +20905,6 @@ def test_delete_security_health_analytics_custom_module_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -20960,7 +20927,6 @@ def test_simulate_security_health_analytics_custom_module_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -20983,7 +20949,6 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21006,7 +20971,6 @@ def test_get_effective_event_threat_detection_custom_module_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -21030,7 +20994,6 @@ def test_list_event_threat_detection_custom_modules_empty_call_rest():
         request_msg = (
             security_center_management.ListEventThreatDetectionCustomModulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21053,7 +21016,6 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call_rest()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21077,7 +21039,6 @@ def test_get_event_threat_detection_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.GetEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21101,7 +21062,6 @@ def test_create_event_threat_detection_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.CreateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21125,7 +21085,6 @@ def test_update_event_threat_detection_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.UpdateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21149,7 +21108,6 @@ def test_delete_event_threat_detection_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.DeleteEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21173,7 +21131,6 @@ def test_validate_event_threat_detection_custom_module_empty_call_rest():
         request_msg = (
             security_center_management.ValidateEventThreatDetectionCustomModuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -21195,7 +21152,6 @@ def test_get_security_center_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.GetSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -21217,7 +21173,6 @@ def test_list_security_center_services_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.ListSecurityCenterServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21239,7 +21194,6 @@ def test_update_security_center_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_center_management.UpdateSecurityCenterServiceRequest()
-
         assert args[0] == request_msg
 
 

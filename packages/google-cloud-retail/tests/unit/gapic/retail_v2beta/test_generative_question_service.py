@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1394,8 +1410,8 @@ def test_generative_question_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
-        dict,
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(),
+        {},
     ],
 )
 def test_update_generative_questions_feature_config(
@@ -1408,7 +1424,7 @@ def test_update_generative_questions_feature_config(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1462,10 +1478,10 @@ def test_update_generative_questions_feature_config_non_empty_request_with_auto_
         client.update_generative_questions_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
+        request_msg = (
+            generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_generative_questions_feature_config_use_cached_wrapped_rpc():
@@ -1551,9 +1567,15 @@ async def test_update_generative_questions_feature_config_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest(),
+        {},
+    ],
+)
 async def test_update_generative_questions_feature_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeQuestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1562,7 +1584,7 @@ async def test_update_generative_questions_feature_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1591,11 +1613,6 @@ async def test_update_generative_questions_feature_config_async(
     assert response.catalog == "catalog_value"
     assert response.feature_enabled is True
     assert response.minimum_products == 1743
-
-
-@pytest.mark.asyncio
-async def test_update_generative_questions_feature_config_async_from_dict():
-    await test_update_generative_questions_feature_config_async(request_type=dict)
 
 
 def test_update_generative_questions_feature_config_field_headers():
@@ -1778,8 +1795,8 @@ async def test_update_generative_questions_feature_config_flattened_error_async(
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
-        dict,
+        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(),
+        {},
     ],
 )
 def test_get_generative_questions_feature_config(request_type, transport: str = "grpc"):
@@ -1790,7 +1807,7 @@ def test_get_generative_questions_feature_config(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1844,11 +1861,12 @@ def test_get_generative_questions_feature_config_non_empty_request_with_auto_pop
         client.get_generative_questions_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(
-            catalog="catalog_value",
+        request_msg = (
+            generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(
+                catalog="catalog_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_generative_questions_feature_config_use_cached_wrapped_rpc():
@@ -1934,9 +1952,15 @@ async def test_get_generative_questions_feature_config_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest(),
+        {},
+    ],
+)
 async def test_get_generative_questions_feature_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeQuestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1945,7 +1969,7 @@ async def test_get_generative_questions_feature_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1974,11 +1998,6 @@ async def test_get_generative_questions_feature_config_async(
     assert response.catalog == "catalog_value"
     assert response.feature_enabled is True
     assert response.minimum_products == 1743
-
-
-@pytest.mark.asyncio
-async def test_get_generative_questions_feature_config_async_from_dict():
-    await test_get_generative_questions_feature_config_async(request_type=dict)
 
 
 def test_get_generative_questions_feature_config_field_headers():
@@ -2135,8 +2154,8 @@ async def test_get_generative_questions_feature_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_question_service.ListGenerativeQuestionConfigsRequest,
-        dict,
+        generative_question_service.ListGenerativeQuestionConfigsRequest(),
+        {},
     ],
 )
 def test_list_generative_question_configs(request_type, transport: str = "grpc"):
@@ -2147,7 +2166,7 @@ def test_list_generative_question_configs(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2196,11 +2215,10 @@ def test_list_generative_question_configs_non_empty_request_with_auto_populated_
         client.list_generative_question_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == generative_question_service.ListGenerativeQuestionConfigsRequest(
+        request_msg = generative_question_service.ListGenerativeQuestionConfigsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_generative_question_configs_use_cached_wrapped_rpc():
@@ -2286,9 +2304,15 @@ async def test_list_generative_question_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.ListGenerativeQuestionConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_generative_question_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_question_service.ListGenerativeQuestionConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeQuestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2297,7 +2321,7 @@ async def test_list_generative_question_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2319,11 +2343,6 @@ async def test_list_generative_question_configs_async(
     assert isinstance(
         response, generative_question_service.ListGenerativeQuestionConfigsResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_list_generative_question_configs_async_from_dict():
-    await test_list_generative_question_configs_async(request_type=dict)
 
 
 def test_list_generative_question_configs_field_headers():
@@ -2486,8 +2505,8 @@ async def test_list_generative_question_configs_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_question_service.UpdateGenerativeQuestionConfigRequest,
-        dict,
+        generative_question_service.UpdateGenerativeQuestionConfigRequest(),
+        {},
     ],
 )
 def test_update_generative_question_config(request_type, transport: str = "grpc"):
@@ -2498,7 +2517,7 @@ def test_update_generative_question_config(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2556,10 +2575,10 @@ def test_update_generative_question_config_non_empty_request_with_auto_populated
         client.update_generative_question_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == generative_question_service.UpdateGenerativeQuestionConfigRequest()
+        request_msg = (
+            generative_question_service.UpdateGenerativeQuestionConfigRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_generative_question_config_use_cached_wrapped_rpc():
@@ -2645,9 +2664,15 @@ async def test_update_generative_question_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.UpdateGenerativeQuestionConfigRequest(),
+        {},
+    ],
+)
 async def test_update_generative_question_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_question_service.UpdateGenerativeQuestionConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeQuestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2656,7 +2681,7 @@ async def test_update_generative_question_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2691,11 +2716,6 @@ async def test_update_generative_question_config_async(
     assert response.example_values == ["example_values_value"]
     assert math.isclose(response.frequency, 0.978, rel_tol=1e-6)
     assert response.allowed_in_conversation is True
-
-
-@pytest.mark.asyncio
-async def test_update_generative_question_config_async_from_dict():
-    await test_update_generative_question_config_async(request_type=dict)
 
 
 def test_update_generative_question_config_field_headers():
@@ -2870,8 +2890,8 @@ async def test_update_generative_question_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
-        dict,
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(),
+        {},
     ],
 )
 def test_batch_update_generative_question_configs(
@@ -2884,7 +2904,7 @@ def test_batch_update_generative_question_configs(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2936,11 +2956,12 @@ def test_batch_update_generative_question_configs_non_empty_request_with_auto_po
         client.batch_update_generative_question_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(
-            parent="parent_value",
+        request_msg = (
+            generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(
+                parent="parent_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_generative_question_configs_use_cached_wrapped_rpc():
@@ -3026,9 +3047,15 @@ async def test_batch_update_generative_question_configs_async_use_cached_wrapped
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest(),
+        {},
+    ],
+)
 async def test_batch_update_generative_question_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GenerativeQuestionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3037,7 +3064,7 @@ async def test_batch_update_generative_question_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3062,11 +3089,6 @@ async def test_batch_update_generative_question_configs_async(
         response,
         generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
     )
-
-
-@pytest.mark.asyncio
-async def test_batch_update_generative_question_configs_async_from_dict():
-    await test_batch_update_generative_question_configs_async(request_type=dict)
 
 
 def test_batch_update_generative_question_configs_field_headers():
@@ -4412,7 +4434,6 @@ def test_update_generative_questions_feature_config_empty_call_grpc():
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4437,7 +4458,6 @@ def test_get_generative_questions_feature_config_empty_call_grpc():
         request_msg = (
             generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4462,7 +4482,6 @@ def test_list_generative_question_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_question_service.ListGenerativeQuestionConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4487,7 +4506,6 @@ def test_update_generative_question_config_empty_call_grpc():
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4514,7 +4532,6 @@ def test_batch_update_generative_question_configs_empty_call_grpc():
         request_msg = (
             generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4561,7 +4578,6 @@ async def test_update_generative_questions_feature_config_empty_call_grpc_asynci
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4594,7 +4610,6 @@ async def test_get_generative_questions_feature_config_empty_call_grpc_asyncio()
         request_msg = (
             generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4621,7 +4636,6 @@ async def test_list_generative_question_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_question_service.ListGenerativeQuestionConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4658,7 +4672,6 @@ async def test_update_generative_question_config_empty_call_grpc_asyncio():
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4687,7 +4700,6 @@ async def test_batch_update_generative_question_configs_empty_call_grpc_asyncio(
         request_msg = (
             generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -5779,7 +5791,6 @@ def test_update_generative_questions_feature_config_empty_call_rest():
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -5803,7 +5814,6 @@ def test_get_generative_questions_feature_config_empty_call_rest():
         request_msg = (
             generative_question_service.GetGenerativeQuestionsFeatureConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -5825,7 +5835,6 @@ def test_list_generative_question_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generative_question_service.ListGenerativeQuestionConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5849,7 +5858,6 @@ def test_update_generative_question_config_empty_call_rest():
         request_msg = (
             generative_question_service.UpdateGenerativeQuestionConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -5873,7 +5881,6 @@ def test_batch_update_generative_question_configs_empty_call_rest():
         request_msg = (
             generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -2511,7 +2527,6 @@ def test_search_ad_review_center_ads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ad_review_center_ad_service.SearchAdReviewCenterAdsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2533,7 +2548,6 @@ def test_batch_allow_ad_review_center_ads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ad_review_center_ad_service.BatchAllowAdReviewCenterAdsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2555,7 +2569,6 @@ def test_batch_block_ad_review_center_ads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ad_review_center_ad_service.BatchBlockAdReviewCenterAdsRequest()
-
         assert args[0] == request_msg
 
 

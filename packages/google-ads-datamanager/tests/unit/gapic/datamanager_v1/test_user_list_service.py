@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -108,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1337,8 +1353,8 @@ def test_user_list_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_list_service.GetUserListRequest,
-        dict,
+        user_list_service.GetUserListRequest(),
+        {},
     ],
 )
 def test_get_user_list(request_type, transport: str = "grpc"):
@@ -1349,7 +1365,7 @@ def test_get_user_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user_list), "__call__") as call:
@@ -1411,9 +1427,10 @@ def test_get_user_list_non_empty_request_with_auto_populated_field():
         client.get_user_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_list_service.GetUserListRequest(
+        request_msg = user_list_service.GetUserListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_user_list_use_cached_wrapped_rpc():
@@ -1494,9 +1511,14 @@ async def test_get_user_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_user_list_async(
-    transport: str = "grpc_asyncio", request_type=user_list_service.GetUserListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_list_service.GetUserListRequest(),
+        {},
+    ],
+)
+async def test_get_user_list_async(request_type, transport: str = "grpc_asyncio"):
     client = UserListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1504,7 +1526,7 @@ async def test_get_user_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user_list), "__call__") as call:
@@ -1543,11 +1565,6 @@ async def test_get_user_list_async(
     assert response.closing_reason == user_list.UserList.ClosingReason.UNUSED
     assert response.access_reason == user_list.UserList.AccessReason.OWNED
     assert response.account_access_status == user_list.UserList.AccessStatus.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_get_user_list_async_from_dict():
-    await test_get_user_list_async(request_type=dict)
 
 
 def test_get_user_list_field_headers():
@@ -1692,8 +1709,8 @@ async def test_get_user_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_list_service.ListUserListsRequest,
-        dict,
+        user_list_service.ListUserListsRequest(),
+        {},
     ],
 )
 def test_list_user_lists(request_type, transport: str = "grpc"):
@@ -1704,7 +1721,7 @@ def test_list_user_lists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_user_lists), "__call__") as call:
@@ -1750,11 +1767,12 @@ def test_list_user_lists_non_empty_request_with_auto_populated_field():
         client.list_user_lists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_list_service.ListUserListsRequest(
+        request_msg = user_list_service.ListUserListsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_user_lists_use_cached_wrapped_rpc():
@@ -1835,9 +1853,14 @@ async def test_list_user_lists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_user_lists_async(
-    transport: str = "grpc_asyncio", request_type=user_list_service.ListUserListsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_list_service.ListUserListsRequest(),
+        {},
+    ],
+)
+async def test_list_user_lists_async(request_type, transport: str = "grpc_asyncio"):
     client = UserListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1845,7 +1868,7 @@ async def test_list_user_lists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_user_lists), "__call__") as call:
@@ -1866,11 +1889,6 @@ async def test_list_user_lists_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUserListsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_user_lists_async_from_dict():
-    await test_list_user_lists_async(request_type=dict)
 
 
 def test_list_user_lists_field_headers():
@@ -2209,8 +2227,8 @@ async def test_list_user_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_list_service.CreateUserListRequest,
-        dict,
+        user_list_service.CreateUserListRequest(),
+        {},
     ],
 )
 def test_create_user_list(request_type, transport: str = "grpc"):
@@ -2221,7 +2239,7 @@ def test_create_user_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user_list), "__call__") as call:
@@ -2283,9 +2301,10 @@ def test_create_user_list_non_empty_request_with_auto_populated_field():
         client.create_user_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_list_service.CreateUserListRequest(
+        request_msg = user_list_service.CreateUserListRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_user_list_use_cached_wrapped_rpc():
@@ -2368,10 +2387,14 @@ async def test_create_user_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_user_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_list_service.CreateUserListRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_list_service.CreateUserListRequest(),
+        {},
+    ],
+)
+async def test_create_user_list_async(request_type, transport: str = "grpc_asyncio"):
     client = UserListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2379,7 +2402,7 @@ async def test_create_user_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user_list), "__call__") as call:
@@ -2418,11 +2441,6 @@ async def test_create_user_list_async(
     assert response.closing_reason == gad_user_list.UserList.ClosingReason.UNUSED
     assert response.access_reason == gad_user_list.UserList.AccessReason.OWNED
     assert response.account_access_status == gad_user_list.UserList.AccessStatus.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_create_user_list_async_from_dict():
-    await test_create_user_list_async(request_type=dict)
 
 
 def test_create_user_list_field_headers():
@@ -2581,8 +2599,8 @@ async def test_create_user_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_list_service.UpdateUserListRequest,
-        dict,
+        user_list_service.UpdateUserListRequest(),
+        {},
     ],
 )
 def test_update_user_list(request_type, transport: str = "grpc"):
@@ -2593,7 +2611,7 @@ def test_update_user_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user_list), "__call__") as call:
@@ -2653,7 +2671,8 @@ def test_update_user_list_non_empty_request_with_auto_populated_field():
         client.update_user_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_list_service.UpdateUserListRequest()
+        request_msg = user_list_service.UpdateUserListRequest()
+        assert args[0] == request_msg
 
 
 def test_update_user_list_use_cached_wrapped_rpc():
@@ -2736,10 +2755,14 @@ async def test_update_user_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_user_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_list_service.UpdateUserListRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_list_service.UpdateUserListRequest(),
+        {},
+    ],
+)
+async def test_update_user_list_async(request_type, transport: str = "grpc_asyncio"):
     client = UserListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2747,7 +2770,7 @@ async def test_update_user_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user_list), "__call__") as call:
@@ -2786,11 +2809,6 @@ async def test_update_user_list_async(
     assert response.closing_reason == gad_user_list.UserList.ClosingReason.UNUSED
     assert response.access_reason == gad_user_list.UserList.AccessReason.OWNED
     assert response.account_access_status == gad_user_list.UserList.AccessStatus.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_update_user_list_async_from_dict():
-    await test_update_user_list_async(request_type=dict)
 
 
 def test_update_user_list_field_headers():
@@ -2949,8 +2967,8 @@ async def test_update_user_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_list_service.DeleteUserListRequest,
-        dict,
+        user_list_service.DeleteUserListRequest(),
+        {},
     ],
 )
 def test_delete_user_list(request_type, transport: str = "grpc"):
@@ -2961,7 +2979,7 @@ def test_delete_user_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user_list), "__call__") as call:
@@ -3002,9 +3020,10 @@ def test_delete_user_list_non_empty_request_with_auto_populated_field():
         client.delete_user_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_list_service.DeleteUserListRequest(
+        request_msg = user_list_service.DeleteUserListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_user_list_use_cached_wrapped_rpc():
@@ -3087,10 +3106,14 @@ async def test_delete_user_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_user_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_list_service.DeleteUserListRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_list_service.DeleteUserListRequest(),
+        {},
+    ],
+)
+async def test_delete_user_list_async(request_type, transport: str = "grpc_asyncio"):
     client = UserListServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3098,7 +3121,7 @@ async def test_delete_user_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user_list), "__call__") as call:
@@ -3114,11 +3137,6 @@ async def test_delete_user_list_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_user_list_async_from_dict():
-    await test_delete_user_list_async(request_type=dict)
 
 
 def test_delete_user_list_field_headers():
@@ -4390,7 +4408,6 @@ def test_get_user_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.GetUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4411,7 +4428,6 @@ def test_list_user_lists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.ListUserListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4432,7 +4448,6 @@ def test_create_user_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.CreateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4453,7 +4468,6 @@ def test_update_user_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.UpdateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4474,7 +4488,6 @@ def test_delete_user_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.DeleteUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4524,7 +4537,6 @@ async def test_get_user_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.GetUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4551,7 +4563,6 @@ async def test_list_user_lists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.ListUserListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4587,7 +4598,6 @@ async def test_create_user_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.CreateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4623,7 +4633,6 @@ async def test_update_user_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.UpdateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -4646,7 +4655,6 @@ async def test_delete_user_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.DeleteUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5601,7 +5609,6 @@ def test_get_user_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.GetUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5621,7 +5628,6 @@ def test_list_user_lists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.ListUserListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5641,7 +5647,6 @@ def test_create_user_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.CreateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5661,7 +5666,6 @@ def test_update_user_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.UpdateUserListRequest()
-
         assert args[0] == request_msg
 
 
@@ -5681,7 +5685,6 @@ def test_delete_user_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_list_service.DeleteUserListRequest()
-
         assert args[0] == request_msg
 
 

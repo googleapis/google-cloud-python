@@ -14,9 +14,7 @@
 
 import pytest
 
-from google.cloud.ndb import _datastore_api
-from google.cloud.ndb import _options
-from google.cloud.ndb import utils
+from google.cloud.ndb import _datastore_api, _options, utils
 
 
 class MyOptions(_options.Options):

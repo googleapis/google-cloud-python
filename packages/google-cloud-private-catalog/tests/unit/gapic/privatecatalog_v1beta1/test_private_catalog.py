@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1310,8 +1326,8 @@ def test_private_catalog_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        private_catalog.SearchCatalogsRequest,
-        dict,
+        private_catalog.SearchCatalogsRequest(),
+        {},
     ],
 )
 def test_search_catalogs(request_type, transport: str = "grpc"):
@@ -1322,7 +1338,7 @@ def test_search_catalogs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
@@ -1368,11 +1384,12 @@ def test_search_catalogs_non_empty_request_with_auto_populated_field():
         client.search_catalogs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchCatalogsRequest(
+        request_msg = private_catalog.SearchCatalogsRequest(
             resource="resource_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_catalogs_use_cached_wrapped_rpc():
@@ -1453,9 +1470,14 @@ async def test_search_catalogs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_catalogs_async(
-    transport: str = "grpc_asyncio", request_type=private_catalog.SearchCatalogsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchCatalogsRequest(),
+        {},
+    ],
+)
+async def test_search_catalogs_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivateCatalogAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1463,7 +1485,7 @@ async def test_search_catalogs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
@@ -1484,11 +1506,6 @@ async def test_search_catalogs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_catalogs_async_from_dict():
-    await test_search_catalogs_async(request_type=dict)
 
 
 def test_search_catalogs_field_headers():
@@ -1745,8 +1762,8 @@ async def test_search_catalogs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        private_catalog.SearchProductsRequest,
-        dict,
+        private_catalog.SearchProductsRequest(),
+        {},
     ],
 )
 def test_search_products(request_type, transport: str = "grpc"):
@@ -1757,7 +1774,7 @@ def test_search_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_products), "__call__") as call:
@@ -1803,11 +1820,12 @@ def test_search_products_non_empty_request_with_auto_populated_field():
         client.search_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchProductsRequest(
+        request_msg = private_catalog.SearchProductsRequest(
             resource="resource_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_products_use_cached_wrapped_rpc():
@@ -1888,9 +1906,14 @@ async def test_search_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_products_async(
-    transport: str = "grpc_asyncio", request_type=private_catalog.SearchProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchProductsRequest(),
+        {},
+    ],
+)
+async def test_search_products_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivateCatalogAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1898,7 +1921,7 @@ async def test_search_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_products), "__call__") as call:
@@ -1919,11 +1942,6 @@ async def test_search_products_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_products_async_from_dict():
-    await test_search_products_async(request_type=dict)
 
 
 def test_search_products_field_headers():
@@ -2180,8 +2198,8 @@ async def test_search_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        private_catalog.SearchVersionsRequest,
-        dict,
+        private_catalog.SearchVersionsRequest(),
+        {},
     ],
 )
 def test_search_versions(request_type, transport: str = "grpc"):
@@ -2192,7 +2210,7 @@ def test_search_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
@@ -2238,11 +2256,12 @@ def test_search_versions_non_empty_request_with_auto_populated_field():
         client.search_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == private_catalog.SearchVersionsRequest(
+        request_msg = private_catalog.SearchVersionsRequest(
             resource="resource_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_versions_use_cached_wrapped_rpc():
@@ -2323,9 +2342,14 @@ async def test_search_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_versions_async(
-    transport: str = "grpc_asyncio", request_type=private_catalog.SearchVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchVersionsRequest(),
+        {},
+    ],
+)
+async def test_search_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = PrivateCatalogAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2333,7 +2357,7 @@ async def test_search_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
@@ -2354,11 +2378,6 @@ async def test_search_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_versions_async_from_dict():
-    await test_search_versions_async(request_type=dict)
 
 
 def test_search_versions_field_headers():
@@ -3353,7 +3372,6 @@ def test_search_catalogs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3374,7 +3392,6 @@ def test_search_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3395,7 +3412,6 @@ def test_search_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3436,7 +3452,6 @@ async def test_search_catalogs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3463,7 +3478,6 @@ async def test_search_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3490,7 +3504,6 @@ async def test_search_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3932,7 +3945,6 @@ def test_search_catalogs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3952,7 +3964,6 @@ def test_search_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3972,7 +3983,6 @@ def test_search_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = private_catalog.SearchVersionsRequest()
-
         assert args[0] == request_msg
 
 

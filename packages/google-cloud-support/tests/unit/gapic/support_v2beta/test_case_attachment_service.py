@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1373,8 +1389,8 @@ def test_case_attachment_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        attachment_service.ListAttachmentsRequest,
-        dict,
+        attachment_service.ListAttachmentsRequest(),
+        {},
     ],
 )
 def test_list_attachments(request_type, transport: str = "grpc"):
@@ -1385,7 +1401,7 @@ def test_list_attachments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_attachments), "__call__") as call:
@@ -1430,10 +1446,11 @@ def test_list_attachments_non_empty_request_with_auto_populated_field():
         client.list_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attachment_service.ListAttachmentsRequest(
+        request_msg = attachment_service.ListAttachmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_attachments_use_cached_wrapped_rpc():
@@ -1516,10 +1533,14 @@ async def test_list_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_attachments_async(
-    transport: str = "grpc_asyncio",
-    request_type=attachment_service.ListAttachmentsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attachment_service.ListAttachmentsRequest(),
+        {},
+    ],
+)
+async def test_list_attachments_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1527,7 +1548,7 @@ async def test_list_attachments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_attachments), "__call__") as call:
@@ -1548,11 +1569,6 @@ async def test_list_attachments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAttachmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_attachments_async_from_dict():
-    await test_list_attachments_async(request_type=dict)
 
 
 def test_list_attachments_field_headers():
@@ -1891,8 +1907,8 @@ async def test_list_attachments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attachment_service.GetAttachmentRequest,
-        dict,
+        attachment_service.GetAttachmentRequest(),
+        {},
     ],
 )
 def test_get_attachment(request_type, transport: str = "grpc"):
@@ -1903,7 +1919,7 @@ def test_get_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_attachment), "__call__") as call:
@@ -1953,9 +1969,10 @@ def test_get_attachment_non_empty_request_with_auto_populated_field():
         client.get_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attachment_service.GetAttachmentRequest(
+        request_msg = attachment_service.GetAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_attachment_use_cached_wrapped_rpc():
@@ -2036,10 +2053,14 @@ async def test_get_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=attachment_service.GetAttachmentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attachment_service.GetAttachmentRequest(),
+        {},
+    ],
+)
+async def test_get_attachment_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2047,7 +2068,7 @@ async def test_get_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_attachment), "__call__") as call:
@@ -2074,11 +2095,6 @@ async def test_get_attachment_async(
     assert response.filename == "filename_value"
     assert response.mime_type == "mime_type_value"
     assert response.size_bytes == 1089
-
-
-@pytest.mark.asyncio
-async def test_get_attachment_async_from_dict():
-    await test_get_attachment_async(request_type=dict)
 
 
 def test_get_attachment_field_headers():
@@ -2782,7 +2798,6 @@ def test_list_attachments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.ListAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2803,7 +2818,6 @@ def test_get_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -2844,7 +2858,6 @@ async def test_list_attachments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.ListAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2874,7 +2887,6 @@ async def test_get_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -3181,7 +3193,6 @@ def test_list_attachments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.ListAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3201,7 +3212,6 @@ def test_get_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment_service.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 

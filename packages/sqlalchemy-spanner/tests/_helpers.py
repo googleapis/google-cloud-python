@@ -6,8 +6,9 @@
 
 
 import configparser
-import mock
 import os
+
+import mock
 from sqlalchemy.testing import fixtures
 
 try:

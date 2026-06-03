@@ -23,9 +23,6 @@ libraries:
   # Allow release for google-crc32c once this bug is fixed.
   - id: "google-crc32c"
     release_blocked: true
-  # TODO(b/501132869): Disabling automatic releases until resolved.
-  - id: "google-cloud-bigtable"
-    release_blocked: true
   # TODO(https://github.com/googleapis/google-cloud-python/issues/16962):
   # Disable automatic releases until tests stabilize.
   - id: "pandas-gbq"
@@ -34,4 +31,15 @@ libraries:
   # Disable automatic releases until system tests are sped up or reorganized.
   - id: "google-cloud-firestore"
     release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17287):
+  # Allow releases for sqlalchemy-bigquery once the bug above is fixed.
+  - id: "sqlalchemy-bigquery"
+    release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
+  - id: "google-cloud-bigquery"
+    release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
+  - id: "google-cloud-bigtable"
+    release_blocked: true
+
 
