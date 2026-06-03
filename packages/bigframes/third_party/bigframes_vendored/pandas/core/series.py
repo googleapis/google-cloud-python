@@ -2582,7 +2582,8 @@ class Series(NDFrame):  # type: ignore[misc]
             ... }
             >>> s = bpd.DataFrame(data).set_index("timestamp_col")
             >>> s.resample(rule="7s", origin="epoch").min()
-                                int64_col
+                                 int64_col
+            timestamp_col
             2021-01-01 12:59:56          0
             2021-01-01 13:00:03          3
             2021-01-01 13:00:10         10
@@ -5674,8 +5675,8 @@ class Series(NDFrame):  # type: ignore[misc]
 
         With a scalar integer.
 
-            >>> type(df.iloc[0])
-            <class 'pandas.core.series.Series'>
+            >>> type(df.iloc[0]) # doctest: +ELLIPSIS
+            <class 'pandas...Series'>
 
             >>> df.iloc[0]
             a    1

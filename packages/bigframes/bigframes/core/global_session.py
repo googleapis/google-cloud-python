@@ -19,7 +19,7 @@ from __future__ import annotations
 import threading
 import traceback
 import warnings
-from typing import TYPE_CHECKING, Callable, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Iterable, Optional, TypeVar
 
 import google.auth.exceptions
 
@@ -124,12 +124,20 @@ def with_default_session(func_: Callable[..., _T], *args, **kwargs) -> _T:
     return func_(get_global_session(), *args, **kwargs)
 
 
-def execution_history() -> "bigframes.session._ExecutionHistory":
-    import pandas  # noqa: F401
-
+def execution_history(
+    *,
+    events: Optional[Iterable[bigframes.core.events.Event]] = None,
+    job_ids: Optional[Iterable[str]] = None,
+    all_cells: bool = True,
+) -> "bigframes.session._ExecutionHistory":
     import bigframes.session
 
-    return with_default_session(bigframes.session.Session.execution_history)
+    return with_default_session(
+        bigframes.session.Session.execution_history,
+        events=events,
+        job_ids=job_ids,
+        all_cells=all_cells,
+    )
 
 
 class _GlobalSessionContext:

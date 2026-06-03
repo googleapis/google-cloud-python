@@ -12,16 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.15.1-0.20260528141105-567c9bf1faa7
+version: v0.16.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: dae2a496666e372c1ebf56ceb54fe7f467a2c10e
-    sha256: 867490e3ce7818a2011475a888ce5d77c68cb7a13764f47d9aec8cf3038320e0
+    commit: c73334a47800ba03cc65e46ade96c07f01db3446
+    sha256: 07be59c8bc1dfc420e352db0528641baa23943e7dd1659acac41ca55969fb259
 default:
   output: packages
   tag_format: '{name}-v{version}'
   python:
+    allowed_namespaces:
+      - google.ads
+      - google.apps
+      - google.cloud
+      - google.maps
+      - google.shopping
+      - google.devicesandservices
     common_gapic_paths:
       - samples/generated_samples
       - tests/unit/gapic
@@ -2197,6 +2204,13 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
+  - name: google-devicesandservices-health
+    version: 0.0.0
+    apis:
+      - path: google/devicesandservices/health/v4
+    copyright_year: "2026"
+    python:
+      default_version: v4
   - name: google-geo-type
     version: 0.7.0
     apis:
