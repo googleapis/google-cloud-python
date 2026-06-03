@@ -53,7 +53,7 @@ class GetAttr(Expression):
         return self.input.column_references
 
     @property
-    def free_variables(self) -> set[Hashable]:
+    def free_variables(self) -> tuple[Hashable, ...]:
         return self.input.free_variables
 
     @property
@@ -233,8 +233,8 @@ class Call(Expression):
         )
 
     @property
-    def free_variables(self) -> set[Hashable]:
-        return set(
+    def free_variables(self) -> tuple[Hashable, ...]:
+        return tuple(
             itertools.chain.from_iterable(
                 map(lambda x: x.free_variables, self.children)
             )
