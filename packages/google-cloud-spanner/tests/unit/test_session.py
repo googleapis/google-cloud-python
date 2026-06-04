@@ -14,6 +14,7 @@
 
 
 import datetime
+import threading
 from datetime import timezone
 
 import google.api_core.gapic_v1.method
@@ -1714,8 +1715,6 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        import threading
-
         main_thread = threading.current_thread()
         _results = [1, 1.5]
 
@@ -1791,8 +1790,6 @@ class TestSession(OpenTelemetryBase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
-
-        import threading
 
         main_thread = threading.current_thread()
         _results = [1, 2, 4, 8]

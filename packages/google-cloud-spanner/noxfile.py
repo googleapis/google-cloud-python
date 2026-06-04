@@ -43,6 +43,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-xdist",
 ]
 MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
     "google-cloud-testutils",
@@ -230,7 +231,6 @@ def unit(session, protobuf_implementation):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-    session.install("pytest-xdist")
 
     # TODO(https://github.com/googleapis/synthtool/issues/1976):
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
