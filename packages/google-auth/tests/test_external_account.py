@@ -1007,14 +1007,26 @@ class TestCredentials(object):
             scopes=self.SCOPES,
         )
         credentials._set_blocking_regional_access_boundary_lookup()
-        assert credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert (
+            credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
 
         credentials.refresh(request)
 
         assert credentials._impersonated_credentials is not None
-        assert credentials._impersonated_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
-        assert credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
-        assert credentials._rab_manager is credentials._impersonated_credentials._rab_manager
+        assert (
+            credentials._impersonated_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        assert (
+            credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        assert (
+            credentials._rab_manager
+            is credentials._impersonated_credentials._rab_manager
+        )
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",

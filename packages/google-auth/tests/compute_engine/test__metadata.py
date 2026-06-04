@@ -989,7 +989,10 @@ def test__prepare_request_for_mds_mtls_http_request(mock_mds_mtls_adapter):
 
 def test__is_service_account_email():
     # Valid email formats
-    assert _metadata._is_service_account_email("my-sa@my-project.iam.gserviceaccount.com") is True
+    assert (
+        _metadata._is_service_account_email("my-sa@my-project.iam.gserviceaccount.com")
+        is True
+    )
     assert _metadata._is_service_account_email("test@example.com") is True
 
     # Empty inputs and standard string placeholders

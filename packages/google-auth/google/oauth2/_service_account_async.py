@@ -22,9 +22,9 @@ credentials file google.oauth2.service_account
 
 """
 
-from google.auth import _regional_access_boundary_utils
 from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.oauth2 import _client_async
 from google.oauth2 import service_account
 
