@@ -185,7 +185,8 @@ def test__token_endpoint_request_error():
         _client._token_endpoint_request(request, "http://example.com", {})
 
 
-def test__token_endpoint_request_internal_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_error(mock_sleep):
     request = make_request(
         {"error_description": "internal_failure"}, status=http_client.BAD_REQUEST
     )
@@ -207,9 +208,11 @@ def test__token_endpoint_request_internal_failure_error():
         )
     # request with 2 retries
     assert request.call_count == 3
+    assert mock_sleep.call_count == 4
 
 
-def test__token_endpoint_request_internal_failure_and_retry_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_and_retry_failure_error(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -233,9 +236,11 @@ def test__token_endpoint_request_internal_failure_and_retry_failure_error():
     # request should be called three times. Two retryable errors and one
     # unretryable error to break the retry loop.
     assert request.call_count == 3
+    assert mock_sleep.call_count == 2
 
 
-def test__token_endpoint_request_internal_failure_and_retry_succeeds():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_and_retry_succeeds(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -255,6 +260,7 @@ def test__token_endpoint_request_internal_failure_and_retry_succeeds():
     )
 
     assert request.call_count == 2
+    assert mock_sleep.call_count == 1
 
 
 def test__token_endpoint_request_string_error():
@@ -611,7 +617,8 @@ def test_refresh_grant_retry_with_retry(
 
 
 @pytest.mark.parametrize("can_retry", [True, False])
-def test__token_endpoint_request_no_throw_with_retry(can_retry):
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_no_throw_with_retry(mock_sleep, can_retry):
     response_data = {"error": "help", "error_description": "I'm alive"}
     body = "dummy body"
 
@@ -628,8 +635,10 @@ def test__token_endpoint_request_no_throw_with_retry(can_retry):
 
     if can_retry:
         assert mock_request.call_count == 3
+        assert mock_sleep.call_count == 2
     else:
         assert mock_request.call_count == 1
+        mock_sleep.assert_not_called()
 
 
 def test_lookup_regional_access_boundary():
@@ -706,7 +715,8 @@ def test_lookup_regional_access_boundary_non_retryable_error(status_code):
     )
 
 
-def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -731,11 +741,13 @@ def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_erro
     # request should be called three times. Two retryable errors and one
     # unretryable error to break the retry loop.
     assert request.call_count == 3
+    assert mock_sleep.call_count == 2
     for call in request.call_args_list:
         assert call[1]["headers"] == headers
 
 
-def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds():
+@mock.patch("time.sleep", return_value=None)
+def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -760,6 +772,7 @@ def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds():
     )
 
     assert request.call_count == 2
+    assert mock_sleep.call_count == 1
     for call in request.call_args_list:
         assert call[1]["headers"] == headers
 

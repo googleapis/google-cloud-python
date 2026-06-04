@@ -486,7 +486,8 @@ async def test_refresh_grant_retry_with_retry(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("can_retry", [True, False])
-async def test__token_endpoint_request_no_throw_with_retry(can_retry):
+@mock.patch("time.sleep", return_value=None)
+async def test__token_endpoint_request_no_throw_with_retry(mock_sleep, can_retry):
     mock_request = make_request(
         {"error": "help", "error_description": "I'm alive"},
         http_client.INTERNAL_SERVER_ERROR,
@@ -503,8 +504,10 @@ async def test__token_endpoint_request_no_throw_with_retry(can_retry):
 
     if can_retry:
         assert mock_request.call_count == 3
+        assert mock_sleep.call_count == 2
     else:
         assert mock_request.call_count == 1
+        mock_sleep.assert_not_called()
 
 
 @pytest.mark.asyncio
@@ -580,7 +583,7 @@ async def test__lookup_regional_access_boundary_request_no_throw_timeout(mock_wa
 
     assert success is False
     assert data == {}
-    assert retryable is False
+    assert retryable is True
 
 
 @pytest.mark.asyncio
@@ -613,7 +616,10 @@ async def test__lookup_regional_access_boundary_request_no_throw_bad_gateway_ret
 
 
 @pytest.mark.asyncio
-async def test__lookup_regional_access_boundary_request_no_throw_transport_error():
+@mock.patch("asyncio.sleep", new_callable=mock.AsyncMock)
+async def test__lookup_regional_access_boundary_request_no_throw_transport_error(
+    mock_sleep,
+):
     request = mock.AsyncMock(spec=["transport.Request"])
     request.side_effect = exceptions.TransportError("Socket connection failed")
 
@@ -627,7 +633,9 @@ async def test__lookup_regional_access_boundary_request_no_throw_transport_error
 
     assert success is False
     assert data == {}
-    assert retryable is False
+    assert retryable is True
+    assert request.call_count == 6
+    assert mock_sleep.call_count == 5
 
 
 @pytest.mark.asyncio
