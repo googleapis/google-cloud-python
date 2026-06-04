@@ -551,10 +551,11 @@ def test_sequential_cache_priming_multi_region(
         storage_client._bucket_metadata_cache.update_cache = original_update
 
 
+@pytest.mark.parametrize("env_value", ["true", "1", "yes", "on"])
 def test_disable_bucket_md_env_flag(
-    storage_client, exporter, buckets_to_delete, monkeypatch
+    storage_client, exporter, buckets_to_delete, monkeypatch, env_value
 ):
-    """Verifies that setting DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA=true disables GCS
+    """Verifies that setting DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA to a truthy value disables GCS
     destination annotations, even on cache hits."""
     # Clear cache and OTel exporter logs
     storage_client._bucket_metadata_cache.clear()
@@ -573,7 +574,7 @@ def test_disable_bucket_md_env_flag(
     assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
 
     # Enable the DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA environment variable using monkeypatch
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "true")
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", env_value)
 
     # Download (normally would be a cache hit with GCS annotations)
     blob.download_as_bytes()
