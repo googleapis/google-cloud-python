@@ -60,6 +60,9 @@ libraries:
     version: 0.0.0
     apis:
       - path: backstory
+    keep:
+      - tests/unit/test_backstory.py
+      - tests/unit/test_packaging.py
     python:
       opt_args_by_api:
         backstory:

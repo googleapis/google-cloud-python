@@ -438,7 +438,9 @@ libraries:
       - path: backstory
     source_roots:
       - packages/google-backstory
-    preserve_regex: []
+    preserve_regex:
+      - tests/unit/test_backstory.py
+      - tests/unit/test_packaging.py
     remove_regex: []
     release_exclude_paths:
       - packages/google-backstory/.repo-metadata.json
