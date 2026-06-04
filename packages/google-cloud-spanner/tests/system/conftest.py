@@ -16,10 +16,6 @@ import datetime
 import os
 import time
 
-# Disable builtin metrics for system tests by default to avoid 401 errors
-# from the background thread exporting to Cloud Monitoring without permissions.
-os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
-
 import pytest
 
 from google.cloud import spanner_v1
@@ -29,6 +25,10 @@ from google.cloud.spanner_admin_database_v1.types.backup import (
 )
 
 from . import _helpers
+
+# Disable builtin metrics for system tests by default to avoid 401 errors
+# from the background thread exporting to Cloud Monitoring without permissions.
+os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
 
 
 @pytest.fixture(scope="function")
