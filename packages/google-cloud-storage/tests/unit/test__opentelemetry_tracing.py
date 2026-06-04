@@ -321,3 +321,24 @@ def test__parse_bool_env(monkeypatch, env_value, default, expected):
 
     result = _opentelemetry_tracing._parse_bool_env(env_var_name, default)
     assert result is expected
+
+
+def test__is_bucket_metadata_disabled(monkeypatch):
+    # Test default (not set)
+    monkeypatch.delenv("DISABLE_BUCKET_MD_IN_OTEL", raising=False)
+    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
+
+    # Test truthy
+    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "true")
+    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
+
+    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "1")
+    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
+
+    # Test falsy
+    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "false")
+    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
+
+    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "0")
+    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
+
