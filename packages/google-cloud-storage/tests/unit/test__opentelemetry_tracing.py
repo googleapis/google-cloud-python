@@ -323,28 +323,33 @@ def test__parse_bool_env(monkeypatch, env_value, default, expected):
     assert result is expected
 
 
-def test__is_bucket_metadata_disabled(monkeypatch):
-    # Test default (not set)
-    monkeypatch.delenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", raising=False)
-    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
+@pytest.mark.parametrize(
+    "env_value, expected",
+    [
+        # Test default (not set)
+        (None, False),
+        # Test truthy values
+        ("true", True),
+        ("1", True),
+        ("yes", True),
+        ("on", True),
+        ("TRUE", True),
+        (" Yes ", True),
+        # Test falsy values
+        ("false", False),
+        ("0", False),
+        ("no", False),
+        ("off", False),
+        ("any_other_string", False),
+        ("", False),
+    ],
+)
+def test__is_bucket_metadata_disabled(monkeypatch, env_value, expected):
+    env_var_name = "DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA"
+    if env_value is not None:
+        monkeypatch.setenv(env_var_name, str(env_value))
+    else:
+        monkeypatch.delenv(env_var_name, raising=False)
 
-    # Test truthy
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "true")
-    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
-
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "1")
-    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
-
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "yes")
-    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
-
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "on")
-    assert _opentelemetry_tracing._is_bucket_metadata_disabled()
-
-    # Test falsy
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "false")
-    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
-
-    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "0")
-    assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
+    assert _opentelemetry_tracing._is_bucket_metadata_disabled() is expected
 
