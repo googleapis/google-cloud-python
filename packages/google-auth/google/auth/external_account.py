@@ -619,7 +619,7 @@ class Credentials(
 
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         # Initialize and return impersonated credentials.
-        return impersonated_credentials.Credentials(
+        impersonated_creds = impersonated_credentials.Credentials(
             source_credentials=source_credentials,
             target_principal=target_principal,
             target_scopes=scopes,
@@ -630,6 +630,9 @@ class Credentials(
             ),
             trust_boundary=self._trust_boundary,
         )
+        if self._rab_manager._use_blocking_regional_access_boundary_lookup:
+            impersonated_creds._set_blocking_regional_access_boundary_lookup()
+        return impersonated_creds
 
     def _create_default_metrics_options(self):
         metrics_options = {}

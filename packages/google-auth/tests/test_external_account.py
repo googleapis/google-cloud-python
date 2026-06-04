@@ -985,6 +985,45 @@ class TestCredentials(object):
         "google.auth.metrics.python_and_auth_lib_version",
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
     )
+    def test_refresh_impersonation_propagates_rab_config(
+        self, mock_metrics_header_value, mock_auth_lib_value
+    ):
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=2800)
+        ).isoformat("T") + "Z"
+        token_response = self.SUCCESS_RESPONSE.copy()
+        impersonation_response = {
+            "accessToken": "SA_ACCESS_TOKEN",
+            "expireTime": expire_time,
+        }
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=token_response,
+            impersonation_status=http_client.OK,
+            impersonation_data=impersonation_response,
+        )
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+        credentials._set_blocking_regional_access_boundary_lookup()
+        assert credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+
+        credentials.refresh(request)
+
+        assert credentials._impersonated_credentials is not None
+        assert credentials._impersonated_credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert credentials._rab_manager._use_blocking_regional_access_boundary_lookup is True
+        assert credentials._rab_manager is credentials._impersonated_credentials._rab_manager
+
+    @mock.patch(
+        "google.auth.metrics.token_request_access_token_impersonate",
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+    )
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
     @mock.patch(
         "google.auth.external_account.Credentials._mtls_required", return_value=True
     )
