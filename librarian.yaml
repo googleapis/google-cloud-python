@@ -238,6 +238,20 @@ libraries:
     version: 1.4.0
     python:
       library_type: AUTH
+  - name: google-backstory
+    version: 0.0.0
+    apis:
+      - path: backstory
+    keep:
+      - tests/unit/test_backstory.py
+      - tests/unit/test_packaging.py
+    python:
+      library_type: CORE
+      opt_args_by_api:
+        backstory:
+          - python-gapic-namespace=google
+          - python-gapic-name=backstory
+      default_version: apiVersion
   - name: google-cloud-access-approval
     version: 1.20.0
     apis:

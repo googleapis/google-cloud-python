@@ -431,6 +431,24 @@ libraries:
       - packages/google-auth-oauthlib/README.rst
       - packages/google-auth-oauthlib/docs/
     tag_format: '{id}-v{version}'
+  - id: google-backstory
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: backstory
+    source_roots:
+      - packages/google-backstory
+    preserve_regex:
+      - tests/unit/test_backstory.py
+      - tests/unit/test_packaging.py
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-backstory/.repo-metadata.json
+      - packages/google-backstory/noxfile.py
+      - packages/google-backstory/tests/
+      - packages/google-backstory/README.rst
+      - packages/google-backstory/docs/
+    tag_format: '{id}-v{version}'
   - id: google-cloud-access-approval
     version: 1.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
