@@ -13,7 +13,12 @@
 # limitations under the License.
 
 import datetime
+import os
 import time
+
+# Disable builtin metrics for system tests by default to avoid 401 errors
+# from the background thread exporting to Cloud Monitoring without permissions.
+os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
 
 import pytest
 
