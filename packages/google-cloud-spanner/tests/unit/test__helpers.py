@@ -653,6 +653,96 @@ class Test_parse_value_pb(unittest.TestCase):
         self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
 
+    def test_w_timestamp_w_offset(self):
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        value_pb = Value(string_value="2016-12-20T12:13:47.123456789+01:00")
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 11, 13, 47, nanosecond=123456789, tzinfo=timezone.utc
+        )
+
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
+        self.assertEqual(parsed, expected)
+
+        value_pb_neg = Value(string_value="2016-12-20T12:13:47.123456789-05:00")
+        expected_neg = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 17, 13, 47, nanosecond=123456789, tzinfo=timezone.utc
+        )
+        parsed_neg = self._callFUT(value_pb_neg, field_type, field_name)
+        self.assertEqual(parsed_neg, expected_neg)
+
+    def test_w_timestamp_various_formats(self):
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        # 1. No seconds fraction, UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=0, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+
+        # 2. Single digit fraction (nanoseconds), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.1Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=100000000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+
+        # 3. Milliseconds (3 digits fraction), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.123Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123000000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+
+        # 4. Microseconds (6 digits fraction), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.123456Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123456000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+
+    def test_w_timestamp_invalid_formats(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        invalid_strings = [
+            "2016-12-20T21:13:47",  # Missing timezone offset
+            "2016-12-20 21:13:47Z",  # Space instead of 'T' separator
+            "2016-12-20T21:13:47+0100",  # Missing colon in offset
+            "2016-12-20T21:13:47.1234567890Z",  # Too many sub-seconds digits (10 digits)
+            "2016-12-20T21:13:4Z",  # Single digit second
+            "2016-12-20T21:1:47Z",  # Single digit minute
+            "2016-12-20T2:13:47Z",  # Single digit hour
+            "2016-12-20T21:13:47+1:00",  # Single digit hour in offset
+        ]
+
+        for invalid_string in invalid_strings:
+            value_pb = Value(string_value=invalid_string)
+            with self.assertRaises((ValueError, IndexError)):
+                self._callFUT(value_pb, field_type, field_name)
+
     def test_w_array_empty(self):
         from google.protobuf.struct_pb2 import ListValue, Value
 

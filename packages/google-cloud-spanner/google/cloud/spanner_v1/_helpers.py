@@ -466,6 +466,12 @@ def _parse_value_pb(value_pb, field_type, field_name, column_info=None):
     return _parse_nullable(value_pb, decoder)
 
 
+_date_fromisoformat = datetime.date.fromisoformat
+_Decimal = decimal.Decimal
+_json_from_str = JsonObject.from_str
+_uuid_UUID = uuid.UUID
+
+
 def _get_type_decoder(field_type, field_name, column_info=None):
     """Returns a function that converts a Value protobuf to cell data.
 
@@ -499,19 +505,27 @@ def _get_type_decoder(field_type, field_name, column_info=None):
     elif type_code == TypeCode.INT64:
         return lambda value_pb: int(value_pb.string_value)
     elif type_code == TypeCode.FLOAT64:
-        return _parse_float
+        return (
+            lambda value_pb: float(value_pb.string_value)
+            if value_pb.HasField("string_value")
+            else value_pb.number_value
+        )
     elif type_code == TypeCode.FLOAT32:
-        return _parse_float
+        return (
+            lambda value_pb: float(value_pb.string_value)
+            if value_pb.HasField("string_value")
+            else value_pb.number_value
+        )
     elif type_code == TypeCode.DATE:
-        return _parse_date
+        return lambda value_pb: _date_fromisoformat(value_pb.string_value)
     elif type_code == TypeCode.TIMESTAMP:
         return _parse_timestamp
     elif type_code == TypeCode.NUMERIC:
-        return _parse_numeric
+        return lambda value_pb: _Decimal(value_pb.string_value)
     elif type_code == TypeCode.JSON:
-        return _parse_json
+        return lambda value_pb: _json_from_str(value_pb.string_value)
     elif type_code == TypeCode.UUID:
-        return _parse_uuid
+        return lambda value_pb: _uuid_UUID(value_pb.string_value)
     elif type_code == TypeCode.PROTO:
         return lambda value_pb: _parse_proto(value_pb, column_info, field_name)
     elif type_code == TypeCode.ENUM:
@@ -554,37 +568,10 @@ def _parse_list_value_pbs(rows, row_type):
     return result
 
 
-def _parse_string(value_pb) -> str:
-    return value_pb.string_value
-
-
-def _parse_bytes(value_pb):
-    return value_pb.string_value.encode("utf8")
-
-
-def _parse_bool(value_pb) -> bool:
-    return value_pb.bool_value
-
-
-def _parse_int64(value_pb) -> int:
-    return int(value_pb.string_value)
-
-
-def _parse_float(value_pb) -> float:
-    if value_pb.HasField("string_value"):
-        return float(value_pb.string_value)
-    else:
-        return value_pb.number_value
-
-
-def _parse_date(value_pb):
-    return datetime.date.fromisoformat(value_pb.string_value)
-
-
 _RFC3339_NANOS = re.compile(
     r"^(?P<no_fraction>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})"
     r"(?:\.(?P<nanos>\d{1,9}))?"
-    r"(?:Z|[+-]\d{2}:\d{2})$"
+    r"(?P<offset>Z|[+-]\d{2}:\d{2})$"
 )
 
 
@@ -602,6 +589,18 @@ def _parse_timestamp(value_pb):
     else:
         scale = 9 - len(fraction)
         nanos = int(fraction) * (10**scale)
+
+    offset = match.group("offset")
+    if offset != "Z":
+        sign = offset[0]
+        hours = int(offset[1:3])
+        minutes = int(offset[4:6])
+        delta = datetime.timedelta(hours=hours, minutes=minutes)
+        if sign == "-":
+            delta = -delta
+        tzinfo = datetime.timezone(delta)
+        bare = bare.replace(tzinfo=tzinfo).astimezone(datetime.timezone.utc)
+
     return datetime_helpers.DatetimeWithNanoseconds(
         bare.year,
         bare.month,
@@ -612,18 +611,6 @@ def _parse_timestamp(value_pb):
         nanosecond=nanos,
         tzinfo=datetime.timezone.utc,
     )
-
-
-def _parse_numeric(value_pb):
-    return decimal.Decimal(value_pb.string_value)
-
-
-def _parse_json(value_pb):
-    return JsonObject.from_str(value_pb.string_value)
-
-
-def _parse_uuid(value_pb):
-    return uuid.UUID(value_pb.string_value)
 
 
 def _parse_proto(value_pb, column_info, field_name):
