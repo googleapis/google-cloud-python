@@ -531,6 +531,7 @@ libraries:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.42.0
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
