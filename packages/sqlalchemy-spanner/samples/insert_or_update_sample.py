@@ -14,12 +14,12 @@
 
 import uuid
 
+from model import Singer
+from sample_helper import run_sample
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from google.cloud.sqlalchemy_spanner.dml import insert_or_update
-from sample_helper import run_sample
-from model import Singer
 
 
 # Shows how to use insert-or-update using SQLAlchemy and Spanner.

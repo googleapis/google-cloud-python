@@ -1,7 +1,10 @@
 from os import getenv
 from unittest import IsolatedAsyncioTestCase
 
-import mock
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 
 from google.cloud.spanner_v1 import gapic_version
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType

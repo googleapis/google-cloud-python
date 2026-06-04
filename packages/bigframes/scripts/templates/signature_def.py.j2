@@ -3,7 +3,9 @@ def {{ func_name }}(*args):
     args = args + (None,) * ({{ max_args }} - len(args))
     {% for impl in impls %}
     # Try matching impl {{ loop.index0 }}
+    {% if impl.uses_any1 %}
     any1_val = None
+    {% endif %}
     match_ok = True
     {% for arg in impl.args %}
     {% set idx = loop.index0 %}

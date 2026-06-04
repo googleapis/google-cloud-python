@@ -58,6 +58,21 @@ CrossSync._Sync_Impl.add_mapping("SwappableChannel", SwappableChannel)
 CrossSync._Sync_Impl.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @CrossSync._Sync_Impl.add_mapping_decorator("TestBigtableDataClient")
 class TestBigtableDataClient:
     @staticmethod
@@ -900,9 +915,12 @@ class TestBigtableDataClient:
     def test_configured_universe_domain_mismatched_credentials(self):
         """Test that configured universe domain errors with mismatched universe
         domain credentials."""
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(
@@ -1910,7 +1928,7 @@ class TestReadRowsSharded:
         from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
         from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
-        operation_timeout = 0.1
+        operation_timeout = 5.0
         num_queries = 15
         sleeps = [0] * _CONCURRENCY_LIMIT + [DeadlineExceeded("times up")] * (
             num_queries - _CONCURRENCY_LIMIT
@@ -1921,7 +1939,7 @@ class TestReadRowsSharded:
             if isinstance(next_item, Exception):
                 raise next_item
             else:
-                asyncio.sleep(next_item)
+                CrossSync._Sync_Impl.sleep(next_item)
             return [mock.Mock()]
 
         with self._make_client() as client:

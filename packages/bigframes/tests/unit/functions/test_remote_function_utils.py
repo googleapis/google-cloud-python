@@ -23,22 +23,18 @@ from bigframes.functions import _utils, function_typing
 
 
 @pytest.mark.parametrize(
-    ("input_location", "expected_bq_location", "expected_cf_region"),
+    ("input_location", "expected_cf_region"),
     [
-        (None, "us", "us-central1"),
-        ("us", "us", "us-central1"),
-        ("eu", "eu", "europe-west1"),
-        ("US-east4", "us-east4", "us-east4"),
+        ("us", "us-central1"),
+        ("eu", "europe-west1"),
+        ("US-east4", "us-east4"),
     ],
 )
-def test_get_remote_function_locations(
-    input_location, expected_bq_location, expected_cf_region
-):
-    """Tests getting remote function locations for various locations."""
-    bq_location, cf_region = _utils.get_remote_function_locations(input_location)
+def test_gcf_location_from_bq_location(input_location, expected_cf_region):
+    """Tests getting cloud function locations for various BigQuery locations."""
+    gcf_location = _utils.gcf_location_from_bq_location(input_location)
 
-    assert bq_location == expected_bq_location
-    assert cf_region == expected_cf_region
+    assert gcf_location == expected_cf_region
 
 
 @patch("bigframes.functions._utils.numpy.__version__", "1.24.4")

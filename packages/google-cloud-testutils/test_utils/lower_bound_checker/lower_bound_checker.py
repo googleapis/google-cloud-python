@@ -121,7 +121,7 @@ def _lower_bound(requirement: Requirement) -> str:
     Returns:
         str: The lower bound for the requirement.
     """
-    spec_set = list(requirement.specifier)
+    spec_set = [s for s in requirement.specifier if s.operator != "!="]
 
     # sort by operator: <, then >=
     spec_set.sort(key=lambda x: x.operator)

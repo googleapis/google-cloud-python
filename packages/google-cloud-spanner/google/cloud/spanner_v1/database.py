@@ -206,9 +206,6 @@ class Database(object):
         if pool is None:
             pool = BurstyPool(database_role=database_role)
         self._pool = pool
-        self._experimental_host = (
-            self._instance.experimental_host if self._instance else None
-        )
         self._sessions_manager = DatabaseSessionsManager(self, pool)
 
     @property
@@ -442,18 +439,19 @@ class Database(object):
                     client_info=client_info, transport=transport
                 )
                 return self._spanner_api
-            if self._experimental_host is not None:
+            client = getattr(self._instance, "_client", None)
+            if getattr(client, "instance_type", None) == "omni":
                 from google.cloud.spanner_v1._helpers import (
-                    _create_experimental_host_transport as _create_experimental_host_transport_sync,
+                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
                 )
 
-                transport = _create_experimental_host_transport_sync(
+                transport = _create_spanner_omni_transport_sync(
                     SpannerGrpcTransport,
-                    self._experimental_host,
-                    self._instance._client._use_plain_text,
-                    self._instance._client._ca_certificate,
-                    self._instance._client._client_certificate,
-                    self._instance._client._client_key,
+                    client._host,
+                    client._use_plain_text,
+                    client._ca_certificate,
+                    client._client_certificate,
+                    client._client_key,
                 )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,

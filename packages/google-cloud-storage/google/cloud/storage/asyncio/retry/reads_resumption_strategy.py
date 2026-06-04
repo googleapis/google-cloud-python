@@ -41,6 +41,7 @@ class _DownloadState:
         initial_length: int,
         user_buffer: IO[bytes],
         is_full_object_read: bool = False,
+        enable_checksum: bool = True,
     ):
         self.initial_offset = initial_offset
         self.initial_length = initial_length
@@ -50,7 +51,9 @@ class _DownloadState:
         self.is_complete = False
         self.is_full_object_read = is_full_object_read
         self.rolling_checksum = (
-            google_crc32c.Checksum() if is_full_object_read else None
+            google_crc32c.Checksum()
+            if (is_full_object_read and enable_checksum)
+            else None
         )
 
 
@@ -168,7 +171,11 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                     )
 
                 # Perform full-object checksum verification once the stream finishes.
-                if read_state.is_full_object_read and checksum_enabled:
+                if (
+                    read_state.is_full_object_read
+                    and checksum_enabled
+                    and read_state.rolling_checksum is not None
+                ):
                     full_obj_server_crc32c = state.get("full_obj_server_crc32c")
                     if full_obj_server_crc32c is not None:
                         # Use standard big-endian byte conversion to retrieve the rolling checksum value.

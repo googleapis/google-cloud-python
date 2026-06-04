@@ -16,12 +16,12 @@
 
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
+
 import collections
 import logging
-import uuid
-import time
-
 import queue
+import time
+import uuid
 
 from google.cloud.ndb import utils
 

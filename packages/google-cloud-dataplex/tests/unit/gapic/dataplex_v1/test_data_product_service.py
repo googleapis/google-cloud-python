@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -41,6 +42,7 @@ import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
     client_options,
@@ -71,7 +73,13 @@ from google.cloud.dataplex_v1.services.data_product_service import (
     pagers,
     transports,
 )
-from google.cloud.dataplex_v1.types import data_products, service
+from google.cloud.dataplex_v1.types import (
+    approval_workflow,
+    business_glossary,
+    catalog,
+    data_products,
+    service,
+)
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -119,6 +127,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1352,7 +1375,12 @@ def test_data_product_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -1366,8 +1394,8 @@ def test_data_product_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.CreateDataProductRequest,
-        dict,
+        data_products.CreateDataProductRequest(),
+        {},
     ],
 )
 def test_create_data_product(request_type, transport: str = "grpc"):
@@ -1378,7 +1406,7 @@ def test_create_data_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1424,10 +1452,11 @@ def test_create_data_product_non_empty_request_with_auto_populated_field():
         client.create_data_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.CreateDataProductRequest(
+        request_msg = data_products.CreateDataProductRequest(
             parent="parent_value",
             data_product_id="data_product_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_product_use_cached_wrapped_rpc():
@@ -1522,9 +1551,14 @@ async def test_create_data_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_product_async(
-    transport: str = "grpc_asyncio", request_type=data_products.CreateDataProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.CreateDataProductRequest(),
+        {},
+    ],
+)
+async def test_create_data_product_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1532,7 +1566,7 @@ async def test_create_data_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1552,11 +1586,6 @@ async def test_create_data_product_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_data_product_async_from_dict():
-    await test_create_data_product_async(request_type=dict)
 
 
 def test_create_data_product_field_headers():
@@ -1733,8 +1762,8 @@ async def test_create_data_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.DeleteDataProductRequest,
-        dict,
+        data_products.DeleteDataProductRequest(),
+        {},
     ],
 )
 def test_delete_data_product(request_type, transport: str = "grpc"):
@@ -1745,7 +1774,7 @@ def test_delete_data_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1791,10 +1820,11 @@ def test_delete_data_product_non_empty_request_with_auto_populated_field():
         client.delete_data_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.DeleteDataProductRequest(
+        request_msg = data_products.DeleteDataProductRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_product_use_cached_wrapped_rpc():
@@ -1889,9 +1919,14 @@ async def test_delete_data_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_product_async(
-    transport: str = "grpc_asyncio", request_type=data_products.DeleteDataProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.DeleteDataProductRequest(),
+        {},
+    ],
+)
+async def test_delete_data_product_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1899,7 +1934,7 @@ async def test_delete_data_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1919,11 +1954,6 @@ async def test_delete_data_product_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_data_product_async_from_dict():
-    await test_delete_data_product_async(request_type=dict)
 
 
 def test_delete_data_product_field_headers():
@@ -2080,8 +2110,8 @@ async def test_delete_data_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.GetDataProductRequest,
-        dict,
+        data_products.GetDataProductRequest(),
+        {},
     ],
 )
 def test_get_data_product(request_type, transport: str = "grpc"):
@@ -2092,7 +2122,7 @@ def test_get_data_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_product), "__call__") as call:
@@ -2150,9 +2180,10 @@ def test_get_data_product_non_empty_request_with_auto_populated_field():
         client.get_data_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.GetDataProductRequest(
+        request_msg = data_products.GetDataProductRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_product_use_cached_wrapped_rpc():
@@ -2235,9 +2266,14 @@ async def test_get_data_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_product_async(
-    transport: str = "grpc_asyncio", request_type=data_products.GetDataProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.GetDataProductRequest(),
+        {},
+    ],
+)
+async def test_get_data_product_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2245,7 +2281,7 @@ async def test_get_data_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_product), "__call__") as call:
@@ -2280,11 +2316,6 @@ async def test_get_data_product_async(
     assert response.icon == b"icon_blob"
     assert response.owner_emails == ["owner_emails_value"]
     assert response.asset_count == 1192
-
-
-@pytest.mark.asyncio
-async def test_get_data_product_async_from_dict():
-    await test_get_data_product_async(request_type=dict)
 
 
 def test_get_data_product_field_headers():
@@ -2433,8 +2464,8 @@ async def test_get_data_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.ListDataProductsRequest,
-        dict,
+        data_products.ListDataProductsRequest(),
+        {},
     ],
 )
 def test_list_data_products(request_type, transport: str = "grpc"):
@@ -2445,7 +2476,7 @@ def test_list_data_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2498,12 +2529,13 @@ def test_list_data_products_non_empty_request_with_auto_populated_field():
         client.list_data_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.ListDataProductsRequest(
+        request_msg = data_products.ListDataProductsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_products_use_cached_wrapped_rpc():
@@ -2588,9 +2620,14 @@ async def test_list_data_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_products_async(
-    transport: str = "grpc_asyncio", request_type=data_products.ListDataProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.ListDataProductsRequest(),
+        {},
+    ],
+)
+async def test_list_data_products_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2598,7 +2635,7 @@ async def test_list_data_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2623,11 +2660,6 @@ async def test_list_data_products_async(
     assert isinstance(response, pagers.ListDataProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_data_products_async_from_dict():
-    await test_list_data_products_async(request_type=dict)
 
 
 def test_list_data_products_field_headers():
@@ -2982,8 +3014,8 @@ async def test_list_data_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.UpdateDataProductRequest,
-        dict,
+        data_products.UpdateDataProductRequest(),
+        {},
     ],
 )
 def test_update_data_product(request_type, transport: str = "grpc"):
@@ -2994,7 +3026,7 @@ def test_update_data_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3037,7 +3069,8 @@ def test_update_data_product_non_empty_request_with_auto_populated_field():
         client.update_data_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.UpdateDataProductRequest()
+        request_msg = data_products.UpdateDataProductRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_product_use_cached_wrapped_rpc():
@@ -3132,9 +3165,14 @@ async def test_update_data_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_product_async(
-    transport: str = "grpc_asyncio", request_type=data_products.UpdateDataProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.UpdateDataProductRequest(),
+        {},
+    ],
+)
+async def test_update_data_product_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3142,7 +3180,7 @@ async def test_update_data_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3162,11 +3200,6 @@ async def test_update_data_product_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_data_product_async_from_dict():
-    await test_update_data_product_async(request_type=dict)
 
 
 def test_update_data_product_field_headers():
@@ -3333,8 +3366,363 @@ async def test_update_data_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.CreateDataAssetRequest,
-        dict,
+        data_products.RequestDataProductAccessRequest(),
+        {},
+    ],
+)
+def test_request_data_product_access(request_type, transport: str = "grpc"):
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = data_products.RequestDataProductAccessResponse(
+            change_request_name="change_request_name_value",
+        )
+        response = client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = data_products.RequestDataProductAccessRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, data_products.RequestDataProductAccessResponse)
+    assert response.change_request_name == "change_request_name_value"
+
+
+def test_request_data_product_access_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_products.RequestDataProductAccessRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.request_data_product_access(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_products.RequestDataProductAccessRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_request_data_product_access_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataProductServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.request_data_product_access
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.request_data_product_access
+        ] = mock_rpc
+        request = {}
+        client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.request_data_product_access(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_request_data_product_access_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DataProductServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.request_data_product_access
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.request_data_product_access
+        ] = mock_rpc
+
+        request = {}
+        await client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.request_data_product_access(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.RequestDataProductAccessRequest(),
+        {},
+    ],
+)
+async def test_request_data_product_access_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DataProductServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_products.RequestDataProductAccessResponse(
+                change_request_name="change_request_name_value",
+            )
+        )
+        response = await client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = data_products.RequestDataProductAccessRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, data_products.RequestDataProductAccessResponse)
+    assert response.change_request_name == "change_request_name_value"
+
+
+def test_request_data_product_access_field_headers():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = data_products.RequestDataProductAccessRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        call.return_value = data_products.RequestDataProductAccessResponse()
+        client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_request_data_product_access_field_headers_async():
+    client = DataProductServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = data_products.RequestDataProductAccessRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_products.RequestDataProductAccessResponse()
+        )
+        await client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_request_data_product_access_flattened():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = data_products.RequestDataProductAccessResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.request_data_product_access(
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].change_request
+        mock_val = approval_workflow.ChangeRequest(name="name_value")
+        assert arg == mock_val
+
+
+def test_request_data_product_access_flattened_error():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.request_data_product_access(
+            data_products.RequestDataProductAccessRequest(),
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_request_data_product_access_flattened_async():
+    client = DataProductServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = data_products.RequestDataProductAccessResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_products.RequestDataProductAccessResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.request_data_product_access(
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].change_request
+        mock_val = approval_workflow.ChangeRequest(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_request_data_product_access_flattened_error_async():
+    client = DataProductServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.request_data_product_access(
+            data_products.RequestDataProductAccessRequest(),
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.CreateDataAssetRequest(),
+        {},
     ],
 )
 def test_create_data_asset(request_type, transport: str = "grpc"):
@@ -3345,7 +3733,7 @@ def test_create_data_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3391,10 +3779,11 @@ def test_create_data_asset_non_empty_request_with_auto_populated_field():
         client.create_data_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.CreateDataAssetRequest(
+        request_msg = data_products.CreateDataAssetRequest(
             parent="parent_value",
             data_asset_id="data_asset_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_asset_use_cached_wrapped_rpc():
@@ -3487,9 +3876,14 @@ async def test_create_data_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_asset_async(
-    transport: str = "grpc_asyncio", request_type=data_products.CreateDataAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.CreateDataAssetRequest(),
+        {},
+    ],
+)
+async def test_create_data_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3497,7 +3891,7 @@ async def test_create_data_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3517,11 +3911,6 @@ async def test_create_data_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_data_asset_async_from_dict():
-    await test_create_data_asset_async(request_type=dict)
 
 
 def test_create_data_asset_field_headers():
@@ -3698,8 +4087,8 @@ async def test_create_data_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.UpdateDataAssetRequest,
-        dict,
+        data_products.UpdateDataAssetRequest(),
+        {},
     ],
 )
 def test_update_data_asset(request_type, transport: str = "grpc"):
@@ -3710,7 +4099,7 @@ def test_update_data_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3753,7 +4142,8 @@ def test_update_data_asset_non_empty_request_with_auto_populated_field():
         client.update_data_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.UpdateDataAssetRequest()
+        request_msg = data_products.UpdateDataAssetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_asset_use_cached_wrapped_rpc():
@@ -3846,9 +4236,14 @@ async def test_update_data_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_asset_async(
-    transport: str = "grpc_asyncio", request_type=data_products.UpdateDataAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.UpdateDataAssetRequest(),
+        {},
+    ],
+)
+async def test_update_data_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3856,7 +4251,7 @@ async def test_update_data_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3876,11 +4271,6 @@ async def test_update_data_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_data_asset_async_from_dict():
-    await test_update_data_asset_async(request_type=dict)
 
 
 def test_update_data_asset_field_headers():
@@ -4047,8 +4437,8 @@ async def test_update_data_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.DeleteDataAssetRequest,
-        dict,
+        data_products.DeleteDataAssetRequest(),
+        {},
     ],
 )
 def test_delete_data_asset(request_type, transport: str = "grpc"):
@@ -4059,7 +4449,7 @@ def test_delete_data_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4105,10 +4495,11 @@ def test_delete_data_asset_non_empty_request_with_auto_populated_field():
         client.delete_data_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.DeleteDataAssetRequest(
+        request_msg = data_products.DeleteDataAssetRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_asset_use_cached_wrapped_rpc():
@@ -4201,9 +4592,14 @@ async def test_delete_data_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_asset_async(
-    transport: str = "grpc_asyncio", request_type=data_products.DeleteDataAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.DeleteDataAssetRequest(),
+        {},
+    ],
+)
+async def test_delete_data_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4211,7 +4607,7 @@ async def test_delete_data_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4231,11 +4627,6 @@ async def test_delete_data_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_data_asset_async_from_dict():
-    await test_delete_data_asset_async(request_type=dict)
 
 
 def test_delete_data_asset_field_headers():
@@ -4392,8 +4783,8 @@ async def test_delete_data_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.GetDataAssetRequest,
-        dict,
+        data_products.GetDataAssetRequest(),
+        {},
     ],
 )
 def test_get_data_asset(request_type, transport: str = "grpc"):
@@ -4404,7 +4795,7 @@ def test_get_data_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_asset), "__call__") as call:
@@ -4454,9 +4845,10 @@ def test_get_data_asset_non_empty_request_with_auto_populated_field():
         client.get_data_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.GetDataAssetRequest(
+        request_msg = data_products.GetDataAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_asset_use_cached_wrapped_rpc():
@@ -4537,9 +4929,14 @@ async def test_get_data_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_asset_async(
-    transport: str = "grpc_asyncio", request_type=data_products.GetDataAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.GetDataAssetRequest(),
+        {},
+    ],
+)
+async def test_get_data_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4547,7 +4944,7 @@ async def test_get_data_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_asset), "__call__") as call:
@@ -4574,11 +4971,6 @@ async def test_get_data_asset_async(
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
     assert response.resource == "resource_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_asset_async_from_dict():
-    await test_get_data_asset_async(request_type=dict)
 
 
 def test_get_data_asset_field_headers():
@@ -4727,8 +5119,8 @@ async def test_get_data_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_products.ListDataAssetsRequest,
-        dict,
+        data_products.ListDataAssetsRequest(),
+        {},
     ],
 )
 def test_list_data_assets(request_type, transport: str = "grpc"):
@@ -4739,7 +5131,7 @@ def test_list_data_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_assets), "__call__") as call:
@@ -4786,12 +5178,13 @@ def test_list_data_assets_non_empty_request_with_auto_populated_field():
         client.list_data_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_products.ListDataAssetsRequest(
+        request_msg = data_products.ListDataAssetsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_assets_use_cached_wrapped_rpc():
@@ -4874,9 +5267,14 @@ async def test_list_data_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_assets_async(
-    transport: str = "grpc_asyncio", request_type=data_products.ListDataAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.ListDataAssetsRequest(),
+        {},
+    ],
+)
+async def test_list_data_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = DataProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4884,7 +5282,7 @@ async def test_list_data_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_assets), "__call__") as call:
@@ -4905,11 +5303,6 @@ async def test_list_data_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_assets_async_from_dict():
-    await test_list_data_assets_async(request_type=dict)
 
 
 def test_list_data_assets_field_headers():
@@ -6293,6 +6686,204 @@ def test_update_data_product_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_request_data_product_access_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataProductServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.request_data_product_access
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.request_data_product_access
+        ] = mock_rpc
+
+        request = {}
+        client.request_data_product_access(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.request_data_product_access(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_request_data_product_access_rest_required_fields(
+    request_type=data_products.RequestDataProductAccessRequest,
+):
+    transport_class = transports.DataProductServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).request_data_product_access._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).request_data_product_access._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = data_products.RequestDataProductAccessResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = data_products.RequestDataProductAccessResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.request_data_product_access(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_request_data_product_access_rest_unset_required_fields():
+    transport = transports.DataProductServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.request_data_product_access._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "changeRequest",
+            )
+        )
+    )
+
+
+def test_request_data_product_access_rest_flattened():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = data_products.RequestDataProductAccessResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataProducts/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = data_products.RequestDataProductAccessResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.request_data_product_access(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/dataProducts/*}:requestAccess"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_request_data_product_access_rest_flattened_error(transport: str = "rest"):
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.request_data_product_access(
+            data_products.RequestDataProductAccessRequest(),
+            parent="parent_value",
+            change_request=approval_workflow.ChangeRequest(name="name_value"),
+        )
+
+
 def test_create_data_asset_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7462,7 +8053,6 @@ def test_create_data_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7485,7 +8075,6 @@ def test_delete_data_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7506,7 +8095,6 @@ def test_get_data_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7529,7 +8117,6 @@ def test_list_data_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7552,7 +8139,28 @@ def test_update_data_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataProductRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_request_data_product_access_empty_call_grpc():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        call.return_value = data_products.RequestDataProductAccessResponse()
+        client.request_data_product_access(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_products.RequestDataProductAccessRequest()
         assert args[0] == request_msg
 
 
@@ -7575,7 +8183,6 @@ def test_create_data_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7598,7 +8205,6 @@ def test_update_data_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7621,7 +8227,6 @@ def test_delete_data_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7642,7 +8247,6 @@ def test_get_data_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7663,7 +8267,6 @@ def test_list_data_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7704,7 +8307,6 @@ async def test_create_data_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7731,7 +8333,6 @@ async def test_delete_data_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7765,7 +8366,6 @@ async def test_get_data_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -7795,7 +8395,6 @@ async def test_list_data_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7822,7 +8421,34 @@ async def test_update_data_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataProductRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_request_data_product_access_empty_call_grpc_asyncio():
+    client = DataProductServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_products.RequestDataProductAccessResponse(
+                change_request_name="change_request_name_value",
+            )
+        )
+        await client.request_data_product_access(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_products.RequestDataProductAccessRequest()
         assert args[0] == request_msg
 
 
@@ -7849,7 +8475,6 @@ async def test_create_data_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7876,7 +8501,6 @@ async def test_update_data_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7903,7 +8527,6 @@ async def test_delete_data_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7933,7 +8556,6 @@ async def test_get_data_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -7960,7 +8582,6 @@ async def test_list_data_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8024,6 +8645,9 @@ def test_create_data_product_rest_call_success(request_type):
         "owner_emails": ["owner_emails_value1", "owner_emails_value2"],
         "asset_count": 1192,
         "access_groups": {},
+        "access_approval_config": {
+            "approver_emails": ["approver_emails_value1", "approver_emails_value2"]
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8648,6 +9272,9 @@ def test_update_data_product_rest_call_success(request_type):
         "owner_emails": ["owner_emails_value1", "owner_emails_value2"],
         "asset_count": 1192,
         "access_groups": {},
+        "access_approval_config": {
+            "approver_emails": ["approver_emails_value1", "approver_emails_value2"]
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8790,6 +9417,144 @@ def test_update_data_product_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_data_product(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_request_data_product_access_rest_bad_request(
+    request_type=data_products.RequestDataProductAccessRequest,
+):
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataProducts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.request_data_product_access(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_products.RequestDataProductAccessRequest,
+        dict,
+    ],
+)
+def test_request_data_product_access_rest_call_success(request_type):
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/dataProducts/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = data_products.RequestDataProductAccessResponse(
+            change_request_name="change_request_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = data_products.RequestDataProductAccessResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.request_data_product_access(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, data_products.RequestDataProductAccessResponse)
+    assert response.change_request_name == "change_request_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_request_data_product_access_rest_interceptors(null_interceptor):
+    transport = transports.DataProductServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DataProductServiceRestInterceptor(),
+    )
+    client = DataProductServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataProductServiceRestInterceptor,
+            "post_request_data_product_access",
+        ) as post,
+        mock.patch.object(
+            transports.DataProductServiceRestInterceptor,
+            "post_request_data_product_access_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataProductServiceRestInterceptor,
+            "pre_request_data_product_access",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = data_products.RequestDataProductAccessRequest.pb(
+            data_products.RequestDataProductAccessRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = data_products.RequestDataProductAccessResponse.to_json(
+            data_products.RequestDataProductAccessResponse()
+        )
+        req.return_value.content = return_value
+
+        request = data_products.RequestDataProductAccessRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = data_products.RequestDataProductAccessResponse()
+        post_with_metadata.return_value = (
+            data_products.RequestDataProductAccessResponse(),
+            metadata,
+        )
+
+        client.request_data_product_access(
             request,
             metadata=[
                 ("key", "val"),
@@ -10211,7 +10976,6 @@ def test_create_data_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -10233,7 +10997,6 @@ def test_delete_data_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -10253,7 +11016,6 @@ def test_get_data_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -10275,7 +11037,6 @@ def test_list_data_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10297,7 +11058,27 @@ def test_update_data_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataProductRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_request_data_product_access_empty_call_rest():
+    client = DataProductServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.request_data_product_access), "__call__"
+    ) as call:
+        client.request_data_product_access(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_products.RequestDataProductAccessRequest()
         assert args[0] == request_msg
 
 
@@ -10319,7 +11100,6 @@ def test_create_data_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.CreateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10341,7 +11121,6 @@ def test_update_data_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.UpdateDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10363,7 +11142,6 @@ def test_delete_data_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.DeleteDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10383,7 +11161,6 @@ def test_get_data_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.GetDataAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10403,7 +11180,6 @@ def test_list_data_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_products.ListDataAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10462,6 +11238,7 @@ def test_data_product_service_base_transport():
         "get_data_product",
         "list_data_products",
         "update_data_product",
+        "request_data_product_access",
         "create_data_asset",
         "update_data_asset",
         "delete_data_asset",
@@ -10517,7 +11294,12 @@ def test_data_product_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -10543,7 +11325,12 @@ def test_data_product_service_auth_adc():
         DataProductServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id=None,
         )
 
@@ -10563,7 +11350,12 @@ def test_data_product_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -10616,7 +11408,12 @@ def test_data_product_service_transport_create_channel(transport_class, grpc_hel
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-platform.read-only",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+                "https://www.googleapis.com/auth/dataplex.readonly",
+            ),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -10762,6 +11559,9 @@ def test_data_product_service_client_transport_session_collision(transport_name)
     assert session1 != session2
     session1 = client1.transport.update_data_product._session
     session2 = client2.transport.update_data_product._session
+    assert session1 != session2
+    session1 = client1.transport.request_data_product_access._session
+    session2 = client2.transport.request_data_product_access._session
     assert session1 != session2
     session1 = client1.transport.create_data_asset._session
     session2 = client2.transport.create_data_asset._session
@@ -10941,11 +11741,39 @@ def test_data_product_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_data_asset_path():
+def test_change_request_path():
     project = "squid"
     location = "clam"
-    data_product = "whelk"
-    data_asset = "octopus"
+    change_request = "whelk"
+    expected = "projects/{project}/locations/{location}/changeRequests/{change_request}".format(
+        project=project,
+        location=location,
+        change_request=change_request,
+    )
+    actual = DataProductServiceClient.change_request_path(
+        project, location, change_request
+    )
+    assert expected == actual
+
+
+def test_parse_change_request_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "change_request": "nudibranch",
+    }
+    path = DataProductServiceClient.change_request_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_change_request_path(path)
+    assert expected == actual
+
+
+def test_data_asset_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_product = "winkle"
+    data_asset = "nautilus"
     expected = "projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}".format(
         project=project,
         location=location,
@@ -10960,10 +11788,10 @@ def test_data_asset_path():
 
 def test_parse_data_asset_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "data_product": "cuttlefish",
-        "data_asset": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "data_product": "squid",
+        "data_asset": "clam",
     }
     path = DataProductServiceClient.data_asset_path(**expected)
 
@@ -10973,9 +11801,9 @@ def test_parse_data_asset_path():
 
 
 def test_data_product_path():
-    project = "winkle"
-    location = "nautilus"
-    data_product = "scallop"
+    project = "whelk"
+    location = "octopus"
+    data_product = "oyster"
     expected = (
         "projects/{project}/locations/{location}/dataProducts/{data_product}".format(
             project=project,
@@ -10989,9 +11817,9 @@ def test_data_product_path():
 
 def test_parse_data_product_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "data_product": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "data_product": "mussel",
     }
     path = DataProductServiceClient.data_product_path(**expected)
 
@@ -11000,8 +11828,184 @@ def test_parse_data_product_path():
     assert expected == actual
 
 
+def test_entry_path():
+    project = "winkle"
+    location = "nautilus"
+    entry_group = "scallop"
+    entry = "abalone"
+    expected = "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}".format(
+        project=project,
+        location=location,
+        entry_group=entry_group,
+        entry=entry,
+    )
+    actual = DataProductServiceClient.entry_path(project, location, entry_group, entry)
+    assert expected == actual
+
+
+def test_parse_entry_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "entry_group": "whelk",
+        "entry": "octopus",
+    }
+    path = DataProductServiceClient.entry_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_entry_path(path)
+    assert expected == actual
+
+
+def test_entry_group_path():
+    project = "oyster"
+    location = "nudibranch"
+    entry_group = "cuttlefish"
+    expected = (
+        "projects/{project}/locations/{location}/entryGroups/{entry_group}".format(
+            project=project,
+            location=location,
+            entry_group=entry_group,
+        )
+    )
+    actual = DataProductServiceClient.entry_group_path(project, location, entry_group)
+    assert expected == actual
+
+
+def test_parse_entry_group_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "entry_group": "nautilus",
+    }
+    path = DataProductServiceClient.entry_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_entry_group_path(path)
+    assert expected == actual
+
+
+def test_entry_link_path():
+    project = "scallop"
+    location = "abalone"
+    entry_group = "squid"
+    entry_link = "clam"
+    expected = "projects/{project}/locations/{location}/entryGroups/{entry_group}/entryLinks/{entry_link}".format(
+        project=project,
+        location=location,
+        entry_group=entry_group,
+        entry_link=entry_link,
+    )
+    actual = DataProductServiceClient.entry_link_path(
+        project, location, entry_group, entry_link
+    )
+    assert expected == actual
+
+
+def test_parse_entry_link_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "entry_group": "oyster",
+        "entry_link": "nudibranch",
+    }
+    path = DataProductServiceClient.entry_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_entry_link_path(path)
+    assert expected == actual
+
+
+def test_glossary_path():
+    project = "cuttlefish"
+    location = "mussel"
+    glossary = "winkle"
+    expected = "projects/{project}/locations/{location}/glossaries/{glossary}".format(
+        project=project,
+        location=location,
+        glossary=glossary,
+    )
+    actual = DataProductServiceClient.glossary_path(project, location, glossary)
+    assert expected == actual
+
+
+def test_parse_glossary_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "glossary": "abalone",
+    }
+    path = DataProductServiceClient.glossary_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_glossary_path(path)
+    assert expected == actual
+
+
+def test_glossary_category_path():
+    project = "squid"
+    location = "clam"
+    glossary = "whelk"
+    glossary_category = "octopus"
+    expected = "projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}".format(
+        project=project,
+        location=location,
+        glossary=glossary,
+        glossary_category=glossary_category,
+    )
+    actual = DataProductServiceClient.glossary_category_path(
+        project, location, glossary, glossary_category
+    )
+    assert expected == actual
+
+
+def test_parse_glossary_category_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "glossary": "cuttlefish",
+        "glossary_category": "mussel",
+    }
+    path = DataProductServiceClient.glossary_category_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_glossary_category_path(path)
+    assert expected == actual
+
+
+def test_glossary_term_path():
+    project = "winkle"
+    location = "nautilus"
+    glossary = "scallop"
+    glossary_term = "abalone"
+    expected = "projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}".format(
+        project=project,
+        location=location,
+        glossary=glossary,
+        glossary_term=glossary_term,
+    )
+    actual = DataProductServiceClient.glossary_term_path(
+        project, location, glossary, glossary_term
+    )
+    assert expected == actual
+
+
+def test_parse_glossary_term_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "glossary": "whelk",
+        "glossary_term": "octopus",
+    }
+    path = DataProductServiceClient.glossary_term_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataProductServiceClient.parse_glossary_term_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -11011,7 +12015,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = DataProductServiceClient.common_billing_account_path(**expected)
 
@@ -11021,7 +12025,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11031,7 +12035,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = DataProductServiceClient.common_folder_path(**expected)
 
@@ -11041,7 +12045,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11051,7 +12055,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = DataProductServiceClient.common_organization_path(**expected)
 
@@ -11061,7 +12065,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11071,7 +12075,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = DataProductServiceClient.common_project_path(**expected)
 
@@ -11081,8 +12085,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11093,8 +12097,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = DataProductServiceClient.common_location_path(**expected)
 

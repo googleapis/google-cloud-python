@@ -57,6 +57,8 @@ from google.ads.datamanager_v1.services.user_list_service.client import (
 from google.ads.datamanager_v1.types.age_range import AgeRange
 from google.ads.datamanager_v1.types.audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -70,6 +72,7 @@ from google.ads.datamanager_v1.types.destination import (
     ProductAccount,
 )
 from google.ads.datamanager_v1.types.device_info import DeviceInfo
+from google.ads.datamanager_v1.types.encrypted_user_id import EncryptedUserId
 from google.ads.datamanager_v1.types.encryption_info import (
     AwsWrappedKeyInfo,
     EncryptionInfo,
@@ -212,6 +215,8 @@ __all__ = (
     "UserListServiceAsyncClient",
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
@@ -225,6 +230,7 @@ __all__ = (
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",

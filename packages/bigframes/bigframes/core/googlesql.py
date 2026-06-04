@@ -16,13 +16,40 @@
 
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
+
+import pandas as pd
 
 import bigframes.core.col
 import bigframes.core.expression as ex
+import bigframes.core.global_session as global_session
 import bigframes.core.sentinels as sentinels
 import bigframes.series as series
 from bigframes.operations import googlesql
+
+if TYPE_CHECKING:
+    import bigframes.session
+
+
+def _is_pandas_series(arg: Any) -> bool:
+    return isinstance(arg, pd.Series)
+
+
+def _find_session(*args: Any) -> Optional[bigframes.session.Session]:
+    import bigframes.core.indexes as indexes
+    import bigframes.dataframe as dataframe
+
+    for arg in args:
+        if isinstance(arg, (series.Series, dataframe.DataFrame, indexes.Index)):
+            return arg._session
+    return None
+
+
+def _get_session(*args: Any) -> bigframes.session.Session:
+    session = _find_session(*args)
+    if session is not None:
+        return session
+    return global_session.get_global_session()
 
 
 def apply_googlesql_scalar_op(
@@ -44,6 +71,14 @@ def apply_googlesql_scalar_op(
             The result of the operation. If any of ``args`` is a Series, returns
             a Series. Otherwise, returns an Expression.
     """
+    has_pandas_series = any(_is_pandas_series(arg) for arg in args)
+
+    if has_pandas_series:
+        session = _get_session(*args)
+        args = tuple(
+            session.read_pandas(arg) if _is_pandas_series(arg) else arg for arg in args
+        )
+
     # Find the first Series to use for alignment
     first_series = None
     for arg in args:

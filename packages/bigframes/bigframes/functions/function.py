@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-from typing import TYPE_CHECKING, Callable, Optional, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Callable, Optional, Protocol, Union, runtime_checkable
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -26,8 +26,6 @@ from bigframes.functions import _function_session as bff_session
 from bigframes.functions import function_typing, udf_def
 
 if TYPE_CHECKING:
-    import bigframes.core.col
-    import bigframes.series
     from bigframes.session import Session
 
 logger = logging.getLogger(__name__)
@@ -65,7 +63,9 @@ def get_routine_reference(
 
 
 def remote_function(*args, **kwargs):
-    function_session = bff_session.FunctionSession()
+    import bigframes
+
+    function_session = bigframes.get_global_session()._function_session
     return function_session.remote_function(*args, **kwargs)
 
 
@@ -73,7 +73,9 @@ remote_function.__doc__ = bff_session.FunctionSession.remote_function.__doc__
 
 
 def udf(*args, **kwargs):
-    function_session = bff_session.FunctionSession()
+    import bigframes
+
+    function_session = bigframes.get_global_session()._function_session
     return function_session.udf(*args, **kwargs)
 
 
@@ -81,24 +83,24 @@ udf.__doc__ = bff_session.FunctionSession.udf.__doc__
 
 
 def _try_import_routine(
-    routine: bigquery.Routine, session: bigframes.Session
+    routine: bigquery.Routine, bq_client: bigquery.Client
 ) -> BigqueryCallableRoutine:
     udf_def = _routine_as_udf_def(routine)
     is_remote = (
         hasattr(routine, "remote_function_options") and routine.remote_function_options
     )
-    return BigqueryCallableRoutine(udf_def, session, is_managed=not is_remote)
+    return BigqueryCallableRoutine(udf_def, bq_client, is_managed=not is_remote)
 
 
 def _try_import_row_routine(
-    routine: bigquery.Routine, session: bigframes.Session
+    routine: bigquery.Routine, bq_client: bigquery.Client
 ) -> BigqueryCallableRoutine:
     udf_def = _routine_as_udf_def(routine, is_row_processor=True)
 
     is_remote = (
         hasattr(routine, "remote_function_options") and routine.remote_function_options
     )
-    return BigqueryCallableRoutine(udf_def, session, is_managed=not is_remote)
+    return BigqueryCallableRoutine(udf_def, bq_client, is_managed=not is_remote)
 
 
 def _routine_as_udf_def(
@@ -148,9 +150,9 @@ def read_gbq_function(
 
     # TODO(493293086): Deprecate is_row_processor.
     if is_row_processor:
-        return _try_import_row_routine(routine, session)
+        return _try_import_row_routine(routine, bigquery_client)
     else:
-        return _try_import_routine(routine, session)
+        return _try_import_routine(routine, bigquery_client)
 
 
 @runtime_checkable
@@ -162,7 +164,7 @@ class Udf(Protocol):
     """
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf: ...
+    def udf_def(self) -> Union[udf_def.BigqueryUdf, udf_def.PythonUdf]: ...
 
 
 class BigqueryCallableRoutine:
@@ -175,14 +177,14 @@ class BigqueryCallableRoutine:
     def __init__(
         self,
         udf_def: udf_def.BigqueryUdf,
-        session: bigframes.Session,
+        bq_client: bigquery.Client,
         *,
         local_func: Optional[Callable] = None,
         cloud_function_ref: Optional[str] = None,
         is_managed: bool = False,
     ):
         self._udf_def = udf_def
-        self._session = session
+        self._bq_client = bq_client
         self._local_fun = local_func
         self._cloud_function = cloud_function_ref
         self._is_managed = is_managed
@@ -196,13 +198,12 @@ class BigqueryCallableRoutine:
 
         args_string = ", ".join([sg_sql.to_sql(sg_sql.literal(v)) for v in args])
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
-        iter, job = bf_io_bigquery.start_query_with_job(
-            self._session.bqclient,
+        row_iterator = bf_io_bigquery.start_query_job_optional(
+            self._bq_client,
             sql=sql,
             job_config=bigquery.QueryJobConfig(),
-            publisher=self._session._publisher,
         )  # type: ignore
-        return list(iter.to_arrow().to_pydict().values())[0][0]
+        return list(row_iterator.to_arrow().to_pydict().values())[0][0]
 
     @property
     def bigframes_bigquery_function(self) -> str:
@@ -242,11 +243,11 @@ class UdfRoutine:
     func: Callable
     # Try not to depend on this, bq managed function creation will be deferred later
     # And this ref will be replaced with requirements rather to support lazy creation
-    _udf_def: udf_def.BigqueryUdf
+    _udf_def: Union[udf_def.BigqueryUdf, udf_def.PythonUdf]
 
     def __call__(self, *args, **kwargs):
         return self.func(*args, **kwargs)
 
     @property
-    def udf_def(self) -> udf_def.BigqueryUdf:
+    def udf_def(self) -> Union[udf_def.BigqueryUdf, udf_def.PythonUdf]:
         return self._udf_def

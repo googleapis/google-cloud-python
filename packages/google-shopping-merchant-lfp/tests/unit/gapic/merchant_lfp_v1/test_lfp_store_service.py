@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1334,8 +1350,8 @@ def test_lfp_store_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        lfpstore.GetLfpStoreRequest,
-        dict,
+        lfpstore.GetLfpStoreRequest(),
+        {},
     ],
 )
 def test_get_lfp_store(request_type, transport: str = "grpc"):
@@ -1346,7 +1362,7 @@ def test_get_lfp_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
@@ -1413,9 +1429,10 @@ def test_get_lfp_store_non_empty_request_with_auto_populated_field():
         client.get_lfp_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.GetLfpStoreRequest(
+        request_msg = lfpstore.GetLfpStoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_lfp_store_use_cached_wrapped_rpc():
@@ -1496,9 +1513,14 @@ async def test_get_lfp_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_lfp_store_async(
-    transport: str = "grpc_asyncio", request_type=lfpstore.GetLfpStoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.GetLfpStoreRequest(),
+        {},
+    ],
+)
+async def test_get_lfp_store_async(request_type, transport: str = "grpc_asyncio"):
     client = LfpStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1506,7 +1528,7 @@ async def test_get_lfp_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
@@ -1550,11 +1572,6 @@ async def test_get_lfp_store_async(
         == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
     )
     assert response.matching_state_hint == "matching_state_hint_value"
-
-
-@pytest.mark.asyncio
-async def test_get_lfp_store_async_from_dict():
-    await test_get_lfp_store_async(request_type=dict)
 
 
 def test_get_lfp_store_field_headers():
@@ -1699,8 +1716,8 @@ async def test_get_lfp_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lfpstore.InsertLfpStoreRequest,
-        dict,
+        lfpstore.InsertLfpStoreRequest(),
+        {},
     ],
 )
 def test_insert_lfp_store(request_type, transport: str = "grpc"):
@@ -1711,7 +1728,7 @@ def test_insert_lfp_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
@@ -1778,9 +1795,10 @@ def test_insert_lfp_store_non_empty_request_with_auto_populated_field():
         client.insert_lfp_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.InsertLfpStoreRequest(
+        request_msg = lfpstore.InsertLfpStoreRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_insert_lfp_store_use_cached_wrapped_rpc():
@@ -1863,9 +1881,14 @@ async def test_insert_lfp_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_insert_lfp_store_async(
-    transport: str = "grpc_asyncio", request_type=lfpstore.InsertLfpStoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.InsertLfpStoreRequest(),
+        {},
+    ],
+)
+async def test_insert_lfp_store_async(request_type, transport: str = "grpc_asyncio"):
     client = LfpStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1873,7 +1896,7 @@ async def test_insert_lfp_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
@@ -1917,11 +1940,6 @@ async def test_insert_lfp_store_async(
         == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
     )
     assert response.matching_state_hint == "matching_state_hint_value"
-
-
-@pytest.mark.asyncio
-async def test_insert_lfp_store_async_from_dict():
-    await test_insert_lfp_store_async(request_type=dict)
 
 
 def test_insert_lfp_store_field_headers():
@@ -2076,8 +2094,8 @@ async def test_insert_lfp_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lfpstore.DeleteLfpStoreRequest,
-        dict,
+        lfpstore.DeleteLfpStoreRequest(),
+        {},
     ],
 )
 def test_delete_lfp_store(request_type, transport: str = "grpc"):
@@ -2088,7 +2106,7 @@ def test_delete_lfp_store(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
@@ -2129,9 +2147,10 @@ def test_delete_lfp_store_non_empty_request_with_auto_populated_field():
         client.delete_lfp_store(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.DeleteLfpStoreRequest(
+        request_msg = lfpstore.DeleteLfpStoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_lfp_store_use_cached_wrapped_rpc():
@@ -2214,9 +2233,14 @@ async def test_delete_lfp_store_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_lfp_store_async(
-    transport: str = "grpc_asyncio", request_type=lfpstore.DeleteLfpStoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.DeleteLfpStoreRequest(),
+        {},
+    ],
+)
+async def test_delete_lfp_store_async(request_type, transport: str = "grpc_asyncio"):
     client = LfpStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2224,7 +2248,7 @@ async def test_delete_lfp_store_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
@@ -2240,11 +2264,6 @@ async def test_delete_lfp_store_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_lfp_store_async_from_dict():
-    await test_delete_lfp_store_async(request_type=dict)
 
 
 def test_delete_lfp_store_field_headers():
@@ -2389,8 +2408,8 @@ async def test_delete_lfp_store_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lfpstore.ListLfpStoresRequest,
-        dict,
+        lfpstore.ListLfpStoresRequest(),
+        {},
     ],
 )
 def test_list_lfp_stores(request_type, transport: str = "grpc"):
@@ -2401,7 +2420,7 @@ def test_list_lfp_stores(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
@@ -2446,10 +2465,11 @@ def test_list_lfp_stores_non_empty_request_with_auto_populated_field():
         client.list_lfp_stores(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.ListLfpStoresRequest(
+        request_msg = lfpstore.ListLfpStoresRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lfp_stores_use_cached_wrapped_rpc():
@@ -2530,9 +2550,14 @@ async def test_list_lfp_stores_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_lfp_stores_async(
-    transport: str = "grpc_asyncio", request_type=lfpstore.ListLfpStoresRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.ListLfpStoresRequest(),
+        {},
+    ],
+)
+async def test_list_lfp_stores_async(request_type, transport: str = "grpc_asyncio"):
     client = LfpStoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2540,7 +2565,7 @@ async def test_list_lfp_stores_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
@@ -2561,11 +2586,6 @@ async def test_list_lfp_stores_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLfpStoresAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_lfp_stores_async_from_dict():
-    await test_list_lfp_stores_async(request_type=dict)
 
 
 def test_list_lfp_stores_field_headers():
@@ -3833,7 +3853,6 @@ def test_get_lfp_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.GetLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -3854,7 +3873,6 @@ def test_insert_lfp_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.InsertLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -3875,7 +3893,6 @@ def test_delete_lfp_store_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.DeleteLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -3896,7 +3913,6 @@ def test_list_lfp_stores_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.ListLfpStoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -3947,7 +3963,6 @@ async def test_get_lfp_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.GetLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -3984,7 +3999,6 @@ async def test_insert_lfp_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.InsertLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4007,7 +4021,6 @@ async def test_delete_lfp_store_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.DeleteLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4034,7 +4047,6 @@ async def test_list_lfp_stores_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.ListLfpStoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -4683,7 +4695,6 @@ def test_get_lfp_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.GetLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4703,7 +4714,6 @@ def test_insert_lfp_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.InsertLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4723,7 +4733,6 @@ def test_delete_lfp_store_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.DeleteLfpStoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -4743,7 +4752,6 @@ def test_list_lfp_stores_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lfpstore.ListLfpStoresRequest()
-
         assert args[0] == request_msg
 
 

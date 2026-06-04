@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -123,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1370,8 +1386,8 @@ def test_certificate_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.ListCertificatesRequest,
-        dict,
+        certificate_manager.ListCertificatesRequest(),
+        {},
     ],
 )
 def test_list_certificates(request_type, transport: str = "grpc"):
@@ -1382,7 +1398,7 @@ def test_list_certificates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1435,12 +1451,13 @@ def test_list_certificates_non_empty_request_with_auto_populated_field():
         client.list_certificates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificatesRequest(
+        request_msg = certificate_manager.ListCertificatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_certificates_use_cached_wrapped_rpc():
@@ -1523,10 +1540,14 @@ async def test_list_certificates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_certificates_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.ListCertificatesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.ListCertificatesRequest(),
+        {},
+    ],
+)
+async def test_list_certificates_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1534,7 +1555,7 @@ async def test_list_certificates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1559,11 +1580,6 @@ async def test_list_certificates_async(
     assert isinstance(response, pagers.ListCertificatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_certificates_async_from_dict():
-    await test_list_certificates_async(request_type=dict)
 
 
 def test_list_certificates_field_headers():
@@ -1918,8 +1934,8 @@ async def test_list_certificates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.GetCertificateRequest,
-        dict,
+        certificate_manager.GetCertificateRequest(),
+        {},
     ],
 )
 def test_get_certificate(request_type, transport: str = "grpc"):
@@ -1930,7 +1946,7 @@ def test_get_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
@@ -1982,9 +1998,10 @@ def test_get_certificate_non_empty_request_with_auto_populated_field():
         client.get_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateRequest(
+        request_msg = certificate_manager.GetCertificateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_use_cached_wrapped_rpc():
@@ -2065,10 +2082,14 @@ async def test_get_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.GetCertificateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.GetCertificateRequest(),
+        {},
+    ],
+)
+async def test_get_certificate_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2076,7 +2097,7 @@ async def test_get_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
@@ -2105,11 +2126,6 @@ async def test_get_certificate_async(
     assert response.san_dnsnames == ["san_dnsnames_value"]
     assert response.pem_certificate == "pem_certificate_value"
     assert response.scope == certificate_manager.Certificate.Scope.EDGE_CACHE
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_async_from_dict():
-    await test_get_certificate_async(request_type=dict)
 
 
 def test_get_certificate_field_headers():
@@ -2258,8 +2274,8 @@ async def test_get_certificate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.CreateCertificateRequest,
-        dict,
+        certificate_manager.CreateCertificateRequest(),
+        {},
     ],
 )
 def test_create_certificate(request_type, transport: str = "grpc"):
@@ -2270,7 +2286,7 @@ def test_create_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2316,10 +2332,11 @@ def test_create_certificate_non_empty_request_with_auto_populated_field():
         client.create_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateRequest(
+        request_msg = certificate_manager.CreateCertificateRequest(
             parent="parent_value",
             certificate_id="certificate_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_certificate_use_cached_wrapped_rpc():
@@ -2414,10 +2431,14 @@ async def test_create_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.CreateCertificateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.CreateCertificateRequest(),
+        {},
+    ],
+)
+async def test_create_certificate_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2425,7 +2446,7 @@ async def test_create_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2445,11 +2466,6 @@ async def test_create_certificate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_certificate_async_from_dict():
-    await test_create_certificate_async(request_type=dict)
 
 
 def test_create_certificate_field_headers():
@@ -2626,8 +2642,8 @@ async def test_create_certificate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.UpdateCertificateRequest,
-        dict,
+        certificate_manager.UpdateCertificateRequest(),
+        {},
     ],
 )
 def test_update_certificate(request_type, transport: str = "grpc"):
@@ -2638,7 +2654,7 @@ def test_update_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2681,7 +2697,8 @@ def test_update_certificate_non_empty_request_with_auto_populated_field():
         client.update_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateRequest()
+        request_msg = certificate_manager.UpdateCertificateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_certificate_use_cached_wrapped_rpc():
@@ -2776,10 +2793,14 @@ async def test_update_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.UpdateCertificateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateRequest(),
+        {},
+    ],
+)
+async def test_update_certificate_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2787,7 +2808,7 @@ async def test_update_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2807,11 +2828,6 @@ async def test_update_certificate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_certificate_async_from_dict():
-    await test_update_certificate_async(request_type=dict)
 
 
 def test_update_certificate_field_headers():
@@ -2978,8 +2994,8 @@ async def test_update_certificate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.DeleteCertificateRequest,
-        dict,
+        certificate_manager.DeleteCertificateRequest(),
+        {},
     ],
 )
 def test_delete_certificate(request_type, transport: str = "grpc"):
@@ -2990,7 +3006,7 @@ def test_delete_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3035,9 +3051,10 @@ def test_delete_certificate_non_empty_request_with_auto_populated_field():
         client.delete_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateRequest(
+        request_msg = certificate_manager.DeleteCertificateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_certificate_use_cached_wrapped_rpc():
@@ -3132,10 +3149,14 @@ async def test_delete_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.DeleteCertificateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateRequest(),
+        {},
+    ],
+)
+async def test_delete_certificate_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3143,7 +3164,7 @@ async def test_delete_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3163,11 +3184,6 @@ async def test_delete_certificate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_certificate_async_from_dict():
-    await test_delete_certificate_async(request_type=dict)
 
 
 def test_delete_certificate_field_headers():
@@ -3324,8 +3340,8 @@ async def test_delete_certificate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.ListCertificateMapsRequest,
-        dict,
+        certificate_manager.ListCertificateMapsRequest(),
+        {},
     ],
 )
 def test_list_certificate_maps(request_type, transport: str = "grpc"):
@@ -3336,7 +3352,7 @@ def test_list_certificate_maps(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3389,12 +3405,13 @@ def test_list_certificate_maps_non_empty_request_with_auto_populated_field():
         client.list_certificate_maps(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapsRequest(
+        request_msg = certificate_manager.ListCertificateMapsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_certificate_maps_use_cached_wrapped_rpc():
@@ -3480,9 +3497,15 @@ async def test_list_certificate_maps_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.ListCertificateMapsRequest(),
+        {},
+    ],
+)
 async def test_list_certificate_maps_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.ListCertificateMapsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3491,7 +3514,7 @@ async def test_list_certificate_maps_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3516,11 +3539,6 @@ async def test_list_certificate_maps_async(
     assert isinstance(response, pagers.ListCertificateMapsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_certificate_maps_async_from_dict():
-    await test_list_certificate_maps_async(request_type=dict)
 
 
 def test_list_certificate_maps_field_headers():
@@ -3875,8 +3893,8 @@ async def test_list_certificate_maps_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.GetCertificateMapRequest,
-        dict,
+        certificate_manager.GetCertificateMapRequest(),
+        {},
     ],
 )
 def test_get_certificate_map(request_type, transport: str = "grpc"):
@@ -3887,7 +3905,7 @@ def test_get_certificate_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3937,9 +3955,10 @@ def test_get_certificate_map_non_empty_request_with_auto_populated_field():
         client.get_certificate_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapRequest(
+        request_msg = certificate_manager.GetCertificateMapRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_map_use_cached_wrapped_rpc():
@@ -4024,10 +4043,14 @@ async def test_get_certificate_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_certificate_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.GetCertificateMapRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.GetCertificateMapRequest(),
+        {},
+    ],
+)
+async def test_get_certificate_map_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4035,7 +4058,7 @@ async def test_get_certificate_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4060,11 +4083,6 @@ async def test_get_certificate_map_async(
     assert isinstance(response, certificate_manager.CertificateMap)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_map_async_from_dict():
-    await test_get_certificate_map_async(request_type=dict)
 
 
 def test_get_certificate_map_field_headers():
@@ -4221,8 +4239,8 @@ async def test_get_certificate_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.CreateCertificateMapRequest,
-        dict,
+        certificate_manager.CreateCertificateMapRequest(),
+        {},
     ],
 )
 def test_create_certificate_map(request_type, transport: str = "grpc"):
@@ -4233,7 +4251,7 @@ def test_create_certificate_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4279,10 +4297,11 @@ def test_create_certificate_map_non_empty_request_with_auto_populated_field():
         client.create_certificate_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapRequest(
+        request_msg = certificate_manager.CreateCertificateMapRequest(
             parent="parent_value",
             certificate_map_id="certificate_map_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_certificate_map_use_cached_wrapped_rpc():
@@ -4378,9 +4397,15 @@ async def test_create_certificate_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.CreateCertificateMapRequest(),
+        {},
+    ],
+)
 async def test_create_certificate_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.CreateCertificateMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4389,7 +4414,7 @@ async def test_create_certificate_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4409,11 +4434,6 @@ async def test_create_certificate_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_certificate_map_async_from_dict():
-    await test_create_certificate_map_async(request_type=dict)
 
 
 def test_create_certificate_map_field_headers():
@@ -4590,8 +4610,8 @@ async def test_create_certificate_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.UpdateCertificateMapRequest,
-        dict,
+        certificate_manager.UpdateCertificateMapRequest(),
+        {},
     ],
 )
 def test_update_certificate_map(request_type, transport: str = "grpc"):
@@ -4602,7 +4622,7 @@ def test_update_certificate_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4645,7 +4665,8 @@ def test_update_certificate_map_non_empty_request_with_auto_populated_field():
         client.update_certificate_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapRequest()
+        request_msg = certificate_manager.UpdateCertificateMapRequest()
+        assert args[0] == request_msg
 
 
 def test_update_certificate_map_use_cached_wrapped_rpc():
@@ -4741,9 +4762,15 @@ async def test_update_certificate_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateMapRequest(),
+        {},
+    ],
+)
 async def test_update_certificate_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.UpdateCertificateMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4752,7 +4779,7 @@ async def test_update_certificate_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4772,11 +4799,6 @@ async def test_update_certificate_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_certificate_map_async_from_dict():
-    await test_update_certificate_map_async(request_type=dict)
 
 
 def test_update_certificate_map_field_headers():
@@ -4943,8 +4965,8 @@ async def test_update_certificate_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.DeleteCertificateMapRequest,
-        dict,
+        certificate_manager.DeleteCertificateMapRequest(),
+        {},
     ],
 )
 def test_delete_certificate_map(request_type, transport: str = "grpc"):
@@ -4955,7 +4977,7 @@ def test_delete_certificate_map(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5000,9 +5022,10 @@ def test_delete_certificate_map_non_empty_request_with_auto_populated_field():
         client.delete_certificate_map(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapRequest(
+        request_msg = certificate_manager.DeleteCertificateMapRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_certificate_map_use_cached_wrapped_rpc():
@@ -5098,9 +5121,15 @@ async def test_delete_certificate_map_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateMapRequest(),
+        {},
+    ],
+)
 async def test_delete_certificate_map_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.DeleteCertificateMapRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5109,7 +5138,7 @@ async def test_delete_certificate_map_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5129,11 +5158,6 @@ async def test_delete_certificate_map_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_certificate_map_async_from_dict():
-    await test_delete_certificate_map_async(request_type=dict)
 
 
 def test_delete_certificate_map_field_headers():
@@ -5290,8 +5314,8 @@ async def test_delete_certificate_map_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.ListCertificateMapEntriesRequest,
-        dict,
+        certificate_manager.ListCertificateMapEntriesRequest(),
+        {},
     ],
 )
 def test_list_certificate_map_entries(request_type, transport: str = "grpc"):
@@ -5302,7 +5326,7 @@ def test_list_certificate_map_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5355,12 +5379,13 @@ def test_list_certificate_map_entries_non_empty_request_with_auto_populated_fiel
         client.list_certificate_map_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListCertificateMapEntriesRequest(
+        request_msg = certificate_manager.ListCertificateMapEntriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_certificate_map_entries_use_cached_wrapped_rpc():
@@ -5446,9 +5471,15 @@ async def test_list_certificate_map_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.ListCertificateMapEntriesRequest(),
+        {},
+    ],
+)
 async def test_list_certificate_map_entries_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.ListCertificateMapEntriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5457,7 +5488,7 @@ async def test_list_certificate_map_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5482,11 +5513,6 @@ async def test_list_certificate_map_entries_async(
     assert isinstance(response, pagers.ListCertificateMapEntriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_certificate_map_entries_async_from_dict():
-    await test_list_certificate_map_entries_async(request_type=dict)
 
 
 def test_list_certificate_map_entries_field_headers():
@@ -5849,8 +5875,8 @@ async def test_list_certificate_map_entries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.GetCertificateMapEntryRequest,
-        dict,
+        certificate_manager.GetCertificateMapEntryRequest(),
+        {},
     ],
 )
 def test_get_certificate_map_entry(request_type, transport: str = "grpc"):
@@ -5861,7 +5887,7 @@ def test_get_certificate_map_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5916,9 +5942,10 @@ def test_get_certificate_map_entry_non_empty_request_with_auto_populated_field()
         client.get_certificate_map_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetCertificateMapEntryRequest(
+        request_msg = certificate_manager.GetCertificateMapEntryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_map_entry_use_cached_wrapped_rpc():
@@ -6004,9 +6031,15 @@ async def test_get_certificate_map_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.GetCertificateMapEntryRequest(),
+        {},
+    ],
+)
 async def test_get_certificate_map_entry_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.GetCertificateMapEntryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6015,7 +6048,7 @@ async def test_get_certificate_map_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6044,11 +6077,6 @@ async def test_get_certificate_map_entry_async(
     assert response.description == "description_value"
     assert response.certificates == ["certificates_value"]
     assert response.state == certificate_manager.ServingState.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_map_entry_async_from_dict():
-    await test_get_certificate_map_entry_async(request_type=dict)
 
 
 def test_get_certificate_map_entry_field_headers():
@@ -6205,8 +6233,8 @@ async def test_get_certificate_map_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.CreateCertificateMapEntryRequest,
-        dict,
+        certificate_manager.CreateCertificateMapEntryRequest(),
+        {},
     ],
 )
 def test_create_certificate_map_entry(request_type, transport: str = "grpc"):
@@ -6217,7 +6245,7 @@ def test_create_certificate_map_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6263,10 +6291,11 @@ def test_create_certificate_map_entry_non_empty_request_with_auto_populated_fiel
         client.create_certificate_map_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateCertificateMapEntryRequest(
+        request_msg = certificate_manager.CreateCertificateMapEntryRequest(
             parent="parent_value",
             certificate_map_entry_id="certificate_map_entry_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_certificate_map_entry_use_cached_wrapped_rpc():
@@ -6362,9 +6391,15 @@ async def test_create_certificate_map_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.CreateCertificateMapEntryRequest(),
+        {},
+    ],
+)
 async def test_create_certificate_map_entry_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.CreateCertificateMapEntryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6373,7 +6408,7 @@ async def test_create_certificate_map_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6393,11 +6428,6 @@ async def test_create_certificate_map_entry_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_certificate_map_entry_async_from_dict():
-    await test_create_certificate_map_entry_async(request_type=dict)
 
 
 def test_create_certificate_map_entry_field_headers():
@@ -6582,8 +6612,8 @@ async def test_create_certificate_map_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.UpdateCertificateMapEntryRequest,
-        dict,
+        certificate_manager.UpdateCertificateMapEntryRequest(),
+        {},
     ],
 )
 def test_update_certificate_map_entry(request_type, transport: str = "grpc"):
@@ -6594,7 +6624,7 @@ def test_update_certificate_map_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6637,7 +6667,8 @@ def test_update_certificate_map_entry_non_empty_request_with_auto_populated_fiel
         client.update_certificate_map_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateCertificateMapEntryRequest()
+        request_msg = certificate_manager.UpdateCertificateMapEntryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_certificate_map_entry_use_cached_wrapped_rpc():
@@ -6733,9 +6764,15 @@ async def test_update_certificate_map_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateMapEntryRequest(),
+        {},
+    ],
+)
 async def test_update_certificate_map_entry_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.UpdateCertificateMapEntryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6744,7 +6781,7 @@ async def test_update_certificate_map_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6764,11 +6801,6 @@ async def test_update_certificate_map_entry_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_certificate_map_entry_async_from_dict():
-    await test_update_certificate_map_entry_async(request_type=dict)
 
 
 def test_update_certificate_map_entry_field_headers():
@@ -6943,8 +6975,8 @@ async def test_update_certificate_map_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.DeleteCertificateMapEntryRequest,
-        dict,
+        certificate_manager.DeleteCertificateMapEntryRequest(),
+        {},
     ],
 )
 def test_delete_certificate_map_entry(request_type, transport: str = "grpc"):
@@ -6955,7 +6987,7 @@ def test_delete_certificate_map_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7000,9 +7032,10 @@ def test_delete_certificate_map_entry_non_empty_request_with_auto_populated_fiel
         client.delete_certificate_map_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteCertificateMapEntryRequest(
+        request_msg = certificate_manager.DeleteCertificateMapEntryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_certificate_map_entry_use_cached_wrapped_rpc():
@@ -7098,9 +7131,15 @@ async def test_delete_certificate_map_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateMapEntryRequest(),
+        {},
+    ],
+)
 async def test_delete_certificate_map_entry_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.DeleteCertificateMapEntryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7109,7 +7148,7 @@ async def test_delete_certificate_map_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7129,11 +7168,6 @@ async def test_delete_certificate_map_entry_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_certificate_map_entry_async_from_dict():
-    await test_delete_certificate_map_entry_async(request_type=dict)
 
 
 def test_delete_certificate_map_entry_field_headers():
@@ -7290,8 +7324,8 @@ async def test_delete_certificate_map_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.ListDnsAuthorizationsRequest,
-        dict,
+        certificate_manager.ListDnsAuthorizationsRequest(),
+        {},
     ],
 )
 def test_list_dns_authorizations(request_type, transport: str = "grpc"):
@@ -7302,7 +7336,7 @@ def test_list_dns_authorizations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7355,12 +7389,13 @@ def test_list_dns_authorizations_non_empty_request_with_auto_populated_field():
         client.list_dns_authorizations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.ListDnsAuthorizationsRequest(
+        request_msg = certificate_manager.ListDnsAuthorizationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_dns_authorizations_use_cached_wrapped_rpc():
@@ -7446,9 +7481,15 @@ async def test_list_dns_authorizations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.ListDnsAuthorizationsRequest(),
+        {},
+    ],
+)
 async def test_list_dns_authorizations_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.ListDnsAuthorizationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7457,7 +7498,7 @@ async def test_list_dns_authorizations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7482,11 +7523,6 @@ async def test_list_dns_authorizations_async(
     assert isinstance(response, pagers.ListDnsAuthorizationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_dns_authorizations_async_from_dict():
-    await test_list_dns_authorizations_async(request_type=dict)
 
 
 def test_list_dns_authorizations_field_headers():
@@ -7843,8 +7879,8 @@ async def test_list_dns_authorizations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.GetDnsAuthorizationRequest,
-        dict,
+        certificate_manager.GetDnsAuthorizationRequest(),
+        {},
     ],
 )
 def test_get_dns_authorization(request_type, transport: str = "grpc"):
@@ -7855,7 +7891,7 @@ def test_get_dns_authorization(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7909,9 +7945,10 @@ def test_get_dns_authorization_non_empty_request_with_auto_populated_field():
         client.get_dns_authorization(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.GetDnsAuthorizationRequest(
+        request_msg = certificate_manager.GetDnsAuthorizationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dns_authorization_use_cached_wrapped_rpc():
@@ -7997,9 +8034,15 @@ async def test_get_dns_authorization_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.GetDnsAuthorizationRequest(),
+        {},
+    ],
+)
 async def test_get_dns_authorization_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.GetDnsAuthorizationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8008,7 +8051,7 @@ async def test_get_dns_authorization_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8037,11 +8080,6 @@ async def test_get_dns_authorization_async(
     assert response.description == "description_value"
     assert response.domain == "domain_value"
     assert response.type_ == certificate_manager.DnsAuthorization.Type.FIXED_RECORD
-
-
-@pytest.mark.asyncio
-async def test_get_dns_authorization_async_from_dict():
-    await test_get_dns_authorization_async(request_type=dict)
 
 
 def test_get_dns_authorization_field_headers():
@@ -8198,8 +8236,8 @@ async def test_get_dns_authorization_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.CreateDnsAuthorizationRequest,
-        dict,
+        certificate_manager.CreateDnsAuthorizationRequest(),
+        {},
     ],
 )
 def test_create_dns_authorization(request_type, transport: str = "grpc"):
@@ -8210,7 +8248,7 @@ def test_create_dns_authorization(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8256,10 +8294,11 @@ def test_create_dns_authorization_non_empty_request_with_auto_populated_field():
         client.create_dns_authorization(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.CreateDnsAuthorizationRequest(
+        request_msg = certificate_manager.CreateDnsAuthorizationRequest(
             parent="parent_value",
             dns_authorization_id="dns_authorization_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dns_authorization_use_cached_wrapped_rpc():
@@ -8355,9 +8394,15 @@ async def test_create_dns_authorization_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.CreateDnsAuthorizationRequest(),
+        {},
+    ],
+)
 async def test_create_dns_authorization_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.CreateDnsAuthorizationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8366,7 +8411,7 @@ async def test_create_dns_authorization_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8386,11 +8431,6 @@ async def test_create_dns_authorization_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_dns_authorization_async_from_dict():
-    await test_create_dns_authorization_async(request_type=dict)
 
 
 def test_create_dns_authorization_field_headers():
@@ -8567,8 +8607,8 @@ async def test_create_dns_authorization_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.UpdateDnsAuthorizationRequest,
-        dict,
+        certificate_manager.UpdateDnsAuthorizationRequest(),
+        {},
     ],
 )
 def test_update_dns_authorization(request_type, transport: str = "grpc"):
@@ -8579,7 +8619,7 @@ def test_update_dns_authorization(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8622,7 +8662,8 @@ def test_update_dns_authorization_non_empty_request_with_auto_populated_field():
         client.update_dns_authorization(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.UpdateDnsAuthorizationRequest()
+        request_msg = certificate_manager.UpdateDnsAuthorizationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_dns_authorization_use_cached_wrapped_rpc():
@@ -8718,9 +8759,15 @@ async def test_update_dns_authorization_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.UpdateDnsAuthorizationRequest(),
+        {},
+    ],
+)
 async def test_update_dns_authorization_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.UpdateDnsAuthorizationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8729,7 +8776,7 @@ async def test_update_dns_authorization_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8749,11 +8796,6 @@ async def test_update_dns_authorization_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_dns_authorization_async_from_dict():
-    await test_update_dns_authorization_async(request_type=dict)
 
 
 def test_update_dns_authorization_field_headers():
@@ -8920,8 +8962,8 @@ async def test_update_dns_authorization_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_manager.DeleteDnsAuthorizationRequest,
-        dict,
+        certificate_manager.DeleteDnsAuthorizationRequest(),
+        {},
     ],
 )
 def test_delete_dns_authorization(request_type, transport: str = "grpc"):
@@ -8932,7 +8974,7 @@ def test_delete_dns_authorization(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8977,9 +9019,10 @@ def test_delete_dns_authorization_non_empty_request_with_auto_populated_field():
         client.delete_dns_authorization(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == certificate_manager.DeleteDnsAuthorizationRequest(
+        request_msg = certificate_manager.DeleteDnsAuthorizationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dns_authorization_use_cached_wrapped_rpc():
@@ -9075,9 +9118,15 @@ async def test_delete_dns_authorization_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_manager.DeleteDnsAuthorizationRequest(),
+        {},
+    ],
+)
 async def test_delete_dns_authorization_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_manager.DeleteDnsAuthorizationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9086,7 +9135,7 @@ async def test_delete_dns_authorization_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9106,11 +9155,6 @@ async def test_delete_dns_authorization_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_dns_authorization_async_from_dict():
-    await test_delete_dns_authorization_async(request_type=dict)
 
 
 def test_delete_dns_authorization_field_headers():
@@ -9267,8 +9311,8 @@ async def test_delete_dns_authorization_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
-        dict,
+        certificate_issuance_config.ListCertificateIssuanceConfigsRequest(),
+        {},
     ],
 )
 def test_list_certificate_issuance_configs(request_type, transport: str = "grpc"):
@@ -9279,7 +9323,7 @@ def test_list_certificate_issuance_configs(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9334,14 +9378,13 @@ def test_list_certificate_issuance_configs_non_empty_request_with_auto_populated
         client.list_certificate_issuance_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == certificate_issuance_config.ListCertificateIssuanceConfigsRequest(
+        request_msg = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_certificate_issuance_configs_use_cached_wrapped_rpc():
@@ -9427,9 +9470,15 @@ async def test_list_certificate_issuance_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.ListCertificateIssuanceConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_certificate_issuance_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9438,7 +9487,7 @@ async def test_list_certificate_issuance_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9463,11 +9512,6 @@ async def test_list_certificate_issuance_configs_async(
     assert isinstance(response, pagers.ListCertificateIssuanceConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_certificate_issuance_configs_async_from_dict():
-    await test_list_certificate_issuance_configs_async(request_type=dict)
 
 
 def test_list_certificate_issuance_configs_field_headers():
@@ -9838,8 +9882,8 @@ async def test_list_certificate_issuance_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_issuance_config.GetCertificateIssuanceConfigRequest,
-        dict,
+        certificate_issuance_config.GetCertificateIssuanceConfigRequest(),
+        {},
     ],
 )
 def test_get_certificate_issuance_config(request_type, transport: str = "grpc"):
@@ -9850,7 +9894,7 @@ def test_get_certificate_issuance_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9907,11 +9951,10 @@ def test_get_certificate_issuance_config_non_empty_request_with_auto_populated_f
         client.get_certificate_issuance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == certificate_issuance_config.GetCertificateIssuanceConfigRequest(
+        request_msg = certificate_issuance_config.GetCertificateIssuanceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_issuance_config_use_cached_wrapped_rpc():
@@ -9997,9 +10040,15 @@ async def test_get_certificate_issuance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.GetCertificateIssuanceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_certificate_issuance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_issuance_config.GetCertificateIssuanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10008,7 +10057,7 @@ async def test_get_certificate_issuance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10040,11 +10089,6 @@ async def test_get_certificate_issuance_config_async(
         response.key_algorithm
         == certificate_issuance_config.CertificateIssuanceConfig.KeyAlgorithm.RSA_2048
     )
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_issuance_config_async_from_dict():
-    await test_get_certificate_issuance_config_async(request_type=dict)
 
 
 def test_get_certificate_issuance_config_field_headers():
@@ -10201,8 +10245,8 @@ async def test_get_certificate_issuance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
-        dict,
+        gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(),
+        {},
     ],
 )
 def test_create_certificate_issuance_config(request_type, transport: str = "grpc"):
@@ -10213,7 +10257,7 @@ def test_create_certificate_issuance_config(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10261,12 +10305,13 @@ def test_create_certificate_issuance_config_non_empty_request_with_auto_populate
         client.create_certificate_issuance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(
-            parent="parent_value",
-            certificate_issuance_config_id="certificate_issuance_config_id_value",
+        request_msg = (
+            gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(
+                parent="parent_value",
+                certificate_issuance_config_id="certificate_issuance_config_id_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_create_certificate_issuance_config_use_cached_wrapped_rpc():
@@ -10362,9 +10407,15 @@ async def test_create_certificate_issuance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest(),
+        {},
+    ],
+)
 async def test_create_certificate_issuance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10373,7 +10424,7 @@ async def test_create_certificate_issuance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10395,11 +10446,6 @@ async def test_create_certificate_issuance_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_certificate_issuance_config_async_from_dict():
-    await test_create_certificate_issuance_config_async(request_type=dict)
 
 
 def test_create_certificate_issuance_config_field_headers():
@@ -10588,8 +10634,8 @@ async def test_create_certificate_issuance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
-        dict,
+        certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(),
+        {},
     ],
 )
 def test_delete_certificate_issuance_config(request_type, transport: str = "grpc"):
@@ -10600,7 +10646,7 @@ def test_delete_certificate_issuance_config(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10645,11 +10691,12 @@ def test_delete_certificate_issuance_config_non_empty_request_with_auto_populate
         client.delete_certificate_issuance_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(
-            name="name_value",
+        request_msg = (
+            certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_certificate_issuance_config_use_cached_wrapped_rpc():
@@ -10745,9 +10792,15 @@ async def test_delete_certificate_issuance_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        certificate_issuance_config.DeleteCertificateIssuanceConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_certificate_issuance_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10756,7 +10809,7 @@ async def test_delete_certificate_issuance_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10776,11 +10829,6 @@ async def test_delete_certificate_issuance_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_certificate_issuance_config_async_from_dict():
-    await test_delete_certificate_issuance_config_async(request_type=dict)
 
 
 def test_delete_certificate_issuance_config_field_headers():
@@ -10937,8 +10985,8 @@ async def test_delete_certificate_issuance_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        trust_config.ListTrustConfigsRequest,
-        dict,
+        trust_config.ListTrustConfigsRequest(),
+        {},
     ],
 )
 def test_list_trust_configs(request_type, transport: str = "grpc"):
@@ -10949,7 +10997,7 @@ def test_list_trust_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11002,12 +11050,13 @@ def test_list_trust_configs_non_empty_request_with_auto_populated_field():
         client.list_trust_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.ListTrustConfigsRequest(
+        request_msg = trust_config.ListTrustConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_trust_configs_use_cached_wrapped_rpc():
@@ -11092,9 +11141,14 @@ async def test_list_trust_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_trust_configs_async(
-    transport: str = "grpc_asyncio", request_type=trust_config.ListTrustConfigsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trust_config.ListTrustConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_trust_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11102,7 +11156,7 @@ async def test_list_trust_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11127,11 +11181,6 @@ async def test_list_trust_configs_async(
     assert isinstance(response, pagers.ListTrustConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_trust_configs_async_from_dict():
-    await test_list_trust_configs_async(request_type=dict)
 
 
 def test_list_trust_configs_field_headers():
@@ -11486,8 +11535,8 @@ async def test_list_trust_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        trust_config.GetTrustConfigRequest,
-        dict,
+        trust_config.GetTrustConfigRequest(),
+        {},
     ],
 )
 def test_get_trust_config(request_type, transport: str = "grpc"):
@@ -11498,7 +11547,7 @@ def test_get_trust_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trust_config), "__call__") as call:
@@ -11546,9 +11595,10 @@ def test_get_trust_config_non_empty_request_with_auto_populated_field():
         client.get_trust_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.GetTrustConfigRequest(
+        request_msg = trust_config.GetTrustConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_trust_config_use_cached_wrapped_rpc():
@@ -11631,9 +11681,14 @@ async def test_get_trust_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_trust_config_async(
-    transport: str = "grpc_asyncio", request_type=trust_config.GetTrustConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trust_config.GetTrustConfigRequest(),
+        {},
+    ],
+)
+async def test_get_trust_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11641,7 +11696,7 @@ async def test_get_trust_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trust_config), "__call__") as call:
@@ -11666,11 +11721,6 @@ async def test_get_trust_config_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_trust_config_async_from_dict():
-    await test_get_trust_config_async(request_type=dict)
 
 
 def test_get_trust_config_field_headers():
@@ -11819,8 +11869,8 @@ async def test_get_trust_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_trust_config.CreateTrustConfigRequest,
-        dict,
+        gcc_trust_config.CreateTrustConfigRequest(),
+        {},
     ],
 )
 def test_create_trust_config(request_type, transport: str = "grpc"):
@@ -11831,7 +11881,7 @@ def test_create_trust_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11877,10 +11927,11 @@ def test_create_trust_config_non_empty_request_with_auto_populated_field():
         client.create_trust_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.CreateTrustConfigRequest(
+        request_msg = gcc_trust_config.CreateTrustConfigRequest(
             parent="parent_value",
             trust_config_id="trust_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_trust_config_use_cached_wrapped_rpc():
@@ -11975,10 +12026,14 @@ async def test_create_trust_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_trust_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_trust_config.CreateTrustConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_trust_config.CreateTrustConfigRequest(),
+        {},
+    ],
+)
+async def test_create_trust_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11986,7 +12041,7 @@ async def test_create_trust_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12006,11 +12061,6 @@ async def test_create_trust_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_trust_config_async_from_dict():
-    await test_create_trust_config_async(request_type=dict)
 
 
 def test_create_trust_config_field_headers():
@@ -12187,8 +12237,8 @@ async def test_create_trust_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_trust_config.UpdateTrustConfigRequest,
-        dict,
+        gcc_trust_config.UpdateTrustConfigRequest(),
+        {},
     ],
 )
 def test_update_trust_config(request_type, transport: str = "grpc"):
@@ -12199,7 +12249,7 @@ def test_update_trust_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12242,7 +12292,8 @@ def test_update_trust_config_non_empty_request_with_auto_populated_field():
         client.update_trust_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_trust_config.UpdateTrustConfigRequest()
+        request_msg = gcc_trust_config.UpdateTrustConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_trust_config_use_cached_wrapped_rpc():
@@ -12337,10 +12388,14 @@ async def test_update_trust_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_trust_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_trust_config.UpdateTrustConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_trust_config.UpdateTrustConfigRequest(),
+        {},
+    ],
+)
+async def test_update_trust_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12348,7 +12403,7 @@ async def test_update_trust_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12368,11 +12423,6 @@ async def test_update_trust_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_trust_config_async_from_dict():
-    await test_update_trust_config_async(request_type=dict)
 
 
 def test_update_trust_config_field_headers():
@@ -12539,8 +12589,8 @@ async def test_update_trust_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        trust_config.DeleteTrustConfigRequest,
-        dict,
+        trust_config.DeleteTrustConfigRequest(),
+        {},
     ],
 )
 def test_delete_trust_config(request_type, transport: str = "grpc"):
@@ -12551,7 +12601,7 @@ def test_delete_trust_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12597,10 +12647,11 @@ def test_delete_trust_config_non_empty_request_with_auto_populated_field():
         client.delete_trust_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trust_config.DeleteTrustConfigRequest(
+        request_msg = trust_config.DeleteTrustConfigRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_trust_config_use_cached_wrapped_rpc():
@@ -12695,9 +12746,14 @@ async def test_delete_trust_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_trust_config_async(
-    transport: str = "grpc_asyncio", request_type=trust_config.DeleteTrustConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trust_config.DeleteTrustConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_trust_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CertificateManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12705,7 +12761,7 @@ async def test_delete_trust_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12725,11 +12781,6 @@ async def test_delete_trust_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_trust_config_async_from_dict():
-    await test_delete_trust_config_async(request_type=dict)
 
 
 def test_delete_trust_config_field_headers():
@@ -19114,7 +19165,6 @@ def test_list_certificates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19135,7 +19185,6 @@ def test_get_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19158,7 +19207,6 @@ def test_create_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19181,7 +19229,6 @@ def test_update_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19204,7 +19251,6 @@ def test_delete_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19227,7 +19273,6 @@ def test_list_certificate_maps_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19250,7 +19295,6 @@ def test_get_certificate_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -19273,7 +19317,6 @@ def test_create_certificate_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -19296,7 +19339,6 @@ def test_update_certificate_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -19319,7 +19361,6 @@ def test_delete_certificate_map_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -19342,7 +19383,6 @@ def test_list_certificate_map_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19365,7 +19405,6 @@ def test_get_certificate_map_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19388,7 +19427,6 @@ def test_create_certificate_map_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19411,7 +19449,6 @@ def test_update_certificate_map_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19434,7 +19471,6 @@ def test_delete_certificate_map_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -19457,7 +19493,6 @@ def test_list_dns_authorizations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListDnsAuthorizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19480,7 +19515,6 @@ def test_get_dns_authorization_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19503,7 +19537,6 @@ def test_create_dns_authorization_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19526,7 +19559,6 @@ def test_update_dns_authorization_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19549,7 +19581,6 @@ def test_delete_dns_authorization_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19576,7 +19607,6 @@ def test_list_certificate_issuance_configs_empty_call_grpc():
         request_msg = (
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -19599,7 +19629,6 @@ def test_get_certificate_issuance_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19624,7 +19653,6 @@ def test_create_certificate_issuance_config_empty_call_grpc():
         request_msg = (
             gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -19649,7 +19677,6 @@ def test_delete_certificate_issuance_config_empty_call_grpc():
         request_msg = (
             certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -19672,7 +19699,6 @@ def test_list_trust_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.ListTrustConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19693,7 +19719,6 @@ def test_get_trust_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.GetTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19716,7 +19741,6 @@ def test_create_trust_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.CreateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19739,7 +19763,6 @@ def test_update_trust_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.UpdateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19762,7 +19785,6 @@ def test_delete_trust_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.DeleteTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19806,7 +19828,6 @@ async def test_list_certificates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19837,7 +19858,6 @@ async def test_get_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19864,7 +19884,6 @@ async def test_create_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19891,7 +19910,6 @@ async def test_update_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19918,7 +19936,6 @@ async def test_delete_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19948,7 +19965,6 @@ async def test_list_certificate_maps_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19978,7 +19994,6 @@ async def test_get_certificate_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -20005,7 +20020,6 @@ async def test_create_certificate_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -20032,7 +20046,6 @@ async def test_update_certificate_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -20059,7 +20072,6 @@ async def test_delete_certificate_map_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -20089,7 +20101,6 @@ async def test_list_certificate_map_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -20121,7 +20132,6 @@ async def test_get_certificate_map_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -20148,7 +20158,6 @@ async def test_create_certificate_map_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -20175,7 +20184,6 @@ async def test_update_certificate_map_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -20202,7 +20210,6 @@ async def test_delete_certificate_map_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -20232,7 +20239,6 @@ async def test_list_dns_authorizations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListDnsAuthorizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20264,7 +20270,6 @@ async def test_get_dns_authorization_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -20291,7 +20296,6 @@ async def test_create_dns_authorization_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -20318,7 +20322,6 @@ async def test_update_dns_authorization_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -20345,7 +20348,6 @@ async def test_delete_dns_authorization_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -20377,7 +20379,6 @@ async def test_list_certificate_issuance_configs_empty_call_grpc_asyncio():
         request_msg = (
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20409,7 +20410,6 @@ async def test_get_certificate_issuance_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20438,7 +20438,6 @@ async def test_create_certificate_issuance_config_empty_call_grpc_asyncio():
         request_msg = (
             gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20467,7 +20466,6 @@ async def test_delete_certificate_issuance_config_empty_call_grpc_asyncio():
         request_msg = (
             certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20497,7 +20495,6 @@ async def test_list_trust_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.ListTrustConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20526,7 +20523,6 @@ async def test_get_trust_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.GetTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20553,7 +20549,6 @@ async def test_create_trust_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.CreateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20580,7 +20575,6 @@ async def test_update_trust_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.UpdateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20607,7 +20601,6 @@ async def test_delete_trust_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.DeleteTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -25897,7 +25890,6 @@ def test_list_certificates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25917,7 +25909,6 @@ def test_get_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25939,7 +25930,6 @@ def test_create_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25961,7 +25951,6 @@ def test_update_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25983,7 +25972,6 @@ def test_delete_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26005,7 +25993,6 @@ def test_list_certificate_maps_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26027,7 +26014,6 @@ def test_get_certificate_map_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -26049,7 +26035,6 @@ def test_create_certificate_map_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -26071,7 +26056,6 @@ def test_update_certificate_map_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -26093,7 +26077,6 @@ def test_delete_certificate_map_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapRequest()
-
         assert args[0] == request_msg
 
 
@@ -26115,7 +26098,6 @@ def test_list_certificate_map_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListCertificateMapEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -26137,7 +26119,6 @@ def test_get_certificate_map_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -26159,7 +26140,6 @@ def test_create_certificate_map_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -26181,7 +26161,6 @@ def test_update_certificate_map_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -26203,7 +26182,6 @@ def test_delete_certificate_map_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteCertificateMapEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -26225,7 +26203,6 @@ def test_list_dns_authorizations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.ListDnsAuthorizationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26247,7 +26224,6 @@ def test_get_dns_authorization_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.GetDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -26269,7 +26245,6 @@ def test_create_dns_authorization_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.CreateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -26291,7 +26266,6 @@ def test_update_dns_authorization_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.UpdateDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -26313,7 +26287,6 @@ def test_delete_dns_authorization_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_manager.DeleteDnsAuthorizationRequest()
-
         assert args[0] == request_msg
 
 
@@ -26337,7 +26310,6 @@ def test_list_certificate_issuance_configs_empty_call_rest():
         request_msg = (
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -26359,7 +26331,6 @@ def test_get_certificate_issuance_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = certificate_issuance_config.GetCertificateIssuanceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26383,7 +26354,6 @@ def test_create_certificate_issuance_config_empty_call_rest():
         request_msg = (
             gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -26407,7 +26377,6 @@ def test_delete_certificate_issuance_config_empty_call_rest():
         request_msg = (
             certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -26429,7 +26398,6 @@ def test_list_trust_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.ListTrustConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26449,7 +26417,6 @@ def test_get_trust_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.GetTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26471,7 +26438,6 @@ def test_create_trust_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.CreateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26493,7 +26459,6 @@ def test_update_trust_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_trust_config.UpdateTrustConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26515,7 +26480,6 @@ def test_delete_trust_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trust_config.DeleteTrustConfigRequest()
-
         assert args[0] == request_msg
 
 

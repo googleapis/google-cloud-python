@@ -16,5 +16,12 @@ from bigframes.extensions.bigframes.dataframe_accessor import (
     BigframesAIAccessor,
     BigframesBigQueryDataFrameAccessor,
 )
+from bigframes.extensions.bigframes.series_accessor import (
+    BigframesBigQuerySeriesAccessor,
+)
 
-__all__ = ["BigframesAIAccessor", "BigframesBigQueryDataFrameAccessor"]
+__all__ = [
+    "BigframesAIAccessor",
+    "BigframesBigQueryDataFrameAccessor",
+    "BigframesBigQuerySeriesAccessor",
+]

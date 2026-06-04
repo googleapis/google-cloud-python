@@ -66,6 +66,28 @@ class TestDownloadState(unittest.TestCase):
         self.assertTrue(state_full.is_full_object_read)
         self.assertIsNotNone(state_full.rolling_checksum)
 
+    def test_initialization_with_full_object_read_and_checksum_disabled(self):
+        """Test that _DownloadState does not initialize rolling_checksum when enable_checksum is False."""
+        initial_offset = 10
+        initial_length = 100
+        user_buffer = io.BytesIO()
+        state_full = _DownloadState(
+            initial_offset,
+            initial_length,
+            user_buffer,
+            is_full_object_read=True,
+            enable_checksum=False,
+        )
+
+        self.assertEqual(state_full.initial_offset, initial_offset)
+        self.assertEqual(state_full.initial_length, initial_length)
+        self.assertEqual(state_full.user_buffer, user_buffer)
+        self.assertEqual(state_full.bytes_written, 0)
+        self.assertEqual(state_full.next_expected_offset, initial_offset)
+        self.assertFalse(state_full.is_complete)
+        self.assertTrue(state_full.is_full_object_read)
+        self.assertIsNone(state_full.rolling_checksum)
+
 
 class TestReadResumptionStrategy(unittest.TestCase):
     def setUp(self):
@@ -74,7 +96,13 @@ class TestReadResumptionStrategy(unittest.TestCase):
         self.state = {"download_states": {}, "read_handle": None, "routing_token": None}
 
     def _add_download(
-        self, read_id, offset=0, length=100, buffer=None, is_full_object_read=False
+        self,
+        read_id,
+        offset=0,
+        length=100,
+        buffer=None,
+        is_full_object_read=False,
+        enable_checksum=True,
     ):
         """Helper to inject a download state into the correct nested location."""
         if buffer is None:
@@ -84,6 +112,7 @@ class TestReadResumptionStrategy(unittest.TestCase):
             initial_length=length,
             user_buffer=buffer,
             is_full_object_read=is_full_object_read,
+            enable_checksum=enable_checksum,
         )
         self.state["download_states"][read_id] = state
         return state
@@ -425,7 +454,13 @@ class TestReadResumptionStrategy(unittest.TestCase):
 
     def test_update_state_full_object_checksum_mismatch_ignored_when_disabled(self):
         """Test that a full-object CRC32C mismatch is ignored when enable_checksum is False."""
-        self._add_download(_READ_ID, offset=0, length=9, is_full_object_read=True)
+        self._add_download(
+            _READ_ID,
+            offset=0,
+            length=9,
+            is_full_object_read=True,
+            enable_checksum=False,
+        )
         self.state["enable_checksum"] = False
         self.state["full_obj_server_crc32c"] = 111111  # Wrong server checksum!
 

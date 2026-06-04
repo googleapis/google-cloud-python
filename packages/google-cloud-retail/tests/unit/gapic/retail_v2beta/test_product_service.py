@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -125,6 +126,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1330,8 +1346,8 @@ def test_product_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.CreateProductRequest,
-        dict,
+        product_service.CreateProductRequest(),
+        {},
     ],
 )
 def test_create_product(request_type, transport: str = "grpc"):
@@ -1342,7 +1358,7 @@ def test_create_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_product), "__call__") as call:
@@ -1421,10 +1437,11 @@ def test_create_product_non_empty_request_with_auto_populated_field():
         client.create_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.CreateProductRequest(
+        request_msg = product_service.CreateProductRequest(
             parent="parent_value",
             product_id="product_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_product_use_cached_wrapped_rpc():
@@ -1505,9 +1522,14 @@ async def test_create_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_product_async(
-    transport: str = "grpc_asyncio", request_type=product_service.CreateProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.CreateProductRequest(),
+        {},
+    ],
+)
+async def test_create_product_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1515,7 +1537,7 @@ async def test_create_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_product), "__call__") as call:
@@ -1570,11 +1592,6 @@ async def test_create_product_async(
     assert response.materials == ["materials_value"]
     assert response.patterns == ["patterns_value"]
     assert response.conditions == ["conditions_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_product_async_from_dict():
-    await test_create_product_async(request_type=dict)
 
 
 def test_create_product_field_headers():
@@ -1747,8 +1764,8 @@ async def test_create_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.GetProductRequest,
-        dict,
+        product_service.GetProductRequest(),
+        {},
     ],
 )
 def test_get_product(request_type, transport: str = "grpc"):
@@ -1759,7 +1776,7 @@ def test_get_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
@@ -1837,9 +1854,10 @@ def test_get_product_non_empty_request_with_auto_populated_field():
         client.get_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.GetProductRequest(
+        request_msg = product_service.GetProductRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_product_use_cached_wrapped_rpc():
@@ -1920,9 +1938,14 @@ async def test_get_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_product_async(
-    transport: str = "grpc_asyncio", request_type=product_service.GetProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.GetProductRequest(),
+        {},
+    ],
+)
+async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1930,7 +1953,7 @@ async def test_get_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
@@ -1985,11 +2008,6 @@ async def test_get_product_async(
     assert response.materials == ["materials_value"]
     assert response.patterns == ["patterns_value"]
     assert response.conditions == ["conditions_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_product_async_from_dict():
-    await test_get_product_async(request_type=dict)
 
 
 def test_get_product_field_headers():
@@ -2134,8 +2152,8 @@ async def test_get_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.ListProductsRequest,
-        dict,
+        product_service.ListProductsRequest(),
+        {},
     ],
 )
 def test_list_products(request_type, transport: str = "grpc"):
@@ -2146,7 +2164,7 @@ def test_list_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -2192,11 +2210,12 @@ def test_list_products_non_empty_request_with_auto_populated_field():
         client.list_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.ListProductsRequest(
+        request_msg = product_service.ListProductsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_products_use_cached_wrapped_rpc():
@@ -2277,9 +2296,14 @@ async def test_list_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_products_async(
-    transport: str = "grpc_asyncio", request_type=product_service.ListProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.ListProductsRequest(),
+        {},
+    ],
+)
+async def test_list_products_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2287,7 +2311,7 @@ async def test_list_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -2308,11 +2332,6 @@ async def test_list_products_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_products_async_from_dict():
-    await test_list_products_async(request_type=dict)
 
 
 def test_list_products_field_headers():
@@ -2651,8 +2670,8 @@ async def test_list_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.UpdateProductRequest,
-        dict,
+        product_service.UpdateProductRequest(),
+        {},
     ],
 )
 def test_update_product(request_type, transport: str = "grpc"):
@@ -2663,7 +2682,7 @@ def test_update_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_product), "__call__") as call:
@@ -2739,7 +2758,8 @@ def test_update_product_non_empty_request_with_auto_populated_field():
         client.update_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.UpdateProductRequest()
+        request_msg = product_service.UpdateProductRequest()
+        assert args[0] == request_msg
 
 
 def test_update_product_use_cached_wrapped_rpc():
@@ -2820,9 +2840,14 @@ async def test_update_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_product_async(
-    transport: str = "grpc_asyncio", request_type=product_service.UpdateProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.UpdateProductRequest(),
+        {},
+    ],
+)
+async def test_update_product_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2830,7 +2855,7 @@ async def test_update_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_product), "__call__") as call:
@@ -2885,11 +2910,6 @@ async def test_update_product_async(
     assert response.materials == ["materials_value"]
     assert response.patterns == ["patterns_value"]
     assert response.conditions == ["conditions_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_product_async_from_dict():
-    await test_update_product_async(request_type=dict)
 
 
 def test_update_product_field_headers():
@@ -3052,8 +3072,8 @@ async def test_update_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.DeleteProductRequest,
-        dict,
+        product_service.DeleteProductRequest(),
+        {},
     ],
 )
 def test_delete_product(request_type, transport: str = "grpc"):
@@ -3064,7 +3084,7 @@ def test_delete_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
@@ -3105,9 +3125,10 @@ def test_delete_product_non_empty_request_with_auto_populated_field():
         client.delete_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.DeleteProductRequest(
+        request_msg = product_service.DeleteProductRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_product_use_cached_wrapped_rpc():
@@ -3188,9 +3209,14 @@ async def test_delete_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_product_async(
-    transport: str = "grpc_asyncio", request_type=product_service.DeleteProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.DeleteProductRequest(),
+        {},
+    ],
+)
+async def test_delete_product_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3198,7 +3224,7 @@ async def test_delete_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
@@ -3214,11 +3240,6 @@ async def test_delete_product_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_product_async_from_dict():
-    await test_delete_product_async(request_type=dict)
 
 
 def test_delete_product_field_headers():
@@ -3363,8 +3384,8 @@ async def test_delete_product_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        purge_config.PurgeProductsRequest,
-        dict,
+        purge_config.PurgeProductsRequest(),
+        {},
     ],
 )
 def test_purge_products(request_type, transport: str = "grpc"):
@@ -3375,7 +3396,7 @@ def test_purge_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_products), "__call__") as call:
@@ -3417,10 +3438,11 @@ def test_purge_products_non_empty_request_with_auto_populated_field():
         client.purge_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeProductsRequest(
+        request_msg = purge_config.PurgeProductsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_purge_products_use_cached_wrapped_rpc():
@@ -3511,9 +3533,14 @@ async def test_purge_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_purge_products_async(
-    transport: str = "grpc_asyncio", request_type=purge_config.PurgeProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        purge_config.PurgeProductsRequest(),
+        {},
+    ],
+)
+async def test_purge_products_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3521,7 +3548,7 @@ async def test_purge_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_products), "__call__") as call:
@@ -3539,11 +3566,6 @@ async def test_purge_products_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_purge_products_async_from_dict():
-    await test_purge_products_async(request_type=dict)
 
 
 def test_purge_products_field_headers():
@@ -3610,8 +3632,8 @@ async def test_purge_products_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        import_config.ImportProductsRequest,
-        dict,
+        import_config.ImportProductsRequest(),
+        {},
     ],
 )
 def test_import_products(request_type, transport: str = "grpc"):
@@ -3622,7 +3644,7 @@ def test_import_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_products), "__call__") as call:
@@ -3665,11 +3687,12 @@ def test_import_products_non_empty_request_with_auto_populated_field():
         client.import_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportProductsRequest(
+        request_msg = import_config.ImportProductsRequest(
             parent="parent_value",
             request_id="request_id_value",
             notification_pubsub_topic="notification_pubsub_topic_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_products_use_cached_wrapped_rpc():
@@ -3760,9 +3783,14 @@ async def test_import_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_products_async(
-    transport: str = "grpc_asyncio", request_type=import_config.ImportProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_config.ImportProductsRequest(),
+        {},
+    ],
+)
+async def test_import_products_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3770,7 +3798,7 @@ async def test_import_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_products), "__call__") as call:
@@ -3788,11 +3816,6 @@ async def test_import_products_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_products_async_from_dict():
-    await test_import_products_async(request_type=dict)
 
 
 def test_import_products_field_headers():
@@ -3859,8 +3882,8 @@ async def test_import_products_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        export_config.ExportProductsRequest,
-        dict,
+        export_config.ExportProductsRequest(),
+        {},
     ],
 )
 def test_export_products(request_type, transport: str = "grpc"):
@@ -3871,7 +3894,7 @@ def test_export_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_products), "__call__") as call:
@@ -3913,10 +3936,11 @@ def test_export_products_non_empty_request_with_auto_populated_field():
         client.export_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == export_config.ExportProductsRequest(
+        request_msg = export_config.ExportProductsRequest(
             parent="parent_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_products_use_cached_wrapped_rpc():
@@ -4007,9 +4031,14 @@ async def test_export_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_products_async(
-    transport: str = "grpc_asyncio", request_type=export_config.ExportProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        export_config.ExportProductsRequest(),
+        {},
+    ],
+)
+async def test_export_products_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4017,7 +4046,7 @@ async def test_export_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_products), "__call__") as call:
@@ -4035,11 +4064,6 @@ async def test_export_products_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_products_async_from_dict():
-    await test_export_products_async(request_type=dict)
 
 
 def test_export_products_field_headers():
@@ -4106,8 +4130,8 @@ async def test_export_products_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.SetInventoryRequest,
-        dict,
+        product_service.SetInventoryRequest(),
+        {},
     ],
 )
 def test_set_inventory(request_type, transport: str = "grpc"):
@@ -4118,7 +4142,7 @@ def test_set_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_inventory), "__call__") as call:
@@ -4157,7 +4181,8 @@ def test_set_inventory_non_empty_request_with_auto_populated_field():
         client.set_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.SetInventoryRequest()
+        request_msg = product_service.SetInventoryRequest()
+        assert args[0] == request_msg
 
 
 def test_set_inventory_use_cached_wrapped_rpc():
@@ -4248,9 +4273,14 @@ async def test_set_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_inventory_async(
-    transport: str = "grpc_asyncio", request_type=product_service.SetInventoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.SetInventoryRequest(),
+        {},
+    ],
+)
+async def test_set_inventory_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4258,7 +4288,7 @@ async def test_set_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_inventory), "__call__") as call:
@@ -4276,11 +4306,6 @@ async def test_set_inventory_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_set_inventory_async_from_dict():
-    await test_set_inventory_async(request_type=dict)
 
 
 def test_set_inventory_field_headers():
@@ -4439,8 +4464,8 @@ async def test_set_inventory_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.AddFulfillmentPlacesRequest,
-        dict,
+        product_service.AddFulfillmentPlacesRequest(),
+        {},
     ],
 )
 def test_add_fulfillment_places(request_type, transport: str = "grpc"):
@@ -4451,7 +4476,7 @@ def test_add_fulfillment_places(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4497,10 +4522,11 @@ def test_add_fulfillment_places_non_empty_request_with_auto_populated_field():
         client.add_fulfillment_places(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.AddFulfillmentPlacesRequest(
+        request_msg = product_service.AddFulfillmentPlacesRequest(
             product="product_value",
             type_="type__value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_fulfillment_places_use_cached_wrapped_rpc():
@@ -4596,9 +4622,15 @@ async def test_add_fulfillment_places_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.AddFulfillmentPlacesRequest(),
+        {},
+    ],
+)
 async def test_add_fulfillment_places_async(
-    transport: str = "grpc_asyncio",
-    request_type=product_service.AddFulfillmentPlacesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4607,7 +4639,7 @@ async def test_add_fulfillment_places_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4627,11 +4659,6 @@ async def test_add_fulfillment_places_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_add_fulfillment_places_async_from_dict():
-    await test_add_fulfillment_places_async(request_type=dict)
 
 
 def test_add_fulfillment_places_field_headers():
@@ -4788,8 +4815,8 @@ async def test_add_fulfillment_places_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.RemoveFulfillmentPlacesRequest,
-        dict,
+        product_service.RemoveFulfillmentPlacesRequest(),
+        {},
     ],
 )
 def test_remove_fulfillment_places(request_type, transport: str = "grpc"):
@@ -4800,7 +4827,7 @@ def test_remove_fulfillment_places(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4846,10 +4873,11 @@ def test_remove_fulfillment_places_non_empty_request_with_auto_populated_field()
         client.remove_fulfillment_places(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.RemoveFulfillmentPlacesRequest(
+        request_msg = product_service.RemoveFulfillmentPlacesRequest(
             product="product_value",
             type_="type__value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_fulfillment_places_use_cached_wrapped_rpc():
@@ -4945,9 +4973,15 @@ async def test_remove_fulfillment_places_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.RemoveFulfillmentPlacesRequest(),
+        {},
+    ],
+)
 async def test_remove_fulfillment_places_async(
-    transport: str = "grpc_asyncio",
-    request_type=product_service.RemoveFulfillmentPlacesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4956,7 +4990,7 @@ async def test_remove_fulfillment_places_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4976,11 +5010,6 @@ async def test_remove_fulfillment_places_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_fulfillment_places_async_from_dict():
-    await test_remove_fulfillment_places_async(request_type=dict)
 
 
 def test_remove_fulfillment_places_field_headers():
@@ -5137,8 +5166,8 @@ async def test_remove_fulfillment_places_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.AddLocalInventoriesRequest,
-        dict,
+        product_service.AddLocalInventoriesRequest(),
+        {},
     ],
 )
 def test_add_local_inventories(request_type, transport: str = "grpc"):
@@ -5149,7 +5178,7 @@ def test_add_local_inventories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5194,9 +5223,10 @@ def test_add_local_inventories_non_empty_request_with_auto_populated_field():
         client.add_local_inventories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.AddLocalInventoriesRequest(
+        request_msg = product_service.AddLocalInventoriesRequest(
             product="product_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_local_inventories_use_cached_wrapped_rpc():
@@ -5292,9 +5322,15 @@ async def test_add_local_inventories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.AddLocalInventoriesRequest(),
+        {},
+    ],
+)
 async def test_add_local_inventories_async(
-    transport: str = "grpc_asyncio",
-    request_type=product_service.AddLocalInventoriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5303,7 +5339,7 @@ async def test_add_local_inventories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5323,11 +5359,6 @@ async def test_add_local_inventories_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_add_local_inventories_async_from_dict():
-    await test_add_local_inventories_async(request_type=dict)
 
 
 def test_add_local_inventories_field_headers():
@@ -5484,8 +5515,8 @@ async def test_add_local_inventories_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        product_service.RemoveLocalInventoriesRequest,
-        dict,
+        product_service.RemoveLocalInventoriesRequest(),
+        {},
     ],
 )
 def test_remove_local_inventories(request_type, transport: str = "grpc"):
@@ -5496,7 +5527,7 @@ def test_remove_local_inventories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5541,9 +5572,10 @@ def test_remove_local_inventories_non_empty_request_with_auto_populated_field():
         client.remove_local_inventories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == product_service.RemoveLocalInventoriesRequest(
+        request_msg = product_service.RemoveLocalInventoriesRequest(
             product="product_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_local_inventories_use_cached_wrapped_rpc():
@@ -5639,9 +5671,15 @@ async def test_remove_local_inventories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        product_service.RemoveLocalInventoriesRequest(),
+        {},
+    ],
+)
 async def test_remove_local_inventories_async(
-    transport: str = "grpc_asyncio",
-    request_type=product_service.RemoveLocalInventoriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5650,7 +5688,7 @@ async def test_remove_local_inventories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5670,11 +5708,6 @@ async def test_remove_local_inventories_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_local_inventories_async_from_dict():
-    await test_remove_local_inventories_async(request_type=dict)
 
 
 def test_remove_local_inventories_field_headers():
@@ -8349,7 +8382,6 @@ def test_create_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.CreateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8370,7 +8402,6 @@ def test_get_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.GetProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8391,7 +8422,6 @@ def test_list_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8412,7 +8442,6 @@ def test_update_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.UpdateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8433,7 +8462,6 @@ def test_delete_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.DeleteProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8454,7 +8482,6 @@ def test_purge_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8475,7 +8502,6 @@ def test_import_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8496,7 +8522,6 @@ def test_export_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8517,7 +8542,6 @@ def test_set_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.SetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -8540,7 +8564,6 @@ def test_add_fulfillment_places_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8563,7 +8586,6 @@ def test_remove_fulfillment_places_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8586,7 +8608,6 @@ def test_add_local_inventories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8609,7 +8630,6 @@ def test_remove_local_inventories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8667,7 +8687,6 @@ async def test_create_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.CreateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8711,7 +8730,6 @@ async def test_get_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.GetProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8738,7 +8756,6 @@ async def test_list_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8782,7 +8799,6 @@ async def test_update_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.UpdateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8805,7 +8821,6 @@ async def test_delete_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.DeleteProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -8830,7 +8845,6 @@ async def test_purge_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8855,7 +8869,6 @@ async def test_import_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8880,7 +8893,6 @@ async def test_export_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8905,7 +8917,6 @@ async def test_set_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.SetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -8932,7 +8943,6 @@ async def test_add_fulfillment_places_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8959,7 +8969,6 @@ async def test_remove_fulfillment_places_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8986,7 +8995,6 @@ async def test_add_local_inventories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9013,7 +9021,6 @@ async def test_remove_local_inventories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11276,7 +11283,6 @@ def test_create_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.CreateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -11296,7 +11302,6 @@ def test_get_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.GetProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -11316,7 +11321,6 @@ def test_list_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11336,7 +11340,6 @@ def test_update_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.UpdateProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -11356,7 +11359,6 @@ def test_delete_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.DeleteProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -11376,7 +11378,6 @@ def test_purge_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11396,7 +11397,6 @@ def test_import_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11416,7 +11416,6 @@ def test_export_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = export_config.ExportProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11436,7 +11435,6 @@ def test_set_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.SetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11458,7 +11456,6 @@ def test_add_fulfillment_places_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11480,7 +11477,6 @@ def test_remove_fulfillment_places_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveFulfillmentPlacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11502,7 +11498,6 @@ def test_add_local_inventories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.AddLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11524,7 +11519,6 @@ def test_remove_local_inventories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = product_service.RemoveLocalInventoriesRequest()
-
         assert args[0] == request_msg
 
 

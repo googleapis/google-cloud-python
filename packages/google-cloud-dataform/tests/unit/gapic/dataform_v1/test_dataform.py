@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -126,6 +127,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1275,8 +1291,8 @@ def test_dataform_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetTeamFolderRequest,
-        dict,
+        dataform.GetTeamFolderRequest(),
+        {},
     ],
 )
 def test_get_team_folder(request_type, transport: str = "grpc"):
@@ -1287,7 +1303,7 @@ def test_get_team_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_team_folder), "__call__") as call:
@@ -1337,9 +1353,10 @@ def test_get_team_folder_non_empty_request_with_auto_populated_field():
         client.get_team_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetTeamFolderRequest(
+        request_msg = dataform.GetTeamFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_team_folder_use_cached_wrapped_rpc():
@@ -1420,9 +1437,14 @@ async def test_get_team_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_team_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetTeamFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetTeamFolderRequest(),
+        {},
+    ],
+)
+async def test_get_team_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1430,7 +1452,7 @@ async def test_get_team_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_team_folder), "__call__") as call:
@@ -1457,11 +1479,6 @@ async def test_get_team_folder_async(
     assert response.display_name == "display_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_get_team_folder_async_from_dict():
-    await test_get_team_folder_async(request_type=dict)
 
 
 def test_get_team_folder_field_headers():
@@ -1606,8 +1623,8 @@ async def test_get_team_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateTeamFolderRequest,
-        dict,
+        dataform.CreateTeamFolderRequest(),
+        {},
     ],
 )
 def test_create_team_folder(request_type, transport: str = "grpc"):
@@ -1618,7 +1635,7 @@ def test_create_team_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1672,9 +1689,10 @@ def test_create_team_folder_non_empty_request_with_auto_populated_field():
         client.create_team_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateTeamFolderRequest(
+        request_msg = dataform.CreateTeamFolderRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_team_folder_use_cached_wrapped_rpc():
@@ -1759,9 +1777,14 @@ async def test_create_team_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_team_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateTeamFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateTeamFolderRequest(),
+        {},
+    ],
+)
+async def test_create_team_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1769,7 +1792,7 @@ async def test_create_team_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1798,11 +1821,6 @@ async def test_create_team_folder_async(
     assert response.display_name == "display_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_create_team_folder_async_from_dict():
-    await test_create_team_folder_async(request_type=dict)
 
 
 def test_create_team_folder_field_headers():
@@ -1965,8 +1983,8 @@ async def test_create_team_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateTeamFolderRequest,
-        dict,
+        dataform.UpdateTeamFolderRequest(),
+        {},
     ],
 )
 def test_update_team_folder(request_type, transport: str = "grpc"):
@@ -1977,7 +1995,7 @@ def test_update_team_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2029,7 +2047,8 @@ def test_update_team_folder_non_empty_request_with_auto_populated_field():
         client.update_team_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateTeamFolderRequest()
+        request_msg = dataform.UpdateTeamFolderRequest()
+        assert args[0] == request_msg
 
 
 def test_update_team_folder_use_cached_wrapped_rpc():
@@ -2114,9 +2133,14 @@ async def test_update_team_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_team_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateTeamFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateTeamFolderRequest(),
+        {},
+    ],
+)
+async def test_update_team_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2124,7 +2148,7 @@ async def test_update_team_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2153,11 +2177,6 @@ async def test_update_team_folder_async(
     assert response.display_name == "display_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_update_team_folder_async_from_dict():
-    await test_update_team_folder_async(request_type=dict)
 
 
 def test_update_team_folder_field_headers():
@@ -2320,8 +2339,8 @@ async def test_update_team_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteTeamFolderRequest,
-        dict,
+        dataform.DeleteTeamFolderRequest(),
+        {},
     ],
 )
 def test_delete_team_folder(request_type, transport: str = "grpc"):
@@ -2332,7 +2351,7 @@ def test_delete_team_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2377,9 +2396,10 @@ def test_delete_team_folder_non_empty_request_with_auto_populated_field():
         client.delete_team_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteTeamFolderRequest(
+        request_msg = dataform.DeleteTeamFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_team_folder_use_cached_wrapped_rpc():
@@ -2464,9 +2484,14 @@ async def test_delete_team_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_team_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteTeamFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteTeamFolderRequest(),
+        {},
+    ],
+)
+async def test_delete_team_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2474,7 +2499,7 @@ async def test_delete_team_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2492,11 +2517,6 @@ async def test_delete_team_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_team_folder_async_from_dict():
-    await test_delete_team_folder_async(request_type=dict)
 
 
 def test_delete_team_folder_field_headers():
@@ -2649,8 +2669,8 @@ async def test_delete_team_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteTeamFolderTreeRequest,
-        dict,
+        dataform.DeleteTeamFolderTreeRequest(),
+        {},
     ],
 )
 def test_delete_team_folder_tree(request_type, transport: str = "grpc"):
@@ -2661,7 +2681,7 @@ def test_delete_team_folder_tree(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2706,9 +2726,10 @@ def test_delete_team_folder_tree_non_empty_request_with_auto_populated_field():
         client.delete_team_folder_tree(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteTeamFolderTreeRequest(
+        request_msg = dataform.DeleteTeamFolderTreeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_team_folder_tree_use_cached_wrapped_rpc():
@@ -2804,8 +2825,15 @@ async def test_delete_team_folder_tree_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteTeamFolderTreeRequest(),
+        {},
+    ],
+)
 async def test_delete_team_folder_tree_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteTeamFolderTreeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2814,7 +2842,7 @@ async def test_delete_team_folder_tree_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2834,11 +2862,6 @@ async def test_delete_team_folder_tree_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_team_folder_tree_async_from_dict():
-    await test_delete_team_folder_tree_async(request_type=dict)
 
 
 def test_delete_team_folder_tree_field_headers():
@@ -3005,8 +3028,8 @@ async def test_delete_team_folder_tree_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryTeamFolderContentsRequest,
-        dict,
+        dataform.QueryTeamFolderContentsRequest(),
+        {},
     ],
 )
 def test_query_team_folder_contents(request_type, transport: str = "grpc"):
@@ -3017,7 +3040,7 @@ def test_query_team_folder_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3068,12 +3091,13 @@ def test_query_team_folder_contents_non_empty_request_with_auto_populated_field(
         client.query_team_folder_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryTeamFolderContentsRequest(
+        request_msg = dataform.QueryTeamFolderContentsRequest(
             team_folder="team_folder_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_team_folder_contents_use_cached_wrapped_rpc():
@@ -3159,9 +3183,15 @@ async def test_query_team_folder_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryTeamFolderContentsRequest(),
+        {},
+    ],
+)
 async def test_query_team_folder_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.QueryTeamFolderContentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3170,7 +3200,7 @@ async def test_query_team_folder_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3193,11 +3223,6 @@ async def test_query_team_folder_contents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryTeamFolderContentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_team_folder_contents_async_from_dict():
-    await test_query_team_folder_contents_async(request_type=dict)
 
 
 def test_query_team_folder_contents_field_headers():
@@ -3564,8 +3589,8 @@ async def test_query_team_folder_contents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.SearchTeamFoldersRequest,
-        dict,
+        dataform.SearchTeamFoldersRequest(),
+        {},
     ],
 )
 def test_search_team_folders(request_type, transport: str = "grpc"):
@@ -3576,7 +3601,7 @@ def test_search_team_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3627,12 +3652,13 @@ def test_search_team_folders_non_empty_request_with_auto_populated_field():
         client.search_team_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.SearchTeamFoldersRequest(
+        request_msg = dataform.SearchTeamFoldersRequest(
             location="location_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_team_folders_use_cached_wrapped_rpc():
@@ -3717,9 +3743,14 @@ async def test_search_team_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_team_folders_async(
-    transport: str = "grpc_asyncio", request_type=dataform.SearchTeamFoldersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.SearchTeamFoldersRequest(),
+        {},
+    ],
+)
+async def test_search_team_folders_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3727,7 +3758,7 @@ async def test_search_team_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3750,11 +3781,6 @@ async def test_search_team_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchTeamFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_team_folders_async_from_dict():
-    await test_search_team_folders_async(request_type=dict)
 
 
 def test_search_team_folders_field_headers():
@@ -4029,8 +4055,8 @@ async def test_search_team_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetFolderRequest,
-        dict,
+        dataform.GetFolderRequest(),
+        {},
     ],
 )
 def test_get_folder(request_type, transport: str = "grpc"):
@@ -4041,7 +4067,7 @@ def test_get_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -4095,9 +4121,10 @@ def test_get_folder_non_empty_request_with_auto_populated_field():
         client.get_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetFolderRequest(
+        request_msg = dataform.GetFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_folder_use_cached_wrapped_rpc():
@@ -4176,9 +4203,14 @@ async def test_get_folder_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetFolderRequest(),
+        {},
+    ],
+)
+async def test_get_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4186,7 +4218,7 @@ async def test_get_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -4217,11 +4249,6 @@ async def test_get_folder_async(
     assert response.team_folder_name == "team_folder_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_get_folder_async_from_dict():
-    await test_get_folder_async(request_type=dict)
 
 
 def test_get_folder_field_headers():
@@ -4366,8 +4393,8 @@ async def test_get_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateFolderRequest,
-        dict,
+        dataform.CreateFolderRequest(),
+        {},
     ],
 )
 def test_create_folder(request_type, transport: str = "grpc"):
@@ -4378,7 +4405,7 @@ def test_create_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -4432,9 +4459,10 @@ def test_create_folder_non_empty_request_with_auto_populated_field():
         client.create_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateFolderRequest(
+        request_msg = dataform.CreateFolderRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_folder_use_cached_wrapped_rpc():
@@ -4515,9 +4543,14 @@ async def test_create_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateFolderRequest(),
+        {},
+    ],
+)
+async def test_create_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4525,7 +4558,7 @@ async def test_create_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -4556,11 +4589,6 @@ async def test_create_folder_async(
     assert response.team_folder_name == "team_folder_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_create_folder_async_from_dict():
-    await test_create_folder_async(request_type=dict)
 
 
 def test_create_folder_field_headers():
@@ -4715,8 +4743,8 @@ async def test_create_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateFolderRequest,
-        dict,
+        dataform.UpdateFolderRequest(),
+        {},
     ],
 )
 def test_update_folder(request_type, transport: str = "grpc"):
@@ -4727,7 +4755,7 @@ def test_update_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_folder), "__call__") as call:
@@ -4779,7 +4807,8 @@ def test_update_folder_non_empty_request_with_auto_populated_field():
         client.update_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateFolderRequest()
+        request_msg = dataform.UpdateFolderRequest()
+        assert args[0] == request_msg
 
 
 def test_update_folder_use_cached_wrapped_rpc():
@@ -4860,9 +4889,14 @@ async def test_update_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateFolderRequest(),
+        {},
+    ],
+)
+async def test_update_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4870,7 +4904,7 @@ async def test_update_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_folder), "__call__") as call:
@@ -4901,11 +4935,6 @@ async def test_update_folder_async(
     assert response.team_folder_name == "team_folder_name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.creator_iam_principal == "creator_iam_principal_value"
-
-
-@pytest.mark.asyncio
-async def test_update_folder_async_from_dict():
-    await test_update_folder_async(request_type=dict)
 
 
 def test_update_folder_field_headers():
@@ -5060,8 +5089,8 @@ async def test_update_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteFolderRequest,
-        dict,
+        dataform.DeleteFolderRequest(),
+        {},
     ],
 )
 def test_delete_folder(request_type, transport: str = "grpc"):
@@ -5072,7 +5101,7 @@ def test_delete_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -5113,9 +5142,10 @@ def test_delete_folder_non_empty_request_with_auto_populated_field():
         client.delete_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteFolderRequest(
+        request_msg = dataform.DeleteFolderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_folder_use_cached_wrapped_rpc():
@@ -5196,9 +5226,14 @@ async def test_delete_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteFolderRequest(),
+        {},
+    ],
+)
+async def test_delete_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5206,7 +5241,7 @@ async def test_delete_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -5222,11 +5257,6 @@ async def test_delete_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_async_from_dict():
-    await test_delete_folder_async(request_type=dict)
 
 
 def test_delete_folder_field_headers():
@@ -5371,8 +5401,8 @@ async def test_delete_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteFolderTreeRequest,
-        dict,
+        dataform.DeleteFolderTreeRequest(),
+        {},
     ],
 )
 def test_delete_folder_tree(request_type, transport: str = "grpc"):
@@ -5383,7 +5413,7 @@ def test_delete_folder_tree(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5428,9 +5458,10 @@ def test_delete_folder_tree_non_empty_request_with_auto_populated_field():
         client.delete_folder_tree(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteFolderTreeRequest(
+        request_msg = dataform.DeleteFolderTreeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_folder_tree_use_cached_wrapped_rpc():
@@ -5525,9 +5556,14 @@ async def test_delete_folder_tree_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_folder_tree_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteFolderTreeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteFolderTreeRequest(),
+        {},
+    ],
+)
+async def test_delete_folder_tree_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5535,7 +5571,7 @@ async def test_delete_folder_tree_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5555,11 +5591,6 @@ async def test_delete_folder_tree_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_tree_async_from_dict():
-    await test_delete_folder_tree_async(request_type=dict)
 
 
 def test_delete_folder_tree_field_headers():
@@ -5726,8 +5757,8 @@ async def test_delete_folder_tree_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryFolderContentsRequest,
-        dict,
+        dataform.QueryFolderContentsRequest(),
+        {},
     ],
 )
 def test_query_folder_contents(request_type, transport: str = "grpc"):
@@ -5738,7 +5769,7 @@ def test_query_folder_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5789,12 +5820,13 @@ def test_query_folder_contents_non_empty_request_with_auto_populated_field():
         client.query_folder_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryFolderContentsRequest(
+        request_msg = dataform.QueryFolderContentsRequest(
             folder="folder_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_folder_contents_use_cached_wrapped_rpc():
@@ -5880,8 +5912,15 @@ async def test_query_folder_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryFolderContentsRequest(),
+        {},
+    ],
+)
 async def test_query_folder_contents_async(
-    transport: str = "grpc_asyncio", request_type=dataform.QueryFolderContentsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5890,7 +5929,7 @@ async def test_query_folder_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5913,11 +5952,6 @@ async def test_query_folder_contents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryFolderContentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_folder_contents_async_from_dict():
-    await test_query_folder_contents_async(request_type=dict)
 
 
 def test_query_folder_contents_field_headers():
@@ -6278,8 +6312,8 @@ async def test_query_folder_contents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryUserRootContentsRequest,
-        dict,
+        dataform.QueryUserRootContentsRequest(),
+        {},
     ],
 )
 def test_query_user_root_contents(request_type, transport: str = "grpc"):
@@ -6290,7 +6324,7 @@ def test_query_user_root_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6341,12 +6375,13 @@ def test_query_user_root_contents_non_empty_request_with_auto_populated_field():
         client.query_user_root_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryUserRootContentsRequest(
+        request_msg = dataform.QueryUserRootContentsRequest(
             location="location_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_user_root_contents_use_cached_wrapped_rpc():
@@ -6432,8 +6467,15 @@ async def test_query_user_root_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryUserRootContentsRequest(),
+        {},
+    ],
+)
 async def test_query_user_root_contents_async(
-    transport: str = "grpc_asyncio", request_type=dataform.QueryUserRootContentsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6442,7 +6484,7 @@ async def test_query_user_root_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6465,11 +6507,6 @@ async def test_query_user_root_contents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryUserRootContentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_user_root_contents_async_from_dict():
-    await test_query_user_root_contents_async(request_type=dict)
 
 
 def test_query_user_root_contents_field_headers():
@@ -6832,8 +6869,8 @@ async def test_query_user_root_contents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.MoveFolderRequest,
-        dict,
+        dataform.MoveFolderRequest(),
+        {},
     ],
 )
 def test_move_folder(request_type, transport: str = "grpc"):
@@ -6844,7 +6881,7 @@ def test_move_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_folder), "__call__") as call:
@@ -6886,10 +6923,11 @@ def test_move_folder_non_empty_request_with_auto_populated_field():
         client.move_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveFolderRequest(
+        request_msg = dataform.MoveFolderRequest(
             name="name_value",
             destination_containing_folder="destination_containing_folder_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_folder_use_cached_wrapped_rpc():
@@ -6980,9 +7018,14 @@ async def test_move_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_folder_async(
-    transport: str = "grpc_asyncio", request_type=dataform.MoveFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.MoveFolderRequest(),
+        {},
+    ],
+)
+async def test_move_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6990,7 +7033,7 @@ async def test_move_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_folder), "__call__") as call:
@@ -7008,11 +7051,6 @@ async def test_move_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_move_folder_async_from_dict():
-    await test_move_folder_async(request_type=dict)
 
 
 def test_move_folder_field_headers():
@@ -7171,8 +7209,8 @@ async def test_move_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListRepositoriesRequest,
-        dict,
+        dataform.ListRepositoriesRequest(),
+        {},
     ],
 )
 def test_list_repositories(request_type, transport: str = "grpc"):
@@ -7183,7 +7221,7 @@ def test_list_repositories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7236,12 +7274,13 @@ def test_list_repositories_non_empty_request_with_auto_populated_field():
         client.list_repositories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListRepositoriesRequest(
+        request_msg = dataform.ListRepositoriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_repositories_use_cached_wrapped_rpc():
@@ -7324,9 +7363,14 @@ async def test_list_repositories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_repositories_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ListRepositoriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListRepositoriesRequest(),
+        {},
+    ],
+)
+async def test_list_repositories_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7334,7 +7378,7 @@ async def test_list_repositories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7359,11 +7403,6 @@ async def test_list_repositories_async(
     assert isinstance(response, pagers.ListRepositoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_repositories_async_from_dict():
-    await test_list_repositories_async(request_type=dict)
 
 
 def test_list_repositories_field_headers():
@@ -7718,8 +7757,8 @@ async def test_list_repositories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetRepositoryRequest,
-        dict,
+        dataform.GetRepositoryRequest(),
+        {},
     ],
 )
 def test_get_repository(request_type, transport: str = "grpc"):
@@ -7730,7 +7769,7 @@ def test_get_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
@@ -7793,9 +7832,10 @@ def test_get_repository_non_empty_request_with_auto_populated_field():
         client.get_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetRepositoryRequest(
+        request_msg = dataform.GetRepositoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_repository_use_cached_wrapped_rpc():
@@ -7876,9 +7916,14 @@ async def test_get_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_repository_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetRepositoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetRepositoryRequest(),
+        {},
+    ],
+)
+async def test_get_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7886,7 +7931,7 @@ async def test_get_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
@@ -7926,11 +7971,6 @@ async def test_get_repository_async(
     assert response.service_account == "service_account_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_repository_async_from_dict():
-    await test_get_repository_async(request_type=dict)
 
 
 def test_get_repository_field_headers():
@@ -8075,8 +8115,8 @@ async def test_get_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateRepositoryRequest,
-        dict,
+        dataform.CreateRepositoryRequest(),
+        {},
     ],
 )
 def test_create_repository(request_type, transport: str = "grpc"):
@@ -8087,7 +8127,7 @@ def test_create_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8155,10 +8195,11 @@ def test_create_repository_non_empty_request_with_auto_populated_field():
         client.create_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateRepositoryRequest(
+        request_msg = dataform.CreateRepositoryRequest(
             parent="parent_value",
             repository_id="repository_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_repository_use_cached_wrapped_rpc():
@@ -8241,9 +8282,14 @@ async def test_create_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_repository_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateRepositoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateRepositoryRequest(),
+        {},
+    ],
+)
+async def test_create_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8251,7 +8297,7 @@ async def test_create_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8293,11 +8339,6 @@ async def test_create_repository_async(
     assert response.service_account == "service_account_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_create_repository_async_from_dict():
-    await test_create_repository_async(request_type=dict)
 
 
 def test_create_repository_field_headers():
@@ -8470,8 +8511,8 @@ async def test_create_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateRepositoryRequest,
-        dict,
+        dataform.UpdateRepositoryRequest(),
+        {},
     ],
 )
 def test_update_repository(request_type, transport: str = "grpc"):
@@ -8482,7 +8523,7 @@ def test_update_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8547,7 +8588,8 @@ def test_update_repository_non_empty_request_with_auto_populated_field():
         client.update_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateRepositoryRequest()
+        request_msg = dataform.UpdateRepositoryRequest()
+        assert args[0] == request_msg
 
 
 def test_update_repository_use_cached_wrapped_rpc():
@@ -8630,9 +8672,14 @@ async def test_update_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_repository_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateRepositoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateRepositoryRequest(),
+        {},
+    ],
+)
+async def test_update_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8640,7 +8687,7 @@ async def test_update_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8682,11 +8729,6 @@ async def test_update_repository_async(
     assert response.service_account == "service_account_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_update_repository_async_from_dict():
-    await test_update_repository_async(request_type=dict)
 
 
 def test_update_repository_field_headers():
@@ -8849,8 +8891,8 @@ async def test_update_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteRepositoryRequest,
-        dict,
+        dataform.DeleteRepositoryRequest(),
+        {},
     ],
 )
 def test_delete_repository(request_type, transport: str = "grpc"):
@@ -8861,7 +8903,7 @@ def test_delete_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8906,9 +8948,10 @@ def test_delete_repository_non_empty_request_with_auto_populated_field():
         client.delete_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteRepositoryRequest(
+        request_msg = dataform.DeleteRepositoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_repository_use_cached_wrapped_rpc():
@@ -8991,9 +9034,14 @@ async def test_delete_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_repository_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteRepositoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteRepositoryRequest(),
+        {},
+    ],
+)
+async def test_delete_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9001,7 +9049,7 @@ async def test_delete_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9019,11 +9067,6 @@ async def test_delete_repository_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_repository_async_from_dict():
-    await test_delete_repository_async(request_type=dict)
 
 
 def test_delete_repository_field_headers():
@@ -9176,8 +9219,8 @@ async def test_delete_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.MoveRepositoryRequest,
-        dict,
+        dataform.MoveRepositoryRequest(),
+        {},
     ],
 )
 def test_move_repository(request_type, transport: str = "grpc"):
@@ -9188,7 +9231,7 @@ def test_move_repository(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_repository), "__call__") as call:
@@ -9230,10 +9273,11 @@ def test_move_repository_non_empty_request_with_auto_populated_field():
         client.move_repository(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveRepositoryRequest(
+        request_msg = dataform.MoveRepositoryRequest(
             name="name_value",
             destination_containing_folder="destination_containing_folder_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_repository_use_cached_wrapped_rpc():
@@ -9324,9 +9368,14 @@ async def test_move_repository_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_repository_async(
-    transport: str = "grpc_asyncio", request_type=dataform.MoveRepositoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.MoveRepositoryRequest(),
+        {},
+    ],
+)
+async def test_move_repository_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9334,7 +9383,7 @@ async def test_move_repository_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_repository), "__call__") as call:
@@ -9352,11 +9401,6 @@ async def test_move_repository_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_move_repository_async_from_dict():
-    await test_move_repository_async(request_type=dict)
 
 
 def test_move_repository_field_headers():
@@ -9515,8 +9559,8 @@ async def test_move_repository_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CommitRepositoryChangesRequest,
-        dict,
+        dataform.CommitRepositoryChangesRequest(),
+        {},
     ],
 )
 def test_commit_repository_changes(request_type, transport: str = "grpc"):
@@ -9527,7 +9571,7 @@ def test_commit_repository_changes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9576,10 +9620,11 @@ def test_commit_repository_changes_non_empty_request_with_auto_populated_field()
         client.commit_repository_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitRepositoryChangesRequest(
+        request_msg = dataform.CommitRepositoryChangesRequest(
             name="name_value",
             required_head_commit_sha="required_head_commit_sha_value",
         )
+        assert args[0] == request_msg
 
 
 def test_commit_repository_changes_use_cached_wrapped_rpc():
@@ -9665,9 +9710,15 @@ async def test_commit_repository_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CommitRepositoryChangesRequest(),
+        {},
+    ],
+)
 async def test_commit_repository_changes_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.CommitRepositoryChangesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9676,7 +9727,7 @@ async def test_commit_repository_changes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9699,11 +9750,6 @@ async def test_commit_repository_changes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CommitRepositoryChangesResponse)
     assert response.commit_sha == "commit_sha_value"
-
-
-@pytest.mark.asyncio
-async def test_commit_repository_changes_async_from_dict():
-    await test_commit_repository_changes_async(request_type=dict)
 
 
 def test_commit_repository_changes_field_headers():
@@ -9774,8 +9820,8 @@ async def test_commit_repository_changes_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ReadRepositoryFileRequest,
-        dict,
+        dataform.ReadRepositoryFileRequest(),
+        {},
     ],
 )
 def test_read_repository_file(request_type, transport: str = "grpc"):
@@ -9786,7 +9832,7 @@ def test_read_repository_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9836,11 +9882,12 @@ def test_read_repository_file_non_empty_request_with_auto_populated_field():
         client.read_repository_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadRepositoryFileRequest(
+        request_msg = dataform.ReadRepositoryFileRequest(
             name="name_value",
             commit_sha="commit_sha_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_repository_file_use_cached_wrapped_rpc():
@@ -9925,8 +9972,15 @@ async def test_read_repository_file_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ReadRepositoryFileRequest(),
+        {},
+    ],
+)
 async def test_read_repository_file_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ReadRepositoryFileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9935,7 +9989,7 @@ async def test_read_repository_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9958,11 +10012,6 @@ async def test_read_repository_file_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadRepositoryFileResponse)
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_read_repository_file_async_from_dict():
-    await test_read_repository_file_async(request_type=dict)
 
 
 def test_read_repository_file_field_headers():
@@ -10033,8 +10082,8 @@ async def test_read_repository_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryRepositoryDirectoryContentsRequest,
-        dict,
+        dataform.QueryRepositoryDirectoryContentsRequest(),
+        {},
     ],
 )
 def test_query_repository_directory_contents(request_type, transport: str = "grpc"):
@@ -10045,7 +10094,7 @@ def test_query_repository_directory_contents(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10096,12 +10145,13 @@ def test_query_repository_directory_contents_non_empty_request_with_auto_populat
         client.query_repository_directory_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest(
+        request_msg = dataform.QueryRepositoryDirectoryContentsRequest(
             name="name_value",
             commit_sha="commit_sha_value",
             path="path_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_repository_directory_contents_use_cached_wrapped_rpc():
@@ -10187,9 +10237,15 @@ async def test_query_repository_directory_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryRepositoryDirectoryContentsRequest(),
+        {},
+    ],
+)
 async def test_query_repository_directory_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.QueryRepositoryDirectoryContentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10198,7 +10254,7 @@ async def test_query_repository_directory_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10221,11 +10277,6 @@ async def test_query_repository_directory_contents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryRepositoryDirectoryContentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_repository_directory_contents_async_from_dict():
-    await test_query_repository_directory_contents_async(request_type=dict)
 
 
 def test_query_repository_directory_contents_field_headers():
@@ -10498,8 +10549,8 @@ async def test_query_repository_directory_contents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.FetchRepositoryHistoryRequest,
-        dict,
+        dataform.FetchRepositoryHistoryRequest(),
+        {},
     ],
 )
 def test_fetch_repository_history(request_type, transport: str = "grpc"):
@@ -10510,7 +10561,7 @@ def test_fetch_repository_history(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10559,10 +10610,11 @@ def test_fetch_repository_history_non_empty_request_with_auto_populated_field():
         client.fetch_repository_history(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRepositoryHistoryRequest(
+        request_msg = dataform.FetchRepositoryHistoryRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_repository_history_use_cached_wrapped_rpc():
@@ -10648,8 +10700,15 @@ async def test_fetch_repository_history_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchRepositoryHistoryRequest(),
+        {},
+    ],
+)
 async def test_fetch_repository_history_async(
-    transport: str = "grpc_asyncio", request_type=dataform.FetchRepositoryHistoryRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10658,7 +10717,7 @@ async def test_fetch_repository_history_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10681,11 +10740,6 @@ async def test_fetch_repository_history_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchRepositoryHistoryAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_repository_history_async_from_dict():
-    await test_fetch_repository_history_async(request_type=dict)
 
 
 def test_fetch_repository_history_field_headers():
@@ -10956,8 +11010,8 @@ async def test_fetch_repository_history_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ComputeRepositoryAccessTokenStatusRequest,
-        dict,
+        dataform.ComputeRepositoryAccessTokenStatusRequest(),
+        {},
     ],
 )
 def test_compute_repository_access_token_status(request_type, transport: str = "grpc"):
@@ -10968,7 +11022,7 @@ def test_compute_repository_access_token_status(request_type, transport: str = "
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11019,9 +11073,10 @@ def test_compute_repository_access_token_status_non_empty_request_with_auto_popu
         client.compute_repository_access_token_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest(
+        request_msg = dataform.ComputeRepositoryAccessTokenStatusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_compute_repository_access_token_status_use_cached_wrapped_rpc():
@@ -11107,9 +11162,15 @@ async def test_compute_repository_access_token_status_async_use_cached_wrapped_r
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ComputeRepositoryAccessTokenStatusRequest(),
+        {},
+    ],
+)
 async def test_compute_repository_access_token_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11118,7 +11179,7 @@ async def test_compute_repository_access_token_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11144,11 +11205,6 @@ async def test_compute_repository_access_token_status_async(
         response.token_status
         == dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND
     )
-
-
-@pytest.mark.asyncio
-async def test_compute_repository_access_token_status_async_from_dict():
-    await test_compute_repository_access_token_status_async(request_type=dict)
 
 
 def test_compute_repository_access_token_status_field_headers():
@@ -11219,8 +11275,8 @@ async def test_compute_repository_access_token_status_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.FetchRemoteBranchesRequest,
-        dict,
+        dataform.FetchRemoteBranchesRequest(),
+        {},
     ],
 )
 def test_fetch_remote_branches(request_type, transport: str = "grpc"):
@@ -11231,7 +11287,7 @@ def test_fetch_remote_branches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11279,9 +11335,10 @@ def test_fetch_remote_branches_non_empty_request_with_auto_populated_field():
         client.fetch_remote_branches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchRemoteBranchesRequest(
+        request_msg = dataform.FetchRemoteBranchesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_remote_branches_use_cached_wrapped_rpc():
@@ -11367,8 +11424,15 @@ async def test_fetch_remote_branches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchRemoteBranchesRequest(),
+        {},
+    ],
+)
 async def test_fetch_remote_branches_async(
-    transport: str = "grpc_asyncio", request_type=dataform.FetchRemoteBranchesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11377,7 +11441,7 @@ async def test_fetch_remote_branches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11400,11 +11464,6 @@ async def test_fetch_remote_branches_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchRemoteBranchesResponse)
     assert response.branches == ["branches_value"]
-
-
-@pytest.mark.asyncio
-async def test_fetch_remote_branches_async_from_dict():
-    await test_fetch_remote_branches_async(request_type=dict)
 
 
 def test_fetch_remote_branches_field_headers():
@@ -11475,8 +11534,8 @@ async def test_fetch_remote_branches_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListWorkspacesRequest,
-        dict,
+        dataform.ListWorkspacesRequest(),
+        {},
     ],
 )
 def test_list_workspaces(request_type, transport: str = "grpc"):
@@ -11487,7 +11546,7 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -11536,12 +11595,13 @@ def test_list_workspaces_non_empty_request_with_auto_populated_field():
         client.list_workspaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkspacesRequest(
+        request_msg = dataform.ListWorkspacesRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workspaces_use_cached_wrapped_rpc():
@@ -11622,9 +11682,14 @@ async def test_list_workspaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workspaces_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ListWorkspacesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListWorkspacesRequest(),
+        {},
+    ],
+)
+async def test_list_workspaces_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11632,7 +11697,7 @@ async def test_list_workspaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -11655,11 +11720,6 @@ async def test_list_workspaces_async(
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workspaces_async_from_dict():
-    await test_list_workspaces_async(request_type=dict)
 
 
 def test_list_workspaces_field_headers():
@@ -11998,8 +12058,8 @@ async def test_list_workspaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetWorkspaceRequest,
-        dict,
+        dataform.GetWorkspaceRequest(),
+        {},
     ],
 )
 def test_get_workspace(request_type, transport: str = "grpc"):
@@ -12010,7 +12070,7 @@ def test_get_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
@@ -12058,9 +12118,10 @@ def test_get_workspace_non_empty_request_with_auto_populated_field():
         client.get_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkspaceRequest(
+        request_msg = dataform.GetWorkspaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workspace_use_cached_wrapped_rpc():
@@ -12141,9 +12202,14 @@ async def test_get_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workspace_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetWorkspaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetWorkspaceRequest(),
+        {},
+    ],
+)
+async def test_get_workspace_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12151,7 +12217,7 @@ async def test_get_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
@@ -12176,11 +12242,6 @@ async def test_get_workspace_async(
     assert response.name == "name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.disable_moves is True
-
-
-@pytest.mark.asyncio
-async def test_get_workspace_async_from_dict():
-    await test_get_workspace_async(request_type=dict)
 
 
 def test_get_workspace_field_headers():
@@ -12325,8 +12386,8 @@ async def test_get_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateWorkspaceRequest,
-        dict,
+        dataform.CreateWorkspaceRequest(),
+        {},
     ],
 )
 def test_create_workspace(request_type, transport: str = "grpc"):
@@ -12337,7 +12398,7 @@ def test_create_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workspace), "__call__") as call:
@@ -12386,10 +12447,11 @@ def test_create_workspace_non_empty_request_with_auto_populated_field():
         client.create_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkspaceRequest(
+        request_msg = dataform.CreateWorkspaceRequest(
             parent="parent_value",
             workspace_id="workspace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workspace_use_cached_wrapped_rpc():
@@ -12472,9 +12534,14 @@ async def test_create_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workspace_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateWorkspaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateWorkspaceRequest(),
+        {},
+    ],
+)
+async def test_create_workspace_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12482,7 +12549,7 @@ async def test_create_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workspace), "__call__") as call:
@@ -12507,11 +12574,6 @@ async def test_create_workspace_async(
     assert response.name == "name_value"
     assert response.internal_metadata == "internal_metadata_value"
     assert response.disable_moves is True
-
-
-@pytest.mark.asyncio
-async def test_create_workspace_async_from_dict():
-    await test_create_workspace_async(request_type=dict)
 
 
 def test_create_workspace_field_headers():
@@ -12676,8 +12738,8 @@ async def test_create_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteWorkspaceRequest,
-        dict,
+        dataform.DeleteWorkspaceRequest(),
+        {},
     ],
 )
 def test_delete_workspace(request_type, transport: str = "grpc"):
@@ -12688,7 +12750,7 @@ def test_delete_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workspace), "__call__") as call:
@@ -12729,9 +12791,10 @@ def test_delete_workspace_non_empty_request_with_auto_populated_field():
         client.delete_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkspaceRequest(
+        request_msg = dataform.DeleteWorkspaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workspace_use_cached_wrapped_rpc():
@@ -12814,9 +12877,14 @@ async def test_delete_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workspace_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteWorkspaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteWorkspaceRequest(),
+        {},
+    ],
+)
+async def test_delete_workspace_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12824,7 +12892,7 @@ async def test_delete_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workspace), "__call__") as call:
@@ -12840,11 +12908,6 @@ async def test_delete_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_workspace_async_from_dict():
-    await test_delete_workspace_async(request_type=dict)
 
 
 def test_delete_workspace_field_headers():
@@ -12989,8 +13052,8 @@ async def test_delete_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.InstallNpmPackagesRequest,
-        dict,
+        dataform.InstallNpmPackagesRequest(),
+        {},
     ],
 )
 def test_install_npm_packages(request_type, transport: str = "grpc"):
@@ -13001,7 +13064,7 @@ def test_install_npm_packages(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13046,9 +13109,10 @@ def test_install_npm_packages_non_empty_request_with_auto_populated_field():
         client.install_npm_packages(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.InstallNpmPackagesRequest(
+        request_msg = dataform.InstallNpmPackagesRequest(
             workspace="workspace_value",
         )
+        assert args[0] == request_msg
 
 
 def test_install_npm_packages_use_cached_wrapped_rpc():
@@ -13133,8 +13197,15 @@ async def test_install_npm_packages_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.InstallNpmPackagesRequest(),
+        {},
+    ],
+)
 async def test_install_npm_packages_async(
-    transport: str = "grpc_asyncio", request_type=dataform.InstallNpmPackagesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13143,7 +13214,7 @@ async def test_install_npm_packages_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13163,11 +13234,6 @@ async def test_install_npm_packages_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.InstallNpmPackagesResponse)
-
-
-@pytest.mark.asyncio
-async def test_install_npm_packages_async_from_dict():
-    await test_install_npm_packages_async(request_type=dict)
 
 
 def test_install_npm_packages_field_headers():
@@ -13238,8 +13304,8 @@ async def test_install_npm_packages_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.PullGitCommitsRequest,
-        dict,
+        dataform.PullGitCommitsRequest(),
+        {},
     ],
 )
 def test_pull_git_commits(request_type, transport: str = "grpc"):
@@ -13250,7 +13316,7 @@ def test_pull_git_commits(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull_git_commits), "__call__") as call:
@@ -13292,10 +13358,11 @@ def test_pull_git_commits_non_empty_request_with_auto_populated_field():
         client.pull_git_commits(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PullGitCommitsRequest(
+        request_msg = dataform.PullGitCommitsRequest(
             name="name_value",
             remote_branch="remote_branch_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pull_git_commits_use_cached_wrapped_rpc():
@@ -13378,9 +13445,14 @@ async def test_pull_git_commits_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_pull_git_commits_async(
-    transport: str = "grpc_asyncio", request_type=dataform.PullGitCommitsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.PullGitCommitsRequest(),
+        {},
+    ],
+)
+async def test_pull_git_commits_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13388,7 +13460,7 @@ async def test_pull_git_commits_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull_git_commits), "__call__") as call:
@@ -13406,11 +13478,6 @@ async def test_pull_git_commits_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.PullGitCommitsResponse)
-
-
-@pytest.mark.asyncio
-async def test_pull_git_commits_async_from_dict():
-    await test_pull_git_commits_async(request_type=dict)
 
 
 def test_pull_git_commits_field_headers():
@@ -13477,8 +13544,8 @@ async def test_pull_git_commits_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.PushGitCommitsRequest,
-        dict,
+        dataform.PushGitCommitsRequest(),
+        {},
     ],
 )
 def test_push_git_commits(request_type, transport: str = "grpc"):
@@ -13489,7 +13556,7 @@ def test_push_git_commits(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.push_git_commits), "__call__") as call:
@@ -13531,10 +13598,11 @@ def test_push_git_commits_non_empty_request_with_auto_populated_field():
         client.push_git_commits(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.PushGitCommitsRequest(
+        request_msg = dataform.PushGitCommitsRequest(
             name="name_value",
             remote_branch="remote_branch_value",
         )
+        assert args[0] == request_msg
 
 
 def test_push_git_commits_use_cached_wrapped_rpc():
@@ -13617,9 +13685,14 @@ async def test_push_git_commits_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_push_git_commits_async(
-    transport: str = "grpc_asyncio", request_type=dataform.PushGitCommitsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.PushGitCommitsRequest(),
+        {},
+    ],
+)
+async def test_push_git_commits_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13627,7 +13700,7 @@ async def test_push_git_commits_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.push_git_commits), "__call__") as call:
@@ -13645,11 +13718,6 @@ async def test_push_git_commits_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.PushGitCommitsResponse)
-
-
-@pytest.mark.asyncio
-async def test_push_git_commits_async_from_dict():
-    await test_push_git_commits_async(request_type=dict)
 
 
 def test_push_git_commits_field_headers():
@@ -13716,8 +13784,8 @@ async def test_push_git_commits_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.FetchFileGitStatusesRequest,
-        dict,
+        dataform.FetchFileGitStatusesRequest(),
+        {},
     ],
 )
 def test_fetch_file_git_statuses(request_type, transport: str = "grpc"):
@@ -13728,7 +13796,7 @@ def test_fetch_file_git_statuses(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13773,9 +13841,10 @@ def test_fetch_file_git_statuses_non_empty_request_with_auto_populated_field():
         client.fetch_file_git_statuses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileGitStatusesRequest(
+        request_msg = dataform.FetchFileGitStatusesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_file_git_statuses_use_cached_wrapped_rpc():
@@ -13861,8 +13930,15 @@ async def test_fetch_file_git_statuses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchFileGitStatusesRequest(),
+        {},
+    ],
+)
 async def test_fetch_file_git_statuses_async(
-    transport: str = "grpc_asyncio", request_type=dataform.FetchFileGitStatusesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13871,7 +13947,7 @@ async def test_fetch_file_git_statuses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13891,11 +13967,6 @@ async def test_fetch_file_git_statuses_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileGitStatusesResponse)
-
-
-@pytest.mark.asyncio
-async def test_fetch_file_git_statuses_async_from_dict():
-    await test_fetch_file_git_statuses_async(request_type=dict)
 
 
 def test_fetch_file_git_statuses_field_headers():
@@ -13966,8 +14037,8 @@ async def test_fetch_file_git_statuses_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.FetchGitAheadBehindRequest,
-        dict,
+        dataform.FetchGitAheadBehindRequest(),
+        {},
     ],
 )
 def test_fetch_git_ahead_behind(request_type, transport: str = "grpc"):
@@ -13978,7 +14049,7 @@ def test_fetch_git_ahead_behind(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14029,10 +14100,11 @@ def test_fetch_git_ahead_behind_non_empty_request_with_auto_populated_field():
         client.fetch_git_ahead_behind(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchGitAheadBehindRequest(
+        request_msg = dataform.FetchGitAheadBehindRequest(
             name="name_value",
             remote_branch="remote_branch_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_git_ahead_behind_use_cached_wrapped_rpc():
@@ -14118,8 +14190,15 @@ async def test_fetch_git_ahead_behind_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchGitAheadBehindRequest(),
+        {},
+    ],
+)
 async def test_fetch_git_ahead_behind_async(
-    transport: str = "grpc_asyncio", request_type=dataform.FetchGitAheadBehindRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14128,7 +14207,7 @@ async def test_fetch_git_ahead_behind_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14153,11 +14232,6 @@ async def test_fetch_git_ahead_behind_async(
     assert isinstance(response, dataform.FetchGitAheadBehindResponse)
     assert response.commits_ahead == 1358
     assert response.commits_behind == 1477
-
-
-@pytest.mark.asyncio
-async def test_fetch_git_ahead_behind_async_from_dict():
-    await test_fetch_git_ahead_behind_async(request_type=dict)
 
 
 def test_fetch_git_ahead_behind_field_headers():
@@ -14228,8 +14302,8 @@ async def test_fetch_git_ahead_behind_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CommitWorkspaceChangesRequest,
-        dict,
+        dataform.CommitWorkspaceChangesRequest(),
+        {},
     ],
 )
 def test_commit_workspace_changes(request_type, transport: str = "grpc"):
@@ -14240,7 +14314,7 @@ def test_commit_workspace_changes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14286,10 +14360,11 @@ def test_commit_workspace_changes_non_empty_request_with_auto_populated_field():
         client.commit_workspace_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CommitWorkspaceChangesRequest(
+        request_msg = dataform.CommitWorkspaceChangesRequest(
             name="name_value",
             commit_message="commit_message_value",
         )
+        assert args[0] == request_msg
 
 
 def test_commit_workspace_changes_use_cached_wrapped_rpc():
@@ -14375,8 +14450,15 @@ async def test_commit_workspace_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CommitWorkspaceChangesRequest(),
+        {},
+    ],
+)
 async def test_commit_workspace_changes_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CommitWorkspaceChangesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14385,7 +14467,7 @@ async def test_commit_workspace_changes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14405,11 +14487,6 @@ async def test_commit_workspace_changes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CommitWorkspaceChangesResponse)
-
-
-@pytest.mark.asyncio
-async def test_commit_workspace_changes_async_from_dict():
-    await test_commit_workspace_changes_async(request_type=dict)
 
 
 def test_commit_workspace_changes_field_headers():
@@ -14480,8 +14557,8 @@ async def test_commit_workspace_changes_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ResetWorkspaceChangesRequest,
-        dict,
+        dataform.ResetWorkspaceChangesRequest(),
+        {},
     ],
 )
 def test_reset_workspace_changes(request_type, transport: str = "grpc"):
@@ -14492,7 +14569,7 @@ def test_reset_workspace_changes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14537,9 +14614,10 @@ def test_reset_workspace_changes_non_empty_request_with_auto_populated_field():
         client.reset_workspace_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ResetWorkspaceChangesRequest(
+        request_msg = dataform.ResetWorkspaceChangesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_workspace_changes_use_cached_wrapped_rpc():
@@ -14625,8 +14703,15 @@ async def test_reset_workspace_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ResetWorkspaceChangesRequest(),
+        {},
+    ],
+)
 async def test_reset_workspace_changes_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ResetWorkspaceChangesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14635,7 +14720,7 @@ async def test_reset_workspace_changes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14655,11 +14740,6 @@ async def test_reset_workspace_changes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ResetWorkspaceChangesResponse)
-
-
-@pytest.mark.asyncio
-async def test_reset_workspace_changes_async_from_dict():
-    await test_reset_workspace_changes_async(request_type=dict)
 
 
 def test_reset_workspace_changes_field_headers():
@@ -14730,8 +14810,8 @@ async def test_reset_workspace_changes_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.FetchFileDiffRequest,
-        dict,
+        dataform.FetchFileDiffRequest(),
+        {},
     ],
 )
 def test_fetch_file_diff(request_type, transport: str = "grpc"):
@@ -14742,7 +14822,7 @@ def test_fetch_file_diff(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_file_diff), "__call__") as call:
@@ -14787,10 +14867,11 @@ def test_fetch_file_diff_non_empty_request_with_auto_populated_field():
         client.fetch_file_diff(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.FetchFileDiffRequest(
+        request_msg = dataform.FetchFileDiffRequest(
             workspace="workspace_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_file_diff_use_cached_wrapped_rpc():
@@ -14871,9 +14952,14 @@ async def test_fetch_file_diff_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_file_diff_async(
-    transport: str = "grpc_asyncio", request_type=dataform.FetchFileDiffRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchFileDiffRequest(),
+        {},
+    ],
+)
+async def test_fetch_file_diff_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14881,7 +14967,7 @@ async def test_fetch_file_diff_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_file_diff), "__call__") as call:
@@ -14902,11 +14988,6 @@ async def test_fetch_file_diff_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.FetchFileDiffResponse)
     assert response.formatted_diff == "formatted_diff_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_file_diff_async_from_dict():
-    await test_fetch_file_diff_async(request_type=dict)
 
 
 def test_fetch_file_diff_field_headers():
@@ -14973,8 +15054,8 @@ async def test_fetch_file_diff_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryDirectoryContentsRequest,
-        dict,
+        dataform.QueryDirectoryContentsRequest(),
+        {},
     ],
 )
 def test_query_directory_contents(request_type, transport: str = "grpc"):
@@ -14985,7 +15066,7 @@ def test_query_directory_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15035,11 +15116,12 @@ def test_query_directory_contents_non_empty_request_with_auto_populated_field():
         client.query_directory_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryDirectoryContentsRequest(
+        request_msg = dataform.QueryDirectoryContentsRequest(
             workspace="workspace_value",
             path="path_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_directory_contents_use_cached_wrapped_rpc():
@@ -15125,8 +15207,15 @@ async def test_query_directory_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryDirectoryContentsRequest(),
+        {},
+    ],
+)
 async def test_query_directory_contents_async(
-    transport: str = "grpc_asyncio", request_type=dataform.QueryDirectoryContentsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15135,7 +15224,7 @@ async def test_query_directory_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15158,11 +15247,6 @@ async def test_query_directory_contents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryDirectoryContentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_directory_contents_async_from_dict():
-    await test_query_directory_contents_async(request_type=dict)
 
 
 def test_query_directory_contents_field_headers():
@@ -15433,8 +15517,8 @@ async def test_query_directory_contents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.SearchFilesRequest,
-        dict,
+        dataform.SearchFilesRequest(),
+        {},
     ],
 )
 def test_search_files(request_type, transport: str = "grpc"):
@@ -15445,7 +15529,7 @@ def test_search_files(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_files), "__call__") as call:
@@ -15491,11 +15575,12 @@ def test_search_files_non_empty_request_with_auto_populated_field():
         client.search_files(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.SearchFilesRequest(
+        request_msg = dataform.SearchFilesRequest(
             workspace="workspace_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_files_use_cached_wrapped_rpc():
@@ -15576,9 +15661,14 @@ async def test_search_files_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_files_async(
-    transport: str = "grpc_asyncio", request_type=dataform.SearchFilesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.SearchFilesRequest(),
+        {},
+    ],
+)
+async def test_search_files_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15586,7 +15676,7 @@ async def test_search_files_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_files), "__call__") as call:
@@ -15607,11 +15697,6 @@ async def test_search_files_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchFilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_files_async_from_dict():
-    await test_search_files_async(request_type=dict)
 
 
 def test_search_files_field_headers():
@@ -15868,8 +15953,8 @@ async def test_search_files_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.MakeDirectoryRequest,
-        dict,
+        dataform.MakeDirectoryRequest(),
+        {},
     ],
 )
 def test_make_directory(request_type, transport: str = "grpc"):
@@ -15880,7 +15965,7 @@ def test_make_directory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.make_directory), "__call__") as call:
@@ -15922,10 +16007,11 @@ def test_make_directory_non_empty_request_with_auto_populated_field():
         client.make_directory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MakeDirectoryRequest(
+        request_msg = dataform.MakeDirectoryRequest(
             workspace="workspace_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_make_directory_use_cached_wrapped_rpc():
@@ -16006,9 +16092,14 @@ async def test_make_directory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_make_directory_async(
-    transport: str = "grpc_asyncio", request_type=dataform.MakeDirectoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.MakeDirectoryRequest(),
+        {},
+    ],
+)
+async def test_make_directory_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16016,7 +16107,7 @@ async def test_make_directory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.make_directory), "__call__") as call:
@@ -16034,11 +16125,6 @@ async def test_make_directory_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MakeDirectoryResponse)
-
-
-@pytest.mark.asyncio
-async def test_make_directory_async_from_dict():
-    await test_make_directory_async(request_type=dict)
 
 
 def test_make_directory_field_headers():
@@ -16105,8 +16191,8 @@ async def test_make_directory_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.RemoveDirectoryRequest,
-        dict,
+        dataform.RemoveDirectoryRequest(),
+        {},
     ],
 )
 def test_remove_directory(request_type, transport: str = "grpc"):
@@ -16117,7 +16203,7 @@ def test_remove_directory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_directory), "__call__") as call:
@@ -16159,10 +16245,11 @@ def test_remove_directory_non_empty_request_with_auto_populated_field():
         client.remove_directory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveDirectoryRequest(
+        request_msg = dataform.RemoveDirectoryRequest(
             workspace="workspace_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_directory_use_cached_wrapped_rpc():
@@ -16245,9 +16332,14 @@ async def test_remove_directory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_directory_async(
-    transport: str = "grpc_asyncio", request_type=dataform.RemoveDirectoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.RemoveDirectoryRequest(),
+        {},
+    ],
+)
+async def test_remove_directory_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16255,7 +16347,7 @@ async def test_remove_directory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_directory), "__call__") as call:
@@ -16273,11 +16365,6 @@ async def test_remove_directory_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.RemoveDirectoryResponse)
-
-
-@pytest.mark.asyncio
-async def test_remove_directory_async_from_dict():
-    await test_remove_directory_async(request_type=dict)
 
 
 def test_remove_directory_field_headers():
@@ -16344,8 +16431,8 @@ async def test_remove_directory_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.MoveDirectoryRequest,
-        dict,
+        dataform.MoveDirectoryRequest(),
+        {},
     ],
 )
 def test_move_directory(request_type, transport: str = "grpc"):
@@ -16356,7 +16443,7 @@ def test_move_directory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_directory), "__call__") as call:
@@ -16399,11 +16486,12 @@ def test_move_directory_non_empty_request_with_auto_populated_field():
         client.move_directory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveDirectoryRequest(
+        request_msg = dataform.MoveDirectoryRequest(
             workspace="workspace_value",
             path="path_value",
             new_path="new_path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_directory_use_cached_wrapped_rpc():
@@ -16484,9 +16572,14 @@ async def test_move_directory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_directory_async(
-    transport: str = "grpc_asyncio", request_type=dataform.MoveDirectoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.MoveDirectoryRequest(),
+        {},
+    ],
+)
+async def test_move_directory_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16494,7 +16587,7 @@ async def test_move_directory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_directory), "__call__") as call:
@@ -16512,11 +16605,6 @@ async def test_move_directory_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveDirectoryResponse)
-
-
-@pytest.mark.asyncio
-async def test_move_directory_async_from_dict():
-    await test_move_directory_async(request_type=dict)
 
 
 def test_move_directory_field_headers():
@@ -16583,8 +16671,8 @@ async def test_move_directory_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ReadFileRequest,
-        dict,
+        dataform.ReadFileRequest(),
+        {},
     ],
 )
 def test_read_file(request_type, transport: str = "grpc"):
@@ -16595,7 +16683,7 @@ def test_read_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_file), "__call__") as call:
@@ -16641,11 +16729,12 @@ def test_read_file_non_empty_request_with_auto_populated_field():
         client.read_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ReadFileRequest(
+        request_msg = dataform.ReadFileRequest(
             workspace="workspace_value",
             path="path_value",
             revision="revision_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_file_use_cached_wrapped_rpc():
@@ -16724,9 +16813,14 @@ async def test_read_file_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_read_file_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ReadFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ReadFileRequest(),
+        {},
+    ],
+)
+async def test_read_file_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16734,7 +16828,7 @@ async def test_read_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_file), "__call__") as call:
@@ -16755,11 +16849,6 @@ async def test_read_file_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.ReadFileResponse)
     assert response.file_contents == b"file_contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_read_file_async_from_dict():
-    await test_read_file_async(request_type=dict)
 
 
 def test_read_file_field_headers():
@@ -16826,8 +16915,8 @@ async def test_read_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.RemoveFileRequest,
-        dict,
+        dataform.RemoveFileRequest(),
+        {},
     ],
 )
 def test_remove_file(request_type, transport: str = "grpc"):
@@ -16838,7 +16927,7 @@ def test_remove_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_file), "__call__") as call:
@@ -16880,10 +16969,11 @@ def test_remove_file_non_empty_request_with_auto_populated_field():
         client.remove_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.RemoveFileRequest(
+        request_msg = dataform.RemoveFileRequest(
             workspace="workspace_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_file_use_cached_wrapped_rpc():
@@ -16964,9 +17054,14 @@ async def test_remove_file_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_file_async(
-    transport: str = "grpc_asyncio", request_type=dataform.RemoveFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.RemoveFileRequest(),
+        {},
+    ],
+)
+async def test_remove_file_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16974,7 +17069,7 @@ async def test_remove_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.remove_file), "__call__") as call:
@@ -16992,11 +17087,6 @@ async def test_remove_file_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.RemoveFileResponse)
-
-
-@pytest.mark.asyncio
-async def test_remove_file_async_from_dict():
-    await test_remove_file_async(request_type=dict)
 
 
 def test_remove_file_field_headers():
@@ -17063,8 +17153,8 @@ async def test_remove_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.MoveFileRequest,
-        dict,
+        dataform.MoveFileRequest(),
+        {},
     ],
 )
 def test_move_file(request_type, transport: str = "grpc"):
@@ -17075,7 +17165,7 @@ def test_move_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_file), "__call__") as call:
@@ -17118,11 +17208,12 @@ def test_move_file_non_empty_request_with_auto_populated_field():
         client.move_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.MoveFileRequest(
+        request_msg = dataform.MoveFileRequest(
             workspace="workspace_value",
             path="path_value",
             new_path="new_path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_file_use_cached_wrapped_rpc():
@@ -17201,9 +17292,14 @@ async def test_move_file_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_move_file_async(
-    transport: str = "grpc_asyncio", request_type=dataform.MoveFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.MoveFileRequest(),
+        {},
+    ],
+)
+async def test_move_file_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17211,7 +17307,7 @@ async def test_move_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_file), "__call__") as call:
@@ -17229,11 +17325,6 @@ async def test_move_file_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.MoveFileResponse)
-
-
-@pytest.mark.asyncio
-async def test_move_file_async_from_dict():
-    await test_move_file_async(request_type=dict)
 
 
 def test_move_file_field_headers():
@@ -17300,8 +17391,8 @@ async def test_move_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.WriteFileRequest,
-        dict,
+        dataform.WriteFileRequest(),
+        {},
     ],
 )
 def test_write_file(request_type, transport: str = "grpc"):
@@ -17312,7 +17403,7 @@ def test_write_file(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_file), "__call__") as call:
@@ -17354,10 +17445,11 @@ def test_write_file_non_empty_request_with_auto_populated_field():
         client.write_file(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.WriteFileRequest(
+        request_msg = dataform.WriteFileRequest(
             workspace="workspace_value",
             path="path_value",
         )
+        assert args[0] == request_msg
 
 
 def test_write_file_use_cached_wrapped_rpc():
@@ -17436,9 +17528,14 @@ async def test_write_file_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_write_file_async(
-    transport: str = "grpc_asyncio", request_type=dataform.WriteFileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.WriteFileRequest(),
+        {},
+    ],
+)
+async def test_write_file_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17446,7 +17543,7 @@ async def test_write_file_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_file), "__call__") as call:
@@ -17464,11 +17561,6 @@ async def test_write_file_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WriteFileResponse)
-
-
-@pytest.mark.asyncio
-async def test_write_file_async_from_dict():
-    await test_write_file_async(request_type=dict)
 
 
 def test_write_file_field_headers():
@@ -17535,8 +17627,8 @@ async def test_write_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListReleaseConfigsRequest,
-        dict,
+        dataform.ListReleaseConfigsRequest(),
+        {},
     ],
 )
 def test_list_release_configs(request_type, transport: str = "grpc"):
@@ -17547,7 +17639,7 @@ def test_list_release_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17598,10 +17690,11 @@ def test_list_release_configs_non_empty_request_with_auto_populated_field():
         client.list_release_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListReleaseConfigsRequest(
+        request_msg = dataform.ListReleaseConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_release_configs_use_cached_wrapped_rpc():
@@ -17686,8 +17779,15 @@ async def test_list_release_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListReleaseConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_release_configs_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ListReleaseConfigsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17696,7 +17796,7 @@ async def test_list_release_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17721,11 +17821,6 @@ async def test_list_release_configs_async(
     assert isinstance(response, pagers.ListReleaseConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_release_configs_async_from_dict():
-    await test_list_release_configs_async(request_type=dict)
 
 
 def test_list_release_configs_field_headers():
@@ -18080,8 +18175,8 @@ async def test_list_release_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetReleaseConfigRequest,
-        dict,
+        dataform.GetReleaseConfigRequest(),
+        {},
     ],
 )
 def test_get_release_config(request_type, transport: str = "grpc"):
@@ -18092,7 +18187,7 @@ def test_get_release_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18152,9 +18247,10 @@ def test_get_release_config_non_empty_request_with_auto_populated_field():
         client.get_release_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetReleaseConfigRequest(
+        request_msg = dataform.GetReleaseConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_release_config_use_cached_wrapped_rpc():
@@ -18239,9 +18335,14 @@ async def test_get_release_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_release_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetReleaseConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetReleaseConfigRequest(),
+        {},
+    ],
+)
+async def test_get_release_config_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -18249,7 +18350,7 @@ async def test_get_release_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18284,11 +18385,6 @@ async def test_get_release_config_async(
     assert response.release_compilation_result == "release_compilation_result_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_release_config_async_from_dict():
-    await test_get_release_config_async(request_type=dict)
 
 
 def test_get_release_config_field_headers():
@@ -18445,8 +18541,8 @@ async def test_get_release_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateReleaseConfigRequest,
-        dict,
+        dataform.CreateReleaseConfigRequest(),
+        {},
     ],
 )
 def test_create_release_config(request_type, transport: str = "grpc"):
@@ -18457,7 +18553,7 @@ def test_create_release_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18518,10 +18614,11 @@ def test_create_release_config_non_empty_request_with_auto_populated_field():
         client.create_release_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateReleaseConfigRequest(
+        request_msg = dataform.CreateReleaseConfigRequest(
             parent="parent_value",
             release_config_id="release_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_release_config_use_cached_wrapped_rpc():
@@ -18607,8 +18704,15 @@ async def test_create_release_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateReleaseConfigRequest(),
+        {},
+    ],
+)
 async def test_create_release_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateReleaseConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18617,7 +18721,7 @@ async def test_create_release_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18652,11 +18756,6 @@ async def test_create_release_config_async(
     assert response.release_compilation_result == "release_compilation_result_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_create_release_config_async_from_dict():
-    await test_create_release_config_async(request_type=dict)
 
 
 def test_create_release_config_field_headers():
@@ -18833,8 +18932,8 @@ async def test_create_release_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateReleaseConfigRequest,
-        dict,
+        dataform.UpdateReleaseConfigRequest(),
+        {},
     ],
 )
 def test_update_release_config(request_type, transport: str = "grpc"):
@@ -18845,7 +18944,7 @@ def test_update_release_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18903,7 +19002,8 @@ def test_update_release_config_non_empty_request_with_auto_populated_field():
         client.update_release_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateReleaseConfigRequest()
+        request_msg = dataform.UpdateReleaseConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_release_config_use_cached_wrapped_rpc():
@@ -18989,8 +19089,15 @@ async def test_update_release_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateReleaseConfigRequest(),
+        {},
+    ],
+)
 async def test_update_release_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateReleaseConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18999,7 +19106,7 @@ async def test_update_release_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19034,11 +19141,6 @@ async def test_update_release_config_async(
     assert response.release_compilation_result == "release_compilation_result_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_update_release_config_async_from_dict():
-    await test_update_release_config_async(request_type=dict)
 
 
 def test_update_release_config_field_headers():
@@ -19205,8 +19307,8 @@ async def test_update_release_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteReleaseConfigRequest,
-        dict,
+        dataform.DeleteReleaseConfigRequest(),
+        {},
     ],
 )
 def test_delete_release_config(request_type, transport: str = "grpc"):
@@ -19217,7 +19319,7 @@ def test_delete_release_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19262,9 +19364,10 @@ def test_delete_release_config_non_empty_request_with_auto_populated_field():
         client.delete_release_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteReleaseConfigRequest(
+        request_msg = dataform.DeleteReleaseConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_release_config_use_cached_wrapped_rpc():
@@ -19350,8 +19453,15 @@ async def test_delete_release_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteReleaseConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_release_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteReleaseConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19360,7 +19470,7 @@ async def test_delete_release_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19378,11 +19488,6 @@ async def test_delete_release_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_release_config_async_from_dict():
-    await test_delete_release_config_async(request_type=dict)
 
 
 def test_delete_release_config_field_headers():
@@ -19535,8 +19640,8 @@ async def test_delete_release_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListCompilationResultsRequest,
-        dict,
+        dataform.ListCompilationResultsRequest(),
+        {},
     ],
 )
 def test_list_compilation_results(request_type, transport: str = "grpc"):
@@ -19547,7 +19652,7 @@ def test_list_compilation_results(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19600,12 +19705,13 @@ def test_list_compilation_results_non_empty_request_with_auto_populated_field():
         client.list_compilation_results(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListCompilationResultsRequest(
+        request_msg = dataform.ListCompilationResultsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_compilation_results_use_cached_wrapped_rpc():
@@ -19691,8 +19797,15 @@ async def test_list_compilation_results_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListCompilationResultsRequest(),
+        {},
+    ],
+)
 async def test_list_compilation_results_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ListCompilationResultsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19701,7 +19814,7 @@ async def test_list_compilation_results_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19726,11 +19839,6 @@ async def test_list_compilation_results_async(
     assert isinstance(response, pagers.ListCompilationResultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_compilation_results_async_from_dict():
-    await test_list_compilation_results_async(request_type=dict)
 
 
 def test_list_compilation_results_field_headers():
@@ -20087,8 +20195,8 @@ async def test_list_compilation_results_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetCompilationResultRequest,
-        dict,
+        dataform.GetCompilationResultRequest(),
+        {},
     ],
 )
 def test_get_compilation_result(request_type, transport: str = "grpc"):
@@ -20099,7 +20207,7 @@ def test_get_compilation_result(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20154,9 +20262,10 @@ def test_get_compilation_result_non_empty_request_with_auto_populated_field():
         client.get_compilation_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetCompilationResultRequest(
+        request_msg = dataform.GetCompilationResultRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_compilation_result_use_cached_wrapped_rpc():
@@ -20242,8 +20351,15 @@ async def test_get_compilation_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetCompilationResultRequest(),
+        {},
+    ],
+)
 async def test_get_compilation_result_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetCompilationResultRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20252,7 +20368,7 @@ async def test_get_compilation_result_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20281,11 +20397,6 @@ async def test_get_compilation_result_async(
     assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_compilation_result_async_from_dict():
-    await test_get_compilation_result_async(request_type=dict)
 
 
 def test_get_compilation_result_field_headers():
@@ -20442,8 +20553,8 @@ async def test_get_compilation_result_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateCompilationResultRequest,
-        dict,
+        dataform.CreateCompilationResultRequest(),
+        {},
     ],
 )
 def test_create_compilation_result(request_type, transport: str = "grpc"):
@@ -20454,7 +20565,7 @@ def test_create_compilation_result(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20509,9 +20620,10 @@ def test_create_compilation_result_non_empty_request_with_auto_populated_field()
         client.create_compilation_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateCompilationResultRequest(
+        request_msg = dataform.CreateCompilationResultRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_compilation_result_use_cached_wrapped_rpc():
@@ -20597,9 +20709,15 @@ async def test_create_compilation_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateCompilationResultRequest(),
+        {},
+    ],
+)
 async def test_create_compilation_result_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.CreateCompilationResultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20608,7 +20726,7 @@ async def test_create_compilation_result_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20637,11 +20755,6 @@ async def test_create_compilation_result_async(
     assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_create_compilation_result_async_from_dict():
-    await test_create_compilation_result_async(request_type=dict)
 
 
 def test_create_compilation_result_field_headers():
@@ -20816,8 +20929,8 @@ async def test_create_compilation_result_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryCompilationResultActionsRequest,
-        dict,
+        dataform.QueryCompilationResultActionsRequest(),
+        {},
     ],
 )
 def test_query_compilation_result_actions(request_type, transport: str = "grpc"):
@@ -20828,7 +20941,7 @@ def test_query_compilation_result_actions(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20878,11 +20991,12 @@ def test_query_compilation_result_actions_non_empty_request_with_auto_populated_
         client.query_compilation_result_actions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryCompilationResultActionsRequest(
+        request_msg = dataform.QueryCompilationResultActionsRequest(
             name="name_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_compilation_result_actions_use_cached_wrapped_rpc():
@@ -20968,9 +21082,15 @@ async def test_query_compilation_result_actions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryCompilationResultActionsRequest(),
+        {},
+    ],
+)
 async def test_query_compilation_result_actions_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.QueryCompilationResultActionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20979,7 +21099,7 @@ async def test_query_compilation_result_actions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21002,11 +21122,6 @@ async def test_query_compilation_result_actions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryCompilationResultActionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_compilation_result_actions_async_from_dict():
-    await test_query_compilation_result_actions_async(request_type=dict)
 
 
 def test_query_compilation_result_actions_field_headers():
@@ -21279,8 +21394,8 @@ async def test_query_compilation_result_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListWorkflowConfigsRequest,
-        dict,
+        dataform.ListWorkflowConfigsRequest(),
+        {},
     ],
 )
 def test_list_workflow_configs(request_type, transport: str = "grpc"):
@@ -21291,7 +21406,7 @@ def test_list_workflow_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21342,10 +21457,11 @@ def test_list_workflow_configs_non_empty_request_with_auto_populated_field():
         client.list_workflow_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowConfigsRequest(
+        request_msg = dataform.ListWorkflowConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workflow_configs_use_cached_wrapped_rpc():
@@ -21431,8 +21547,15 @@ async def test_list_workflow_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListWorkflowConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_workflow_configs_async(
-    transport: str = "grpc_asyncio", request_type=dataform.ListWorkflowConfigsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21441,7 +21564,7 @@ async def test_list_workflow_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21466,11 +21589,6 @@ async def test_list_workflow_configs_async(
     assert isinstance(response, pagers.ListWorkflowConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workflow_configs_async_from_dict():
-    await test_list_workflow_configs_async(request_type=dict)
 
 
 def test_list_workflow_configs_field_headers():
@@ -21825,8 +21943,8 @@ async def test_list_workflow_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetWorkflowConfigRequest,
-        dict,
+        dataform.GetWorkflowConfigRequest(),
+        {},
     ],
 )
 def test_get_workflow_config(request_type, transport: str = "grpc"):
@@ -21837,7 +21955,7 @@ def test_get_workflow_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21895,9 +22013,10 @@ def test_get_workflow_config_non_empty_request_with_auto_populated_field():
         client.get_workflow_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowConfigRequest(
+        request_msg = dataform.GetWorkflowConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workflow_config_use_cached_wrapped_rpc():
@@ -21982,9 +22101,14 @@ async def test_get_workflow_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workflow_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetWorkflowConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetWorkflowConfigRequest(),
+        {},
+    ],
+)
+async def test_get_workflow_config_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21992,7 +22116,7 @@ async def test_get_workflow_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22025,11 +22149,6 @@ async def test_get_workflow_config_async(
     assert response.time_zone == "time_zone_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_workflow_config_async_from_dict():
-    await test_get_workflow_config_async(request_type=dict)
 
 
 def test_get_workflow_config_field_headers():
@@ -22186,8 +22305,8 @@ async def test_get_workflow_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateWorkflowConfigRequest,
-        dict,
+        dataform.CreateWorkflowConfigRequest(),
+        {},
     ],
 )
 def test_create_workflow_config(request_type, transport: str = "grpc"):
@@ -22198,7 +22317,7 @@ def test_create_workflow_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22257,10 +22376,11 @@ def test_create_workflow_config_non_empty_request_with_auto_populated_field():
         client.create_workflow_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowConfigRequest(
+        request_msg = dataform.CreateWorkflowConfigRequest(
             parent="parent_value",
             workflow_config_id="workflow_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workflow_config_use_cached_wrapped_rpc():
@@ -22346,8 +22466,15 @@ async def test_create_workflow_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateWorkflowConfigRequest(),
+        {},
+    ],
+)
 async def test_create_workflow_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.CreateWorkflowConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22356,7 +22483,7 @@ async def test_create_workflow_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22389,11 +22516,6 @@ async def test_create_workflow_config_async(
     assert response.time_zone == "time_zone_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_create_workflow_config_async_from_dict():
-    await test_create_workflow_config_async(request_type=dict)
 
 
 def test_create_workflow_config_field_headers():
@@ -22570,8 +22692,8 @@ async def test_create_workflow_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateWorkflowConfigRequest,
-        dict,
+        dataform.UpdateWorkflowConfigRequest(),
+        {},
     ],
 )
 def test_update_workflow_config(request_type, transport: str = "grpc"):
@@ -22582,7 +22704,7 @@ def test_update_workflow_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22638,7 +22760,8 @@ def test_update_workflow_config_non_empty_request_with_auto_populated_field():
         client.update_workflow_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+        request_msg = dataform.UpdateWorkflowConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workflow_config_use_cached_wrapped_rpc():
@@ -22724,8 +22847,15 @@ async def test_update_workflow_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateWorkflowConfigRequest(),
+        {},
+    ],
+)
 async def test_update_workflow_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateWorkflowConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22734,7 +22864,7 @@ async def test_update_workflow_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22767,11 +22897,6 @@ async def test_update_workflow_config_async(
     assert response.time_zone == "time_zone_value"
     assert response.disabled is True
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_update_workflow_config_async_from_dict():
-    await test_update_workflow_config_async(request_type=dict)
 
 
 def test_update_workflow_config_field_headers():
@@ -22938,8 +23063,8 @@ async def test_update_workflow_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteWorkflowConfigRequest,
-        dict,
+        dataform.DeleteWorkflowConfigRequest(),
+        {},
     ],
 )
 def test_delete_workflow_config(request_type, transport: str = "grpc"):
@@ -22950,7 +23075,7 @@ def test_delete_workflow_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22995,9 +23120,10 @@ def test_delete_workflow_config_non_empty_request_with_auto_populated_field():
         client.delete_workflow_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowConfigRequest(
+        request_msg = dataform.DeleteWorkflowConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workflow_config_use_cached_wrapped_rpc():
@@ -23083,8 +23209,15 @@ async def test_delete_workflow_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteWorkflowConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_workflow_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.DeleteWorkflowConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23093,7 +23226,7 @@ async def test_delete_workflow_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23111,11 +23244,6 @@ async def test_delete_workflow_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_workflow_config_async_from_dict():
-    await test_delete_workflow_config_async(request_type=dict)
 
 
 def test_delete_workflow_config_field_headers():
@@ -23268,8 +23396,8 @@ async def test_delete_workflow_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.ListWorkflowInvocationsRequest,
-        dict,
+        dataform.ListWorkflowInvocationsRequest(),
+        {},
     ],
 )
 def test_list_workflow_invocations(request_type, transport: str = "grpc"):
@@ -23280,7 +23408,7 @@ def test_list_workflow_invocations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23333,12 +23461,13 @@ def test_list_workflow_invocations_non_empty_request_with_auto_populated_field()
         client.list_workflow_invocations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.ListWorkflowInvocationsRequest(
+        request_msg = dataform.ListWorkflowInvocationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             order_by="order_by_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workflow_invocations_use_cached_wrapped_rpc():
@@ -23424,9 +23553,15 @@ async def test_list_workflow_invocations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ListWorkflowInvocationsRequest(),
+        {},
+    ],
+)
 async def test_list_workflow_invocations_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.ListWorkflowInvocationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23435,7 +23570,7 @@ async def test_list_workflow_invocations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23460,11 +23595,6 @@ async def test_list_workflow_invocations_async(
     assert isinstance(response, pagers.ListWorkflowInvocationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workflow_invocations_async_from_dict():
-    await test_list_workflow_invocations_async(request_type=dict)
 
 
 def test_list_workflow_invocations_field_headers():
@@ -23821,8 +23951,8 @@ async def test_list_workflow_invocations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetWorkflowInvocationRequest,
-        dict,
+        dataform.GetWorkflowInvocationRequest(),
+        {},
     ],
 )
 def test_get_workflow_invocation(request_type, transport: str = "grpc"):
@@ -23833,7 +23963,7 @@ def test_get_workflow_invocation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23888,9 +24018,10 @@ def test_get_workflow_invocation_non_empty_request_with_auto_populated_field():
         client.get_workflow_invocation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetWorkflowInvocationRequest(
+        request_msg = dataform.GetWorkflowInvocationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workflow_invocation_use_cached_wrapped_rpc():
@@ -23976,8 +24107,15 @@ async def test_get_workflow_invocation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetWorkflowInvocationRequest(),
+        {},
+    ],
+)
 async def test_get_workflow_invocation_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetWorkflowInvocationRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23986,7 +24124,7 @@ async def test_get_workflow_invocation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24015,11 +24153,6 @@ async def test_get_workflow_invocation_async(
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
     assert response.resolved_compilation_result == "resolved_compilation_result_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_workflow_invocation_async_from_dict():
-    await test_get_workflow_invocation_async(request_type=dict)
 
 
 def test_get_workflow_invocation_field_headers():
@@ -24176,8 +24309,8 @@ async def test_get_workflow_invocation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CreateWorkflowInvocationRequest,
-        dict,
+        dataform.CreateWorkflowInvocationRequest(),
+        {},
     ],
 )
 def test_create_workflow_invocation(request_type, transport: str = "grpc"):
@@ -24188,7 +24321,7 @@ def test_create_workflow_invocation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24243,9 +24376,10 @@ def test_create_workflow_invocation_non_empty_request_with_auto_populated_field(
         client.create_workflow_invocation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CreateWorkflowInvocationRequest(
+        request_msg = dataform.CreateWorkflowInvocationRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workflow_invocation_use_cached_wrapped_rpc():
@@ -24331,9 +24465,15 @@ async def test_create_workflow_invocation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateWorkflowInvocationRequest(),
+        {},
+    ],
+)
 async def test_create_workflow_invocation_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.CreateWorkflowInvocationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24342,7 +24482,7 @@ async def test_create_workflow_invocation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24371,11 +24511,6 @@ async def test_create_workflow_invocation_async(
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
     assert response.resolved_compilation_result == "resolved_compilation_result_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_create_workflow_invocation_async_from_dict():
-    await test_create_workflow_invocation_async(request_type=dict)
 
 
 def test_create_workflow_invocation_field_headers():
@@ -24554,8 +24689,8 @@ async def test_create_workflow_invocation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.DeleteWorkflowInvocationRequest,
-        dict,
+        dataform.DeleteWorkflowInvocationRequest(),
+        {},
     ],
 )
 def test_delete_workflow_invocation(request_type, transport: str = "grpc"):
@@ -24566,7 +24701,7 @@ def test_delete_workflow_invocation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24611,9 +24746,10 @@ def test_delete_workflow_invocation_non_empty_request_with_auto_populated_field(
         client.delete_workflow_invocation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.DeleteWorkflowInvocationRequest(
+        request_msg = dataform.DeleteWorkflowInvocationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workflow_invocation_use_cached_wrapped_rpc():
@@ -24699,9 +24835,15 @@ async def test_delete_workflow_invocation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteWorkflowInvocationRequest(),
+        {},
+    ],
+)
 async def test_delete_workflow_invocation_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.DeleteWorkflowInvocationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24710,7 +24852,7 @@ async def test_delete_workflow_invocation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24728,11 +24870,6 @@ async def test_delete_workflow_invocation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_workflow_invocation_async_from_dict():
-    await test_delete_workflow_invocation_async(request_type=dict)
 
 
 def test_delete_workflow_invocation_field_headers():
@@ -24885,8 +25022,8 @@ async def test_delete_workflow_invocation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.CancelWorkflowInvocationRequest,
-        dict,
+        dataform.CancelWorkflowInvocationRequest(),
+        {},
     ],
 )
 def test_cancel_workflow_invocation(request_type, transport: str = "grpc"):
@@ -24897,7 +25034,7 @@ def test_cancel_workflow_invocation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24942,9 +25079,10 @@ def test_cancel_workflow_invocation_non_empty_request_with_auto_populated_field(
         client.cancel_workflow_invocation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.CancelWorkflowInvocationRequest(
+        request_msg = dataform.CancelWorkflowInvocationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_workflow_invocation_use_cached_wrapped_rpc():
@@ -25030,9 +25168,15 @@ async def test_cancel_workflow_invocation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CancelWorkflowInvocationRequest(),
+        {},
+    ],
+)
 async def test_cancel_workflow_invocation_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.CancelWorkflowInvocationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25041,7 +25185,7 @@ async def test_cancel_workflow_invocation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25061,11 +25205,6 @@ async def test_cancel_workflow_invocation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CancelWorkflowInvocationResponse)
-
-
-@pytest.mark.asyncio
-async def test_cancel_workflow_invocation_async_from_dict():
-    await test_cancel_workflow_invocation_async(request_type=dict)
 
 
 def test_cancel_workflow_invocation_field_headers():
@@ -25136,8 +25275,8 @@ async def test_cancel_workflow_invocation_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.QueryWorkflowInvocationActionsRequest,
-        dict,
+        dataform.QueryWorkflowInvocationActionsRequest(),
+        {},
     ],
 )
 def test_query_workflow_invocation_actions(request_type, transport: str = "grpc"):
@@ -25148,7 +25287,7 @@ def test_query_workflow_invocation_actions(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25197,10 +25336,11 @@ def test_query_workflow_invocation_actions_non_empty_request_with_auto_populated
         client.query_workflow_invocation_actions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.QueryWorkflowInvocationActionsRequest(
+        request_msg = dataform.QueryWorkflowInvocationActionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_workflow_invocation_actions_use_cached_wrapped_rpc():
@@ -25286,9 +25426,15 @@ async def test_query_workflow_invocation_actions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryWorkflowInvocationActionsRequest(),
+        {},
+    ],
+)
 async def test_query_workflow_invocation_actions_async(
-    transport: str = "grpc_asyncio",
-    request_type=dataform.QueryWorkflowInvocationActionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25297,7 +25443,7 @@ async def test_query_workflow_invocation_actions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25320,11 +25466,6 @@ async def test_query_workflow_invocation_actions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryWorkflowInvocationActionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_workflow_invocation_actions_async_from_dict():
-    await test_query_workflow_invocation_actions_async(request_type=dict)
 
 
 def test_query_workflow_invocation_actions_field_headers():
@@ -25597,8 +25738,8 @@ async def test_query_workflow_invocation_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.GetConfigRequest,
-        dict,
+        dataform.GetConfigRequest(),
+        {},
     ],
 )
 def test_get_config(request_type, transport: str = "grpc"):
@@ -25609,7 +25750,7 @@ def test_get_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_config), "__call__") as call:
@@ -25657,9 +25798,10 @@ def test_get_config_non_empty_request_with_auto_populated_field():
         client.get_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.GetConfigRequest(
+        request_msg = dataform.GetConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_config_use_cached_wrapped_rpc():
@@ -25738,9 +25880,14 @@ async def test_get_config_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.GetConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetConfigRequest(),
+        {},
+    ],
+)
+async def test_get_config_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -25748,7 +25895,7 @@ async def test_get_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_config), "__call__") as call:
@@ -25773,11 +25920,6 @@ async def test_get_config_async(
     assert response.name == "name_value"
     assert response.default_kms_key_name == "default_kms_key_name_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_get_config_async_from_dict():
-    await test_get_config_async(request_type=dict)
 
 
 def test_get_config_field_headers():
@@ -25922,8 +26064,8 @@ async def test_get_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dataform.UpdateConfigRequest,
-        dict,
+        dataform.UpdateConfigRequest(),
+        {},
     ],
 )
 def test_update_config(request_type, transport: str = "grpc"):
@@ -25934,7 +26076,7 @@ def test_update_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_config), "__call__") as call:
@@ -25980,7 +26122,8 @@ def test_update_config_non_empty_request_with_auto_populated_field():
         client.update_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dataform.UpdateConfigRequest()
+        request_msg = dataform.UpdateConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_config_use_cached_wrapped_rpc():
@@ -26061,9 +26204,14 @@ async def test_update_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_config_async(
-    transport: str = "grpc_asyncio", request_type=dataform.UpdateConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateConfigRequest(),
+        {},
+    ],
+)
+async def test_update_config_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -26071,7 +26219,7 @@ async def test_update_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_config), "__call__") as call:
@@ -26096,11 +26244,6 @@ async def test_update_config_async(
     assert response.name == "name_value"
     assert response.default_kms_key_name == "default_kms_key_name_value"
     assert response.internal_metadata == "internal_metadata_value"
-
-
-@pytest.mark.asyncio
-async def test_update_config_async_from_dict():
-    await test_update_config_async(request_type=dict)
 
 
 def test_update_config_field_headers():
@@ -26255,8 +26398,8 @@ async def test_update_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -26267,7 +26410,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -26313,9 +26456,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -26396,9 +26540,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -26406,7 +26555,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -26429,11 +26578,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -26595,8 +26739,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -26607,7 +26751,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -26653,9 +26797,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -26736,9 +26881,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -26746,7 +26896,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -26769,11 +26919,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -26856,8 +27001,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -26868,7 +27013,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26916,9 +27061,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -27003,9 +27149,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataformAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -27014,7 +27166,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -27037,11 +27189,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -40553,7 +40700,6 @@ def test_get_team_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40576,7 +40722,6 @@ def test_create_team_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40599,7 +40744,6 @@ def test_update_team_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40622,7 +40766,6 @@ def test_delete_team_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40645,7 +40788,6 @@ def test_delete_team_folder_tree_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -40668,7 +40810,6 @@ def test_query_team_folder_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryTeamFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40691,7 +40832,6 @@ def test_search_team_folders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchTeamFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -40712,7 +40852,6 @@ def test_get_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40733,7 +40872,6 @@ def test_create_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40754,7 +40892,6 @@ def test_update_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40775,7 +40912,6 @@ def test_delete_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40798,7 +40934,6 @@ def test_delete_folder_tree_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -40821,7 +40956,6 @@ def test_query_folder_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40844,7 +40978,6 @@ def test_query_user_root_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryUserRootContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40865,7 +40998,6 @@ def test_move_folder_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -40888,7 +41020,6 @@ def test_list_repositories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40909,7 +41040,6 @@ def test_get_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -40932,7 +41062,6 @@ def test_create_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -40955,7 +41084,6 @@ def test_update_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -40978,7 +41106,6 @@ def test_delete_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -40999,7 +41126,6 @@ def test_move_repository_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -41022,7 +41148,6 @@ def test_commit_repository_changes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitRepositoryChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41045,7 +41170,6 @@ def test_read_repository_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadRepositoryFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -41068,7 +41192,6 @@ def test_query_repository_directory_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryRepositoryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41091,7 +41214,6 @@ def test_fetch_repository_history_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRepositoryHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -41114,7 +41236,6 @@ def test_compute_repository_access_token_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ComputeRepositoryAccessTokenStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -41137,7 +41258,6 @@ def test_fetch_remote_branches_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRemoteBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41158,7 +41278,6 @@ def test_list_workspaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41179,7 +41298,6 @@ def test_get_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -41200,7 +41318,6 @@ def test_create_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -41221,7 +41338,6 @@ def test_delete_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -41244,7 +41360,6 @@ def test_install_npm_packages_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.InstallNpmPackagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41265,7 +41380,6 @@ def test_pull_git_commits_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PullGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41286,7 +41400,6 @@ def test_push_git_commits_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PushGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41309,7 +41422,6 @@ def test_fetch_file_git_statuses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileGitStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41332,7 +41444,6 @@ def test_fetch_git_ahead_behind_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchGitAheadBehindRequest()
-
         assert args[0] == request_msg
 
 
@@ -41355,7 +41466,6 @@ def test_commit_workspace_changes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41378,7 +41488,6 @@ def test_reset_workspace_changes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ResetWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41399,7 +41508,6 @@ def test_fetch_file_diff_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -41422,7 +41530,6 @@ def test_query_directory_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41443,7 +41550,6 @@ def test_search_files_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41464,7 +41570,6 @@ def test_make_directory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MakeDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -41485,7 +41590,6 @@ def test_remove_directory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -41506,7 +41610,6 @@ def test_move_directory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -41527,7 +41630,6 @@ def test_read_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -41548,7 +41650,6 @@ def test_remove_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -41569,7 +41670,6 @@ def test_move_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -41590,7 +41690,6 @@ def test_write_file_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.WriteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -41613,7 +41712,6 @@ def test_list_release_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListReleaseConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41636,7 +41734,6 @@ def test_get_release_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41659,7 +41756,6 @@ def test_create_release_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41682,7 +41778,6 @@ def test_update_release_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41705,7 +41800,6 @@ def test_delete_release_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41728,7 +41822,6 @@ def test_list_compilation_results_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListCompilationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41751,7 +41844,6 @@ def test_get_compilation_result_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -41774,7 +41866,6 @@ def test_create_compilation_result_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -41797,7 +41888,6 @@ def test_query_compilation_result_actions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryCompilationResultActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41820,7 +41910,6 @@ def test_list_workflow_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41843,7 +41932,6 @@ def test_get_workflow_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41866,7 +41954,6 @@ def test_create_workflow_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41889,7 +41976,6 @@ def test_update_workflow_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41912,7 +41998,6 @@ def test_delete_workflow_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -41935,7 +42020,6 @@ def test_list_workflow_invocations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowInvocationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41958,7 +42042,6 @@ def test_get_workflow_invocation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -41981,7 +42064,6 @@ def test_create_workflow_invocation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -42004,7 +42086,6 @@ def test_delete_workflow_invocation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -42027,7 +42108,6 @@ def test_cancel_workflow_invocation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CancelWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -42050,7 +42130,6 @@ def test_query_workflow_invocation_actions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryWorkflowInvocationActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42071,7 +42150,6 @@ def test_get_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42092,7 +42170,6 @@ def test_update_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -42113,7 +42190,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -42134,7 +42210,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -42157,7 +42232,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42201,7 +42275,6 @@ async def test_get_team_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42233,7 +42306,6 @@ async def test_create_team_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42265,7 +42337,6 @@ async def test_update_team_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42290,7 +42361,6 @@ async def test_delete_team_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42317,7 +42387,6 @@ async def test_delete_team_folder_tree_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -42346,7 +42415,6 @@ async def test_query_team_folder_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryTeamFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42375,7 +42443,6 @@ async def test_search_team_folders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchTeamFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -42407,7 +42474,6 @@ async def test_get_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42439,7 +42505,6 @@ async def test_create_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42471,7 +42536,6 @@ async def test_update_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42494,7 +42558,6 @@ async def test_delete_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42521,7 +42584,6 @@ async def test_delete_folder_tree_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -42550,7 +42612,6 @@ async def test_query_folder_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42579,7 +42640,6 @@ async def test_query_user_root_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryUserRootContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42604,7 +42664,6 @@ async def test_move_folder_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -42634,7 +42693,6 @@ async def test_list_repositories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42669,7 +42727,6 @@ async def test_get_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42706,7 +42763,6 @@ async def test_create_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42743,7 +42799,6 @@ async def test_update_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42768,7 +42823,6 @@ async def test_delete_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42793,7 +42847,6 @@ async def test_move_repository_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42822,7 +42875,6 @@ async def test_commit_repository_changes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitRepositoryChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42851,7 +42903,6 @@ async def test_read_repository_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadRepositoryFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -42880,7 +42931,6 @@ async def test_query_repository_directory_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryRepositoryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42909,7 +42959,6 @@ async def test_fetch_repository_history_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRepositoryHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -42938,7 +42987,6 @@ async def test_compute_repository_access_token_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ComputeRepositoryAccessTokenStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -42967,7 +43015,6 @@ async def test_fetch_remote_branches_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRemoteBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42995,7 +43042,6 @@ async def test_list_workspaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43024,7 +43070,6 @@ async def test_get_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43053,7 +43098,6 @@ async def test_create_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43076,7 +43120,6 @@ async def test_delete_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -43103,7 +43146,6 @@ async def test_install_npm_packages_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.InstallNpmPackagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43128,7 +43170,6 @@ async def test_pull_git_commits_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PullGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43153,7 +43194,6 @@ async def test_push_git_commits_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PushGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43180,7 +43220,6 @@ async def test_fetch_file_git_statuses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileGitStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43210,7 +43249,6 @@ async def test_fetch_git_ahead_behind_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchGitAheadBehindRequest()
-
         assert args[0] == request_msg
 
 
@@ -43237,7 +43275,6 @@ async def test_commit_workspace_changes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43264,7 +43301,6 @@ async def test_reset_workspace_changes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ResetWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43291,7 +43327,6 @@ async def test_fetch_file_diff_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -43320,7 +43355,6 @@ async def test_query_directory_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43347,7 +43381,6 @@ async def test_search_files_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -43372,7 +43405,6 @@ async def test_make_directory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MakeDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43397,7 +43429,6 @@ async def test_remove_directory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43422,7 +43453,6 @@ async def test_move_directory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -43449,7 +43479,6 @@ async def test_read_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43474,7 +43503,6 @@ async def test_remove_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43499,7 +43527,6 @@ async def test_move_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43524,7 +43551,6 @@ async def test_write_file_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.WriteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -43554,7 +43580,6 @@ async def test_list_release_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListReleaseConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43589,7 +43614,6 @@ async def test_get_release_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43624,7 +43648,6 @@ async def test_create_release_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43659,7 +43682,6 @@ async def test_update_release_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43684,7 +43706,6 @@ async def test_delete_release_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43714,7 +43735,6 @@ async def test_list_compilation_results_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListCompilationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43746,7 +43766,6 @@ async def test_get_compilation_result_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -43778,7 +43797,6 @@ async def test_create_compilation_result_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -43807,7 +43825,6 @@ async def test_query_compilation_result_actions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryCompilationResultActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43837,7 +43854,6 @@ async def test_list_workflow_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -43871,7 +43887,6 @@ async def test_get_workflow_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43905,7 +43920,6 @@ async def test_create_workflow_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43939,7 +43953,6 @@ async def test_update_workflow_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43964,7 +43977,6 @@ async def test_delete_workflow_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -43994,7 +44006,6 @@ async def test_list_workflow_invocations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowInvocationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44026,7 +44037,6 @@ async def test_get_workflow_invocation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -44058,7 +44068,6 @@ async def test_create_workflow_invocation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -44083,7 +44092,6 @@ async def test_delete_workflow_invocation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -44110,7 +44118,6 @@ async def test_cancel_workflow_invocation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CancelWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -44139,7 +44146,6 @@ async def test_query_workflow_invocation_actions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryWorkflowInvocationActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -44168,7 +44174,6 @@ async def test_get_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -44197,7 +44202,6 @@ async def test_update_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -44225,7 +44229,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -44253,7 +44256,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -44282,7 +44284,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -55578,7 +55579,6 @@ def test_get_team_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55600,7 +55600,6 @@ def test_create_team_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55622,7 +55621,6 @@ def test_update_team_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55644,7 +55642,6 @@ def test_delete_team_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55666,7 +55663,6 @@ def test_delete_team_folder_tree_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteTeamFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -55688,7 +55684,6 @@ def test_query_team_folder_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryTeamFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -55710,7 +55705,6 @@ def test_search_team_folders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchTeamFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -55730,7 +55724,6 @@ def test_get_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55750,7 +55743,6 @@ def test_create_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55770,7 +55762,6 @@ def test_update_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55790,7 +55781,6 @@ def test_delete_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55812,7 +55802,6 @@ def test_delete_folder_tree_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteFolderTreeRequest()
-
         assert args[0] == request_msg
 
 
@@ -55834,7 +55823,6 @@ def test_query_folder_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryFolderContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -55856,7 +55844,6 @@ def test_query_user_root_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryUserRootContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -55876,7 +55863,6 @@ def test_move_folder_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFolderRequest()
-
         assert args[0] == request_msg
 
 
@@ -55898,7 +55884,6 @@ def test_list_repositories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -55918,7 +55903,6 @@ def test_get_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -55940,7 +55924,6 @@ def test_create_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -55962,7 +55945,6 @@ def test_update_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -55984,7 +55966,6 @@ def test_delete_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56004,7 +55985,6 @@ def test_move_repository_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveRepositoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56026,7 +56006,6 @@ def test_commit_repository_changes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitRepositoryChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56048,7 +56027,6 @@ def test_read_repository_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadRepositoryFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -56070,7 +56048,6 @@ def test_query_repository_directory_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryRepositoryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56092,7 +56069,6 @@ def test_fetch_repository_history_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRepositoryHistoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56114,7 +56090,6 @@ def test_compute_repository_access_token_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ComputeRepositoryAccessTokenStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -56136,7 +56111,6 @@ def test_fetch_remote_branches_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchRemoteBranchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56156,7 +56130,6 @@ def test_list_workspaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56176,7 +56149,6 @@ def test_get_workspace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -56196,7 +56168,6 @@ def test_create_workspace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -56216,7 +56187,6 @@ def test_delete_workspace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -56238,7 +56208,6 @@ def test_install_npm_packages_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.InstallNpmPackagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56258,7 +56227,6 @@ def test_pull_git_commits_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PullGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56278,7 +56246,6 @@ def test_push_git_commits_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.PushGitCommitsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56300,7 +56267,6 @@ def test_fetch_file_git_statuses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileGitStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56322,7 +56288,6 @@ def test_fetch_git_ahead_behind_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchGitAheadBehindRequest()
-
         assert args[0] == request_msg
 
 
@@ -56344,7 +56309,6 @@ def test_commit_workspace_changes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CommitWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56366,7 +56330,6 @@ def test_reset_workspace_changes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ResetWorkspaceChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56386,7 +56349,6 @@ def test_fetch_file_diff_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.FetchFileDiffRequest()
-
         assert args[0] == request_msg
 
 
@@ -56408,7 +56370,6 @@ def test_query_directory_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryDirectoryContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56428,7 +56389,6 @@ def test_search_files_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.SearchFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -56448,7 +56408,6 @@ def test_make_directory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MakeDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56468,7 +56427,6 @@ def test_remove_directory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56488,7 +56446,6 @@ def test_move_directory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveDirectoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -56508,7 +56465,6 @@ def test_read_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ReadFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -56528,7 +56484,6 @@ def test_remove_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.RemoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -56548,7 +56503,6 @@ def test_move_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.MoveFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -56568,7 +56522,6 @@ def test_write_file_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.WriteFileRequest()
-
         assert args[0] == request_msg
 
 
@@ -56590,7 +56543,6 @@ def test_list_release_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListReleaseConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56612,7 +56564,6 @@ def test_get_release_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56634,7 +56585,6 @@ def test_create_release_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56656,7 +56606,6 @@ def test_update_release_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56678,7 +56627,6 @@ def test_delete_release_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteReleaseConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56700,7 +56648,6 @@ def test_list_compilation_results_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListCompilationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56722,7 +56669,6 @@ def test_get_compilation_result_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -56744,7 +56690,6 @@ def test_create_compilation_result_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateCompilationResultRequest()
-
         assert args[0] == request_msg
 
 
@@ -56766,7 +56711,6 @@ def test_query_compilation_result_actions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryCompilationResultActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56788,7 +56732,6 @@ def test_list_workflow_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56810,7 +56753,6 @@ def test_get_workflow_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56832,7 +56774,6 @@ def test_create_workflow_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56854,7 +56795,6 @@ def test_update_workflow_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56876,7 +56816,6 @@ def test_delete_workflow_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -56898,7 +56837,6 @@ def test_list_workflow_invocations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.ListWorkflowInvocationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -56920,7 +56858,6 @@ def test_get_workflow_invocation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -56942,7 +56879,6 @@ def test_create_workflow_invocation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CreateWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -56964,7 +56900,6 @@ def test_delete_workflow_invocation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.DeleteWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -56986,7 +56921,6 @@ def test_cancel_workflow_invocation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.CancelWorkflowInvocationRequest()
-
         assert args[0] == request_msg
 
 
@@ -57008,7 +56942,6 @@ def test_query_workflow_invocation_actions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.QueryWorkflowInvocationActionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -57028,7 +56961,6 @@ def test_get_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -57048,7 +56980,6 @@ def test_update_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dataform.UpdateConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -57068,7 +56999,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -57088,7 +57018,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -57110,7 +57039,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 

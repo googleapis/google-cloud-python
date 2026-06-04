@@ -597,9 +597,9 @@ replacements:
           # experimental in this SDK. More info in b/465352227
           "grpc": [
               "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-              "grpcio >= 1.44.0, < 2.0.0; python_version < '3.14'",
+              "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
               "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "grpcio-status >= 1.44.0, < 2.0.0; python_version < '3.14'",
+              "grpcio-status >= 1.59.0, < 2.0.0; python_version < '3.14'",
               "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
               "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
               "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
@@ -642,7 +642,7 @@ replacements:
     before: |
       google-api-core==2.17.1
       google-auth==2.14.1
-      grpcio==1.44.0
+      grpcio==1.59.0
       proto-plus==1.22.3
       protobuf==4.25.8
       grpc-google-iam-v1==0.14.0
@@ -653,8 +653,8 @@ replacements:
       google-api-core==2.27.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
-      grpcio==1.44.0
-      grpcio-status==1.44.0
+      grpcio==1.59.0
+      grpcio-status==1.59.0
       proto-plus==1.22.3
       protobuf==4.25.8
       grpc-google-iam-v1==0.14.0

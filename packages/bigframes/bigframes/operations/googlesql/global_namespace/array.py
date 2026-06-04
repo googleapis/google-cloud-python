@@ -18,15 +18,12 @@
 
 from __future__ import annotations
 
-import datetime
 import decimal
-from typing import Any, Literal, Optional, TypeVar, Union
+from typing import Any, Literal, Union
 
 import bigframes.core.col
-import bigframes.core.expression as ex
 import bigframes.core.googlesql
 import bigframes.core.sentinels as sentinels
-import bigframes.operations as ops
 import bigframes.series as series
 from bigframes import dtypes
 from bigframes.operations import googlesql
@@ -301,7 +298,6 @@ def _ARRAY_TO_STRING_SIG(*args):
     # Pad args with None to match max expected args
     args = args + (None,) * (3 - len(args))
     # Try matching impl 0
-    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         if not dtypes.is_array_like(args[0]):
@@ -338,7 +334,6 @@ def _ARRAY_TO_STRING_SIG(*args):
         return dtypes.STRING_DTYPE
 
     # Try matching impl 1
-    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         if not dtypes.is_array_like(args[0]):
@@ -432,7 +427,6 @@ def _GENERATE_ARRAY_SIG(*args):
     # Pad args with None to match max expected args
     args = args + (None,) * (3 - len(args))
     # Try matching impl 0
-    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
@@ -456,7 +450,6 @@ def _GENERATE_ARRAY_SIG(*args):
         return dtypes.list_type(dtypes.INT_DTYPE)
 
     # Try matching impl 1
-    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
@@ -489,7 +482,6 @@ def _GENERATE_ARRAY_SIG(*args):
         return dtypes.list_type(dtypes.NUMERIC_DTYPE)
 
     # Try matching impl 2
-    any1_val = None
     match_ok = True
     if match_ok and args[0] is not None:
         try:
@@ -696,7 +688,26 @@ def array_length(
         2    2
         dtype: Int64
 
-    You can also apply this function directly to Series.
+    You can call this function using the Series `bigquery` accessor.
+
+        >>> s.bigquery.array_length()
+        0    4
+        1    0
+        2    2
+        dtype: Int64
+
+    You can also use this accessor on a pandas Series after importing bigframes.
+
+        >>> import bigframes
+        >>> import pandas as pd
+        >>> ps = pd.Series([[1, 2, 8, 3], [], [3, 4]])
+        >>> ps.bigquery.array_length()
+        0    4
+        1    0
+        2    2
+        dtype: Int64
+
+    You can also apply this function directly to Series using `apply`.
 
         >>> s.apply(bbq.array_length, by_row=False)
         0    4
@@ -783,6 +794,29 @@ def array_to_string(
 
         >>> s = bpd.Series([["H", "i", "!"], ["Hello", "World"], np.nan, [], ["Hi"]])
         >>> bbq.array_to_string(s, delimiter=", ")
+        0         H, i, !
+        1    Hello, World
+        2
+        3
+        4              Hi
+        dtype: string
+
+    You can call this function using the Series `bigquery` accessor.
+
+        >>> s.bigquery.array_to_string(delimiter=", ")
+        0         H, i, !
+        1    Hello, World
+        2
+        3
+        4              Hi
+        dtype: string
+
+    You can also use this accessor on a pandas Series after importing bigframes.
+
+        >>> import bigframes
+        >>> import pandas as pd
+        >>> ps = pd.Series([["H", "i", "!"], ["Hello", "World"], None, [], ["Hi"]])
+        >>> ps.bigquery.array_to_string(delimiter=", ")
         0         H, i, !
         1    Hello, World
         2

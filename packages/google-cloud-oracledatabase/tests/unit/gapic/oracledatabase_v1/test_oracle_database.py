@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -156,6 +157,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1361,8 +1377,8 @@ def test_oracle_database_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListCloudExadataInfrastructuresRequest,
-        dict,
+        oracledatabase.ListCloudExadataInfrastructuresRequest(),
+        {},
     ],
 )
 def test_list_cloud_exadata_infrastructures(request_type, transport: str = "grpc"):
@@ -1373,7 +1389,7 @@ def test_list_cloud_exadata_infrastructures(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1424,12 +1440,13 @@ def test_list_cloud_exadata_infrastructures_non_empty_request_with_auto_populate
         client.list_cloud_exadata_infrastructures(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListCloudExadataInfrastructuresRequest(
+        request_msg = oracledatabase.ListCloudExadataInfrastructuresRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cloud_exadata_infrastructures_use_cached_wrapped_rpc():
@@ -1515,9 +1532,15 @@ async def test_list_cloud_exadata_infrastructures_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListCloudExadataInfrastructuresRequest(),
+        {},
+    ],
+)
 async def test_list_cloud_exadata_infrastructures_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListCloudExadataInfrastructuresRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1526,7 +1549,7 @@ async def test_list_cloud_exadata_infrastructures_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1549,11 +1572,6 @@ async def test_list_cloud_exadata_infrastructures_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCloudExadataInfrastructuresAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_cloud_exadata_infrastructures_async_from_dict():
-    await test_list_cloud_exadata_infrastructures_async(request_type=dict)
 
 
 def test_list_cloud_exadata_infrastructures_field_headers():
@@ -1916,8 +1934,8 @@ async def test_list_cloud_exadata_infrastructures_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.GetCloudExadataInfrastructureRequest,
-        dict,
+        oracledatabase.GetCloudExadataInfrastructureRequest(),
+        {},
     ],
 )
 def test_get_cloud_exadata_infrastructure(request_type, transport: str = "grpc"):
@@ -1928,7 +1946,7 @@ def test_get_cloud_exadata_infrastructure(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1982,9 +2000,10 @@ def test_get_cloud_exadata_infrastructure_non_empty_request_with_auto_populated_
         client.get_cloud_exadata_infrastructure(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.GetCloudExadataInfrastructureRequest(
+        request_msg = oracledatabase.GetCloudExadataInfrastructureRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cloud_exadata_infrastructure_use_cached_wrapped_rpc():
@@ -2070,9 +2089,15 @@ async def test_get_cloud_exadata_infrastructure_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
 async def test_get_cloud_exadata_infrastructure_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.GetCloudExadataInfrastructureRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2081,7 +2106,7 @@ async def test_get_cloud_exadata_infrastructure_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2110,11 +2135,6 @@ async def test_get_cloud_exadata_infrastructure_async(
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cloud_exadata_infrastructure_async_from_dict():
-    await test_get_cloud_exadata_infrastructure_async(request_type=dict)
 
 
 def test_get_cloud_exadata_infrastructure_field_headers():
@@ -2271,8 +2291,8 @@ async def test_get_cloud_exadata_infrastructure_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.CreateCloudExadataInfrastructureRequest,
-        dict,
+        oracledatabase.CreateCloudExadataInfrastructureRequest(),
+        {},
     ],
 )
 def test_create_cloud_exadata_infrastructure(request_type, transport: str = "grpc"):
@@ -2283,7 +2303,7 @@ def test_create_cloud_exadata_infrastructure(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2329,10 +2349,11 @@ def test_create_cloud_exadata_infrastructure_non_empty_request_with_auto_populat
         client.create_cloud_exadata_infrastructure(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.CreateCloudExadataInfrastructureRequest(
+        request_msg = oracledatabase.CreateCloudExadataInfrastructureRequest(
             parent="parent_value",
             cloud_exadata_infrastructure_id="cloud_exadata_infrastructure_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cloud_exadata_infrastructure_use_cached_wrapped_rpc():
@@ -2428,9 +2449,15 @@ async def test_create_cloud_exadata_infrastructure_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
 async def test_create_cloud_exadata_infrastructure_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.CreateCloudExadataInfrastructureRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2439,7 +2466,7 @@ async def test_create_cloud_exadata_infrastructure_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2459,11 +2486,6 @@ async def test_create_cloud_exadata_infrastructure_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cloud_exadata_infrastructure_async_from_dict():
-    await test_create_cloud_exadata_infrastructure_async(request_type=dict)
 
 
 def test_create_cloud_exadata_infrastructure_field_headers():
@@ -2648,8 +2670,8 @@ async def test_create_cloud_exadata_infrastructure_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        dict,
+        oracledatabase.DeleteCloudExadataInfrastructureRequest(),
+        {},
     ],
 )
 def test_delete_cloud_exadata_infrastructure(request_type, transport: str = "grpc"):
@@ -2660,7 +2682,7 @@ def test_delete_cloud_exadata_infrastructure(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2705,9 +2727,10 @@ def test_delete_cloud_exadata_infrastructure_non_empty_request_with_auto_populat
         client.delete_cloud_exadata_infrastructure(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.DeleteCloudExadataInfrastructureRequest(
+        request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cloud_exadata_infrastructure_use_cached_wrapped_rpc():
@@ -2803,9 +2826,15 @@ async def test_delete_cloud_exadata_infrastructure_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
 async def test_delete_cloud_exadata_infrastructure_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.DeleteCloudExadataInfrastructureRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2814,7 +2843,7 @@ async def test_delete_cloud_exadata_infrastructure_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2834,11 +2863,6 @@ async def test_delete_cloud_exadata_infrastructure_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cloud_exadata_infrastructure_async_from_dict():
-    await test_delete_cloud_exadata_infrastructure_async(request_type=dict)
 
 
 def test_delete_cloud_exadata_infrastructure_field_headers():
@@ -2995,8 +3019,8 @@ async def test_delete_cloud_exadata_infrastructure_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListCloudVmClustersRequest,
-        dict,
+        oracledatabase.ListCloudVmClustersRequest(),
+        {},
     ],
 )
 def test_list_cloud_vm_clusters(request_type, transport: str = "grpc"):
@@ -3007,7 +3031,7 @@ def test_list_cloud_vm_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3057,11 +3081,12 @@ def test_list_cloud_vm_clusters_non_empty_request_with_auto_populated_field():
         client.list_cloud_vm_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListCloudVmClustersRequest(
+        request_msg = oracledatabase.ListCloudVmClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cloud_vm_clusters_use_cached_wrapped_rpc():
@@ -3147,9 +3172,15 @@ async def test_list_cloud_vm_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListCloudVmClustersRequest(),
+        {},
+    ],
+)
 async def test_list_cloud_vm_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListCloudVmClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3158,7 +3189,7 @@ async def test_list_cloud_vm_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3181,11 +3212,6 @@ async def test_list_cloud_vm_clusters_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCloudVmClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_cloud_vm_clusters_async_from_dict():
-    await test_list_cloud_vm_clusters_async(request_type=dict)
 
 
 def test_list_cloud_vm_clusters_field_headers():
@@ -3540,8 +3566,8 @@ async def test_list_cloud_vm_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.GetCloudVmClusterRequest,
-        dict,
+        oracledatabase.GetCloudVmClusterRequest(),
+        {},
     ],
 )
 def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
@@ -3552,7 +3578,7 @@ def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3618,9 +3644,10 @@ def test_get_cloud_vm_cluster_non_empty_request_with_auto_populated_field():
         client.get_cloud_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.GetCloudVmClusterRequest(
+        request_msg = oracledatabase.GetCloudVmClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cloud_vm_cluster_use_cached_wrapped_rpc():
@@ -3705,9 +3732,15 @@ async def test_get_cloud_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetCloudVmClusterRequest(),
+        {},
+    ],
+)
 async def test_get_cloud_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.GetCloudVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3716,7 +3749,7 @@ async def test_get_cloud_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3757,11 +3790,6 @@ async def test_get_cloud_vm_cluster_async(
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cloud_vm_cluster_async_from_dict():
-    await test_get_cloud_vm_cluster_async(request_type=dict)
 
 
 def test_get_cloud_vm_cluster_field_headers():
@@ -3918,8 +3946,8 @@ async def test_get_cloud_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.CreateCloudVmClusterRequest,
-        dict,
+        oracledatabase.CreateCloudVmClusterRequest(),
+        {},
     ],
 )
 def test_create_cloud_vm_cluster(request_type, transport: str = "grpc"):
@@ -3930,7 +3958,7 @@ def test_create_cloud_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3976,10 +4004,11 @@ def test_create_cloud_vm_cluster_non_empty_request_with_auto_populated_field():
         client.create_cloud_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.CreateCloudVmClusterRequest(
+        request_msg = oracledatabase.CreateCloudVmClusterRequest(
             parent="parent_value",
             cloud_vm_cluster_id="cloud_vm_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cloud_vm_cluster_use_cached_wrapped_rpc():
@@ -4075,9 +4104,15 @@ async def test_create_cloud_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateCloudVmClusterRequest(),
+        {},
+    ],
+)
 async def test_create_cloud_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.CreateCloudVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4086,7 +4121,7 @@ async def test_create_cloud_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4106,11 +4141,6 @@ async def test_create_cloud_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cloud_vm_cluster_async_from_dict():
-    await test_create_cloud_vm_cluster_async(request_type=dict)
 
 
 def test_create_cloud_vm_cluster_field_headers():
@@ -4287,8 +4317,8 @@ async def test_create_cloud_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.DeleteCloudVmClusterRequest,
-        dict,
+        oracledatabase.DeleteCloudVmClusterRequest(),
+        {},
     ],
 )
 def test_delete_cloud_vm_cluster(request_type, transport: str = "grpc"):
@@ -4299,7 +4329,7 @@ def test_delete_cloud_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4344,9 +4374,10 @@ def test_delete_cloud_vm_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cloud_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.DeleteCloudVmClusterRequest(
+        request_msg = oracledatabase.DeleteCloudVmClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cloud_vm_cluster_use_cached_wrapped_rpc():
@@ -4442,9 +4473,15 @@ async def test_delete_cloud_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteCloudVmClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_cloud_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.DeleteCloudVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4453,7 +4490,7 @@ async def test_delete_cloud_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4473,11 +4510,6 @@ async def test_delete_cloud_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cloud_vm_cluster_async_from_dict():
-    await test_delete_cloud_vm_cluster_async(request_type=dict)
 
 
 def test_delete_cloud_vm_cluster_field_headers():
@@ -4634,8 +4666,8 @@ async def test_delete_cloud_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListEntitlementsRequest,
-        dict,
+        oracledatabase.ListEntitlementsRequest(),
+        {},
     ],
 )
 def test_list_entitlements(request_type, transport: str = "grpc"):
@@ -4646,7 +4678,7 @@ def test_list_entitlements(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4695,10 +4727,11 @@ def test_list_entitlements_non_empty_request_with_auto_populated_field():
         client.list_entitlements(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListEntitlementsRequest(
+        request_msg = oracledatabase.ListEntitlementsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entitlements_use_cached_wrapped_rpc():
@@ -4781,9 +4814,14 @@ async def test_list_entitlements_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entitlements_async(
-    transport: str = "grpc_asyncio", request_type=oracledatabase.ListEntitlementsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListEntitlementsRequest(),
+        {},
+    ],
+)
+async def test_list_entitlements_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4791,7 +4829,7 @@ async def test_list_entitlements_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4814,11 +4852,6 @@ async def test_list_entitlements_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_entitlements_async_from_dict():
-    await test_list_entitlements_async(request_type=dict)
 
 
 def test_list_entitlements_field_headers():
@@ -5173,8 +5206,8 @@ async def test_list_entitlements_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListDbServersRequest,
-        dict,
+        oracledatabase.ListDbServersRequest(),
+        {},
     ],
 )
 def test_list_db_servers(request_type, transport: str = "grpc"):
@@ -5185,7 +5218,7 @@ def test_list_db_servers(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_servers), "__call__") as call:
@@ -5230,10 +5263,11 @@ def test_list_db_servers_non_empty_request_with_auto_populated_field():
         client.list_db_servers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListDbServersRequest(
+        request_msg = oracledatabase.ListDbServersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_servers_use_cached_wrapped_rpc():
@@ -5314,9 +5348,14 @@ async def test_list_db_servers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_db_servers_async(
-    transport: str = "grpc_asyncio", request_type=oracledatabase.ListDbServersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbServersRequest(),
+        {},
+    ],
+)
+async def test_list_db_servers_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5324,7 +5363,7 @@ async def test_list_db_servers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_servers), "__call__") as call:
@@ -5345,11 +5384,6 @@ async def test_list_db_servers_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbServersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_servers_async_from_dict():
-    await test_list_db_servers_async(request_type=dict)
 
 
 def test_list_db_servers_field_headers():
@@ -5688,8 +5722,8 @@ async def test_list_db_servers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListDbNodesRequest,
-        dict,
+        oracledatabase.ListDbNodesRequest(),
+        {},
     ],
 )
 def test_list_db_nodes(request_type, transport: str = "grpc"):
@@ -5700,7 +5734,7 @@ def test_list_db_nodes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_nodes), "__call__") as call:
@@ -5745,10 +5779,11 @@ def test_list_db_nodes_non_empty_request_with_auto_populated_field():
         client.list_db_nodes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListDbNodesRequest(
+        request_msg = oracledatabase.ListDbNodesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_nodes_use_cached_wrapped_rpc():
@@ -5829,9 +5864,14 @@ async def test_list_db_nodes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_db_nodes_async(
-    transport: str = "grpc_asyncio", request_type=oracledatabase.ListDbNodesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbNodesRequest(),
+        {},
+    ],
+)
+async def test_list_db_nodes_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5839,7 +5879,7 @@ async def test_list_db_nodes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_nodes), "__call__") as call:
@@ -5860,11 +5900,6 @@ async def test_list_db_nodes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbNodesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_nodes_async_from_dict():
-    await test_list_db_nodes_async(request_type=dict)
 
 
 def test_list_db_nodes_field_headers():
@@ -6203,8 +6238,8 @@ async def test_list_db_nodes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListGiVersionsRequest,
-        dict,
+        oracledatabase.ListGiVersionsRequest(),
+        {},
     ],
 )
 def test_list_gi_versions(request_type, transport: str = "grpc"):
@@ -6215,7 +6250,7 @@ def test_list_gi_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gi_versions), "__call__") as call:
@@ -6261,11 +6296,12 @@ def test_list_gi_versions_non_empty_request_with_auto_populated_field():
         client.list_gi_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListGiVersionsRequest(
+        request_msg = oracledatabase.ListGiVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_gi_versions_use_cached_wrapped_rpc():
@@ -6348,9 +6384,14 @@ async def test_list_gi_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_gi_versions_async(
-    transport: str = "grpc_asyncio", request_type=oracledatabase.ListGiVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListGiVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_gi_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6358,7 +6399,7 @@ async def test_list_gi_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gi_versions), "__call__") as call:
@@ -6379,11 +6420,6 @@ async def test_list_gi_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGiVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_gi_versions_async_from_dict():
-    await test_list_gi_versions_async(request_type=dict)
 
 
 def test_list_gi_versions_field_headers():
@@ -6722,8 +6758,8 @@ async def test_list_gi_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        minor_version.ListMinorVersionsRequest,
-        dict,
+        minor_version.ListMinorVersionsRequest(),
+        {},
     ],
 )
 def test_list_minor_versions(request_type, transport: str = "grpc"):
@@ -6734,7 +6770,7 @@ def test_list_minor_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6784,11 +6820,12 @@ def test_list_minor_versions_non_empty_request_with_auto_populated_field():
         client.list_minor_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == minor_version.ListMinorVersionsRequest(
+        request_msg = minor_version.ListMinorVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_minor_versions_use_cached_wrapped_rpc():
@@ -6873,9 +6910,14 @@ async def test_list_minor_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_minor_versions_async(
-    transport: str = "grpc_asyncio", request_type=minor_version.ListMinorVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        minor_version.ListMinorVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_minor_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6883,7 +6925,7 @@ async def test_list_minor_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6906,11 +6948,6 @@ async def test_list_minor_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMinorVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_minor_versions_async_from_dict():
-    await test_list_minor_versions_async(request_type=dict)
 
 
 def test_list_minor_versions_field_headers():
@@ -7265,8 +7302,8 @@ async def test_list_minor_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListDbSystemShapesRequest,
-        dict,
+        oracledatabase.ListDbSystemShapesRequest(),
+        {},
     ],
 )
 def test_list_db_system_shapes(request_type, transport: str = "grpc"):
@@ -7277,7 +7314,7 @@ def test_list_db_system_shapes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7327,11 +7364,12 @@ def test_list_db_system_shapes_non_empty_request_with_auto_populated_field():
         client.list_db_system_shapes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListDbSystemShapesRequest(
+        request_msg = oracledatabase.ListDbSystemShapesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_system_shapes_use_cached_wrapped_rpc():
@@ -7417,9 +7455,15 @@ async def test_list_db_system_shapes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbSystemShapesRequest(),
+        {},
+    ],
+)
 async def test_list_db_system_shapes_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListDbSystemShapesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7428,7 +7472,7 @@ async def test_list_db_system_shapes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7451,11 +7495,6 @@ async def test_list_db_system_shapes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbSystemShapesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_system_shapes_async_from_dict():
-    await test_list_db_system_shapes_async(request_type=dict)
 
 
 def test_list_db_system_shapes_field_headers():
@@ -7810,8 +7849,8 @@ async def test_list_db_system_shapes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListAutonomousDatabasesRequest,
-        dict,
+        oracledatabase.ListAutonomousDatabasesRequest(),
+        {},
     ],
 )
 def test_list_autonomous_databases(request_type, transport: str = "grpc"):
@@ -7822,7 +7861,7 @@ def test_list_autonomous_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7873,12 +7912,13 @@ def test_list_autonomous_databases_non_empty_request_with_auto_populated_field()
         client.list_autonomous_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListAutonomousDatabasesRequest(
+        request_msg = oracledatabase.ListAutonomousDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_autonomous_databases_use_cached_wrapped_rpc():
@@ -7964,9 +8004,15 @@ async def test_list_autonomous_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListAutonomousDatabasesRequest(),
+        {},
+    ],
+)
 async def test_list_autonomous_databases_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListAutonomousDatabasesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7975,7 +8021,7 @@ async def test_list_autonomous_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7998,11 +8044,6 @@ async def test_list_autonomous_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_autonomous_databases_async_from_dict():
-    await test_list_autonomous_databases_async(request_type=dict)
 
 
 def test_list_autonomous_databases_field_headers():
@@ -8363,8 +8404,8 @@ async def test_list_autonomous_databases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.GetAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.GetAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_get_autonomous_database(request_type, transport: str = "grpc"):
@@ -8375,7 +8416,7 @@ def test_get_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8447,9 +8488,10 @@ def test_get_autonomous_database_non_empty_request_with_auto_populated_field():
         client.get_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.GetAutonomousDatabaseRequest(
+        request_msg = oracledatabase.GetAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_autonomous_database_use_cached_wrapped_rpc():
@@ -8535,9 +8577,15 @@ async def test_get_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_get_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.GetAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8546,7 +8594,7 @@ async def test_get_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8593,11 +8641,6 @@ async def test_get_autonomous_database_async(
     assert response.disaster_recovery_supported_locations == [
         "disaster_recovery_supported_locations_value"
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_autonomous_database_async_from_dict():
-    await test_get_autonomous_database_async(request_type=dict)
 
 
 def test_get_autonomous_database_field_headers():
@@ -8754,8 +8797,8 @@ async def test_get_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.CreateAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.CreateAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_create_autonomous_database(request_type, transport: str = "grpc"):
@@ -8766,7 +8809,7 @@ def test_create_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8812,10 +8855,11 @@ def test_create_autonomous_database_non_empty_request_with_auto_populated_field(
         client.create_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.CreateAutonomousDatabaseRequest(
+        request_msg = oracledatabase.CreateAutonomousDatabaseRequest(
             parent="parent_value",
             autonomous_database_id="autonomous_database_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_autonomous_database_use_cached_wrapped_rpc():
@@ -8911,9 +8955,15 @@ async def test_create_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_create_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.CreateAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8922,7 +8972,7 @@ async def test_create_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8942,11 +8992,6 @@ async def test_create_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_autonomous_database_async_from_dict():
-    await test_create_autonomous_database_async(request_type=dict)
 
 
 def test_create_autonomous_database_field_headers():
@@ -9131,8 +9176,8 @@ async def test_create_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.UpdateAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.UpdateAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_update_autonomous_database(request_type, transport: str = "grpc"):
@@ -9143,7 +9188,7 @@ def test_update_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9186,7 +9231,8 @@ def test_update_autonomous_database_non_empty_request_with_auto_populated_field(
         client.update_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.UpdateAutonomousDatabaseRequest()
+        request_msg = oracledatabase.UpdateAutonomousDatabaseRequest()
+        assert args[0] == request_msg
 
 
 def test_update_autonomous_database_use_cached_wrapped_rpc():
@@ -9282,9 +9328,15 @@ async def test_update_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.UpdateAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_update_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.UpdateAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9293,7 +9345,7 @@ async def test_update_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9313,11 +9365,6 @@ async def test_update_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_autonomous_database_async_from_dict():
-    await test_update_autonomous_database_async(request_type=dict)
 
 
 def test_update_autonomous_database_field_headers():
@@ -9492,8 +9539,8 @@ async def test_update_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.DeleteAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.DeleteAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_delete_autonomous_database(request_type, transport: str = "grpc"):
@@ -9504,7 +9551,7 @@ def test_delete_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9549,9 +9596,10 @@ def test_delete_autonomous_database_non_empty_request_with_auto_populated_field(
         client.delete_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.DeleteAutonomousDatabaseRequest(
+        request_msg = oracledatabase.DeleteAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_autonomous_database_use_cached_wrapped_rpc():
@@ -9647,9 +9695,15 @@ async def test_delete_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_delete_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.DeleteAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9658,7 +9712,7 @@ async def test_delete_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9678,11 +9732,6 @@ async def test_delete_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_autonomous_database_async_from_dict():
-    await test_delete_autonomous_database_async(request_type=dict)
 
 
 def test_delete_autonomous_database_field_headers():
@@ -9839,8 +9888,8 @@ async def test_delete_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.RestoreAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.RestoreAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_restore_autonomous_database(request_type, transport: str = "grpc"):
@@ -9851,7 +9900,7 @@ def test_restore_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9896,9 +9945,10 @@ def test_restore_autonomous_database_non_empty_request_with_auto_populated_field
         client.restore_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.RestoreAutonomousDatabaseRequest(
+        request_msg = oracledatabase.RestoreAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_autonomous_database_use_cached_wrapped_rpc():
@@ -9994,9 +10044,15 @@ async def test_restore_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.RestoreAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_restore_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.RestoreAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10005,7 +10061,7 @@ async def test_restore_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10025,11 +10081,6 @@ async def test_restore_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restore_autonomous_database_async_from_dict():
-    await test_restore_autonomous_database_async(request_type=dict)
 
 
 def test_restore_autonomous_database_field_headers():
@@ -10196,8 +10247,8 @@ async def test_restore_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-        dict,
+        oracledatabase.GenerateAutonomousDatabaseWalletRequest(),
+        {},
     ],
 )
 def test_generate_autonomous_database_wallet(request_type, transport: str = "grpc"):
@@ -10208,7 +10259,7 @@ def test_generate_autonomous_database_wallet(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10257,10 +10308,11 @@ def test_generate_autonomous_database_wallet_non_empty_request_with_auto_populat
         client.generate_autonomous_database_wallet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.GenerateAutonomousDatabaseWalletRequest(
+        request_msg = oracledatabase.GenerateAutonomousDatabaseWalletRequest(
             name="name_value",
             password="password_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_autonomous_database_wallet_use_cached_wrapped_rpc():
@@ -10346,9 +10398,15 @@ async def test_generate_autonomous_database_wallet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GenerateAutonomousDatabaseWalletRequest(),
+        {},
+    ],
+)
 async def test_generate_autonomous_database_wallet_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.GenerateAutonomousDatabaseWalletRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10357,7 +10415,7 @@ async def test_generate_autonomous_database_wallet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10380,11 +10438,6 @@ async def test_generate_autonomous_database_wallet_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, oracledatabase.GenerateAutonomousDatabaseWalletResponse)
     assert response.archive_content == b"archive_content_blob"
-
-
-@pytest.mark.asyncio
-async def test_generate_autonomous_database_wallet_async_from_dict():
-    await test_generate_autonomous_database_wallet_async(request_type=dict)
 
 
 def test_generate_autonomous_database_wallet_field_headers():
@@ -10571,8 +10624,8 @@ async def test_generate_autonomous_database_wallet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListAutonomousDbVersionsRequest,
-        dict,
+        oracledatabase.ListAutonomousDbVersionsRequest(),
+        {},
     ],
 )
 def test_list_autonomous_db_versions(request_type, transport: str = "grpc"):
@@ -10583,7 +10636,7 @@ def test_list_autonomous_db_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10632,10 +10685,11 @@ def test_list_autonomous_db_versions_non_empty_request_with_auto_populated_field
         client.list_autonomous_db_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListAutonomousDbVersionsRequest(
+        request_msg = oracledatabase.ListAutonomousDbVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_autonomous_db_versions_use_cached_wrapped_rpc():
@@ -10721,9 +10775,15 @@ async def test_list_autonomous_db_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListAutonomousDbVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_autonomous_db_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListAutonomousDbVersionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10732,7 +10792,7 @@ async def test_list_autonomous_db_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10755,11 +10815,6 @@ async def test_list_autonomous_db_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDbVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_autonomous_db_versions_async_from_dict():
-    await test_list_autonomous_db_versions_async(request_type=dict)
 
 
 def test_list_autonomous_db_versions_field_headers():
@@ -11120,8 +11175,8 @@ async def test_list_autonomous_db_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-        dict,
+        oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(),
+        {},
     ],
 )
 def test_list_autonomous_database_character_sets(request_type, transport: str = "grpc"):
@@ -11132,7 +11187,7 @@ def test_list_autonomous_database_character_sets(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11182,11 +11237,12 @@ def test_list_autonomous_database_character_sets_non_empty_request_with_auto_pop
         client.list_autonomous_database_character_sets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(
+        request_msg = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_autonomous_database_character_sets_use_cached_wrapped_rpc():
@@ -11272,9 +11328,15 @@ async def test_list_autonomous_database_character_sets_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(),
+        {},
+    ],
+)
 async def test_list_autonomous_database_character_sets_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11283,7 +11345,7 @@ async def test_list_autonomous_database_character_sets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11306,11 +11368,6 @@ async def test_list_autonomous_database_character_sets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDatabaseCharacterSetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_autonomous_database_character_sets_async_from_dict():
-    await test_list_autonomous_database_character_sets_async(request_type=dict)
 
 
 def test_list_autonomous_database_character_sets_field_headers():
@@ -11679,8 +11736,8 @@ async def test_list_autonomous_database_character_sets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListAutonomousDatabaseBackupsRequest,
-        dict,
+        oracledatabase.ListAutonomousDatabaseBackupsRequest(),
+        {},
     ],
 )
 def test_list_autonomous_database_backups(request_type, transport: str = "grpc"):
@@ -11691,7 +11748,7 @@ def test_list_autonomous_database_backups(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11741,11 +11798,12 @@ def test_list_autonomous_database_backups_non_empty_request_with_auto_populated_
         client.list_autonomous_database_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListAutonomousDatabaseBackupsRequest(
+        request_msg = oracledatabase.ListAutonomousDatabaseBackupsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_autonomous_database_backups_use_cached_wrapped_rpc():
@@ -11831,9 +11889,15 @@ async def test_list_autonomous_database_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListAutonomousDatabaseBackupsRequest(),
+        {},
+    ],
+)
 async def test_list_autonomous_database_backups_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListAutonomousDatabaseBackupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11842,7 +11906,7 @@ async def test_list_autonomous_database_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11865,11 +11929,6 @@ async def test_list_autonomous_database_backups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDatabaseBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_autonomous_database_backups_async_from_dict():
-    await test_list_autonomous_database_backups_async(request_type=dict)
 
 
 def test_list_autonomous_database_backups_field_headers():
@@ -12234,8 +12293,8 @@ async def test_list_autonomous_database_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.StopAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.StopAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_stop_autonomous_database(request_type, transport: str = "grpc"):
@@ -12246,7 +12305,7 @@ def test_stop_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12291,9 +12350,10 @@ def test_stop_autonomous_database_non_empty_request_with_auto_populated_field():
         client.stop_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.StopAutonomousDatabaseRequest(
+        request_msg = oracledatabase.StopAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_autonomous_database_use_cached_wrapped_rpc():
@@ -12389,9 +12449,15 @@ async def test_stop_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.StopAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_stop_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.StopAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12400,7 +12466,7 @@ async def test_stop_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12420,11 +12486,6 @@ async def test_stop_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_stop_autonomous_database_async_from_dict():
-    await test_stop_autonomous_database_async(request_type=dict)
 
 
 def test_stop_autonomous_database_field_headers():
@@ -12581,8 +12642,8 @@ async def test_stop_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.StartAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.StartAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_start_autonomous_database(request_type, transport: str = "grpc"):
@@ -12593,7 +12654,7 @@ def test_start_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12638,9 +12699,10 @@ def test_start_autonomous_database_non_empty_request_with_auto_populated_field()
         client.start_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.StartAutonomousDatabaseRequest(
+        request_msg = oracledatabase.StartAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_autonomous_database_use_cached_wrapped_rpc():
@@ -12736,9 +12798,15 @@ async def test_start_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.StartAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_start_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.StartAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12747,7 +12815,7 @@ async def test_start_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12767,11 +12835,6 @@ async def test_start_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_autonomous_database_async_from_dict():
-    await test_start_autonomous_database_async(request_type=dict)
 
 
 def test_start_autonomous_database_field_headers():
@@ -12928,8 +12991,8 @@ async def test_start_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.RestartAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.RestartAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_restart_autonomous_database(request_type, transport: str = "grpc"):
@@ -12940,7 +13003,7 @@ def test_restart_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12985,9 +13048,10 @@ def test_restart_autonomous_database_non_empty_request_with_auto_populated_field
         client.restart_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.RestartAutonomousDatabaseRequest(
+        request_msg = oracledatabase.RestartAutonomousDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restart_autonomous_database_use_cached_wrapped_rpc():
@@ -13083,9 +13147,15 @@ async def test_restart_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.RestartAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_restart_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.RestartAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13094,7 +13164,7 @@ async def test_restart_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13114,11 +13184,6 @@ async def test_restart_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restart_autonomous_database_async_from_dict():
-    await test_restart_autonomous_database_async(request_type=dict)
 
 
 def test_restart_autonomous_database_field_headers():
@@ -13275,8 +13340,8 @@ async def test_restart_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.SwitchoverAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.SwitchoverAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_switchover_autonomous_database(request_type, transport: str = "grpc"):
@@ -13287,7 +13352,7 @@ def test_switchover_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13333,10 +13398,11 @@ def test_switchover_autonomous_database_non_empty_request_with_auto_populated_fi
         client.switchover_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.SwitchoverAutonomousDatabaseRequest(
+        request_msg = oracledatabase.SwitchoverAutonomousDatabaseRequest(
             name="name_value",
             peer_autonomous_database="peer_autonomous_database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_switchover_autonomous_database_use_cached_wrapped_rpc():
@@ -13432,9 +13498,15 @@ async def test_switchover_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.SwitchoverAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_switchover_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.SwitchoverAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13443,7 +13515,7 @@ async def test_switchover_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13463,11 +13535,6 @@ async def test_switchover_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_switchover_autonomous_database_async_from_dict():
-    await test_switchover_autonomous_database_async(request_type=dict)
 
 
 def test_switchover_autonomous_database_field_headers():
@@ -13634,8 +13701,8 @@ async def test_switchover_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.FailoverAutonomousDatabaseRequest,
-        dict,
+        oracledatabase.FailoverAutonomousDatabaseRequest(),
+        {},
     ],
 )
 def test_failover_autonomous_database(request_type, transport: str = "grpc"):
@@ -13646,7 +13713,7 @@ def test_failover_autonomous_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13692,10 +13759,11 @@ def test_failover_autonomous_database_non_empty_request_with_auto_populated_fiel
         client.failover_autonomous_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.FailoverAutonomousDatabaseRequest(
+        request_msg = oracledatabase.FailoverAutonomousDatabaseRequest(
             name="name_value",
             peer_autonomous_database="peer_autonomous_database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_failover_autonomous_database_use_cached_wrapped_rpc():
@@ -13791,9 +13859,15 @@ async def test_failover_autonomous_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.FailoverAutonomousDatabaseRequest(),
+        {},
+    ],
+)
 async def test_failover_autonomous_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.FailoverAutonomousDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13802,7 +13876,7 @@ async def test_failover_autonomous_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13822,11 +13896,6 @@ async def test_failover_autonomous_database_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_failover_autonomous_database_async_from_dict():
-    await test_failover_autonomous_database_async(request_type=dict)
 
 
 def test_failover_autonomous_database_field_headers():
@@ -13993,8 +14062,8 @@ async def test_failover_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_network.ListOdbNetworksRequest,
-        dict,
+        odb_network.ListOdbNetworksRequest(),
+        {},
     ],
 )
 def test_list_odb_networks(request_type, transport: str = "grpc"):
@@ -14005,7 +14074,7 @@ def test_list_odb_networks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14058,12 +14127,13 @@ def test_list_odb_networks_non_empty_request_with_auto_populated_field():
         client.list_odb_networks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_network.ListOdbNetworksRequest(
+        request_msg = odb_network.ListOdbNetworksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_odb_networks_use_cached_wrapped_rpc():
@@ -14146,9 +14216,14 @@ async def test_list_odb_networks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_odb_networks_async(
-    transport: str = "grpc_asyncio", request_type=odb_network.ListOdbNetworksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_network.ListOdbNetworksRequest(),
+        {},
+    ],
+)
+async def test_list_odb_networks_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14156,7 +14231,7 @@ async def test_list_odb_networks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14181,11 +14256,6 @@ async def test_list_odb_networks_async(
     assert isinstance(response, pagers.ListOdbNetworksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_odb_networks_async_from_dict():
-    await test_list_odb_networks_async(request_type=dict)
 
 
 def test_list_odb_networks_field_headers():
@@ -14540,8 +14610,8 @@ async def test_list_odb_networks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_network.GetOdbNetworkRequest,
-        dict,
+        odb_network.GetOdbNetworkRequest(),
+        {},
     ],
 )
 def test_get_odb_network(request_type, transport: str = "grpc"):
@@ -14552,7 +14622,7 @@ def test_get_odb_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_odb_network), "__call__") as call:
@@ -14604,9 +14674,10 @@ def test_get_odb_network_non_empty_request_with_auto_populated_field():
         client.get_odb_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_network.GetOdbNetworkRequest(
+        request_msg = odb_network.GetOdbNetworkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_odb_network_use_cached_wrapped_rpc():
@@ -14687,9 +14758,14 @@ async def test_get_odb_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_odb_network_async(
-    transport: str = "grpc_asyncio", request_type=odb_network.GetOdbNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_network.GetOdbNetworkRequest(),
+        {},
+    ],
+)
+async def test_get_odb_network_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14697,7 +14773,7 @@ async def test_get_odb_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_odb_network), "__call__") as call:
@@ -14726,11 +14802,6 @@ async def test_get_odb_network_async(
     assert response.state == odb_network.OdbNetwork.State.PROVISIONING
     assert response.entitlement_id == "entitlement_id_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
-
-
-@pytest.mark.asyncio
-async def test_get_odb_network_async_from_dict():
-    await test_get_odb_network_async(request_type=dict)
 
 
 def test_get_odb_network_field_headers():
@@ -14879,8 +14950,8 @@ async def test_get_odb_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gco_odb_network.CreateOdbNetworkRequest,
-        dict,
+        gco_odb_network.CreateOdbNetworkRequest(),
+        {},
     ],
 )
 def test_create_odb_network(request_type, transport: str = "grpc"):
@@ -14891,7 +14962,7 @@ def test_create_odb_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14937,10 +15008,11 @@ def test_create_odb_network_non_empty_request_with_auto_populated_field():
         client.create_odb_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gco_odb_network.CreateOdbNetworkRequest(
+        request_msg = gco_odb_network.CreateOdbNetworkRequest(
             parent="parent_value",
             odb_network_id="odb_network_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_odb_network_use_cached_wrapped_rpc():
@@ -15035,10 +15107,14 @@ async def test_create_odb_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_odb_network_async(
-    transport: str = "grpc_asyncio",
-    request_type=gco_odb_network.CreateOdbNetworkRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gco_odb_network.CreateOdbNetworkRequest(),
+        {},
+    ],
+)
+async def test_create_odb_network_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15046,7 +15122,7 @@ async def test_create_odb_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15066,11 +15142,6 @@ async def test_create_odb_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_odb_network_async_from_dict():
-    await test_create_odb_network_async(request_type=dict)
 
 
 def test_create_odb_network_field_headers():
@@ -15247,8 +15318,8 @@ async def test_create_odb_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_network.DeleteOdbNetworkRequest,
-        dict,
+        odb_network.DeleteOdbNetworkRequest(),
+        {},
     ],
 )
 def test_delete_odb_network(request_type, transport: str = "grpc"):
@@ -15259,7 +15330,7 @@ def test_delete_odb_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15304,9 +15375,10 @@ def test_delete_odb_network_non_empty_request_with_auto_populated_field():
         client.delete_odb_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_network.DeleteOdbNetworkRequest(
+        request_msg = odb_network.DeleteOdbNetworkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_odb_network_use_cached_wrapped_rpc():
@@ -15401,9 +15473,14 @@ async def test_delete_odb_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_odb_network_async(
-    transport: str = "grpc_asyncio", request_type=odb_network.DeleteOdbNetworkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_network.DeleteOdbNetworkRequest(),
+        {},
+    ],
+)
+async def test_delete_odb_network_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15411,7 +15488,7 @@ async def test_delete_odb_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15431,11 +15508,6 @@ async def test_delete_odb_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_odb_network_async_from_dict():
-    await test_delete_odb_network_async(request_type=dict)
 
 
 def test_delete_odb_network_field_headers():
@@ -15592,8 +15664,8 @@ async def test_delete_odb_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_subnet.ListOdbSubnetsRequest,
-        dict,
+        odb_subnet.ListOdbSubnetsRequest(),
+        {},
     ],
 )
 def test_list_odb_subnets(request_type, transport: str = "grpc"):
@@ -15604,7 +15676,7 @@ def test_list_odb_subnets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_odb_subnets), "__call__") as call:
@@ -15653,12 +15725,13 @@ def test_list_odb_subnets_non_empty_request_with_auto_populated_field():
         client.list_odb_subnets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_subnet.ListOdbSubnetsRequest(
+        request_msg = odb_subnet.ListOdbSubnetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_odb_subnets_use_cached_wrapped_rpc():
@@ -15741,9 +15814,14 @@ async def test_list_odb_subnets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_odb_subnets_async(
-    transport: str = "grpc_asyncio", request_type=odb_subnet.ListOdbSubnetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_subnet.ListOdbSubnetsRequest(),
+        {},
+    ],
+)
+async def test_list_odb_subnets_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15751,7 +15829,7 @@ async def test_list_odb_subnets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_odb_subnets), "__call__") as call:
@@ -15774,11 +15852,6 @@ async def test_list_odb_subnets_async(
     assert isinstance(response, pagers.ListOdbSubnetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_odb_subnets_async_from_dict():
-    await test_list_odb_subnets_async(request_type=dict)
 
 
 def test_list_odb_subnets_field_headers():
@@ -16117,8 +16190,8 @@ async def test_list_odb_subnets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_subnet.GetOdbSubnetRequest,
-        dict,
+        odb_subnet.GetOdbSubnetRequest(),
+        {},
     ],
 )
 def test_get_odb_subnet(request_type, transport: str = "grpc"):
@@ -16129,7 +16202,7 @@ def test_get_odb_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_odb_subnet), "__call__") as call:
@@ -16179,9 +16252,10 @@ def test_get_odb_subnet_non_empty_request_with_auto_populated_field():
         client.get_odb_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_subnet.GetOdbSubnetRequest(
+        request_msg = odb_subnet.GetOdbSubnetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_odb_subnet_use_cached_wrapped_rpc():
@@ -16262,9 +16336,14 @@ async def test_get_odb_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_odb_subnet_async(
-    transport: str = "grpc_asyncio", request_type=odb_subnet.GetOdbSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_subnet.GetOdbSubnetRequest(),
+        {},
+    ],
+)
+async def test_get_odb_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16272,7 +16351,7 @@ async def test_get_odb_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_odb_subnet), "__call__") as call:
@@ -16299,11 +16378,6 @@ async def test_get_odb_subnet_async(
     assert response.cidr_range == "cidr_range_value"
     assert response.purpose == odb_subnet.OdbSubnet.Purpose.CLIENT_SUBNET
     assert response.state == odb_subnet.OdbSubnet.State.PROVISIONING
-
-
-@pytest.mark.asyncio
-async def test_get_odb_subnet_async_from_dict():
-    await test_get_odb_subnet_async(request_type=dict)
 
 
 def test_get_odb_subnet_field_headers():
@@ -16452,8 +16526,8 @@ async def test_get_odb_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gco_odb_subnet.CreateOdbSubnetRequest,
-        dict,
+        gco_odb_subnet.CreateOdbSubnetRequest(),
+        {},
     ],
 )
 def test_create_odb_subnet(request_type, transport: str = "grpc"):
@@ -16464,7 +16538,7 @@ def test_create_odb_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16510,10 +16584,11 @@ def test_create_odb_subnet_non_empty_request_with_auto_populated_field():
         client.create_odb_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gco_odb_subnet.CreateOdbSubnetRequest(
+        request_msg = gco_odb_subnet.CreateOdbSubnetRequest(
             parent="parent_value",
             odb_subnet_id="odb_subnet_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_odb_subnet_use_cached_wrapped_rpc():
@@ -16606,9 +16681,14 @@ async def test_create_odb_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_odb_subnet_async(
-    transport: str = "grpc_asyncio", request_type=gco_odb_subnet.CreateOdbSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gco_odb_subnet.CreateOdbSubnetRequest(),
+        {},
+    ],
+)
+async def test_create_odb_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16616,7 +16696,7 @@ async def test_create_odb_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16636,11 +16716,6 @@ async def test_create_odb_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_odb_subnet_async_from_dict():
-    await test_create_odb_subnet_async(request_type=dict)
 
 
 def test_create_odb_subnet_field_headers():
@@ -16817,8 +16892,8 @@ async def test_create_odb_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        odb_subnet.DeleteOdbSubnetRequest,
-        dict,
+        odb_subnet.DeleteOdbSubnetRequest(),
+        {},
     ],
 )
 def test_delete_odb_subnet(request_type, transport: str = "grpc"):
@@ -16829,7 +16904,7 @@ def test_delete_odb_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16874,9 +16949,10 @@ def test_delete_odb_subnet_non_empty_request_with_auto_populated_field():
         client.delete_odb_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == odb_subnet.DeleteOdbSubnetRequest(
+        request_msg = odb_subnet.DeleteOdbSubnetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_odb_subnet_use_cached_wrapped_rpc():
@@ -16969,9 +17045,14 @@ async def test_delete_odb_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_odb_subnet_async(
-    transport: str = "grpc_asyncio", request_type=odb_subnet.DeleteOdbSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        odb_subnet.DeleteOdbSubnetRequest(),
+        {},
+    ],
+)
+async def test_delete_odb_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16979,7 +17060,7 @@ async def test_delete_odb_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16999,11 +17080,6 @@ async def test_delete_odb_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_odb_subnet_async_from_dict():
-    await test_delete_odb_subnet_async(request_type=dict)
 
 
 def test_delete_odb_subnet_field_headers():
@@ -17160,8 +17236,8 @@ async def test_delete_odb_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.ListExadbVmClustersRequest,
-        dict,
+        oracledatabase.ListExadbVmClustersRequest(),
+        {},
     ],
 )
 def test_list_exadb_vm_clusters(request_type, transport: str = "grpc"):
@@ -17172,7 +17248,7 @@ def test_list_exadb_vm_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17223,12 +17299,13 @@ def test_list_exadb_vm_clusters_non_empty_request_with_auto_populated_field():
         client.list_exadb_vm_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.ListExadbVmClustersRequest(
+        request_msg = oracledatabase.ListExadbVmClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_exadb_vm_clusters_use_cached_wrapped_rpc():
@@ -17314,9 +17391,15 @@ async def test_list_exadb_vm_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListExadbVmClustersRequest(),
+        {},
+    ],
+)
 async def test_list_exadb_vm_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.ListExadbVmClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17325,7 +17408,7 @@ async def test_list_exadb_vm_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17348,11 +17431,6 @@ async def test_list_exadb_vm_clusters_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExadbVmClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_exadb_vm_clusters_async_from_dict():
-    await test_list_exadb_vm_clusters_async(request_type=dict)
 
 
 def test_list_exadb_vm_clusters_field_headers():
@@ -17707,8 +17785,8 @@ async def test_list_exadb_vm_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.GetExadbVmClusterRequest,
-        dict,
+        oracledatabase.GetExadbVmClusterRequest(),
+        {},
     ],
 )
 def test_get_exadb_vm_cluster(request_type, transport: str = "grpc"):
@@ -17719,7 +17797,7 @@ def test_get_exadb_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17779,9 +17857,10 @@ def test_get_exadb_vm_cluster_non_empty_request_with_auto_populated_field():
         client.get_exadb_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.GetExadbVmClusterRequest(
+        request_msg = oracledatabase.GetExadbVmClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_exadb_vm_cluster_use_cached_wrapped_rpc():
@@ -17866,9 +17945,15 @@ async def test_get_exadb_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetExadbVmClusterRequest(),
+        {},
+    ],
+)
 async def test_get_exadb_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.GetExadbVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17877,7 +17962,7 @@ async def test_get_exadb_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17912,11 +17997,6 @@ async def test_get_exadb_vm_cluster_async(
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
     assert response.display_name == "display_name_value"
     assert response.entitlement_id == "entitlement_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_exadb_vm_cluster_async_from_dict():
-    await test_get_exadb_vm_cluster_async(request_type=dict)
 
 
 def test_get_exadb_vm_cluster_field_headers():
@@ -18073,8 +18153,8 @@ async def test_get_exadb_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.CreateExadbVmClusterRequest,
-        dict,
+        oracledatabase.CreateExadbVmClusterRequest(),
+        {},
     ],
 )
 def test_create_exadb_vm_cluster(request_type, transport: str = "grpc"):
@@ -18085,7 +18165,7 @@ def test_create_exadb_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18131,10 +18211,11 @@ def test_create_exadb_vm_cluster_non_empty_request_with_auto_populated_field():
         client.create_exadb_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.CreateExadbVmClusterRequest(
+        request_msg = oracledatabase.CreateExadbVmClusterRequest(
             parent="parent_value",
             exadb_vm_cluster_id="exadb_vm_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_exadb_vm_cluster_use_cached_wrapped_rpc():
@@ -18230,9 +18311,15 @@ async def test_create_exadb_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateExadbVmClusterRequest(),
+        {},
+    ],
+)
 async def test_create_exadb_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.CreateExadbVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18241,7 +18328,7 @@ async def test_create_exadb_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18261,11 +18348,6 @@ async def test_create_exadb_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_exadb_vm_cluster_async_from_dict():
-    await test_create_exadb_vm_cluster_async(request_type=dict)
 
 
 def test_create_exadb_vm_cluster_field_headers():
@@ -18442,8 +18524,8 @@ async def test_create_exadb_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.DeleteExadbVmClusterRequest,
-        dict,
+        oracledatabase.DeleteExadbVmClusterRequest(),
+        {},
     ],
 )
 def test_delete_exadb_vm_cluster(request_type, transport: str = "grpc"):
@@ -18454,7 +18536,7 @@ def test_delete_exadb_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18499,9 +18581,10 @@ def test_delete_exadb_vm_cluster_non_empty_request_with_auto_populated_field():
         client.delete_exadb_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.DeleteExadbVmClusterRequest(
+        request_msg = oracledatabase.DeleteExadbVmClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_exadb_vm_cluster_use_cached_wrapped_rpc():
@@ -18597,9 +18680,15 @@ async def test_delete_exadb_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteExadbVmClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_exadb_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.DeleteExadbVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18608,7 +18697,7 @@ async def test_delete_exadb_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18628,11 +18717,6 @@ async def test_delete_exadb_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_exadb_vm_cluster_async_from_dict():
-    await test_delete_exadb_vm_cluster_async(request_type=dict)
 
 
 def test_delete_exadb_vm_cluster_field_headers():
@@ -18789,8 +18873,8 @@ async def test_delete_exadb_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.UpdateExadbVmClusterRequest,
-        dict,
+        oracledatabase.UpdateExadbVmClusterRequest(),
+        {},
     ],
 )
 def test_update_exadb_vm_cluster(request_type, transport: str = "grpc"):
@@ -18801,7 +18885,7 @@ def test_update_exadb_vm_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18844,7 +18928,8 @@ def test_update_exadb_vm_cluster_non_empty_request_with_auto_populated_field():
         client.update_exadb_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.UpdateExadbVmClusterRequest()
+        request_msg = oracledatabase.UpdateExadbVmClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_exadb_vm_cluster_use_cached_wrapped_rpc():
@@ -18940,9 +19025,15 @@ async def test_update_exadb_vm_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.UpdateExadbVmClusterRequest(),
+        {},
+    ],
+)
 async def test_update_exadb_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.UpdateExadbVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18951,7 +19042,7 @@ async def test_update_exadb_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18971,11 +19062,6 @@ async def test_update_exadb_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_exadb_vm_cluster_async_from_dict():
-    await test_update_exadb_vm_cluster_async(request_type=dict)
 
 
 def test_update_exadb_vm_cluster_field_headers():
@@ -19142,8 +19228,8 @@ async def test_update_exadb_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oracledatabase.RemoveVirtualMachineExadbVmClusterRequest,
-        dict,
+        oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(),
+        {},
     ],
 )
 def test_remove_virtual_machine_exadb_vm_cluster(request_type, transport: str = "grpc"):
@@ -19154,7 +19240,7 @@ def test_remove_virtual_machine_exadb_vm_cluster(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19199,9 +19285,10 @@ def test_remove_virtual_machine_exadb_vm_cluster_non_empty_request_with_auto_pop
         client.remove_virtual_machine_exadb_vm_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(
+        request_msg = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_virtual_machine_exadb_vm_cluster_use_cached_wrapped_rpc():
@@ -19297,9 +19384,15 @@ async def test_remove_virtual_machine_exadb_vm_cluster_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(),
+        {},
+    ],
+)
 async def test_remove_virtual_machine_exadb_vm_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=oracledatabase.RemoveVirtualMachineExadbVmClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19308,7 +19401,7 @@ async def test_remove_virtual_machine_exadb_vm_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19328,11 +19421,6 @@ async def test_remove_virtual_machine_exadb_vm_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_virtual_machine_exadb_vm_cluster_async_from_dict():
-    await test_remove_virtual_machine_exadb_vm_cluster_async(request_type=dict)
 
 
 def test_remove_virtual_machine_exadb_vm_cluster_field_headers():
@@ -19499,8 +19587,8 @@ async def test_remove_virtual_machine_exadb_vm_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
-        dict,
+        exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(),
+        {},
     ],
 )
 def test_list_exascale_db_storage_vaults(request_type, transport: str = "grpc"):
@@ -19511,7 +19599,7 @@ def test_list_exascale_db_storage_vaults(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19564,12 +19652,13 @@ def test_list_exascale_db_storage_vaults_non_empty_request_with_auto_populated_f
         client.list_exascale_db_storage_vaults(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
+        request_msg = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_exascale_db_storage_vaults_use_cached_wrapped_rpc():
@@ -19655,9 +19744,15 @@ async def test_list_exascale_db_storage_vaults_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(),
+        {},
+    ],
+)
 async def test_list_exascale_db_storage_vaults_async(
-    transport: str = "grpc_asyncio",
-    request_type=exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19666,7 +19761,7 @@ async def test_list_exascale_db_storage_vaults_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19689,11 +19784,6 @@ async def test_list_exascale_db_storage_vaults_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExascaleDbStorageVaultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_exascale_db_storage_vaults_async_from_dict():
-    await test_list_exascale_db_storage_vaults_async(request_type=dict)
 
 
 def test_list_exascale_db_storage_vaults_field_headers():
@@ -20064,8 +20154,8 @@ async def test_list_exascale_db_storage_vaults_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        exascale_db_storage_vault.GetExascaleDbStorageVaultRequest,
-        dict,
+        exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(),
+        {},
     ],
 )
 def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
@@ -20076,7 +20166,7 @@ def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20130,9 +20220,10 @@ def test_get_exascale_db_storage_vault_non_empty_request_with_auto_populated_fie
         client.get_exascale_db_storage_vault(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(
+        request_msg = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_exascale_db_storage_vault_use_cached_wrapped_rpc():
@@ -20218,9 +20309,15 @@ async def test_get_exascale_db_storage_vault_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(),
+        {},
+    ],
+)
 async def test_get_exascale_db_storage_vault_async(
-    transport: str = "grpc_asyncio",
-    request_type=exascale_db_storage_vault.GetExascaleDbStorageVaultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20229,7 +20326,7 @@ async def test_get_exascale_db_storage_vault_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20258,11 +20355,6 @@ async def test_get_exascale_db_storage_vault_async(
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_exascale_db_storage_vault_async_from_dict():
-    await test_get_exascale_db_storage_vault_async(request_type=dict)
 
 
 def test_get_exascale_db_storage_vault_field_headers():
@@ -20419,8 +20511,8 @@ async def test_get_exascale_db_storage_vault_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest,
-        dict,
+        gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(),
+        {},
     ],
 )
 def test_create_exascale_db_storage_vault(request_type, transport: str = "grpc"):
@@ -20431,7 +20523,7 @@ def test_create_exascale_db_storage_vault(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20477,12 +20569,11 @@ def test_create_exascale_db_storage_vault_non_empty_request_with_auto_populated_
         client.create_exascale_db_storage_vault(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(
+        request_msg = gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(
             parent="parent_value",
             exascale_db_storage_vault_id="exascale_db_storage_vault_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_exascale_db_storage_vault_use_cached_wrapped_rpc():
@@ -20578,9 +20669,15 @@ async def test_create_exascale_db_storage_vault_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(),
+        {},
+    ],
+)
 async def test_create_exascale_db_storage_vault_async(
-    transport: str = "grpc_asyncio",
-    request_type=gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20589,7 +20686,7 @@ async def test_create_exascale_db_storage_vault_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20609,11 +20706,6 @@ async def test_create_exascale_db_storage_vault_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_exascale_db_storage_vault_async_from_dict():
-    await test_create_exascale_db_storage_vault_async(request_type=dict)
 
 
 def test_create_exascale_db_storage_vault_field_headers():
@@ -20802,8 +20894,8 @@ async def test_create_exascale_db_storage_vault_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest,
-        dict,
+        exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(),
+        {},
     ],
 )
 def test_delete_exascale_db_storage_vault(request_type, transport: str = "grpc"):
@@ -20814,7 +20906,7 @@ def test_delete_exascale_db_storage_vault(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20859,9 +20951,10 @@ def test_delete_exascale_db_storage_vault_non_empty_request_with_auto_populated_
         client.delete_exascale_db_storage_vault(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(
+        request_msg = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_exascale_db_storage_vault_use_cached_wrapped_rpc():
@@ -20957,9 +21050,15 @@ async def test_delete_exascale_db_storage_vault_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(),
+        {},
+    ],
+)
 async def test_delete_exascale_db_storage_vault_async(
-    transport: str = "grpc_asyncio",
-    request_type=exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20968,7 +21067,7 @@ async def test_delete_exascale_db_storage_vault_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20988,11 +21087,6 @@ async def test_delete_exascale_db_storage_vault_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_exascale_db_storage_vault_async_from_dict():
-    await test_delete_exascale_db_storage_vault_async(request_type=dict)
 
 
 def test_delete_exascale_db_storage_vault_field_headers():
@@ -21149,8 +21243,8 @@ async def test_delete_exascale_db_storage_vault_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
-        dict,
+        db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(),
+        {},
     ],
 )
 def test_list_db_system_initial_storage_sizes(request_type, transport: str = "grpc"):
@@ -21161,7 +21255,7 @@ def test_list_db_system_initial_storage_sizes(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21214,12 +21308,13 @@ def test_list_db_system_initial_storage_sizes_non_empty_request_with_auto_popula
         client.list_db_system_initial_storage_sizes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        request_msg = (
+            db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_system_initial_storage_sizes_use_cached_wrapped_rpc():
@@ -21305,9 +21400,15 @@ async def test_list_db_system_initial_storage_sizes_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(),
+        {},
+    ],
+)
 async def test_list_db_system_initial_storage_sizes_async(
-    transport: str = "grpc_asyncio",
-    request_type=db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21316,7 +21417,7 @@ async def test_list_db_system_initial_storage_sizes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21341,11 +21442,6 @@ async def test_list_db_system_initial_storage_sizes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbSystemInitialStorageSizesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_system_initial_storage_sizes_async_from_dict():
-    await test_list_db_system_initial_storage_sizes_async(request_type=dict)
 
 
 def test_list_db_system_initial_storage_sizes_field_headers():
@@ -21716,8 +21812,8 @@ async def test_list_db_system_initial_storage_sizes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        database.ListDatabasesRequest,
-        dict,
+        database.ListDatabasesRequest(),
+        {},
     ],
 )
 def test_list_databases(request_type, transport: str = "grpc"):
@@ -21728,7 +21824,7 @@ def test_list_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -21774,11 +21870,12 @@ def test_list_databases_non_empty_request_with_auto_populated_field():
         client.list_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == database.ListDatabasesRequest(
+        request_msg = database.ListDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_databases_use_cached_wrapped_rpc():
@@ -21859,9 +21956,14 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_databases_async(
-    transport: str = "grpc_asyncio", request_type=database.ListDatabasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        database.ListDatabasesRequest(),
+        {},
+    ],
+)
+async def test_list_databases_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21869,7 +21971,7 @@ async def test_list_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -21890,11 +21992,6 @@ async def test_list_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_databases_async_from_dict():
-    await test_list_databases_async(request_type=dict)
 
 
 def test_list_databases_field_headers():
@@ -22233,8 +22330,8 @@ async def test_list_databases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        database.GetDatabaseRequest,
-        dict,
+        database.GetDatabaseRequest(),
+        {},
     ],
 )
 def test_get_database(request_type, transport: str = "grpc"):
@@ -22245,7 +22342,7 @@ def test_get_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -22314,9 +22411,10 @@ def test_get_database_non_empty_request_with_auto_populated_field():
         client.get_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == database.GetDatabaseRequest(
+        request_msg = database.GetDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_database_use_cached_wrapped_rpc():
@@ -22397,9 +22495,14 @@ async def test_get_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_database_async(
-    transport: str = "grpc_asyncio", request_type=database.GetDatabaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        database.GetDatabaseRequest(),
+        {},
+    ],
+)
+async def test_get_database_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -22407,7 +22510,7 @@ async def test_get_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -22453,11 +22556,6 @@ async def test_get_database_async(
         response.ops_insights_status
         == database.Database.OperationsInsightsStatus.ENABLING
     )
-
-
-@pytest.mark.asyncio
-async def test_get_database_async_from_dict():
-    await test_get_database_async(request_type=dict)
 
 
 def test_get_database_field_headers():
@@ -22602,8 +22700,8 @@ async def test_get_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pluggable_database.ListPluggableDatabasesRequest,
-        dict,
+        pluggable_database.ListPluggableDatabasesRequest(),
+        {},
     ],
 )
 def test_list_pluggable_databases(request_type, transport: str = "grpc"):
@@ -22614,7 +22712,7 @@ def test_list_pluggable_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22664,11 +22762,12 @@ def test_list_pluggable_databases_non_empty_request_with_auto_populated_field():
         client.list_pluggable_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pluggable_database.ListPluggableDatabasesRequest(
+        request_msg = pluggable_database.ListPluggableDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_pluggable_databases_use_cached_wrapped_rpc():
@@ -22754,9 +22853,15 @@ async def test_list_pluggable_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pluggable_database.ListPluggableDatabasesRequest(),
+        {},
+    ],
+)
 async def test_list_pluggable_databases_async(
-    transport: str = "grpc_asyncio",
-    request_type=pluggable_database.ListPluggableDatabasesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22765,7 +22870,7 @@ async def test_list_pluggable_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22788,11 +22893,6 @@ async def test_list_pluggable_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPluggableDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_pluggable_databases_async_from_dict():
-    await test_list_pluggable_databases_async(request_type=dict)
 
 
 def test_list_pluggable_databases_field_headers():
@@ -23151,8 +23251,8 @@ async def test_list_pluggable_databases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pluggable_database.GetPluggableDatabaseRequest,
-        dict,
+        pluggable_database.GetPluggableDatabaseRequest(),
+        {},
     ],
 )
 def test_get_pluggable_database(request_type, transport: str = "grpc"):
@@ -23163,7 +23263,7 @@ def test_get_pluggable_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23213,9 +23313,10 @@ def test_get_pluggable_database_non_empty_request_with_auto_populated_field():
         client.get_pluggable_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pluggable_database.GetPluggableDatabaseRequest(
+        request_msg = pluggable_database.GetPluggableDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_pluggable_database_use_cached_wrapped_rpc():
@@ -23301,9 +23402,15 @@ async def test_get_pluggable_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pluggable_database.GetPluggableDatabaseRequest(),
+        {},
+    ],
+)
 async def test_get_pluggable_database_async(
-    transport: str = "grpc_asyncio",
-    request_type=pluggable_database.GetPluggableDatabaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23312,7 +23419,7 @@ async def test_get_pluggable_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23337,11 +23444,6 @@ async def test_get_pluggable_database_async(
     assert isinstance(response, pluggable_database.PluggableDatabase)
     assert response.name == "name_value"
     assert response.oci_url == "oci_url_value"
-
-
-@pytest.mark.asyncio
-async def test_get_pluggable_database_async_from_dict():
-    await test_get_pluggable_database_async(request_type=dict)
 
 
 def test_get_pluggable_database_field_headers():
@@ -23498,8 +23600,8 @@ async def test_get_pluggable_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        db_system.ListDbSystemsRequest,
-        dict,
+        db_system.ListDbSystemsRequest(),
+        {},
     ],
 )
 def test_list_db_systems(request_type, transport: str = "grpc"):
@@ -23510,7 +23612,7 @@ def test_list_db_systems(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_systems), "__call__") as call:
@@ -23557,12 +23659,13 @@ def test_list_db_systems_non_empty_request_with_auto_populated_field():
         client.list_db_systems(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == db_system.ListDbSystemsRequest(
+        request_msg = db_system.ListDbSystemsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_systems_use_cached_wrapped_rpc():
@@ -23643,9 +23746,14 @@ async def test_list_db_systems_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_db_systems_async(
-    transport: str = "grpc_asyncio", request_type=db_system.ListDbSystemsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        db_system.ListDbSystemsRequest(),
+        {},
+    ],
+)
+async def test_list_db_systems_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -23653,7 +23761,7 @@ async def test_list_db_systems_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_systems), "__call__") as call:
@@ -23674,11 +23782,6 @@ async def test_list_db_systems_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbSystemsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_systems_async_from_dict():
-    await test_list_db_systems_async(request_type=dict)
 
 
 def test_list_db_systems_field_headers():
@@ -24017,8 +24120,8 @@ async def test_list_db_systems_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        db_system.GetDbSystemRequest,
-        dict,
+        db_system.GetDbSystemRequest(),
+        {},
     ],
 )
 def test_get_db_system(request_type, transport: str = "grpc"):
@@ -24029,7 +24132,7 @@ def test_get_db_system(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_db_system), "__call__") as call:
@@ -24085,9 +24188,10 @@ def test_get_db_system_non_empty_request_with_auto_populated_field():
         client.get_db_system(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == db_system.GetDbSystemRequest(
+        request_msg = db_system.GetDbSystemRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_db_system_use_cached_wrapped_rpc():
@@ -24168,9 +24272,14 @@ async def test_get_db_system_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_db_system_async(
-    transport: str = "grpc_asyncio", request_type=db_system.GetDbSystemRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        db_system.GetDbSystemRequest(),
+        {},
+    ],
+)
+async def test_get_db_system_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -24178,7 +24287,7 @@ async def test_get_db_system_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_db_system), "__call__") as call:
@@ -24211,11 +24320,6 @@ async def test_get_db_system_async(
     assert response.entitlement_id == "entitlement_id_value"
     assert response.display_name == "display_name_value"
     assert response.oci_url == "oci_url_value"
-
-
-@pytest.mark.asyncio
-async def test_get_db_system_async_from_dict():
-    await test_get_db_system_async(request_type=dict)
 
 
 def test_get_db_system_field_headers():
@@ -24360,8 +24464,8 @@ async def test_get_db_system_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gco_db_system.CreateDbSystemRequest,
-        dict,
+        gco_db_system.CreateDbSystemRequest(),
+        {},
     ],
 )
 def test_create_db_system(request_type, transport: str = "grpc"):
@@ -24372,7 +24476,7 @@ def test_create_db_system(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_db_system), "__call__") as call:
@@ -24414,10 +24518,11 @@ def test_create_db_system_non_empty_request_with_auto_populated_field():
         client.create_db_system(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gco_db_system.CreateDbSystemRequest(
+        request_msg = gco_db_system.CreateDbSystemRequest(
             parent="parent_value",
             db_system_id="db_system_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_db_system_use_cached_wrapped_rpc():
@@ -24510,9 +24615,14 @@ async def test_create_db_system_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_db_system_async(
-    transport: str = "grpc_asyncio", request_type=gco_db_system.CreateDbSystemRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gco_db_system.CreateDbSystemRequest(),
+        {},
+    ],
+)
+async def test_create_db_system_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -24520,7 +24630,7 @@ async def test_create_db_system_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_db_system), "__call__") as call:
@@ -24538,11 +24648,6 @@ async def test_create_db_system_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_db_system_async_from_dict():
-    await test_create_db_system_async(request_type=dict)
 
 
 def test_create_db_system_field_headers():
@@ -24711,8 +24816,8 @@ async def test_create_db_system_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        db_system.DeleteDbSystemRequest,
-        dict,
+        db_system.DeleteDbSystemRequest(),
+        {},
     ],
 )
 def test_delete_db_system(request_type, transport: str = "grpc"):
@@ -24723,7 +24828,7 @@ def test_delete_db_system(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_db_system), "__call__") as call:
@@ -24764,9 +24869,10 @@ def test_delete_db_system_non_empty_request_with_auto_populated_field():
         client.delete_db_system(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == db_system.DeleteDbSystemRequest(
+        request_msg = db_system.DeleteDbSystemRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_db_system_use_cached_wrapped_rpc():
@@ -24859,9 +24965,14 @@ async def test_delete_db_system_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_db_system_async(
-    transport: str = "grpc_asyncio", request_type=db_system.DeleteDbSystemRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        db_system.DeleteDbSystemRequest(),
+        {},
+    ],
+)
+async def test_delete_db_system_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -24869,7 +24980,7 @@ async def test_delete_db_system_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_db_system), "__call__") as call:
@@ -24887,11 +24998,6 @@ async def test_delete_db_system_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_db_system_async_from_dict():
-    await test_delete_db_system_async(request_type=dict)
 
 
 def test_delete_db_system_field_headers():
@@ -25040,8 +25146,8 @@ async def test_delete_db_system_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        db_version.ListDbVersionsRequest,
-        dict,
+        db_version.ListDbVersionsRequest(),
+        {},
     ],
 )
 def test_list_db_versions(request_type, transport: str = "grpc"):
@@ -25052,7 +25158,7 @@ def test_list_db_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_versions), "__call__") as call:
@@ -25098,11 +25204,12 @@ def test_list_db_versions_non_empty_request_with_auto_populated_field():
         client.list_db_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == db_version.ListDbVersionsRequest(
+        request_msg = db_version.ListDbVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_db_versions_use_cached_wrapped_rpc():
@@ -25185,9 +25292,14 @@ async def test_list_db_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_db_versions_async(
-    transport: str = "grpc_asyncio", request_type=db_version.ListDbVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        db_version.ListDbVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_db_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -25195,7 +25307,7 @@ async def test_list_db_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_db_versions), "__call__") as call:
@@ -25216,11 +25328,6 @@ async def test_list_db_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDbVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_db_versions_async_from_dict():
-    await test_list_db_versions_async(request_type=dict)
 
 
 def test_list_db_versions_field_headers():
@@ -25559,8 +25666,8 @@ async def test_list_db_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        database_character_set.ListDatabaseCharacterSetsRequest,
-        dict,
+        database_character_set.ListDatabaseCharacterSetsRequest(),
+        {},
     ],
 )
 def test_list_database_character_sets(request_type, transport: str = "grpc"):
@@ -25571,7 +25678,7 @@ def test_list_database_character_sets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25621,11 +25728,12 @@ def test_list_database_character_sets_non_empty_request_with_auto_populated_fiel
         client.list_database_character_sets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == database_character_set.ListDatabaseCharacterSetsRequest(
+        request_msg = database_character_set.ListDatabaseCharacterSetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_database_character_sets_use_cached_wrapped_rpc():
@@ -25711,9 +25819,15 @@ async def test_list_database_character_sets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        database_character_set.ListDatabaseCharacterSetsRequest(),
+        {},
+    ],
+)
 async def test_list_database_character_sets_async(
-    transport: str = "grpc_asyncio",
-    request_type=database_character_set.ListDatabaseCharacterSetsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25722,7 +25836,7 @@ async def test_list_database_character_sets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25745,11 +25859,6 @@ async def test_list_database_character_sets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabaseCharacterSetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_database_character_sets_async_from_dict():
-    await test_list_database_character_sets_async(request_type=dict)
 
 
 def test_list_database_character_sets_field_headers():
@@ -39208,7 +39317,6 @@ def test_list_cloud_exadata_infrastructures_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudExadataInfrastructuresRequest()
-
         assert args[0] == request_msg
 
 
@@ -39231,7 +39339,6 @@ def test_get_cloud_exadata_infrastructure_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -39254,7 +39361,6 @@ def test_create_cloud_exadata_infrastructure_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -39277,7 +39383,6 @@ def test_delete_cloud_exadata_infrastructure_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -39300,7 +39405,6 @@ def test_list_cloud_vm_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -39323,7 +39427,6 @@ def test_get_cloud_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -39346,7 +39449,6 @@ def test_create_cloud_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -39369,7 +39471,6 @@ def test_delete_cloud_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -39392,7 +39493,6 @@ def test_list_entitlements_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39413,7 +39513,6 @@ def test_list_db_servers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -39434,7 +39533,6 @@ def test_list_db_nodes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39455,7 +39553,6 @@ def test_list_gi_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListGiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39478,7 +39575,6 @@ def test_list_minor_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = minor_version.ListMinorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39501,7 +39597,6 @@ def test_list_db_system_shapes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbSystemShapesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39524,7 +39619,6 @@ def test_list_autonomous_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39547,7 +39641,6 @@ def test_get_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39570,7 +39663,6 @@ def test_create_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39593,7 +39685,6 @@ def test_update_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39616,7 +39707,6 @@ def test_delete_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39639,7 +39729,6 @@ def test_restore_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestoreAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39662,7 +39751,6 @@ def test_generate_autonomous_database_wallet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GenerateAutonomousDatabaseWalletRequest()
-
         assert args[0] == request_msg
 
 
@@ -39685,7 +39773,6 @@ def test_list_autonomous_db_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39708,7 +39795,6 @@ def test_list_autonomous_database_character_sets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39731,7 +39817,6 @@ def test_list_autonomous_database_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39754,7 +39839,6 @@ def test_stop_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StopAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39777,7 +39861,6 @@ def test_start_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39800,7 +39883,6 @@ def test_restart_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39823,7 +39905,6 @@ def test_switchover_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.SwitchoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39846,7 +39927,6 @@ def test_failover_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.FailoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39869,7 +39949,6 @@ def test_list_odb_networks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.ListOdbNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -39890,7 +39969,6 @@ def test_get_odb_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.GetOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -39913,7 +39991,6 @@ def test_create_odb_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_network.CreateOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -39936,7 +40013,6 @@ def test_delete_odb_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.DeleteOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -39957,7 +40033,6 @@ def test_list_odb_subnets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.ListOdbSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39978,7 +40053,6 @@ def test_get_odb_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.GetOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -40001,7 +40075,6 @@ def test_create_odb_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_subnet.CreateOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -40024,7 +40097,6 @@ def test_delete_odb_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.DeleteOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -40047,7 +40119,6 @@ def test_list_exadb_vm_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListExadbVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -40070,7 +40141,6 @@ def test_get_exadb_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40093,7 +40163,6 @@ def test_create_exadb_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40116,7 +40185,6 @@ def test_delete_exadb_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40139,7 +40207,6 @@ def test_update_exadb_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40162,7 +40229,6 @@ def test_remove_virtual_machine_exadb_vm_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40187,7 +40253,6 @@ def test_list_exascale_db_storage_vaults_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40210,7 +40275,6 @@ def test_get_exascale_db_storage_vault_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -40235,7 +40299,6 @@ def test_create_exascale_db_storage_vault_empty_call_grpc():
         request_msg = (
             gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40258,7 +40321,6 @@ def test_delete_exascale_db_storage_vault_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -40285,7 +40347,6 @@ def test_list_db_system_initial_storage_sizes_empty_call_grpc():
         request_msg = (
             db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40306,7 +40367,6 @@ def test_list_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40327,7 +40387,6 @@ def test_get_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -40350,7 +40409,6 @@ def test_list_pluggable_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.ListPluggableDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40373,7 +40431,6 @@ def test_get_pluggable_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.GetPluggableDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -40394,7 +40451,6 @@ def test_list_db_systems_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.ListDbSystemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40415,7 +40471,6 @@ def test_get_db_system_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.GetDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -40436,7 +40491,6 @@ def test_create_db_system_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_db_system.CreateDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -40457,7 +40511,6 @@ def test_delete_db_system_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.DeleteDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -40478,7 +40531,6 @@ def test_list_db_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_version.ListDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40501,7 +40553,6 @@ def test_list_database_character_sets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database_character_set.ListDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40544,7 +40595,6 @@ async def test_list_cloud_exadata_infrastructures_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudExadataInfrastructuresRequest()
-
         assert args[0] == request_msg
 
 
@@ -40576,7 +40626,6 @@ async def test_get_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -40603,7 +40652,6 @@ async def test_create_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -40630,7 +40678,6 @@ async def test_delete_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -40659,7 +40706,6 @@ async def test_list_cloud_vm_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -40697,7 +40743,6 @@ async def test_get_cloud_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40724,7 +40769,6 @@ async def test_create_cloud_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40751,7 +40795,6 @@ async def test_delete_cloud_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -40780,7 +40823,6 @@ async def test_list_entitlements_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40807,7 +40849,6 @@ async def test_list_db_servers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -40834,7 +40875,6 @@ async def test_list_db_nodes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40861,7 +40901,6 @@ async def test_list_gi_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListGiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40890,7 +40929,6 @@ async def test_list_minor_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = minor_version.ListMinorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40919,7 +40957,6 @@ async def test_list_db_system_shapes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbSystemShapesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40948,7 +40985,6 @@ async def test_list_autonomous_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40989,7 +41025,6 @@ async def test_get_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41016,7 +41051,6 @@ async def test_create_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41043,7 +41077,6 @@ async def test_update_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41070,7 +41103,6 @@ async def test_delete_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41097,7 +41129,6 @@ async def test_restore_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestoreAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41126,7 +41157,6 @@ async def test_generate_autonomous_database_wallet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GenerateAutonomousDatabaseWalletRequest()
-
         assert args[0] == request_msg
 
 
@@ -41155,7 +41185,6 @@ async def test_list_autonomous_db_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41184,7 +41213,6 @@ async def test_list_autonomous_database_character_sets_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41213,7 +41241,6 @@ async def test_list_autonomous_database_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41240,7 +41267,6 @@ async def test_stop_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StopAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41267,7 +41293,6 @@ async def test_start_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41294,7 +41319,6 @@ async def test_restart_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41321,7 +41345,6 @@ async def test_switchover_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.SwitchoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41348,7 +41371,6 @@ async def test_failover_autonomous_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.FailoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41378,7 +41400,6 @@ async def test_list_odb_networks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.ListOdbNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -41409,7 +41430,6 @@ async def test_get_odb_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.GetOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -41436,7 +41456,6 @@ async def test_create_odb_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_network.CreateOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -41463,7 +41482,6 @@ async def test_delete_odb_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.DeleteOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -41491,7 +41509,6 @@ async def test_list_odb_subnets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.ListOdbSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41521,7 +41538,6 @@ async def test_get_odb_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.GetOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -41548,7 +41564,6 @@ async def test_create_odb_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_subnet.CreateOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -41575,7 +41590,6 @@ async def test_delete_odb_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.DeleteOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -41604,7 +41618,6 @@ async def test_list_exadb_vm_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListExadbVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -41639,7 +41652,6 @@ async def test_get_exadb_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -41666,7 +41678,6 @@ async def test_create_exadb_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -41693,7 +41704,6 @@ async def test_delete_exadb_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -41720,7 +41730,6 @@ async def test_update_exadb_vm_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -41747,7 +41756,6 @@ async def test_remove_virtual_machine_exadb_vm_cluster_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -41776,7 +41784,6 @@ async def test_list_exascale_db_storage_vaults_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41808,7 +41815,6 @@ async def test_get_exascale_db_storage_vault_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -41837,7 +41843,6 @@ async def test_create_exascale_db_storage_vault_empty_call_grpc_asyncio():
         request_msg = (
             gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -41864,7 +41869,6 @@ async def test_delete_exascale_db_storage_vault_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -41895,7 +41899,6 @@ async def test_list_db_system_initial_storage_sizes_empty_call_grpc_asyncio():
         request_msg = (
             db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -41922,7 +41925,6 @@ async def test_list_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -41960,7 +41962,6 @@ async def test_get_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -41989,7 +41990,6 @@ async def test_list_pluggable_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.ListPluggableDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -42019,7 +42019,6 @@ async def test_get_pluggable_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.GetPluggableDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -42046,7 +42045,6 @@ async def test_list_db_systems_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.ListDbSystemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42079,7 +42077,6 @@ async def test_get_db_system_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.GetDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -42104,7 +42101,6 @@ async def test_create_db_system_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_db_system.CreateDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -42129,7 +42125,6 @@ async def test_delete_db_system_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.DeleteDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -42156,7 +42151,6 @@ async def test_list_db_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_version.ListDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -42185,7 +42179,6 @@ async def test_list_database_character_sets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database_character_set.ListDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -51747,7 +51740,6 @@ def test_list_cloud_exadata_infrastructures_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudExadataInfrastructuresRequest()
-
         assert args[0] == request_msg
 
 
@@ -51769,7 +51761,6 @@ def test_get_cloud_exadata_infrastructure_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -51791,7 +51782,6 @@ def test_create_cloud_exadata_infrastructure_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -51813,7 +51803,6 @@ def test_delete_cloud_exadata_infrastructure_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
-
         assert args[0] == request_msg
 
 
@@ -51835,7 +51824,6 @@ def test_list_cloud_vm_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListCloudVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -51857,7 +51845,6 @@ def test_get_cloud_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -51879,7 +51866,6 @@ def test_create_cloud_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -51901,7 +51887,6 @@ def test_delete_cloud_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -51923,7 +51908,6 @@ def test_list_entitlements_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListEntitlementsRequest()
-
         assert args[0] == request_msg
 
 
@@ -51943,7 +51927,6 @@ def test_list_db_servers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -51963,7 +51946,6 @@ def test_list_db_nodes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -51983,7 +51965,6 @@ def test_list_gi_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListGiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52005,7 +51986,6 @@ def test_list_minor_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = minor_version.ListMinorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52027,7 +52007,6 @@ def test_list_db_system_shapes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListDbSystemShapesRequest()
-
         assert args[0] == request_msg
 
 
@@ -52049,7 +52028,6 @@ def test_list_autonomous_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -52071,7 +52049,6 @@ def test_get_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52093,7 +52070,6 @@ def test_create_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52115,7 +52091,6 @@ def test_update_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52137,7 +52112,6 @@ def test_delete_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52159,7 +52133,6 @@ def test_restore_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestoreAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52181,7 +52154,6 @@ def test_generate_autonomous_database_wallet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GenerateAutonomousDatabaseWalletRequest()
-
         assert args[0] == request_msg
 
 
@@ -52203,7 +52175,6 @@ def test_list_autonomous_db_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52225,7 +52196,6 @@ def test_list_autonomous_database_character_sets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52247,7 +52217,6 @@ def test_list_autonomous_database_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListAutonomousDatabaseBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52269,7 +52238,6 @@ def test_stop_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StopAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52291,7 +52259,6 @@ def test_start_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.StartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52313,7 +52280,6 @@ def test_restart_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RestartAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52335,7 +52301,6 @@ def test_switchover_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.SwitchoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52357,7 +52322,6 @@ def test_failover_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.FailoverAutonomousDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52379,7 +52343,6 @@ def test_list_odb_networks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.ListOdbNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -52399,7 +52362,6 @@ def test_get_odb_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.GetOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -52421,7 +52383,6 @@ def test_create_odb_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_network.CreateOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -52443,7 +52404,6 @@ def test_delete_odb_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_network.DeleteOdbNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -52463,7 +52423,6 @@ def test_list_odb_subnets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.ListOdbSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52483,7 +52442,6 @@ def test_get_odb_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.GetOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -52505,7 +52463,6 @@ def test_create_odb_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_odb_subnet.CreateOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -52527,7 +52484,6 @@ def test_delete_odb_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = odb_subnet.DeleteOdbSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -52549,7 +52505,6 @@ def test_list_exadb_vm_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.ListExadbVmClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -52571,7 +52526,6 @@ def test_get_exadb_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.GetExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -52593,7 +52547,6 @@ def test_create_exadb_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.CreateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -52615,7 +52568,6 @@ def test_delete_exadb_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -52637,7 +52589,6 @@ def test_update_exadb_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.UpdateExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -52659,7 +52610,6 @@ def test_remove_virtual_machine_exadb_vm_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -52681,7 +52631,6 @@ def test_list_exascale_db_storage_vaults_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52703,7 +52652,6 @@ def test_get_exascale_db_storage_vault_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -52727,7 +52675,6 @@ def test_create_exascale_db_storage_vault_empty_call_rest():
         request_msg = (
             gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -52749,7 +52696,6 @@ def test_delete_exascale_db_storage_vault_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -52773,7 +52719,6 @@ def test_list_db_system_initial_storage_sizes_empty_call_rest():
         request_msg = (
             db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -52793,7 +52738,6 @@ def test_list_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -52813,7 +52757,6 @@ def test_get_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52835,7 +52778,6 @@ def test_list_pluggable_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.ListPluggableDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -52857,7 +52799,6 @@ def test_get_pluggable_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pluggable_database.GetPluggableDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -52877,7 +52818,6 @@ def test_list_db_systems_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.ListDbSystemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52897,7 +52837,6 @@ def test_get_db_system_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.GetDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -52917,7 +52856,6 @@ def test_create_db_system_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gco_db_system.CreateDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -52937,7 +52875,6 @@ def test_delete_db_system_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_system.DeleteDbSystemRequest()
-
         assert args[0] == request_msg
 
 
@@ -52957,7 +52894,6 @@ def test_list_db_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = db_version.ListDbVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52979,7 +52915,6 @@ def test_list_database_character_sets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = database_character_set.ListDatabaseCharacterSetsRequest()
-
         assert args[0] == request_msg
 
 

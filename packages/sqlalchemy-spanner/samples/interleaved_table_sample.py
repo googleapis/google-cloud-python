@@ -14,11 +14,10 @@
 
 import uuid
 
+from model import Album, Singer, Track
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer, Album, Track
 
 
 # Shows how INTERLEAVE IN PARENT can be used in SQLAlchemy.

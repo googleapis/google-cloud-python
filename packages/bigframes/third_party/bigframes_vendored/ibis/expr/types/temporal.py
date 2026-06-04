@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Literal
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored import ibis
 from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.common.annotations import annotated
 from bigframes_vendored.ibis.common.temporal import IntervalUnit

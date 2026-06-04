@@ -41,7 +41,7 @@ from typing import (
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
-import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.job
 import numpy
 import pandas
 import pyarrow as pa
@@ -80,6 +80,7 @@ from bigframes.core.logging import log_adapter
 from bigframes.core.window import rolling
 
 if typing.TYPE_CHECKING:
+    import bigframes.extensions.bigframes.series_accessor as series_bigquery_accessor
     import bigframes.geopandas.geoseries
     import bigframes.operations.datetimes as datetimes
     import bigframes.operations.strings as strings
@@ -118,7 +119,7 @@ class Series:
         *,
         session: Optional[bigframes.session.Session] = None,
     ):
-        self._query_job: Optional[bigquery.QueryJob] = None
+        self._query_job: Optional[google.cloud.bigquery.job.QueryJob] = None
         import bigframes.pandas
 
         # Ignore object dtype if provided, as it provides no additional
@@ -301,7 +302,26 @@ class Series:
         return self.index
 
     @property
-    def query_job(self) -> Optional[bigquery.QueryJob]:
+    def bigquery(
+        self,
+    ) -> series_bigquery_accessor.BigframesBigQuerySeriesAccessor:
+        """
+        Accessor for BigQuery functionality.
+
+        Returns:
+            bigframes.extensions.core.series_accessor.BigQuerySeriesAccessor:
+                Accessor that exposes BigQuery functionality on a Series,
+                with method names closer to SQL.
+        """
+        # Import the accessor here to avoid circular imports.
+        import bigframes.extensions.bigframes.series_accessor
+
+        return bigframes.extensions.bigframes.series_accessor.BigframesBigQuerySeriesAccessor(
+            self
+        )
+
+    @property
+    def query_job(self) -> Optional[google.cloud.bigquery.job.QueryJob]:
         """BigQuery job metadata for the most recent query.
 
         Returns:
@@ -355,7 +375,9 @@ class Series:
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
+    def _set_internal_query_job(
+        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
+    ):
         self._query_job = query_job
 
     def __len__(self):
@@ -760,6 +782,7 @@ class Series:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> Iterable[pandas.Series]:
         """Stream Series results to an iterable of pandas Series.
 
@@ -812,10 +835,11 @@ class Series:
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
         return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 
-    def _compute_dry_run(self) -> bigquery.QueryJob:
+    def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
         _, query_job = self._block._compute_dry_run((self._value_column,))
         return query_job
 
@@ -2043,17 +2067,10 @@ class Series:
 
         if isinstance(func, bigframes.functions.Udf):
             # We are working with bigquery function at this point
-            if args:
-                result_series = self._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), args
-                )
-                # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-                # `name`. Manually reassigning it here as a temporary fix.
-                result_series.name = self.name
-            else:
-                result_series = self._apply_unary_op(
-                    ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
-                )
+            result_series = self._apply_nary_op(ops.func_to_op(func), args)
+            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+            # `name`. Manually reassigning it here as a temporary fix.
+            result_series.name = self.name
 
             return result_series
 
@@ -2103,9 +2120,11 @@ class Series:
             )
 
         if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_binary_op(
-                other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
-            )
+            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+            if hasattr(other, "name") and other.name != self._name:  # type: ignore
+                result_series.name = None
+            else:
+                result_series.name = self.name
             return result_series
 
         bf_op = python_ops.python_callable_to_op(func)
@@ -2475,7 +2494,9 @@ class Series:
 
         self_df = self.to_frame(name="series")
         result_df = self_df.join(map_df, on="series")
-        return result_df[self.name]
+        result = cast(Series, result_df[self.name])
+        result.name = self.name
+        return result
 
     @validations.requires_ordering()
     def sample(
@@ -2701,7 +2722,7 @@ class Series:
             others, ignore_self=ignore_self, cast_scalars=False
         )
         block, result_id = block.project_expr(op.as_expr(*values))
-        return Series(block.select_column(result_id))
+        return Series(block.select_column(result_id).with_column_labels([None]))
 
     def _apply_binary_aggregation(
         self, other: Series, stat: agg_ops.BinaryAggregateOp

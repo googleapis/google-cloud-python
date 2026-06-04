@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
 
 import pytest
 
-import bigframes.dtypes
 import bigframes.operations.googlesql as gsql_ops
-from bigframes.core import array_value, expression
+from bigframes.core import array_value
 from bigframes.session import polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 

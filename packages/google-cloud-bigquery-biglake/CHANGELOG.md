@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-biglake/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.7.0...google-cloud-bigquery-biglake-v0.8.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.6.0...google-cloud-bigquery-biglake-v0.7.0) (2026-03-26)
 
 
