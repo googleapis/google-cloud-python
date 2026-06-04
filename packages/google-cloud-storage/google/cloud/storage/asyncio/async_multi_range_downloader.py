@@ -44,8 +44,8 @@ from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
     _DownloadState,
     _ReadResumptionStrategy,
 )
-
 from google.cloud.storage.exceptions import DataCorruption
+
 from ._utils import raise_if_no_fast_crc32c
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
@@ -437,9 +437,10 @@ class AsyncMultiRangeDownloader:
             # Heuristic to detect full object reads:
             # - Implicit full object read: start offset is 0 and length is 0 (read all).
             # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
-            is_full_object_read = (
-                (offset == 0 and length == 0) or
-                (self.persisted_size is not None and offset == 0 and length == self.persisted_size)
+            is_full_object_read = (offset == 0 and length == 0) or (
+                self.persisted_size is not None
+                and offset == 0
+                and length == self.persisted_size
             )
             download_states[read_id] = _DownloadState(
                 initial_offset=offset,

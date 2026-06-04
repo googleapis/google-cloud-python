@@ -26,7 +26,7 @@ from google.cloud.storage.blob import (
     ObjectContexts,
     ObjectCustomContextPayload,
 )
-from google.cloud.storage.exceptions import DataCorruption
+
 
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
@@ -973,7 +973,13 @@ def test_mrd_concurrent_download_out_of_bounds(
     ],
 )
 def test_mrd_checksum_validation(
-    storage_client, blobs_to_delete, event_loop, grpc_client_direct, read_start, read_length, enable_checksum
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+    read_start,
+    read_length,
+    enable_checksum,
 ):
     """
     Tests full downloads with specified offset, length, and enable_checksum toggle on finalized objects.
@@ -995,7 +1001,9 @@ def test_mrd_checksum_validation(
             grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             buffer = BytesIO()
-            await mrd.download_ranges([(read_start, read_length, buffer)], enable_checksum=enable_checksum)
+            await mrd.download_ranges(
+                [(read_start, read_length, buffer)], enable_checksum=enable_checksum
+            )
             assert buffer.getvalue() == object_data
 
         # cleanup

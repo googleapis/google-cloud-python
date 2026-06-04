@@ -309,7 +309,9 @@ class TestAsyncMultiRangeDownloader:
 
     @mock.patch("google.cloud.storage.asyncio._utils.google_crc32c")
     @pytest.mark.asyncio
-    async def test_download_ranges_raises_if_crc32c_c_extension_is_missing(self, mock_google_crc32c):
+    async def test_download_ranges_raises_if_crc32c_c_extension_is_missing(
+        self, mock_google_crc32c
+    ):
         mock_google_crc32c.implementation = "python"
         mock_client = mock.MagicMock()
         mrd = AsyncMultiRangeDownloader(mock_client, "bucket", "object")
@@ -586,7 +588,9 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_open_populates_checksum_properties(self, mock_cls_async_read_object_stream):
+    async def test_open_populates_checksum_properties(
+        self, mock_cls_async_read_object_stream
+    ):
         # Arrange
         mock_client = mock.MagicMock()
         mock_client.grpc_client = mock.AsyncMock()
@@ -620,7 +624,10 @@ class TestAsyncMultiRangeDownloader:
     )
     @pytest.mark.asyncio
     async def test_download_ranges_configures_full_object_read_state(
-        self, mock_cls_async_read_object_stream, mock_retry_manager_cls, mock_strategy_cls
+        self,
+        mock_cls_async_read_object_stream,
+        mock_retry_manager_cls,
+        mock_strategy_cls,
     ):
         # Arrange
         mock_client = mock.MagicMock()
@@ -644,7 +651,7 @@ class TestAsyncMultiRangeDownloader:
         # Assert
         mock_retry_manager.execute.assert_called_once()
         initial_state = mock_retry_manager.execute.call_args[0][0]
-        
+
         download_states = initial_state["download_states"]
         assert len(download_states) == 3
 
@@ -676,7 +683,10 @@ class TestAsyncMultiRangeDownloader:
     )
     @pytest.mark.asyncio
     async def test_download_ranges_closes_on_datacorruption(
-        self, mock_cls_async_read_object_stream, mock_retry_manager_cls, mock_strategy_cls
+        self,
+        mock_cls_async_read_object_stream,
+        mock_retry_manager_cls,
+        mock_strategy_cls,
     ):
         # Arrange
         mock_client = mock.MagicMock()
@@ -688,7 +698,9 @@ class TestAsyncMultiRangeDownloader:
         mrd.close = AsyncMock()
 
         mock_retry_manager = mock_retry_manager_cls.return_value
-        mock_retry_manager.execute = AsyncMock(side_effect=DataCorruption(None, "corrupted"))
+        mock_retry_manager.execute = AsyncMock(
+            side_effect=DataCorruption(None, "corrupted")
+        )
 
         # Act & Assert
         with pytest.raises(DataCorruption):

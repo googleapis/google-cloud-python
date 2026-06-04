@@ -33,8 +33,10 @@ from google.auth import environment_vars
 from google.cloud.exceptions import NotFound
 
 from google.cloud.storage._opentelemetry_tracing import (
-    create_trace_span as _base_create_trace_span,
     _is_bucket_metadata_disabled,
+)
+from google.cloud.storage._opentelemetry_tracing import (
+    create_trace_span as _base_create_trace_span,
 )
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import (
