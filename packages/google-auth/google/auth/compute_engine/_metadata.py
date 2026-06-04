@@ -22,6 +22,7 @@ import http.client as http_client
 import json
 import logging
 import os
+import re
 from urllib.parse import urljoin
 
 import requests
@@ -36,6 +37,10 @@ from google.auth.compute_engine import _mtls
 
 
 _LOGGER = logging.getLogger(__name__)
+
+_SERVICE_ACCOUNT_EMAIL_PATTERN = re.compile(
+    r"^[^@]+@[^@]+\.[^@]+$"
+)
 
 _GCE_DEFAULT_MDS_IP = "169.254.169.254"
 _GCE_DEFAULT_HOST = "metadata.google.internal"
@@ -504,18 +509,18 @@ def get_service_account_token(request, service_account="default", scopes=None):
     return token_json["access_token"], token_expiry
 
 
-def _is_email(email):
-    """Checks if the provided string is in an email format.
+def _is_service_account_email(email):
+    """Checks if the provided string is a service account email.
 
-    This is a simple check that ensures the candidate string is non-empty
-    and contains the '@' character.
+    This is a check that ensures the candidate string is non-empty
+    and matches a standard email format.
 
     Args:
         email (str): The candidate string to check.
 
     Returns:
-        bool: True if the string is non-empty and contains '@', False otherwise.
+        bool: True if the string is non-empty and matches email format, False otherwise.
     """
     if not email:
         return False
-    return "@" in email
+    return bool(_SERVICE_ACCOUNT_EMAIL_PATTERN.match(email))

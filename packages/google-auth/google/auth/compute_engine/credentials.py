@@ -171,7 +171,7 @@ class Credentials(
         if self.service_account_email == "default":
             return True
 
-        return _metadata._is_email(self.service_account_email)
+        return _metadata._is_service_account_email(self.service_account_email)
 
     def _build_regional_access_boundary_lookup_url(
         self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
@@ -218,7 +218,7 @@ class Credentials(
                 )
                 return None
 
-        if not _metadata._is_email(self.service_account_email):
+        if not _metadata._is_service_account_email(self.service_account_email):
             _LOGGER.info(
                 "Service account email '%s' is not a valid email. Skipping Regional Access Boundary lookup.",
                 self.service_account_email,
