@@ -25,9 +25,9 @@ from google.cloud import _http
 from google.cloud.storage import __version__, _helpers
 from google.cloud.storage._opentelemetry_tracing import (
     HAS_OPENTELEMETRY,
+    _is_bucket_metadata_disabled,
     create_trace_span,
     enable_otel_traces,
-    _is_bucket_metadata_disabled,
 )
 
 logger = logging.getLogger(__name__)
