@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -101,6 +102,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1328,8 +1344,8 @@ def test_sql_translation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        translation_service.TranslateQueryRequest,
-        dict,
+        translation_service.TranslateQueryRequest(),
+        {},
     ],
 )
 def test_translate_query(request_type, transport: str = "grpc"):
@@ -1340,7 +1356,7 @@ def test_translate_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_query), "__call__") as call:
@@ -1387,10 +1403,11 @@ def test_translate_query_non_empty_request_with_auto_populated_field():
         client.translate_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateQueryRequest(
+        request_msg = translation_service.TranslateQueryRequest(
             parent="parent_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_translate_query_use_cached_wrapped_rpc():
@@ -1471,10 +1488,14 @@ async def test_translate_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_translate_query_async(
-    transport: str = "grpc_asyncio",
-    request_type=translation_service.TranslateQueryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.TranslateQueryRequest(),
+        {},
+    ],
+)
+async def test_translate_query_async(request_type, transport: str = "grpc_asyncio"):
     client = SqlTranslationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1482,7 +1503,7 @@ async def test_translate_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_query), "__call__") as call:
@@ -1505,11 +1526,6 @@ async def test_translate_query_async(
     assert isinstance(response, translation_service.TranslateQueryResponse)
     assert response.translation_job == "translation_job_value"
     assert response.translated_query == "translated_query_value"
-
-
-@pytest.mark.asyncio
-async def test_translate_query_async_from_dict():
-    await test_translate_query_async(request_type=dict)
 
 
 def test_translate_query_field_headers():
@@ -1797,7 +1813,6 @@ def test_translate_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = translation_service.TranslateQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -1839,7 +1854,6 @@ async def test_translate_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = translation_service.TranslateQueryRequest()
-
         assert args[0] == request_msg
 
 

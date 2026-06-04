@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -118,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1285,8 +1301,8 @@ def test_vm_migration_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListSourcesRequest,
-        dict,
+        vmmigration.ListSourcesRequest(),
+        {},
     ],
 )
 def test_list_sources(request_type, transport: str = "grpc"):
@@ -1297,7 +1313,7 @@ def test_list_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -1346,12 +1362,13 @@ def test_list_sources_non_empty_request_with_auto_populated_field():
         client.list_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListSourcesRequest(
+        request_msg = vmmigration.ListSourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sources_use_cached_wrapped_rpc():
@@ -1432,9 +1449,14 @@ async def test_list_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sources_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListSourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListSourcesRequest(),
+        {},
+    ],
+)
+async def test_list_sources_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1442,7 +1464,7 @@ async def test_list_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -1465,11 +1487,6 @@ async def test_list_sources_async(
     assert isinstance(response, pagers.ListSourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_sources_async_from_dict():
-    await test_list_sources_async(request_type=dict)
 
 
 def test_list_sources_field_headers():
@@ -1808,8 +1825,8 @@ async def test_list_sources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetSourceRequest,
-        dict,
+        vmmigration.GetSourceRequest(),
+        {},
     ],
 )
 def test_get_source(request_type, transport: str = "grpc"):
@@ -1820,7 +1837,7 @@ def test_get_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1866,9 +1883,10 @@ def test_get_source_non_empty_request_with_auto_populated_field():
         client.get_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetSourceRequest(
+        request_msg = vmmigration.GetSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_source_use_cached_wrapped_rpc():
@@ -1947,9 +1965,14 @@ async def test_get_source_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_source_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetSourceRequest(),
+        {},
+    ],
+)
+async def test_get_source_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1957,7 +1980,7 @@ async def test_get_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1980,11 +2003,6 @@ async def test_get_source_async(
     assert isinstance(response, vmmigration.Source)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_source_async_from_dict():
-    await test_get_source_async(request_type=dict)
 
 
 def test_get_source_field_headers():
@@ -2129,8 +2147,8 @@ async def test_get_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateSourceRequest,
-        dict,
+        vmmigration.CreateSourceRequest(),
+        {},
     ],
 )
 def test_create_source(request_type, transport: str = "grpc"):
@@ -2141,7 +2159,7 @@ def test_create_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -2184,11 +2202,12 @@ def test_create_source_non_empty_request_with_auto_populated_field():
         client.create_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateSourceRequest(
+        request_msg = vmmigration.CreateSourceRequest(
             parent="parent_value",
             source_id="source_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_source_use_cached_wrapped_rpc():
@@ -2279,9 +2298,14 @@ async def test_create_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_source_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateSourceRequest(),
+        {},
+    ],
+)
+async def test_create_source_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2289,7 +2313,7 @@ async def test_create_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -2307,11 +2331,6 @@ async def test_create_source_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_source_async_from_dict():
-    await test_create_source_async(request_type=dict)
 
 
 def test_create_source_field_headers():
@@ -2492,8 +2511,8 @@ async def test_create_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpdateSourceRequest,
-        dict,
+        vmmigration.UpdateSourceRequest(),
+        {},
     ],
 )
 def test_update_source(request_type, transport: str = "grpc"):
@@ -2504,7 +2523,7 @@ def test_update_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -2545,9 +2564,10 @@ def test_update_source_non_empty_request_with_auto_populated_field():
         client.update_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpdateSourceRequest(
+        request_msg = vmmigration.UpdateSourceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_source_use_cached_wrapped_rpc():
@@ -2638,9 +2658,14 @@ async def test_update_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_source_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.UpdateSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateSourceRequest(),
+        {},
+    ],
+)
+async def test_update_source_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2648,7 +2673,7 @@ async def test_update_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -2666,11 +2691,6 @@ async def test_update_source_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_source_async_from_dict():
-    await test_update_source_async(request_type=dict)
 
 
 def test_update_source_field_headers():
@@ -2841,8 +2861,8 @@ async def test_update_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteSourceRequest,
-        dict,
+        vmmigration.DeleteSourceRequest(),
+        {},
     ],
 )
 def test_delete_source(request_type, transport: str = "grpc"):
@@ -2853,7 +2873,7 @@ def test_delete_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -2895,10 +2915,11 @@ def test_delete_source_non_empty_request_with_auto_populated_field():
         client.delete_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteSourceRequest(
+        request_msg = vmmigration.DeleteSourceRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_source_use_cached_wrapped_rpc():
@@ -2989,9 +3010,14 @@ async def test_delete_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_source_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.DeleteSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteSourceRequest(),
+        {},
+    ],
+)
+async def test_delete_source_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2999,7 +3025,7 @@ async def test_delete_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -3017,11 +3043,6 @@ async def test_delete_source_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_source_async_from_dict():
-    await test_delete_source_async(request_type=dict)
 
 
 def test_delete_source_field_headers():
@@ -3170,8 +3191,8 @@ async def test_delete_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.FetchInventoryRequest,
-        dict,
+        vmmigration.FetchInventoryRequest(),
+        {},
     ],
 )
 def test_fetch_inventory(request_type, transport: str = "grpc"):
@@ -3182,7 +3203,7 @@ def test_fetch_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -3223,9 +3244,10 @@ def test_fetch_inventory_non_empty_request_with_auto_populated_field():
         client.fetch_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.FetchInventoryRequest(
+        request_msg = vmmigration.FetchInventoryRequest(
             source="source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_inventory_use_cached_wrapped_rpc():
@@ -3306,9 +3328,14 @@ async def test_fetch_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_inventory_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.FetchInventoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FetchInventoryRequest(),
+        {},
+    ],
+)
+async def test_fetch_inventory_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3316,7 +3343,7 @@ async def test_fetch_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -3334,11 +3361,6 @@ async def test_fetch_inventory_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmmigration.FetchInventoryResponse)
-
-
-@pytest.mark.asyncio
-async def test_fetch_inventory_async_from_dict():
-    await test_fetch_inventory_async(request_type=dict)
 
 
 def test_fetch_inventory_field_headers():
@@ -3487,8 +3509,8 @@ async def test_fetch_inventory_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.FetchStorageInventoryRequest,
-        dict,
+        vmmigration.FetchStorageInventoryRequest(),
+        {},
     ],
 )
 def test_fetch_storage_inventory(request_type, transport: str = "grpc"):
@@ -3499,7 +3521,7 @@ def test_fetch_storage_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3548,10 +3570,11 @@ def test_fetch_storage_inventory_non_empty_request_with_auto_populated_field():
         client.fetch_storage_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.FetchStorageInventoryRequest(
+        request_msg = vmmigration.FetchStorageInventoryRequest(
             source="source_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_storage_inventory_use_cached_wrapped_rpc():
@@ -3637,9 +3660,15 @@ async def test_fetch_storage_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FetchStorageInventoryRequest(),
+        {},
+    ],
+)
 async def test_fetch_storage_inventory_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.FetchStorageInventoryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3648,7 +3677,7 @@ async def test_fetch_storage_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3671,11 +3700,6 @@ async def test_fetch_storage_inventory_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchStorageInventoryAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_storage_inventory_async_from_dict():
-    await test_fetch_storage_inventory_async(request_type=dict)
 
 
 def test_fetch_storage_inventory_field_headers():
@@ -4040,8 +4064,8 @@ async def test_fetch_storage_inventory_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListUtilizationReportsRequest,
-        dict,
+        vmmigration.ListUtilizationReportsRequest(),
+        {},
     ],
 )
 def test_list_utilization_reports(request_type, transport: str = "grpc"):
@@ -4052,7 +4076,7 @@ def test_list_utilization_reports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4105,12 +4129,13 @@ def test_list_utilization_reports_non_empty_request_with_auto_populated_field():
         client.list_utilization_reports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListUtilizationReportsRequest(
+        request_msg = vmmigration.ListUtilizationReportsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_utilization_reports_use_cached_wrapped_rpc():
@@ -4196,9 +4221,15 @@ async def test_list_utilization_reports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListUtilizationReportsRequest(),
+        {},
+    ],
+)
 async def test_list_utilization_reports_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.ListUtilizationReportsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4207,7 +4238,7 @@ async def test_list_utilization_reports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4232,11 +4263,6 @@ async def test_list_utilization_reports_async(
     assert isinstance(response, pagers.ListUtilizationReportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_utilization_reports_async_from_dict():
-    await test_list_utilization_reports_async(request_type=dict)
 
 
 def test_list_utilization_reports_field_headers():
@@ -4593,8 +4619,8 @@ async def test_list_utilization_reports_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetUtilizationReportRequest,
-        dict,
+        vmmigration.GetUtilizationReportRequest(),
+        {},
     ],
 )
 def test_get_utilization_report(request_type, transport: str = "grpc"):
@@ -4605,7 +4631,7 @@ def test_get_utilization_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4661,9 +4687,10 @@ def test_get_utilization_report_non_empty_request_with_auto_populated_field():
         client.get_utilization_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetUtilizationReportRequest(
+        request_msg = vmmigration.GetUtilizationReportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_utilization_report_use_cached_wrapped_rpc():
@@ -4749,9 +4776,15 @@ async def test_get_utilization_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetUtilizationReportRequest(),
+        {},
+    ],
+)
 async def test_get_utilization_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.GetUtilizationReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4760,7 +4793,7 @@ async def test_get_utilization_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4791,11 +4824,6 @@ async def test_get_utilization_report_async(
     assert response.state == vmmigration.UtilizationReport.State.CREATING
     assert response.time_frame == vmmigration.UtilizationReport.TimeFrame.WEEK
     assert response.vm_count == 875
-
-
-@pytest.mark.asyncio
-async def test_get_utilization_report_async_from_dict():
-    await test_get_utilization_report_async(request_type=dict)
 
 
 def test_get_utilization_report_field_headers():
@@ -4952,8 +4980,8 @@ async def test_get_utilization_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateUtilizationReportRequest,
-        dict,
+        vmmigration.CreateUtilizationReportRequest(),
+        {},
     ],
 )
 def test_create_utilization_report(request_type, transport: str = "grpc"):
@@ -4964,7 +4992,7 @@ def test_create_utilization_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5011,11 +5039,12 @@ def test_create_utilization_report_non_empty_request_with_auto_populated_field()
         client.create_utilization_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateUtilizationReportRequest(
+        request_msg = vmmigration.CreateUtilizationReportRequest(
             parent="parent_value",
             utilization_report_id="utilization_report_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_utilization_report_use_cached_wrapped_rpc():
@@ -5111,9 +5140,15 @@ async def test_create_utilization_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateUtilizationReportRequest(),
+        {},
+    ],
+)
 async def test_create_utilization_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.CreateUtilizationReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5122,7 +5157,7 @@ async def test_create_utilization_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5142,11 +5177,6 @@ async def test_create_utilization_report_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_utilization_report_async_from_dict():
-    await test_create_utilization_report_async(request_type=dict)
 
 
 def test_create_utilization_report_field_headers():
@@ -5323,8 +5353,8 @@ async def test_create_utilization_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteUtilizationReportRequest,
-        dict,
+        vmmigration.DeleteUtilizationReportRequest(),
+        {},
     ],
 )
 def test_delete_utilization_report(request_type, transport: str = "grpc"):
@@ -5335,7 +5365,7 @@ def test_delete_utilization_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5381,10 +5411,11 @@ def test_delete_utilization_report_non_empty_request_with_auto_populated_field()
         client.delete_utilization_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteUtilizationReportRequest(
+        request_msg = vmmigration.DeleteUtilizationReportRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_utilization_report_use_cached_wrapped_rpc():
@@ -5480,9 +5511,15 @@ async def test_delete_utilization_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteUtilizationReportRequest(),
+        {},
+    ],
+)
 async def test_delete_utilization_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.DeleteUtilizationReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5491,7 +5528,7 @@ async def test_delete_utilization_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5511,11 +5548,6 @@ async def test_delete_utilization_report_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_utilization_report_async_from_dict():
-    await test_delete_utilization_report_async(request_type=dict)
 
 
 def test_delete_utilization_report_field_headers():
@@ -5672,8 +5704,8 @@ async def test_delete_utilization_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListDatacenterConnectorsRequest,
-        dict,
+        vmmigration.ListDatacenterConnectorsRequest(),
+        {},
     ],
 )
 def test_list_datacenter_connectors(request_type, transport: str = "grpc"):
@@ -5684,7 +5716,7 @@ def test_list_datacenter_connectors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5737,12 +5769,13 @@ def test_list_datacenter_connectors_non_empty_request_with_auto_populated_field(
         client.list_datacenter_connectors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListDatacenterConnectorsRequest(
+        request_msg = vmmigration.ListDatacenterConnectorsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_datacenter_connectors_use_cached_wrapped_rpc():
@@ -5828,9 +5861,15 @@ async def test_list_datacenter_connectors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListDatacenterConnectorsRequest(),
+        {},
+    ],
+)
 async def test_list_datacenter_connectors_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.ListDatacenterConnectorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5839,7 +5878,7 @@ async def test_list_datacenter_connectors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5864,11 +5903,6 @@ async def test_list_datacenter_connectors_async(
     assert isinstance(response, pagers.ListDatacenterConnectorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_datacenter_connectors_async_from_dict():
-    await test_list_datacenter_connectors_async(request_type=dict)
 
 
 def test_list_datacenter_connectors_field_headers():
@@ -6225,8 +6259,8 @@ async def test_list_datacenter_connectors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetDatacenterConnectorRequest,
-        dict,
+        vmmigration.GetDatacenterConnectorRequest(),
+        {},
     ],
 )
 def test_get_datacenter_connector(request_type, transport: str = "grpc"):
@@ -6237,7 +6271,7 @@ def test_get_datacenter_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6302,9 +6336,10 @@ def test_get_datacenter_connector_non_empty_request_with_auto_populated_field():
         client.get_datacenter_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetDatacenterConnectorRequest(
+        request_msg = vmmigration.GetDatacenterConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_datacenter_connector_use_cached_wrapped_rpc():
@@ -6390,9 +6425,15 @@ async def test_get_datacenter_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetDatacenterConnectorRequest(),
+        {},
+    ],
+)
 async def test_get_datacenter_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.GetDatacenterConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6401,7 +6442,7 @@ async def test_get_datacenter_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6441,11 +6482,6 @@ async def test_get_datacenter_connector_async(
         == "appliance_infrastructure_version_value"
     )
     assert response.appliance_software_version == "appliance_software_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_datacenter_connector_async_from_dict():
-    await test_get_datacenter_connector_async(request_type=dict)
 
 
 def test_get_datacenter_connector_field_headers():
@@ -6602,8 +6638,8 @@ async def test_get_datacenter_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateDatacenterConnectorRequest,
-        dict,
+        vmmigration.CreateDatacenterConnectorRequest(),
+        {},
     ],
 )
 def test_create_datacenter_connector(request_type, transport: str = "grpc"):
@@ -6614,7 +6650,7 @@ def test_create_datacenter_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6661,11 +6697,12 @@ def test_create_datacenter_connector_non_empty_request_with_auto_populated_field
         client.create_datacenter_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateDatacenterConnectorRequest(
+        request_msg = vmmigration.CreateDatacenterConnectorRequest(
             parent="parent_value",
             datacenter_connector_id="datacenter_connector_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_datacenter_connector_use_cached_wrapped_rpc():
@@ -6761,9 +6798,15 @@ async def test_create_datacenter_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateDatacenterConnectorRequest(),
+        {},
+    ],
+)
 async def test_create_datacenter_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.CreateDatacenterConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6772,7 +6815,7 @@ async def test_create_datacenter_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6792,11 +6835,6 @@ async def test_create_datacenter_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_datacenter_connector_async_from_dict():
-    await test_create_datacenter_connector_async(request_type=dict)
 
 
 def test_create_datacenter_connector_field_headers():
@@ -6985,8 +7023,8 @@ async def test_create_datacenter_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteDatacenterConnectorRequest,
-        dict,
+        vmmigration.DeleteDatacenterConnectorRequest(),
+        {},
     ],
 )
 def test_delete_datacenter_connector(request_type, transport: str = "grpc"):
@@ -6997,7 +7035,7 @@ def test_delete_datacenter_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7043,10 +7081,11 @@ def test_delete_datacenter_connector_non_empty_request_with_auto_populated_field
         client.delete_datacenter_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteDatacenterConnectorRequest(
+        request_msg = vmmigration.DeleteDatacenterConnectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_datacenter_connector_use_cached_wrapped_rpc():
@@ -7142,9 +7181,15 @@ async def test_delete_datacenter_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteDatacenterConnectorRequest(),
+        {},
+    ],
+)
 async def test_delete_datacenter_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.DeleteDatacenterConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7153,7 +7198,7 @@ async def test_delete_datacenter_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7173,11 +7218,6 @@ async def test_delete_datacenter_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_datacenter_connector_async_from_dict():
-    await test_delete_datacenter_connector_async(request_type=dict)
 
 
 def test_delete_datacenter_connector_field_headers():
@@ -7334,8 +7374,8 @@ async def test_delete_datacenter_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpgradeApplianceRequest,
-        dict,
+        vmmigration.UpgradeApplianceRequest(),
+        {},
     ],
 )
 def test_upgrade_appliance(request_type, transport: str = "grpc"):
@@ -7346,7 +7386,7 @@ def test_upgrade_appliance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7392,10 +7432,11 @@ def test_upgrade_appliance_non_empty_request_with_auto_populated_field():
         client.upgrade_appliance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpgradeApplianceRequest(
+        request_msg = vmmigration.UpgradeApplianceRequest(
             datacenter_connector="datacenter_connector_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_upgrade_appliance_use_cached_wrapped_rpc():
@@ -7488,9 +7529,14 @@ async def test_upgrade_appliance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_upgrade_appliance_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.UpgradeApplianceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpgradeApplianceRequest(),
+        {},
+    ],
+)
+async def test_upgrade_appliance_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7498,7 +7544,7 @@ async def test_upgrade_appliance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7518,11 +7564,6 @@ async def test_upgrade_appliance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_upgrade_appliance_async_from_dict():
-    await test_upgrade_appliance_async(request_type=dict)
 
 
 def test_upgrade_appliance_field_headers():
@@ -7593,8 +7634,8 @@ async def test_upgrade_appliance_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateMigratingVmRequest,
-        dict,
+        vmmigration.CreateMigratingVmRequest(),
+        {},
     ],
 )
 def test_create_migrating_vm(request_type, transport: str = "grpc"):
@@ -7605,7 +7646,7 @@ def test_create_migrating_vm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7652,11 +7693,12 @@ def test_create_migrating_vm_non_empty_request_with_auto_populated_field():
         client.create_migrating_vm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateMigratingVmRequest(
+        request_msg = vmmigration.CreateMigratingVmRequest(
             parent="parent_value",
             migrating_vm_id="migrating_vm_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_migrating_vm_use_cached_wrapped_rpc():
@@ -7751,9 +7793,14 @@ async def test_create_migrating_vm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_migrating_vm_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateMigratingVmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateMigratingVmRequest(),
+        {},
+    ],
+)
+async def test_create_migrating_vm_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7761,7 +7808,7 @@ async def test_create_migrating_vm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7781,11 +7828,6 @@ async def test_create_migrating_vm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_migrating_vm_async_from_dict():
-    await test_create_migrating_vm_async(request_type=dict)
 
 
 def test_create_migrating_vm_field_headers():
@@ -7986,8 +8028,8 @@ async def test_create_migrating_vm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListMigratingVmsRequest,
-        dict,
+        vmmigration.ListMigratingVmsRequest(),
+        {},
     ],
 )
 def test_list_migrating_vms(request_type, transport: str = "grpc"):
@@ -7998,7 +8040,7 @@ def test_list_migrating_vms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8051,12 +8093,13 @@ def test_list_migrating_vms_non_empty_request_with_auto_populated_field():
         client.list_migrating_vms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListMigratingVmsRequest(
+        request_msg = vmmigration.ListMigratingVmsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_migrating_vms_use_cached_wrapped_rpc():
@@ -8141,9 +8184,14 @@ async def test_list_migrating_vms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_migrating_vms_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListMigratingVmsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListMigratingVmsRequest(),
+        {},
+    ],
+)
+async def test_list_migrating_vms_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8151,7 +8199,7 @@ async def test_list_migrating_vms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8176,11 +8224,6 @@ async def test_list_migrating_vms_async(
     assert isinstance(response, pagers.ListMigratingVmsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_migrating_vms_async_from_dict():
-    await test_list_migrating_vms_async(request_type=dict)
 
 
 def test_list_migrating_vms_field_headers():
@@ -8535,8 +8578,8 @@ async def test_list_migrating_vms_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetMigratingVmRequest,
-        dict,
+        vmmigration.GetMigratingVmRequest(),
+        {},
     ],
 )
 def test_get_migrating_vm(request_type, transport: str = "grpc"):
@@ -8547,7 +8590,7 @@ def test_get_migrating_vm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -8601,9 +8644,10 @@ def test_get_migrating_vm_non_empty_request_with_auto_populated_field():
         client.get_migrating_vm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetMigratingVmRequest(
+        request_msg = vmmigration.GetMigratingVmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_migrating_vm_use_cached_wrapped_rpc():
@@ -8686,9 +8730,14 @@ async def test_get_migrating_vm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_migrating_vm_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetMigratingVmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetMigratingVmRequest(),
+        {},
+    ],
+)
+async def test_get_migrating_vm_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8696,7 +8745,7 @@ async def test_get_migrating_vm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -8727,11 +8776,6 @@ async def test_get_migrating_vm_async(
     assert response.description == "description_value"
     assert response.state == vmmigration.MigratingVm.State.PENDING
     assert response.group == "group_value"
-
-
-@pytest.mark.asyncio
-async def test_get_migrating_vm_async_from_dict():
-    await test_get_migrating_vm_async(request_type=dict)
 
 
 def test_get_migrating_vm_field_headers():
@@ -8880,8 +8924,8 @@ async def test_get_migrating_vm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpdateMigratingVmRequest,
-        dict,
+        vmmigration.UpdateMigratingVmRequest(),
+        {},
     ],
 )
 def test_update_migrating_vm(request_type, transport: str = "grpc"):
@@ -8892,7 +8936,7 @@ def test_update_migrating_vm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8937,9 +8981,10 @@ def test_update_migrating_vm_non_empty_request_with_auto_populated_field():
         client.update_migrating_vm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpdateMigratingVmRequest(
+        request_msg = vmmigration.UpdateMigratingVmRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_migrating_vm_use_cached_wrapped_rpc():
@@ -9034,9 +9079,14 @@ async def test_update_migrating_vm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_migrating_vm_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.UpdateMigratingVmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateMigratingVmRequest(),
+        {},
+    ],
+)
+async def test_update_migrating_vm_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9044,7 +9094,7 @@ async def test_update_migrating_vm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9064,11 +9114,6 @@ async def test_update_migrating_vm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_migrating_vm_async_from_dict():
-    await test_update_migrating_vm_async(request_type=dict)
 
 
 def test_update_migrating_vm_field_headers():
@@ -9259,8 +9304,8 @@ async def test_update_migrating_vm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteMigratingVmRequest,
-        dict,
+        vmmigration.DeleteMigratingVmRequest(),
+        {},
     ],
 )
 def test_delete_migrating_vm(request_type, transport: str = "grpc"):
@@ -9271,7 +9316,7 @@ def test_delete_migrating_vm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9316,9 +9361,10 @@ def test_delete_migrating_vm_non_empty_request_with_auto_populated_field():
         client.delete_migrating_vm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteMigratingVmRequest(
+        request_msg = vmmigration.DeleteMigratingVmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_migrating_vm_use_cached_wrapped_rpc():
@@ -9413,9 +9459,14 @@ async def test_delete_migrating_vm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_migrating_vm_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.DeleteMigratingVmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteMigratingVmRequest(),
+        {},
+    ],
+)
+async def test_delete_migrating_vm_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9423,7 +9474,7 @@ async def test_delete_migrating_vm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9443,11 +9494,6 @@ async def test_delete_migrating_vm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_migrating_vm_async_from_dict():
-    await test_delete_migrating_vm_async(request_type=dict)
 
 
 def test_delete_migrating_vm_field_headers():
@@ -9604,8 +9650,8 @@ async def test_delete_migrating_vm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.StartMigrationRequest,
-        dict,
+        vmmigration.StartMigrationRequest(),
+        {},
     ],
 )
 def test_start_migration(request_type, transport: str = "grpc"):
@@ -9616,7 +9662,7 @@ def test_start_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -9657,9 +9703,10 @@ def test_start_migration_non_empty_request_with_auto_populated_field():
         client.start_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.StartMigrationRequest(
+        request_msg = vmmigration.StartMigrationRequest(
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_migration_use_cached_wrapped_rpc():
@@ -9750,9 +9797,14 @@ async def test_start_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.StartMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.StartMigrationRequest(),
+        {},
+    ],
+)
+async def test_start_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9760,7 +9812,7 @@ async def test_start_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -9778,11 +9830,6 @@ async def test_start_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_migration_async_from_dict():
-    await test_start_migration_async(request_type=dict)
 
 
 def test_start_migration_field_headers():
@@ -9931,8 +9978,8 @@ async def test_start_migration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ResumeMigrationRequest,
-        dict,
+        vmmigration.ResumeMigrationRequest(),
+        {},
     ],
 )
 def test_resume_migration(request_type, transport: str = "grpc"):
@@ -9943,7 +9990,7 @@ def test_resume_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_migration), "__call__") as call:
@@ -9984,9 +10031,10 @@ def test_resume_migration_non_empty_request_with_auto_populated_field():
         client.resume_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ResumeMigrationRequest(
+        request_msg = vmmigration.ResumeMigrationRequest(
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_migration_use_cached_wrapped_rpc():
@@ -10079,9 +10127,14 @@ async def test_resume_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resume_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ResumeMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ResumeMigrationRequest(),
+        {},
+    ],
+)
+async def test_resume_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10089,7 +10142,7 @@ async def test_resume_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_migration), "__call__") as call:
@@ -10107,11 +10160,6 @@ async def test_resume_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_resume_migration_async_from_dict():
-    await test_resume_migration_async(request_type=dict)
 
 
 def test_resume_migration_field_headers():
@@ -10178,8 +10226,8 @@ async def test_resume_migration_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.PauseMigrationRequest,
-        dict,
+        vmmigration.PauseMigrationRequest(),
+        {},
     ],
 )
 def test_pause_migration(request_type, transport: str = "grpc"):
@@ -10190,7 +10238,7 @@ def test_pause_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_migration), "__call__") as call:
@@ -10231,9 +10279,10 @@ def test_pause_migration_non_empty_request_with_auto_populated_field():
         client.pause_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.PauseMigrationRequest(
+        request_msg = vmmigration.PauseMigrationRequest(
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_migration_use_cached_wrapped_rpc():
@@ -10324,9 +10373,14 @@ async def test_pause_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_pause_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.PauseMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.PauseMigrationRequest(),
+        {},
+    ],
+)
+async def test_pause_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10334,7 +10388,7 @@ async def test_pause_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_migration), "__call__") as call:
@@ -10352,11 +10406,6 @@ async def test_pause_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_pause_migration_async_from_dict():
-    await test_pause_migration_async(request_type=dict)
 
 
 def test_pause_migration_field_headers():
@@ -10423,8 +10472,8 @@ async def test_pause_migration_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.FinalizeMigrationRequest,
-        dict,
+        vmmigration.FinalizeMigrationRequest(),
+        {},
     ],
 )
 def test_finalize_migration(request_type, transport: str = "grpc"):
@@ -10435,7 +10484,7 @@ def test_finalize_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10480,9 +10529,10 @@ def test_finalize_migration_non_empty_request_with_auto_populated_field():
         client.finalize_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.FinalizeMigrationRequest(
+        request_msg = vmmigration.FinalizeMigrationRequest(
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_finalize_migration_use_cached_wrapped_rpc():
@@ -10577,9 +10627,14 @@ async def test_finalize_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_finalize_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.FinalizeMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FinalizeMigrationRequest(),
+        {},
+    ],
+)
+async def test_finalize_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10587,7 +10642,7 @@ async def test_finalize_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10607,11 +10662,6 @@ async def test_finalize_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_finalize_migration_async_from_dict():
-    await test_finalize_migration_async(request_type=dict)
 
 
 def test_finalize_migration_field_headers():
@@ -10768,8 +10818,8 @@ async def test_finalize_migration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ExtendMigrationRequest,
-        dict,
+        vmmigration.ExtendMigrationRequest(),
+        {},
     ],
 )
 def test_extend_migration(request_type, transport: str = "grpc"):
@@ -10780,7 +10830,7 @@ def test_extend_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.extend_migration), "__call__") as call:
@@ -10821,9 +10871,10 @@ def test_extend_migration_non_empty_request_with_auto_populated_field():
         client.extend_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ExtendMigrationRequest(
+        request_msg = vmmigration.ExtendMigrationRequest(
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_extend_migration_use_cached_wrapped_rpc():
@@ -10916,9 +10967,14 @@ async def test_extend_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_extend_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ExtendMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ExtendMigrationRequest(),
+        {},
+    ],
+)
+async def test_extend_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10926,7 +10982,7 @@ async def test_extend_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.extend_migration), "__call__") as call:
@@ -10944,11 +11000,6 @@ async def test_extend_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_extend_migration_async_from_dict():
-    await test_extend_migration_async(request_type=dict)
 
 
 def test_extend_migration_field_headers():
@@ -11015,8 +11066,8 @@ async def test_extend_migration_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateCloneJobRequest,
-        dict,
+        vmmigration.CreateCloneJobRequest(),
+        {},
     ],
 )
 def test_create_clone_job(request_type, transport: str = "grpc"):
@@ -11027,7 +11078,7 @@ def test_create_clone_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -11070,11 +11121,12 @@ def test_create_clone_job_non_empty_request_with_auto_populated_field():
         client.create_clone_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateCloneJobRequest(
+        request_msg = vmmigration.CreateCloneJobRequest(
             parent="parent_value",
             clone_job_id="clone_job_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_clone_job_use_cached_wrapped_rpc():
@@ -11167,9 +11219,14 @@ async def test_create_clone_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_clone_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateCloneJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCloneJobRequest(),
+        {},
+    ],
+)
+async def test_create_clone_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11177,7 +11234,7 @@ async def test_create_clone_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -11195,11 +11252,6 @@ async def test_create_clone_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_clone_job_async_from_dict():
-    await test_create_clone_job_async(request_type=dict)
 
 
 def test_create_clone_job_field_headers():
@@ -11392,8 +11444,8 @@ async def test_create_clone_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CancelCloneJobRequest,
-        dict,
+        vmmigration.CancelCloneJobRequest(),
+        {},
     ],
 )
 def test_cancel_clone_job(request_type, transport: str = "grpc"):
@@ -11404,7 +11456,7 @@ def test_cancel_clone_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -11445,9 +11497,10 @@ def test_cancel_clone_job_non_empty_request_with_auto_populated_field():
         client.cancel_clone_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CancelCloneJobRequest(
+        request_msg = vmmigration.CancelCloneJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_clone_job_use_cached_wrapped_rpc():
@@ -11540,9 +11593,14 @@ async def test_cancel_clone_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_clone_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CancelCloneJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCloneJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_clone_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11550,7 +11608,7 @@ async def test_cancel_clone_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -11568,11 +11626,6 @@ async def test_cancel_clone_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_cancel_clone_job_async_from_dict():
-    await test_cancel_clone_job_async(request_type=dict)
 
 
 def test_cancel_clone_job_field_headers():
@@ -11721,8 +11774,8 @@ async def test_cancel_clone_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListCloneJobsRequest,
-        dict,
+        vmmigration.ListCloneJobsRequest(),
+        {},
     ],
 )
 def test_list_clone_jobs(request_type, transport: str = "grpc"):
@@ -11733,7 +11786,7 @@ def test_list_clone_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -11782,12 +11835,13 @@ def test_list_clone_jobs_non_empty_request_with_auto_populated_field():
         client.list_clone_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListCloneJobsRequest(
+        request_msg = vmmigration.ListCloneJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clone_jobs_use_cached_wrapped_rpc():
@@ -11868,9 +11922,14 @@ async def test_list_clone_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clone_jobs_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListCloneJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCloneJobsRequest(),
+        {},
+    ],
+)
+async def test_list_clone_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11878,7 +11937,7 @@ async def test_list_clone_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -11901,11 +11960,6 @@ async def test_list_clone_jobs_async(
     assert isinstance(response, pagers.ListCloneJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clone_jobs_async_from_dict():
-    await test_list_clone_jobs_async(request_type=dict)
 
 
 def test_list_clone_jobs_field_headers():
@@ -12244,8 +12298,8 @@ async def test_list_clone_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetCloneJobRequest,
-        dict,
+        vmmigration.GetCloneJobRequest(),
+        {},
     ],
 )
 def test_get_clone_job(request_type, transport: str = "grpc"):
@@ -12256,7 +12310,7 @@ def test_get_clone_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -12302,9 +12356,10 @@ def test_get_clone_job_non_empty_request_with_auto_populated_field():
         client.get_clone_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetCloneJobRequest(
+        request_msg = vmmigration.GetCloneJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_clone_job_use_cached_wrapped_rpc():
@@ -12385,9 +12440,14 @@ async def test_get_clone_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_clone_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetCloneJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCloneJobRequest(),
+        {},
+    ],
+)
+async def test_get_clone_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12395,7 +12455,7 @@ async def test_get_clone_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -12418,11 +12478,6 @@ async def test_get_clone_job_async(
     assert isinstance(response, vmmigration.CloneJob)
     assert response.name == "name_value"
     assert response.state == vmmigration.CloneJob.State.PENDING
-
-
-@pytest.mark.asyncio
-async def test_get_clone_job_async_from_dict():
-    await test_get_clone_job_async(request_type=dict)
 
 
 def test_get_clone_job_field_headers():
@@ -12571,8 +12626,8 @@ async def test_get_clone_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateCutoverJobRequest,
-        dict,
+        vmmigration.CreateCutoverJobRequest(),
+        {},
     ],
 )
 def test_create_cutover_job(request_type, transport: str = "grpc"):
@@ -12583,7 +12638,7 @@ def test_create_cutover_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12630,11 +12685,12 @@ def test_create_cutover_job_non_empty_request_with_auto_populated_field():
         client.create_cutover_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateCutoverJobRequest(
+        request_msg = vmmigration.CreateCutoverJobRequest(
             parent="parent_value",
             cutover_job_id="cutover_job_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cutover_job_use_cached_wrapped_rpc():
@@ -12729,9 +12785,14 @@ async def test_create_cutover_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cutover_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateCutoverJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCutoverJobRequest(),
+        {},
+    ],
+)
+async def test_create_cutover_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12739,7 +12800,7 @@ async def test_create_cutover_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12759,11 +12820,6 @@ async def test_create_cutover_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cutover_job_async_from_dict():
-    await test_create_cutover_job_async(request_type=dict)
 
 
 def test_create_cutover_job_field_headers():
@@ -12964,8 +13020,8 @@ async def test_create_cutover_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CancelCutoverJobRequest,
-        dict,
+        vmmigration.CancelCutoverJobRequest(),
+        {},
     ],
 )
 def test_cancel_cutover_job(request_type, transport: str = "grpc"):
@@ -12976,7 +13032,7 @@ def test_cancel_cutover_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13021,9 +13077,10 @@ def test_cancel_cutover_job_non_empty_request_with_auto_populated_field():
         client.cancel_cutover_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CancelCutoverJobRequest(
+        request_msg = vmmigration.CancelCutoverJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_cutover_job_use_cached_wrapped_rpc():
@@ -13118,9 +13175,14 @@ async def test_cancel_cutover_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_cutover_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CancelCutoverJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCutoverJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_cutover_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13128,7 +13190,7 @@ async def test_cancel_cutover_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13148,11 +13210,6 @@ async def test_cancel_cutover_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_cancel_cutover_job_async_from_dict():
-    await test_cancel_cutover_job_async(request_type=dict)
 
 
 def test_cancel_cutover_job_field_headers():
@@ -13309,8 +13366,8 @@ async def test_cancel_cutover_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListCutoverJobsRequest,
-        dict,
+        vmmigration.ListCutoverJobsRequest(),
+        {},
     ],
 )
 def test_list_cutover_jobs(request_type, transport: str = "grpc"):
@@ -13321,7 +13378,7 @@ def test_list_cutover_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13374,12 +13431,13 @@ def test_list_cutover_jobs_non_empty_request_with_auto_populated_field():
         client.list_cutover_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListCutoverJobsRequest(
+        request_msg = vmmigration.ListCutoverJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cutover_jobs_use_cached_wrapped_rpc():
@@ -13462,9 +13520,14 @@ async def test_list_cutover_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_cutover_jobs_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListCutoverJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCutoverJobsRequest(),
+        {},
+    ],
+)
+async def test_list_cutover_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13472,7 +13535,7 @@ async def test_list_cutover_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13497,11 +13560,6 @@ async def test_list_cutover_jobs_async(
     assert isinstance(response, pagers.ListCutoverJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_cutover_jobs_async_from_dict():
-    await test_list_cutover_jobs_async(request_type=dict)
 
 
 def test_list_cutover_jobs_field_headers():
@@ -13856,8 +13914,8 @@ async def test_list_cutover_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetCutoverJobRequest,
-        dict,
+        vmmigration.GetCutoverJobRequest(),
+        {},
     ],
 )
 def test_get_cutover_job(request_type, transport: str = "grpc"):
@@ -13868,7 +13926,7 @@ def test_get_cutover_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -13918,9 +13976,10 @@ def test_get_cutover_job_non_empty_request_with_auto_populated_field():
         client.get_cutover_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetCutoverJobRequest(
+        request_msg = vmmigration.GetCutoverJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cutover_job_use_cached_wrapped_rpc():
@@ -14001,9 +14060,14 @@ async def test_get_cutover_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cutover_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetCutoverJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCutoverJobRequest(),
+        {},
+    ],
+)
+async def test_get_cutover_job_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14011,7 +14075,7 @@ async def test_get_cutover_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -14038,11 +14102,6 @@ async def test_get_cutover_job_async(
     assert response.state == vmmigration.CutoverJob.State.PENDING
     assert response.progress_percent == 1733
     assert response.state_message == "state_message_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cutover_job_async_from_dict():
-    await test_get_cutover_job_async(request_type=dict)
 
 
 def test_get_cutover_job_field_headers():
@@ -14191,8 +14250,8 @@ async def test_get_cutover_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListGroupsRequest,
-        dict,
+        vmmigration.ListGroupsRequest(),
+        {},
     ],
 )
 def test_list_groups(request_type, transport: str = "grpc"):
@@ -14203,7 +14262,7 @@ def test_list_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -14252,12 +14311,13 @@ def test_list_groups_non_empty_request_with_auto_populated_field():
         client.list_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListGroupsRequest(
+        request_msg = vmmigration.ListGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_groups_use_cached_wrapped_rpc():
@@ -14338,9 +14398,14 @@ async def test_list_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_groups_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListGroupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListGroupsRequest(),
+        {},
+    ],
+)
+async def test_list_groups_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14348,7 +14413,7 @@ async def test_list_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -14371,11 +14436,6 @@ async def test_list_groups_async(
     assert isinstance(response, pagers.ListGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_groups_async_from_dict():
-    await test_list_groups_async(request_type=dict)
 
 
 def test_list_groups_field_headers():
@@ -14714,8 +14774,8 @@ async def test_list_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetGroupRequest,
-        dict,
+        vmmigration.GetGroupRequest(),
+        {},
     ],
 )
 def test_get_group(request_type, transport: str = "grpc"):
@@ -14726,7 +14786,7 @@ def test_get_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -14779,9 +14839,10 @@ def test_get_group_non_empty_request_with_auto_populated_field():
         client.get_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetGroupRequest(
+        request_msg = vmmigration.GetGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_group_use_cached_wrapped_rpc():
@@ -14860,9 +14921,14 @@ async def test_get_group_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_group_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetGroupRequest(),
+        {},
+    ],
+)
+async def test_get_group_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14870,7 +14936,7 @@ async def test_get_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -14900,11 +14966,6 @@ async def test_get_group_async(
         response.migration_target_type
         == vmmigration.Group.MigrationTargetType.MIGRATION_TARGET_TYPE_GCE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_group_async_from_dict():
-    await test_get_group_async(request_type=dict)
 
 
 def test_get_group_field_headers():
@@ -15049,8 +15110,8 @@ async def test_get_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateGroupRequest,
-        dict,
+        vmmigration.CreateGroupRequest(),
+        {},
     ],
 )
 def test_create_group(request_type, transport: str = "grpc"):
@@ -15061,7 +15122,7 @@ def test_create_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -15104,11 +15165,12 @@ def test_create_group_non_empty_request_with_auto_populated_field():
         client.create_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateGroupRequest(
+        request_msg = vmmigration.CreateGroupRequest(
             parent="parent_value",
             group_id="group_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_group_use_cached_wrapped_rpc():
@@ -15199,9 +15261,14 @@ async def test_create_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_group_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateGroupRequest(),
+        {},
+    ],
+)
+async def test_create_group_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15209,7 +15276,7 @@ async def test_create_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -15227,11 +15294,6 @@ async def test_create_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_group_async_from_dict():
-    await test_create_group_async(request_type=dict)
 
 
 def test_create_group_field_headers():
@@ -15400,8 +15462,8 @@ async def test_create_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpdateGroupRequest,
-        dict,
+        vmmigration.UpdateGroupRequest(),
+        {},
     ],
 )
 def test_update_group(request_type, transport: str = "grpc"):
@@ -15412,7 +15474,7 @@ def test_update_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -15453,9 +15515,10 @@ def test_update_group_non_empty_request_with_auto_populated_field():
         client.update_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpdateGroupRequest(
+        request_msg = vmmigration.UpdateGroupRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_group_use_cached_wrapped_rpc():
@@ -15546,9 +15609,14 @@ async def test_update_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_group_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.UpdateGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateGroupRequest(),
+        {},
+    ],
+)
+async def test_update_group_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15556,7 +15624,7 @@ async def test_update_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -15574,11 +15642,6 @@ async def test_update_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_group_async_from_dict():
-    await test_update_group_async(request_type=dict)
 
 
 def test_update_group_field_headers():
@@ -15737,8 +15800,8 @@ async def test_update_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteGroupRequest,
-        dict,
+        vmmigration.DeleteGroupRequest(),
+        {},
     ],
 )
 def test_delete_group(request_type, transport: str = "grpc"):
@@ -15749,7 +15812,7 @@ def test_delete_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -15791,10 +15854,11 @@ def test_delete_group_non_empty_request_with_auto_populated_field():
         client.delete_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteGroupRequest(
+        request_msg = vmmigration.DeleteGroupRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_group_use_cached_wrapped_rpc():
@@ -15885,9 +15949,14 @@ async def test_delete_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_group_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.DeleteGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteGroupRequest(),
+        {},
+    ],
+)
+async def test_delete_group_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15895,7 +15964,7 @@ async def test_delete_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -15913,11 +15982,6 @@ async def test_delete_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_group_async_from_dict():
-    await test_delete_group_async(request_type=dict)
 
 
 def test_delete_group_field_headers():
@@ -16066,8 +16130,8 @@ async def test_delete_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.AddGroupMigrationRequest,
-        dict,
+        vmmigration.AddGroupMigrationRequest(),
+        {},
     ],
 )
 def test_add_group_migration(request_type, transport: str = "grpc"):
@@ -16078,7 +16142,7 @@ def test_add_group_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16124,10 +16188,11 @@ def test_add_group_migration_non_empty_request_with_auto_populated_field():
         client.add_group_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.AddGroupMigrationRequest(
+        request_msg = vmmigration.AddGroupMigrationRequest(
             group="group_value",
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_group_migration_use_cached_wrapped_rpc():
@@ -16222,9 +16287,14 @@ async def test_add_group_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_add_group_migration_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.AddGroupMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.AddGroupMigrationRequest(),
+        {},
+    ],
+)
+async def test_add_group_migration_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16232,7 +16302,7 @@ async def test_add_group_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16252,11 +16322,6 @@ async def test_add_group_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_add_group_migration_async_from_dict():
-    await test_add_group_migration_async(request_type=dict)
 
 
 def test_add_group_migration_field_headers():
@@ -16413,8 +16478,8 @@ async def test_add_group_migration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.RemoveGroupMigrationRequest,
-        dict,
+        vmmigration.RemoveGroupMigrationRequest(),
+        {},
     ],
 )
 def test_remove_group_migration(request_type, transport: str = "grpc"):
@@ -16425,7 +16490,7 @@ def test_remove_group_migration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16471,10 +16536,11 @@ def test_remove_group_migration_non_empty_request_with_auto_populated_field():
         client.remove_group_migration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.RemoveGroupMigrationRequest(
+        request_msg = vmmigration.RemoveGroupMigrationRequest(
             group="group_value",
             migrating_vm="migrating_vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_group_migration_use_cached_wrapped_rpc():
@@ -16570,9 +16636,15 @@ async def test_remove_group_migration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.RemoveGroupMigrationRequest(),
+        {},
+    ],
+)
 async def test_remove_group_migration_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.RemoveGroupMigrationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16581,7 +16653,7 @@ async def test_remove_group_migration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16601,11 +16673,6 @@ async def test_remove_group_migration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_remove_group_migration_async_from_dict():
-    await test_remove_group_migration_async(request_type=dict)
 
 
 def test_remove_group_migration_field_headers():
@@ -16762,8 +16829,8 @@ async def test_remove_group_migration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListTargetProjectsRequest,
-        dict,
+        vmmigration.ListTargetProjectsRequest(),
+        {},
     ],
 )
 def test_list_target_projects(request_type, transport: str = "grpc"):
@@ -16774,7 +16841,7 @@ def test_list_target_projects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16827,12 +16894,13 @@ def test_list_target_projects_non_empty_request_with_auto_populated_field():
         client.list_target_projects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListTargetProjectsRequest(
+        request_msg = vmmigration.ListTargetProjectsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_target_projects_use_cached_wrapped_rpc():
@@ -16917,8 +16985,15 @@ async def test_list_target_projects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListTargetProjectsRequest(),
+        {},
+    ],
+)
 async def test_list_target_projects_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListTargetProjectsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16927,7 +17002,7 @@ async def test_list_target_projects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16952,11 +17027,6 @@ async def test_list_target_projects_async(
     assert isinstance(response, pagers.ListTargetProjectsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_target_projects_async_from_dict():
-    await test_list_target_projects_async(request_type=dict)
 
 
 def test_list_target_projects_field_headers():
@@ -17311,8 +17381,8 @@ async def test_list_target_projects_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetTargetProjectRequest,
-        dict,
+        vmmigration.GetTargetProjectRequest(),
+        {},
     ],
 )
 def test_get_target_project(request_type, transport: str = "grpc"):
@@ -17323,7 +17393,7 @@ def test_get_target_project(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17375,9 +17445,10 @@ def test_get_target_project_non_empty_request_with_auto_populated_field():
         client.get_target_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetTargetProjectRequest(
+        request_msg = vmmigration.GetTargetProjectRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_target_project_use_cached_wrapped_rpc():
@@ -17462,9 +17533,14 @@ async def test_get_target_project_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_target_project_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetTargetProjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetTargetProjectRequest(),
+        {},
+    ],
+)
+async def test_get_target_project_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17472,7 +17548,7 @@ async def test_get_target_project_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17499,11 +17575,6 @@ async def test_get_target_project_async(
     assert response.name == "name_value"
     assert response.project == "project_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_target_project_async_from_dict():
-    await test_get_target_project_async(request_type=dict)
 
 
 def test_get_target_project_field_headers():
@@ -17660,8 +17731,8 @@ async def test_get_target_project_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateTargetProjectRequest,
-        dict,
+        vmmigration.CreateTargetProjectRequest(),
+        {},
     ],
 )
 def test_create_target_project(request_type, transport: str = "grpc"):
@@ -17672,7 +17743,7 @@ def test_create_target_project(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17719,11 +17790,12 @@ def test_create_target_project_non_empty_request_with_auto_populated_field():
         client.create_target_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateTargetProjectRequest(
+        request_msg = vmmigration.CreateTargetProjectRequest(
             parent="parent_value",
             target_project_id="target_project_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_target_project_use_cached_wrapped_rpc():
@@ -17819,8 +17891,15 @@ async def test_create_target_project_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateTargetProjectRequest(),
+        {},
+    ],
+)
 async def test_create_target_project_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateTargetProjectRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17829,7 +17908,7 @@ async def test_create_target_project_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17849,11 +17928,6 @@ async def test_create_target_project_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_target_project_async_from_dict():
-    await test_create_target_project_async(request_type=dict)
 
 
 def test_create_target_project_field_headers():
@@ -18030,8 +18104,8 @@ async def test_create_target_project_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpdateTargetProjectRequest,
-        dict,
+        vmmigration.UpdateTargetProjectRequest(),
+        {},
     ],
 )
 def test_update_target_project(request_type, transport: str = "grpc"):
@@ -18042,7 +18116,7 @@ def test_update_target_project(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18087,9 +18161,10 @@ def test_update_target_project_non_empty_request_with_auto_populated_field():
         client.update_target_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpdateTargetProjectRequest(
+        request_msg = vmmigration.UpdateTargetProjectRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_target_project_use_cached_wrapped_rpc():
@@ -18185,8 +18260,15 @@ async def test_update_target_project_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateTargetProjectRequest(),
+        {},
+    ],
+)
 async def test_update_target_project_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.UpdateTargetProjectRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18195,7 +18277,7 @@ async def test_update_target_project_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18215,11 +18297,6 @@ async def test_update_target_project_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_target_project_async_from_dict():
-    await test_update_target_project_async(request_type=dict)
 
 
 def test_update_target_project_field_headers():
@@ -18386,8 +18463,8 @@ async def test_update_target_project_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteTargetProjectRequest,
-        dict,
+        vmmigration.DeleteTargetProjectRequest(),
+        {},
     ],
 )
 def test_delete_target_project(request_type, transport: str = "grpc"):
@@ -18398,7 +18475,7 @@ def test_delete_target_project(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18444,10 +18521,11 @@ def test_delete_target_project_non_empty_request_with_auto_populated_field():
         client.delete_target_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteTargetProjectRequest(
+        request_msg = vmmigration.DeleteTargetProjectRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_target_project_use_cached_wrapped_rpc():
@@ -18543,8 +18621,15 @@ async def test_delete_target_project_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteTargetProjectRequest(),
+        {},
+    ],
+)
 async def test_delete_target_project_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.DeleteTargetProjectRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18553,7 +18638,7 @@ async def test_delete_target_project_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18573,11 +18658,6 @@ async def test_delete_target_project_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_target_project_async_from_dict():
-    await test_delete_target_project_async(request_type=dict)
 
 
 def test_delete_target_project_field_headers():
@@ -18734,8 +18814,8 @@ async def test_delete_target_project_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListReplicationCyclesRequest,
-        dict,
+        vmmigration.ListReplicationCyclesRequest(),
+        {},
     ],
 )
 def test_list_replication_cycles(request_type, transport: str = "grpc"):
@@ -18746,7 +18826,7 @@ def test_list_replication_cycles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18799,12 +18879,13 @@ def test_list_replication_cycles_non_empty_request_with_auto_populated_field():
         client.list_replication_cycles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListReplicationCyclesRequest(
+        request_msg = vmmigration.ListReplicationCyclesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_replication_cycles_use_cached_wrapped_rpc():
@@ -18890,9 +18971,15 @@ async def test_list_replication_cycles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListReplicationCyclesRequest(),
+        {},
+    ],
+)
 async def test_list_replication_cycles_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.ListReplicationCyclesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18901,7 +18988,7 @@ async def test_list_replication_cycles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18926,11 +19013,6 @@ async def test_list_replication_cycles_async(
     assert isinstance(response, pagers.ListReplicationCyclesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_replication_cycles_async_from_dict():
-    await test_list_replication_cycles_async(request_type=dict)
 
 
 def test_list_replication_cycles_field_headers():
@@ -19285,8 +19367,8 @@ async def test_list_replication_cycles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetReplicationCycleRequest,
-        dict,
+        vmmigration.GetReplicationCycleRequest(),
+        {},
     ],
 )
 def test_get_replication_cycle(request_type, transport: str = "grpc"):
@@ -19297,7 +19379,7 @@ def test_get_replication_cycle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19351,9 +19433,10 @@ def test_get_replication_cycle_non_empty_request_with_auto_populated_field():
         client.get_replication_cycle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetReplicationCycleRequest(
+        request_msg = vmmigration.GetReplicationCycleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_replication_cycle_use_cached_wrapped_rpc():
@@ -19439,8 +19522,15 @@ async def test_get_replication_cycle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetReplicationCycleRequest(),
+        {},
+    ],
+)
 async def test_get_replication_cycle_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetReplicationCycleRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19449,7 +19539,7 @@ async def test_get_replication_cycle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19478,11 +19568,6 @@ async def test_get_replication_cycle_async(
     assert response.cycle_number == 1272
     assert response.progress_percent == 1733
     assert response.state == vmmigration.ReplicationCycle.State.RUNNING
-
-
-@pytest.mark.asyncio
-async def test_get_replication_cycle_async_from_dict():
-    await test_get_replication_cycle_async(request_type=dict)
 
 
 def test_get_replication_cycle_field_headers():
@@ -19639,8 +19724,8 @@ async def test_get_replication_cycle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListImageImportsRequest,
-        dict,
+        vmmigration.ListImageImportsRequest(),
+        {},
     ],
 )
 def test_list_image_imports(request_type, transport: str = "grpc"):
@@ -19651,7 +19736,7 @@ def test_list_image_imports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19704,12 +19789,13 @@ def test_list_image_imports_non_empty_request_with_auto_populated_field():
         client.list_image_imports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListImageImportsRequest(
+        request_msg = vmmigration.ListImageImportsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_image_imports_use_cached_wrapped_rpc():
@@ -19794,9 +19880,14 @@ async def test_list_image_imports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_image_imports_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListImageImportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListImageImportsRequest(),
+        {},
+    ],
+)
+async def test_list_image_imports_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19804,7 +19895,7 @@ async def test_list_image_imports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19829,11 +19920,6 @@ async def test_list_image_imports_async(
     assert isinstance(response, pagers.ListImageImportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_image_imports_async_from_dict():
-    await test_list_image_imports_async(request_type=dict)
 
 
 def test_list_image_imports_field_headers():
@@ -20188,8 +20274,8 @@ async def test_list_image_imports_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetImageImportRequest,
-        dict,
+        vmmigration.GetImageImportRequest(),
+        {},
     ],
 )
 def test_get_image_import(request_type, transport: str = "grpc"):
@@ -20200,7 +20286,7 @@ def test_get_image_import(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_image_import), "__call__") as call:
@@ -20245,9 +20331,10 @@ def test_get_image_import_non_empty_request_with_auto_populated_field():
         client.get_image_import(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetImageImportRequest(
+        request_msg = vmmigration.GetImageImportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_image_import_use_cached_wrapped_rpc():
@@ -20330,9 +20417,14 @@ async def test_get_image_import_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_image_import_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetImageImportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetImageImportRequest(),
+        {},
+    ],
+)
+async def test_get_image_import_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20340,7 +20432,7 @@ async def test_get_image_import_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_image_import), "__call__") as call:
@@ -20361,11 +20453,6 @@ async def test_get_image_import_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmmigration.ImageImport)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_image_import_async_from_dict():
-    await test_get_image_import_async(request_type=dict)
 
 
 def test_get_image_import_field_headers():
@@ -20514,8 +20601,8 @@ async def test_get_image_import_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateImageImportRequest,
-        dict,
+        vmmigration.CreateImageImportRequest(),
+        {},
     ],
 )
 def test_create_image_import(request_type, transport: str = "grpc"):
@@ -20526,7 +20613,7 @@ def test_create_image_import(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20573,11 +20660,12 @@ def test_create_image_import_non_empty_request_with_auto_populated_field():
         client.create_image_import(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateImageImportRequest(
+        request_msg = vmmigration.CreateImageImportRequest(
             parent="parent_value",
             image_import_id="image_import_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_image_import_use_cached_wrapped_rpc():
@@ -20672,9 +20760,14 @@ async def test_create_image_import_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_image_import_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.CreateImageImportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateImageImportRequest(),
+        {},
+    ],
+)
+async def test_create_image_import_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -20682,7 +20775,7 @@ async def test_create_image_import_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20702,11 +20795,6 @@ async def test_create_image_import_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_image_import_async_from_dict():
-    await test_create_image_import_async(request_type=dict)
 
 
 def test_create_image_import_field_headers():
@@ -20891,8 +20979,8 @@ async def test_create_image_import_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteImageImportRequest,
-        dict,
+        vmmigration.DeleteImageImportRequest(),
+        {},
     ],
 )
 def test_delete_image_import(request_type, transport: str = "grpc"):
@@ -20903,7 +20991,7 @@ def test_delete_image_import(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20949,10 +21037,11 @@ def test_delete_image_import_non_empty_request_with_auto_populated_field():
         client.delete_image_import(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteImageImportRequest(
+        request_msg = vmmigration.DeleteImageImportRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_image_import_use_cached_wrapped_rpc():
@@ -21047,9 +21136,14 @@ async def test_delete_image_import_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_image_import_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.DeleteImageImportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteImageImportRequest(),
+        {},
+    ],
+)
+async def test_delete_image_import_async(request_type, transport: str = "grpc_asyncio"):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21057,7 +21151,7 @@ async def test_delete_image_import_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21077,11 +21171,6 @@ async def test_delete_image_import_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_image_import_async_from_dict():
-    await test_delete_image_import_async(request_type=dict)
 
 
 def test_delete_image_import_field_headers():
@@ -21238,8 +21327,8 @@ async def test_delete_image_import_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListImageImportJobsRequest,
-        dict,
+        vmmigration.ListImageImportJobsRequest(),
+        {},
     ],
 )
 def test_list_image_import_jobs(request_type, transport: str = "grpc"):
@@ -21250,7 +21339,7 @@ def test_list_image_import_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21303,12 +21392,13 @@ def test_list_image_import_jobs_non_empty_request_with_auto_populated_field():
         client.list_image_import_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListImageImportJobsRequest(
+        request_msg = vmmigration.ListImageImportJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_image_import_jobs_use_cached_wrapped_rpc():
@@ -21394,8 +21484,15 @@ async def test_list_image_import_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListImageImportJobsRequest(),
+        {},
+    ],
+)
 async def test_list_image_import_jobs_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.ListImageImportJobsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21404,7 +21501,7 @@ async def test_list_image_import_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21429,11 +21526,6 @@ async def test_list_image_import_jobs_async(
     assert isinstance(response, pagers.ListImageImportJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_image_import_jobs_async_from_dict():
-    await test_list_image_import_jobs_async(request_type=dict)
 
 
 def test_list_image_import_jobs_field_headers():
@@ -21788,8 +21880,8 @@ async def test_list_image_import_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetImageImportJobRequest,
-        dict,
+        vmmigration.GetImageImportJobRequest(),
+        {},
     ],
 )
 def test_get_image_import_job(request_type, transport: str = "grpc"):
@@ -21800,7 +21892,7 @@ def test_get_image_import_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21853,9 +21945,10 @@ def test_get_image_import_job_non_empty_request_with_auto_populated_field():
         client.get_image_import_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetImageImportJobRequest(
+        request_msg = vmmigration.GetImageImportJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_image_import_job_use_cached_wrapped_rpc():
@@ -21940,8 +22033,15 @@ async def test_get_image_import_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetImageImportJobRequest(),
+        {},
+    ],
+)
 async def test_get_image_import_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetImageImportJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21950,7 +22050,7 @@ async def test_get_image_import_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21977,11 +22077,6 @@ async def test_get_image_import_job_async(
     assert response.name == "name_value"
     assert response.created_resources == ["created_resources_value"]
     assert response.state == vmmigration.ImageImportJob.State.PENDING
-
-
-@pytest.mark.asyncio
-async def test_get_image_import_job_async_from_dict():
-    await test_get_image_import_job_async(request_type=dict)
 
 
 def test_get_image_import_job_field_headers():
@@ -22138,8 +22233,8 @@ async def test_get_image_import_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CancelImageImportJobRequest,
-        dict,
+        vmmigration.CancelImageImportJobRequest(),
+        {},
     ],
 )
 def test_cancel_image_import_job(request_type, transport: str = "grpc"):
@@ -22150,7 +22245,7 @@ def test_cancel_image_import_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22195,9 +22290,10 @@ def test_cancel_image_import_job_non_empty_request_with_auto_populated_field():
         client.cancel_image_import_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CancelImageImportJobRequest(
+        request_msg = vmmigration.CancelImageImportJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_image_import_job_use_cached_wrapped_rpc():
@@ -22293,9 +22389,15 @@ async def test_cancel_image_import_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelImageImportJobRequest(),
+        {},
+    ],
+)
 async def test_cancel_image_import_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.CancelImageImportJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22304,7 +22406,7 @@ async def test_cancel_image_import_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22324,11 +22426,6 @@ async def test_cancel_image_import_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_cancel_image_import_job_async_from_dict():
-    await test_cancel_image_import_job_async(request_type=dict)
 
 
 def test_cancel_image_import_job_field_headers():
@@ -22485,8 +22582,8 @@ async def test_cancel_image_import_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CreateDiskMigrationJobRequest,
-        dict,
+        vmmigration.CreateDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_create_disk_migration_job(request_type, transport: str = "grpc"):
@@ -22497,7 +22594,7 @@ def test_create_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22543,10 +22640,11 @@ def test_create_disk_migration_job_non_empty_request_with_auto_populated_field()
         client.create_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CreateDiskMigrationJobRequest(
+        request_msg = vmmigration.CreateDiskMigrationJobRequest(
             parent="parent_value",
             disk_migration_job_id="disk_migration_job_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_disk_migration_job_use_cached_wrapped_rpc():
@@ -22642,9 +22740,15 @@ async def test_create_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_create_disk_migration_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.CreateDiskMigrationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22653,7 +22757,7 @@ async def test_create_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22673,11 +22777,6 @@ async def test_create_disk_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_disk_migration_job_async_from_dict():
-    await test_create_disk_migration_job_async(request_type=dict)
 
 
 def test_create_disk_migration_job_field_headers():
@@ -22878,8 +22977,8 @@ async def test_create_disk_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.ListDiskMigrationJobsRequest,
-        dict,
+        vmmigration.ListDiskMigrationJobsRequest(),
+        {},
     ],
 )
 def test_list_disk_migration_jobs(request_type, transport: str = "grpc"):
@@ -22890,7 +22989,7 @@ def test_list_disk_migration_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22943,12 +23042,13 @@ def test_list_disk_migration_jobs_non_empty_request_with_auto_populated_field():
         client.list_disk_migration_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.ListDiskMigrationJobsRequest(
+        request_msg = vmmigration.ListDiskMigrationJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_disk_migration_jobs_use_cached_wrapped_rpc():
@@ -23034,9 +23134,15 @@ async def test_list_disk_migration_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListDiskMigrationJobsRequest(),
+        {},
+    ],
+)
 async def test_list_disk_migration_jobs_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.ListDiskMigrationJobsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23045,7 +23151,7 @@ async def test_list_disk_migration_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23070,11 +23176,6 @@ async def test_list_disk_migration_jobs_async(
     assert isinstance(response, pagers.ListDiskMigrationJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_disk_migration_jobs_async_from_dict():
-    await test_list_disk_migration_jobs_async(request_type=dict)
 
 
 def test_list_disk_migration_jobs_field_headers():
@@ -23431,8 +23532,8 @@ async def test_list_disk_migration_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.GetDiskMigrationJobRequest,
-        dict,
+        vmmigration.GetDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_get_disk_migration_job(request_type, transport: str = "grpc"):
@@ -23443,7 +23544,7 @@ def test_get_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23493,9 +23594,10 @@ def test_get_disk_migration_job_non_empty_request_with_auto_populated_field():
         client.get_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.GetDiskMigrationJobRequest(
+        request_msg = vmmigration.GetDiskMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_disk_migration_job_use_cached_wrapped_rpc():
@@ -23581,8 +23683,15 @@ async def test_get_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_get_disk_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.GetDiskMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23591,7 +23700,7 @@ async def test_get_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23616,11 +23725,6 @@ async def test_get_disk_migration_job_async(
     assert isinstance(response, vmmigration.DiskMigrationJob)
     assert response.name == "name_value"
     assert response.state == vmmigration.DiskMigrationJob.State.READY
-
-
-@pytest.mark.asyncio
-async def test_get_disk_migration_job_async_from_dict():
-    await test_get_disk_migration_job_async(request_type=dict)
 
 
 def test_get_disk_migration_job_field_headers():
@@ -23777,8 +23881,8 @@ async def test_get_disk_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.UpdateDiskMigrationJobRequest,
-        dict,
+        vmmigration.UpdateDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_update_disk_migration_job(request_type, transport: str = "grpc"):
@@ -23789,7 +23893,7 @@ def test_update_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23832,7 +23936,8 @@ def test_update_disk_migration_job_non_empty_request_with_auto_populated_field()
         client.update_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.UpdateDiskMigrationJobRequest()
+        request_msg = vmmigration.UpdateDiskMigrationJobRequest()
+        assert args[0] == request_msg
 
 
 def test_update_disk_migration_job_use_cached_wrapped_rpc():
@@ -23928,9 +24033,15 @@ async def test_update_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_update_disk_migration_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.UpdateDiskMigrationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23939,7 +24050,7 @@ async def test_update_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23959,11 +24070,6 @@ async def test_update_disk_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_disk_migration_job_async_from_dict():
-    await test_update_disk_migration_job_async(request_type=dict)
 
 
 def test_update_disk_migration_job_field_headers():
@@ -24154,8 +24260,8 @@ async def test_update_disk_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.DeleteDiskMigrationJobRequest,
-        dict,
+        vmmigration.DeleteDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_delete_disk_migration_job(request_type, transport: str = "grpc"):
@@ -24166,7 +24272,7 @@ def test_delete_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24211,9 +24317,10 @@ def test_delete_disk_migration_job_non_empty_request_with_auto_populated_field()
         client.delete_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.DeleteDiskMigrationJobRequest(
+        request_msg = vmmigration.DeleteDiskMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_disk_migration_job_use_cached_wrapped_rpc():
@@ -24309,9 +24416,15 @@ async def test_delete_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_delete_disk_migration_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.DeleteDiskMigrationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24320,7 +24433,7 @@ async def test_delete_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24340,11 +24453,6 @@ async def test_delete_disk_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_disk_migration_job_async_from_dict():
-    await test_delete_disk_migration_job_async(request_type=dict)
 
 
 def test_delete_disk_migration_job_field_headers():
@@ -24501,8 +24609,8 @@ async def test_delete_disk_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.RunDiskMigrationJobRequest,
-        dict,
+        vmmigration.RunDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_run_disk_migration_job(request_type, transport: str = "grpc"):
@@ -24513,7 +24621,7 @@ def test_run_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24558,9 +24666,10 @@ def test_run_disk_migration_job_non_empty_request_with_auto_populated_field():
         client.run_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.RunDiskMigrationJobRequest(
+        request_msg = vmmigration.RunDiskMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_disk_migration_job_use_cached_wrapped_rpc():
@@ -24656,8 +24765,15 @@ async def test_run_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.RunDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_run_disk_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=vmmigration.RunDiskMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24666,7 +24782,7 @@ async def test_run_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24686,11 +24802,6 @@ async def test_run_disk_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_run_disk_migration_job_async_from_dict():
-    await test_run_disk_migration_job_async(request_type=dict)
 
 
 def test_run_disk_migration_job_field_headers():
@@ -24847,8 +24958,8 @@ async def test_run_disk_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmmigration.CancelDiskMigrationJobRequest,
-        dict,
+        vmmigration.CancelDiskMigrationJobRequest(),
+        {},
     ],
 )
 def test_cancel_disk_migration_job(request_type, transport: str = "grpc"):
@@ -24859,7 +24970,7 @@ def test_cancel_disk_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24904,9 +25015,10 @@ def test_cancel_disk_migration_job_non_empty_request_with_auto_populated_field()
         client.cancel_disk_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmmigration.CancelDiskMigrationJobRequest(
+        request_msg = vmmigration.CancelDiskMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_disk_migration_job_use_cached_wrapped_rpc():
@@ -25002,9 +25114,15 @@ async def test_cancel_disk_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelDiskMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_cancel_disk_migration_job_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmmigration.CancelDiskMigrationJobRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmMigrationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25013,7 +25131,7 @@ async def test_cancel_disk_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25033,11 +25151,6 @@ async def test_cancel_disk_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_cancel_disk_migration_job_async_from_dict():
-    await test_cancel_disk_migration_job_async(request_type=dict)
 
 
 def test_cancel_disk_migration_job_field_headers():
@@ -38019,7 +38132,6 @@ def test_list_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -38040,7 +38152,6 @@ def test_get_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -38061,7 +38172,6 @@ def test_create_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -38082,7 +38192,6 @@ def test_update_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -38103,7 +38212,6 @@ def test_delete_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -38124,7 +38232,6 @@ def test_fetch_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -38147,7 +38254,6 @@ def test_fetch_storage_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchStorageInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -38170,7 +38276,6 @@ def test_list_utilization_reports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListUtilizationReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38193,7 +38298,6 @@ def test_get_utilization_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -38216,7 +38320,6 @@ def test_create_utilization_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -38239,7 +38342,6 @@ def test_delete_utilization_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -38262,7 +38364,6 @@ def test_list_datacenter_connectors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDatacenterConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38285,7 +38386,6 @@ def test_get_datacenter_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -38308,7 +38408,6 @@ def test_create_datacenter_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -38331,7 +38430,6 @@ def test_delete_datacenter_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -38354,7 +38452,6 @@ def test_upgrade_appliance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpgradeApplianceRequest()
-
         assert args[0] == request_msg
 
 
@@ -38377,7 +38474,6 @@ def test_create_migrating_vm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -38400,7 +38496,6 @@ def test_list_migrating_vms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListMigratingVmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38421,7 +38516,6 @@ def test_get_migrating_vm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -38444,7 +38538,6 @@ def test_update_migrating_vm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -38467,7 +38560,6 @@ def test_delete_migrating_vm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -38488,7 +38580,6 @@ def test_start_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.StartMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38509,7 +38600,6 @@ def test_resume_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ResumeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38530,7 +38620,6 @@ def test_pause_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.PauseMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38553,7 +38642,6 @@ def test_finalize_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FinalizeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38574,7 +38662,6 @@ def test_extend_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ExtendMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38595,7 +38682,6 @@ def test_create_clone_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38616,7 +38702,6 @@ def test_cancel_clone_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38637,7 +38722,6 @@ def test_list_clone_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCloneJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38658,7 +38742,6 @@ def test_get_clone_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38681,7 +38764,6 @@ def test_create_cutover_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38704,7 +38786,6 @@ def test_cancel_cutover_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38727,7 +38808,6 @@ def test_list_cutover_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCutoverJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38748,7 +38828,6 @@ def test_get_cutover_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -38769,7 +38848,6 @@ def test_list_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38790,7 +38868,6 @@ def test_get_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -38811,7 +38888,6 @@ def test_create_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -38832,7 +38908,6 @@ def test_update_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -38853,7 +38928,6 @@ def test_delete_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -38876,7 +38950,6 @@ def test_add_group_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.AddGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38899,7 +38972,6 @@ def test_remove_group_migration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RemoveGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -38922,7 +38994,6 @@ def test_list_target_projects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListTargetProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -38945,7 +39016,6 @@ def test_get_target_project_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -38968,7 +39038,6 @@ def test_create_target_project_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -38991,7 +39060,6 @@ def test_update_target_project_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -39014,7 +39082,6 @@ def test_delete_target_project_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -39037,7 +39104,6 @@ def test_list_replication_cycles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListReplicationCyclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39060,7 +39126,6 @@ def test_get_replication_cycle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetReplicationCycleRequest()
-
         assert args[0] == request_msg
 
 
@@ -39083,7 +39148,6 @@ def test_list_image_imports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39104,7 +39168,6 @@ def test_get_image_import_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39127,7 +39190,6 @@ def test_create_image_import_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39150,7 +39212,6 @@ def test_delete_image_import_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39173,7 +39234,6 @@ def test_list_image_import_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39196,7 +39256,6 @@ def test_get_image_import_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39219,7 +39278,6 @@ def test_cancel_image_import_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39242,7 +39300,6 @@ def test_create_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39265,7 +39322,6 @@ def test_list_disk_migration_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDiskMigrationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39288,7 +39344,6 @@ def test_get_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39311,7 +39366,6 @@ def test_update_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39334,7 +39388,6 @@ def test_delete_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39357,7 +39410,6 @@ def test_run_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RunDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39380,7 +39432,6 @@ def test_cancel_disk_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39422,7 +39473,6 @@ async def test_list_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39450,7 +39500,6 @@ async def test_get_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -39475,7 +39524,6 @@ async def test_create_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -39500,7 +39548,6 @@ async def test_update_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -39525,7 +39572,6 @@ async def test_delete_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -39550,7 +39596,6 @@ async def test_fetch_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -39579,7 +39624,6 @@ async def test_fetch_storage_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchStorageInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -39609,7 +39653,6 @@ async def test_list_utilization_reports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListUtilizationReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39642,7 +39685,6 @@ async def test_get_utilization_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39669,7 +39711,6 @@ async def test_create_utilization_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39696,7 +39737,6 @@ async def test_delete_utilization_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -39726,7 +39766,6 @@ async def test_list_datacenter_connectors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDatacenterConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39762,7 +39801,6 @@ async def test_get_datacenter_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -39789,7 +39827,6 @@ async def test_create_datacenter_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -39816,7 +39853,6 @@ async def test_delete_datacenter_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -39843,7 +39879,6 @@ async def test_upgrade_appliance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpgradeApplianceRequest()
-
         assert args[0] == request_msg
 
 
@@ -39870,7 +39905,6 @@ async def test_create_migrating_vm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -39900,7 +39934,6 @@ async def test_list_migrating_vms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListMigratingVmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39932,7 +39965,6 @@ async def test_get_migrating_vm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -39959,7 +39991,6 @@ async def test_update_migrating_vm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -39986,7 +40017,6 @@ async def test_delete_migrating_vm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -40011,7 +40041,6 @@ async def test_start_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.StartMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40036,7 +40065,6 @@ async def test_resume_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ResumeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40061,7 +40089,6 @@ async def test_pause_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.PauseMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40088,7 +40115,6 @@ async def test_finalize_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FinalizeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40113,7 +40139,6 @@ async def test_extend_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ExtendMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40138,7 +40163,6 @@ async def test_create_clone_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40163,7 +40187,6 @@ async def test_cancel_clone_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40191,7 +40214,6 @@ async def test_list_clone_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCloneJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40219,7 +40241,6 @@ async def test_get_clone_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40246,7 +40267,6 @@ async def test_create_cutover_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40273,7 +40293,6 @@ async def test_cancel_cutover_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40303,7 +40322,6 @@ async def test_list_cutover_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCutoverJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40333,7 +40351,6 @@ async def test_get_cutover_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40361,7 +40378,6 @@ async def test_list_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40391,7 +40407,6 @@ async def test_get_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -40416,7 +40431,6 @@ async def test_create_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -40441,7 +40455,6 @@ async def test_update_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -40466,7 +40479,6 @@ async def test_delete_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -40493,7 +40505,6 @@ async def test_add_group_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.AddGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40520,7 +40531,6 @@ async def test_remove_group_migration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RemoveGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -40550,7 +40560,6 @@ async def test_list_target_projects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListTargetProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40581,7 +40590,6 @@ async def test_get_target_project_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -40608,7 +40616,6 @@ async def test_create_target_project_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -40635,7 +40642,6 @@ async def test_update_target_project_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -40662,7 +40668,6 @@ async def test_delete_target_project_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -40692,7 +40697,6 @@ async def test_list_replication_cycles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListReplicationCyclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40724,7 +40728,6 @@ async def test_get_replication_cycle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetReplicationCycleRequest()
-
         assert args[0] == request_msg
 
 
@@ -40754,7 +40757,6 @@ async def test_list_image_imports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40781,7 +40783,6 @@ async def test_get_image_import_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -40808,7 +40809,6 @@ async def test_create_image_import_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -40835,7 +40835,6 @@ async def test_delete_image_import_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -40865,7 +40864,6 @@ async def test_list_image_import_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40896,7 +40894,6 @@ async def test_get_image_import_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40923,7 +40920,6 @@ async def test_cancel_image_import_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40950,7 +40946,6 @@ async def test_create_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -40980,7 +40975,6 @@ async def test_list_disk_migration_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDiskMigrationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -41010,7 +41004,6 @@ async def test_get_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -41037,7 +41030,6 @@ async def test_update_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -41064,7 +41056,6 @@ async def test_delete_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -41091,7 +41082,6 @@ async def test_run_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RunDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -41118,7 +41108,6 @@ async def test_cancel_disk_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -51924,7 +51913,6 @@ def test_list_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -51944,7 +51932,6 @@ def test_get_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -51964,7 +51951,6 @@ def test_create_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -51984,7 +51970,6 @@ def test_update_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -52004,7 +51989,6 @@ def test_delete_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -52024,7 +52008,6 @@ def test_fetch_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -52046,7 +52029,6 @@ def test_fetch_storage_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FetchStorageInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -52068,7 +52050,6 @@ def test_list_utilization_reports_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListUtilizationReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52090,7 +52071,6 @@ def test_get_utilization_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -52112,7 +52092,6 @@ def test_create_utilization_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -52134,7 +52113,6 @@ def test_delete_utilization_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteUtilizationReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -52156,7 +52134,6 @@ def test_list_datacenter_connectors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDatacenterConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52178,7 +52155,6 @@ def test_get_datacenter_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -52200,7 +52176,6 @@ def test_create_datacenter_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -52222,7 +52197,6 @@ def test_delete_datacenter_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDatacenterConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -52244,7 +52218,6 @@ def test_upgrade_appliance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpgradeApplianceRequest()
-
         assert args[0] == request_msg
 
 
@@ -52266,7 +52239,6 @@ def test_create_migrating_vm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -52288,7 +52260,6 @@ def test_list_migrating_vms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListMigratingVmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52308,7 +52279,6 @@ def test_get_migrating_vm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -52330,7 +52300,6 @@ def test_update_migrating_vm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -52352,7 +52321,6 @@ def test_delete_migrating_vm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteMigratingVmRequest()
-
         assert args[0] == request_msg
 
 
@@ -52372,7 +52340,6 @@ def test_start_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.StartMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52392,7 +52359,6 @@ def test_resume_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ResumeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52412,7 +52378,6 @@ def test_pause_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.PauseMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52434,7 +52399,6 @@ def test_finalize_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.FinalizeMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52454,7 +52418,6 @@ def test_extend_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ExtendMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52474,7 +52437,6 @@ def test_create_clone_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52494,7 +52456,6 @@ def test_cancel_clone_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52514,7 +52475,6 @@ def test_list_clone_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCloneJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52534,7 +52494,6 @@ def test_get_clone_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCloneJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52556,7 +52515,6 @@ def test_create_cutover_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52578,7 +52536,6 @@ def test_cancel_cutover_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52600,7 +52557,6 @@ def test_list_cutover_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListCutoverJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52620,7 +52576,6 @@ def test_get_cutover_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetCutoverJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -52640,7 +52595,6 @@ def test_list_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52660,7 +52614,6 @@ def test_get_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -52680,7 +52633,6 @@ def test_create_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -52700,7 +52652,6 @@ def test_update_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -52720,7 +52671,6 @@ def test_delete_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -52742,7 +52692,6 @@ def test_add_group_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.AddGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52764,7 +52713,6 @@ def test_remove_group_migration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RemoveGroupMigrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -52786,7 +52734,6 @@ def test_list_target_projects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListTargetProjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52808,7 +52755,6 @@ def test_get_target_project_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -52830,7 +52776,6 @@ def test_create_target_project_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -52852,7 +52797,6 @@ def test_update_target_project_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -52874,7 +52818,6 @@ def test_delete_target_project_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteTargetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -52896,7 +52839,6 @@ def test_list_replication_cycles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListReplicationCyclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -52918,7 +52860,6 @@ def test_get_replication_cycle_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetReplicationCycleRequest()
-
         assert args[0] == request_msg
 
 
@@ -52940,7 +52881,6 @@ def test_list_image_imports_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -52960,7 +52900,6 @@ def test_get_image_import_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -52982,7 +52921,6 @@ def test_create_image_import_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -53004,7 +52942,6 @@ def test_delete_image_import_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteImageImportRequest()
-
         assert args[0] == request_msg
 
 
@@ -53026,7 +52963,6 @@ def test_list_image_import_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListImageImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -53048,7 +52984,6 @@ def test_get_image_import_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53070,7 +53005,6 @@ def test_cancel_image_import_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelImageImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53092,7 +53026,6 @@ def test_create_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CreateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53114,7 +53047,6 @@ def test_list_disk_migration_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.ListDiskMigrationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -53136,7 +53068,6 @@ def test_get_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.GetDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53158,7 +53089,6 @@ def test_update_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.UpdateDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53180,7 +53110,6 @@ def test_delete_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.DeleteDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53202,7 +53131,6 @@ def test_run_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.RunDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -53224,7 +53152,6 @@ def test_cancel_disk_migration_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmmigration.CancelDiskMigrationJobRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1366,8 +1382,8 @@ def test_firewall_activation_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.ListFirewallEndpointsRequest,
-        dict,
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
     ],
 )
 def test_list_firewall_endpoints(request_type, transport: str = "grpc"):
@@ -1378,7 +1394,7 @@ def test_list_firewall_endpoints(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1431,12 +1447,13 @@ def test_list_firewall_endpoints_non_empty_request_with_auto_populated_field():
         client.list_firewall_endpoints(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.ListFirewallEndpointsRequest(
+        request_msg = firewall_activation.ListFirewallEndpointsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_firewall_endpoints_use_cached_wrapped_rpc():
@@ -1522,9 +1539,15 @@ async def test_list_firewall_endpoints_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
+    ],
+)
 async def test_list_firewall_endpoints_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.ListFirewallEndpointsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1533,7 +1556,7 @@ async def test_list_firewall_endpoints_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1558,11 +1581,6 @@ async def test_list_firewall_endpoints_async(
     assert isinstance(response, pagers.ListFirewallEndpointsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_firewall_endpoints_async_from_dict():
-    await test_list_firewall_endpoints_async(request_type=dict)
 
 
 def test_list_firewall_endpoints_field_headers():
@@ -1919,8 +1937,567 @@ async def test_list_firewall_endpoints_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.GetFirewallEndpointRequest,
-        dict,
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
+    ],
+)
+def test_list_project_firewall_endpoints(request_type, transport: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.ListFirewallEndpointsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.ListFirewallEndpointsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProjectFirewallEndpointsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_project_firewall_endpoints_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firewall_activation.ListFirewallEndpointsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_project_firewall_endpoints(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.ListFirewallEndpointsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_project_firewall_endpoints_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_project_firewall_endpoints
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_project_firewall_endpoints
+        ] = mock_rpc
+        request = {}
+        client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_project_firewall_endpoints(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = FirewallActivationAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_project_firewall_endpoints
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_project_firewall_endpoints
+        ] = mock_rpc
+
+        request = {}
+        await client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_project_firewall_endpoints(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointsRequest(),
+        {},
+    ],
+)
+async def test_list_project_firewall_endpoints_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.ListFirewallEndpointsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.ListFirewallEndpointsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProjectFirewallEndpointsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_project_firewall_endpoints_field_headers():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.ListFirewallEndpointsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        call.return_value = firewall_activation.ListFirewallEndpointsResponse()
+        client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_field_headers_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.ListFirewallEndpointsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.ListFirewallEndpointsResponse()
+        )
+        await client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_project_firewall_endpoints_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.ListFirewallEndpointsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_project_firewall_endpoints(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_project_firewall_endpoints_flattened_error():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_project_firewall_endpoints(
+            firewall_activation.ListFirewallEndpointsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_flattened_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.ListFirewallEndpointsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.ListFirewallEndpointsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_project_firewall_endpoints(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_flattened_error_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_project_firewall_endpoints(
+            firewall_activation.ListFirewallEndpointsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_project_firewall_endpoints_pager(transport_name: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="abc",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[],
+                next_page_token="def",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="ghi",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_project_firewall_endpoints(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, firewall_activation.FirewallEndpoint) for i in results)
+
+
+def test_list_project_firewall_endpoints_pages(transport_name: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="abc",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[],
+                next_page_token="def",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="ghi",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_project_firewall_endpoints(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_async_pager():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="abc",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[],
+                next_page_token="def",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="ghi",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_project_firewall_endpoints(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, firewall_activation.FirewallEndpoint) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_async_pages():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="abc",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[],
+                next_page_token="def",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="ghi",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_project_firewall_endpoints(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_get_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -1931,7 +2508,7 @@ def test_get_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1993,9 +2570,10 @@ def test_get_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.get_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.GetFirewallEndpointRequest(
+        request_msg = firewall_activation.GetFirewallEndpointRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2081,9 +2659,15 @@ async def test_get_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_get_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.GetFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2092,7 +2676,7 @@ async def test_get_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2129,11 +2713,6 @@ async def test_get_firewall_endpoint_async(
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
     assert response.billing_project_id == "billing_project_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_firewall_endpoint_async_from_dict():
-    await test_get_firewall_endpoint_async(request_type=dict)
 
 
 def test_get_firewall_endpoint_field_headers():
@@ -2290,8 +2869,381 @@ async def test_get_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.CreateFirewallEndpointRequest,
-        dict,
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
+    ],
+)
+def test_get_project_firewall_endpoint(request_type, transport: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.FirewallEndpoint(
+            name="name_value",
+            description="description_value",
+            state=firewall_activation.FirewallEndpoint.State.CREATING,
+            reconciling=True,
+            associated_networks=["associated_networks_value"],
+            satisfies_pzs=True,
+            satisfies_pzi=True,
+            billing_project_id="billing_project_id_value",
+        )
+        response = client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.GetFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, firewall_activation.FirewallEndpoint)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == firewall_activation.FirewallEndpoint.State.CREATING
+    assert response.reconciling is True
+    assert response.associated_networks == ["associated_networks_value"]
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
+    assert response.billing_project_id == "billing_project_id_value"
+
+
+def test_get_project_firewall_endpoint_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firewall_activation.GetFirewallEndpointRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_project_firewall_endpoint(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.GetFirewallEndpointRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_project_firewall_endpoint_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_project_firewall_endpoint
+        ] = mock_rpc
+        request = {}
+        client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_project_firewall_endpoint_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = FirewallActivationAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_project_firewall_endpoint
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        await client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointRequest(),
+        {},
+    ],
+)
+async def test_get_project_firewall_endpoint_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.FirewallEndpoint(
+                name="name_value",
+                description="description_value",
+                state=firewall_activation.FirewallEndpoint.State.CREATING,
+                reconciling=True,
+                associated_networks=["associated_networks_value"],
+                satisfies_pzs=True,
+                satisfies_pzi=True,
+                billing_project_id="billing_project_id_value",
+            )
+        )
+        response = await client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.GetFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, firewall_activation.FirewallEndpoint)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == firewall_activation.FirewallEndpoint.State.CREATING
+    assert response.reconciling is True
+    assert response.associated_networks == ["associated_networks_value"]
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
+    assert response.billing_project_id == "billing_project_id_value"
+
+
+def test_get_project_firewall_endpoint_field_headers():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.GetFirewallEndpointRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = firewall_activation.FirewallEndpoint()
+        client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_project_firewall_endpoint_field_headers_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.GetFirewallEndpointRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.FirewallEndpoint()
+        )
+        await client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_project_firewall_endpoint_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.FirewallEndpoint()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_project_firewall_endpoint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_project_firewall_endpoint_flattened_error():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_project_firewall_endpoint(
+            firewall_activation.GetFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_project_firewall_endpoint_flattened_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = firewall_activation.FirewallEndpoint()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.FirewallEndpoint()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_project_firewall_endpoint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_project_firewall_endpoint_flattened_error_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_project_firewall_endpoint(
+            firewall_activation.GetFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_create_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -2302,7 +3254,7 @@ def test_create_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2349,11 +3301,12 @@ def test_create_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.create_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.CreateFirewallEndpointRequest(
+        request_msg = firewall_activation.CreateFirewallEndpointRequest(
             parent="parent_value",
             firewall_endpoint_id="firewall_endpoint_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2449,9 +3402,15 @@ async def test_create_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_create_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.CreateFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2460,7 +3419,7 @@ async def test_create_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2480,11 +3439,6 @@ async def test_create_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_firewall_endpoint_async_from_dict():
-    await test_create_firewall_endpoint_async(request_type=dict)
 
 
 def test_create_firewall_endpoint_field_headers():
@@ -2661,8 +3615,381 @@ async def test_create_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.DeleteFirewallEndpointRequest,
-        dict,
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
+    ],
+)
+def test_create_project_firewall_endpoint(request_type, transport: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.CreateFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_project_firewall_endpoint_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firewall_activation.CreateFirewallEndpointRequest(
+        parent="parent_value",
+        firewall_endpoint_id="firewall_endpoint_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_project_firewall_endpoint(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.CreateFirewallEndpointRequest(
+            parent="parent_value",
+            firewall_endpoint_id="firewall_endpoint_id_value",
+            request_id="request_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_create_project_firewall_endpoint_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_project_firewall_endpoint
+        ] = mock_rpc
+        request = {}
+        client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_project_firewall_endpoint_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = FirewallActivationAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_project_firewall_endpoint
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        await client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.create_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointRequest(),
+        {},
+    ],
+)
+async def test_create_project_firewall_endpoint_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.CreateFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_project_firewall_endpoint_field_headers():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.CreateFirewallEndpointRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_project_firewall_endpoint_field_headers_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.CreateFirewallEndpointRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_project_firewall_endpoint_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_project_firewall_endpoint(
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].firewall_endpoint
+        mock_val = firewall_activation.FirewallEndpoint(name="name_value")
+        assert arg == mock_val
+        arg = args[0].firewall_endpoint_id
+        mock_val = "firewall_endpoint_id_value"
+        assert arg == mock_val
+
+
+def test_create_project_firewall_endpoint_flattened_error():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_project_firewall_endpoint(
+            firewall_activation.CreateFirewallEndpointRequest(),
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_project_firewall_endpoint_flattened_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_project_firewall_endpoint(
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].firewall_endpoint
+        mock_val = firewall_activation.FirewallEndpoint(name="name_value")
+        assert arg == mock_val
+        arg = args[0].firewall_endpoint_id
+        mock_val = "firewall_endpoint_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_project_firewall_endpoint_flattened_error_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_project_firewall_endpoint(
+            firewall_activation.CreateFirewallEndpointRequest(),
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_delete_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -2673,7 +4000,7 @@ def test_delete_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2719,10 +4046,11 @@ def test_delete_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.delete_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.DeleteFirewallEndpointRequest(
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_firewall_endpoint_use_cached_wrapped_rpc():
@@ -2818,9 +4146,15 @@ async def test_delete_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_delete_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.DeleteFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2829,7 +4163,7 @@ async def test_delete_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2849,11 +4183,6 @@ async def test_delete_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_firewall_endpoint_async_from_dict():
-    await test_delete_firewall_endpoint_async(request_type=dict)
 
 
 def test_delete_firewall_endpoint_field_headers():
@@ -3010,8 +4339,359 @@ async def test_delete_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.UpdateFirewallEndpointRequest,
-        dict,
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
+    ],
+)
+def test_delete_project_firewall_endpoint(request_type, transport: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.DeleteFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_project_firewall_endpoint_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firewall_activation.DeleteFirewallEndpointRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_project_firewall_endpoint(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_delete_project_firewall_endpoint_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_project_firewall_endpoint
+        ] = mock_rpc
+        request = {}
+        client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_project_firewall_endpoint_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = FirewallActivationAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_project_firewall_endpoint
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointRequest(),
+        {},
+    ],
+)
+async def test_delete_project_firewall_endpoint_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.DeleteFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_project_firewall_endpoint_field_headers():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.DeleteFirewallEndpointRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_project_firewall_endpoint_field_headers_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.DeleteFirewallEndpointRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_project_firewall_endpoint_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_project_firewall_endpoint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_project_firewall_endpoint_flattened_error():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_project_firewall_endpoint(
+            firewall_activation.DeleteFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_project_firewall_endpoint_flattened_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_project_firewall_endpoint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_project_firewall_endpoint_flattened_error_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_project_firewall_endpoint(
+            firewall_activation.DeleteFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
     ],
 )
 def test_update_firewall_endpoint(request_type, transport: str = "grpc"):
@@ -3022,7 +4702,7 @@ def test_update_firewall_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3067,9 +4747,10 @@ def test_update_firewall_endpoint_non_empty_request_with_auto_populated_field():
         client.update_firewall_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.UpdateFirewallEndpointRequest(
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_firewall_endpoint_use_cached_wrapped_rpc():
@@ -3165,9 +4846,15 @@ async def test_update_firewall_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
+    ],
+)
 async def test_update_firewall_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.UpdateFirewallEndpointRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3176,7 +4863,7 @@ async def test_update_firewall_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3196,11 +4883,6 @@ async def test_update_firewall_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_firewall_endpoint_async_from_dict():
-    await test_update_firewall_endpoint_async(request_type=dict)
 
 
 def test_update_firewall_endpoint_field_headers():
@@ -3367,8 +5049,367 @@ async def test_update_firewall_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.ListFirewallEndpointAssociationsRequest,
-        dict,
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
+    ],
+)
+def test_update_project_firewall_endpoint(request_type, transport: str = "grpc"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.UpdateFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_project_firewall_endpoint_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = firewall_activation.UpdateFirewallEndpointRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_project_firewall_endpoint(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest(
+            request_id="request_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_update_project_firewall_endpoint_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_project_firewall_endpoint
+        ] = mock_rpc
+        request = {}
+        client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_project_firewall_endpoint_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = FirewallActivationAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_project_firewall_endpoint
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        await client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointRequest(),
+        {},
+    ],
+)
+async def test_update_project_firewall_endpoint_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = firewall_activation.UpdateFirewallEndpointRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_project_firewall_endpoint_field_headers():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.UpdateFirewallEndpointRequest()
+
+    request.firewall_endpoint.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "firewall_endpoint.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_project_firewall_endpoint_field_headers_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firewall_activation.UpdateFirewallEndpointRequest()
+
+    request.firewall_endpoint.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "firewall_endpoint.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_project_firewall_endpoint_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_project_firewall_endpoint(
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].firewall_endpoint
+        mock_val = firewall_activation.FirewallEndpoint(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_project_firewall_endpoint_flattened_error():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_project_firewall_endpoint(
+            firewall_activation.UpdateFirewallEndpointRequest(),
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_project_firewall_endpoint_flattened_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_project_firewall_endpoint(
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].firewall_endpoint
+        mock_val = firewall_activation.FirewallEndpoint(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_project_firewall_endpoint_flattened_error_async():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_project_firewall_endpoint(
+            firewall_activation.UpdateFirewallEndpointRequest(),
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointAssociationsRequest(),
+        {},
     ],
 )
 def test_list_firewall_endpoint_associations(request_type, transport: str = "grpc"):
@@ -3379,7 +5420,7 @@ def test_list_firewall_endpoint_associations(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3434,12 +5475,13 @@ def test_list_firewall_endpoint_associations_non_empty_request_with_auto_populat
         client.list_firewall_endpoint_associations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.ListFirewallEndpointAssociationsRequest(
+        request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_firewall_endpoint_associations_use_cached_wrapped_rpc():
@@ -3525,9 +5567,15 @@ async def test_list_firewall_endpoint_associations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointAssociationsRequest(),
+        {},
+    ],
+)
 async def test_list_firewall_endpoint_associations_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.ListFirewallEndpointAssociationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3536,7 +5584,7 @@ async def test_list_firewall_endpoint_associations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3561,11 +5609,6 @@ async def test_list_firewall_endpoint_associations_async(
     assert isinstance(response, pagers.ListFirewallEndpointAssociationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_firewall_endpoint_associations_async_from_dict():
-    await test_list_firewall_endpoint_associations_async(request_type=dict)
 
 
 def test_list_firewall_endpoint_associations_field_headers():
@@ -3936,8 +5979,8 @@ async def test_list_firewall_endpoint_associations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.GetFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.GetFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_get_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -3948,7 +5991,7 @@ def test_get_firewall_endpoint_association(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4010,9 +6053,10 @@ def test_get_firewall_endpoint_association_non_empty_request_with_auto_populated
         client.get_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.GetFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.GetFirewallEndpointAssociationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4098,9 +6142,15 @@ async def test_get_firewall_endpoint_association_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_get_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.GetFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4109,7 +6159,7 @@ async def test_get_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4146,11 +6196,6 @@ async def test_get_firewall_endpoint_association_async(
     assert response.tls_inspection_policy == "tls_inspection_policy_value"
     assert response.reconciling is True
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_firewall_endpoint_association_async_from_dict():
-    await test_get_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_get_firewall_endpoint_association_field_headers():
@@ -4307,8 +6352,8 @@ async def test_get_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.CreateFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.CreateFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_create_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -4319,7 +6364,7 @@ def test_create_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4366,11 +6411,12 @@ def test_create_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.create_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.CreateFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest(
             parent="parent_value",
             firewall_endpoint_association_id="firewall_endpoint_association_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4466,9 +6512,15 @@ async def test_create_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_create_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.CreateFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4477,7 +6529,7 @@ async def test_create_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4497,11 +6549,6 @@ async def test_create_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_firewall_endpoint_association_async_from_dict():
-    await test_create_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_create_firewall_endpoint_association_field_headers():
@@ -4686,8 +6733,8 @@ async def test_create_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.DeleteFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.DeleteFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_delete_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -4698,7 +6745,7 @@ def test_delete_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4744,10 +6791,11 @@ def test_delete_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.delete_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.DeleteFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -4843,9 +6891,15 @@ async def test_delete_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_delete_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.DeleteFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4854,7 +6908,7 @@ async def test_delete_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4874,11 +6928,6 @@ async def test_delete_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_firewall_endpoint_association_async_from_dict():
-    await test_delete_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_delete_firewall_endpoint_association_field_headers():
@@ -5035,8 +7084,8 @@ async def test_delete_firewall_endpoint_association_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firewall_activation.UpdateFirewallEndpointAssociationRequest,
-        dict,
+        firewall_activation.UpdateFirewallEndpointAssociationRequest(),
+        {},
     ],
 )
 def test_update_firewall_endpoint_association(request_type, transport: str = "grpc"):
@@ -5047,7 +7096,7 @@ def test_update_firewall_endpoint_association(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5092,9 +7141,10 @@ def test_update_firewall_endpoint_association_non_empty_request_with_auto_popula
         client.update_firewall_endpoint_association(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firewall_activation.UpdateFirewallEndpointAssociationRequest(
+        request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_firewall_endpoint_association_use_cached_wrapped_rpc():
@@ -5190,9 +7240,15 @@ async def test_update_firewall_endpoint_association_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointAssociationRequest(),
+        {},
+    ],
+)
 async def test_update_firewall_endpoint_association_async(
-    transport: str = "grpc_asyncio",
-    request_type=firewall_activation.UpdateFirewallEndpointAssociationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallActivationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5201,7 +7257,7 @@ async def test_update_firewall_endpoint_association_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5221,11 +7277,6 @@ async def test_update_firewall_endpoint_association_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_firewall_endpoint_association_async_from_dict():
-    await test_update_firewall_endpoint_association_async(request_type=dict)
 
 
 def test_update_firewall_endpoint_association_field_headers():
@@ -5667,6 +7718,280 @@ def test_list_firewall_endpoints_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_list_project_firewall_endpoints_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_project_firewall_endpoints
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_project_firewall_endpoints
+        ] = mock_rpc
+
+        request = {}
+        client.list_project_firewall_endpoints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_project_firewall_endpoints(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_project_firewall_endpoints_rest_required_fields(
+    request_type=firewall_activation.ListFirewallEndpointsRequest,
+):
+    transport_class = transports.FirewallActivationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_project_firewall_endpoints._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_project_firewall_endpoints._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = firewall_activation.ListFirewallEndpointsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = firewall_activation.ListFirewallEndpointsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_project_firewall_endpoints(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_project_firewall_endpoints_rest_unset_required_fields():
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_project_firewall_endpoints._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_project_firewall_endpoints_rest_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = firewall_activation.ListFirewallEndpointsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = firewall_activation.ListFirewallEndpointsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_project_firewall_endpoints(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/firewallEndpoints"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_project_firewall_endpoints_rest_flattened_error(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_project_firewall_endpoints(
+            firewall_activation.ListFirewallEndpointsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_project_firewall_endpoints_rest_pager(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="abc",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[],
+                next_page_token="def",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                ],
+                next_page_token="ghi",
+            ),
+            firewall_activation.ListFirewallEndpointsResponse(
+                firewall_endpoints=[
+                    firewall_activation.FirewallEndpoint(),
+                    firewall_activation.FirewallEndpoint(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            firewall_activation.ListFirewallEndpointsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_project_firewall_endpoints(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, firewall_activation.FirewallEndpoint) for i in results)
+
+        pages = list(
+            client.list_project_firewall_endpoints(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_get_firewall_endpoint_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5847,6 +8172,193 @@ def test_get_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_firewall_endpoint(
+            firewall_activation.GetFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+def test_get_project_firewall_endpoint_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        client.get_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_project_firewall_endpoint_rest_required_fields(
+    request_type=firewall_activation.GetFirewallEndpointRequest,
+):
+    transport_class = transports.FirewallActivationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = firewall_activation.FirewallEndpoint()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = firewall_activation.FirewallEndpoint.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_project_firewall_endpoint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_project_firewall_endpoint_rest_unset_required_fields():
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_project_firewall_endpoint._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_project_firewall_endpoint_rest_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = firewall_activation.FirewallEndpoint()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = firewall_activation.FirewallEndpoint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_project_firewall_endpoint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/firewallEndpoints/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_project_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_project_firewall_endpoint(
             firewall_activation.GetFirewallEndpointRequest(),
             name="name_value",
         )
@@ -6075,6 +8587,231 @@ def test_create_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_project_firewall_endpoint_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        client.create_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_project_firewall_endpoint_rest_required_fields(
+    request_type=firewall_activation.CreateFirewallEndpointRequest,
+):
+    transport_class = transports.FirewallActivationRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["firewall_endpoint_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "firewallEndpointId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "firewallEndpointId" in jsonified_request
+    assert (
+        jsonified_request["firewallEndpointId"] == request_init["firewall_endpoint_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["firewallEndpointId"] = "firewall_endpoint_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "firewall_endpoint_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "firewallEndpointId" in jsonified_request
+    assert jsonified_request["firewallEndpointId"] == "firewall_endpoint_id_value"
+
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_project_firewall_endpoint(request)
+
+            expected_params = [
+                (
+                    "firewallEndpointId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_project_firewall_endpoint_rest_unset_required_fields():
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.create_project_firewall_endpoint._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "firewallEndpointId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "firewallEndpointId",
+                "firewallEndpoint",
+            )
+        )
+    )
+
+
+def test_create_project_firewall_endpoint_rest_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_project_firewall_endpoint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/firewallEndpoints"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_project_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_project_firewall_endpoint(
+            firewall_activation.CreateFirewallEndpointRequest(),
+            parent="parent_value",
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            firewall_endpoint_id="firewall_endpoint_id_value",
+        )
+
+
 def test_delete_firewall_endpoint_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6256,6 +8993,194 @@ def test_delete_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_firewall_endpoint(
+            firewall_activation.DeleteFirewallEndpointRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_project_firewall_endpoint_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        client.delete_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_project_firewall_endpoint_rest_required_fields(
+    request_type=firewall_activation.DeleteFirewallEndpointRequest,
+):
+    transport_class = transports.FirewallActivationRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_project_firewall_endpoint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_project_firewall_endpoint_rest_unset_required_fields():
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.delete_project_firewall_endpoint._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+def test_delete_project_firewall_endpoint_rest_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_project_firewall_endpoint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/firewallEndpoints/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_project_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_project_firewall_endpoint(
             firewall_activation.DeleteFirewallEndpointRequest(),
             name="name_value",
         )
@@ -6459,6 +9384,212 @@ def test_update_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_firewall_endpoint(
+            firewall_activation.UpdateFirewallEndpointRequest(),
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_project_firewall_endpoint_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = FirewallActivationClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_project_firewall_endpoint
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_project_firewall_endpoint
+        ] = mock_rpc
+
+        request = {}
+        client.update_project_firewall_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_project_firewall_endpoint(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_project_firewall_endpoint_rest_required_fields(
+    request_type=firewall_activation.UpdateFirewallEndpointRequest,
+):
+    transport_class = transports.FirewallActivationRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_project_firewall_endpoint._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_project_firewall_endpoint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_project_firewall_endpoint_rest_unset_required_fields():
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_project_firewall_endpoint._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "firewallEndpoint",
+            )
+        )
+    )
+
+
+def test_update_project_firewall_endpoint_rest_flattened():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "firewall_endpoint": {
+                "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_project_firewall_endpoint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{firewall_endpoint.name=projects/*/locations/*/firewallEndpoints/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_project_firewall_endpoint_rest_flattened_error(transport: str = "rest"):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_project_firewall_endpoint(
             firewall_activation.UpdateFirewallEndpointRequest(),
             firewall_endpoint=firewall_activation.FirewallEndpoint(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
@@ -7679,7 +10810,28 @@ def test_list_firewall_endpoints_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_project_firewall_endpoints_empty_call_grpc():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        call.return_value = firewall_activation.ListFirewallEndpointsResponse()
+        client.list_project_firewall_endpoints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.ListFirewallEndpointsRequest()
         assert args[0] == request_msg
 
 
@@ -7702,7 +10854,28 @@ def test_get_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_project_firewall_endpoint_empty_call_grpc():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = firewall_activation.FirewallEndpoint()
+        client.get_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.GetFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -7725,7 +10898,28 @@ def test_create_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_project_firewall_endpoint_empty_call_grpc():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.CreateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -7748,7 +10942,28 @@ def test_delete_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_project_firewall_endpoint_empty_call_grpc():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -7771,7 +10986,28 @@ def test_update_firewall_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_project_firewall_endpoint_empty_call_grpc():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -7796,7 +11032,6 @@ def test_list_firewall_endpoint_associations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7819,7 +11054,6 @@ def test_get_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7842,7 +11076,6 @@ def test_create_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7865,7 +11098,6 @@ def test_delete_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7888,7 +11120,6 @@ def test_update_firewall_endpoint_association_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7932,7 +11163,35 @@ async def test_list_firewall_endpoints_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_project_firewall_endpoints_empty_call_grpc_asyncio():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.ListFirewallEndpointsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_project_firewall_endpoints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.ListFirewallEndpointsRequest()
         assert args[0] == request_msg
 
 
@@ -7968,7 +11227,41 @@ async def test_get_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_project_firewall_endpoint_empty_call_grpc_asyncio():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            firewall_activation.FirewallEndpoint(
+                name="name_value",
+                description="description_value",
+                state=firewall_activation.FirewallEndpoint.State.CREATING,
+                reconciling=True,
+                associated_networks=["associated_networks_value"],
+                satisfies_pzs=True,
+                satisfies_pzi=True,
+                billing_project_id="billing_project_id_value",
+            )
+        )
+        await client.get_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.GetFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -7995,7 +11288,32 @@ async def test_create_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_project_firewall_endpoint_empty_call_grpc_asyncio():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.CreateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -8022,7 +11340,32 @@ async def test_delete_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_project_firewall_endpoint_empty_call_grpc_asyncio():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -8049,7 +11392,32 @@ async def test_update_firewall_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_project_firewall_endpoint_empty_call_grpc_asyncio():
+    client = FirewallActivationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -8079,7 +11447,6 @@ async def test_list_firewall_endpoint_associations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8114,7 +11481,6 @@ async def test_get_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8141,7 +11507,6 @@ async def test_create_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8168,7 +11533,6 @@ async def test_delete_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8195,7 +11559,6 @@ async def test_update_firewall_endpoint_association_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8334,6 +11697,148 @@ def test_list_firewall_endpoints_rest_interceptors(null_interceptor):
         )
 
         client.list_firewall_endpoints(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_project_firewall_endpoints_rest_bad_request(
+    request_type=firewall_activation.ListFirewallEndpointsRequest,
+):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_project_firewall_endpoints(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.ListFirewallEndpointsRequest,
+        dict,
+    ],
+)
+def test_list_project_firewall_endpoints_rest_call_success(request_type):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = firewall_activation.ListFirewallEndpointsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = firewall_activation.ListFirewallEndpointsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_project_firewall_endpoints(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProjectFirewallEndpointsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_project_firewall_endpoints_rest_interceptors(null_interceptor):
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirewallActivationRestInterceptor(),
+    )
+    client = FirewallActivationClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_list_project_firewall_endpoints",
+        ) as post,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_list_project_firewall_endpoints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "pre_list_project_firewall_endpoints",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = firewall_activation.ListFirewallEndpointsRequest.pb(
+            firewall_activation.ListFirewallEndpointsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = firewall_activation.ListFirewallEndpointsResponse.to_json(
+            firewall_activation.ListFirewallEndpointsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = firewall_activation.ListFirewallEndpointsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = firewall_activation.ListFirewallEndpointsResponse()
+        post_with_metadata.return_value = (
+            firewall_activation.ListFirewallEndpointsResponse(),
+            metadata,
+        )
+
+        client.list_project_firewall_endpoints(
             request,
             metadata=[
                 ("key", "val"),
@@ -8488,6 +11993,162 @@ def test_get_firewall_endpoint_rest_interceptors(null_interceptor):
         )
 
         client.get_firewall_endpoint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_project_firewall_endpoint_rest_bad_request(
+    request_type=firewall_activation.GetFirewallEndpointRequest,
+):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_project_firewall_endpoint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.GetFirewallEndpointRequest,
+        dict,
+    ],
+)
+def test_get_project_firewall_endpoint_rest_call_success(request_type):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = firewall_activation.FirewallEndpoint(
+            name="name_value",
+            description="description_value",
+            state=firewall_activation.FirewallEndpoint.State.CREATING,
+            reconciling=True,
+            associated_networks=["associated_networks_value"],
+            satisfies_pzs=True,
+            satisfies_pzi=True,
+            billing_project_id="billing_project_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = firewall_activation.FirewallEndpoint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_project_firewall_endpoint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, firewall_activation.FirewallEndpoint)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == firewall_activation.FirewallEndpoint.State.CREATING
+    assert response.reconciling is True
+    assert response.associated_networks == ["associated_networks_value"]
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
+    assert response.billing_project_id == "billing_project_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_project_firewall_endpoint_rest_interceptors(null_interceptor):
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirewallActivationRestInterceptor(),
+    )
+    client = FirewallActivationClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_get_project_firewall_endpoint",
+        ) as post,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_get_project_firewall_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "pre_get_project_firewall_endpoint",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = firewall_activation.GetFirewallEndpointRequest.pb(
+            firewall_activation.GetFirewallEndpointRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = firewall_activation.FirewallEndpoint.to_json(
+            firewall_activation.FirewallEndpoint()
+        )
+        req.return_value.content = return_value
+
+        request = firewall_activation.GetFirewallEndpointRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = firewall_activation.FirewallEndpoint()
+        post_with_metadata.return_value = (
+            firewall_activation.FirewallEndpoint(),
+            metadata,
+        )
+
+        client.get_project_firewall_endpoint(
             request,
             metadata=[
                 ("key", "val"),
@@ -8714,6 +12375,221 @@ def test_create_firewall_endpoint_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_create_project_firewall_endpoint_rest_bad_request(
+    request_type=firewall_activation.CreateFirewallEndpointRequest,
+):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_project_firewall_endpoint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.CreateFirewallEndpointRequest,
+        dict,
+    ],
+)
+def test_create_project_firewall_endpoint_rest_call_success(request_type):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["firewall_endpoint"] = {
+        "name": "name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "state": 1,
+        "reconciling": True,
+        "associated_networks": [
+            "associated_networks_value1",
+            "associated_networks_value2",
+        ],
+        "associations": [{"name": "name_value", "network": "network_value"}],
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
+        "billing_project_id": "billing_project_id_value",
+        "endpoint_settings": {"jumbo_frames_enabled": True},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = firewall_activation.CreateFirewallEndpointRequest.meta.fields[
+        "firewall_endpoint"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["firewall_endpoint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["firewall_endpoint"][field])):
+                    del request_init["firewall_endpoint"][field][i][subfield]
+            else:
+                del request_init["firewall_endpoint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_project_firewall_endpoint(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_project_firewall_endpoint_rest_interceptors(null_interceptor):
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirewallActivationRestInterceptor(),
+    )
+    client = FirewallActivationClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_create_project_firewall_endpoint",
+        ) as post,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_create_project_firewall_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "pre_create_project_firewall_endpoint",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = firewall_activation.CreateFirewallEndpointRequest.pb(
+            firewall_activation.CreateFirewallEndpointRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = firewall_activation.CreateFirewallEndpointRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.create_project_firewall_endpoint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_delete_firewall_endpoint_rest_bad_request(
     request_type=firewall_activation.DeleteFirewallEndpointRequest,
 ):
@@ -8833,6 +12709,138 @@ def test_delete_firewall_endpoint_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_firewall_endpoint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_project_firewall_endpoint_rest_bad_request(
+    request_type=firewall_activation.DeleteFirewallEndpointRequest,
+):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_project_firewall_endpoint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.DeleteFirewallEndpointRequest,
+        dict,
+    ],
+)
+def test_delete_project_firewall_endpoint_rest_call_success(request_type):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_project_firewall_endpoint(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_project_firewall_endpoint_rest_interceptors(null_interceptor):
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirewallActivationRestInterceptor(),
+    )
+    client = FirewallActivationClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_delete_project_firewall_endpoint",
+        ) as post,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_delete_project_firewall_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "pre_delete_project_firewall_endpoint",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = firewall_activation.DeleteFirewallEndpointRequest.pb(
+            firewall_activation.DeleteFirewallEndpointRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = firewall_activation.DeleteFirewallEndpointRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.delete_project_firewall_endpoint(
             request,
             metadata=[
                 ("key", "val"),
@@ -9055,6 +13063,229 @@ def test_update_firewall_endpoint_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_firewall_endpoint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_project_firewall_endpoint_rest_bad_request(
+    request_type=firewall_activation.UpdateFirewallEndpointRequest,
+):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "firewall_endpoint": {
+            "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_project_firewall_endpoint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firewall_activation.UpdateFirewallEndpointRequest,
+        dict,
+    ],
+)
+def test_update_project_firewall_endpoint_rest_call_success(request_type):
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "firewall_endpoint": {
+            "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3"
+        }
+    }
+    request_init["firewall_endpoint"] = {
+        "name": "projects/sample1/locations/sample2/firewallEndpoints/sample3",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "state": 1,
+        "reconciling": True,
+        "associated_networks": [
+            "associated_networks_value1",
+            "associated_networks_value2",
+        ],
+        "associations": [{"name": "name_value", "network": "network_value"}],
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
+        "billing_project_id": "billing_project_id_value",
+        "endpoint_settings": {"jumbo_frames_enabled": True},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = firewall_activation.UpdateFirewallEndpointRequest.meta.fields[
+        "firewall_endpoint"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["firewall_endpoint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["firewall_endpoint"][field])):
+                    del request_init["firewall_endpoint"][field][i][subfield]
+            else:
+                del request_init["firewall_endpoint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_project_firewall_endpoint(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_project_firewall_endpoint_rest_interceptors(null_interceptor):
+    transport = transports.FirewallActivationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirewallActivationRestInterceptor(),
+    )
+    client = FirewallActivationClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_update_project_firewall_endpoint",
+        ) as post,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "post_update_project_firewall_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.FirewallActivationRestInterceptor,
+            "pre_update_project_firewall_endpoint",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = firewall_activation.UpdateFirewallEndpointRequest.pb(
+            firewall_activation.UpdateFirewallEndpointRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = firewall_activation.UpdateFirewallEndpointRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.update_project_firewall_endpoint(
             request,
             metadata=[
                 ("key", "val"),
@@ -10540,7 +14771,27 @@ def test_list_firewall_endpoints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_project_firewall_endpoints_empty_call_rest():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_firewall_endpoints), "__call__"
+    ) as call:
+        client.list_project_firewall_endpoints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.ListFirewallEndpointsRequest()
         assert args[0] == request_msg
 
 
@@ -10562,7 +14813,27 @@ def test_get_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_project_firewall_endpoint_empty_call_rest():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_firewall_endpoint), "__call__"
+    ) as call:
+        client.get_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.GetFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -10584,7 +14855,27 @@ def test_create_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_project_firewall_endpoint_empty_call_rest():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_project_firewall_endpoint), "__call__"
+    ) as call:
+        client.create_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.CreateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -10606,7 +14897,27 @@ def test_delete_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_project_firewall_endpoint_empty_call_rest():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_project_firewall_endpoint), "__call__"
+    ) as call:
+        client.delete_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.DeleteFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -10628,7 +14939,27 @@ def test_update_firewall_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_project_firewall_endpoint_empty_call_rest():
+    client = FirewallActivationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_firewall_endpoint), "__call__"
+    ) as call:
+        client.update_project_firewall_endpoint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = firewall_activation.UpdateFirewallEndpointRequest()
         assert args[0] == request_msg
 
 
@@ -10650,7 +14981,6 @@ def test_list_firewall_endpoint_associations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.ListFirewallEndpointAssociationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10672,7 +15002,6 @@ def test_get_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.GetFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10694,7 +15023,6 @@ def test_create_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.CreateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10716,7 +15044,6 @@ def test_delete_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.DeleteFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10738,7 +15065,6 @@ def test_update_firewall_endpoint_association_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firewall_activation.UpdateFirewallEndpointAssociationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10793,10 +15119,15 @@ def test_firewall_activation_base_transport():
     # raise NotImplementedError.
     methods = (
         "list_firewall_endpoints",
+        "list_project_firewall_endpoints",
         "get_firewall_endpoint",
+        "get_project_firewall_endpoint",
         "create_firewall_endpoint",
+        "create_project_firewall_endpoint",
         "delete_firewall_endpoint",
+        "delete_project_firewall_endpoint",
         "update_firewall_endpoint",
+        "update_project_firewall_endpoint",
         "list_firewall_endpoint_associations",
         "get_firewall_endpoint_association",
         "create_firewall_endpoint_association",
@@ -11086,17 +15417,32 @@ def test_firewall_activation_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_firewall_endpoints._session
     session2 = client2.transport.list_firewall_endpoints._session
     assert session1 != session2
+    session1 = client1.transport.list_project_firewall_endpoints._session
+    session2 = client2.transport.list_project_firewall_endpoints._session
+    assert session1 != session2
     session1 = client1.transport.get_firewall_endpoint._session
     session2 = client2.transport.get_firewall_endpoint._session
+    assert session1 != session2
+    session1 = client1.transport.get_project_firewall_endpoint._session
+    session2 = client2.transport.get_project_firewall_endpoint._session
     assert session1 != session2
     session1 = client1.transport.create_firewall_endpoint._session
     session2 = client2.transport.create_firewall_endpoint._session
     assert session1 != session2
+    session1 = client1.transport.create_project_firewall_endpoint._session
+    session2 = client2.transport.create_project_firewall_endpoint._session
+    assert session1 != session2
     session1 = client1.transport.delete_firewall_endpoint._session
     session2 = client2.transport.delete_firewall_endpoint._session
     assert session1 != session2
+    session1 = client1.transport.delete_project_firewall_endpoint._session
+    session2 = client2.transport.delete_project_firewall_endpoint._session
+    assert session1 != session2
     session1 = client1.transport.update_firewall_endpoint._session
     session2 = client2.transport.update_firewall_endpoint._session
+    assert session1 != session2
+    session1 = client1.transport.update_project_firewall_endpoint._session
+    session2 = client2.transport.update_project_firewall_endpoint._session
     assert session1 != session2
     session1 = client1.transport.list_firewall_endpoint_associations._session
     session2 = client2.transport.list_firewall_endpoint_associations._session

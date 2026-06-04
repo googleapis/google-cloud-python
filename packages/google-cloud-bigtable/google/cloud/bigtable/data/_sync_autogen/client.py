@@ -184,7 +184,8 @@ class BigtableDataClient(ClientWithProject):
         )
         if (
             credentials
-            and credentials.universe_domain != self.universe_domain
+            and hasattr(credentials, "universe_domain")
+            and (credentials.universe_domain != self.universe_domain)
             and (self._emulator_host is None)
         ):
             raise ValueError(
@@ -1048,10 +1049,12 @@ class _DataApiTarget(abc.ABC):
             operation_timeout, operation_timeout
         )
         concurrency_sem = CrossSync._Sync_Impl.Semaphore(_CONCURRENCY_LIMIT)
+        gen_lock = CrossSync._Sync_Impl.Semaphore(1)
 
         def read_rows_with_semaphore(query):
             with concurrency_sem:
-                shard_timeout = next(rpc_timeout_generator)
+                with gen_lock:
+                    shard_timeout = next(rpc_timeout_generator)
                 if shard_timeout <= 0:
                     raise DeadlineExceeded(
                         "Operation timeout exceeded before starting query"

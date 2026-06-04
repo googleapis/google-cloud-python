@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1410,8 +1426,8 @@ def test_consumer_procurement_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        procurement_service.PlaceOrderRequest,
-        dict,
+        procurement_service.PlaceOrderRequest(),
+        {},
     ],
 )
 def test_place_order(request_type, transport: str = "grpc"):
@@ -1422,7 +1438,7 @@ def test_place_order(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.place_order), "__call__") as call:
@@ -1465,11 +1481,12 @@ def test_place_order_non_empty_request_with_auto_populated_field():
         client.place_order(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.PlaceOrderRequest(
+        request_msg = procurement_service.PlaceOrderRequest(
             parent="parent_value",
             display_name="display_name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_place_order_use_cached_wrapped_rpc():
@@ -1560,9 +1577,14 @@ async def test_place_order_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_place_order_async(
-    transport: str = "grpc_asyncio", request_type=procurement_service.PlaceOrderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        procurement_service.PlaceOrderRequest(),
+        {},
+    ],
+)
+async def test_place_order_async(request_type, transport: str = "grpc_asyncio"):
     client = ConsumerProcurementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1570,7 +1592,7 @@ async def test_place_order_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.place_order), "__call__") as call:
@@ -1588,11 +1610,6 @@ async def test_place_order_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_place_order_async_from_dict():
-    await test_place_order_async(request_type=dict)
 
 
 def test_place_order_field_headers():
@@ -1659,8 +1676,8 @@ async def test_place_order_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        procurement_service.GetOrderRequest,
-        dict,
+        procurement_service.GetOrderRequest(),
+        {},
     ],
 )
 def test_get_order(request_type, transport: str = "grpc"):
@@ -1671,7 +1688,7 @@ def test_get_order(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_order), "__call__") as call:
@@ -1719,9 +1736,10 @@ def test_get_order_non_empty_request_with_auto_populated_field():
         client.get_order(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.GetOrderRequest(
+        request_msg = procurement_service.GetOrderRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_order_use_cached_wrapped_rpc():
@@ -1800,9 +1818,14 @@ async def test_get_order_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_order_async(
-    transport: str = "grpc_asyncio", request_type=procurement_service.GetOrderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        procurement_service.GetOrderRequest(),
+        {},
+    ],
+)
+async def test_get_order_async(request_type, transport: str = "grpc_asyncio"):
     client = ConsumerProcurementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1810,7 +1833,7 @@ async def test_get_order_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_order), "__call__") as call:
@@ -1835,11 +1858,6 @@ async def test_get_order_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_order_async_from_dict():
-    await test_get_order_async(request_type=dict)
 
 
 def test_get_order_field_headers():
@@ -1984,8 +2002,8 @@ async def test_get_order_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        procurement_service.ListOrdersRequest,
-        dict,
+        procurement_service.ListOrdersRequest(),
+        {},
     ],
 )
 def test_list_orders(request_type, transport: str = "grpc"):
@@ -1996,7 +2014,7 @@ def test_list_orders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_orders), "__call__") as call:
@@ -2042,11 +2060,12 @@ def test_list_orders_non_empty_request_with_auto_populated_field():
         client.list_orders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.ListOrdersRequest(
+        request_msg = procurement_service.ListOrdersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_orders_use_cached_wrapped_rpc():
@@ -2127,9 +2146,14 @@ async def test_list_orders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_orders_async(
-    transport: str = "grpc_asyncio", request_type=procurement_service.ListOrdersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        procurement_service.ListOrdersRequest(),
+        {},
+    ],
+)
+async def test_list_orders_async(request_type, transport: str = "grpc_asyncio"):
     client = ConsumerProcurementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2137,7 +2161,7 @@ async def test_list_orders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_orders), "__call__") as call:
@@ -2158,11 +2182,6 @@ async def test_list_orders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrdersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_orders_async_from_dict():
-    await test_list_orders_async(request_type=dict)
 
 
 def test_list_orders_field_headers():
@@ -3189,7 +3208,6 @@ def test_place_order_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.PlaceOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3210,7 +3228,6 @@ def test_get_order_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.GetOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3231,7 +3248,6 @@ def test_list_orders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.ListOrdersRequest()
-
         assert args[0] == request_msg
 
 
@@ -3270,7 +3286,6 @@ async def test_place_order_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.PlaceOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3299,7 +3314,6 @@ async def test_get_order_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.GetOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3326,7 +3340,6 @@ async def test_list_orders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.ListOrdersRequest()
-
         assert args[0] == request_msg
 
 
@@ -3818,7 +3831,6 @@ def test_place_order_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.PlaceOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3838,7 +3850,6 @@ def test_get_order_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.GetOrderRequest()
-
         assert args[0] == request_msg
 
 
@@ -3858,7 +3869,6 @@ def test_list_orders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = procurement_service.ListOrdersRequest()
-
         assert args[0] == request_msg
 
 

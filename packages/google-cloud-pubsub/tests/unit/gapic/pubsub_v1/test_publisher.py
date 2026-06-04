@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1278,8 +1294,8 @@ def test_publisher_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.Topic,
-        dict,
+        pubsub.Topic(),
+        {},
     ],
 )
 def test_create_topic(request_type, transport: str = "grpc"):
@@ -1290,7 +1306,7 @@ def test_create_topic(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
@@ -1341,10 +1357,11 @@ def test_create_topic_non_empty_request_with_auto_populated_field():
         client.create_topic(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.Topic(
+        request_msg = pubsub.Topic(
             name="name_value",
             kms_key_name="kms_key_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_topic_use_cached_wrapped_rpc():
@@ -1425,9 +1442,14 @@ async def test_create_topic_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_topic_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.Topic
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.Topic(),
+        {},
+    ],
+)
+async def test_create_topic_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1435,7 +1457,7 @@ async def test_create_topic_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
@@ -1462,11 +1484,6 @@ async def test_create_topic_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
     assert response.state == pubsub.Topic.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_create_topic_async_from_dict():
-    await test_create_topic_async(request_type=dict)
 
 
 def test_create_topic_field_headers():
@@ -1611,8 +1628,8 @@ async def test_create_topic_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.UpdateTopicRequest,
-        dict,
+        pubsub.UpdateTopicRequest(),
+        {},
     ],
 )
 def test_update_topic(request_type, transport: str = "grpc"):
@@ -1623,7 +1640,7 @@ def test_update_topic(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
@@ -1671,7 +1688,8 @@ def test_update_topic_non_empty_request_with_auto_populated_field():
         client.update_topic(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.UpdateTopicRequest()
+        request_msg = pubsub.UpdateTopicRequest()
+        assert args[0] == request_msg
 
 
 def test_update_topic_use_cached_wrapped_rpc():
@@ -1752,9 +1770,14 @@ async def test_update_topic_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_topic_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.UpdateTopicRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateTopicRequest(),
+        {},
+    ],
+)
+async def test_update_topic_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1762,7 +1785,7 @@ async def test_update_topic_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
@@ -1789,11 +1812,6 @@ async def test_update_topic_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
     assert response.state == pubsub.Topic.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_update_topic_async_from_dict():
-    await test_update_topic_async(request_type=dict)
 
 
 def test_update_topic_field_headers():
@@ -1948,8 +1966,8 @@ async def test_update_topic_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.PublishRequest,
-        dict,
+        pubsub.PublishRequest(),
+        {},
     ],
 )
 def test_publish(request_type, transport: str = "grpc"):
@@ -1960,7 +1978,7 @@ def test_publish(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish), "__call__") as call:
@@ -2004,9 +2022,10 @@ def test_publish_non_empty_request_with_auto_populated_field():
         client.publish(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.PublishRequest(
+        request_msg = pubsub.PublishRequest(
             topic="topic_value",
         )
+        assert args[0] == request_msg
 
 
 def test_publish_use_cached_wrapped_rpc():
@@ -2085,9 +2104,14 @@ async def test_publish_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_publish_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.PublishRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.PublishRequest(),
+        {},
+    ],
+)
+async def test_publish_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2095,7 +2119,7 @@ async def test_publish_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish), "__call__") as call:
@@ -2116,11 +2140,6 @@ async def test_publish_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pubsub.PublishResponse)
     assert response.message_ids == ["message_ids_value"]
-
-
-@pytest.mark.asyncio
-async def test_publish_async_from_dict():
-    await test_publish_async(request_type=dict)
 
 
 def test_publish_field_headers():
@@ -2279,8 +2298,8 @@ async def test_publish_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.GetTopicRequest,
-        dict,
+        pubsub.GetTopicRequest(),
+        {},
     ],
 )
 def test_get_topic(request_type, transport: str = "grpc"):
@@ -2291,7 +2310,7 @@ def test_get_topic(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
@@ -2341,9 +2360,10 @@ def test_get_topic_non_empty_request_with_auto_populated_field():
         client.get_topic(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.GetTopicRequest(
+        request_msg = pubsub.GetTopicRequest(
             topic="topic_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_topic_use_cached_wrapped_rpc():
@@ -2422,9 +2442,14 @@ async def test_get_topic_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_topic_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.GetTopicRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetTopicRequest(),
+        {},
+    ],
+)
+async def test_get_topic_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2432,7 +2457,7 @@ async def test_get_topic_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
@@ -2459,11 +2484,6 @@ async def test_get_topic_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
     assert response.state == pubsub.Topic.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_topic_async_from_dict():
-    await test_get_topic_async(request_type=dict)
 
 
 def test_get_topic_field_headers():
@@ -2608,8 +2628,8 @@ async def test_get_topic_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.ListTopicsRequest,
-        dict,
+        pubsub.ListTopicsRequest(),
+        {},
     ],
 )
 def test_list_topics(request_type, transport: str = "grpc"):
@@ -2620,7 +2640,7 @@ def test_list_topics(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -2665,10 +2685,11 @@ def test_list_topics_non_empty_request_with_auto_populated_field():
         client.list_topics(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.ListTopicsRequest(
+        request_msg = pubsub.ListTopicsRequest(
             project="project_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_topics_use_cached_wrapped_rpc():
@@ -2749,9 +2770,14 @@ async def test_list_topics_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_topics_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.ListTopicsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicsRequest(),
+        {},
+    ],
+)
+async def test_list_topics_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2759,7 +2785,7 @@ async def test_list_topics_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -2780,11 +2806,6 @@ async def test_list_topics_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTopicsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_topics_async_from_dict():
-    await test_list_topics_async(request_type=dict)
 
 
 def test_list_topics_field_headers():
@@ -3123,8 +3144,8 @@ async def test_list_topics_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.ListTopicSubscriptionsRequest,
-        dict,
+        pubsub.ListTopicSubscriptionsRequest(),
+        {},
     ],
 )
 def test_list_topic_subscriptions(request_type, transport: str = "grpc"):
@@ -3135,7 +3156,7 @@ def test_list_topic_subscriptions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3186,10 +3207,11 @@ def test_list_topic_subscriptions_non_empty_request_with_auto_populated_field():
         client.list_topic_subscriptions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.ListTopicSubscriptionsRequest(
+        request_msg = pubsub.ListTopicSubscriptionsRequest(
             topic="topic_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_topic_subscriptions_use_cached_wrapped_rpc():
@@ -3275,8 +3297,15 @@ async def test_list_topic_subscriptions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicSubscriptionsRequest(),
+        {},
+    ],
+)
 async def test_list_topic_subscriptions_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.ListTopicSubscriptionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3285,7 +3314,7 @@ async def test_list_topic_subscriptions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3310,11 +3339,6 @@ async def test_list_topic_subscriptions_async(
     assert isinstance(response, pagers.ListTopicSubscriptionsAsyncPager)
     assert response.subscriptions == ["subscriptions_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_topic_subscriptions_async_from_dict():
-    await test_list_topic_subscriptions_async(request_type=dict)
 
 
 def test_list_topic_subscriptions_field_headers():
@@ -3671,8 +3695,8 @@ async def test_list_topic_subscriptions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.ListTopicSnapshotsRequest,
-        dict,
+        pubsub.ListTopicSnapshotsRequest(),
+        {},
     ],
 )
 def test_list_topic_snapshots(request_type, transport: str = "grpc"):
@@ -3683,7 +3707,7 @@ def test_list_topic_snapshots(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3734,10 +3758,11 @@ def test_list_topic_snapshots_non_empty_request_with_auto_populated_field():
         client.list_topic_snapshots(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.ListTopicSnapshotsRequest(
+        request_msg = pubsub.ListTopicSnapshotsRequest(
             topic="topic_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_topic_snapshots_use_cached_wrapped_rpc():
@@ -3822,8 +3847,15 @@ async def test_list_topic_snapshots_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicSnapshotsRequest(),
+        {},
+    ],
+)
 async def test_list_topic_snapshots_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.ListTopicSnapshotsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3832,7 +3864,7 @@ async def test_list_topic_snapshots_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3857,11 +3889,6 @@ async def test_list_topic_snapshots_async(
     assert isinstance(response, pagers.ListTopicSnapshotsAsyncPager)
     assert response.snapshots == ["snapshots_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_topic_snapshots_async_from_dict():
-    await test_list_topic_snapshots_async(request_type=dict)
 
 
 def test_list_topic_snapshots_field_headers():
@@ -4216,8 +4243,8 @@ async def test_list_topic_snapshots_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.DeleteTopicRequest,
-        dict,
+        pubsub.DeleteTopicRequest(),
+        {},
     ],
 )
 def test_delete_topic(request_type, transport: str = "grpc"):
@@ -4228,7 +4255,7 @@ def test_delete_topic(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_topic), "__call__") as call:
@@ -4269,9 +4296,10 @@ def test_delete_topic_non_empty_request_with_auto_populated_field():
         client.delete_topic(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.DeleteTopicRequest(
+        request_msg = pubsub.DeleteTopicRequest(
             topic="topic_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_topic_use_cached_wrapped_rpc():
@@ -4352,9 +4380,14 @@ async def test_delete_topic_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_topic_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.DeleteTopicRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteTopicRequest(),
+        {},
+    ],
+)
+async def test_delete_topic_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4362,7 +4395,7 @@ async def test_delete_topic_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_topic), "__call__") as call:
@@ -4378,11 +4411,6 @@ async def test_delete_topic_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_topic_async_from_dict():
-    await test_delete_topic_async(request_type=dict)
 
 
 def test_delete_topic_field_headers():
@@ -4527,8 +4555,8 @@ async def test_delete_topic_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        pubsub.DetachSubscriptionRequest,
-        dict,
+        pubsub.DetachSubscriptionRequest(),
+        {},
     ],
 )
 def test_detach_subscription(request_type, transport: str = "grpc"):
@@ -4539,7 +4567,7 @@ def test_detach_subscription(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4584,9 +4612,10 @@ def test_detach_subscription_non_empty_request_with_auto_populated_field():
         client.detach_subscription(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == pubsub.DetachSubscriptionRequest(
+        request_msg = pubsub.DetachSubscriptionRequest(
             subscription="subscription_value",
         )
+        assert args[0] == request_msg
 
 
 def test_detach_subscription_use_cached_wrapped_rpc():
@@ -4671,9 +4700,14 @@ async def test_detach_subscription_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_detach_subscription_async(
-    transport: str = "grpc_asyncio", request_type=pubsub.DetachSubscriptionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DetachSubscriptionRequest(),
+        {},
+    ],
+)
+async def test_detach_subscription_async(request_type, transport: str = "grpc_asyncio"):
     client = PublisherAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4681,7 +4715,7 @@ async def test_detach_subscription_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4701,11 +4735,6 @@ async def test_detach_subscription_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pubsub.DetachSubscriptionResponse)
-
-
-@pytest.mark.asyncio
-async def test_detach_subscription_async_from_dict():
-    await test_detach_subscription_async(request_type=dict)
 
 
 def test_detach_subscription_field_headers():
@@ -6671,7 +6700,6 @@ def test_create_topic_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.Topic()
-
         assert args[0] == request_msg
 
 
@@ -6692,7 +6720,6 @@ def test_update_topic_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.UpdateTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -6713,7 +6740,6 @@ def test_publish_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.PublishRequest()
-
         assert args[0] == request_msg
 
 
@@ -6734,7 +6760,6 @@ def test_get_topic_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.GetTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -6755,7 +6780,6 @@ def test_list_topics_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6778,7 +6802,6 @@ def test_list_topic_subscriptions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSubscriptionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6801,7 +6824,6 @@ def test_list_topic_snapshots_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6822,7 +6844,6 @@ def test_delete_topic_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DeleteTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -6845,7 +6866,6 @@ def test_detach_subscription_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DetachSubscriptionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6889,7 +6909,6 @@ async def test_create_topic_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.Topic()
-
         assert args[0] == request_msg
 
 
@@ -6919,7 +6938,6 @@ async def test_update_topic_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.UpdateTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -6946,7 +6964,6 @@ async def test_publish_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.PublishRequest()
-
         assert args[0] == request_msg
 
 
@@ -6976,7 +6993,6 @@ async def test_get_topic_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.GetTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -7003,7 +7019,6 @@ async def test_list_topics_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7033,7 +7048,6 @@ async def test_list_topic_subscriptions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSubscriptionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7063,7 +7077,6 @@ async def test_list_topic_snapshots_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7086,7 +7099,6 @@ async def test_delete_topic_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DeleteTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -7113,7 +7125,6 @@ async def test_detach_subscription_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DetachSubscriptionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8469,7 +8480,6 @@ def test_create_topic_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.Topic()
-
         assert args[0] == request_msg
 
 
@@ -8489,7 +8499,6 @@ def test_update_topic_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.UpdateTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -8509,7 +8518,6 @@ def test_publish_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.PublishRequest()
-
         assert args[0] == request_msg
 
 
@@ -8529,7 +8537,6 @@ def test_get_topic_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.GetTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -8549,7 +8556,6 @@ def test_list_topics_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8571,7 +8577,6 @@ def test_list_topic_subscriptions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSubscriptionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8593,7 +8598,6 @@ def test_list_topic_snapshots_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.ListTopicSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8613,7 +8617,6 @@ def test_delete_topic_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DeleteTopicRequest()
-
         assert args[0] == request_msg
 
 
@@ -8635,7 +8638,6 @@ def test_detach_subscription_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = pubsub.DetachSubscriptionRequest()
-
         assert args[0] == request_msg
 
 

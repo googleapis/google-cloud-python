@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1280,8 +1296,8 @@ def test_ekm_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.ListEkmConnectionsRequest,
-        dict,
+        ekm_service.ListEkmConnectionsRequest(),
+        {},
     ],
 )
 def test_list_ekm_connections(request_type, transport: str = "grpc"):
@@ -1292,7 +1308,7 @@ def test_list_ekm_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1345,12 +1361,13 @@ def test_list_ekm_connections_non_empty_request_with_auto_populated_field():
         client.list_ekm_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.ListEkmConnectionsRequest(
+        request_msg = ekm_service.ListEkmConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_ekm_connections_use_cached_wrapped_rpc():
@@ -1435,8 +1452,15 @@ async def test_list_ekm_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.ListEkmConnectionsRequest(),
+        {},
+    ],
+)
 async def test_list_ekm_connections_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.ListEkmConnectionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1445,7 +1469,7 @@ async def test_list_ekm_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1470,11 +1494,6 @@ async def test_list_ekm_connections_async(
     assert isinstance(response, pagers.ListEkmConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_ekm_connections_async_from_dict():
-    await test_list_ekm_connections_async(request_type=dict)
 
 
 def test_list_ekm_connections_field_headers():
@@ -1829,8 +1848,8 @@ async def test_list_ekm_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.GetEkmConnectionRequest,
-        dict,
+        ekm_service.GetEkmConnectionRequest(),
+        {},
     ],
 )
 def test_get_ekm_connection(request_type, transport: str = "grpc"):
@@ -1841,7 +1860,7 @@ def test_get_ekm_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1898,9 +1917,10 @@ def test_get_ekm_connection_non_empty_request_with_auto_populated_field():
         client.get_ekm_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConnectionRequest(
+        request_msg = ekm_service.GetEkmConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_ekm_connection_use_cached_wrapped_rpc():
@@ -1985,9 +2005,14 @@ async def test_get_ekm_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_ekm_connection_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.GetEkmConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.GetEkmConnectionRequest(),
+        {},
+    ],
+)
+async def test_get_ekm_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1995,7 +2020,7 @@ async def test_get_ekm_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2027,11 +2052,6 @@ async def test_get_ekm_connection_async(
         == ekm_service.EkmConnection.KeyManagementMode.MANUAL
     )
     assert response.crypto_space_path == "crypto_space_path_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ekm_connection_async_from_dict():
-    await test_get_ekm_connection_async(request_type=dict)
 
 
 def test_get_ekm_connection_field_headers():
@@ -2188,8 +2208,8 @@ async def test_get_ekm_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.CreateEkmConnectionRequest,
-        dict,
+        ekm_service.CreateEkmConnectionRequest(),
+        {},
     ],
 )
 def test_create_ekm_connection(request_type, transport: str = "grpc"):
@@ -2200,7 +2220,7 @@ def test_create_ekm_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2258,10 +2278,11 @@ def test_create_ekm_connection_non_empty_request_with_auto_populated_field():
         client.create_ekm_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.CreateEkmConnectionRequest(
+        request_msg = ekm_service.CreateEkmConnectionRequest(
             parent="parent_value",
             ekm_connection_id="ekm_connection_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_ekm_connection_use_cached_wrapped_rpc():
@@ -2347,8 +2368,15 @@ async def test_create_ekm_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.CreateEkmConnectionRequest(),
+        {},
+    ],
+)
 async def test_create_ekm_connection_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.CreateEkmConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2357,7 +2385,7 @@ async def test_create_ekm_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2389,11 +2417,6 @@ async def test_create_ekm_connection_async(
         == ekm_service.EkmConnection.KeyManagementMode.MANUAL
     )
     assert response.crypto_space_path == "crypto_space_path_value"
-
-
-@pytest.mark.asyncio
-async def test_create_ekm_connection_async_from_dict():
-    await test_create_ekm_connection_async(request_type=dict)
 
 
 def test_create_ekm_connection_field_headers():
@@ -2570,8 +2593,8 @@ async def test_create_ekm_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.UpdateEkmConnectionRequest,
-        dict,
+        ekm_service.UpdateEkmConnectionRequest(),
+        {},
     ],
 )
 def test_update_ekm_connection(request_type, transport: str = "grpc"):
@@ -2582,7 +2605,7 @@ def test_update_ekm_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2637,7 +2660,8 @@ def test_update_ekm_connection_non_empty_request_with_auto_populated_field():
         client.update_ekm_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConnectionRequest()
+        request_msg = ekm_service.UpdateEkmConnectionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_ekm_connection_use_cached_wrapped_rpc():
@@ -2723,8 +2747,15 @@ async def test_update_ekm_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.UpdateEkmConnectionRequest(),
+        {},
+    ],
+)
 async def test_update_ekm_connection_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.UpdateEkmConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2733,7 +2764,7 @@ async def test_update_ekm_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2765,11 +2796,6 @@ async def test_update_ekm_connection_async(
         == ekm_service.EkmConnection.KeyManagementMode.MANUAL
     )
     assert response.crypto_space_path == "crypto_space_path_value"
-
-
-@pytest.mark.asyncio
-async def test_update_ekm_connection_async_from_dict():
-    await test_update_ekm_connection_async(request_type=dict)
 
 
 def test_update_ekm_connection_field_headers():
@@ -2936,8 +2962,8 @@ async def test_update_ekm_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.GetEkmConfigRequest,
-        dict,
+        ekm_service.GetEkmConfigRequest(),
+        {},
     ],
 )
 def test_get_ekm_config(request_type, transport: str = "grpc"):
@@ -2948,7 +2974,7 @@ def test_get_ekm_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_ekm_config), "__call__") as call:
@@ -2994,9 +3020,10 @@ def test_get_ekm_config_non_empty_request_with_auto_populated_field():
         client.get_ekm_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.GetEkmConfigRequest(
+        request_msg = ekm_service.GetEkmConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_ekm_config_use_cached_wrapped_rpc():
@@ -3077,9 +3104,14 @@ async def test_get_ekm_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_ekm_config_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.GetEkmConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.GetEkmConfigRequest(),
+        {},
+    ],
+)
+async def test_get_ekm_config_async(request_type, transport: str = "grpc_asyncio"):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3087,7 +3119,7 @@ async def test_get_ekm_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_ekm_config), "__call__") as call:
@@ -3110,11 +3142,6 @@ async def test_get_ekm_config_async(
     assert isinstance(response, ekm_service.EkmConfig)
     assert response.name == "name_value"
     assert response.default_ekm_connection == "default_ekm_connection_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ekm_config_async_from_dict():
-    await test_get_ekm_config_async(request_type=dict)
 
 
 def test_get_ekm_config_field_headers():
@@ -3263,8 +3290,8 @@ async def test_get_ekm_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.UpdateEkmConfigRequest,
-        dict,
+        ekm_service.UpdateEkmConfigRequest(),
+        {},
     ],
 )
 def test_update_ekm_config(request_type, transport: str = "grpc"):
@@ -3275,7 +3302,7 @@ def test_update_ekm_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3323,7 +3350,8 @@ def test_update_ekm_config_non_empty_request_with_auto_populated_field():
         client.update_ekm_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.UpdateEkmConfigRequest()
+        request_msg = ekm_service.UpdateEkmConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_ekm_config_use_cached_wrapped_rpc():
@@ -3406,9 +3434,14 @@ async def test_update_ekm_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_ekm_config_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.UpdateEkmConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.UpdateEkmConfigRequest(),
+        {},
+    ],
+)
+async def test_update_ekm_config_async(request_type, transport: str = "grpc_asyncio"):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3416,7 +3449,7 @@ async def test_update_ekm_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3441,11 +3474,6 @@ async def test_update_ekm_config_async(
     assert isinstance(response, ekm_service.EkmConfig)
     assert response.name == "name_value"
     assert response.default_ekm_connection == "default_ekm_connection_value"
-
-
-@pytest.mark.asyncio
-async def test_update_ekm_config_async_from_dict():
-    await test_update_ekm_config_async(request_type=dict)
 
 
 def test_update_ekm_config_field_headers():
@@ -3612,8 +3640,8 @@ async def test_update_ekm_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_service.VerifyConnectivityRequest,
-        dict,
+        ekm_service.VerifyConnectivityRequest(),
+        {},
     ],
 )
 def test_verify_connectivity(request_type, transport: str = "grpc"):
@@ -3624,7 +3652,7 @@ def test_verify_connectivity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3669,9 +3697,10 @@ def test_verify_connectivity_non_empty_request_with_auto_populated_field():
         client.verify_connectivity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_service.VerifyConnectivityRequest(
+        request_msg = ekm_service.VerifyConnectivityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_connectivity_use_cached_wrapped_rpc():
@@ -3756,9 +3785,14 @@ async def test_verify_connectivity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_verify_connectivity_async(
-    transport: str = "grpc_asyncio", request_type=ekm_service.VerifyConnectivityRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_service.VerifyConnectivityRequest(),
+        {},
+    ],
+)
+async def test_verify_connectivity_async(request_type, transport: str = "grpc_asyncio"):
     client = EkmServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3766,7 +3800,7 @@ async def test_verify_connectivity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3786,11 +3820,6 @@ async def test_verify_connectivity_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_service.VerifyConnectivityResponse)
-
-
-@pytest.mark.asyncio
-async def test_verify_connectivity_async_from_dict():
-    await test_verify_connectivity_async(request_type=dict)
 
 
 def test_verify_connectivity_field_headers():
@@ -5475,7 +5504,6 @@ def test_list_ekm_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.ListEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5498,7 +5526,6 @@ def test_get_ekm_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5521,7 +5548,6 @@ def test_create_ekm_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.CreateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5544,7 +5570,6 @@ def test_update_ekm_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5565,7 +5590,6 @@ def test_get_ekm_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5588,7 +5612,6 @@ def test_update_ekm_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5611,7 +5634,6 @@ def test_verify_connectivity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.VerifyConnectivityRequest()
-
         assert args[0] == request_msg
 
 
@@ -5655,7 +5677,6 @@ async def test_list_ekm_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.ListEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5687,7 +5708,6 @@ async def test_get_ekm_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5719,7 +5739,6 @@ async def test_create_ekm_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.CreateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5751,7 +5770,6 @@ async def test_update_ekm_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5779,7 +5797,6 @@ async def test_get_ekm_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5809,7 +5826,6 @@ async def test_update_ekm_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5836,7 +5852,6 @@ async def test_verify_connectivity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.VerifyConnectivityRequest()
-
         assert args[0] == request_msg
 
 
@@ -7476,7 +7491,6 @@ def test_list_ekm_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.ListEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7498,7 +7512,6 @@ def test_get_ekm_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7520,7 +7533,6 @@ def test_create_ekm_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.CreateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7542,7 +7554,6 @@ def test_update_ekm_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7562,7 +7573,6 @@ def test_get_ekm_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.GetEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7584,7 +7594,6 @@ def test_update_ekm_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.UpdateEkmConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7606,7 +7615,6 @@ def test_verify_connectivity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_service.VerifyConnectivityRequest()
-
         assert args[0] == request_msg
 
 

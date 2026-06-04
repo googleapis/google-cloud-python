@@ -156,6 +156,8 @@ class ProductAccount(proto.Message):
                 Google Analytics.
             GOOGLE_AD_MANAGER_AUDIENCE_LINK (6):
                 Google Ad Manager audience link.
+            FLOODLIGHT_CONFIG (7):
+                Floodlight configuration.
         """
 
         ACCOUNT_TYPE_UNSPECIFIED = 0
@@ -165,6 +167,7 @@ class ProductAccount(proto.Message):
         DATA_PARTNER = 4
         GOOGLE_ANALYTICS_PROPERTY = 5
         GOOGLE_AD_MANAGER_AUDIENCE_LINK = 6
+        FLOODLIGHT_CONFIG = 7
 
     product: "Product" = proto.Field(
         proto.ENUM,

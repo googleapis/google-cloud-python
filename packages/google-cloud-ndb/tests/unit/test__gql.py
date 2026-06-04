@@ -13,14 +13,12 @@
 # limitations under the License.
 
 import datetime
+
 import pytest
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import key
-from google.cloud.ndb import model
 from google.cloud.ndb import _gql as gql_module
+from google.cloud.ndb import exceptions, key, model
 from google.cloud.ndb import query as query_module
-
 
 GQL_QUERY = """
     SELECT prop1, prop2 FROM SomeKind WHERE prop3>5 and prop2='xxx'
@@ -475,8 +473,7 @@ class TestGQL:
             prop1 = model.DateTimeProperty()
 
         gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(2020, 3, 26,"
-            "12, 45, 5)"
+            "SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(2020, 3, 26,12, 45, 5)"
         )
         query = gql.get_query()
         assert query.filters == query_module.FilterNode(
@@ -490,8 +487,7 @@ class TestGQL:
             prop1 = model.DateTimeProperty()
 
         gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = "
-            "DateTime('2020-03-26 12:45:05')"
+            "SELECT prop1 FROM SomeKind WHERE prop1 = DateTime('2020-03-26 12:45:05')"
         )
         query = gql.get_query()
         assert query.filters == query_module.FilterNode(
@@ -667,7 +663,7 @@ class TestGQL:
             prop1 = model.GeoPtProperty()
 
         gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = " "GeoPt(20.67,-100.32, 1.5)"
+            "SELECT prop1 FROM SomeKind WHERE prop1 = GeoPt(20.67,-100.32, 1.5)"
         )
         with pytest.raises(exceptions.BadQueryError):
             gql.get_query()
@@ -679,8 +675,7 @@ class TestGQL:
             prop1 = model.KeyProperty()
 
         gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Key('parent', 'c', "
-            "'child', 42)"
+            "SELECT prop1 FROM SomeKind WHERE prop1 = Key('parent', 'c', 'child', 42)"
         )
         query = gql.get_query()
         assert query.filters == query_module.FilterNode(

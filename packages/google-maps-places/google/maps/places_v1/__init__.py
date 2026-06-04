@@ -52,6 +52,13 @@ from .types.review import Review
 from .types.route_modifiers import RouteModifiers
 from .types.routing_preference import RoutingPreference
 from .types.routing_summary import RoutingSummary
+from .types.transit import (
+    TransitAgency,
+    TransitIcon,
+    TransitLine,
+    TransitStation,
+    TransitStop,
+)
 from .types.travel_mode import TravelMode
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -168,5 +175,10 @@ __all__ = (
     "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "TransitAgency",
+    "TransitIcon",
+    "TransitLine",
+    "TransitStation",
+    "TransitStop",
     "TravelMode",
 )

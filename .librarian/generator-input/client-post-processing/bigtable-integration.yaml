@@ -198,10 +198,23 @@ replacements:
       \]
     after: |
       "protobuf >= 4.25.8, < 8.0.0",
-          "google-cloud-core >= 1.4.4, <3.0.0",
-          "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
-          "google-crc32c>=1.5.0, <2.0.0dev",
+          "google-cloud-core >= 2.0.0, <3.0.0",
+          "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
+          "google-crc32c>=1.6.0, <2.0.0dev",
       ]
+    count: 1
+  - paths: [
+      packages/google-cloud-bigtable/testing/constraints-3.10.txt,
+    ]
+    before: |
+        google-api-core==2.17.1
+        google-auth==2.14.1
+    after: |
+        google-api-core==2.17.1
+        google-cloud-core==2.0.0
+        grpc-google-iam-v1==0.14.0
+        google-crc32c==1.6.0
+        google-auth==2.14.1
     count: 1
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_v2/services/bigtable/async_client.py,
@@ -408,13 +421,11 @@ replacements:
       import nox
 
       RUFF_VERSION = "ruff==0.14.14"
-      BLACK_VERSION = "black[jupyter]==23.7.0"
       LINT_PATHS = ["google", "samples", "tests", "noxfile.py", "setup.py"]
 
       DEFAULT_PYTHON_VERSION = "3.14"
 
       ALL_PYTHON = [
-          "3.9",
           "3.10",
           "3.11",
           "3.12",
@@ -428,8 +439,7 @@ replacements:
           "pytest",
           "pytest-cov",
           "pytest-asyncio",
-          BLACK_VERSION,
-          "autoflake",
+          RUFF_VERSION,
       ]
       UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
       UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -445,7 +455,7 @@ replacements:
       ]
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
           "pytest-asyncio==0.21.2",
-          BLACK_VERSION,
+          RUFF_VERSION,
           "pyyaml==6.0.2",
       ]
       SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -607,9 +617,6 @@ replacements:
           ["python", "upb", "cpp"],
       )
       def unit(session, protobuf_implementation):
-          if session.python in ("3.7"):
-              session.skip("Python 3.7 is no longer supported")
-
           # Install all test dependencies, then install this package in-place.
           py_version = tuple([int(v) for v in session.python.split(".")])
           if protobuf_implementation == "cpp" and py_version >= (3, 11):
@@ -646,10 +653,7 @@ replacements:
 
 
       def install_systemtest_dependencies(session, *constraints):
-          # Use pre-release gRPC for system tests.
-          # Exclude version 1.52.0rc1 which has a known issue.
-          # See https://github.com/grpc/grpc/issues/32163
-          session.install("--pre", "grpcio!=1.52.0rc1")
+          session.install("--pre", "grpcio")
 
           session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
@@ -944,8 +948,7 @@ replacements:
           """
           Re-generate sync files for the library from CrossSync-annotated async source
           """
-          session.install(BLACK_VERSION)
-          session.install("autoflake")
+          session.install(RUFF_VERSION)
           session.run("python", ".cross_sync/generate.py", ".")
 
 

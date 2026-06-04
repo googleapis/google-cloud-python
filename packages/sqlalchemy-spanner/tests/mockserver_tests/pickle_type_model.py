@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import Column, Integer, String, PickleType
+from sqlalchemy import Column, Integer, PickleType, String
 from sqlalchemy.orm import DeclarativeBase
 
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerPickleType

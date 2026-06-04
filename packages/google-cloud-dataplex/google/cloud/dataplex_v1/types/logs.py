@@ -1290,6 +1290,9 @@ class DataQualityScanRuleResult(proto.Message):
             SQL_ASSERTION (9):
                 See
                 [DataQualityRule.SqlAssertion][google.cloud.dataplex.v1.DataQualityRule.SqlAssertion].
+            TEMPLATE_REFERENCE (10):
+                See
+                [DataQualityRule.TemplateReference][google.cloud.dataplex.v1.DataQualityRule.TemplateReference].
         """
 
         RULE_TYPE_UNSPECIFIED = 0
@@ -1302,6 +1305,7 @@ class DataQualityScanRuleResult(proto.Message):
         TABLE_CONDITION_EXPECTATION = 7
         UNIQUENESS_EXPECTATION = 8
         SQL_ASSERTION = 9
+        TEMPLATE_REFERENCE = 10
 
     class EvaluationType(proto.Enum):
         r"""The evaluation type of the data quality rule.

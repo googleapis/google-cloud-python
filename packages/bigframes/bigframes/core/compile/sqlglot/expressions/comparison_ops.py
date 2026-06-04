@@ -46,7 +46,7 @@ def _(expr: TypedExpr, op: ops.IsInOp) -> sge.Expression:
         if dtypes.can_compare(expr.dtype, dtype):
             if must_upcast_bools and dtype == dtypes.BOOL_DTYPE:
                 value = int(value)
-            values.append(sge.convert(value))
+            values.append(sql.literal(value))
 
     sg_lexpr: sge.Expression = expr.expr
     if expr.dtype == dtypes.BOOL_DTYPE and must_upcast_bools:

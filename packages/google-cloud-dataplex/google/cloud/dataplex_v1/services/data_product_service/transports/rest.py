@@ -142,6 +142,14 @@ class DataProductServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_request_data_product_access(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_request_data_product_access(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_data_asset(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -549,6 +557,58 @@ class DataProductServiceRestInterceptor:
         `post_list_data_products` interceptor. The (possibly modified) response returned by
         `post_list_data_products` will be passed to
         `post_list_data_products_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_request_data_product_access(
+        self,
+        request: data_products.RequestDataProductAccessRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_products.RequestDataProductAccessRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for request_data_product_access
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataProductService server.
+        """
+        return request, metadata
+
+    def post_request_data_product_access(
+        self, response: data_products.RequestDataProductAccessResponse
+    ) -> data_products.RequestDataProductAccessResponse:
+        """Post-rpc interceptor for request_data_product_access
+
+        DEPRECATED. Please use the `post_request_data_product_access_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataProductService server but before
+        it is returned to user code. This `post_request_data_product_access` interceptor runs
+        before the `post_request_data_product_access_with_metadata` interceptor.
+        """
+        return response
+
+    def post_request_data_product_access_with_metadata(
+        self,
+        response: data_products.RequestDataProductAccessResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_products.RequestDataProductAccessResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for request_data_product_access
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataProductService server but before it is returned to user code.
+
+        We recommend only using this `post_request_data_product_access_with_metadata`
+        interceptor in new development instead of the `post_request_data_product_access` interceptor.
+        When both interceptors are used, this `post_request_data_product_access_with_metadata` interceptor runs after the
+        `post_request_data_product_access` interceptor. The (possibly modified) response returned by
+        `post_request_data_product_access` will be passed to
+        `post_request_data_product_access_with_metadata`.
         """
         return response, metadata
 
@@ -2230,6 +2290,165 @@ class DataProductServiceRestTransport(_BaseDataProductServiceRestTransport):
                 )
             return resp
 
+    class _RequestDataProductAccess(
+        _BaseDataProductServiceRestTransport._BaseRequestDataProductAccess,
+        DataProductServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataProductServiceRestTransport.RequestDataProductAccess")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_products.RequestDataProductAccessRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> data_products.RequestDataProductAccessResponse:
+            r"""Call the request data product
+            access method over HTTP.
+
+                Args:
+                    request (~.data_products.RequestDataProductAccessRequest):
+                        The request object. Message for requesting access to a
+                    Data Product.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.data_products.RequestDataProductAccessResponse:
+                        Response message for requesting
+                    access to a Data Product.
+
+            """
+
+            http_options = _BaseDataProductServiceRestTransport._BaseRequestDataProductAccess._get_http_options()
+
+            request, metadata = self._interceptor.pre_request_data_product_access(
+                request, metadata
+            )
+            transcoded_request = _BaseDataProductServiceRestTransport._BaseRequestDataProductAccess._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataProductServiceRestTransport._BaseRequestDataProductAccess._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataProductServiceRestTransport._BaseRequestDataProductAccess._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.DataProductServiceClient.RequestDataProductAccess",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataProductService",
+                        "rpcName": "RequestDataProductAccess",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DataProductServiceRestTransport._RequestDataProductAccess._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = data_products.RequestDataProductAccessResponse()
+            pb_resp = data_products.RequestDataProductAccessResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_request_data_product_access(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_request_data_product_access_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        data_products.RequestDataProductAccessResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.DataProductServiceClient.request_data_product_access",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataProductService",
+                        "rpcName": "RequestDataProductAccess",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateDataAsset(
         _BaseDataProductServiceRestTransport._BaseUpdateDataAsset,
         DataProductServiceRestStub,
@@ -2603,6 +2822,19 @@ class DataProductServiceRestTransport(_BaseDataProductServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataProducts(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def request_data_product_access(
+        self,
+    ) -> Callable[
+        [data_products.RequestDataProductAccessRequest],
+        data_products.RequestDataProductAccessResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RequestDataProductAccess(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_data_asset(

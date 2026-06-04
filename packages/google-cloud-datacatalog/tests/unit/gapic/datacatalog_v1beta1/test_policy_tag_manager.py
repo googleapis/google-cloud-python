@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1317,8 +1333,8 @@ def test_policy_tag_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.CreateTaxonomyRequest,
-        dict,
+        policytagmanager.CreateTaxonomyRequest(),
+        {},
     ],
 )
 def test_create_taxonomy(request_type, transport: str = "grpc"):
@@ -1329,7 +1345,7 @@ def test_create_taxonomy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
@@ -1385,9 +1401,10 @@ def test_create_taxonomy_non_empty_request_with_auto_populated_field():
         client.create_taxonomy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreateTaxonomyRequest(
+        request_msg = policytagmanager.CreateTaxonomyRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_taxonomy_use_cached_wrapped_rpc():
@@ -1468,9 +1485,14 @@ async def test_create_taxonomy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_taxonomy_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.CreateTaxonomyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.CreateTaxonomyRequest(),
+        {},
+    ],
+)
+async def test_create_taxonomy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1478,7 +1500,7 @@ async def test_create_taxonomy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
@@ -1511,11 +1533,6 @@ async def test_create_taxonomy_async(
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
-
-
-@pytest.mark.asyncio
-async def test_create_taxonomy_async_from_dict():
-    await test_create_taxonomy_async(request_type=dict)
 
 
 def test_create_taxonomy_field_headers():
@@ -1674,8 +1691,8 @@ async def test_create_taxonomy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.DeleteTaxonomyRequest,
-        dict,
+        policytagmanager.DeleteTaxonomyRequest(),
+        {},
     ],
 )
 def test_delete_taxonomy(request_type, transport: str = "grpc"):
@@ -1686,7 +1703,7 @@ def test_delete_taxonomy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
@@ -1727,9 +1744,10 @@ def test_delete_taxonomy_non_empty_request_with_auto_populated_field():
         client.delete_taxonomy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeleteTaxonomyRequest(
+        request_msg = policytagmanager.DeleteTaxonomyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_taxonomy_use_cached_wrapped_rpc():
@@ -1810,9 +1828,14 @@ async def test_delete_taxonomy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_taxonomy_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.DeleteTaxonomyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.DeleteTaxonomyRequest(),
+        {},
+    ],
+)
+async def test_delete_taxonomy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1820,7 +1843,7 @@ async def test_delete_taxonomy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
@@ -1836,11 +1859,6 @@ async def test_delete_taxonomy_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_taxonomy_async_from_dict():
-    await test_delete_taxonomy_async(request_type=dict)
 
 
 def test_delete_taxonomy_field_headers():
@@ -1985,8 +2003,8 @@ async def test_delete_taxonomy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.UpdateTaxonomyRequest,
-        dict,
+        policytagmanager.UpdateTaxonomyRequest(),
+        {},
     ],
 )
 def test_update_taxonomy(request_type, transport: str = "grpc"):
@@ -1997,7 +2015,7 @@ def test_update_taxonomy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
@@ -2051,7 +2069,8 @@ def test_update_taxonomy_non_empty_request_with_auto_populated_field():
         client.update_taxonomy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
+        request_msg = policytagmanager.UpdateTaxonomyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_taxonomy_use_cached_wrapped_rpc():
@@ -2132,9 +2151,14 @@ async def test_update_taxonomy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_taxonomy_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.UpdateTaxonomyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.UpdateTaxonomyRequest(),
+        {},
+    ],
+)
+async def test_update_taxonomy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2142,7 +2166,7 @@ async def test_update_taxonomy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
@@ -2175,11 +2199,6 @@ async def test_update_taxonomy_async(
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
-
-
-@pytest.mark.asyncio
-async def test_update_taxonomy_async_from_dict():
-    await test_update_taxonomy_async(request_type=dict)
 
 
 def test_update_taxonomy_field_headers():
@@ -2328,8 +2347,8 @@ async def test_update_taxonomy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.ListTaxonomiesRequest,
-        dict,
+        policytagmanager.ListTaxonomiesRequest(),
+        {},
     ],
 )
 def test_list_taxonomies(request_type, transport: str = "grpc"):
@@ -2340,7 +2359,7 @@ def test_list_taxonomies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
@@ -2386,11 +2405,12 @@ def test_list_taxonomies_non_empty_request_with_auto_populated_field():
         client.list_taxonomies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListTaxonomiesRequest(
+        request_msg = policytagmanager.ListTaxonomiesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_taxonomies_use_cached_wrapped_rpc():
@@ -2471,9 +2491,14 @@ async def test_list_taxonomies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_taxonomies_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.ListTaxonomiesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.ListTaxonomiesRequest(),
+        {},
+    ],
+)
+async def test_list_taxonomies_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2481,7 +2506,7 @@ async def test_list_taxonomies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
@@ -2502,11 +2527,6 @@ async def test_list_taxonomies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTaxonomiesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_taxonomies_async_from_dict():
-    await test_list_taxonomies_async(request_type=dict)
 
 
 def test_list_taxonomies_field_headers():
@@ -2845,8 +2865,8 @@ async def test_list_taxonomies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.GetTaxonomyRequest,
-        dict,
+        policytagmanager.GetTaxonomyRequest(),
+        {},
     ],
 )
 def test_get_taxonomy(request_type, transport: str = "grpc"):
@@ -2857,7 +2877,7 @@ def test_get_taxonomy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
@@ -2913,9 +2933,10 @@ def test_get_taxonomy_non_empty_request_with_auto_populated_field():
         client.get_taxonomy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetTaxonomyRequest(
+        request_msg = policytagmanager.GetTaxonomyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_taxonomy_use_cached_wrapped_rpc():
@@ -2996,9 +3017,14 @@ async def test_get_taxonomy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_taxonomy_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.GetTaxonomyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.GetTaxonomyRequest(),
+        {},
+    ],
+)
+async def test_get_taxonomy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3006,7 +3032,7 @@ async def test_get_taxonomy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
@@ -3039,11 +3065,6 @@ async def test_get_taxonomy_async(
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_taxonomy_async_from_dict():
-    await test_get_taxonomy_async(request_type=dict)
 
 
 def test_get_taxonomy_field_headers():
@@ -3192,8 +3213,8 @@ async def test_get_taxonomy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.CreatePolicyTagRequest,
-        dict,
+        policytagmanager.CreatePolicyTagRequest(),
+        {},
     ],
 )
 def test_create_policy_tag(request_type, transport: str = "grpc"):
@@ -3204,7 +3225,7 @@ def test_create_policy_tag(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3260,9 +3281,10 @@ def test_create_policy_tag_non_empty_request_with_auto_populated_field():
         client.create_policy_tag(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.CreatePolicyTagRequest(
+        request_msg = policytagmanager.CreatePolicyTagRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_policy_tag_use_cached_wrapped_rpc():
@@ -3345,10 +3367,14 @@ async def test_create_policy_tag_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_policy_tag_async(
-    transport: str = "grpc_asyncio",
-    request_type=policytagmanager.CreatePolicyTagRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.CreatePolicyTagRequest(),
+        {},
+    ],
+)
+async def test_create_policy_tag_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3356,7 +3382,7 @@ async def test_create_policy_tag_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3387,11 +3413,6 @@ async def test_create_policy_tag_async(
     assert response.description == "description_value"
     assert response.parent_policy_tag == "parent_policy_tag_value"
     assert response.child_policy_tags == ["child_policy_tags_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_policy_tag_async_from_dict():
-    await test_create_policy_tag_async(request_type=dict)
 
 
 def test_create_policy_tag_field_headers():
@@ -3558,8 +3579,8 @@ async def test_create_policy_tag_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.DeletePolicyTagRequest,
-        dict,
+        policytagmanager.DeletePolicyTagRequest(),
+        {},
     ],
 )
 def test_delete_policy_tag(request_type, transport: str = "grpc"):
@@ -3570,7 +3591,7 @@ def test_delete_policy_tag(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3615,9 +3636,10 @@ def test_delete_policy_tag_non_empty_request_with_auto_populated_field():
         client.delete_policy_tag(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.DeletePolicyTagRequest(
+        request_msg = policytagmanager.DeletePolicyTagRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_policy_tag_use_cached_wrapped_rpc():
@@ -3700,10 +3722,14 @@ async def test_delete_policy_tag_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_policy_tag_async(
-    transport: str = "grpc_asyncio",
-    request_type=policytagmanager.DeletePolicyTagRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.DeletePolicyTagRequest(),
+        {},
+    ],
+)
+async def test_delete_policy_tag_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3711,7 +3737,7 @@ async def test_delete_policy_tag_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3729,11 +3755,6 @@ async def test_delete_policy_tag_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_policy_tag_async_from_dict():
-    await test_delete_policy_tag_async(request_type=dict)
 
 
 def test_delete_policy_tag_field_headers():
@@ -3886,8 +3907,8 @@ async def test_delete_policy_tag_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.UpdatePolicyTagRequest,
-        dict,
+        policytagmanager.UpdatePolicyTagRequest(),
+        {},
     ],
 )
 def test_update_policy_tag(request_type, transport: str = "grpc"):
@@ -3898,7 +3919,7 @@ def test_update_policy_tag(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3952,7 +3973,8 @@ def test_update_policy_tag_non_empty_request_with_auto_populated_field():
         client.update_policy_tag(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
+        request_msg = policytagmanager.UpdatePolicyTagRequest()
+        assert args[0] == request_msg
 
 
 def test_update_policy_tag_use_cached_wrapped_rpc():
@@ -4035,10 +4057,14 @@ async def test_update_policy_tag_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_policy_tag_async(
-    transport: str = "grpc_asyncio",
-    request_type=policytagmanager.UpdatePolicyTagRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.UpdatePolicyTagRequest(),
+        {},
+    ],
+)
+async def test_update_policy_tag_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4046,7 +4072,7 @@ async def test_update_policy_tag_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4077,11 +4103,6 @@ async def test_update_policy_tag_async(
     assert response.description == "description_value"
     assert response.parent_policy_tag == "parent_policy_tag_value"
     assert response.child_policy_tags == ["child_policy_tags_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_policy_tag_async_from_dict():
-    await test_update_policy_tag_async(request_type=dict)
 
 
 def test_update_policy_tag_field_headers():
@@ -4238,8 +4259,8 @@ async def test_update_policy_tag_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.ListPolicyTagsRequest,
-        dict,
+        policytagmanager.ListPolicyTagsRequest(),
+        {},
     ],
 )
 def test_list_policy_tags(request_type, transport: str = "grpc"):
@@ -4250,7 +4271,7 @@ def test_list_policy_tags(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
@@ -4295,10 +4316,11 @@ def test_list_policy_tags_non_empty_request_with_auto_populated_field():
         client.list_policy_tags(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.ListPolicyTagsRequest(
+        request_msg = policytagmanager.ListPolicyTagsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_policy_tags_use_cached_wrapped_rpc():
@@ -4381,9 +4403,14 @@ async def test_list_policy_tags_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_policy_tags_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.ListPolicyTagsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.ListPolicyTagsRequest(),
+        {},
+    ],
+)
+async def test_list_policy_tags_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4391,7 +4418,7 @@ async def test_list_policy_tags_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
@@ -4412,11 +4439,6 @@ async def test_list_policy_tags_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPolicyTagsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_policy_tags_async_from_dict():
-    await test_list_policy_tags_async(request_type=dict)
 
 
 def test_list_policy_tags_field_headers():
@@ -4755,8 +4777,8 @@ async def test_list_policy_tags_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policytagmanager.GetPolicyTagRequest,
-        dict,
+        policytagmanager.GetPolicyTagRequest(),
+        {},
     ],
 )
 def test_get_policy_tag(request_type, transport: str = "grpc"):
@@ -4767,7 +4789,7 @@ def test_get_policy_tag(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
@@ -4819,9 +4841,10 @@ def test_get_policy_tag_non_empty_request_with_auto_populated_field():
         client.get_policy_tag(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policytagmanager.GetPolicyTagRequest(
+        request_msg = policytagmanager.GetPolicyTagRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_policy_tag_use_cached_wrapped_rpc():
@@ -4902,9 +4925,14 @@ async def test_get_policy_tag_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_policy_tag_async(
-    transport: str = "grpc_asyncio", request_type=policytagmanager.GetPolicyTagRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policytagmanager.GetPolicyTagRequest(),
+        {},
+    ],
+)
+async def test_get_policy_tag_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4912,7 +4940,7 @@ async def test_get_policy_tag_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
@@ -4941,11 +4969,6 @@ async def test_get_policy_tag_async(
     assert response.description == "description_value"
     assert response.parent_policy_tag == "parent_policy_tag_value"
     assert response.child_policy_tags == ["child_policy_tags_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_policy_tag_async_from_dict():
-    await test_get_policy_tag_async(request_type=dict)
 
 
 def test_get_policy_tag_field_headers():
@@ -5094,8 +5117,8 @@ async def test_get_policy_tag_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -5106,7 +5129,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -5152,9 +5175,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -5235,9 +5259,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5245,7 +5274,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -5268,11 +5297,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -5354,8 +5378,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -5366,7 +5390,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5412,9 +5436,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -5495,9 +5520,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5505,7 +5535,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5528,11 +5558,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -5615,8 +5640,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -5627,7 +5652,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5675,9 +5700,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -5762,9 +5788,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PolicyTagManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5773,7 +5805,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5796,11 +5828,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -6009,7 +6036,6 @@ def test_create_taxonomy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.CreateTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6030,7 +6056,6 @@ def test_delete_taxonomy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.DeleteTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6051,7 +6076,6 @@ def test_update_taxonomy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.UpdateTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6072,7 +6096,6 @@ def test_list_taxonomies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.ListTaxonomiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6093,7 +6116,6 @@ def test_get_taxonomy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.GetTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6116,7 +6138,6 @@ def test_create_policy_tag_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.CreatePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6139,7 +6160,6 @@ def test_delete_policy_tag_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.DeletePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6162,7 +6182,6 @@ def test_update_policy_tag_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.UpdatePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6183,7 +6202,6 @@ def test_list_policy_tags_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.ListPolicyTagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6204,7 +6222,6 @@ def test_get_policy_tag_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.GetPolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6225,7 +6242,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6246,7 +6262,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6269,7 +6284,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6316,7 +6330,6 @@ async def test_create_taxonomy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.CreateTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6339,7 +6352,6 @@ async def test_delete_taxonomy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.DeleteTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6372,7 +6384,6 @@ async def test_update_taxonomy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.UpdateTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6399,7 +6410,6 @@ async def test_list_taxonomies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.ListTaxonomiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6432,7 +6442,6 @@ async def test_get_taxonomy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.GetTaxonomyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6465,7 +6474,6 @@ async def test_create_policy_tag_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.CreatePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6490,7 +6498,6 @@ async def test_delete_policy_tag_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.DeletePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6523,7 +6530,6 @@ async def test_update_policy_tag_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.UpdatePolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6550,7 +6556,6 @@ async def test_list_policy_tags_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.ListPolicyTagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6581,7 +6586,6 @@ async def test_get_policy_tag_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policytagmanager.GetPolicyTagRequest()
-
         assert args[0] == request_msg
 
 
@@ -6609,7 +6613,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6637,7 +6640,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6666,7 +6668,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 

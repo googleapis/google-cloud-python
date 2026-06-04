@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1360,8 +1376,8 @@ def test_user_license_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_license_service.ListUserLicensesRequest,
-        dict,
+        user_license_service.ListUserLicensesRequest(),
+        {},
     ],
 )
 def test_list_user_licenses(request_type, transport: str = "grpc"):
@@ -1372,7 +1388,7 @@ def test_list_user_licenses(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1422,11 +1438,12 @@ def test_list_user_licenses_non_empty_request_with_auto_populated_field():
         client.list_user_licenses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_license_service.ListUserLicensesRequest(
+        request_msg = user_license_service.ListUserLicensesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_user_licenses_use_cached_wrapped_rpc():
@@ -1511,10 +1528,14 @@ async def test_list_user_licenses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_user_licenses_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_license_service.ListUserLicensesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_license_service.ListUserLicensesRequest(),
+        {},
+    ],
+)
+async def test_list_user_licenses_async(request_type, transport: str = "grpc_asyncio"):
     client = UserLicenseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1522,7 +1543,7 @@ async def test_list_user_licenses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1545,11 +1566,6 @@ async def test_list_user_licenses_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUserLicensesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_user_licenses_async_from_dict():
-    await test_list_user_licenses_async(request_type=dict)
 
 
 def test_list_user_licenses_field_headers():
@@ -1904,8 +1920,8 @@ async def test_list_user_licenses_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        user_license_service.BatchUpdateUserLicensesRequest,
-        dict,
+        user_license_service.BatchUpdateUserLicensesRequest(),
+        {},
     ],
 )
 def test_batch_update_user_licenses(request_type, transport: str = "grpc"):
@@ -1916,7 +1932,7 @@ def test_batch_update_user_licenses(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1961,9 +1977,10 @@ def test_batch_update_user_licenses_non_empty_request_with_auto_populated_field(
         client.batch_update_user_licenses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_license_service.BatchUpdateUserLicensesRequest(
+        request_msg = user_license_service.BatchUpdateUserLicensesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_user_licenses_use_cached_wrapped_rpc():
@@ -2059,9 +2076,15 @@ async def test_batch_update_user_licenses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        user_license_service.BatchUpdateUserLicensesRequest(),
+        {},
+    ],
+)
 async def test_batch_update_user_licenses_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_license_service.BatchUpdateUserLicensesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = UserLicenseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2070,7 +2093,7 @@ async def test_batch_update_user_licenses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2090,11 +2113,6 @@ async def test_batch_update_user_licenses_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_user_licenses_async_from_dict():
-    await test_batch_update_user_licenses_async(request_type=dict)
 
 
 def test_batch_update_user_licenses_field_headers():
@@ -2682,7 +2700,6 @@ def test_list_user_licenses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.ListUserLicensesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2705,7 +2722,6 @@ def test_batch_update_user_licenses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.BatchUpdateUserLicensesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2748,7 +2764,6 @@ async def test_list_user_licenses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.ListUserLicensesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2775,7 +2790,6 @@ async def test_batch_update_user_licenses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.BatchUpdateUserLicensesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3262,7 +3276,6 @@ def test_list_user_licenses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.ListUserLicensesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3284,7 +3297,6 @@ def test_batch_update_user_licenses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = user_license_service.BatchUpdateUserLicensesRequest()
-
         assert args[0] == request_msg
 
 

@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Callable, Literal, Mapping, Optional, Tuple
+from typing import Literal, Mapping, Optional, Tuple
 
 import google.api_core.exceptions
 import google.cloud.bigquery.job as bq_job
@@ -24,15 +24,12 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.core.compile
-import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
-import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 import bigframes.core.events
-import bigframes.core.schema as schemata
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
 from bigframes import exceptions as bfe
 from bigframes.core import bq_data, compile, nodes
-from bigframes.core.compile.configs import CompileRequest, CompileResult
+from bigframes.core.compile.configs import CompileRequest
 from bigframes.session import execution_spec, executor, semi_executor
 
 _WRITE_DISPOSITIONS = {
@@ -109,6 +106,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             job_config=job_config,
             query_with_job=(not can_skip_job),
             session=plan.session,
+            cell_execution_count=spec.cell_execution_count,
         )
         result_bq_data = None
         if query_job and query_job.destination:
@@ -158,6 +156,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         job_config: bq_job.QueryJobConfig,
         query_with_job: bool,
         session,
+        cell_execution_count: Optional[int] = None,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
@@ -171,6 +170,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                     metrics=self._metrics,
                     publisher=self._publisher,
                     session=session,
+                    cell_execution_count=cell_execution_count,
                 )
             else:
                 return (
@@ -181,6 +181,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
                         metrics=self._metrics,
                         publisher=self._publisher,
                         session=session,
+                        cell_execution_count=cell_execution_count,
                     ),
                     None,
                 )
