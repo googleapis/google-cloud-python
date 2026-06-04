@@ -352,4 +352,3 @@ def test__is_bucket_metadata_disabled(monkeypatch, env_value, expected):
         monkeypatch.delenv(env_var_name, raising=False)
 
     assert _opentelemetry_tracing._is_bucket_metadata_disabled() is expected
-
