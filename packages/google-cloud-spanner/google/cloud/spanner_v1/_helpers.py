@@ -20,7 +20,6 @@ import decimal
 import logging
 import math
 import operator
-import re
 import threading
 import time
 import uuid
@@ -568,49 +567,73 @@ def _parse_list_value_pbs(rows, row_type):
     return result
 
 
-_RFC3339_NANOS = re.compile(
-    r"^(?P<no_fraction>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})"
-    r"(?:\.(?P<nanos>\d{1,9}))?"
-    r"(?P<offset>Z|[+-]\d{2}:\d{2})$"
+_POWERS_OF_10 = (
+    1,
+    10,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000,
+    10000000,
+    100000000,
+    1000000000,
 )
 
 
 def _parse_timestamp(value_pb):
-    match = _RFC3339_NANOS.match(value_pb.string_value)
-    if match is None:
-        raise ValueError(
-            "Timestamp: {} does not match pattern".format(value_pb.string_value)
+    val = value_pb.string_value
+    try:
+        if len(val) < 20 or val[10] != "T":
+            raise ValueError()
+        no_fraction = val[:19]
+        bare = datetime.datetime.fromisoformat(no_fraction)
+        if val[19] == ".":
+            if val.endswith("Z"):
+                offset = "Z"
+                fraction = val[20:-1]
+            elif val[-6] in ("+", "-"):
+                offset = val[-6:]
+                fraction = val[20:-6]
+            else:
+                raise ValueError()
+            if not fraction or len(fraction) > 9 or not fraction.isdigit():
+                raise ValueError()
+            scale = 9 - len(fraction)
+            nanos = int(fraction) * _POWERS_OF_10[scale]
+        else:
+            nanos = 0
+            if val.endswith("Z"):
+                offset = "Z"
+            elif val[-6] in ("+", "-"):
+                offset = val[-6:]
+            else:
+                raise ValueError()
+
+        if offset != "Z":
+            sign = offset[0]
+            hours = int(offset[1:3])
+            minutes = int(offset[4:6])
+            if offset[3] != ":":
+                raise ValueError()
+            delta = datetime.timedelta(hours=hours, minutes=minutes)
+            if sign == "-":
+                delta = -delta
+            tzinfo = datetime.timezone(delta)
+            bare = bare.replace(tzinfo=tzinfo).astimezone(datetime.timezone.utc)
+
+        return datetime_helpers.DatetimeWithNanoseconds(
+            bare.year,
+            bare.month,
+            bare.day,
+            bare.hour,
+            bare.minute,
+            bare.second,
+            nanosecond=nanos,
+            tzinfo=datetime.timezone.utc,
         )
-    no_fraction = match.group("no_fraction")
-    bare = datetime.datetime.fromisoformat(no_fraction)
-    fraction = match.group("nanos")
-    if fraction is None:
-        nanos = 0
-    else:
-        scale = 9 - len(fraction)
-        nanos = int(fraction) * (10**scale)
-
-    offset = match.group("offset")
-    if offset != "Z":
-        sign = offset[0]
-        hours = int(offset[1:3])
-        minutes = int(offset[4:6])
-        delta = datetime.timedelta(hours=hours, minutes=minutes)
-        if sign == "-":
-            delta = -delta
-        tzinfo = datetime.timezone(delta)
-        bare = bare.replace(tzinfo=tzinfo).astimezone(datetime.timezone.utc)
-
-    return datetime_helpers.DatetimeWithNanoseconds(
-        bare.year,
-        bare.month,
-        bare.day,
-        bare.hour,
-        bare.minute,
-        bare.second,
-        nanosecond=nanos,
-        tzinfo=datetime.timezone.utc,
-    )
+    except (IndexError, ValueError) as e:
+        raise ValueError("Timestamp: {} does not match pattern".format(val)) from e
 
 
 def _parse_proto(value_pb, column_info, field_name):
