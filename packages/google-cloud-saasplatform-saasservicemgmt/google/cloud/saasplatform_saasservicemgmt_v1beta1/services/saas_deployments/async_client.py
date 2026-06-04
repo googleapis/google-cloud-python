@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -86,6 +87,20 @@ class SaasDeploymentsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SaasDeploymentsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SaasDeploymentsClient._DEFAULT_UNIVERSE
 
+    application_path = staticmethod(SaasDeploymentsClient.application_path)
+    parse_application_path = staticmethod(SaasDeploymentsClient.parse_application_path)
+    application_template_path = staticmethod(
+        SaasDeploymentsClient.application_template_path
+    )
+    parse_application_template_path = staticmethod(
+        SaasDeploymentsClient.parse_application_template_path
+    )
+    application_template_revision_path = staticmethod(
+        SaasDeploymentsClient.application_template_revision_path
+    )
+    parse_application_template_revision_path = staticmethod(
+        SaasDeploymentsClient.parse_application_template_revision_path
+    )
     release_path = staticmethod(SaasDeploymentsClient.release_path)
     parse_release_path = staticmethod(SaasDeploymentsClient.parse_release_path)
     rollout_path = staticmethod(SaasDeploymentsClient.rollout_path)
@@ -2979,7 +2994,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3127,7 +3142,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3276,7 +3291,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.

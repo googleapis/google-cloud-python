@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1352,8 +1368,8 @@ def test_key_tracking_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        key_tracking_service.GetProtectedResourcesSummaryRequest,
-        dict,
+        key_tracking_service.GetProtectedResourcesSummaryRequest(),
+        {},
     ],
 )
 def test_get_protected_resources_summary(request_type, transport: str = "grpc"):
@@ -1364,7 +1380,7 @@ def test_get_protected_resources_summary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1416,9 +1432,10 @@ def test_get_protected_resources_summary_non_empty_request_with_auto_populated_f
         client.get_protected_resources_summary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == key_tracking_service.GetProtectedResourcesSummaryRequest(
+        request_msg = key_tracking_service.GetProtectedResourcesSummaryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_protected_resources_summary_use_cached_wrapped_rpc():
@@ -1504,9 +1521,15 @@ async def test_get_protected_resources_summary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        key_tracking_service.GetProtectedResourcesSummaryRequest(),
+        {},
+    ],
+)
 async def test_get_protected_resources_summary_async(
-    transport: str = "grpc_asyncio",
-    request_type=key_tracking_service.GetProtectedResourcesSummaryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyTrackingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1515,7 +1538,7 @@ async def test_get_protected_resources_summary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1542,11 +1565,6 @@ async def test_get_protected_resources_summary_async(
     assert response.name == "name_value"
     assert response.resource_count == 1520
     assert response.project_count == 1407
-
-
-@pytest.mark.asyncio
-async def test_get_protected_resources_summary_async_from_dict():
-    await test_get_protected_resources_summary_async(request_type=dict)
 
 
 def test_get_protected_resources_summary_field_headers():
@@ -1703,8 +1721,8 @@ async def test_get_protected_resources_summary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        key_tracking_service.SearchProtectedResourcesRequest,
-        dict,
+        key_tracking_service.SearchProtectedResourcesRequest(),
+        {},
     ],
 )
 def test_search_protected_resources(request_type, transport: str = "grpc"):
@@ -1715,7 +1733,7 @@ def test_search_protected_resources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1765,11 +1783,12 @@ def test_search_protected_resources_non_empty_request_with_auto_populated_field(
         client.search_protected_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == key_tracking_service.SearchProtectedResourcesRequest(
+        request_msg = key_tracking_service.SearchProtectedResourcesRequest(
             scope="scope_value",
             crypto_key="crypto_key_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_protected_resources_use_cached_wrapped_rpc():
@@ -1855,9 +1874,15 @@ async def test_search_protected_resources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        key_tracking_service.SearchProtectedResourcesRequest(),
+        {},
+    ],
+)
 async def test_search_protected_resources_async(
-    transport: str = "grpc_asyncio",
-    request_type=key_tracking_service.SearchProtectedResourcesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyTrackingServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1866,7 +1891,7 @@ async def test_search_protected_resources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1889,11 +1914,6 @@ async def test_search_protected_resources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchProtectedResourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_protected_resources_async_from_dict():
-    await test_search_protected_resources_async(request_type=dict)
 
 
 def test_search_protected_resources_field_headers():
@@ -2869,7 +2889,6 @@ def test_get_protected_resources_summary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.GetProtectedResourcesSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -2892,7 +2911,6 @@ def test_search_protected_resources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.SearchProtectedResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2937,7 +2955,6 @@ async def test_get_protected_resources_summary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.GetProtectedResourcesSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -2966,7 +2983,6 @@ async def test_search_protected_resources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.SearchProtectedResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3288,7 +3304,6 @@ def test_get_protected_resources_summary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.GetProtectedResourcesSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3310,7 +3325,6 @@ def test_search_protected_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = key_tracking_service.SearchProtectedResourcesRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1384,8 +1400,8 @@ def test_data_object_search_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_object_search_service.SearchDataObjectsRequest,
-        dict,
+        data_object_search_service.SearchDataObjectsRequest(),
+        {},
     ],
 )
 def test_search_data_objects(request_type, transport: str = "grpc"):
@@ -1396,7 +1412,7 @@ def test_search_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,10 +1461,11 @@ def test_search_data_objects_non_empty_request_with_auto_populated_field():
         client.search_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_object_search_service.SearchDataObjectsRequest(
+        request_msg = data_object_search_service.SearchDataObjectsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_data_objects_use_cached_wrapped_rpc():
@@ -1533,10 +1550,14 @@ async def test_search_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_object_search_service.SearchDataObjectsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_object_search_service.SearchDataObjectsRequest(),
+        {},
+    ],
+)
+async def test_search_data_objects_async(request_type, transport: str = "grpc_asyncio"):
     client = DataObjectSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1544,7 +1565,7 @@ async def test_search_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1567,11 +1588,6 @@ async def test_search_data_objects_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchDataObjectsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_data_objects_async_from_dict():
-    await test_search_data_objects_async(request_type=dict)
 
 
 def test_search_data_objects_field_headers():
@@ -1844,8 +1860,8 @@ async def test_search_data_objects_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_object_search_service.QueryDataObjectsRequest,
-        dict,
+        data_object_search_service.QueryDataObjectsRequest(),
+        {},
     ],
 )
 def test_query_data_objects(request_type, transport: str = "grpc"):
@@ -1856,7 +1872,7 @@ def test_query_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1905,10 +1921,11 @@ def test_query_data_objects_non_empty_request_with_auto_populated_field():
         client.query_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_object_search_service.QueryDataObjectsRequest(
+        request_msg = data_object_search_service.QueryDataObjectsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_data_objects_use_cached_wrapped_rpc():
@@ -1993,10 +2010,14 @@ async def test_query_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_object_search_service.QueryDataObjectsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_object_search_service.QueryDataObjectsRequest(),
+        {},
+    ],
+)
+async def test_query_data_objects_async(request_type, transport: str = "grpc_asyncio"):
     client = DataObjectSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2004,7 +2025,7 @@ async def test_query_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2027,11 +2048,6 @@ async def test_query_data_objects_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.QueryDataObjectsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_query_data_objects_async_from_dict():
-    await test_query_data_objects_async(request_type=dict)
 
 
 def test_query_data_objects_field_headers():
@@ -2300,8 +2316,8 @@ async def test_query_data_objects_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_object_search_service.AggregateDataObjectsRequest,
-        dict,
+        data_object_search_service.AggregateDataObjectsRequest(),
+        {},
     ],
 )
 def test_aggregate_data_objects(request_type, transport: str = "grpc"):
@@ -2312,7 +2328,7 @@ def test_aggregate_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2357,9 +2373,10 @@ def test_aggregate_data_objects_non_empty_request_with_auto_populated_field():
         client.aggregate_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_object_search_service.AggregateDataObjectsRequest(
+        request_msg = data_object_search_service.AggregateDataObjectsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_data_objects_use_cached_wrapped_rpc():
@@ -2445,9 +2462,15 @@ async def test_aggregate_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_object_search_service.AggregateDataObjectsRequest(),
+        {},
+    ],
+)
 async def test_aggregate_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_object_search_service.AggregateDataObjectsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataObjectSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2456,7 +2479,7 @@ async def test_aggregate_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2476,11 +2499,6 @@ async def test_aggregate_data_objects_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, data_object_search_service.AggregateDataObjectsResponse)
-
-
-@pytest.mark.asyncio
-async def test_aggregate_data_objects_async_from_dict():
-    await test_aggregate_data_objects_async(request_type=dict)
 
 
 def test_aggregate_data_objects_field_headers():
@@ -2551,8 +2569,8 @@ async def test_aggregate_data_objects_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        data_object_search_service.BatchSearchDataObjectsRequest,
-        dict,
+        data_object_search_service.BatchSearchDataObjectsRequest(),
+        {},
     ],
 )
 def test_batch_search_data_objects(request_type, transport: str = "grpc"):
@@ -2563,7 +2581,7 @@ def test_batch_search_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2610,9 +2628,10 @@ def test_batch_search_data_objects_non_empty_request_with_auto_populated_field()
         client.batch_search_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_object_search_service.BatchSearchDataObjectsRequest(
+        request_msg = data_object_search_service.BatchSearchDataObjectsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_search_data_objects_use_cached_wrapped_rpc():
@@ -2698,9 +2717,15 @@ async def test_batch_search_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        data_object_search_service.BatchSearchDataObjectsRequest(),
+        {},
+    ],
+)
 async def test_batch_search_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=data_object_search_service.BatchSearchDataObjectsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataObjectSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2709,7 +2734,7 @@ async def test_batch_search_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2731,11 +2756,6 @@ async def test_batch_search_data_objects_async(
     assert isinstance(
         response, data_object_search_service.BatchSearchDataObjectsResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_batch_search_data_objects_async_from_dict():
-    await test_batch_search_data_objects_async(request_type=dict)
 
 
 def test_batch_search_data_objects_field_headers():
@@ -3588,7 +3608,6 @@ def test_search_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.SearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3611,7 +3630,6 @@ def test_query_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.QueryDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3634,7 +3652,6 @@ def test_aggregate_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.AggregateDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3657,7 +3674,6 @@ def test_batch_search_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.BatchSearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3700,7 +3716,6 @@ async def test_search_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.SearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3729,7 +3744,6 @@ async def test_query_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.QueryDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3756,7 +3770,6 @@ async def test_aggregate_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.AggregateDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3783,7 +3796,6 @@ async def test_batch_search_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.BatchSearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4748,7 +4760,6 @@ def test_search_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.SearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4770,7 +4781,6 @@ def test_query_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.QueryDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4792,7 +4802,6 @@ def test_aggregate_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.AggregateDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4814,7 +4823,6 @@ def test_batch_search_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_object_search_service.BatchSearchDataObjectsRequest()
-
         assert args[0] == request_msg
 
 

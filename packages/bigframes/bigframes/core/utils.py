@@ -249,3 +249,16 @@ def timedelta_to_micros(
         ) * 1_000_000 + timedelta.microseconds
 
     raise TypeError(f"Unrecognized input type: {type(timedelta)}")
+
+
+def get_ipython_execution_count() -> typing.Optional[int]:
+    """Returns the current IPython cell execution count if running in a notebook, else None."""
+    try:
+        from IPython.core.interactiveshell import InteractiveShell
+
+        if InteractiveShell.initialized():
+            ipy = InteractiveShell.instance()
+            return getattr(ipy, "execution_count", None)
+    except (ImportError, NameError):
+        pass
+    return None

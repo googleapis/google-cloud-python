@@ -14,9 +14,7 @@
 
 import pytest
 
-from google.cloud.ndb import _datastore_types
-from google.cloud.ndb import blobstore
-from google.cloud.ndb import model
+from google.cloud.ndb import _datastore_types, blobstore, model
 
 from . import utils
 

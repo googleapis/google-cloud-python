@@ -1333,7 +1333,7 @@ def test_config_service_v2_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListBucketsRequest({}),
+        logging_config.ListBucketsRequest(),
         {},
     ],
 )
@@ -1478,7 +1478,7 @@ async def test_list_buckets_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListBucketsRequest({}),
+        logging_config.ListBucketsRequest(),
         {},
     ],
 )
@@ -1849,7 +1849,7 @@ async def test_list_buckets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetBucketRequest({}),
+        logging_config.GetBucketRequest(),
         {},
     ],
 )
@@ -2002,7 +2002,7 @@ async def test_get_bucket_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetBucketRequest({}),
+        logging_config.GetBucketRequest(),
         {},
     ],
 )
@@ -2113,7 +2113,7 @@ async def test_get_bucket_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateBucketRequest({}),
+        logging_config.CreateBucketRequest(),
         {},
     ],
 )
@@ -2273,7 +2273,7 @@ async def test_create_bucket_async_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateBucketRequest({}),
+        logging_config.CreateBucketRequest(),
         {},
     ],
 )
@@ -2375,7 +2375,7 @@ async def test_create_bucket_async_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateBucketRequest({}),
+        logging_config.UpdateBucketRequest(),
         {},
     ],
 )
@@ -2533,7 +2533,7 @@ async def test_update_bucket_async_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateBucketRequest({}),
+        logging_config.UpdateBucketRequest(),
         {},
     ],
 )
@@ -2635,7 +2635,7 @@ async def test_update_bucket_async_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateBucketRequest({}),
+        logging_config.CreateBucketRequest(),
         {},
     ],
 )
@@ -2792,7 +2792,7 @@ async def test_create_bucket_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateBucketRequest({}),
+        logging_config.CreateBucketRequest(),
         {},
     ],
 )
@@ -2903,7 +2903,7 @@ async def test_create_bucket_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateBucketRequest({}),
+        logging_config.UpdateBucketRequest(),
         {},
     ],
 )
@@ -3058,7 +3058,7 @@ async def test_update_bucket_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateBucketRequest({}),
+        logging_config.UpdateBucketRequest(),
         {},
     ],
 )
@@ -3169,7 +3169,7 @@ async def test_update_bucket_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteBucketRequest({}),
+        logging_config.DeleteBucketRequest(),
         {},
     ],
 )
@@ -3309,7 +3309,7 @@ async def test_delete_bucket_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteBucketRequest({}),
+        logging_config.DeleteBucketRequest(),
         {},
     ],
 )
@@ -3401,7 +3401,7 @@ async def test_delete_bucket_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UndeleteBucketRequest({}),
+        logging_config.UndeleteBucketRequest(),
         {},
     ],
 )
@@ -3541,7 +3541,7 @@ async def test_undelete_bucket_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UndeleteBucketRequest({}),
+        logging_config.UndeleteBucketRequest(),
         {},
     ],
 )
@@ -3633,7 +3633,7 @@ async def test_undelete_bucket_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListViewsRequest({}),
+        logging_config.ListViewsRequest(),
         {},
     ],
 )
@@ -3776,7 +3776,7 @@ async def test_list_views_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListViewsRequest({}),
+        logging_config.ListViewsRequest(),
         {},
     ],
 )
@@ -4147,7 +4147,7 @@ async def test_list_views_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetViewRequest({}),
+        logging_config.GetViewRequest(),
         {},
     ],
 )
@@ -4292,7 +4292,7 @@ async def test_get_view_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetViewRequest({}),
+        logging_config.GetViewRequest(),
         {},
     ],
 )
@@ -4395,7 +4395,7 @@ async def test_get_view_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateViewRequest({}),
+        logging_config.CreateViewRequest(),
         {},
     ],
 )
@@ -4544,7 +4544,7 @@ async def test_create_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateViewRequest({}),
+        logging_config.CreateViewRequest(),
         {},
     ],
 )
@@ -4647,7 +4647,7 @@ async def test_create_view_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateViewRequest({}),
+        logging_config.UpdateViewRequest(),
         {},
     ],
 )
@@ -4794,7 +4794,7 @@ async def test_update_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateViewRequest({}),
+        logging_config.UpdateViewRequest(),
         {},
     ],
 )
@@ -4897,7 +4897,7 @@ async def test_update_view_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteViewRequest({}),
+        logging_config.DeleteViewRequest(),
         {},
     ],
 )
@@ -5037,7 +5037,7 @@ async def test_delete_view_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteViewRequest({}),
+        logging_config.DeleteViewRequest(),
         {},
     ],
 )
@@ -5129,7 +5129,7 @@ async def test_delete_view_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListSinksRequest({}),
+        logging_config.ListSinksRequest(),
         {},
     ],
 )
@@ -5272,7 +5272,7 @@ async def test_list_sinks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListSinksRequest({}),
+        logging_config.ListSinksRequest(),
         {},
     ],
 )
@@ -5643,7 +5643,7 @@ async def test_list_sinks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetSinkRequest({}),
+        logging_config.GetSinkRequest(),
         {},
     ],
 )
@@ -5798,7 +5798,7 @@ async def test_get_sink_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetSinkRequest({}),
+        logging_config.GetSinkRequest(),
         {},
     ],
 )
@@ -5993,7 +5993,7 @@ async def test_get_sink_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateSinkRequest({}),
+        logging_config.CreateSinkRequest(),
         {},
     ],
 )
@@ -6150,7 +6150,7 @@ async def test_create_sink_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateSinkRequest({}),
+        logging_config.CreateSinkRequest(),
         {},
     ],
 )
@@ -6355,7 +6355,7 @@ async def test_create_sink_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateSinkRequest({}),
+        logging_config.UpdateSinkRequest(),
         {},
     ],
 )
@@ -6512,7 +6512,7 @@ async def test_update_sink_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateSinkRequest({}),
+        logging_config.UpdateSinkRequest(),
         {},
     ],
 )
@@ -6727,7 +6727,7 @@ async def test_update_sink_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteSinkRequest({}),
+        logging_config.DeleteSinkRequest(),
         {},
     ],
 )
@@ -6867,7 +6867,7 @@ async def test_delete_sink_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteSinkRequest({}),
+        logging_config.DeleteSinkRequest(),
         {},
     ],
 )
@@ -7039,7 +7039,7 @@ async def test_delete_sink_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateLinkRequest({}),
+        logging_config.CreateLinkRequest(),
         {},
     ],
 )
@@ -7191,7 +7191,7 @@ async def test_create_link_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateLinkRequest({}),
+        logging_config.CreateLinkRequest(),
         {},
     ],
 )
@@ -7389,7 +7389,7 @@ async def test_create_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteLinkRequest({}),
+        logging_config.DeleteLinkRequest(),
         {},
     ],
 )
@@ -7539,7 +7539,7 @@ async def test_delete_link_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteLinkRequest({}),
+        logging_config.DeleteLinkRequest(),
         {},
     ],
 )
@@ -7717,7 +7717,7 @@ async def test_delete_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListLinksRequest({}),
+        logging_config.ListLinksRequest(),
         {},
     ],
 )
@@ -7860,7 +7860,7 @@ async def test_list_links_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListLinksRequest({}),
+        logging_config.ListLinksRequest(),
         {},
     ],
 )
@@ -8231,7 +8231,7 @@ async def test_list_links_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetLinkRequest({}),
+        logging_config.GetLinkRequest(),
         {},
     ],
 )
@@ -8376,7 +8376,7 @@ async def test_get_link_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetLinkRequest({}),
+        logging_config.GetLinkRequest(),
         {},
     ],
 )
@@ -8557,7 +8557,7 @@ async def test_get_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListExclusionsRequest({}),
+        logging_config.ListExclusionsRequest(),
         {},
     ],
 )
@@ -8702,7 +8702,7 @@ async def test_list_exclusions_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.ListExclusionsRequest({}),
+        logging_config.ListExclusionsRequest(),
         {},
     ],
 )
@@ -9073,7 +9073,7 @@ async def test_list_exclusions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetExclusionRequest({}),
+        logging_config.GetExclusionRequest(),
         {},
     ],
 )
@@ -9222,7 +9222,7 @@ async def test_get_exclusion_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetExclusionRequest({}),
+        logging_config.GetExclusionRequest(),
         {},
     ],
 )
@@ -9409,7 +9409,7 @@ async def test_get_exclusion_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateExclusionRequest({}),
+        logging_config.CreateExclusionRequest(),
         {},
     ],
 )
@@ -9560,7 +9560,7 @@ async def test_create_exclusion_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CreateExclusionRequest({}),
+        logging_config.CreateExclusionRequest(),
         {},
     ],
 )
@@ -9757,7 +9757,7 @@ async def test_create_exclusion_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateExclusionRequest({}),
+        logging_config.UpdateExclusionRequest(),
         {},
     ],
 )
@@ -9908,7 +9908,7 @@ async def test_update_exclusion_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateExclusionRequest({}),
+        logging_config.UpdateExclusionRequest(),
         {},
     ],
 )
@@ -10115,7 +10115,7 @@ async def test_update_exclusion_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteExclusionRequest({}),
+        logging_config.DeleteExclusionRequest(),
         {},
     ],
 )
@@ -10257,7 +10257,7 @@ async def test_delete_exclusion_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.DeleteExclusionRequest({}),
+        logging_config.DeleteExclusionRequest(),
         {},
     ],
 )
@@ -10429,7 +10429,7 @@ async def test_delete_exclusion_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetCmekSettingsRequest({}),
+        logging_config.GetCmekSettingsRequest(),
         {},
     ],
 )
@@ -10584,7 +10584,7 @@ async def test_get_cmek_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetCmekSettingsRequest({}),
+        logging_config.GetCmekSettingsRequest(),
         {},
     ],
 )
@@ -10695,7 +10695,7 @@ async def test_get_cmek_settings_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateCmekSettingsRequest({}),
+        logging_config.UpdateCmekSettingsRequest(),
         {},
     ],
 )
@@ -10852,7 +10852,7 @@ async def test_update_cmek_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateCmekSettingsRequest({}),
+        logging_config.UpdateCmekSettingsRequest(),
         {},
     ],
 )
@@ -10965,7 +10965,7 @@ async def test_update_cmek_settings_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetSettingsRequest({}),
+        logging_config.GetSettingsRequest(),
         {},
     ],
 )
@@ -11116,7 +11116,7 @@ async def test_get_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.GetSettingsRequest({}),
+        logging_config.GetSettingsRequest(),
         {},
     ],
 )
@@ -11305,7 +11305,7 @@ async def test_get_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateSettingsRequest({}),
+        logging_config.UpdateSettingsRequest(),
         {},
     ],
 )
@@ -11456,7 +11456,7 @@ async def test_update_settings_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.UpdateSettingsRequest({}),
+        logging_config.UpdateSettingsRequest(),
         {},
     ],
 )
@@ -11655,7 +11655,7 @@ async def test_update_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CopyLogEntriesRequest({}),
+        logging_config.CopyLogEntriesRequest(),
         {},
     ],
 )
@@ -11811,7 +11811,7 @@ async def test_copy_log_entries_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging_config.CopyLogEntriesRequest({}),
+        logging_config.CopyLogEntriesRequest(),
         {},
     ],
 )

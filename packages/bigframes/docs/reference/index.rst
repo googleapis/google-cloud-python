@@ -23,13 +23,15 @@ packages.
 Pandas Extensions
 ~~~~~~~~~~~~~~~~~
 
-BigQuery DataFrames provides extensions to pandas DataFrame objects.
+BigQuery DataFrames provides extensions to pandas DataFrame and Series objects.
 
 .. autosummary::
     :toctree: api
 
     bigframes.extensions.core.dataframe_accessor.BigQueryDataFrameAccessor
     bigframes.extensions.core.dataframe_accessor.AIAccessor
+    bigframes.extensions.core.series_accessor.BigQuerySeriesAccessor
+    bigframes.extensions.core.series_accessor.AeadSeriesAccessor
 
 ML APIs
 ~~~~~~~

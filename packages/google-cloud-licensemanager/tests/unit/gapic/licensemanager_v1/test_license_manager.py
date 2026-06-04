@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1319,8 +1335,8 @@ def test_license_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.ListConfigurationsRequest,
-        dict,
+        licensemanager.ListConfigurationsRequest(),
+        {},
     ],
 )
 def test_list_configurations(request_type, transport: str = "grpc"):
@@ -1331,7 +1347,7 @@ def test_list_configurations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1384,12 +1400,13 @@ def test_list_configurations_non_empty_request_with_auto_populated_field():
         client.list_configurations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.ListConfigurationsRequest(
+        request_msg = licensemanager.ListConfigurationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_configurations_use_cached_wrapped_rpc():
@@ -1474,10 +1491,14 @@ async def test_list_configurations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_configurations_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.ListConfigurationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.ListConfigurationsRequest(),
+        {},
+    ],
+)
+async def test_list_configurations_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1485,7 +1506,7 @@ async def test_list_configurations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1510,11 +1531,6 @@ async def test_list_configurations_async(
     assert isinstance(response, pagers.ListConfigurationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_configurations_async_from_dict():
-    await test_list_configurations_async(request_type=dict)
 
 
 def test_list_configurations_field_headers():
@@ -1869,8 +1885,8 @@ async def test_list_configurations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.GetConfigurationRequest,
-        dict,
+        licensemanager.GetConfigurationRequest(),
+        {},
     ],
 )
 def test_get_configuration(request_type, transport: str = "grpc"):
@@ -1881,7 +1897,7 @@ def test_get_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1940,9 +1956,10 @@ def test_get_configuration_non_empty_request_with_auto_populated_field():
         client.get_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.GetConfigurationRequest(
+        request_msg = licensemanager.GetConfigurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_configuration_use_cached_wrapped_rpc():
@@ -2025,9 +2042,14 @@ async def test_get_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_configuration_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.GetConfigurationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.GetConfigurationRequest(),
+        {},
+    ],
+)
+async def test_get_configuration_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2035,7 +2057,7 @@ async def test_get_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2069,11 +2091,6 @@ async def test_get_configuration_async(
         == api_entities.LicenseType.LICENSE_TYPE_PER_MONTH_PER_USER
     )
     assert response.state == api_entities.Configuration.State.STATE_ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_configuration_async_from_dict():
-    await test_get_configuration_async(request_type=dict)
 
 
 def test_get_configuration_field_headers():
@@ -2230,8 +2247,8 @@ async def test_get_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.CreateConfigurationRequest,
-        dict,
+        licensemanager.CreateConfigurationRequest(),
+        {},
     ],
 )
 def test_create_configuration(request_type, transport: str = "grpc"):
@@ -2242,7 +2259,7 @@ def test_create_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2288,10 +2305,11 @@ def test_create_configuration_non_empty_request_with_auto_populated_field():
         client.create_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.CreateConfigurationRequest(
+        request_msg = licensemanager.CreateConfigurationRequest(
             parent="parent_value",
             configuration_id="configuration_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_configuration_use_cached_wrapped_rpc():
@@ -2386,9 +2404,15 @@ async def test_create_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.CreateConfigurationRequest(),
+        {},
+    ],
+)
 async def test_create_configuration_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.CreateConfigurationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2397,7 +2421,7 @@ async def test_create_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2417,11 +2441,6 @@ async def test_create_configuration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_configuration_async_from_dict():
-    await test_create_configuration_async(request_type=dict)
 
 
 def test_create_configuration_field_headers():
@@ -2598,8 +2617,8 @@ async def test_create_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.UpdateConfigurationRequest,
-        dict,
+        licensemanager.UpdateConfigurationRequest(),
+        {},
     ],
 )
 def test_update_configuration(request_type, transport: str = "grpc"):
@@ -2610,7 +2629,7 @@ def test_update_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2653,7 +2672,8 @@ def test_update_configuration_non_empty_request_with_auto_populated_field():
         client.update_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.UpdateConfigurationRequest()
+        request_msg = licensemanager.UpdateConfigurationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_configuration_use_cached_wrapped_rpc():
@@ -2748,9 +2768,15 @@ async def test_update_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.UpdateConfigurationRequest(),
+        {},
+    ],
+)
 async def test_update_configuration_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.UpdateConfigurationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2759,7 +2785,7 @@ async def test_update_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2779,11 +2805,6 @@ async def test_update_configuration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_configuration_async_from_dict():
-    await test_update_configuration_async(request_type=dict)
 
 
 def test_update_configuration_field_headers():
@@ -2950,8 +2971,8 @@ async def test_update_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.DeleteConfigurationRequest,
-        dict,
+        licensemanager.DeleteConfigurationRequest(),
+        {},
     ],
 )
 def test_delete_configuration(request_type, transport: str = "grpc"):
@@ -2962,7 +2983,7 @@ def test_delete_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3007,9 +3028,10 @@ def test_delete_configuration_non_empty_request_with_auto_populated_field():
         client.delete_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.DeleteConfigurationRequest(
+        request_msg = licensemanager.DeleteConfigurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_configuration_use_cached_wrapped_rpc():
@@ -3104,9 +3126,15 @@ async def test_delete_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.DeleteConfigurationRequest(),
+        {},
+    ],
+)
 async def test_delete_configuration_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.DeleteConfigurationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3115,7 +3143,7 @@ async def test_delete_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3135,11 +3163,6 @@ async def test_delete_configuration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_configuration_async_from_dict():
-    await test_delete_configuration_async(request_type=dict)
 
 
 def test_delete_configuration_field_headers():
@@ -3296,8 +3319,8 @@ async def test_delete_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.ListInstancesRequest,
-        dict,
+        licensemanager.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -3308,7 +3331,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -3357,12 +3380,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.ListInstancesRequest(
+        request_msg = licensemanager.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -3443,9 +3467,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3453,7 +3482,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -3476,11 +3505,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -3819,8 +3843,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.GetInstanceRequest,
-        dict,
+        licensemanager.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -3831,7 +3855,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -3883,9 +3907,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.GetInstanceRequest(
+        request_msg = licensemanager.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -3966,9 +3991,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3976,7 +4006,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -4005,11 +4035,6 @@ async def test_get_instance_async(
     assert response.region == "region_value"
     assert response.license_version_id == "license_version_id_value"
     assert response.compute_instance == "compute_instance_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -4158,8 +4183,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.DeactivateConfigurationRequest,
-        dict,
+        licensemanager.DeactivateConfigurationRequest(),
+        {},
     ],
 )
 def test_deactivate_configuration(request_type, transport: str = "grpc"):
@@ -4170,7 +4195,7 @@ def test_deactivate_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4215,9 +4240,10 @@ def test_deactivate_configuration_non_empty_request_with_auto_populated_field():
         client.deactivate_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.DeactivateConfigurationRequest(
+        request_msg = licensemanager.DeactivateConfigurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_deactivate_configuration_use_cached_wrapped_rpc():
@@ -4313,9 +4339,15 @@ async def test_deactivate_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.DeactivateConfigurationRequest(),
+        {},
+    ],
+)
 async def test_deactivate_configuration_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.DeactivateConfigurationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4324,7 +4356,7 @@ async def test_deactivate_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4344,11 +4376,6 @@ async def test_deactivate_configuration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_deactivate_configuration_async_from_dict():
-    await test_deactivate_configuration_async(request_type=dict)
 
 
 def test_deactivate_configuration_field_headers():
@@ -4505,8 +4532,8 @@ async def test_deactivate_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.ReactivateConfigurationRequest,
-        dict,
+        licensemanager.ReactivateConfigurationRequest(),
+        {},
     ],
 )
 def test_reactivate_configuration(request_type, transport: str = "grpc"):
@@ -4517,7 +4544,7 @@ def test_reactivate_configuration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4562,9 +4589,10 @@ def test_reactivate_configuration_non_empty_request_with_auto_populated_field():
         client.reactivate_configuration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.ReactivateConfigurationRequest(
+        request_msg = licensemanager.ReactivateConfigurationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reactivate_configuration_use_cached_wrapped_rpc():
@@ -4660,9 +4688,15 @@ async def test_reactivate_configuration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.ReactivateConfigurationRequest(),
+        {},
+    ],
+)
 async def test_reactivate_configuration_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.ReactivateConfigurationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4671,7 +4705,7 @@ async def test_reactivate_configuration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4691,11 +4725,6 @@ async def test_reactivate_configuration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reactivate_configuration_async_from_dict():
-    await test_reactivate_configuration_async(request_type=dict)
 
 
 def test_reactivate_configuration_field_headers():
@@ -4852,8 +4881,8 @@ async def test_reactivate_configuration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.QueryConfigurationLicenseUsageRequest,
-        dict,
+        licensemanager.QueryConfigurationLicenseUsageRequest(),
+        {},
     ],
 )
 def test_query_configuration_license_usage(request_type, transport: str = "grpc"):
@@ -4864,7 +4893,7 @@ def test_query_configuration_license_usage(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4909,9 +4938,10 @@ def test_query_configuration_license_usage_non_empty_request_with_auto_populated
         client.query_configuration_license_usage(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.QueryConfigurationLicenseUsageRequest(
+        request_msg = licensemanager.QueryConfigurationLicenseUsageRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_configuration_license_usage_use_cached_wrapped_rpc():
@@ -4997,9 +5027,15 @@ async def test_query_configuration_license_usage_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.QueryConfigurationLicenseUsageRequest(),
+        {},
+    ],
+)
 async def test_query_configuration_license_usage_async(
-    transport: str = "grpc_asyncio",
-    request_type=licensemanager.QueryConfigurationLicenseUsageRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5008,7 +5044,7 @@ async def test_query_configuration_license_usage_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5028,11 +5064,6 @@ async def test_query_configuration_license_usage_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, licensemanager.QueryConfigurationLicenseUsageResponse)
-
-
-@pytest.mark.asyncio
-async def test_query_configuration_license_usage_async_from_dict():
-    await test_query_configuration_license_usage_async(request_type=dict)
 
 
 def test_query_configuration_license_usage_field_headers():
@@ -5209,8 +5240,8 @@ async def test_query_configuration_license_usage_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.AggregateUsageRequest,
-        dict,
+        licensemanager.AggregateUsageRequest(),
+        {},
     ],
 )
 def test_aggregate_usage(request_type, transport: str = "grpc"):
@@ -5221,7 +5252,7 @@ def test_aggregate_usage(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_usage), "__call__") as call:
@@ -5270,12 +5301,13 @@ def test_aggregate_usage_non_empty_request_with_auto_populated_field():
         client.aggregate_usage(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.AggregateUsageRequest(
+        request_msg = licensemanager.AggregateUsageRequest(
             name="name_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_aggregate_usage_use_cached_wrapped_rpc():
@@ -5356,9 +5388,14 @@ async def test_aggregate_usage_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_aggregate_usage_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.AggregateUsageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.AggregateUsageRequest(),
+        {},
+    ],
+)
+async def test_aggregate_usage_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5366,7 +5403,7 @@ async def test_aggregate_usage_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.aggregate_usage), "__call__") as call:
@@ -5389,11 +5426,6 @@ async def test_aggregate_usage_async(
     assert isinstance(response, pagers.AggregateUsageAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_aggregate_usage_async_from_dict():
-    await test_aggregate_usage_async(request_type=dict)
 
 
 def test_aggregate_usage_field_headers():
@@ -5752,8 +5784,8 @@ async def test_aggregate_usage_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.ListProductsRequest,
-        dict,
+        licensemanager.ListProductsRequest(),
+        {},
     ],
 )
 def test_list_products(request_type, transport: str = "grpc"):
@@ -5764,7 +5796,7 @@ def test_list_products(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -5813,12 +5845,13 @@ def test_list_products_non_empty_request_with_auto_populated_field():
         client.list_products(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.ListProductsRequest(
+        request_msg = licensemanager.ListProductsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_products_use_cached_wrapped_rpc():
@@ -5899,9 +5932,14 @@ async def test_list_products_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_products_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.ListProductsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.ListProductsRequest(),
+        {},
+    ],
+)
+async def test_list_products_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5909,7 +5947,7 @@ async def test_list_products_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -5932,11 +5970,6 @@ async def test_list_products_async(
     assert isinstance(response, pagers.ListProductsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_products_async_from_dict():
-    await test_list_products_async(request_type=dict)
 
 
 def test_list_products_field_headers():
@@ -6275,8 +6308,8 @@ async def test_list_products_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        licensemanager.GetProductRequest,
-        dict,
+        licensemanager.GetProductRequest(),
+        {},
     ],
 )
 def test_get_product(request_type, transport: str = "grpc"):
@@ -6287,7 +6320,7 @@ def test_get_product(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
@@ -6343,9 +6376,10 @@ def test_get_product_non_empty_request_with_auto_populated_field():
         client.get_product(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == licensemanager.GetProductRequest(
+        request_msg = licensemanager.GetProductRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_product_use_cached_wrapped_rpc():
@@ -6426,9 +6460,14 @@ async def test_get_product_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_product_async(
-    transport: str = "grpc_asyncio", request_type=licensemanager.GetProductRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        licensemanager.GetProductRequest(),
+        {},
+    ],
+)
+async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
     client = LicenseManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6436,7 +6475,7 @@ async def test_get_product_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
@@ -6469,11 +6508,6 @@ async def test_get_product_async(
     assert response.sku == "sku_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_product_async_from_dict():
-    await test_get_product_async(request_type=dict)
 
 
 def test_get_product_field_headers():
@@ -9533,7 +9567,6 @@ def test_list_configurations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListConfigurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9556,7 +9589,6 @@ def test_get_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9579,7 +9611,6 @@ def test_create_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.CreateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9602,7 +9633,6 @@ def test_update_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.UpdateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9625,7 +9655,6 @@ def test_delete_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeleteConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9646,7 +9675,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9667,7 +9695,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -9690,7 +9717,6 @@ def test_deactivate_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9713,7 +9739,6 @@ def test_reactivate_configuration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ReactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9736,7 +9761,6 @@ def test_query_configuration_license_usage_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.QueryConfigurationLicenseUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -9757,7 +9781,6 @@ def test_aggregate_usage_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.AggregateUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -9778,7 +9801,6 @@ def test_list_products_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9799,7 +9821,6 @@ def test_get_product_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -9843,7 +9864,6 @@ async def test_list_configurations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListConfigurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9876,7 +9896,6 @@ async def test_get_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9903,7 +9922,6 @@ async def test_create_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.CreateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9930,7 +9948,6 @@ async def test_update_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.UpdateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9957,7 +9974,6 @@ async def test_delete_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeleteConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9985,7 +10001,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10016,7 +10031,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10043,7 +10057,6 @@ async def test_deactivate_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10070,7 +10083,6 @@ async def test_reactivate_configuration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ReactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10097,7 +10109,6 @@ async def test_query_configuration_license_usage_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.QueryConfigurationLicenseUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -10125,7 +10136,6 @@ async def test_aggregate_usage_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.AggregateUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -10153,7 +10163,6 @@ async def test_list_products_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10186,7 +10195,6 @@ async def test_get_product_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetProductRequest()
-
         assert args[0] == request_msg
 
 
@@ -12506,7 +12514,6 @@ def test_list_configurations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListConfigurationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12528,7 +12535,6 @@ def test_get_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12550,7 +12556,6 @@ def test_create_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.CreateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12572,7 +12577,6 @@ def test_update_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.UpdateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12594,7 +12598,6 @@ def test_delete_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeleteConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12614,7 +12617,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12634,7 +12636,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12656,7 +12657,6 @@ def test_deactivate_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.DeactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12678,7 +12678,6 @@ def test_reactivate_configuration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ReactivateConfigurationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12700,7 +12699,6 @@ def test_query_configuration_license_usage_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.QueryConfigurationLicenseUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -12720,7 +12718,6 @@ def test_aggregate_usage_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.AggregateUsageRequest()
-
         assert args[0] == request_msg
 
 
@@ -12740,7 +12737,6 @@ def test_list_products_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.ListProductsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12760,7 +12756,6 @@ def test_get_product_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = licensemanager.GetProductRequest()
-
         assert args[0] == request_msg
 
 

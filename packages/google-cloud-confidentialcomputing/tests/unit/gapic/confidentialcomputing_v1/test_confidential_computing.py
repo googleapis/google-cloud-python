@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1374,8 +1390,8 @@ def test_confidential_computing_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateChallengeRequest,
-        dict,
+        service.CreateChallengeRequest(),
+        {},
     ],
 )
 def test_create_challenge(request_type, transport: str = "grpc"):
@@ -1386,7 +1402,7 @@ def test_create_challenge(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_challenge), "__call__") as call:
@@ -1434,9 +1450,10 @@ def test_create_challenge_non_empty_request_with_auto_populated_field():
         client.create_challenge(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateChallengeRequest(
+        request_msg = service.CreateChallengeRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_challenge_use_cached_wrapped_rpc():
@@ -1519,9 +1536,14 @@ async def test_create_challenge_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_challenge_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateChallengeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateChallengeRequest(),
+        {},
+    ],
+)
+async def test_create_challenge_async(request_type, transport: str = "grpc_asyncio"):
     client = ConfidentialComputingAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1529,7 +1551,7 @@ async def test_create_challenge_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_challenge), "__call__") as call:
@@ -1554,11 +1576,6 @@ async def test_create_challenge_async(
     assert response.name == "name_value"
     assert response.used is True
     assert response.tpm_nonce == "tpm_nonce_value"
-
-
-@pytest.mark.asyncio
-async def test_create_challenge_async_from_dict():
-    await test_create_challenge_async(request_type=dict)
 
 
 def test_create_challenge_field_headers():
@@ -1713,8 +1730,8 @@ async def test_create_challenge_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.VerifyAttestationRequest,
-        dict,
+        service.VerifyAttestationRequest(),
+        {},
     ],
 )
 def test_verify_attestation(request_type, transport: str = "grpc"):
@@ -1725,7 +1742,7 @@ def test_verify_attestation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1774,10 +1791,11 @@ def test_verify_attestation_non_empty_request_with_auto_populated_field():
         client.verify_attestation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.VerifyAttestationRequest(
+        request_msg = service.VerifyAttestationRequest(
             challenge="challenge_value",
             attester="attester_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_attestation_use_cached_wrapped_rpc():
@@ -1862,9 +1880,14 @@ async def test_verify_attestation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_verify_attestation_async(
-    transport: str = "grpc_asyncio", request_type=service.VerifyAttestationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.VerifyAttestationRequest(),
+        {},
+    ],
+)
+async def test_verify_attestation_async(request_type, transport: str = "grpc_asyncio"):
     client = ConfidentialComputingAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1872,7 +1895,7 @@ async def test_verify_attestation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1895,11 +1918,6 @@ async def test_verify_attestation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.VerifyAttestationResponse)
     assert response.oidc_claims_token == "oidc_claims_token_value"
-
-
-@pytest.mark.asyncio
-async def test_verify_attestation_async_from_dict():
-    await test_verify_attestation_async(request_type=dict)
 
 
 def test_verify_attestation_field_headers():
@@ -1970,8 +1988,8 @@ async def test_verify_attestation_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.VerifyConfidentialSpaceRequest,
-        dict,
+        service.VerifyConfidentialSpaceRequest(),
+        {},
     ],
 )
 def test_verify_confidential_space(request_type, transport: str = "grpc"):
@@ -1982,7 +2000,7 @@ def test_verify_confidential_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2030,9 +2048,10 @@ def test_verify_confidential_space_non_empty_request_with_auto_populated_field()
         client.verify_confidential_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.VerifyConfidentialSpaceRequest(
+        request_msg = service.VerifyConfidentialSpaceRequest(
             challenge="challenge_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_confidential_space_use_cached_wrapped_rpc():
@@ -2118,8 +2137,15 @@ async def test_verify_confidential_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.VerifyConfidentialSpaceRequest(),
+        {},
+    ],
+)
 async def test_verify_confidential_space_async(
-    transport: str = "grpc_asyncio", request_type=service.VerifyConfidentialSpaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConfidentialComputingAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2128,7 +2154,7 @@ async def test_verify_confidential_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2151,11 +2177,6 @@ async def test_verify_confidential_space_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.VerifyConfidentialSpaceResponse)
     assert response.attestation_token == "attestation_token_value"
-
-
-@pytest.mark.asyncio
-async def test_verify_confidential_space_async_from_dict():
-    await test_verify_confidential_space_async(request_type=dict)
 
 
 def test_verify_confidential_space_field_headers():
@@ -2226,8 +2247,8 @@ async def test_verify_confidential_space_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.VerifyConfidentialGkeRequest,
-        dict,
+        service.VerifyConfidentialGkeRequest(),
+        {},
     ],
 )
 def test_verify_confidential_gke(request_type, transport: str = "grpc"):
@@ -2238,7 +2259,7 @@ def test_verify_confidential_gke(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2286,9 +2307,10 @@ def test_verify_confidential_gke_non_empty_request_with_auto_populated_field():
         client.verify_confidential_gke(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.VerifyConfidentialGkeRequest(
+        request_msg = service.VerifyConfidentialGkeRequest(
             challenge="challenge_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_confidential_gke_use_cached_wrapped_rpc():
@@ -2374,8 +2396,15 @@ async def test_verify_confidential_gke_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.VerifyConfidentialGkeRequest(),
+        {},
+    ],
+)
 async def test_verify_confidential_gke_async(
-    transport: str = "grpc_asyncio", request_type=service.VerifyConfidentialGkeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConfidentialComputingAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2384,7 +2413,7 @@ async def test_verify_confidential_gke_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2407,11 +2436,6 @@ async def test_verify_confidential_gke_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.VerifyConfidentialGkeResponse)
     assert response.attestation_token == "attestation_token_value"
-
-
-@pytest.mark.asyncio
-async def test_verify_confidential_gke_async_from_dict():
-    await test_verify_confidential_gke_async(request_type=dict)
 
 
 def test_verify_confidential_gke_field_headers():
@@ -3177,7 +3201,6 @@ def test_create_challenge_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateChallengeRequest()
-
         assert args[0] == request_msg
 
 
@@ -3200,7 +3223,6 @@ def test_verify_attestation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyAttestationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3223,7 +3245,6 @@ def test_verify_confidential_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3246,7 +3267,6 @@ def test_verify_confidential_gke_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialGkeRequest()
-
         assert args[0] == request_msg
 
 
@@ -3289,7 +3309,6 @@ async def test_create_challenge_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateChallengeRequest()
-
         assert args[0] == request_msg
 
 
@@ -3318,7 +3337,6 @@ async def test_verify_attestation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyAttestationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3347,7 +3365,6 @@ async def test_verify_confidential_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -3376,7 +3393,6 @@ async def test_verify_confidential_gke_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialGkeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4158,7 +4174,6 @@ def test_create_challenge_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateChallengeRequest()
-
         assert args[0] == request_msg
 
 
@@ -4180,7 +4195,6 @@ def test_verify_attestation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyAttestationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4202,7 +4216,6 @@ def test_verify_confidential_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4224,7 +4237,6 @@ def test_verify_confidential_gke_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.VerifyConfidentialGkeRequest()
-
         assert args[0] == request_msg
 
 

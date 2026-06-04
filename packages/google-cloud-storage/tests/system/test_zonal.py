@@ -27,6 +27,7 @@ from google.cloud.storage.blob import (
     ObjectCustomContextPayload,
 )
 
+
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
     reason="Zonal system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
@@ -956,6 +957,91 @@ def test_mrd_concurrent_download_out_of_bounds(
             # Verify fully OOB request returned Exception
             assert isinstance(results[1], OutOfRange)
 
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+@pytest.mark.parametrize(
+    "read_start, read_length, enable_checksum",
+    [
+        (0, 0, True),
+        (0, 1024 * 1024, True),
+        (0, 0, False),
+    ],
+)
+def test_mrd_checksum_validation(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+    read_start,
+    read_length,
+    enable_checksum,
+):
+    """
+    Tests full downloads with specified offset, length, and enable_checksum toggle on finalized objects.
+    """
+    object_size = 1024 * 1024  # 1MB
+    object_name = f"test_mrd_chksum-{uuid.uuid4()}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(object_data)
+        await writer.close(finalize_on_close=True)
+
+        async with AsyncMultiRangeDownloader(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            buffer = BytesIO()
+            await mrd.download_ranges(
+                [(read_start, read_length, buffer)], enable_checksum=enable_checksum
+            )
+            assert buffer.getvalue() == object_data
+
+        # cleanup
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_mrd_checksum_unfinalized_appendable_skipped(
+    storage_client, blobs_to_delete, event_loop, grpc_client_direct
+):
+    """
+    Verifies that live, unfinalized appendable objects skip the full-object checksum check
+    naturally without raising any exceptions.
+    """
+    object_name = f"test_mrd_chksum_unfin-{uuid.uuid4()}"
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(_BYTES_TO_UPLOAD)
+        await writer.flush()  # Flushed but not finalized!
+
+        # Download the unfinalized appendable object with enable_checksum=True
+        async with AsyncMultiRangeDownloader(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            buffer = BytesIO()
+            # Since it's unfinalized, it should skip the checksum check without raising
+            await mrd.download_ranges([(0, 0, buffer)], enable_checksum=True)
+            assert buffer.getvalue() == _BYTES_TO_UPLOAD
+
+        # cleanup
+        await writer.close()
         del writer
         gc.collect()
         blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1377,8 +1393,8 @@ def test_iceberg_catalog_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        iceberg_rest_catalog.GetIcebergCatalogRequest,
-        dict,
+        iceberg_rest_catalog.GetIcebergCatalogRequest(),
+        {},
     ],
 )
 def test_get_iceberg_catalog(request_type, transport: str = "grpc"):
@@ -1389,7 +1405,7 @@ def test_get_iceberg_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1453,9 +1469,10 @@ def test_get_iceberg_catalog_non_empty_request_with_auto_populated_field():
         client.get_iceberg_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iceberg_rest_catalog.GetIcebergCatalogRequest(
+        request_msg = iceberg_rest_catalog.GetIcebergCatalogRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iceberg_catalog_use_cached_wrapped_rpc():
@@ -1540,10 +1557,14 @@ async def test_get_iceberg_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iceberg_catalog_async(
-    transport: str = "grpc_asyncio",
-    request_type=iceberg_rest_catalog.GetIcebergCatalogRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iceberg_rest_catalog.GetIcebergCatalogRequest(),
+        {},
+    ],
+)
+async def test_get_iceberg_catalog_async(request_type, transport: str = "grpc_asyncio"):
     client = IcebergCatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1551,7 +1572,7 @@ async def test_get_iceberg_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1590,11 +1611,6 @@ async def test_get_iceberg_catalog_async(
     )
     assert response.default_location == "default_location_value"
     assert response.catalog_regions == ["catalog_regions_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_iceberg_catalog_async_from_dict():
-    await test_get_iceberg_catalog_async(request_type=dict)
 
 
 def test_get_iceberg_catalog_field_headers():
@@ -1751,8 +1767,8 @@ async def test_get_iceberg_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iceberg_rest_catalog.ListIcebergCatalogsRequest,
-        dict,
+        iceberg_rest_catalog.ListIcebergCatalogsRequest(),
+        {},
     ],
 )
 def test_list_iceberg_catalogs(request_type, transport: str = "grpc"):
@@ -1763,7 +1779,7 @@ def test_list_iceberg_catalogs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1814,10 +1830,11 @@ def test_list_iceberg_catalogs_non_empty_request_with_auto_populated_field():
         client.list_iceberg_catalogs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iceberg_rest_catalog.ListIcebergCatalogsRequest(
+        request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_iceberg_catalogs_use_cached_wrapped_rpc():
@@ -1903,9 +1920,15 @@ async def test_list_iceberg_catalogs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iceberg_rest_catalog.ListIcebergCatalogsRequest(),
+        {},
+    ],
+)
 async def test_list_iceberg_catalogs_async(
-    transport: str = "grpc_asyncio",
-    request_type=iceberg_rest_catalog.ListIcebergCatalogsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IcebergCatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1914,7 +1937,7 @@ async def test_list_iceberg_catalogs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1939,11 +1962,6 @@ async def test_list_iceberg_catalogs_async(
     assert isinstance(response, pagers.ListIcebergCatalogsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_iceberg_catalogs_async_from_dict():
-    await test_list_iceberg_catalogs_async(request_type=dict)
 
 
 def test_list_iceberg_catalogs_field_headers():
@@ -2300,8 +2318,8 @@ async def test_list_iceberg_catalogs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iceberg_rest_catalog.UpdateIcebergCatalogRequest,
-        dict,
+        iceberg_rest_catalog.UpdateIcebergCatalogRequest(),
+        {},
     ],
 )
 def test_update_iceberg_catalog(request_type, transport: str = "grpc"):
@@ -2312,7 +2330,7 @@ def test_update_iceberg_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2374,7 +2392,8 @@ def test_update_iceberg_catalog_non_empty_request_with_auto_populated_field():
         client.update_iceberg_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iceberg_rest_catalog.UpdateIcebergCatalogRequest()
+        request_msg = iceberg_rest_catalog.UpdateIcebergCatalogRequest()
+        assert args[0] == request_msg
 
 
 def test_update_iceberg_catalog_use_cached_wrapped_rpc():
@@ -2460,9 +2479,15 @@ async def test_update_iceberg_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iceberg_rest_catalog.UpdateIcebergCatalogRequest(),
+        {},
+    ],
+)
 async def test_update_iceberg_catalog_async(
-    transport: str = "grpc_asyncio",
-    request_type=iceberg_rest_catalog.UpdateIcebergCatalogRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IcebergCatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2471,7 +2496,7 @@ async def test_update_iceberg_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2510,11 +2535,6 @@ async def test_update_iceberg_catalog_async(
     )
     assert response.default_location == "default_location_value"
     assert response.catalog_regions == ["catalog_regions_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_iceberg_catalog_async_from_dict():
-    await test_update_iceberg_catalog_async(request_type=dict)
 
 
 def test_update_iceberg_catalog_field_headers():
@@ -2681,8 +2701,8 @@ async def test_update_iceberg_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iceberg_rest_catalog.CreateIcebergCatalogRequest,
-        dict,
+        iceberg_rest_catalog.CreateIcebergCatalogRequest(),
+        {},
     ],
 )
 def test_create_iceberg_catalog(request_type, transport: str = "grpc"):
@@ -2693,7 +2713,7 @@ def test_create_iceberg_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2758,10 +2778,11 @@ def test_create_iceberg_catalog_non_empty_request_with_auto_populated_field():
         client.create_iceberg_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iceberg_rest_catalog.CreateIcebergCatalogRequest(
+        request_msg = iceberg_rest_catalog.CreateIcebergCatalogRequest(
             parent="parent_value",
             iceberg_catalog_id="iceberg_catalog_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_iceberg_catalog_use_cached_wrapped_rpc():
@@ -2847,9 +2868,15 @@ async def test_create_iceberg_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iceberg_rest_catalog.CreateIcebergCatalogRequest(),
+        {},
+    ],
+)
 async def test_create_iceberg_catalog_async(
-    transport: str = "grpc_asyncio",
-    request_type=iceberg_rest_catalog.CreateIcebergCatalogRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IcebergCatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2858,7 +2885,7 @@ async def test_create_iceberg_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2897,11 +2924,6 @@ async def test_create_iceberg_catalog_async(
     )
     assert response.default_location == "default_location_value"
     assert response.catalog_regions == ["catalog_regions_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_iceberg_catalog_async_from_dict():
-    await test_create_iceberg_catalog_async(request_type=dict)
 
 
 def test_create_iceberg_catalog_field_headers():
@@ -3078,8 +3100,8 @@ async def test_create_iceberg_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iceberg_rest_catalog.FailoverIcebergCatalogRequest,
-        dict,
+        iceberg_rest_catalog.FailoverIcebergCatalogRequest(),
+        {},
     ],
 )
 def test_failover_iceberg_catalog(request_type, transport: str = "grpc"):
@@ -3090,7 +3112,7 @@ def test_failover_iceberg_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3136,10 +3158,11 @@ def test_failover_iceberg_catalog_non_empty_request_with_auto_populated_field():
         client.failover_iceberg_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iceberg_rest_catalog.FailoverIcebergCatalogRequest(
+        request_msg = iceberg_rest_catalog.FailoverIcebergCatalogRequest(
             name="name_value",
             primary_replica="primary_replica_value",
         )
+        assert args[0] == request_msg
 
 
 def test_failover_iceberg_catalog_use_cached_wrapped_rpc():
@@ -3225,9 +3248,15 @@ async def test_failover_iceberg_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iceberg_rest_catalog.FailoverIcebergCatalogRequest(),
+        {},
+    ],
+)
 async def test_failover_iceberg_catalog_async(
-    transport: str = "grpc_asyncio",
-    request_type=iceberg_rest_catalog.FailoverIcebergCatalogRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IcebergCatalogServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3236,7 +3265,7 @@ async def test_failover_iceberg_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3256,11 +3285,6 @@ async def test_failover_iceberg_catalog_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iceberg_rest_catalog.FailoverIcebergCatalogResponse)
-
-
-@pytest.mark.asyncio
-async def test_failover_iceberg_catalog_async_from_dict():
-    await test_failover_iceberg_catalog_async(request_type=dict)
 
 
 def test_failover_iceberg_catalog_field_headers():
@@ -4596,7 +4620,6 @@ def test_get_iceberg_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.GetIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4619,7 +4642,6 @@ def test_list_iceberg_catalogs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4642,7 +4664,6 @@ def test_update_iceberg_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.UpdateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4665,7 +4686,6 @@ def test_create_iceberg_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.CreateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4688,7 +4708,6 @@ def test_failover_iceberg_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.FailoverIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4736,7 +4755,6 @@ async def test_get_iceberg_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.GetIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4766,7 +4784,6 @@ async def test_list_iceberg_catalogs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4800,7 +4817,6 @@ async def test_update_iceberg_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.UpdateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4834,7 +4850,6 @@ async def test_create_iceberg_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.CreateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -4861,7 +4876,6 @@ async def test_failover_iceberg_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.FailoverIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -5791,7 +5805,6 @@ def test_get_iceberg_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.GetIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -5813,7 +5826,6 @@ def test_list_iceberg_catalogs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.ListIcebergCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5835,7 +5847,6 @@ def test_update_iceberg_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.UpdateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -5857,7 +5868,6 @@ def test_create_iceberg_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.CreateIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -5879,7 +5889,6 @@ def test_failover_iceberg_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iceberg_rest_catalog.FailoverIcebergCatalogRequest()
-
         assert args[0] == request_msg
 
 

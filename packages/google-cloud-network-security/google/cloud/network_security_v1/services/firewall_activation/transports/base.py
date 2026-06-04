@@ -153,8 +153,18 @@ class FirewallActivationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_project_firewall_endpoints: gapic_v1.method.wrap_method(
+                self.list_project_firewall_endpoints,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_firewall_endpoint: gapic_v1.method.wrap_method(
                 self.get_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_project_firewall_endpoint: gapic_v1.method.wrap_method(
+                self.get_project_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -163,13 +173,28 @@ class FirewallActivationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_project_firewall_endpoint: gapic_v1.method.wrap_method(
+                self.create_project_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_firewall_endpoint: gapic_v1.method.wrap_method(
                 self.delete_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_project_firewall_endpoint: gapic_v1.method.wrap_method(
+                self.delete_project_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_firewall_endpoint: gapic_v1.method.wrap_method(
                 self.update_firewall_endpoint,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_project_firewall_endpoint: gapic_v1.method.wrap_method(
+                self.update_project_firewall_endpoint,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -272,7 +297,31 @@ class FirewallActivationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_project_firewall_endpoints(
+        self,
+    ) -> Callable[
+        [firewall_activation.ListFirewallEndpointsRequest],
+        Union[
+            firewall_activation.ListFirewallEndpointsResponse,
+            Awaitable[firewall_activation.ListFirewallEndpointsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.GetFirewallEndpointRequest],
+        Union[
+            firewall_activation.FirewallEndpoint,
+            Awaitable[firewall_activation.FirewallEndpoint],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_project_firewall_endpoint(
         self,
     ) -> Callable[
         [firewall_activation.GetFirewallEndpointRequest],
@@ -293,6 +342,15 @@ class FirewallActivationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.CreateFirewallEndpointRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_firewall_endpoint(
         self,
     ) -> Callable[
@@ -302,7 +360,25 @@ class FirewallActivationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_project_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.DeleteFirewallEndpointRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_firewall_endpoint(
+        self,
+    ) -> Callable[
+        [firewall_activation.UpdateFirewallEndpointRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_project_firewall_endpoint(
         self,
     ) -> Callable[
         [firewall_activation.UpdateFirewallEndpointRequest],

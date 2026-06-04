@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1252,8 +1268,8 @@ def test_pages_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        page.ListPagesRequest,
-        dict,
+        page.ListPagesRequest(),
+        {},
     ],
 )
 def test_list_pages(request_type, transport: str = "grpc"):
@@ -1264,7 +1280,7 @@ def test_list_pages(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
@@ -1310,11 +1326,12 @@ def test_list_pages_non_empty_request_with_auto_populated_field():
         client.list_pages(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.ListPagesRequest(
+        request_msg = page.ListPagesRequest(
             parent="parent_value",
             language_code="language_code_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_pages_use_cached_wrapped_rpc():
@@ -1393,9 +1410,14 @@ async def test_list_pages_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_pages_async(
-    transport: str = "grpc_asyncio", request_type=page.ListPagesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.ListPagesRequest(),
+        {},
+    ],
+)
+async def test_list_pages_async(request_type, transport: str = "grpc_asyncio"):
     client = PagesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1403,7 +1425,7 @@ async def test_list_pages_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
@@ -1424,11 +1446,6 @@ async def test_list_pages_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPagesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_pages_async_from_dict():
-    await test_list_pages_async(request_type=dict)
 
 
 def test_list_pages_field_headers():
@@ -1767,8 +1784,8 @@ async def test_list_pages_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        page.GetPageRequest,
-        dict,
+        page.GetPageRequest(),
+        {},
     ],
 )
 def test_get_page(request_type, transport: str = "grpc"):
@@ -1779,7 +1796,7 @@ def test_get_page(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_page), "__call__") as call:
@@ -1830,10 +1847,11 @@ def test_get_page_non_empty_request_with_auto_populated_field():
         client.get_page(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.GetPageRequest(
+        request_msg = page.GetPageRequest(
             name="name_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_page_use_cached_wrapped_rpc():
@@ -1912,9 +1930,14 @@ async def test_get_page_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_page_async(
-    transport: str = "grpc_asyncio", request_type=page.GetPageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.GetPageRequest(),
+        {},
+    ],
+)
+async def test_get_page_async(request_type, transport: str = "grpc_asyncio"):
     client = PagesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1922,7 +1945,7 @@ async def test_get_page_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_page), "__call__") as call:
@@ -1949,11 +1972,6 @@ async def test_get_page_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_page_async_from_dict():
-    await test_get_page_async(request_type=dict)
 
 
 def test_get_page_field_headers():
@@ -2098,8 +2116,8 @@ async def test_get_page_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_page.CreatePageRequest,
-        dict,
+        gcdc_page.CreatePageRequest(),
+        {},
     ],
 )
 def test_create_page(request_type, transport: str = "grpc"):
@@ -2110,7 +2128,7 @@ def test_create_page(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_page), "__call__") as call:
@@ -2161,10 +2179,11 @@ def test_create_page_non_empty_request_with_auto_populated_field():
         client.create_page(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.CreatePageRequest(
+        request_msg = gcdc_page.CreatePageRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_page_use_cached_wrapped_rpc():
@@ -2245,9 +2264,14 @@ async def test_create_page_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_page_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_page.CreatePageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_page.CreatePageRequest(),
+        {},
+    ],
+)
+async def test_create_page_async(request_type, transport: str = "grpc_asyncio"):
     client = PagesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2255,7 +2279,7 @@ async def test_create_page_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_page), "__call__") as call:
@@ -2282,11 +2306,6 @@ async def test_create_page_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_page_async_from_dict():
-    await test_create_page_async(request_type=dict)
 
 
 def test_create_page_field_headers():
@@ -2441,8 +2460,8 @@ async def test_create_page_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_page.UpdatePageRequest,
-        dict,
+        gcdc_page.UpdatePageRequest(),
+        {},
     ],
 )
 def test_update_page(request_type, transport: str = "grpc"):
@@ -2453,7 +2472,7 @@ def test_update_page(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_page), "__call__") as call:
@@ -2503,9 +2522,10 @@ def test_update_page_non_empty_request_with_auto_populated_field():
         client.update_page(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.UpdatePageRequest(
+        request_msg = gcdc_page.UpdatePageRequest(
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_page_use_cached_wrapped_rpc():
@@ -2586,9 +2606,14 @@ async def test_update_page_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_page_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_page.UpdatePageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_page.UpdatePageRequest(),
+        {},
+    ],
+)
+async def test_update_page_async(request_type, transport: str = "grpc_asyncio"):
     client = PagesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2596,7 +2621,7 @@ async def test_update_page_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_page), "__call__") as call:
@@ -2623,11 +2648,6 @@ async def test_update_page_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_page_async_from_dict():
-    await test_update_page_async(request_type=dict)
 
 
 def test_update_page_field_headers():
@@ -2782,8 +2802,8 @@ async def test_update_page_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        page.DeletePageRequest,
-        dict,
+        page.DeletePageRequest(),
+        {},
     ],
 )
 def test_delete_page(request_type, transport: str = "grpc"):
@@ -2794,7 +2814,7 @@ def test_delete_page(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
@@ -2835,9 +2855,10 @@ def test_delete_page_non_empty_request_with_auto_populated_field():
         client.delete_page(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.DeletePageRequest(
+        request_msg = page.DeletePageRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_page_use_cached_wrapped_rpc():
@@ -2918,9 +2939,14 @@ async def test_delete_page_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_page_async(
-    transport: str = "grpc_asyncio", request_type=page.DeletePageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.DeletePageRequest(),
+        {},
+    ],
+)
+async def test_delete_page_async(request_type, transport: str = "grpc_asyncio"):
     client = PagesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2928,7 +2954,7 @@ async def test_delete_page_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
@@ -2944,11 +2970,6 @@ async def test_delete_page_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_page_async_from_dict():
-    await test_delete_page_async(request_type=dict)
 
 
 def test_delete_page_field_headers():
@@ -4210,7 +4231,6 @@ def test_list_pages_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.ListPagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4231,7 +4251,6 @@ def test_get_page_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.GetPageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4252,7 +4271,6 @@ def test_create_page_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.CreatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4273,7 +4291,6 @@ def test_update_page_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.UpdatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4294,7 +4311,6 @@ def test_delete_page_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.DeletePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4335,7 +4351,6 @@ async def test_list_pages_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.ListPagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4365,7 +4380,6 @@ async def test_get_page_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.GetPageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4395,7 +4409,6 @@ async def test_create_page_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.CreatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4425,7 +4438,6 @@ async def test_update_page_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.UpdatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -4448,7 +4460,6 @@ async def test_delete_page_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.DeletePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -5863,7 +5874,6 @@ def test_list_pages_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.ListPagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5883,7 +5893,6 @@ def test_get_page_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.GetPageRequest()
-
         assert args[0] == request_msg
 
 
@@ -5903,7 +5912,6 @@ def test_create_page_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.CreatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -5923,7 +5931,6 @@ def test_update_page_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_page.UpdatePageRequest()
-
         assert args[0] == request_msg
 
 
@@ -5943,7 +5950,6 @@ def test_delete_page_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = page.DeletePageRequest()
-
         assert args[0] == request_msg
 
 

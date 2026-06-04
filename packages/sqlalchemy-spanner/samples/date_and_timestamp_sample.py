@@ -15,11 +15,10 @@
 import datetime
 import uuid
 
+from model import Concert, Singer, Venue
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer, Concert, Venue
 
 
 # Shows how to map and use the DATE and TIMESTAMP data types in Spanner.

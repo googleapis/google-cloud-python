@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -127,6 +128,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1294,8 +1310,8 @@ def test_worker_pools_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_worker_pool.CreateWorkerPoolRequest,
-        dict,
+        gcr_worker_pool.CreateWorkerPoolRequest(),
+        {},
     ],
 )
 def test_create_worker_pool(request_type, transport: str = "grpc"):
@@ -1306,7 +1322,7 @@ def test_create_worker_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1352,10 +1368,11 @@ def test_create_worker_pool_non_empty_request_with_auto_populated_field():
         client.create_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcr_worker_pool.CreateWorkerPoolRequest(
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             parent="parent_value",
             worker_pool_id="worker_pool_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_worker_pool_use_cached_wrapped_rpc():
@@ -1450,10 +1467,14 @@ async def test_create_worker_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_worker_pool_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcr_worker_pool.CreateWorkerPoolRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcr_worker_pool.CreateWorkerPoolRequest(),
+        {},
+    ],
+)
+async def test_create_worker_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1461,7 +1482,7 @@ async def test_create_worker_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1481,11 +1502,6 @@ async def test_create_worker_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_worker_pool_async_from_dict():
-    await test_create_worker_pool_async(request_type=dict)
 
 
 def test_create_worker_pool_flattened():
@@ -1597,8 +1613,8 @@ async def test_create_worker_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        worker_pool.GetWorkerPoolRequest,
-        dict,
+        worker_pool.GetWorkerPoolRequest(),
+        {},
     ],
 )
 def test_get_worker_pool(request_type, transport: str = "grpc"):
@@ -1609,7 +1625,7 @@ def test_get_worker_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
@@ -1685,9 +1701,10 @@ def test_get_worker_pool_non_empty_request_with_auto_populated_field():
         client.get_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == worker_pool.GetWorkerPoolRequest(
+        request_msg = worker_pool.GetWorkerPoolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_worker_pool_use_cached_wrapped_rpc():
@@ -1768,9 +1785,14 @@ async def test_get_worker_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_worker_pool_async(
-    transport: str = "grpc_asyncio", request_type=worker_pool.GetWorkerPoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        worker_pool.GetWorkerPoolRequest(),
+        {},
+    ],
+)
+async def test_get_worker_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1778,7 +1800,7 @@ async def test_get_worker_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
@@ -1831,11 +1853,6 @@ async def test_get_worker_pool_async(
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_worker_pool_async_from_dict():
-    await test_get_worker_pool_async(request_type=dict)
 
 
 def test_get_worker_pool_flattened():
@@ -1923,8 +1940,8 @@ async def test_get_worker_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        worker_pool.ListWorkerPoolsRequest,
-        dict,
+        worker_pool.ListWorkerPoolsRequest(),
+        {},
     ],
 )
 def test_list_worker_pools(request_type, transport: str = "grpc"):
@@ -1935,7 +1952,7 @@ def test_list_worker_pools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1984,10 +2001,11 @@ def test_list_worker_pools_non_empty_request_with_auto_populated_field():
         client.list_worker_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == worker_pool.ListWorkerPoolsRequest(
+        request_msg = worker_pool.ListWorkerPoolsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_worker_pools_use_cached_wrapped_rpc():
@@ -2070,9 +2088,14 @@ async def test_list_worker_pools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_worker_pools_async(
-    transport: str = "grpc_asyncio", request_type=worker_pool.ListWorkerPoolsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        worker_pool.ListWorkerPoolsRequest(),
+        {},
+    ],
+)
+async def test_list_worker_pools_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2080,7 +2103,7 @@ async def test_list_worker_pools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2103,11 +2126,6 @@ async def test_list_worker_pools_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkerPoolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_worker_pools_async_from_dict():
-    await test_list_worker_pools_async(request_type=dict)
 
 
 def test_list_worker_pools_flattened():
@@ -2394,8 +2412,8 @@ async def test_list_worker_pools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_worker_pool.UpdateWorkerPoolRequest,
-        dict,
+        gcr_worker_pool.UpdateWorkerPoolRequest(),
+        {},
     ],
 )
 def test_update_worker_pool(request_type, transport: str = "grpc"):
@@ -2406,7 +2424,7 @@ def test_update_worker_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2449,7 +2467,8 @@ def test_update_worker_pool_non_empty_request_with_auto_populated_field():
         client.update_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcr_worker_pool.UpdateWorkerPoolRequest()
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
+        assert args[0] == request_msg
 
 
 def test_update_worker_pool_use_cached_wrapped_rpc():
@@ -2544,10 +2563,14 @@ async def test_update_worker_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_worker_pool_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcr_worker_pool.UpdateWorkerPoolRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcr_worker_pool.UpdateWorkerPoolRequest(),
+        {},
+    ],
+)
+async def test_update_worker_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2555,7 +2578,7 @@ async def test_update_worker_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2575,11 +2598,6 @@ async def test_update_worker_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_worker_pool_async_from_dict():
-    await test_update_worker_pool_async(request_type=dict)
 
 
 def test_update_worker_pool_flattened():
@@ -2681,8 +2699,8 @@ async def test_update_worker_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        worker_pool.DeleteWorkerPoolRequest,
-        dict,
+        worker_pool.DeleteWorkerPoolRequest(),
+        {},
     ],
 )
 def test_delete_worker_pool(request_type, transport: str = "grpc"):
@@ -2693,7 +2711,7 @@ def test_delete_worker_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2739,10 +2757,11 @@ def test_delete_worker_pool_non_empty_request_with_auto_populated_field():
         client.delete_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == worker_pool.DeleteWorkerPoolRequest(
+        request_msg = worker_pool.DeleteWorkerPoolRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_worker_pool_use_cached_wrapped_rpc():
@@ -2837,9 +2856,14 @@ async def test_delete_worker_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_worker_pool_async(
-    transport: str = "grpc_asyncio", request_type=worker_pool.DeleteWorkerPoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        worker_pool.DeleteWorkerPoolRequest(),
+        {},
+    ],
+)
+async def test_delete_worker_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2847,7 +2871,7 @@ async def test_delete_worker_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2867,11 +2891,6 @@ async def test_delete_worker_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_worker_pool_async_from_dict():
-    await test_delete_worker_pool_async(request_type=dict)
 
 
 def test_delete_worker_pool_flattened():
@@ -2963,8 +2982,8 @@ async def test_delete_worker_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -2975,7 +2994,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -3021,9 +3040,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -3104,9 +3124,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3114,7 +3139,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -3137,11 +3162,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -3223,8 +3243,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -3235,7 +3255,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3281,9 +3301,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -3364,9 +3385,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3374,7 +3400,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3397,11 +3423,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -3484,8 +3505,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -3496,7 +3517,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3544,9 +3565,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -3631,9 +3653,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3642,7 +3670,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3665,11 +3693,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -5323,7 +5346,6 @@ def test_create_worker_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5344,7 +5366,6 @@ def test_get_worker_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.GetWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5367,7 +5388,6 @@ def test_list_worker_pools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.ListWorkerPoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5390,7 +5410,6 @@ def test_update_worker_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5413,7 +5432,6 @@ def test_delete_worker_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.DeleteWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5434,7 +5452,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5455,7 +5472,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5478,7 +5494,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5503,7 +5518,6 @@ def test_create_worker_pool_routing_parameters_request_1_grpc():
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5531,7 +5545,6 @@ def test_get_worker_pool_routing_parameters_request_1_grpc():
         request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5561,7 +5574,6 @@ def test_list_worker_pools_routing_parameters_request_1_grpc():
         request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5593,7 +5605,6 @@ def test_update_worker_pool_routing_parameters_request_1_grpc():
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
             **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5623,7 +5634,6 @@ def test_delete_worker_pool_routing_parameters_request_1_grpc():
         request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5669,7 +5679,6 @@ async def test_create_worker_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5712,7 +5721,6 @@ async def test_get_worker_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.GetWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5741,7 +5749,6 @@ async def test_list_worker_pools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.ListWorkerPoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5768,7 +5775,6 @@ async def test_update_worker_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5795,7 +5801,6 @@ async def test_delete_worker_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.DeleteWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -5823,7 +5828,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5851,7 +5855,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5880,7 +5883,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5909,7 +5911,6 @@ async def test_create_worker_pool_routing_parameters_request_1_grpc_asyncio():
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5959,7 +5960,6 @@ async def test_get_worker_pool_routing_parameters_request_1_grpc_asyncio():
         request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5995,7 +5995,6 @@ async def test_list_worker_pools_routing_parameters_request_1_grpc_asyncio():
         request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6031,7 +6030,6 @@ async def test_update_worker_pool_routing_parameters_request_1_grpc_asyncio():
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
             **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6065,7 +6063,6 @@ async def test_delete_worker_pool_routing_parameters_request_1_grpc_asyncio():
         request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -7905,7 +7902,6 @@ def test_create_worker_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7925,7 +7921,6 @@ def test_get_worker_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.GetWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7947,7 +7942,6 @@ def test_list_worker_pools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.ListWorkerPoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7969,7 +7963,6 @@ def test_update_worker_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7991,7 +7984,6 @@ def test_delete_worker_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = worker_pool.DeleteWorkerPoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -8011,7 +8003,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8031,7 +8022,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -8053,7 +8043,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8077,7 +8066,6 @@ def test_create_worker_pool_routing_parameters_request_1_rest():
         request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -8104,7 +8092,6 @@ def test_get_worker_pool_routing_parameters_request_1_rest():
         request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -8133,7 +8120,6 @@ def test_list_worker_pools_routing_parameters_request_1_rest():
         request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -8164,7 +8150,6 @@ def test_update_worker_pool_routing_parameters_request_1_rest():
         request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
             **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -8193,7 +8178,6 @@ def test_delete_worker_pool_routing_parameters_request_1_rest():
         request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}

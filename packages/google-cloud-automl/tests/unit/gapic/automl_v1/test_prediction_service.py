@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1360,8 +1376,8 @@ def test_prediction_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        prediction_service.PredictRequest,
-        dict,
+        prediction_service.PredictRequest(),
+        {},
     ],
 )
 def test_predict(request_type, transport: str = "grpc"):
@@ -1372,7 +1388,7 @@ def test_predict(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.predict), "__call__") as call:
@@ -1413,9 +1429,10 @@ def test_predict_non_empty_request_with_auto_populated_field():
         client.predict(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == prediction_service.PredictRequest(
+        request_msg = prediction_service.PredictRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_predict_use_cached_wrapped_rpc():
@@ -1494,9 +1511,14 @@ async def test_predict_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_predict_async(
-    transport: str = "grpc_asyncio", request_type=prediction_service.PredictRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        prediction_service.PredictRequest(),
+        {},
+    ],
+)
+async def test_predict_async(request_type, transport: str = "grpc_asyncio"):
     client = PredictionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1504,7 +1526,7 @@ async def test_predict_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.predict), "__call__") as call:
@@ -1522,11 +1544,6 @@ async def test_predict_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, prediction_service.PredictResponse)
-
-
-@pytest.mark.asyncio
-async def test_predict_async_from_dict():
-    await test_predict_async(request_type=dict)
 
 
 def test_predict_field_headers():
@@ -1707,8 +1724,8 @@ async def test_predict_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        prediction_service.BatchPredictRequest,
-        dict,
+        prediction_service.BatchPredictRequest(),
+        {},
     ],
 )
 def test_batch_predict(request_type, transport: str = "grpc"):
@@ -1719,7 +1736,7 @@ def test_batch_predict(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_predict), "__call__") as call:
@@ -1760,9 +1777,10 @@ def test_batch_predict_non_empty_request_with_auto_populated_field():
         client.batch_predict(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == prediction_service.BatchPredictRequest(
+        request_msg = prediction_service.BatchPredictRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_predict_use_cached_wrapped_rpc():
@@ -1853,9 +1871,14 @@ async def test_batch_predict_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_predict_async(
-    transport: str = "grpc_asyncio", request_type=prediction_service.BatchPredictRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        prediction_service.BatchPredictRequest(),
+        {},
+    ],
+)
+async def test_batch_predict_async(request_type, transport: str = "grpc_asyncio"):
     client = PredictionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1863,7 +1886,7 @@ async def test_batch_predict_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_predict), "__call__") as call:
@@ -1881,11 +1904,6 @@ async def test_batch_predict_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_predict_async_from_dict():
-    await test_batch_predict_async(request_type=dict)
 
 
 def test_batch_predict_field_headers():
@@ -2618,7 +2636,6 @@ def test_predict_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.PredictRequest()
-
         assert args[0] == request_msg
 
 
@@ -2639,7 +2656,6 @@ def test_batch_predict_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.BatchPredictRequest()
-
         assert args[0] == request_msg
 
 
@@ -2678,7 +2694,6 @@ async def test_predict_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.PredictRequest()
-
         assert args[0] == request_msg
 
 
@@ -2703,7 +2718,6 @@ async def test_batch_predict_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.BatchPredictRequest()
-
         assert args[0] == request_msg
 
 
@@ -2990,7 +3004,6 @@ def test_predict_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.PredictRequest()
-
         assert args[0] == request_msg
 
 
@@ -3010,7 +3023,6 @@ def test_batch_predict_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = prediction_service.BatchPredictRequest()
-
         assert args[0] == request_msg
 
 

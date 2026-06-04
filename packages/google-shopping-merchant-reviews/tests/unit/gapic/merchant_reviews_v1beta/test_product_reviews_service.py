@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -110,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1377,8 +1393,8 @@ def test_product_reviews_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        productreviews.GetProductReviewRequest,
-        dict,
+        productreviews.GetProductReviewRequest(),
+        {},
     ],
 )
 def test_get_product_review(request_type, transport: str = "grpc"):
@@ -1389,7 +1405,7 @@ def test_get_product_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1441,9 +1457,10 @@ def test_get_product_review_non_empty_request_with_auto_populated_field():
         client.get_product_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productreviews.GetProductReviewRequest(
+        request_msg = productreviews.GetProductReviewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_product_review_use_cached_wrapped_rpc():
@@ -1528,9 +1545,14 @@ async def test_get_product_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_product_review_async(
-    transport: str = "grpc_asyncio", request_type=productreviews.GetProductReviewRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productreviews.GetProductReviewRequest(),
+        {},
+    ],
+)
+async def test_get_product_review_async(request_type, transport: str = "grpc_asyncio"):
     client = ProductReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1538,7 +1560,7 @@ async def test_get_product_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1565,11 +1587,6 @@ async def test_get_product_review_async(
     assert response.name == "name_value"
     assert response.product_review_id == "product_review_id_value"
     assert response.data_source == "data_source_value"
-
-
-@pytest.mark.asyncio
-async def test_get_product_review_async_from_dict():
-    await test_get_product_review_async(request_type=dict)
 
 
 def test_get_product_review_field_headers():
@@ -1726,8 +1743,8 @@ async def test_get_product_review_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        productreviews.ListProductReviewsRequest,
-        dict,
+        productreviews.ListProductReviewsRequest(),
+        {},
     ],
 )
 def test_list_product_reviews(request_type, transport: str = "grpc"):
@@ -1738,7 +1755,7 @@ def test_list_product_reviews(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1787,10 +1804,11 @@ def test_list_product_reviews_non_empty_request_with_auto_populated_field():
         client.list_product_reviews(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productreviews.ListProductReviewsRequest(
+        request_msg = productreviews.ListProductReviewsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_product_reviews_use_cached_wrapped_rpc():
@@ -1875,9 +1893,15 @@ async def test_list_product_reviews_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productreviews.ListProductReviewsRequest(),
+        {},
+    ],
+)
 async def test_list_product_reviews_async(
-    transport: str = "grpc_asyncio",
-    request_type=productreviews.ListProductReviewsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1886,7 +1910,7 @@ async def test_list_product_reviews_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1909,11 +1933,6 @@ async def test_list_product_reviews_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductReviewsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_product_reviews_async_from_dict():
-    await test_list_product_reviews_async(request_type=dict)
 
 
 def test_list_product_reviews_field_headers():
@@ -2268,8 +2287,8 @@ async def test_list_product_reviews_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        productreviews.InsertProductReviewRequest,
-        dict,
+        productreviews.InsertProductReviewRequest(),
+        {},
     ],
 )
 def test_insert_product_review(request_type, transport: str = "grpc"):
@@ -2280,7 +2299,7 @@ def test_insert_product_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2333,10 +2352,11 @@ def test_insert_product_review_non_empty_request_with_auto_populated_field():
         client.insert_product_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productreviews.InsertProductReviewRequest(
+        request_msg = productreviews.InsertProductReviewRequest(
             parent="parent_value",
             data_source="data_source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_insert_product_review_use_cached_wrapped_rpc():
@@ -2422,9 +2442,15 @@ async def test_insert_product_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productreviews.InsertProductReviewRequest(),
+        {},
+    ],
+)
 async def test_insert_product_review_async(
-    transport: str = "grpc_asyncio",
-    request_type=productreviews.InsertProductReviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2433,7 +2459,7 @@ async def test_insert_product_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2460,11 +2486,6 @@ async def test_insert_product_review_async(
     assert response.name == "name_value"
     assert response.product_review_id == "product_review_id_value"
     assert response.data_source == "data_source_value"
-
-
-@pytest.mark.asyncio
-async def test_insert_product_review_async_from_dict():
-    await test_insert_product_review_async(request_type=dict)
 
 
 def test_insert_product_review_field_headers():
@@ -2535,8 +2556,8 @@ async def test_insert_product_review_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        productreviews.DeleteProductReviewRequest,
-        dict,
+        productreviews.DeleteProductReviewRequest(),
+        {},
     ],
 )
 def test_delete_product_review(request_type, transport: str = "grpc"):
@@ -2547,7 +2568,7 @@ def test_delete_product_review(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2592,9 +2613,10 @@ def test_delete_product_review_non_empty_request_with_auto_populated_field():
         client.delete_product_review(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productreviews.DeleteProductReviewRequest(
+        request_msg = productreviews.DeleteProductReviewRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_product_review_use_cached_wrapped_rpc():
@@ -2680,9 +2702,15 @@ async def test_delete_product_review_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productreviews.DeleteProductReviewRequest(),
+        {},
+    ],
+)
 async def test_delete_product_review_async(
-    transport: str = "grpc_asyncio",
-    request_type=productreviews.DeleteProductReviewRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductReviewsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2691,7 +2719,7 @@ async def test_delete_product_review_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2709,11 +2737,6 @@ async def test_delete_product_review_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_product_review_async_from_dict():
-    await test_delete_product_review_async(request_type=dict)
 
 
 def test_delete_product_review_field_headers():
@@ -3758,7 +3781,6 @@ def test_get_product_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.GetProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3781,7 +3803,6 @@ def test_list_product_reviews_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.ListProductReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3804,7 +3825,6 @@ def test_insert_product_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.InsertProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3827,7 +3847,6 @@ def test_delete_product_review_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.DeleteProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3872,7 +3891,6 @@ async def test_get_product_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.GetProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3901,7 +3919,6 @@ async def test_list_product_reviews_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.ListProductReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3932,7 +3949,6 @@ async def test_insert_product_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.InsertProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -3957,7 +3973,6 @@ async def test_delete_product_review_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.DeleteProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4642,7 +4657,6 @@ def test_get_product_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.GetProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4664,7 +4678,6 @@ def test_list_product_reviews_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.ListProductReviewsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4686,7 +4699,6 @@ def test_insert_product_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.InsertProductReviewRequest()
-
         assert args[0] == request_msg
 
 
@@ -4708,7 +4720,6 @@ def test_delete_product_review_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productreviews.DeleteProductReviewRequest()
-
         assert args[0] == request_msg
 
 

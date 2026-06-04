@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1308,8 +1324,8 @@ def test_map_management_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.CreateMapConfigRequest,
-        dict,
+        map_management_service.CreateMapConfigRequest(),
+        {},
     ],
 )
 def test_create_map_config(request_type, transport: str = "grpc"):
@@ -1320,7 +1336,7 @@ def test_create_map_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1376,9 +1392,10 @@ def test_create_map_config_non_empty_request_with_auto_populated_field():
         client.create_map_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.CreateMapConfigRequest(
+        request_msg = map_management_service.CreateMapConfigRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_map_config_use_cached_wrapped_rpc():
@@ -1461,10 +1478,14 @@ async def test_create_map_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_map_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.CreateMapConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.CreateMapConfigRequest(),
+        {},
+    ],
+)
+async def test_create_map_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1472,7 +1493,7 @@ async def test_create_map_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1503,11 +1524,6 @@ async def test_create_map_config_async(
     assert response.description == "description_value"
     assert response.map_id == "map_id_value"
     assert response.map_type == map_management_service.MapRenderingType.VECTOR
-
-
-@pytest.mark.asyncio
-async def test_create_map_config_async_from_dict():
-    await test_create_map_config_async(request_type=dict)
 
 
 def test_create_map_config_field_headers():
@@ -1674,8 +1690,8 @@ async def test_create_map_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.GetMapConfigRequest,
-        dict,
+        map_management_service.GetMapConfigRequest(),
+        {},
     ],
 )
 def test_get_map_config(request_type, transport: str = "grpc"):
@@ -1686,7 +1702,7 @@ def test_get_map_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_map_config), "__call__") as call:
@@ -1738,9 +1754,10 @@ def test_get_map_config_non_empty_request_with_auto_populated_field():
         client.get_map_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.GetMapConfigRequest(
+        request_msg = map_management_service.GetMapConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_map_config_use_cached_wrapped_rpc():
@@ -1821,10 +1838,14 @@ async def test_get_map_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_map_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.GetMapConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.GetMapConfigRequest(),
+        {},
+    ],
+)
+async def test_get_map_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1832,7 +1853,7 @@ async def test_get_map_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_map_config), "__call__") as call:
@@ -1861,11 +1882,6 @@ async def test_get_map_config_async(
     assert response.description == "description_value"
     assert response.map_id == "map_id_value"
     assert response.map_type == map_management_service.MapRenderingType.VECTOR
-
-
-@pytest.mark.asyncio
-async def test_get_map_config_async_from_dict():
-    await test_get_map_config_async(request_type=dict)
 
 
 def test_get_map_config_field_headers():
@@ -2014,8 +2030,8 @@ async def test_get_map_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.ListMapConfigsRequest,
-        dict,
+        map_management_service.ListMapConfigsRequest(),
+        {},
     ],
 )
 def test_list_map_configs(request_type, transport: str = "grpc"):
@@ -2026,7 +2042,7 @@ def test_list_map_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_map_configs), "__call__") as call:
@@ -2071,10 +2087,11 @@ def test_list_map_configs_non_empty_request_with_auto_populated_field():
         client.list_map_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.ListMapConfigsRequest(
+        request_msg = map_management_service.ListMapConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_map_configs_use_cached_wrapped_rpc():
@@ -2157,10 +2174,14 @@ async def test_list_map_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_map_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.ListMapConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.ListMapConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_map_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2168,7 +2189,7 @@ async def test_list_map_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_map_configs), "__call__") as call:
@@ -2189,11 +2210,6 @@ async def test_list_map_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMapConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_map_configs_async_from_dict():
-    await test_list_map_configs_async(request_type=dict)
 
 
 def test_list_map_configs_field_headers():
@@ -2532,8 +2548,8 @@ async def test_list_map_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.UpdateMapConfigRequest,
-        dict,
+        map_management_service.UpdateMapConfigRequest(),
+        {},
     ],
 )
 def test_update_map_config(request_type, transport: str = "grpc"):
@@ -2544,7 +2560,7 @@ def test_update_map_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2598,7 +2614,8 @@ def test_update_map_config_non_empty_request_with_auto_populated_field():
         client.update_map_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.UpdateMapConfigRequest()
+        request_msg = map_management_service.UpdateMapConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_map_config_use_cached_wrapped_rpc():
@@ -2681,10 +2698,14 @@ async def test_update_map_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_map_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.UpdateMapConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.UpdateMapConfigRequest(),
+        {},
+    ],
+)
+async def test_update_map_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2692,7 +2713,7 @@ async def test_update_map_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2723,11 +2744,6 @@ async def test_update_map_config_async(
     assert response.description == "description_value"
     assert response.map_id == "map_id_value"
     assert response.map_type == map_management_service.MapRenderingType.VECTOR
-
-
-@pytest.mark.asyncio
-async def test_update_map_config_async_from_dict():
-    await test_update_map_config_async(request_type=dict)
 
 
 def test_update_map_config_field_headers():
@@ -2894,8 +2910,8 @@ async def test_update_map_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.DeleteMapConfigRequest,
-        dict,
+        map_management_service.DeleteMapConfigRequest(),
+        {},
     ],
 )
 def test_delete_map_config(request_type, transport: str = "grpc"):
@@ -2906,7 +2922,7 @@ def test_delete_map_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2951,9 +2967,10 @@ def test_delete_map_config_non_empty_request_with_auto_populated_field():
         client.delete_map_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.DeleteMapConfigRequest(
+        request_msg = map_management_service.DeleteMapConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_map_config_use_cached_wrapped_rpc():
@@ -3036,10 +3053,14 @@ async def test_delete_map_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_map_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.DeleteMapConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.DeleteMapConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_map_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3047,7 +3068,7 @@ async def test_delete_map_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3065,11 +3086,6 @@ async def test_delete_map_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_map_config_async_from_dict():
-    await test_delete_map_config_async(request_type=dict)
 
 
 def test_delete_map_config_field_headers():
@@ -3232,8 +3248,8 @@ async def test_delete_map_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.CreateStyleConfigRequest,
-        dict,
+        map_management_service.CreateStyleConfigRequest(),
+        {},
     ],
 )
 def test_create_style_config(request_type, transport: str = "grpc"):
@@ -3244,7 +3260,7 @@ def test_create_style_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3300,9 +3316,10 @@ def test_create_style_config_non_empty_request_with_auto_populated_field():
         client.create_style_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.CreateStyleConfigRequest(
+        request_msg = map_management_service.CreateStyleConfigRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_style_config_use_cached_wrapped_rpc():
@@ -3387,10 +3404,14 @@ async def test_create_style_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_style_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.CreateStyleConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.CreateStyleConfigRequest(),
+        {},
+    ],
+)
+async def test_create_style_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3398,7 +3419,7 @@ async def test_create_style_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3429,11 +3450,6 @@ async def test_create_style_config_async(
     assert response.description == "description_value"
     assert response.style_id == "style_id_value"
     assert response.json_style_sheet == "json_style_sheet_value"
-
-
-@pytest.mark.asyncio
-async def test_create_style_config_async_from_dict():
-    await test_create_style_config_async(request_type=dict)
 
 
 def test_create_style_config_field_headers():
@@ -3600,8 +3616,8 @@ async def test_create_style_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.GetStyleConfigRequest,
-        dict,
+        map_management_service.GetStyleConfigRequest(),
+        {},
     ],
 )
 def test_get_style_config(request_type, transport: str = "grpc"):
@@ -3612,7 +3628,7 @@ def test_get_style_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_style_config), "__call__") as call:
@@ -3664,9 +3680,10 @@ def test_get_style_config_non_empty_request_with_auto_populated_field():
         client.get_style_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.GetStyleConfigRequest(
+        request_msg = map_management_service.GetStyleConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_style_config_use_cached_wrapped_rpc():
@@ -3749,10 +3766,14 @@ async def test_get_style_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_style_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.GetStyleConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.GetStyleConfigRequest(),
+        {},
+    ],
+)
+async def test_get_style_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3760,7 +3781,7 @@ async def test_get_style_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_style_config), "__call__") as call:
@@ -3789,11 +3810,6 @@ async def test_get_style_config_async(
     assert response.description == "description_value"
     assert response.style_id == "style_id_value"
     assert response.json_style_sheet == "json_style_sheet_value"
-
-
-@pytest.mark.asyncio
-async def test_get_style_config_async_from_dict():
-    await test_get_style_config_async(request_type=dict)
 
 
 def test_get_style_config_field_headers():
@@ -3942,8 +3958,8 @@ async def test_get_style_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.ListStyleConfigsRequest,
-        dict,
+        map_management_service.ListStyleConfigsRequest(),
+        {},
     ],
 )
 def test_list_style_configs(request_type, transport: str = "grpc"):
@@ -3954,7 +3970,7 @@ def test_list_style_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4004,11 +4020,12 @@ def test_list_style_configs_non_empty_request_with_auto_populated_field():
         client.list_style_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.ListStyleConfigsRequest(
+        request_msg = map_management_service.ListStyleConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_style_configs_use_cached_wrapped_rpc():
@@ -4093,10 +4110,14 @@ async def test_list_style_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_style_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.ListStyleConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.ListStyleConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_style_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4104,7 +4125,7 @@ async def test_list_style_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4127,11 +4148,6 @@ async def test_list_style_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStyleConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_style_configs_async_from_dict():
-    await test_list_style_configs_async(request_type=dict)
 
 
 def test_list_style_configs_field_headers():
@@ -4486,8 +4502,8 @@ async def test_list_style_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.UpdateStyleConfigRequest,
-        dict,
+        map_management_service.UpdateStyleConfigRequest(),
+        {},
     ],
 )
 def test_update_style_config(request_type, transport: str = "grpc"):
@@ -4498,7 +4514,7 @@ def test_update_style_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4552,7 +4568,8 @@ def test_update_style_config_non_empty_request_with_auto_populated_field():
         client.update_style_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.UpdateStyleConfigRequest()
+        request_msg = map_management_service.UpdateStyleConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_style_config_use_cached_wrapped_rpc():
@@ -4637,10 +4654,14 @@ async def test_update_style_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_style_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.UpdateStyleConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.UpdateStyleConfigRequest(),
+        {},
+    ],
+)
+async def test_update_style_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4648,7 +4669,7 @@ async def test_update_style_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4679,11 +4700,6 @@ async def test_update_style_config_async(
     assert response.description == "description_value"
     assert response.style_id == "style_id_value"
     assert response.json_style_sheet == "json_style_sheet_value"
-
-
-@pytest.mark.asyncio
-async def test_update_style_config_async_from_dict():
-    await test_update_style_config_async(request_type=dict)
 
 
 def test_update_style_config_field_headers():
@@ -4850,8 +4866,8 @@ async def test_update_style_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.DeleteStyleConfigRequest,
-        dict,
+        map_management_service.DeleteStyleConfigRequest(),
+        {},
     ],
 )
 def test_delete_style_config(request_type, transport: str = "grpc"):
@@ -4862,7 +4878,7 @@ def test_delete_style_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4907,9 +4923,10 @@ def test_delete_style_config_non_empty_request_with_auto_populated_field():
         client.delete_style_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.DeleteStyleConfigRequest(
+        request_msg = map_management_service.DeleteStyleConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_style_config_use_cached_wrapped_rpc():
@@ -4994,10 +5011,14 @@ async def test_delete_style_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_style_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.DeleteStyleConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.DeleteStyleConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_style_config_async(request_type, transport: str = "grpc_asyncio"):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5005,7 +5026,7 @@ async def test_delete_style_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5023,11 +5044,6 @@ async def test_delete_style_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_style_config_async_from_dict():
-    await test_delete_style_config_async(request_type=dict)
 
 
 def test_delete_style_config_field_headers():
@@ -5180,8 +5196,8 @@ async def test_delete_style_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.CreateMapContextConfigRequest,
-        dict,
+        map_management_service.CreateMapContextConfigRequest(),
+        {},
     ],
 )
 def test_create_map_context_config(request_type, transport: str = "grpc"):
@@ -5192,7 +5208,7 @@ def test_create_map_context_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5254,9 +5270,10 @@ def test_create_map_context_config_non_empty_request_with_auto_populated_field()
         client.create_map_context_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.CreateMapContextConfigRequest(
+        request_msg = map_management_service.CreateMapContextConfigRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_map_context_config_use_cached_wrapped_rpc():
@@ -5342,9 +5359,15 @@ async def test_create_map_context_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.CreateMapContextConfigRequest(),
+        {},
+    ],
+)
 async def test_create_map_context_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.CreateMapContextConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5353,7 +5376,7 @@ async def test_create_map_context_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5390,11 +5413,6 @@ async def test_create_map_context_config_async(
     assert response.map_variants == [
         map_management_service.MapContextConfig.MapVariant.ROADMAP_DARK
     ]
-
-
-@pytest.mark.asyncio
-async def test_create_map_context_config_async_from_dict():
-    await test_create_map_context_config_async(request_type=dict)
 
 
 def test_create_map_context_config_field_headers():
@@ -5569,8 +5587,8 @@ async def test_create_map_context_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.GetMapContextConfigRequest,
-        dict,
+        map_management_service.GetMapContextConfigRequest(),
+        {},
     ],
 )
 def test_get_map_context_config(request_type, transport: str = "grpc"):
@@ -5581,7 +5599,7 @@ def test_get_map_context_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5643,9 +5661,10 @@ def test_get_map_context_config_non_empty_request_with_auto_populated_field():
         client.get_map_context_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.GetMapContextConfigRequest(
+        request_msg = map_management_service.GetMapContextConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_map_context_config_use_cached_wrapped_rpc():
@@ -5731,9 +5750,15 @@ async def test_get_map_context_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.GetMapContextConfigRequest(),
+        {},
+    ],
+)
 async def test_get_map_context_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.GetMapContextConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5742,7 +5767,7 @@ async def test_get_map_context_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5779,11 +5804,6 @@ async def test_get_map_context_config_async(
     assert response.map_variants == [
         map_management_service.MapContextConfig.MapVariant.ROADMAP_DARK
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_map_context_config_async_from_dict():
-    await test_get_map_context_config_async(request_type=dict)
 
 
 def test_get_map_context_config_field_headers():
@@ -5940,8 +5960,8 @@ async def test_get_map_context_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.ListMapContextConfigsRequest,
-        dict,
+        map_management_service.ListMapContextConfigsRequest(),
+        {},
     ],
 )
 def test_list_map_context_configs(request_type, transport: str = "grpc"):
@@ -5952,7 +5972,7 @@ def test_list_map_context_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6001,10 +6021,11 @@ def test_list_map_context_configs_non_empty_request_with_auto_populated_field():
         client.list_map_context_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.ListMapContextConfigsRequest(
+        request_msg = map_management_service.ListMapContextConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_map_context_configs_use_cached_wrapped_rpc():
@@ -6090,9 +6111,15 @@ async def test_list_map_context_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.ListMapContextConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_map_context_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.ListMapContextConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6101,7 +6128,7 @@ async def test_list_map_context_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6124,11 +6151,6 @@ async def test_list_map_context_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMapContextConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_map_context_configs_async_from_dict():
-    await test_list_map_context_configs_async(request_type=dict)
 
 
 def test_list_map_context_configs_field_headers():
@@ -6489,8 +6511,8 @@ async def test_list_map_context_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.UpdateMapContextConfigRequest,
-        dict,
+        map_management_service.UpdateMapContextConfigRequest(),
+        {},
     ],
 )
 def test_update_map_context_config(request_type, transport: str = "grpc"):
@@ -6501,7 +6523,7 @@ def test_update_map_context_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6561,7 +6583,8 @@ def test_update_map_context_config_non_empty_request_with_auto_populated_field()
         client.update_map_context_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.UpdateMapContextConfigRequest()
+        request_msg = map_management_service.UpdateMapContextConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_map_context_config_use_cached_wrapped_rpc():
@@ -6647,9 +6670,15 @@ async def test_update_map_context_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.UpdateMapContextConfigRequest(),
+        {},
+    ],
+)
 async def test_update_map_context_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.UpdateMapContextConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6658,7 +6687,7 @@ async def test_update_map_context_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6695,11 +6724,6 @@ async def test_update_map_context_config_async(
     assert response.map_variants == [
         map_management_service.MapContextConfig.MapVariant.ROADMAP_DARK
     ]
-
-
-@pytest.mark.asyncio
-async def test_update_map_context_config_async_from_dict():
-    await test_update_map_context_config_async(request_type=dict)
 
 
 def test_update_map_context_config_field_headers():
@@ -6874,8 +6898,8 @@ async def test_update_map_context_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        map_management_service.DeleteMapContextConfigRequest,
-        dict,
+        map_management_service.DeleteMapContextConfigRequest(),
+        {},
     ],
 )
 def test_delete_map_context_config(request_type, transport: str = "grpc"):
@@ -6886,7 +6910,7 @@ def test_delete_map_context_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6931,9 +6955,10 @@ def test_delete_map_context_config_non_empty_request_with_auto_populated_field()
         client.delete_map_context_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == map_management_service.DeleteMapContextConfigRequest(
+        request_msg = map_management_service.DeleteMapContextConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_map_context_config_use_cached_wrapped_rpc():
@@ -7019,9 +7044,15 @@ async def test_delete_map_context_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        map_management_service.DeleteMapContextConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_map_context_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=map_management_service.DeleteMapContextConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapManagementAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7030,7 +7061,7 @@ async def test_delete_map_context_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7048,11 +7079,6 @@ async def test_delete_map_context_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_map_context_config_async_from_dict():
-    await test_delete_map_context_config_async(request_type=dict)
 
 
 def test_delete_map_context_config_field_headers():
@@ -10325,7 +10351,6 @@ def test_create_map_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10346,7 +10371,6 @@ def test_get_map_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10367,7 +10391,6 @@ def test_list_map_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10390,7 +10413,6 @@ def test_update_map_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10413,7 +10435,6 @@ def test_delete_map_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10436,7 +10457,6 @@ def test_create_style_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10457,7 +10477,6 @@ def test_get_style_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10480,7 +10499,6 @@ def test_list_style_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListStyleConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10503,7 +10521,6 @@ def test_update_style_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10526,7 +10543,6 @@ def test_delete_style_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10549,7 +10565,6 @@ def test_create_map_context_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10572,7 +10587,6 @@ def test_get_map_context_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10595,7 +10609,6 @@ def test_list_map_context_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapContextConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10618,7 +10631,6 @@ def test_update_map_context_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10641,7 +10653,6 @@ def test_delete_map_context_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10688,7 +10699,6 @@ async def test_create_map_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10719,7 +10729,6 @@ async def test_get_map_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10746,7 +10755,6 @@ async def test_list_map_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10779,7 +10787,6 @@ async def test_update_map_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10804,7 +10811,6 @@ async def test_delete_map_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10837,7 +10843,6 @@ async def test_create_style_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10868,7 +10873,6 @@ async def test_get_style_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10897,7 +10901,6 @@ async def test_list_style_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListStyleConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10930,7 +10933,6 @@ async def test_update_style_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10955,7 +10957,6 @@ async def test_delete_style_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10991,7 +10992,6 @@ async def test_create_map_context_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11027,7 +11027,6 @@ async def test_get_map_context_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11056,7 +11055,6 @@ async def test_list_map_context_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapContextConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11092,7 +11090,6 @@ async def test_update_map_context_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -11117,7 +11114,6 @@ async def test_delete_map_context_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13672,7 +13668,6 @@ def test_create_map_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13692,7 +13687,6 @@ def test_get_map_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13712,7 +13706,6 @@ def test_list_map_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13734,7 +13727,6 @@ def test_update_map_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13756,7 +13748,6 @@ def test_delete_map_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13778,7 +13769,6 @@ def test_create_style_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13798,7 +13788,6 @@ def test_get_style_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13820,7 +13809,6 @@ def test_list_style_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListStyleConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13842,7 +13830,6 @@ def test_update_style_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13864,7 +13851,6 @@ def test_delete_style_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteStyleConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13886,7 +13872,6 @@ def test_create_map_context_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.CreateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13908,7 +13893,6 @@ def test_get_map_context_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.GetMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13930,7 +13914,6 @@ def test_list_map_context_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.ListMapContextConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13952,7 +13935,6 @@ def test_update_map_context_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.UpdateMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13974,7 +13956,6 @@ def test_delete_map_context_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = map_management_service.DeleteMapContextConfigRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1437,8 +1453,8 @@ def test_cloud_controls_partner_monitoring_client_create_channel_credentials_fil
 @pytest.mark.parametrize(
     "request_type",
     [
-        violations.ListViolationsRequest,
-        dict,
+        violations.ListViolationsRequest(),
+        {},
     ],
 )
 def test_list_violations(request_type, transport: str = "grpc"):
@@ -1449,7 +1465,7 @@ def test_list_violations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_violations), "__call__") as call:
@@ -1498,12 +1514,13 @@ def test_list_violations_non_empty_request_with_auto_populated_field():
         client.list_violations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.ListViolationsRequest(
+        request_msg = violations.ListViolationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_violations_use_cached_wrapped_rpc():
@@ -1584,9 +1601,14 @@ async def test_list_violations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_violations_async(
-    transport: str = "grpc_asyncio", request_type=violations.ListViolationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        violations.ListViolationsRequest(),
+        {},
+    ],
+)
+async def test_list_violations_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerMonitoringAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1594,7 +1616,7 @@ async def test_list_violations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_violations), "__call__") as call:
@@ -1617,11 +1639,6 @@ async def test_list_violations_async(
     assert isinstance(response, pagers.ListViolationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_violations_async_from_dict():
-    await test_list_violations_async(request_type=dict)
 
 
 def test_list_violations_field_headers():
@@ -1960,8 +1977,8 @@ async def test_list_violations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        violations.GetViolationRequest,
-        dict,
+        violations.GetViolationRequest(),
+        {},
     ],
 )
 def test_get_violation(request_type, transport: str = "grpc"):
@@ -1972,7 +1989,7 @@ def test_get_violation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_violation), "__call__") as call:
@@ -2026,9 +2043,10 @@ def test_get_violation_non_empty_request_with_auto_populated_field():
         client.get_violation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.GetViolationRequest(
+        request_msg = violations.GetViolationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_violation_use_cached_wrapped_rpc():
@@ -2109,9 +2127,14 @@ async def test_get_violation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_violation_async(
-    transport: str = "grpc_asyncio", request_type=violations.GetViolationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        violations.GetViolationRequest(),
+        {},
+    ],
+)
+async def test_get_violation_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerMonitoringAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2119,7 +2142,7 @@ async def test_get_violation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_violation), "__call__") as call:
@@ -2150,11 +2173,6 @@ async def test_get_violation_async(
     assert response.state == violations.Violation.State.RESOLVED
     assert response.non_compliant_org_policy == "non_compliant_org_policy_value"
     assert response.folder_id == 936
-
-
-@pytest.mark.asyncio
-async def test_get_violation_async_from_dict():
-    await test_get_violation_async(request_type=dict)
 
 
 def test_get_violation_field_headers():
@@ -2867,7 +2885,6 @@ def test_list_violations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.ListViolationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2888,7 +2905,6 @@ def test_get_violation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.GetViolationRequest()
-
         assert args[0] == request_msg
 
 
@@ -2930,7 +2946,6 @@ async def test_list_violations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.ListViolationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2962,7 +2977,6 @@ async def test_get_violation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.GetViolationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3280,7 +3294,6 @@ def test_list_violations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.ListViolationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3300,7 +3313,6 @@ def test_get_violation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = violations.GetViolationRequest()
-
         assert args[0] == request_msg
 
 

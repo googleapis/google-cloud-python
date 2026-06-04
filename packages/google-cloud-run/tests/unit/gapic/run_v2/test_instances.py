@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -121,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1280,8 +1296,8 @@ def test_instances_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_instance.CreateInstanceRequest,
-        dict,
+        gcr_instance.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -1292,7 +1308,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1334,10 +1350,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcr_instance.CreateInstanceRequest(
+        request_msg = gcr_instance.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -1428,9 +1445,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio", request_type=gcr_instance.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcr_instance.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1438,7 +1460,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1456,11 +1478,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_flattened():
@@ -1558,8 +1575,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.DeleteInstanceRequest,
-        dict,
+        instance.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -1570,7 +1587,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -1612,10 +1629,11 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.DeleteInstanceRequest(
+        request_msg = instance.DeleteInstanceRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -1706,9 +1724,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio", request_type=instance.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1716,7 +1739,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -1734,11 +1757,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_flattened():
@@ -1826,8 +1844,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.GetInstanceRequest,
-        dict,
+        instance.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1838,7 +1856,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1927,9 +1945,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.GetInstanceRequest(
+        request_msg = instance.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -2010,9 +2029,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=instance.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2020,7 +2044,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -2086,11 +2110,6 @@ async def test_get_instance_async(
     assert response.urls == ["urls_value"]
     assert response.reconciling is True
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_flattened():
@@ -2176,8 +2195,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.ListInstancesRequest,
-        dict,
+        instance.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -2188,7 +2207,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -2233,10 +2252,11 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.ListInstancesRequest(
+        request_msg = instance.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -2317,9 +2337,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=instance.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2327,7 +2352,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -2348,11 +2373,6 @@ async def test_list_instances_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_flattened():
@@ -2627,8 +2647,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.StopInstanceRequest,
-        dict,
+        instance.StopInstanceRequest(),
+        {},
     ],
 )
 def test_stop_instance(request_type, transport: str = "grpc"):
@@ -2639,7 +2659,7 @@ def test_stop_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
@@ -2681,10 +2701,11 @@ def test_stop_instance_non_empty_request_with_auto_populated_field():
         client.stop_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.StopInstanceRequest(
+        request_msg = instance.StopInstanceRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_instance_use_cached_wrapped_rpc():
@@ -2775,9 +2796,14 @@ async def test_stop_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_instance_async(
-    transport: str = "grpc_asyncio", request_type=instance.StopInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.StopInstanceRequest(),
+        {},
+    ],
+)
+async def test_stop_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2785,7 +2811,7 @@ async def test_stop_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
@@ -2803,11 +2829,6 @@ async def test_stop_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_stop_instance_async_from_dict():
-    await test_stop_instance_async(request_type=dict)
 
 
 def test_stop_instance_field_headers():
@@ -2956,8 +2977,8 @@ async def test_stop_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance.StartInstanceRequest,
-        dict,
+        instance.StartInstanceRequest(),
+        {},
     ],
 )
 def test_start_instance(request_type, transport: str = "grpc"):
@@ -2968,7 +2989,7 @@ def test_start_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
@@ -3010,10 +3031,11 @@ def test_start_instance_non_empty_request_with_auto_populated_field():
         client.start_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == instance.StartInstanceRequest(
+        request_msg = instance.StartInstanceRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_instance_use_cached_wrapped_rpc():
@@ -3104,9 +3126,14 @@ async def test_start_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_instance_async(
-    transport: str = "grpc_asyncio", request_type=instance.StartInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.StartInstanceRequest(),
+        {},
+    ],
+)
+async def test_start_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = InstancesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3114,7 +3141,7 @@ async def test_start_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
@@ -3132,11 +3159,6 @@ async def test_start_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_instance_async_from_dict():
-    await test_start_instance_async(request_type=dict)
 
 
 def test_start_instance_field_headers():
@@ -4601,7 +4623,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_instance.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4622,7 +4643,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4643,7 +4663,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4664,7 +4683,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4685,7 +4703,6 @@ def test_stop_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StopInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4706,7 +4723,6 @@ def test_start_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4727,7 +4743,6 @@ def test_create_instance_routing_parameters_request_1_grpc():
         request_msg = gcr_instance.CreateInstanceRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -4755,7 +4770,6 @@ def test_delete_instance_routing_parameters_request_1_grpc():
         request_msg = instance.DeleteInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -4783,7 +4797,6 @@ def test_get_instance_routing_parameters_request_1_grpc():
         request_msg = instance.GetInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -4809,7 +4822,6 @@ def test_list_instances_routing_parameters_request_1_grpc():
         request_msg = instance.ListInstancesRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -4853,7 +4865,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_instance.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4878,7 +4889,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4926,7 +4936,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -4953,7 +4962,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4978,7 +4986,6 @@ async def test_stop_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StopInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5003,7 +5010,6 @@ async def test_start_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -5030,7 +5036,6 @@ async def test_create_instance_routing_parameters_request_1_grpc_asyncio():
         request_msg = gcr_instance.CreateInstanceRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5062,7 +5067,6 @@ async def test_delete_instance_routing_parameters_request_1_grpc_asyncio():
         request_msg = instance.DeleteInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5117,7 +5121,6 @@ async def test_get_instance_routing_parameters_request_1_grpc_asyncio():
         request_msg = instance.GetInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -5151,7 +5154,6 @@ async def test_list_instances_routing_parameters_request_1_grpc_asyncio():
         request_msg = instance.ListInstancesRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6436,7 +6438,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcr_instance.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6456,7 +6457,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6476,7 +6476,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6496,7 +6495,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6516,7 +6514,6 @@ def test_stop_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StopInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6536,7 +6533,6 @@ def test_start_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = instance.StartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6556,7 +6552,6 @@ def test_create_instance_routing_parameters_request_1_rest():
         request_msg = gcr_instance.CreateInstanceRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6583,7 +6578,6 @@ def test_delete_instance_routing_parameters_request_1_rest():
         request_msg = instance.DeleteInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6610,7 +6604,6 @@ def test_get_instance_routing_parameters_request_1_rest():
         request_msg = instance.GetInstanceRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}
@@ -6635,7 +6628,6 @@ def test_list_instances_routing_parameters_request_1_rest():
         request_msg = instance.ListInstancesRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"location": "sample2"}

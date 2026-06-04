@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1354,8 +1370,8 @@ def test_cmek_config_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cmek_config_service.UpdateCmekConfigRequest,
-        dict,
+        cmek_config_service.UpdateCmekConfigRequest(),
+        {},
     ],
 )
 def test_update_cmek_config(request_type, transport: str = "grpc"):
@@ -1366,7 +1382,7 @@ def test_update_cmek_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1409,7 +1425,8 @@ def test_update_cmek_config_non_empty_request_with_auto_populated_field():
         client.update_cmek_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cmek_config_service.UpdateCmekConfigRequest()
+        request_msg = cmek_config_service.UpdateCmekConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_cmek_config_use_cached_wrapped_rpc():
@@ -1504,10 +1521,14 @@ async def test_update_cmek_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cmek_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=cmek_config_service.UpdateCmekConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cmek_config_service.UpdateCmekConfigRequest(),
+        {},
+    ],
+)
+async def test_update_cmek_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CmekConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1515,7 +1536,7 @@ async def test_update_cmek_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,11 +1556,6 @@ async def test_update_cmek_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cmek_config_async_from_dict():
-    await test_update_cmek_config_async(request_type=dict)
 
 
 def test_update_cmek_config_field_headers():
@@ -1696,8 +1712,8 @@ async def test_update_cmek_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cmek_config_service.GetCmekConfigRequest,
-        dict,
+        cmek_config_service.GetCmekConfigRequest(),
+        {},
     ],
 )
 def test_get_cmek_config(request_type, transport: str = "grpc"):
@@ -1708,7 +1724,7 @@ def test_get_cmek_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cmek_config), "__call__") as call:
@@ -1767,9 +1783,10 @@ def test_get_cmek_config_non_empty_request_with_auto_populated_field():
         client.get_cmek_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cmek_config_service.GetCmekConfigRequest(
+        request_msg = cmek_config_service.GetCmekConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cmek_config_use_cached_wrapped_rpc():
@@ -1850,10 +1867,14 @@ async def test_get_cmek_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cmek_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=cmek_config_service.GetCmekConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cmek_config_service.GetCmekConfigRequest(),
+        {},
+    ],
+)
+async def test_get_cmek_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CmekConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1861,7 +1882,7 @@ async def test_get_cmek_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cmek_config), "__call__") as call:
@@ -1897,11 +1918,6 @@ async def test_get_cmek_config_async(
         response.notebooklm_state
         == cmek_config_service.CmekConfig.NotebookLMState.NOTEBOOK_LM_NOT_READY
     )
-
-
-@pytest.mark.asyncio
-async def test_get_cmek_config_async_from_dict():
-    await test_get_cmek_config_async(request_type=dict)
 
 
 def test_get_cmek_config_field_headers():
@@ -2050,8 +2066,8 @@ async def test_get_cmek_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cmek_config_service.ListCmekConfigsRequest,
-        dict,
+        cmek_config_service.ListCmekConfigsRequest(),
+        {},
     ],
 )
 def test_list_cmek_configs(request_type, transport: str = "grpc"):
@@ -2062,7 +2078,7 @@ def test_list_cmek_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2107,9 +2123,10 @@ def test_list_cmek_configs_non_empty_request_with_auto_populated_field():
         client.list_cmek_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cmek_config_service.ListCmekConfigsRequest(
+        request_msg = cmek_config_service.ListCmekConfigsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cmek_configs_use_cached_wrapped_rpc():
@@ -2192,10 +2209,14 @@ async def test_list_cmek_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_cmek_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=cmek_config_service.ListCmekConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cmek_config_service.ListCmekConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_cmek_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = CmekConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2203,7 +2224,7 @@ async def test_list_cmek_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2223,11 +2244,6 @@ async def test_list_cmek_configs_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cmek_config_service.ListCmekConfigsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_cmek_configs_async_from_dict():
-    await test_list_cmek_configs_async(request_type=dict)
 
 
 def test_list_cmek_configs_field_headers():
@@ -2384,8 +2400,8 @@ async def test_list_cmek_configs_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cmek_config_service.DeleteCmekConfigRequest,
-        dict,
+        cmek_config_service.DeleteCmekConfigRequest(),
+        {},
     ],
 )
 def test_delete_cmek_config(request_type, transport: str = "grpc"):
@@ -2396,7 +2412,7 @@ def test_delete_cmek_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2441,9 +2457,10 @@ def test_delete_cmek_config_non_empty_request_with_auto_populated_field():
         client.delete_cmek_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cmek_config_service.DeleteCmekConfigRequest(
+        request_msg = cmek_config_service.DeleteCmekConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cmek_config_use_cached_wrapped_rpc():
@@ -2538,10 +2555,14 @@ async def test_delete_cmek_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cmek_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=cmek_config_service.DeleteCmekConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cmek_config_service.DeleteCmekConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_cmek_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CmekConfigServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2549,7 +2570,7 @@ async def test_delete_cmek_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2569,11 +2590,6 @@ async def test_delete_cmek_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cmek_config_async_from_dict():
-    await test_delete_cmek_config_async(request_type=dict)
 
 
 def test_delete_cmek_config_field_headers():
@@ -3573,7 +3589,6 @@ def test_update_cmek_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.UpdateCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3594,7 +3609,6 @@ def test_get_cmek_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.GetCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3617,7 +3631,6 @@ def test_list_cmek_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.ListCmekConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3640,7 +3653,6 @@ def test_delete_cmek_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.DeleteCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3681,7 +3693,6 @@ async def test_update_cmek_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.UpdateCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3714,7 +3725,6 @@ async def test_get_cmek_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.GetCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -3741,7 +3751,6 @@ async def test_list_cmek_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.ListCmekConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3768,7 +3777,6 @@ async def test_delete_cmek_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.DeleteCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4601,7 +4609,6 @@ def test_update_cmek_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.UpdateCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4621,7 +4628,6 @@ def test_get_cmek_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.GetCmekConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -4643,7 +4649,6 @@ def test_list_cmek_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.ListCmekConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4665,7 +4670,6 @@ def test_delete_cmek_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cmek_config_service.DeleteCmekConfigRequest()
-
         assert args[0] == request_msg
 
 

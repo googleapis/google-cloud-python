@@ -162,9 +162,13 @@ class ErrorReason(proto.Enum):
             An event had 2 or more Google Analytics
             destinations.
         FIELD_VALUE_TOO_LONG (50):
-            The field value is too long.
+            Length of the field value is too long.
+        FIELD_VALUE_TOO_SHORT (106):
+            Length of the field value is too short.
         TOO_MANY_ELEMENTS (51):
             Too many elements in a list in the request.
+        TOO_FEW_ELEMENTS (105):
+            Too few elements in a list in the request.
         ALREADY_EXISTS (52):
             The resource already exists.
         IMMUTABLE_FIELD_FOR_UPDATE (53):
@@ -342,6 +346,13 @@ class ErrorReason(proto.Enum):
         CUSTOM_VARIABLE_NOT_FOUND (120):
             The destination does not have a custom variable with a name
             that matches the specified ``variable``.
+        BASELINE_LOCATION_AUTO_DETECTION_FAILED (122):
+            The
+            [location_auto_detection_enabled][google.ads.datamanager.v1.Baseline.location_auto_detection_enabled]
+            field of the request was set to ``true``, but auto detection
+            of baseline location failed.
+        INSIGHTS_MISSING_FOR_DIMENSION (123):
+            Insights missing for this dimension.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -395,7 +406,9 @@ class ErrorReason(proto.Enum):
     INVALID_REQUEST_ID = 48
     MULTIPLE_DESTINATIONS_FOR_GOOGLE_ANALYTICS_EVENT = 49
     FIELD_VALUE_TOO_LONG = 50
+    FIELD_VALUE_TOO_SHORT = 106
     TOO_MANY_ELEMENTS = 51
+    TOO_FEW_ELEMENTS = 105
     ALREADY_EXISTS = 52
     IMMUTABLE_FIELD_FOR_UPDATE = 53
     INVALID_RESOURCE_NAME = 54
@@ -463,6 +476,8 @@ class ErrorReason(proto.Enum):
     CUSTOM_VARIABLE_NOT_ENABLED = 118
     INVALID_CUSTOM_VARIABLE_VALUE = 119
     CUSTOM_VARIABLE_NOT_FOUND = 120
+    BASELINE_LOCATION_AUTO_DETECTION_FAILED = 122
+    INSIGHTS_MISSING_FOR_DIMENSION = 123
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

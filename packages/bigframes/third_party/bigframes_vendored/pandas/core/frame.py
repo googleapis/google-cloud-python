@@ -66,7 +66,7 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> df.axes[1:]
-            [Index(['col1', 'col2'], dtype='object')]
+            [Index(['col1', 'col2'], dtype='str')]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1963,7 +1963,7 @@ class DataFrame(generic.NDFrame):
             ...     'B': [4, 5, 6],
             ...     })
             >>> df.keys()
-            Index(['A', 'B'], dtype='object')
+            Index(['A', 'B'], dtype='str')
 
         Returns:
             pandas.Index: Info axis.
@@ -4819,7 +4819,8 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame(data).set_index("timestamp_col")
             >>> df.resample(rule="7s").min()
-                                int64_col  int64_too
+                                 int64_col  int64_too
+            timestamp_col
             2021-01-01 12:59:55          0         10
             2021-01-01 13:00:02          2         12
             2021-01-01 13:00:09          9         19
@@ -4832,7 +4833,8 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame(data)
             >>> df.resample(rule="7s", on = "timestamp_col", origin="start").min()
-                                int64_col  int64_too
+                                 int64_col  int64_too
+            timestamp_col
             2021-01-01 13:00:00          0         10
             2021-01-01 13:00:07          7         17
             2021-01-01 13:00:14         14         24
@@ -6633,7 +6635,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.columns
-            Index(['Name', 'Age', 'Location'], dtype='object')
+            Index(['Name', 'Age', 'Location'], dtype='str')
 
         You can also set new labels for columns.
 
@@ -6646,7 +6648,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.columns
-            Index(['NewName', 'NewAge', 'NewLocation'], dtype='object')
+            Index(['NewName', 'NewAge', 'NewLocation'], dtype='str')
 
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

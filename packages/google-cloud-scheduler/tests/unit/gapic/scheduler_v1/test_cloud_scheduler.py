@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1318,8 +1334,8 @@ def test_cloud_scheduler_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.ListJobsRequest,
-        dict,
+        cloudscheduler.ListJobsRequest(),
+        {},
     ],
 )
 def test_list_jobs(request_type, transport: str = "grpc"):
@@ -1330,7 +1346,7 @@ def test_list_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -1375,10 +1391,11 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
         client.list_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ListJobsRequest(
+        request_msg = cloudscheduler.ListJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_jobs_use_cached_wrapped_rpc():
@@ -1457,9 +1474,14 @@ async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_jobs_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.ListJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ListJobsRequest(),
+        {},
+    ],
+)
+async def test_list_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1467,7 +1489,7 @@ async def test_list_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -1488,11 +1510,6 @@ async def test_list_jobs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_jobs_async_from_dict():
-    await test_list_jobs_async(request_type=dict)
 
 
 def test_list_jobs_field_headers():
@@ -1831,8 +1848,8 @@ async def test_list_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.GetJobRequest,
-        dict,
+        cloudscheduler.GetJobRequest(),
+        {},
     ],
 )
 def test_get_job(request_type, transport: str = "grpc"):
@@ -1843,7 +1860,7 @@ def test_get_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1895,9 +1912,10 @@ def test_get_job_non_empty_request_with_auto_populated_field():
         client.get_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.GetJobRequest(
+        request_msg = cloudscheduler.GetJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_job_use_cached_wrapped_rpc():
@@ -1976,9 +1994,14 @@ async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.GetJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.GetJobRequest(),
+        {},
+    ],
+)
+async def test_get_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1986,7 +2009,7 @@ async def test_get_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -2015,11 +2038,6 @@ async def test_get_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_get_job_async_from_dict():
-    await test_get_job_async(request_type=dict)
 
 
 def test_get_job_field_headers():
@@ -2164,8 +2182,8 @@ async def test_get_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.CreateJobRequest,
-        dict,
+        cloudscheduler.CreateJobRequest(),
+        {},
     ],
 )
 def test_create_job(request_type, transport: str = "grpc"):
@@ -2176,7 +2194,7 @@ def test_create_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -2228,9 +2246,10 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         client.create_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.CreateJobRequest(
+        request_msg = cloudscheduler.CreateJobRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_job_use_cached_wrapped_rpc():
@@ -2309,9 +2328,14 @@ async def test_create_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.CreateJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.CreateJobRequest(),
+        {},
+    ],
+)
+async def test_create_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2319,7 +2343,7 @@ async def test_create_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -2348,11 +2372,6 @@ async def test_create_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_create_job_async_from_dict():
-    await test_create_job_async(request_type=dict)
 
 
 def test_create_job_field_headers():
@@ -2507,8 +2526,8 @@ async def test_create_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.UpdateJobRequest,
-        dict,
+        cloudscheduler.UpdateJobRequest(),
+        {},
     ],
 )
 def test_update_job(request_type, transport: str = "grpc"):
@@ -2519,7 +2538,7 @@ def test_update_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -2569,7 +2588,8 @@ def test_update_job_non_empty_request_with_auto_populated_field():
         client.update_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.UpdateJobRequest()
+        request_msg = cloudscheduler.UpdateJobRequest()
+        assert args[0] == request_msg
 
 
 def test_update_job_use_cached_wrapped_rpc():
@@ -2648,9 +2668,14 @@ async def test_update_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_update_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.UpdateJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.UpdateJobRequest(),
+        {},
+    ],
+)
+async def test_update_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2658,7 +2683,7 @@ async def test_update_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -2687,11 +2712,6 @@ async def test_update_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_update_job_async_from_dict():
-    await test_update_job_async(request_type=dict)
 
 
 def test_update_job_field_headers():
@@ -2846,8 +2866,8 @@ async def test_update_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.DeleteJobRequest,
-        dict,
+        cloudscheduler.DeleteJobRequest(),
+        {},
     ],
 )
 def test_delete_job(request_type, transport: str = "grpc"):
@@ -2858,7 +2878,7 @@ def test_delete_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -2899,9 +2919,10 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         client.delete_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.DeleteJobRequest(
+        request_msg = cloudscheduler.DeleteJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_job_use_cached_wrapped_rpc():
@@ -2980,9 +3001,14 @@ async def test_delete_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.DeleteJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.DeleteJobRequest(),
+        {},
+    ],
+)
+async def test_delete_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2990,7 +3016,7 @@ async def test_delete_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -3006,11 +3032,6 @@ async def test_delete_job_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_job_async_from_dict():
-    await test_delete_job_async(request_type=dict)
 
 
 def test_delete_job_field_headers():
@@ -3155,8 +3176,8 @@ async def test_delete_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.PauseJobRequest,
-        dict,
+        cloudscheduler.PauseJobRequest(),
+        {},
     ],
 )
 def test_pause_job(request_type, transport: str = "grpc"):
@@ -3167,7 +3188,7 @@ def test_pause_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
@@ -3219,9 +3240,10 @@ def test_pause_job_non_empty_request_with_auto_populated_field():
         client.pause_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.PauseJobRequest(
+        request_msg = cloudscheduler.PauseJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_job_use_cached_wrapped_rpc():
@@ -3300,9 +3322,14 @@ async def test_pause_job_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_pause_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.PauseJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.PauseJobRequest(),
+        {},
+    ],
+)
+async def test_pause_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3310,7 +3337,7 @@ async def test_pause_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
@@ -3339,11 +3366,6 @@ async def test_pause_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_pause_job_async_from_dict():
-    await test_pause_job_async(request_type=dict)
 
 
 def test_pause_job_field_headers():
@@ -3488,8 +3510,8 @@ async def test_pause_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.ResumeJobRequest,
-        dict,
+        cloudscheduler.ResumeJobRequest(),
+        {},
     ],
 )
 def test_resume_job(request_type, transport: str = "grpc"):
@@ -3500,7 +3522,7 @@ def test_resume_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
@@ -3552,9 +3574,10 @@ def test_resume_job_non_empty_request_with_auto_populated_field():
         client.resume_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ResumeJobRequest(
+        request_msg = cloudscheduler.ResumeJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_job_use_cached_wrapped_rpc():
@@ -3633,9 +3656,14 @@ async def test_resume_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_resume_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.ResumeJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ResumeJobRequest(),
+        {},
+    ],
+)
+async def test_resume_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3643,7 +3671,7 @@ async def test_resume_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
@@ -3672,11 +3700,6 @@ async def test_resume_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_resume_job_async_from_dict():
-    await test_resume_job_async(request_type=dict)
 
 
 def test_resume_job_field_headers():
@@ -3821,8 +3844,8 @@ async def test_resume_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloudscheduler.RunJobRequest,
-        dict,
+        cloudscheduler.RunJobRequest(),
+        {},
     ],
 )
 def test_run_job(request_type, transport: str = "grpc"):
@@ -3833,7 +3856,7 @@ def test_run_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -3885,9 +3908,10 @@ def test_run_job_non_empty_request_with_auto_populated_field():
         client.run_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.RunJobRequest(
+        request_msg = cloudscheduler.RunJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_job_use_cached_wrapped_rpc():
@@ -3966,9 +3990,14 @@ async def test_run_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_run_job_async(
-    transport: str = "grpc_asyncio", request_type=cloudscheduler.RunJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.RunJobRequest(),
+        {},
+    ],
+)
+async def test_run_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudSchedulerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3976,7 +4005,7 @@ async def test_run_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -4005,11 +4034,6 @@ async def test_run_job_async(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-@pytest.mark.asyncio
-async def test_run_job_async_from_dict():
-    await test_run_job_async(request_type=dict)
 
 
 def test_run_job_field_headers():
@@ -5762,7 +5786,6 @@ def test_list_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5783,7 +5806,6 @@ def test_get_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5804,7 +5826,6 @@ def test_create_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5825,7 +5846,6 @@ def test_update_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.UpdateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5846,7 +5866,6 @@ def test_delete_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5867,7 +5886,6 @@ def test_pause_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.PauseJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5888,7 +5906,6 @@ def test_resume_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ResumeJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5909,7 +5926,6 @@ def test_run_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.RunJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5950,7 +5966,6 @@ async def test_list_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5981,7 +5996,6 @@ async def test_get_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6012,7 +6026,6 @@ async def test_create_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6043,7 +6056,6 @@ async def test_update_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.UpdateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6066,7 +6078,6 @@ async def test_delete_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6097,7 +6108,6 @@ async def test_pause_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.PauseJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6128,7 +6138,6 @@ async def test_resume_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ResumeJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -6159,7 +6168,6 @@ async def test_run_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.RunJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7613,7 +7621,6 @@ def test_list_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7633,7 +7640,6 @@ def test_get_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7653,7 +7659,6 @@ def test_create_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7673,7 +7678,6 @@ def test_update_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.UpdateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7693,7 +7697,6 @@ def test_delete_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7713,7 +7716,6 @@ def test_pause_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.PauseJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7733,7 +7735,6 @@ def test_resume_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.ResumeJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7753,7 +7754,6 @@ def test_run_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloudscheduler.RunJobRequest()
-
         assert args[0] == request_msg
 
 

@@ -122,7 +122,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 # Assume this is being called in the user thread, so we can access
                 # this thread-local config.
                 job_config=bigquery.QueryJobConfig(
-                    labels=bigframes.options.compute.extra_query_labels
+                    labels=dict(bigframes.options.compute.extra_query_labels)
                 ),
                 location=self.location,
                 project=None,

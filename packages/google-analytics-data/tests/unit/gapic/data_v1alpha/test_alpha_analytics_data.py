@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -112,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1362,8 +1378,8 @@ def test_alpha_analytics_data_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.RunFunnelReportRequest,
-        dict,
+        analytics_data_api.RunFunnelReportRequest(),
+        {},
     ],
 )
 def test_run_funnel_report(request_type, transport: str = "grpc"):
@@ -1374,7 +1390,7 @@ def test_run_funnel_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1422,9 +1438,10 @@ def test_run_funnel_report_non_empty_request_with_auto_populated_field():
         client.run_funnel_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunFunnelReportRequest(
+        request_msg = analytics_data_api.RunFunnelReportRequest(
             property="property_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_funnel_report_use_cached_wrapped_rpc():
@@ -1507,10 +1524,14 @@ async def test_run_funnel_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_run_funnel_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.RunFunnelReportRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.RunFunnelReportRequest(),
+        {},
+    ],
+)
+async def test_run_funnel_report_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1518,7 +1539,7 @@ async def test_run_funnel_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1541,11 +1562,6 @@ async def test_run_funnel_report_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunFunnelReportResponse)
     assert response.kind == "kind_value"
-
-
-@pytest.mark.asyncio
-async def test_run_funnel_report_async_from_dict():
-    await test_run_funnel_report_async(request_type=dict)
 
 
 def test_run_funnel_report_field_headers():
@@ -1616,8 +1632,8 @@ async def test_run_funnel_report_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.CreateAudienceListRequest,
-        dict,
+        analytics_data_api.CreateAudienceListRequest(),
+        {},
     ],
 )
 def test_create_audience_list(request_type, transport: str = "grpc"):
@@ -1628,7 +1644,7 @@ def test_create_audience_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1673,9 +1689,10 @@ def test_create_audience_list_non_empty_request_with_auto_populated_field():
         client.create_audience_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CreateAudienceListRequest(
+        request_msg = analytics_data_api.CreateAudienceListRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_audience_list_use_cached_wrapped_rpc():
@@ -1770,9 +1787,15 @@ async def test_create_audience_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.CreateAudienceListRequest(),
+        {},
+    ],
+)
 async def test_create_audience_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.CreateAudienceListRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1781,7 +1804,7 @@ async def test_create_audience_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1801,11 +1824,6 @@ async def test_create_audience_list_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_audience_list_async_from_dict():
-    await test_create_audience_list_async(request_type=dict)
 
 
 def test_create_audience_list_field_headers():
@@ -1972,8 +1990,8 @@ async def test_create_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.QueryAudienceListRequest,
-        dict,
+        analytics_data_api.QueryAudienceListRequest(),
+        {},
     ],
 )
 def test_query_audience_list(request_type, transport: str = "grpc"):
@@ -1984,7 +2002,7 @@ def test_query_audience_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2032,9 +2050,10 @@ def test_query_audience_list_non_empty_request_with_auto_populated_field():
         client.query_audience_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.QueryAudienceListRequest(
+        request_msg = analytics_data_api.QueryAudienceListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_audience_list_use_cached_wrapped_rpc():
@@ -2119,10 +2138,14 @@ async def test_query_audience_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_audience_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.QueryAudienceListRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.QueryAudienceListRequest(),
+        {},
+    ],
+)
+async def test_query_audience_list_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2130,7 +2153,7 @@ async def test_query_audience_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2153,11 +2176,6 @@ async def test_query_audience_list_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.QueryAudienceListResponse)
     assert response.row_count == 992
-
-
-@pytest.mark.asyncio
-async def test_query_audience_list_async_from_dict():
-    await test_query_audience_list_async(request_type=dict)
 
 
 def test_query_audience_list_field_headers():
@@ -2314,8 +2332,8 @@ async def test_query_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.GetAudienceListRequest,
-        dict,
+        analytics_data_api.GetAudienceListRequest(),
+        {},
     ],
 )
 def test_get_audience_list(request_type, transport: str = "grpc"):
@@ -2326,7 +2344,7 @@ def test_get_audience_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2390,9 +2408,10 @@ def test_get_audience_list_non_empty_request_with_auto_populated_field():
         client.get_audience_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetAudienceListRequest(
+        request_msg = analytics_data_api.GetAudienceListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_audience_list_use_cached_wrapped_rpc():
@@ -2475,10 +2494,14 @@ async def test_get_audience_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_audience_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.GetAudienceListRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetAudienceListRequest(),
+        {},
+    ],
+)
+async def test_get_audience_list_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2486,7 +2509,7 @@ async def test_get_audience_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2525,11 +2548,6 @@ async def test_get_audience_list_async(
     assert response.error_message == "error_message_value"
     assert math.isclose(response.percentage_completed, 0.2106, rel_tol=1e-6)
     assert response.recurring_audience_list == "recurring_audience_list_value"
-
-
-@pytest.mark.asyncio
-async def test_get_audience_list_async_from_dict():
-    await test_get_audience_list_async(request_type=dict)
 
 
 def test_get_audience_list_field_headers():
@@ -2686,8 +2704,8 @@ async def test_get_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.ListAudienceListsRequest,
-        dict,
+        analytics_data_api.ListAudienceListsRequest(),
+        {},
     ],
 )
 def test_list_audience_lists(request_type, transport: str = "grpc"):
@@ -2698,7 +2716,7 @@ def test_list_audience_lists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2747,10 +2765,11 @@ def test_list_audience_lists_non_empty_request_with_auto_populated_field():
         client.list_audience_lists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.ListAudienceListsRequest(
+        request_msg = analytics_data_api.ListAudienceListsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_audience_lists_use_cached_wrapped_rpc():
@@ -2835,10 +2854,14 @@ async def test_list_audience_lists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_audience_lists_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.ListAudienceListsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.ListAudienceListsRequest(),
+        {},
+    ],
+)
+async def test_list_audience_lists_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2846,7 +2869,7 @@ async def test_list_audience_lists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2869,11 +2892,6 @@ async def test_list_audience_lists_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAudienceListsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_audience_lists_async_from_dict():
-    await test_list_audience_lists_async(request_type=dict)
 
 
 def test_list_audience_lists_field_headers():
@@ -3228,8 +3246,8 @@ async def test_list_audience_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.CreateRecurringAudienceListRequest,
-        dict,
+        analytics_data_api.CreateRecurringAudienceListRequest(),
+        {},
     ],
 )
 def test_create_recurring_audience_list(request_type, transport: str = "grpc"):
@@ -3240,7 +3258,7 @@ def test_create_recurring_audience_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3296,9 +3314,10 @@ def test_create_recurring_audience_list_non_empty_request_with_auto_populated_fi
         client.create_recurring_audience_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CreateRecurringAudienceListRequest(
+        request_msg = analytics_data_api.CreateRecurringAudienceListRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_recurring_audience_list_use_cached_wrapped_rpc():
@@ -3384,9 +3403,15 @@ async def test_create_recurring_audience_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.CreateRecurringAudienceListRequest(),
+        {},
+    ],
+)
 async def test_create_recurring_audience_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.CreateRecurringAudienceListRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3395,7 +3420,7 @@ async def test_create_recurring_audience_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3426,11 +3451,6 @@ async def test_create_recurring_audience_list_async(
     assert response.audience_display_name == "audience_display_name_value"
     assert response.active_days_remaining == 2213
     assert response.audience_lists == ["audience_lists_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_recurring_audience_list_async_from_dict():
-    await test_create_recurring_audience_list_async(request_type=dict)
 
 
 def test_create_recurring_audience_list_field_headers():
@@ -3605,8 +3625,8 @@ async def test_create_recurring_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.GetRecurringAudienceListRequest,
-        dict,
+        analytics_data_api.GetRecurringAudienceListRequest(),
+        {},
     ],
 )
 def test_get_recurring_audience_list(request_type, transport: str = "grpc"):
@@ -3617,7 +3637,7 @@ def test_get_recurring_audience_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3673,9 +3693,10 @@ def test_get_recurring_audience_list_non_empty_request_with_auto_populated_field
         client.get_recurring_audience_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetRecurringAudienceListRequest(
+        request_msg = analytics_data_api.GetRecurringAudienceListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_recurring_audience_list_use_cached_wrapped_rpc():
@@ -3761,9 +3782,15 @@ async def test_get_recurring_audience_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetRecurringAudienceListRequest(),
+        {},
+    ],
+)
 async def test_get_recurring_audience_list_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.GetRecurringAudienceListRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3772,7 +3799,7 @@ async def test_get_recurring_audience_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3803,11 +3830,6 @@ async def test_get_recurring_audience_list_async(
     assert response.audience_display_name == "audience_display_name_value"
     assert response.active_days_remaining == 2213
     assert response.audience_lists == ["audience_lists_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_recurring_audience_list_async_from_dict():
-    await test_get_recurring_audience_list_async(request_type=dict)
 
 
 def test_get_recurring_audience_list_field_headers():
@@ -3964,8 +3986,8 @@ async def test_get_recurring_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.ListRecurringAudienceListsRequest,
-        dict,
+        analytics_data_api.ListRecurringAudienceListsRequest(),
+        {},
     ],
 )
 def test_list_recurring_audience_lists(request_type, transport: str = "grpc"):
@@ -3976,7 +3998,7 @@ def test_list_recurring_audience_lists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4025,10 +4047,11 @@ def test_list_recurring_audience_lists_non_empty_request_with_auto_populated_fie
         client.list_recurring_audience_lists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.ListRecurringAudienceListsRequest(
+        request_msg = analytics_data_api.ListRecurringAudienceListsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_recurring_audience_lists_use_cached_wrapped_rpc():
@@ -4114,9 +4137,15 @@ async def test_list_recurring_audience_lists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.ListRecurringAudienceListsRequest(),
+        {},
+    ],
+)
 async def test_list_recurring_audience_lists_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.ListRecurringAudienceListsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4125,7 +4154,7 @@ async def test_list_recurring_audience_lists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4148,11 +4177,6 @@ async def test_list_recurring_audience_lists_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRecurringAudienceListsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_recurring_audience_lists_async_from_dict():
-    await test_list_recurring_audience_lists_async(request_type=dict)
 
 
 def test_list_recurring_audience_lists_field_headers():
@@ -4515,8 +4539,8 @@ async def test_list_recurring_audience_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.GetPropertyQuotasSnapshotRequest,
-        dict,
+        analytics_data_api.GetPropertyQuotasSnapshotRequest(),
+        {},
     ],
 )
 def test_get_property_quotas_snapshot(request_type, transport: str = "grpc"):
@@ -4527,7 +4551,7 @@ def test_get_property_quotas_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4575,9 +4599,10 @@ def test_get_property_quotas_snapshot_non_empty_request_with_auto_populated_fiel
         client.get_property_quotas_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetPropertyQuotasSnapshotRequest(
+        request_msg = analytics_data_api.GetPropertyQuotasSnapshotRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_property_quotas_snapshot_use_cached_wrapped_rpc():
@@ -4663,9 +4688,15 @@ async def test_get_property_quotas_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetPropertyQuotasSnapshotRequest(),
+        {},
+    ],
+)
 async def test_get_property_quotas_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.GetPropertyQuotasSnapshotRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4674,7 +4705,7 @@ async def test_get_property_quotas_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4697,11 +4728,6 @@ async def test_get_property_quotas_snapshot_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.PropertyQuotasSnapshot)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_property_quotas_snapshot_async_from_dict():
-    await test_get_property_quotas_snapshot_async(request_type=dict)
 
 
 def test_get_property_quotas_snapshot_field_headers():
@@ -4858,8 +4884,8 @@ async def test_get_property_quotas_snapshot_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.CreateReportTaskRequest,
-        dict,
+        analytics_data_api.CreateReportTaskRequest(),
+        {},
     ],
 )
 def test_create_report_task(request_type, transport: str = "grpc"):
@@ -4870,7 +4896,7 @@ def test_create_report_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4915,9 +4941,10 @@ def test_create_report_task_non_empty_request_with_auto_populated_field():
         client.create_report_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.CreateReportTaskRequest(
+        request_msg = analytics_data_api.CreateReportTaskRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_report_task_use_cached_wrapped_rpc():
@@ -5012,10 +5039,14 @@ async def test_create_report_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_report_task_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.CreateReportTaskRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.CreateReportTaskRequest(),
+        {},
+    ],
+)
+async def test_create_report_task_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5023,7 +5054,7 @@ async def test_create_report_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5043,11 +5074,6 @@ async def test_create_report_task_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_report_task_async_from_dict():
-    await test_create_report_task_async(request_type=dict)
 
 
 def test_create_report_task_field_headers():
@@ -5214,8 +5240,8 @@ async def test_create_report_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.QueryReportTaskRequest,
-        dict,
+        analytics_data_api.QueryReportTaskRequest(),
+        {},
     ],
 )
 def test_query_report_task(request_type, transport: str = "grpc"):
@@ -5226,7 +5252,7 @@ def test_query_report_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5274,9 +5300,10 @@ def test_query_report_task_non_empty_request_with_auto_populated_field():
         client.query_report_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.QueryReportTaskRequest(
+        request_msg = analytics_data_api.QueryReportTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_report_task_use_cached_wrapped_rpc():
@@ -5359,10 +5386,14 @@ async def test_query_report_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_report_task_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.QueryReportTaskRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.QueryReportTaskRequest(),
+        {},
+    ],
+)
+async def test_query_report_task_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5370,7 +5401,7 @@ async def test_query_report_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5393,11 +5424,6 @@ async def test_query_report_task_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.QueryReportTaskResponse)
     assert response.row_count == 992
-
-
-@pytest.mark.asyncio
-async def test_query_report_task_async_from_dict():
-    await test_query_report_task_async(request_type=dict)
 
 
 def test_query_report_task_field_headers():
@@ -5554,8 +5580,8 @@ async def test_query_report_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.GetReportTaskRequest,
-        dict,
+        analytics_data_api.GetReportTaskRequest(),
+        {},
     ],
 )
 def test_get_report_task(request_type, transport: str = "grpc"):
@@ -5566,7 +5592,7 @@ def test_get_report_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_report_task), "__call__") as call:
@@ -5610,9 +5636,10 @@ def test_get_report_task_non_empty_request_with_auto_populated_field():
         client.get_report_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetReportTaskRequest(
+        request_msg = analytics_data_api.GetReportTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_report_task_use_cached_wrapped_rpc():
@@ -5693,10 +5720,14 @@ async def test_get_report_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_report_task_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.GetReportTaskRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetReportTaskRequest(),
+        {},
+    ],
+)
+async def test_get_report_task_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5704,7 +5735,7 @@ async def test_get_report_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_report_task), "__call__") as call:
@@ -5725,11 +5756,6 @@ async def test_get_report_task_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.ReportTask)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_report_task_async_from_dict():
-    await test_get_report_task_async(request_type=dict)
 
 
 def test_get_report_task_field_headers():
@@ -5878,8 +5904,8 @@ async def test_get_report_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.ListReportTasksRequest,
-        dict,
+        analytics_data_api.ListReportTasksRequest(),
+        {},
     ],
 )
 def test_list_report_tasks(request_type, transport: str = "grpc"):
@@ -5890,7 +5916,7 @@ def test_list_report_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5939,10 +5965,11 @@ def test_list_report_tasks_non_empty_request_with_auto_populated_field():
         client.list_report_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.ListReportTasksRequest(
+        request_msg = analytics_data_api.ListReportTasksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_report_tasks_use_cached_wrapped_rpc():
@@ -6025,10 +6052,14 @@ async def test_list_report_tasks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_report_tasks_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_data_api.ListReportTasksRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.ListReportTasksRequest(),
+        {},
+    ],
+)
+async def test_list_report_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6036,7 +6067,7 @@ async def test_list_report_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6059,11 +6090,6 @@ async def test_list_report_tasks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportTasksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_report_tasks_async_from_dict():
-    await test_list_report_tasks_async(request_type=dict)
 
 
 def test_list_report_tasks_field_headers():
@@ -6418,8 +6444,8 @@ async def test_list_report_tasks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.RunReportRequest,
-        dict,
+        analytics_data_api.RunReportRequest(),
+        {},
     ],
 )
 def test_run_report(request_type, transport: str = "grpc"):
@@ -6430,7 +6456,7 @@ def test_run_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
@@ -6480,10 +6506,11 @@ def test_run_report_non_empty_request_with_auto_populated_field():
         client.run_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.RunReportRequest(
+        request_msg = analytics_data_api.RunReportRequest(
             property="property_value",
             currency_code="currency_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_report_use_cached_wrapped_rpc():
@@ -6562,9 +6589,14 @@ async def test_run_report_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_run_report_async(
-    transport: str = "grpc_asyncio", request_type=analytics_data_api.RunReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.RunReportRequest(),
+        {},
+    ],
+)
+async def test_run_report_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6572,7 +6604,7 @@ async def test_run_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
@@ -6597,11 +6629,6 @@ async def test_run_report_async(
     assert response.row_count == 992
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_run_report_async_from_dict():
-    await test_run_report_async(request_type=dict)
 
 
 def test_run_report_field_headers():
@@ -6668,8 +6695,8 @@ async def test_run_report_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_data_api.GetMetadataRequest,
-        dict,
+        analytics_data_api.GetMetadataRequest(),
+        {},
     ],
 )
 def test_get_metadata(request_type, transport: str = "grpc"):
@@ -6680,7 +6707,7 @@ def test_get_metadata(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
@@ -6724,9 +6751,10 @@ def test_get_metadata_non_empty_request_with_auto_populated_field():
         client.get_metadata(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_data_api.GetMetadataRequest(
+        request_msg = analytics_data_api.GetMetadataRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_metadata_use_cached_wrapped_rpc():
@@ -6807,9 +6835,14 @@ async def test_get_metadata_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_metadata_async(
-    transport: str = "grpc_asyncio", request_type=analytics_data_api.GetMetadataRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_data_api.GetMetadataRequest(),
+        {},
+    ],
+)
+async def test_get_metadata_async(request_type, transport: str = "grpc_asyncio"):
     client = AlphaAnalyticsDataAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6817,7 +6850,7 @@ async def test_get_metadata_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
@@ -6838,11 +6871,6 @@ async def test_get_metadata_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.Metadata)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_metadata_async_from_dict():
-    await test_get_metadata_async(request_type=dict)
 
 
 def test_get_metadata_field_headers():
@@ -9902,7 +9930,6 @@ def test_run_funnel_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunFunnelReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -9925,7 +9952,6 @@ def test_create_audience_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -9948,7 +9974,6 @@ def test_query_audience_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -9971,7 +9996,6 @@ def test_get_audience_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -9994,7 +10018,6 @@ def test_list_audience_lists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10017,7 +10040,6 @@ def test_create_recurring_audience_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10040,7 +10062,6 @@ def test_get_recurring_audience_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10063,7 +10084,6 @@ def test_list_recurring_audience_lists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListRecurringAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10086,7 +10106,6 @@ def test_get_property_quotas_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetPropertyQuotasSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -10109,7 +10128,6 @@ def test_create_report_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10132,7 +10150,6 @@ def test_query_report_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10153,7 +10170,6 @@ def test_get_report_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10176,7 +10192,6 @@ def test_list_report_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListReportTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -10197,7 +10212,6 @@ def test_run_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -10218,7 +10232,6 @@ def test_get_metadata_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetMetadataRequest()
-
         assert args[0] == request_msg
 
 
@@ -10261,7 +10274,6 @@ async def test_run_funnel_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunFunnelReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -10288,7 +10300,6 @@ async def test_create_audience_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10317,7 +10328,6 @@ async def test_query_audience_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10354,7 +10364,6 @@ async def test_get_audience_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10383,7 +10392,6 @@ async def test_list_audience_lists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10416,7 +10424,6 @@ async def test_create_recurring_audience_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10449,7 +10456,6 @@ async def test_get_recurring_audience_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -10478,7 +10484,6 @@ async def test_list_recurring_audience_lists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListRecurringAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10507,7 +10512,6 @@ async def test_get_property_quotas_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetPropertyQuotasSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -10534,7 +10538,6 @@ async def test_create_report_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10563,7 +10566,6 @@ async def test_query_report_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10590,7 +10592,6 @@ async def test_get_report_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -10619,7 +10620,6 @@ async def test_list_report_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListReportTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -10648,7 +10648,6 @@ async def test_run_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -10675,7 +10674,6 @@ async def test_get_metadata_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetMetadataRequest()
-
         assert args[0] == request_msg
 
 
@@ -13105,7 +13103,6 @@ def test_run_funnel_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunFunnelReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -13127,7 +13124,6 @@ def test_create_audience_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -13149,7 +13145,6 @@ def test_query_audience_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -13171,7 +13166,6 @@ def test_get_audience_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -13193,7 +13187,6 @@ def test_list_audience_lists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13215,7 +13208,6 @@ def test_create_recurring_audience_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -13237,7 +13229,6 @@ def test_get_recurring_audience_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetRecurringAudienceListRequest()
-
         assert args[0] == request_msg
 
 
@@ -13259,7 +13250,6 @@ def test_list_recurring_audience_lists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListRecurringAudienceListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13281,7 +13271,6 @@ def test_get_property_quotas_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetPropertyQuotasSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -13303,7 +13292,6 @@ def test_create_report_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.CreateReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13325,7 +13313,6 @@ def test_query_report_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.QueryReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13345,7 +13332,6 @@ def test_get_report_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetReportTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13367,7 +13353,6 @@ def test_list_report_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.ListReportTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13387,7 +13372,6 @@ def test_run_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.RunReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -13407,7 +13391,6 @@ def test_get_metadata_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = analytics_data_api.GetMetadataRequest()
-
         assert args[0] == request_msg
 
 
