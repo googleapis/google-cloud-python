@@ -716,7 +716,9 @@ def test_lookup_regional_access_boundary_non_retryable_error(status_code):
 
 
 @mock.patch("time.sleep", return_value=None)
-def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error(mock_sleep):
+def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error(
+    mock_sleep,
+):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -747,7 +749,9 @@ def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_erro
 
 
 @mock.patch("time.sleep", return_value=None)
-def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds(mock_sleep):
+def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds(
+    mock_sleep,
+):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
