@@ -325,20 +325,20 @@ def test__parse_bool_env(monkeypatch, env_value, default, expected):
 
 def test__is_bucket_metadata_disabled(monkeypatch):
     # Test default (not set)
-    monkeypatch.delenv("DISABLE_BUCKET_MD_IN_OTEL", raising=False)
+    monkeypatch.delenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", raising=False)
     assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
 
     # Test truthy
-    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "true")
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "true")
     assert _opentelemetry_tracing._is_bucket_metadata_disabled()
 
-    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "1")
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "1")
     assert _opentelemetry_tracing._is_bucket_metadata_disabled()
 
     # Test falsy
-    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "false")
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "false")
     assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
 
-    monkeypatch.setenv("DISABLE_BUCKET_MD_IN_OTEL", "0")
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", "0")
     assert not _opentelemetry_tracing._is_bucket_metadata_disabled()
 

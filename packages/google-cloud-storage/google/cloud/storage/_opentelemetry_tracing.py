@@ -27,7 +27,7 @@ from google.cloud.storage.retry import ConditionalRetryPolicy
 
 ENABLE_OTEL_TRACES_ENV_VAR = "ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"
 _DEFAULT_ENABLE_OTEL_TRACES_VALUE = False
-DISABLE_BUCKET_MD_ENV_VAR = "DISABLE_BUCKET_MD_IN_OTEL"
+DISABLE_BUCKET_MD_ENV_VAR = "DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA"
 
 
 def _parse_bool_env(name: str, default: bool = False) -> bool:
