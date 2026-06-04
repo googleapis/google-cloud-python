@@ -165,13 +165,22 @@ class TestAgentIdentityUtils:
         assert result == str(cert_path)
 
     @mock.patch("time.sleep")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_retry(
-        self, mock_sleep, tmpdir, monkeypatch
+        self, mock_exists, mock_sleep, tmpdir, monkeypatch
     ):
         config_path = tmpdir.join("config.json")
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
         )
+
+        # Simulate workload env (well_known_dir exists) to avoid fail-fast
+        def exists_side_effect(path):
+            if path == "/var/run/secrets/workload-spiffe-credentials":
+                return True
+            return False
+
+        mock_exists.side_effect = exists_side_effect
 
         # File doesn't exist initially
         with pytest.raises(exceptions.RefreshError):
@@ -180,13 +189,22 @@ class TestAgentIdentityUtils:
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
     @mock.patch("time.sleep")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_failure(
-        self, mock_sleep, tmpdir, monkeypatch
+        self, mock_exists, mock_sleep, tmpdir, monkeypatch
     ):
         config_path = tmpdir.join("non_existent_config.json")
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
         )
+
+        # Simulate workload env (well_known_dir exists) to avoid fail-fast
+        def exists_side_effect(path):
+            if path == "/var/run/secrets/workload-spiffe-credentials":
+                return True
+            return False
+
+        mock_exists.side_effect = exists_side_effect
 
         with pytest.raises(exceptions.RefreshError) as excinfo:
             _agent_identity_utils.get_agent_identity_certificate_path()
@@ -197,6 +215,19 @@ class TestAgentIdentityUtils:
             in str(excinfo.value)
         )
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
+
+    def test_get_agent_identity_certificate_path_workstation_fail_fast(
+        self, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("non_existent_config.json")
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        # On a workstation, well_known_dir does not exist, and config file is missing.
+        # It should fail-fast and return None immediately.
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
 
     @mock.patch("time.sleep")
     @mock.patch("os.path.exists")
