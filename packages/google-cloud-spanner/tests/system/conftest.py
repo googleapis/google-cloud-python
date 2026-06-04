@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import os
 import time
 
 import pytest
@@ -24,6 +25,10 @@ from google.cloud.spanner_admin_database_v1.types.backup import (
 )
 
 from . import _helpers
+
+# Disable builtin metrics for system tests by default to avoid 401 errors
+# from the background thread exporting to Cloud Monitoring without permissions.
+os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
 
 
 @pytest.fixture(scope="function")
