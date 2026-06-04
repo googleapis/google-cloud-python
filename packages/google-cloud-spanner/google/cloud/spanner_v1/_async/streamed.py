@@ -129,16 +129,35 @@ class StreamedResultSet(object):
         decoders = self._decoders
         width = len(self.fields)
         index = len(self._current_row)
-        for value in values:
-            if self._lazy_decode:
-                self._current_row.append(value)
-            else:
-                self._current_row.append(_parse_nullable(value, decoders[index]))
-            index += 1
-            if index == width:
-                self._rows.append(self._current_row)
-                self._current_row = []
-                index = 0
+        current_row = self._current_row
+        rows = self._rows
+
+        current_row_append = current_row.append
+        rows_append = rows.append
+
+        if self._lazy_decode:
+            for value in values:
+                current_row_append(value)
+                index += 1
+                if index == width:
+                    rows_append(current_row)
+                    current_row = []
+                    current_row_append = current_row.append
+                    index = 0
+        else:
+            for value in values:
+                if value.HasField("null_value"):
+                    current_row_append(None)
+                else:
+                    current_row_append(decoders[index](value))
+                index += 1
+                if index == width:
+                    rows_append(current_row)
+                    current_row = []
+                    current_row_append = current_row.append
+                    index = 0
+
+        self._current_row = current_row
 
     @CrossSync.convert
     async def _consume_next(self):

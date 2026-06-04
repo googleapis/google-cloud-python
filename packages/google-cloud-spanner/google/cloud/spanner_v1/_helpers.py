@@ -19,6 +19,8 @@ import datetime
 import decimal
 import logging
 import math
+import operator
+import re
 import threading
 import time
 import uuid
@@ -26,7 +28,6 @@ from contextlib import contextmanager
 
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
-from google.cloud._helpers import _date_from_iso8601_date
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import DecodeError, Message
 from google.protobuf.struct_pb2 import ListValue, Value
@@ -490,13 +491,13 @@ def _get_type_decoder(field_type, field_name, column_info=None):
 
     type_code = field_type.code
     if type_code == TypeCode.STRING:
-        return _parse_string
+        return operator.attrgetter("string_value")
     elif type_code == TypeCode.BYTES:
-        return _parse_bytes
+        return lambda value_pb: value_pb.string_value.encode("utf8")
     elif type_code == TypeCode.BOOL:
-        return _parse_bool
+        return operator.attrgetter("bool_value")
     elif type_code == TypeCode.INT64:
-        return _parse_int64
+        return lambda value_pb: int(value_pb.string_value)
     elif type_code == TypeCode.FLOAT64:
         return _parse_float
     elif type_code == TypeCode.FLOAT32:
@@ -577,12 +578,40 @@ def _parse_float(value_pb) -> float:
 
 
 def _parse_date(value_pb):
-    return _date_from_iso8601_date(value_pb.string_value)
+    return datetime.date.fromisoformat(value_pb.string_value)
+
+
+_RFC3339_NANOS = re.compile(
+    r"^(?P<no_fraction>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})"
+    r"(?:\.(?P<nanos>\d{1,9}))?"
+    r"(?:Z|[+-]\d{2}:\d{2})$"
+)
 
 
 def _parse_timestamp(value_pb):
-    DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
-    return DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
+    match = _RFC3339_NANOS.match(value_pb.string_value)
+    if match is None:
+        raise ValueError(
+            "Timestamp: {} does not match pattern".format(value_pb.string_value)
+        )
+    no_fraction = match.group("no_fraction")
+    bare = datetime.datetime.fromisoformat(no_fraction)
+    fraction = match.group("nanos")
+    if fraction is None:
+        nanos = 0
+    else:
+        scale = 9 - len(fraction)
+        nanos = int(fraction) * (10**scale)
+    return datetime_helpers.DatetimeWithNanoseconds(
+        bare.year,
+        bare.month,
+        bare.day,
+        bare.hour,
+        bare.minute,
+        bare.second,
+        nanosecond=nanos,
+        tzinfo=datetime.timezone.utc,
+    )
 
 
 def _parse_numeric(value_pb):
