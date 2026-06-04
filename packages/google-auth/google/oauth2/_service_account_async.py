@@ -22,6 +22,7 @@ credentials file google.oauth2.service_account
 
 """
 
+from google.auth import _regional_access_boundary_utils
 from google.auth import _credentials_async as credentials_async
 from google.auth import _helpers
 from google.oauth2 import _client_async
@@ -71,7 +72,6 @@ class Credentials(
     def __setstate__(self, state):
         """Restores the credential state and ensures the async refresh manager is attached."""
         super().__setstate__(state)
-        from google.auth import _regional_access_boundary_utils
 
         self._rab_manager.refresh_manager = (
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()

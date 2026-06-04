@@ -46,6 +46,7 @@ change in minor releases.
 from google.auth import _credentials_async
 from google.auth import _helpers
 from google.auth import jwt
+from google.auth import _regional_access_boundary_utils
 
 
 def encode(signer, payload, header=None, key_id=None):
@@ -148,7 +149,6 @@ class Credentials(
     def __setstate__(self, state):
         """Restores the credential state and ensures the async refresh manager is attached."""
         super().__setstate__(state)
-        from google.auth import _regional_access_boundary_utils
 
         self._rab_manager.refresh_manager = (
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
