@@ -82,16 +82,34 @@ def sqlglot_engine(
 
 
 @pytest.fixture(scope="session")
-def substrait_datafusion_engine(
-) -> semi_executor.SemiExecutor:
-    return substrait_executor.SubstraitExecutor(
-        consumer = substrait_executor.DataFusionSubstraitConsumer()
-    )
+def substrait_datafusion_engine() -> semi_executor.SemiExecutor:
+    return substrait_executor.SubstraitExecutor.default_for_engine("datafusion")
 
 
-@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot", "substrait-datafusion"])
+@pytest.fixture(scope="session")
+def substrait_acero_engine() -> semi_executor.SemiExecutor:
+    return substrait_executor.SubstraitExecutor.default_for_engine("acero")
+
+
+@pytest.fixture(
+    scope="session",
+    params=[
+        "pyarrow",
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+)
 def engine(
-    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine, substrait_datafusion_engine
+    request,
+    pyarrow_engine,
+    polars_engine,
+    bq_engine,
+    sqlglot_engine,
+    substrait_datafusion_engine,
+    substrait_acero_engine,
 ) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return pyarrow_engine
@@ -103,6 +121,8 @@ def engine(
         return sqlglot_engine
     if request.param == "substrait-datafusion":
         return substrait_datafusion_engine
+    if request.param == "substrait-acero":
+        return substrait_acero_engine
     raise ValueError(f"Unrecognized param: {request.param}")
 
 

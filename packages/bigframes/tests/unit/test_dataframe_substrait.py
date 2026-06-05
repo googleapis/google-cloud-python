@@ -48,9 +48,16 @@ DATA_DIR = CURRENT_DIR.parent / "data"
 @pytest.fixture(scope="module", autouse=True)
 def session() -> Generator[bigframes.Session, None, None]:
     import bigframes.core.global_session
+    import bigframes.session.substrait_executor as substrait_executor
     from bigframes.testing import substrait_session
 
-    session = substrait_session.TestSession()
+    executor = substrait_session.SubstraitTestExecutor(
+        substrait_executor.AceroSubstraitConsumer()
+    )
+    # executor = substrait_session.SubstraitTestExecutor(
+    #    substrait_executor.DataFusionSubstraitConsumer()
+    # )
+    session = substrait_session.TestSession(executor)
     with bigframes.core.global_session._GlobalSessionContext(session):
         yield session
 
@@ -2867,7 +2874,7 @@ def test_df_melt_default(scalars_dfs):
     pd_result = scalars_pandas_df[columns].melt()
 
     # Pandas produces int64 index, Bigframes produces Int64 (nullable)
-    pd.testing.assert_frame_equal(
+    assert_frame_equal(
         bf_result,
         pd_result,
         check_index_type=False,
@@ -4496,22 +4503,28 @@ def test_recursion_limit_unit(scalars_df_index):
 def test_dataframe_popvar(scalars_dfs):
     scalars_df_index, scalars_pandas_df_index = scalars_dfs
     col_names = ["int64_too", "float64_col", "int64_col"]
-    from bigframes.operations import aggregations as agg_ops
-    from bigframes.core import agg_expressions
     import bigframes.core.expression as ex
-    
+    from bigframes.core import agg_expressions
+    from bigframes.operations import aggregations as agg_ops
+
     col_ids = [scalars_df_index._block.resolve_label_exact(col) for col in col_names]
-    aggs = [agg_expressions.UnaryAggregation(agg_ops.PopVarOp(), ex.deref(col)) for col in col_ids]
-    
-    agg_block = scalars_df_index._block.aggregate(aggs, column_labels=pandas.Index(col_names))
-    
+    aggs = [
+        agg_expressions.UnaryAggregation(agg_ops.PopVarOp(), ex.deref(col))
+        for col in col_ids
+    ]
+
+    agg_block = scalars_df_index._block.aggregate(
+        aggs, column_labels=pandas.Index(col_names)
+    )
+
     import bigframes.dataframe as bfd
+
     bf_result = bfd.DataFrame(agg_block).to_pandas()
     bf_result = bf_result.iloc[0]
-    
+
     pd_result = scalars_pandas_df_index[col_names].var(ddof=0)
     pd_result.index = pd_result.index.astype("string[pyarrow]")
-    
+
     pandas.testing.assert_series_equal(
         pd_result,
         bf_result,

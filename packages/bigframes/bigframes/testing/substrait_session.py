@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-import dataclasses
+import asyncio
 import weakref
 from typing import TYPE_CHECKING, Union
 
@@ -31,11 +31,13 @@ if TYPE_CHECKING:
     import bigframes.core
 
 
-@dataclasses.dataclass
 class SubstraitTestExecutor(bigframes.session.executor.Executor):
-    def __init__(self):
-        from bigframes.session.substrait_executor import DataFusionSubstraitConsumer, SubstraitExecutor
-        self.executor = SubstraitExecutor(DataFusionSubstraitConsumer())
+    def __init__(
+        self, consumer: bigframes.session.substrait_executor.SubstraitConsumer
+    ):
+        from bigframes.session.substrait_executor import SubstraitExecutor
+
+        self.executor = SubstraitExecutor(consumer)
 
     def execute(
         self,
@@ -46,11 +48,15 @@ class SubstraitTestExecutor(bigframes.session.executor.Executor):
             raise ValueError(
                 f"SubstraitTestExecutor does not support destination spec: {execution_spec.destination_spec}"
             )
-        
-        result = self.executor.execute(array_value.node, ordered=True, peek=execution_spec.peek)
+
+        result = asyncio.run(
+            self.executor.execute(
+                array_value.node, ordered=True, peek=execution_spec.peek
+            )
+        )
         if result is None:
             raise NotImplementedError("SubstraitExecutor cannot execute this plan")
-            
+
         return result
 
     def cached(
@@ -63,7 +69,7 @@ class SubstraitTestExecutor(bigframes.session.executor.Executor):
 
 
 class TestSession(bigframes.session.Session):
-    def __init__(self):
+    def __init__(self, executor: SubstraitTestExecutor):
         self._location = None  # type: ignore
         self._bq_kms_key_name = None  # type: ignore
         self._clients_provider = None  # type: ignore
@@ -85,7 +91,7 @@ class TestSession(bigframes.session.Session):
         self._metrics = bigframes.session.metrics.ExecutionMetrics()
         self._function_session = None  # type: ignore
         self._temp_storage_manager = None  # type: ignore
-        self._executor = SubstraitTestExecutor()
+        self._executor = executor
         self._loader = None  # type: ignore
 
     def read_pandas(self, pandas_dataframe, write_engine="default"):
