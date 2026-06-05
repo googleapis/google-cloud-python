@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 from functools import singledispatchmethod
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence
 
 import pandas as pd
 import substrait.algebra_pb2 as algebra_pb2
@@ -38,7 +38,11 @@ class SubstraitCompiler:
     Compiles BigFrameNode plans to Substrait schema (JSON representation).
     """
 
-    def __init__(self, duration_type: Literal["interval_day", "int"], use_precision_types: bool = True):
+    def __init__(
+        self,
+        duration_type: Literal["interval_day", "int"],
+        use_precision_types: bool = True,
+    ):
         self._duration_type = duration_type
         self._use_precision_types = use_precision_types
 
@@ -1109,7 +1113,9 @@ class SubstraitCompiler:
         elif dtype == bigframes.dtypes.TIME_DTYPE:
             if self._use_precision_types:
                 # type_variation_reference 1 is for time64, precision 6 is for microseconds
-                return {"precision_time": {"precision": 6, "type_variation_reference": 1}}
+                return {
+                    "precision_time": {"precision": 6, "type_variation_reference": 1}
+                }
             else:
                 return {"time": {}}
         elif dtype in (
@@ -1125,9 +1131,7 @@ class SubstraitCompiler:
             }
         elif dtype == bigframes.dtypes.TIMEDELTA_DTYPE:
             if self._duration_type == "interval_day":
-                return {
-                    "interval_day": {"precision": 6, "type_variation_reference": 1}
-                }
+                return {"interval_day": {"precision": 6, "type_variation_reference": 1}}
             else:
                 return {"i64": {}}
         elif bigframes.dtypes.is_struct_like(dtype):
