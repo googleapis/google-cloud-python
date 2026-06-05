@@ -74,6 +74,7 @@ from google.cloud.bigtable.data.exceptions import (
 )
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
+    _format_execute_query_view_params,
     _to_param_types,
 )
 from google.cloud.bigtable.data.execute_query.metadata import (
@@ -717,6 +718,7 @@ class BigtableDataClientAsync(ClientWithProject):
         *,
         parameters: dict[str, ExecuteQueryValueType] | None = None,
         parameter_types: dict[str, SqlType.Type] | None = None,
+        view_parameters: dict[str, str] | None = None,
         app_profile_id: str | None = None,
         operation_timeout: float = 600,
         attempt_timeout: float | None = 20,
@@ -758,6 +760,8 @@ class BigtableDataClientAsync(ClientWithProject):
                 Required to contain entries only for parameters whose type cannot be
                 detected automatically (i.e. the value can be None, an empty list or
                 an empty dict).
+            view_parameters: Dictionary with values for all view parameters. Currently only
+                string values are supported.
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             operation_timeout: the time budget for the entire executeQuery operation, in seconds.
@@ -883,12 +887,14 @@ class BigtableDataClientAsync(ClientWithProject):
         retryable_excs = [_get_error_type(e) for e in retryable_errors]
 
         pb_params = _format_execute_query_params(parameters, parameter_types)
+        pb_view_params = _format_execute_query_view_params(view_parameters)
 
         request_body = {
             "instance_name": instance_name,
             "app_profile_id": app_profile_id,
             "prepared_query": prepare_result.prepared_query,
             "params": pb_params,
+            "view_parameters": pb_view_params,
         }
         operation_timeout, attempt_timeout = _align_timeouts(
             operation_timeout, attempt_timeout

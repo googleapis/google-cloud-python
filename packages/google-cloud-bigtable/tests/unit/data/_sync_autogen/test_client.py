@@ -2973,6 +2973,42 @@ class TestExecuteQuery:
         assert execute_query_mock.call_count == 1
         assert prepare_mock.call_count == 1
 
+    def test_execute_query_with_view_parameters(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        values = [
+            *chunked_responses(2, str_val("test2"), int_val(9), token=b"r2"),
+        ]
+        execute_query_mock.return_value = self._make_gapic_stream(values)
+        query_str = f"SELECT a, b FROM {self.TABLE_NAME} WHERE user_id = VIEW_PARAMETERS('user_id')"
+        result = client.execute_query(
+            query_str,
+            self.INSTANCE_NAME,
+            view_parameters={"user_id": "alice"},
+        )
+        results = [r for r in result]
+        assert len(results) == 1
+        assert results[0]["a"] == "test2"
+        assert results[0]["b"] == 9
+        assert execute_query_mock.call_count == 1
+        assert prepare_mock.call_count == 1
+        assert prepare_mock.call_args[1]["request"]["query"] == query_str
+
+        request = execute_query_mock.call_args[0][0]
+        assert "user_id" in request.view_parameters
+        assert request.view_parameters["user_id"].string_value == "alice"
+
+    def test_execute_query_with_view_parameters_invalid_type(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        with pytest.raises(TypeError) as e:
+            client.execute_query(
+                f"SELECT a, b FROM {self.TABLE_NAME}",
+                self.INSTANCE_NAME,
+                view_parameters={"user_id": 123},
+            )
+        assert "View parameter user_id must be a string, got int" in str(e.value)
+
     def test_execute_query_error_before_metadata(
         self, client, execute_query_mock, prepare_mock
     ):

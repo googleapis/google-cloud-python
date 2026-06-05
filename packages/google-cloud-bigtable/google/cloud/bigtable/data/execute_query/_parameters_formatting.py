@@ -23,6 +23,27 @@ from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueTyp
 from google.cloud.bigtable_v2.types.data import Value
 
 
+def _format_execute_query_view_params(
+    view_parameters: Optional[Dict[str, str]],
+) -> Dict[str, Value]:
+    """
+    Takes a dictionary of view_param_name -> view_param_value (string) and formats
+    them into a dictionary of string-typed Value objects.
+    """
+    if not view_parameters:
+        return {}
+
+    result_values = {}
+    for key, value in view_parameters.items():
+        if not isinstance(value, str):
+            raise TypeError(
+                f"View parameter {key} must be a string, got {type(value).__name__}"
+            )
+        result_values[key] = Value(string_value=value)
+
+    return result_values
+
+
 def _format_execute_query_params(
     params: Optional[Dict[str, ExecuteQueryValueType]],
     parameter_types: Optional[Dict[str, SqlType.Type]],
