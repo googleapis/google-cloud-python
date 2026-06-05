@@ -53,13 +53,13 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 
-from google.developers.knowledge_v1.services.developer_knowledge import (
+from google.developer_knowledge_v1.services.developer_knowledge import (
     DeveloperKnowledgeAsyncClient,
     DeveloperKnowledgeClient,
     pagers,
     transports,
 )
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.types import developerknowledge
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1278,7 +1278,7 @@ def test_developer_knowledge_client_client_options_credentials_file(
 
 def test_developer_knowledge_client_client_options_from_dict():
     with mock.patch(
-        "google.developers.knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeGrpcTransport.__init__"
+        "google.developer_knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = DeveloperKnowledgeClient(
@@ -3614,7 +3614,7 @@ def test_developer_knowledge_base_transport_error():
 def test_developer_knowledge_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.developers.knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport.__init__"
+        "google.developer_knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.DeveloperKnowledgeTransport(
@@ -3651,7 +3651,7 @@ def test_developer_knowledge_base_transport_with_credentials_file():
             google.auth, "load_credentials_from_file", autospec=True
         ) as load_creds,
         mock.patch(
-            "google.developers.knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport._prep_wrapped_messages"
+            "google.developer_knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport._prep_wrapped_messages"
         ) as Transport,
     ):
         Transport.return_value = None
@@ -3673,7 +3673,7 @@ def test_developer_knowledge_base_transport_with_adc():
     with (
         mock.patch.object(google.auth, "default", autospec=True) as adc,
         mock.patch(
-            "google.developers.knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport._prep_wrapped_messages"
+            "google.developer_knowledge_v1.services.developer_knowledge.transports.DeveloperKnowledgeTransport._prep_wrapped_messages"
         ) as Transport,
     ):
         Transport.return_value = None

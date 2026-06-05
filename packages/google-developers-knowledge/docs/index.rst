@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    knowledge_v1/services_
-    knowledge_v1/types_
+    developer_knowledge_v1/services_
+    developer_knowledge_v1/types_
 
 
 Changelog

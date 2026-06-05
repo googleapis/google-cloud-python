@@ -28,7 +28,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.types import developerknowledge
 
 from .base import DEFAULT_CLIENT_INFO, DeveloperKnowledgeTransport
 

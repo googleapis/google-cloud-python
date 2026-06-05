@@ -29,7 +29,7 @@ description = "Google Developers Knowledge API client library"
 version = None
 
 with open(
-    os.path.join(package_root, "google/developers/knowledge/gapic_version.py")
+    os.path.join(package_root, "google/developer_knowledge/gapic_version.py")
 ) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1

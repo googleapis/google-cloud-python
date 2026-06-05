@@ -17,7 +17,7 @@ import sys
 
 import google.api_core as api_core
 
-from google.developers.knowledge_v1 import gapic_version as package_version
+from google.developer_knowledge_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -41,8 +41,8 @@ from .types.developerknowledge import (
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
 ):  # pragma: NO COVER
-    api_core.check_python_version("google.developers.knowledge_v1")  # type: ignore
-    api_core.check_dependency_versions("google.developers.knowledge_v1")  # type: ignore
+    api_core.check_python_version("google.developer_knowledge_v1")  # type: ignore
+    api_core.check_dependency_versions("google.developer_knowledge_v1")  # type: ignore
 else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
@@ -50,7 +50,7 @@ else:  # pragma: NO COVER
         import warnings
 
         _py_version_str = sys.version.split()[0]
-        _package_label = "google.developers.knowledge_v1"
+        _package_label = "google.developer_knowledge_v1"
         if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "

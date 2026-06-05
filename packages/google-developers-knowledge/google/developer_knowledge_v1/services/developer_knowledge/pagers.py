@@ -38,14 +38,14 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.types import developerknowledge
 
 
 class SearchDocumentChunksPager:
     """A pager for iterating through ``search_document_chunks`` requests.
 
     This class thinly wraps an initial
-    :class:`google.developers.knowledge_v1.types.SearchDocumentChunksResponse` object, and
+    :class:`google.developer_knowledge_v1.types.SearchDocumentChunksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``results`` field.
 
@@ -54,7 +54,7 @@ class SearchDocumentChunksPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`google.developers.knowledge_v1.types.SearchDocumentChunksResponse`
+    All the usual :class:`google.developer_knowledge_v1.types.SearchDocumentChunksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -74,9 +74,9 @@ class SearchDocumentChunksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.developers.knowledge_v1.types.SearchDocumentChunksRequest):
+            request (google.developer_knowledge_v1.types.SearchDocumentChunksRequest):
                 The initial request object.
-            response (google.developers.knowledge_v1.types.SearchDocumentChunksResponse):
+            response (google.developer_knowledge_v1.types.SearchDocumentChunksResponse):
                 The initial response object.
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
@@ -121,7 +121,7 @@ class SearchDocumentChunksAsyncPager:
     """A pager for iterating through ``search_document_chunks`` requests.
 
     This class thinly wraps an initial
-    :class:`google.developers.knowledge_v1.types.SearchDocumentChunksResponse` object, and
+    :class:`google.developer_knowledge_v1.types.SearchDocumentChunksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``results`` field.
 
@@ -130,7 +130,7 @@ class SearchDocumentChunksAsyncPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`google.developers.knowledge_v1.types.SearchDocumentChunksResponse`
+    All the usual :class:`google.developer_knowledge_v1.types.SearchDocumentChunksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -152,9 +152,9 @@ class SearchDocumentChunksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.developers.knowledge_v1.types.SearchDocumentChunksRequest):
+            request (google.developer_knowledge_v1.types.SearchDocumentChunksRequest):
                 The initial request object.
-            response (google.developers.knowledge_v1.types.SearchDocumentChunksResponse):
+            response (google.developer_knowledge_v1.types.SearchDocumentChunksResponse):
                 The initial response object.
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.

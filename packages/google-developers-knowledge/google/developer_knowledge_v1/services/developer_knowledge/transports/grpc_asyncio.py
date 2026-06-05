@@ -31,7 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.types import developerknowledge
 
 from .base import DEFAULT_CLIENT_INFO, DeveloperKnowledgeTransport
 from .grpc import DeveloperKnowledgeGrpcTransport

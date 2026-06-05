@@ -4,8 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/developers/knowledge/__init__.py
-    google/developers/knowledge/gapic_version.py
+    google/developer_knowledge/__init__.py
+    google/developer_knowledge/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

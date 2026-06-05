@@ -13,18 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.developers.knowledge import gapic_version as package_version
+from google.developer_knowledge import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.developers.knowledge_v1.services.developer_knowledge.async_client import (
+from google.developer_knowledge_v1.services.developer_knowledge.async_client import (
     DeveloperKnowledgeAsyncClient,
 )
-from google.developers.knowledge_v1.services.developer_knowledge.client import (
+from google.developer_knowledge_v1.services.developer_knowledge.client import (
     DeveloperKnowledgeClient,
 )
-from google.developers.knowledge_v1.types.developerknowledge import (
+from google.developer_knowledge_v1.types.developerknowledge import (
     BatchGetDocumentsRequest,
     BatchGetDocumentsResponse,
     Document,

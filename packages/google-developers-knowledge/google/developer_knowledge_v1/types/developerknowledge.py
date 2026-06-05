@@ -105,7 +105,7 @@ class Document(proto.Message):
             Output only. Represents the timestamp when
             the content or metadata of the document was last
             updated.
-        view (google.developers.knowledge_v1.types.DocumentView):
+        view (google.developer_knowledge_v1.types.DocumentView):
             Output only. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
             of the document.
@@ -239,7 +239,7 @@ class SearchDocumentChunksResponse(proto.Message):
     [DeveloperKnowledge.SearchDocumentChunks][google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks].
 
     Attributes:
-        results (MutableSequence[google.developers.knowledge_v1.types.DocumentChunk]):
+        results (MutableSequence[google.developer_knowledge_v1.types.DocumentChunk]):
             Contains the search results for the given query. Each
             [DocumentChunk][google.developers.knowledge.v1.DocumentChunk]
             in this list contains a snippet of content relevant to the
@@ -280,7 +280,7 @@ class GetDocumentRequest(proto.Message):
             Required. Specifies the name of the document to retrieve.
             Format: ``documents/{uri_without_scheme}`` Example:
             ``documents/docs.cloud.google.com/storage/docs/creating-buckets``
-        view (google.developers.knowledge_v1.types.DocumentView):
+        view (google.developer_knowledge_v1.types.DocumentView):
             Optional. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
             of the document. If unspecified,
@@ -312,7 +312,7 @@ class BatchGetDocumentsRequest(proto.Message):
 
             Format: ``documents/{uri_without_scheme}`` Example:
             ``documents/docs.cloud.google.com/storage/docs/creating-buckets``
-        view (google.developers.knowledge_v1.types.DocumentView):
+        view (google.developer_knowledge_v1.types.DocumentView):
             Optional. Specifies the
             [DocumentView][google.developers.knowledge.v1.DocumentView]
             of the document. If unspecified,
@@ -336,7 +336,7 @@ class BatchGetDocumentsResponse(proto.Message):
     [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments].
 
     Attributes:
-        documents (MutableSequence[google.developers.knowledge_v1.types.Document]):
+        documents (MutableSequence[google.developer_knowledge_v1.types.Document]):
             Contains the documents requested.
     """
 
@@ -371,7 +371,7 @@ class DocumentChunk(proto.Message):
         content (str):
             Output only. Contains the content of the
             document chunk.
-        document (google.developers.knowledge_v1.types.Document):
+        document (google.developer_knowledge_v1.types.Document):
             Output only. Represents metadata about the
             [Document][google.developers.knowledge.v1.Document] this
             chunk is from. The

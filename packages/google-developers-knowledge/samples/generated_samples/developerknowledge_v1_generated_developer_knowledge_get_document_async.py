@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.developers import knowledge_v1
+from google import developer_knowledge_v1
 
 
 async def sample_get_document():
     # Create a client
-    client = knowledge_v1.DeveloperKnowledgeAsyncClient()
+    client = developer_knowledge_v1.DeveloperKnowledgeAsyncClient()
 
     # Initialize request argument(s)
-    request = knowledge_v1.GetDocumentRequest(
+    request = developer_knowledge_v1.GetDocumentRequest(
         name="name_value",
     )
 

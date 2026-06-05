@@ -45,7 +45,7 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.developers.knowledge_v1 import gapic_version as package_version
+from google.developer_knowledge_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,8 +63,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
-from google.developers.knowledge_v1.services.developer_knowledge import pagers
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.services.developer_knowledge import pagers
+from google.developer_knowledge_v1.types import developerknowledge
 
 from .transports.base import DEFAULT_CLIENT_INFO, DeveloperKnowledgeTransport
 from .transports.grpc import DeveloperKnowledgeGrpcTransport
@@ -776,14 +776,14 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.developers import knowledge_v1
+            from google import developer_knowledge_v1
 
             def sample_search_document_chunks():
                 # Create a client
-                client = knowledge_v1.DeveloperKnowledgeClient()
+                client = developer_knowledge_v1.DeveloperKnowledgeClient()
 
                 # Initialize request argument(s)
-                request = knowledge_v1.SearchDocumentChunksRequest(
+                request = developer_knowledge_v1.SearchDocumentChunksRequest(
                     query="query_value",
                 )
 
@@ -795,7 +795,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.developers.knowledge_v1.types.SearchDocumentChunksRequest, dict]):
+            request (Union[google.developer_knowledge_v1.types.SearchDocumentChunksRequest, dict]):
                 The request object. Request message for
                 [DeveloperKnowledge.SearchDocumentChunks][google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -807,7 +807,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.developers.knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksPager:
+            google.developer_knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksPager:
                 Response message for
                    [DeveloperKnowledge.SearchDocumentChunks][google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks].
 
@@ -871,14 +871,14 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.developers import knowledge_v1
+            from google import developer_knowledge_v1
 
             def sample_get_document():
                 # Create a client
-                client = knowledge_v1.DeveloperKnowledgeClient()
+                client = developer_knowledge_v1.DeveloperKnowledgeClient()
 
                 # Initialize request argument(s)
-                request = knowledge_v1.GetDocumentRequest(
+                request = developer_knowledge_v1.GetDocumentRequest(
                     name="name_value",
                 )
 
@@ -889,7 +889,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.developers.knowledge_v1.types.GetDocumentRequest, dict]):
+            request (Union[google.developer_knowledge_v1.types.GetDocumentRequest, dict]):
                 The request object. Request message for
                 [DeveloperKnowledge.GetDocument][google.developers.knowledge.v1.DeveloperKnowledge.GetDocument].
             name (str):
@@ -910,7 +910,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.developers.knowledge_v1.types.Document:
+            google.developer_knowledge_v1.types.Document:
                 A Document represents a piece of
                 content from the Developer Knowledge
                 corpus.
@@ -984,14 +984,14 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.developers import knowledge_v1
+            from google import developer_knowledge_v1
 
             def sample_batch_get_documents():
                 # Create a client
-                client = knowledge_v1.DeveloperKnowledgeClient()
+                client = developer_knowledge_v1.DeveloperKnowledgeClient()
 
                 # Initialize request argument(s)
-                request = knowledge_v1.BatchGetDocumentsRequest(
+                request = developer_knowledge_v1.BatchGetDocumentsRequest(
                     names=['names_value1', 'names_value2'],
                 )
 
@@ -1002,7 +1002,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.developers.knowledge_v1.types.BatchGetDocumentsRequest, dict]):
+            request (Union[google.developer_knowledge_v1.types.BatchGetDocumentsRequest, dict]):
                 The request object. Request message for
                 [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1014,7 +1014,7 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.developers.knowledge_v1.types.BatchGetDocumentsResponse:
+            google.developer_knowledge_v1.types.BatchGetDocumentsResponse:
                 Response message for
                    [DeveloperKnowledge.BatchGetDocuments][google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments].
 

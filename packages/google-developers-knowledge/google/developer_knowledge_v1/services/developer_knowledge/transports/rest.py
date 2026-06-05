@@ -28,7 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.developers.knowledge_v1.types import developerknowledge
+from google.developer_knowledge_v1.types import developerknowledge
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDeveloperKnowledgeRestTransport
