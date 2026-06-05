@@ -27,7 +27,6 @@ from google.cloud.storage.blob import (
     ObjectCustomContextPayload,
 )
 
-
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
     reason="Zonal system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",

@@ -329,6 +329,11 @@ class WorkstationsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.push_credentials: gapic_v1.method.wrap_method(
+                self.push_credentials,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
@@ -579,6 +584,15 @@ class WorkstationsTransport(abc.ABC):
             workstations.GenerateAccessTokenResponse,
             Awaitable[workstations.GenerateAccessTokenResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def push_credentials(
+        self,
+    ) -> Callable[
+        [workstations.PushCredentialsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
