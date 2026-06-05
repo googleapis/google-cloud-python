@@ -16,7 +16,7 @@
 
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 
 function render({ model, el }: { model: any, el: HTMLElement }) {
   // Create a container for the Angular app
@@ -26,6 +26,7 @@ function render({ model, el }: { model: any, el: HTMLElement }) {
   const appConfig: ApplicationConfig = {
     providers: [
       provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
       { provide: 'ANYWIDGET_MODEL', useValue: model }
     ]
   };
