@@ -229,6 +229,143 @@ class TestCredentials(object):
         # Credentials should now be valid.
         assert credentials.valid
 
+    @pytest.mark.asyncio
+    async def test_before_request_triggers_rab_refresh(self):
+        credentials = self.make_credentials()
+        credentials.token = "tok"
+
+        request = mock.AsyncMock(spec=["transport.Request"])
+        headers1 = {}
+
+        with mock.patch.object(
+            credentials,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+        ) as mock_lookup, mock.patch.object(
+            credentials,
+            "_is_regional_access_boundary_lookup_required",
+            return_value=True,
+        ):
+            mock_lookup.return_value = {
+                "locations": ["us-central1", "europe-west1"],
+                "encodedLocations": "0xA30",
+            }
+
+            # The first request triggers a background refresh and returns immediately.
+            await credentials.before_request(
+                request, "GET", "https://storage.googleapis.com/bucket", headers1
+            )
+            assert "x-allowed-locations" not in headers1
+
+            # Wait for the background task to finish and update the cache.
+            await credentials._rab_manager.refresh_manager._worker_task
+            mock_lookup.assert_called_once_with(request)
+
+            # The second request retrieves the locations from the cache.
+            headers2 = {}
+            await credentials.before_request(
+                request, "GET", "https://storage.googleapis.com/bucket", headers2
+            )
+            assert headers2["x-allowed-locations"] == "0xA30"
+
+    @pytest.mark.asyncio
+    async def test_before_request_rab_refresh_failure_ignored(self):
+        credentials = self.make_credentials()
+        credentials.token = "tok"
+
+        request = mock.AsyncMock(spec=["transport.Request"])
+        headers = {}
+
+        with mock.patch.object(
+            credentials,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+            side_effect=Exception("Transport failed"),
+        ) as mock_lookup, mock.patch.object(
+            credentials,
+            "_is_regional_access_boundary_lookup_required",
+            return_value=True,
+        ):
+            # Any transport/lookup failure must be caught gracefully during refresh.
+            await credentials.before_request(
+                request, "GET", "https://storage.googleapis.com/bucket", headers
+            )
+
+            # Wait for the background task to finish.
+            await credentials._rab_manager.refresh_manager._worker_task
+
+            mock_lookup.assert_called_once_with(request)
+            assert "x-allowed-locations" not in headers
+
+    @pytest.mark.asyncio
+    async def test_before_request_triggers_blocking_rab_refresh(self):
+        credentials = self.make_credentials()
+        credentials.token = "tok"
+        credentials._set_blocking_regional_access_boundary_lookup()
+
+        request = mock.AsyncMock(spec=["transport.Request"])
+        headers = {}
+
+        with mock.patch.object(
+            credentials,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+        ) as mock_lookup, mock.patch.object(
+            credentials,
+            "_is_regional_access_boundary_lookup_required",
+            return_value=True,
+        ):
+            mock_lookup.return_value = {
+                "locations": ["us-central1", "europe-west1"],
+                "encodedLocations": "0xA30",
+            }
+
+            # When blocking lookup is enabled, the first request awaits the lookup sequentially.
+            await credentials.before_request(
+                request, "GET", "https://storage.googleapis.com/bucket", headers
+            )
+
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert headers["x-allowed-locations"] == "0xA30"
+
+    @pytest.mark.asyncio
+    async def test_maybe_start_regional_access_boundary_refresh_async_invalid_url(self):
+        credentials = self.make_credentials()
+        request = mock.create_autospec(transport.Request)
+
+        # Verifies that passing invalid/non-string URLs asynchronously fails safe without crashing.
+        await credentials._maybe_start_regional_access_boundary_refresh_async(
+            request, url=None
+        )
+        await credentials._maybe_start_regional_access_boundary_refresh_async(
+            request, url=123
+        )
+        await credentials._maybe_start_regional_access_boundary_refresh_async(
+            request, url=object()
+        )
+
+    def test_unpickle_old_credentials_without_rab(self):
+        from google.auth import _regional_access_boundary_utils
+
+        credentials = self.make_credentials()
+        old_state = credentials.__dict__.copy()
+        if "_rab_manager" in old_state:
+            del old_state["_rab_manager"]
+        if "_use_non_blocking_refresh" in old_state:
+            del old_state["_use_non_blocking_refresh"]
+        if "_refresh_worker" in old_state:
+            del old_state["_refresh_worker"]
+
+        new_instance = type(credentials).__new__(type(credentials))
+        new_instance.__setstate__(old_state)
+
+        # Verify the manager was correctly restored with the async refresh manager!
+        assert hasattr(new_instance, "_rab_manager")
+        assert isinstance(
+            new_instance._rab_manager.refresh_manager,
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager,
+        )
+
 
 class TestIDTokenCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
