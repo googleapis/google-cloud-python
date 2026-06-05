@@ -2225,11 +2225,11 @@ libraries:
       - path: google/developers/knowledge/v1
     copyright_year: "2026"
     python:
-      default_version: v1
       opt_args_by_api:
         google/developers/knowledge/v1:
           - python-gapic-namespace=google
           - python-gapic-name=developer_knowledge
+      default_version: v1
   - name: google-devicesandservices-health
     version: 0.0.0
     apis:
