@@ -907,6 +907,9 @@ class _DataApiTarget(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=True
+            ),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -993,15 +996,26 @@ class _DataApiTarget(abc.ABC):
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
         query = ReadRowsQuery(row_keys=row_key, row_filter=row_filter, limit=1)
-        results = self.read_rows(
+        operation_timeout, attempt_timeout = _get_timeouts(
+            operation_timeout, attempt_timeout, self
+        )
+        retryable_excs = _get_retryable_errors(retryable_errors, self)
+        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
+            self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            retryable_errors=retryable_errors,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=False
+            ),
+            retryable_exceptions=retryable_excs,
         )
-        if len(results) == 0:
+        results_generator = row_merger.start_operation()
+        try:
+            results = [a for a in results_generator]
+            return results[0]
+        except IndexError:
             return None
-        return results[0]
 
     def read_rows_sharded(
         self,
@@ -1125,19 +1139,17 @@ class _DataApiTarget(abc.ABC):
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error"""
-        if row_key is None:
-            raise ValueError("row_key must be string or bytes")
         strip_filter = StripValueTransformerFilter(flag=True)
         limit_filter = CellsRowLimitFilter(1)
         chain_filter = RowFilterChain(filters=[limit_filter, strip_filter])
-        query = ReadRowsQuery(row_keys=row_key, limit=1, row_filter=chain_filter)
-        results = self.read_rows(
-            query,
+        result = self.read_row(
+            row_key=row_key,
+            row_filter=chain_filter,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
             retryable_errors=retryable_errors,
         )
-        return len(results) > 0
+        return result is not None
 
     def sample_row_keys(
         self,
@@ -1375,6 +1387,7 @@ class _DataApiTarget(abc.ABC):
             mutation_entries,
             operation_timeout,
             attempt_timeout,
+            metric=self._metrics.create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
         )
         operation.start()

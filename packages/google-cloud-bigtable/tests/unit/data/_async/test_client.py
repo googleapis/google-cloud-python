@@ -2010,9 +2010,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 row = await table.read_row(
@@ -2021,16 +2033,17 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
                 assert query.row_ranges == []
                 assert query.limit == 1
+                assert args[1] is table
 
     @CrossSync.pytest
     async def test_read_row_w_filter(self):
@@ -2038,14 +2051,24 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
-                mock_filter = mock.Mock()
-                expected_filter = {"filter": "mock filter"}
-                mock_filter._to_dict.return_value = expected_filter
+                expected_filter = mock.Mock()
                 row = await table.read_row(
                     row_key,
                     operation_timeout=expected_op_timeout,
@@ -2053,11 +2076,11 @@ class TestReadRowsAsync:
                     row_filter=expected_filter,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
@@ -2071,9 +2094,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: []
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        if False:
+                            yield
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = []
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 result = await table.read_row(
@@ -2082,8 +2117,8 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert result is None
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
                 assert isinstance(args[0], ReadRowsQuery)
@@ -2106,22 +2141,36 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: return_value
-                expected_op_timeout = 1
-                expected_req_timeout = 2
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        for item in return_value:
+                            yield item
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = return_value
+                mock_op_constructor.return_value = mock_op
+                expected_op_timeout = 2
+                expected_req_timeout = 1
                 result = await table.row_exists(
                     row_key,
                     operation_timeout=expected_op_timeout,
                     attempt_timeout=expected_req_timeout,
                 )
                 assert expected_result == result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert isinstance(args[0], ReadRowsQuery)
+                query = args[0]
+                assert isinstance(query, ReadRowsQuery)
+                assert query.row_keys == [row_key]
+                assert query.limit == 1
                 expected_filter = {
                     "chain": {
                         "filters": [
@@ -2130,10 +2179,6 @@ class TestReadRowsAsync:
                         ]
                     }
                 }
-                query = args[0]
-                assert query.row_keys == [row_key]
-                assert query.row_ranges == []
-                assert query.limit == 1
                 assert query.filter._to_dict() == expected_filter
 
 
