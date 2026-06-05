@@ -495,6 +495,8 @@ def _get_type_decoder(field_type, field_name, column_info=None):
     """
 
     type_code = field_type.code
+    # Note: STRING and BOOL use operator.attrgetter because direct attribute extraction
+    # is faster in Python. Other types require type transformation, so they use lambdas.
     if type_code == TypeCode.STRING:
         return operator.attrgetter("string_value")
     elif type_code == TypeCode.BYTES:
@@ -504,17 +506,9 @@ def _get_type_decoder(field_type, field_name, column_info=None):
     elif type_code == TypeCode.INT64:
         return lambda value_pb: int(value_pb.string_value)
     elif type_code == TypeCode.FLOAT64:
-        return (
-            lambda value_pb: float(value_pb.string_value)
-            if value_pb.HasField("string_value")
-            else value_pb.number_value
-        )
+        return _parse_float
     elif type_code == TypeCode.FLOAT32:
-        return (
-            lambda value_pb: float(value_pb.string_value)
-            if value_pb.HasField("string_value")
-            else value_pb.number_value
-        )
+        return _parse_float
     elif type_code == TypeCode.DATE:
         return lambda value_pb: _date_fromisoformat(value_pb.string_value)
     elif type_code == TypeCode.TIMESTAMP:
@@ -565,6 +559,14 @@ def _parse_list_value_pbs(rows, row_type):
             row_data.append(_parse_value_pb(value_pb, field.type_, field.name))
         result.append(row_data)
     return result
+
+
+def _parse_float(value_pb) -> float:
+    # Note: Storing val = value_pb.string_value and doing a truthiness check is faster
+    # than calling value_pb.HasField("string_value") because it avoids the C-extension
+    # method lookup/call overhead and accesses the attribute only once.
+    val = value_pb.string_value
+    return float(val) if val else value_pb.number_value
 
 
 _POWERS_OF_10 = (

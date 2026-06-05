@@ -131,6 +131,10 @@ class StreamedResultSet(object):
                     index = 0
         else:
             for value in values:
+                # Note: We manually check value.HasField("null_value") here instead of
+                # wrapping every decoder in _parse_nullable to avoid the overhead of
+                # an extra Python function call layer for every cell value decoded in this loop.
+                # If the nullable check logic is updated in _parse_nullable, update this check.
                 if value.HasField("null_value"):
                     current_row_append(None)
                 else:
