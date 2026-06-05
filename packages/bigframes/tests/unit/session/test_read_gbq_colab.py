@@ -207,12 +207,9 @@ def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
     )
     session._metrics.jobs.extend([job1, job2])
 
-    mock_ipy = mock.Mock()
-    mock_ipy.execution_count = 20
-    mock_ipython = mock.MagicMock()
-    mock_ipython.get_ipython.return_value = mock_ipy
-
-    with mock.patch.dict("sys.modules", {"IPython": mock_ipython}):
+    with mock.patch(
+        "bigframes.core.utils.get_ipython_execution_count", return_value=20
+    ):
         history = session.execution_history(all_cells=False).to_dataframe()
 
     assert len(history) == 1

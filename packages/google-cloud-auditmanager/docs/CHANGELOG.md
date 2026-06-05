@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-auditmanager/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-auditmanager-v0.2.0...google-cloud-auditmanager-v0.3.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-a packages (#17089) ([39c988267529419b03f808d7662ec521258571b4](https://github.com/googleapis/google-cloud-python/commit/39c988267529419b03f808d7662ec521258571b4))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-auditmanager-v0.1.0...google-cloud-auditmanager-v0.2.0) (2026-03-26)
 
 

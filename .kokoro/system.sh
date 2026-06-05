@@ -90,34 +90,8 @@ run_package_test() {
   return $res
 }
 
-packages_with_system_tests=(
-  "bigframes"
-  "google-auth"
-  "google-cloud-bigquery-storage"
-  "google-cloud-bigtable"
-  "google-cloud-compute"
-  "google-cloud-compute-v1beta"
-  "google-cloud-datastore"
-  "google-cloud-dns"
-  "google-cloud-error-reporting"
-  "google-cloud-firestore"
-  "google-cloud-logging"
-  "google-cloud-ndb"
-  "google-cloud-pubsub"
-  "google-cloud-spanner"
-  "google-cloud-storage"
-  "google-cloud-testutils"
-  "pandas-gbq"
-  "sqlalchemy-bigquery"
-  "sqlalchemy-spanner"
-)
-
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
-
-# Join array elements with | for the pattern match
-packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
-packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
@@ -142,8 +116,20 @@ for path in `find 'packages' \
     "${package_path}/**/version.py"
   )
 
-  # If the package is in our "always run full system tests" list, check the whole directory
-  if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
+  # Hand-written (non-GAPIC_AUTO) packages or google-cloud-compute should check
+  # the whole directory for changes.
+  metadata="${package_path}/.repo-metadata.json"
+  library_type="UNKNOWN"
+  if [ -f "$metadata" ]; then
+    library_type=$(sed -n 's/.*"library_type":[[:space:]]*"\([^"]*\)".*/\1/p' "$metadata")
+    library_type="${library_type:-UNKNOWN}"
+  fi
+
+  # System tests always run in release PRs, regardless of library type.
+  # Automated GAPIC libraries bypass system tests in non-release PRs because their generation is deterministic.
+  # However, google-cloud-compute is included because its Discovery-based nature requires additional
+  # verification.
+  if [[ "${library_type}" != "GAPIC_AUTO" || "${package_name}" == "google-cloud-compute"* ]]; then
     files_to_check=("${package_path}")
   fi
 

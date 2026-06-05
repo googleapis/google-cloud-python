@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1344,8 +1360,8 @@ def test_snapshots_v1_beta3_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        snapshots.GetSnapshotRequest,
-        dict,
+        snapshots.GetSnapshotRequest(),
+        {},
     ],
 )
 def test_get_snapshot(request_type, transport: str = "grpc"):
@@ -1356,7 +1372,7 @@ def test_get_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -1414,11 +1430,12 @@ def test_get_snapshot_non_empty_request_with_auto_populated_field():
         client.get_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshots.GetSnapshotRequest(
+        request_msg = snapshots.GetSnapshotRequest(
             project_id="project_id_value",
             snapshot_id="snapshot_id_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_snapshot_use_cached_wrapped_rpc():
@@ -1499,9 +1516,14 @@ async def test_get_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_snapshot_async(
-    transport: str = "grpc_asyncio", request_type=snapshots.GetSnapshotRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        snapshots.GetSnapshotRequest(),
+        {},
+    ],
+)
+async def test_get_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = SnapshotsV1Beta3AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1509,7 +1531,7 @@ async def test_get_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -1542,11 +1564,6 @@ async def test_get_snapshot_async(
     assert response.description == "description_value"
     assert response.disk_size_bytes == 1611
     assert response.region == "region_value"
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_async_from_dict():
-    await test_get_snapshot_async(request_type=dict)
 
 
 def test_get_snapshot_field_headers():
@@ -1615,8 +1632,8 @@ async def test_get_snapshot_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        snapshots.DeleteSnapshotRequest,
-        dict,
+        snapshots.DeleteSnapshotRequest(),
+        {},
     ],
 )
 def test_delete_snapshot(request_type, transport: str = "grpc"):
@@ -1627,7 +1644,7 @@ def test_delete_snapshot(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -1670,11 +1687,12 @@ def test_delete_snapshot_non_empty_request_with_auto_populated_field():
         client.delete_snapshot(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshots.DeleteSnapshotRequest(
+        request_msg = snapshots.DeleteSnapshotRequest(
             project_id="project_id_value",
             snapshot_id="snapshot_id_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_snapshot_use_cached_wrapped_rpc():
@@ -1755,9 +1773,14 @@ async def test_delete_snapshot_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_snapshot_async(
-    transport: str = "grpc_asyncio", request_type=snapshots.DeleteSnapshotRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        snapshots.DeleteSnapshotRequest(),
+        {},
+    ],
+)
+async def test_delete_snapshot_async(request_type, transport: str = "grpc_asyncio"):
     client = SnapshotsV1Beta3AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1765,7 +1788,7 @@ async def test_delete_snapshot_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -1783,11 +1806,6 @@ async def test_delete_snapshot_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snapshots.DeleteSnapshotResponse)
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_async_from_dict():
-    await test_delete_snapshot_async(request_type=dict)
 
 
 def test_delete_snapshot_field_headers():
@@ -1858,8 +1876,8 @@ async def test_delete_snapshot_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        snapshots.ListSnapshotsRequest,
-        dict,
+        snapshots.ListSnapshotsRequest(),
+        {},
     ],
 )
 def test_list_snapshots(request_type, transport: str = "grpc"):
@@ -1870,7 +1888,7 @@ def test_list_snapshots(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -1913,11 +1931,12 @@ def test_list_snapshots_non_empty_request_with_auto_populated_field():
         client.list_snapshots(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == snapshots.ListSnapshotsRequest(
+        request_msg = snapshots.ListSnapshotsRequest(
             project_id="project_id_value",
             job_id="job_id_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_snapshots_use_cached_wrapped_rpc():
@@ -1998,9 +2017,14 @@ async def test_list_snapshots_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_snapshots_async(
-    transport: str = "grpc_asyncio", request_type=snapshots.ListSnapshotsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        snapshots.ListSnapshotsRequest(),
+        {},
+    ],
+)
+async def test_list_snapshots_async(request_type, transport: str = "grpc_asyncio"):
     client = SnapshotsV1Beta3AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2008,7 +2032,7 @@ async def test_list_snapshots_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -2026,11 +2050,6 @@ async def test_list_snapshots_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, snapshots.ListSnapshotsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_snapshots_async_from_dict():
-    await test_list_snapshots_async(request_type=dict)
 
 
 def test_list_snapshots_field_headers():
@@ -2329,7 +2348,6 @@ def test_get_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2350,7 +2368,6 @@ def test_delete_snapshot_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2371,7 +2388,6 @@ def test_list_snapshots_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2418,7 +2434,6 @@ async def test_get_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2443,7 +2458,6 @@ async def test_delete_snapshot_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2468,7 +2482,6 @@ async def test_list_snapshots_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2911,7 +2924,6 @@ def test_get_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.GetSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2931,7 +2943,6 @@ def test_delete_snapshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.DeleteSnapshotRequest()
-
         assert args[0] == request_msg
 
 
@@ -2951,7 +2962,6 @@ def test_list_snapshots_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = snapshots.ListSnapshotsRequest()
-
         assert args[0] == request_msg
 
 

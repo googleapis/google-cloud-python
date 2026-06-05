@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1197,8 +1213,8 @@ def test_tpu_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.ListNodesRequest,
-        dict,
+        cloud_tpu.ListNodesRequest(),
+        {},
     ],
 )
 def test_list_nodes(request_type, transport: str = "grpc"):
@@ -1209,7 +1225,7 @@ def test_list_nodes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -1256,10 +1272,11 @@ def test_list_nodes_non_empty_request_with_auto_populated_field():
         client.list_nodes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListNodesRequest(
+        request_msg = cloud_tpu.ListNodesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_nodes_use_cached_wrapped_rpc():
@@ -1338,9 +1355,14 @@ async def test_list_nodes_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_nodes_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.ListNodesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListNodesRequest(),
+        {},
+    ],
+)
+async def test_list_nodes_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1348,7 +1370,7 @@ async def test_list_nodes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -1371,11 +1393,6 @@ async def test_list_nodes_async(
     assert isinstance(response, pagers.ListNodesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_nodes_async_from_dict():
-    await test_list_nodes_async(request_type=dict)
 
 
 def test_list_nodes_field_headers():
@@ -1714,8 +1731,8 @@ async def test_list_nodes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.GetNodeRequest,
-        dict,
+        cloud_tpu.GetNodeRequest(),
+        {},
     ],
 )
 def test_get_node(request_type, transport: str = "grpc"):
@@ -1726,7 +1743,7 @@ def test_get_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -1796,9 +1813,10 @@ def test_get_node_non_empty_request_with_auto_populated_field():
         client.get_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetNodeRequest(
+        request_msg = cloud_tpu.GetNodeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_node_use_cached_wrapped_rpc():
@@ -1877,9 +1895,14 @@ async def test_get_node_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.GetNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetNodeRequest(),
+        {},
+    ],
+)
+async def test_get_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1887,7 +1910,7 @@ async def test_get_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -1934,11 +1957,6 @@ async def test_get_node_async(
     assert response.health == cloud_tpu.Node.Health.HEALTHY
     assert response.use_service_networking is True
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
-
-
-@pytest.mark.asyncio
-async def test_get_node_async_from_dict():
-    await test_get_node_async(request_type=dict)
 
 
 def test_get_node_field_headers():
@@ -2083,8 +2101,8 @@ async def test_get_node_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.CreateNodeRequest,
-        dict,
+        cloud_tpu.CreateNodeRequest(),
+        {},
     ],
 )
 def test_create_node(request_type, transport: str = "grpc"):
@@ -2095,7 +2113,7 @@ def test_create_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node), "__call__") as call:
@@ -2137,10 +2155,11 @@ def test_create_node_non_empty_request_with_auto_populated_field():
         client.create_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.CreateNodeRequest(
+        request_msg = cloud_tpu.CreateNodeRequest(
             parent="parent_value",
             node_id="node_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_node_use_cached_wrapped_rpc():
@@ -2231,9 +2250,14 @@ async def test_create_node_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.CreateNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.CreateNodeRequest(),
+        {},
+    ],
+)
+async def test_create_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2241,7 +2265,7 @@ async def test_create_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node), "__call__") as call:
@@ -2259,11 +2283,6 @@ async def test_create_node_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_node_async_from_dict():
-    await test_create_node_async(request_type=dict)
 
 
 def test_create_node_field_headers():
@@ -2432,8 +2451,8 @@ async def test_create_node_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.DeleteNodeRequest,
-        dict,
+        cloud_tpu.DeleteNodeRequest(),
+        {},
     ],
 )
 def test_delete_node(request_type, transport: str = "grpc"):
@@ -2444,7 +2463,7 @@ def test_delete_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
@@ -2485,9 +2504,10 @@ def test_delete_node_non_empty_request_with_auto_populated_field():
         client.delete_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.DeleteNodeRequest(
+        request_msg = cloud_tpu.DeleteNodeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_node_use_cached_wrapped_rpc():
@@ -2578,9 +2598,14 @@ async def test_delete_node_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.DeleteNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.DeleteNodeRequest(),
+        {},
+    ],
+)
+async def test_delete_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2588,7 +2613,7 @@ async def test_delete_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
@@ -2606,11 +2631,6 @@ async def test_delete_node_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_node_async_from_dict():
-    await test_delete_node_async(request_type=dict)
 
 
 def test_delete_node_field_headers():
@@ -2759,8 +2779,8 @@ async def test_delete_node_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.ReimageNodeRequest,
-        dict,
+        cloud_tpu.ReimageNodeRequest(),
+        {},
     ],
 )
 def test_reimage_node(request_type, transport: str = "grpc"):
@@ -2771,7 +2791,7 @@ def test_reimage_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reimage_node), "__call__") as call:
@@ -2813,10 +2833,11 @@ def test_reimage_node_non_empty_request_with_auto_populated_field():
         client.reimage_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ReimageNodeRequest(
+        request_msg = cloud_tpu.ReimageNodeRequest(
             name="name_value",
             tensorflow_version="tensorflow_version_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reimage_node_use_cached_wrapped_rpc():
@@ -2907,9 +2928,14 @@ async def test_reimage_node_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reimage_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.ReimageNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ReimageNodeRequest(),
+        {},
+    ],
+)
+async def test_reimage_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2917,7 +2943,7 @@ async def test_reimage_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reimage_node), "__call__") as call:
@@ -2935,11 +2961,6 @@ async def test_reimage_node_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reimage_node_async_from_dict():
-    await test_reimage_node_async(request_type=dict)
 
 
 def test_reimage_node_field_headers():
@@ -3006,8 +3027,8 @@ async def test_reimage_node_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.StopNodeRequest,
-        dict,
+        cloud_tpu.StopNodeRequest(),
+        {},
     ],
 )
 def test_stop_node(request_type, transport: str = "grpc"):
@@ -3018,7 +3039,7 @@ def test_stop_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_node), "__call__") as call:
@@ -3059,9 +3080,10 @@ def test_stop_node_non_empty_request_with_auto_populated_field():
         client.stop_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StopNodeRequest(
+        request_msg = cloud_tpu.StopNodeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_node_use_cached_wrapped_rpc():
@@ -3150,9 +3172,14 @@ async def test_stop_node_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_stop_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.StopNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.StopNodeRequest(),
+        {},
+    ],
+)
+async def test_stop_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3160,7 +3187,7 @@ async def test_stop_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_node), "__call__") as call:
@@ -3178,11 +3205,6 @@ async def test_stop_node_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_stop_node_async_from_dict():
-    await test_stop_node_async(request_type=dict)
 
 
 def test_stop_node_field_headers():
@@ -3249,8 +3271,8 @@ async def test_stop_node_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.StartNodeRequest,
-        dict,
+        cloud_tpu.StartNodeRequest(),
+        {},
     ],
 )
 def test_start_node(request_type, transport: str = "grpc"):
@@ -3261,7 +3283,7 @@ def test_start_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_node), "__call__") as call:
@@ -3302,9 +3324,10 @@ def test_start_node_non_empty_request_with_auto_populated_field():
         client.start_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.StartNodeRequest(
+        request_msg = cloud_tpu.StartNodeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_node_use_cached_wrapped_rpc():
@@ -3393,9 +3416,14 @@ async def test_start_node_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_start_node_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.StartNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.StartNodeRequest(),
+        {},
+    ],
+)
+async def test_start_node_async(request_type, transport: str = "grpc_asyncio"):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3403,7 +3431,7 @@ async def test_start_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_node), "__call__") as call:
@@ -3421,11 +3449,6 @@ async def test_start_node_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_node_async_from_dict():
-    await test_start_node_async(request_type=dict)
 
 
 def test_start_node_field_headers():
@@ -3492,8 +3515,8 @@ async def test_start_node_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.ListTensorFlowVersionsRequest,
-        dict,
+        cloud_tpu.ListTensorFlowVersionsRequest(),
+        {},
     ],
 )
 def test_list_tensor_flow_versions(request_type, transport: str = "grpc"):
@@ -3504,7 +3527,7 @@ def test_list_tensor_flow_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3557,12 +3580,13 @@ def test_list_tensor_flow_versions_non_empty_request_with_auto_populated_field()
         client.list_tensor_flow_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListTensorFlowVersionsRequest(
+        request_msg = cloud_tpu.ListTensorFlowVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tensor_flow_versions_use_cached_wrapped_rpc():
@@ -3648,9 +3672,15 @@ async def test_list_tensor_flow_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListTensorFlowVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_tensor_flow_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_tpu.ListTensorFlowVersionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3659,7 +3689,7 @@ async def test_list_tensor_flow_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3684,11 +3714,6 @@ async def test_list_tensor_flow_versions_async(
     assert isinstance(response, pagers.ListTensorFlowVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_tensor_flow_versions_async_from_dict():
-    await test_list_tensor_flow_versions_async(request_type=dict)
 
 
 def test_list_tensor_flow_versions_field_headers():
@@ -4045,8 +4070,8 @@ async def test_list_tensor_flow_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.GetTensorFlowVersionRequest,
-        dict,
+        cloud_tpu.GetTensorFlowVersionRequest(),
+        {},
     ],
 )
 def test_get_tensor_flow_version(request_type, transport: str = "grpc"):
@@ -4057,7 +4082,7 @@ def test_get_tensor_flow_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4107,9 +4132,10 @@ def test_get_tensor_flow_version_non_empty_request_with_auto_populated_field():
         client.get_tensor_flow_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetTensorFlowVersionRequest(
+        request_msg = cloud_tpu.GetTensorFlowVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_tensor_flow_version_use_cached_wrapped_rpc():
@@ -4195,8 +4221,15 @@ async def test_get_tensor_flow_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetTensorFlowVersionRequest(),
+        {},
+    ],
+)
 async def test_get_tensor_flow_version_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.GetTensorFlowVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4205,7 +4238,7 @@ async def test_get_tensor_flow_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4230,11 +4263,6 @@ async def test_get_tensor_flow_version_async(
     assert isinstance(response, cloud_tpu.TensorFlowVersion)
     assert response.name == "name_value"
     assert response.version == "version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_tensor_flow_version_async_from_dict():
-    await test_get_tensor_flow_version_async(request_type=dict)
 
 
 def test_get_tensor_flow_version_field_headers():
@@ -4391,8 +4419,8 @@ async def test_get_tensor_flow_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.ListAcceleratorTypesRequest,
-        dict,
+        cloud_tpu.ListAcceleratorTypesRequest(),
+        {},
     ],
 )
 def test_list_accelerator_types(request_type, transport: str = "grpc"):
@@ -4403,7 +4431,7 @@ def test_list_accelerator_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4456,12 +4484,13 @@ def test_list_accelerator_types_non_empty_request_with_auto_populated_field():
         client.list_accelerator_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.ListAcceleratorTypesRequest(
+        request_msg = cloud_tpu.ListAcceleratorTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_accelerator_types_use_cached_wrapped_rpc():
@@ -4547,8 +4576,15 @@ async def test_list_accelerator_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListAcceleratorTypesRequest(),
+        {},
+    ],
+)
 async def test_list_accelerator_types_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.ListAcceleratorTypesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4557,7 +4593,7 @@ async def test_list_accelerator_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4582,11 +4618,6 @@ async def test_list_accelerator_types_async(
     assert isinstance(response, pagers.ListAcceleratorTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_accelerator_types_async_from_dict():
-    await test_list_accelerator_types_async(request_type=dict)
 
 
 def test_list_accelerator_types_field_headers():
@@ -4941,8 +4972,8 @@ async def test_list_accelerator_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_tpu.GetAcceleratorTypeRequest,
-        dict,
+        cloud_tpu.GetAcceleratorTypeRequest(),
+        {},
     ],
 )
 def test_get_accelerator_type(request_type, transport: str = "grpc"):
@@ -4953,7 +4984,7 @@ def test_get_accelerator_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5003,9 +5034,10 @@ def test_get_accelerator_type_non_empty_request_with_auto_populated_field():
         client.get_accelerator_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_tpu.GetAcceleratorTypeRequest(
+        request_msg = cloud_tpu.GetAcceleratorTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_accelerator_type_use_cached_wrapped_rpc():
@@ -5090,8 +5122,15 @@ async def test_get_accelerator_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetAcceleratorTypeRequest(),
+        {},
+    ],
+)
 async def test_get_accelerator_type_async(
-    transport: str = "grpc_asyncio", request_type=cloud_tpu.GetAcceleratorTypeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5100,7 +5139,7 @@ async def test_get_accelerator_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5125,11 +5164,6 @@ async def test_get_accelerator_type_async(
     assert isinstance(response, cloud_tpu.AcceleratorType)
     assert response.name == "name_value"
     assert response.type_ == "type__value"
-
-
-@pytest.mark.asyncio
-async def test_get_accelerator_type_async_from_dict():
-    await test_get_accelerator_type_async(request_type=dict)
 
 
 def test_get_accelerator_type_field_headers():
@@ -5405,7 +5439,6 @@ def test_list_nodes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5426,7 +5459,6 @@ def test_get_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5447,7 +5479,6 @@ def test_create_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.CreateNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5468,7 +5499,6 @@ def test_delete_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.DeleteNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5489,7 +5519,6 @@ def test_reimage_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ReimageNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5510,7 +5539,6 @@ def test_stop_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.StopNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5531,7 +5559,6 @@ def test_start_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.StartNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5554,7 +5581,6 @@ def test_list_tensor_flow_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListTensorFlowVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5577,7 +5603,6 @@ def test_get_tensor_flow_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetTensorFlowVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5600,7 +5625,6 @@ def test_list_accelerator_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListAcceleratorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5623,7 +5647,6 @@ def test_get_accelerator_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetAcceleratorTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5665,7 +5688,6 @@ async def test_list_nodes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5705,7 +5727,6 @@ async def test_get_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5730,7 +5751,6 @@ async def test_create_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.CreateNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5755,7 +5775,6 @@ async def test_delete_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.DeleteNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5780,7 +5799,6 @@ async def test_reimage_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ReimageNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5805,7 +5823,6 @@ async def test_stop_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.StopNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5830,7 +5847,6 @@ async def test_start_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.StartNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -5860,7 +5876,6 @@ async def test_list_tensor_flow_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListTensorFlowVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5890,7 +5905,6 @@ async def test_get_tensor_flow_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetTensorFlowVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5920,7 +5934,6 @@ async def test_list_accelerator_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ListAcceleratorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5950,7 +5963,6 @@ async def test_get_accelerator_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.GetAcceleratorTypeRequest()
-
         assert args[0] == request_msg
 
 

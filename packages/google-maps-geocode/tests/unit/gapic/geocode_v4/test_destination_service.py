@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1357,8 +1373,8 @@ def test_destination_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        destination_service.SearchDestinationsRequest,
-        dict,
+        destination_service.SearchDestinationsRequest(),
+        {},
     ],
 )
 def test_search_destinations(request_type, transport: str = "grpc"):
@@ -1369,7 +1385,7 @@ def test_search_destinations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1416,11 +1432,12 @@ def test_search_destinations_non_empty_request_with_auto_populated_field():
         client.search_destinations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == destination_service.SearchDestinationsRequest(
+        request_msg = destination_service.SearchDestinationsRequest(
             place="place_value",
             language_code="language_code_value",
             region_code="region_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_destinations_use_cached_wrapped_rpc():
@@ -1505,10 +1522,14 @@ async def test_search_destinations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_destinations_async(
-    transport: str = "grpc_asyncio",
-    request_type=destination_service.SearchDestinationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        destination_service.SearchDestinationsRequest(),
+        {},
+    ],
+)
+async def test_search_destinations_async(request_type, transport: str = "grpc_asyncio"):
     client = DestinationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1516,7 +1537,7 @@ async def test_search_destinations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1536,11 +1557,6 @@ async def test_search_destinations_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, destination_service.SearchDestinationsResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_destinations_async_from_dict():
-    await test_search_destinations_async(request_type=dict)
 
 
 def test_search_destinations_rest_use_cached_wrapped_rpc():
@@ -1708,7 +1724,6 @@ def test_search_destinations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1749,7 +1764,6 @@ async def test_search_destinations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1918,7 +1932,6 @@ def test_search_destinations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 

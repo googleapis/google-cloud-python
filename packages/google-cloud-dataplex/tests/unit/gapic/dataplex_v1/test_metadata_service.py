@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1328,7 +1344,10 @@ def test_metadata_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+            ),
             scopes=None,
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,
@@ -1342,8 +1361,8 @@ def test_metadata_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.CreateEntityRequest,
-        dict,
+        metadata_.CreateEntityRequest(),
+        {},
     ],
 )
 def test_create_entity(request_type, transport: str = "grpc"):
@@ -1354,7 +1373,7 @@ def test_create_entity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
@@ -1420,9 +1439,10 @@ def test_create_entity_non_empty_request_with_auto_populated_field():
         client.create_entity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.CreateEntityRequest(
+        request_msg = metadata_.CreateEntityRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entity_use_cached_wrapped_rpc():
@@ -1503,9 +1523,14 @@ async def test_create_entity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entity_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.CreateEntityRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.CreateEntityRequest(),
+        {},
+    ],
+)
+async def test_create_entity_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1513,7 +1538,7 @@ async def test_create_entity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
@@ -1556,11 +1581,6 @@ async def test_create_entity_async(
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_create_entity_async_from_dict():
-    await test_create_entity_async(request_type=dict)
 
 
 def test_create_entity_field_headers():
@@ -1715,8 +1735,8 @@ async def test_create_entity_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.UpdateEntityRequest,
-        dict,
+        metadata_.UpdateEntityRequest(),
+        {},
     ],
 )
 def test_update_entity(request_type, transport: str = "grpc"):
@@ -1727,7 +1747,7 @@ def test_update_entity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
@@ -1791,7 +1811,8 @@ def test_update_entity_non_empty_request_with_auto_populated_field():
         client.update_entity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.UpdateEntityRequest()
+        request_msg = metadata_.UpdateEntityRequest()
+        assert args[0] == request_msg
 
 
 def test_update_entity_use_cached_wrapped_rpc():
@@ -1872,9 +1893,14 @@ async def test_update_entity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entity_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.UpdateEntityRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.UpdateEntityRequest(),
+        {},
+    ],
+)
+async def test_update_entity_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1882,7 +1908,7 @@ async def test_update_entity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
@@ -1925,11 +1951,6 @@ async def test_update_entity_async(
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_update_entity_async_from_dict():
-    await test_update_entity_async(request_type=dict)
 
 
 def test_update_entity_field_headers():
@@ -1994,8 +2015,8 @@ async def test_update_entity_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.DeleteEntityRequest,
-        dict,
+        metadata_.DeleteEntityRequest(),
+        {},
     ],
 )
 def test_delete_entity(request_type, transport: str = "grpc"):
@@ -2006,7 +2027,7 @@ def test_delete_entity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
@@ -2048,10 +2069,11 @@ def test_delete_entity_non_empty_request_with_auto_populated_field():
         client.delete_entity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.DeleteEntityRequest(
+        request_msg = metadata_.DeleteEntityRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entity_use_cached_wrapped_rpc():
@@ -2132,9 +2154,14 @@ async def test_delete_entity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entity_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.DeleteEntityRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.DeleteEntityRequest(),
+        {},
+    ],
+)
+async def test_delete_entity_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2142,7 +2169,7 @@ async def test_delete_entity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
@@ -2158,11 +2185,6 @@ async def test_delete_entity_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_entity_async_from_dict():
-    await test_delete_entity_async(request_type=dict)
 
 
 def test_delete_entity_field_headers():
@@ -2307,8 +2329,8 @@ async def test_delete_entity_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.GetEntityRequest,
-        dict,
+        metadata_.GetEntityRequest(),
+        {},
     ],
 )
 def test_get_entity(request_type, transport: str = "grpc"):
@@ -2319,7 +2341,7 @@ def test_get_entity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity), "__call__") as call:
@@ -2385,9 +2407,10 @@ def test_get_entity_non_empty_request_with_auto_populated_field():
         client.get_entity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.GetEntityRequest(
+        request_msg = metadata_.GetEntityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entity_use_cached_wrapped_rpc():
@@ -2466,9 +2489,14 @@ async def test_get_entity_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_entity_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.GetEntityRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.GetEntityRequest(),
+        {},
+    ],
+)
+async def test_get_entity_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2476,7 +2504,7 @@ async def test_get_entity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity), "__call__") as call:
@@ -2519,11 +2547,6 @@ async def test_get_entity_async(
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_entity_async_from_dict():
-    await test_get_entity_async(request_type=dict)
 
 
 def test_get_entity_field_headers():
@@ -2668,8 +2691,8 @@ async def test_get_entity_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.ListEntitiesRequest,
-        dict,
+        metadata_.ListEntitiesRequest(),
+        {},
     ],
 )
 def test_list_entities(request_type, transport: str = "grpc"):
@@ -2680,7 +2703,7 @@ def test_list_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entities), "__call__") as call:
@@ -2726,11 +2749,12 @@ def test_list_entities_non_empty_request_with_auto_populated_field():
         client.list_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.ListEntitiesRequest(
+        request_msg = metadata_.ListEntitiesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entities_use_cached_wrapped_rpc():
@@ -2811,9 +2835,14 @@ async def test_list_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entities_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.ListEntitiesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.ListEntitiesRequest(),
+        {},
+    ],
+)
+async def test_list_entities_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2821,7 +2850,7 @@ async def test_list_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entities), "__call__") as call:
@@ -2842,11 +2871,6 @@ async def test_list_entities_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitiesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_entities_async_from_dict():
-    await test_list_entities_async(request_type=dict)
 
 
 def test_list_entities_field_headers():
@@ -3185,8 +3209,8 @@ async def test_list_entities_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.CreatePartitionRequest,
-        dict,
+        metadata_.CreatePartitionRequest(),
+        {},
     ],
 )
 def test_create_partition(request_type, transport: str = "grpc"):
@@ -3197,7 +3221,7 @@ def test_create_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
@@ -3247,9 +3271,10 @@ def test_create_partition_non_empty_request_with_auto_populated_field():
         client.create_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.CreatePartitionRequest(
+        request_msg = metadata_.CreatePartitionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_partition_use_cached_wrapped_rpc():
@@ -3332,9 +3357,14 @@ async def test_create_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_partition_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.CreatePartitionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.CreatePartitionRequest(),
+        {},
+    ],
+)
+async def test_create_partition_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3342,7 +3372,7 @@ async def test_create_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
@@ -3369,11 +3399,6 @@ async def test_create_partition_async(
     assert response.values == ["values_value"]
     assert response.location == "location_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_partition_async_from_dict():
-    await test_create_partition_async(request_type=dict)
 
 
 def test_create_partition_field_headers():
@@ -3528,8 +3553,8 @@ async def test_create_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.DeletePartitionRequest,
-        dict,
+        metadata_.DeletePartitionRequest(),
+        {},
     ],
 )
 def test_delete_partition(request_type, transport: str = "grpc"):
@@ -3540,7 +3565,7 @@ def test_delete_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
@@ -3582,10 +3607,11 @@ def test_delete_partition_non_empty_request_with_auto_populated_field():
         client.delete_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.DeletePartitionRequest(
+        request_msg = metadata_.DeletePartitionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_partition_use_cached_wrapped_rpc():
@@ -3668,9 +3694,14 @@ async def test_delete_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_partition_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.DeletePartitionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.DeletePartitionRequest(),
+        {},
+    ],
+)
+async def test_delete_partition_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3678,7 +3709,7 @@ async def test_delete_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
@@ -3694,11 +3725,6 @@ async def test_delete_partition_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_partition_async_from_dict():
-    await test_delete_partition_async(request_type=dict)
 
 
 def test_delete_partition_field_headers():
@@ -3843,8 +3869,8 @@ async def test_delete_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.GetPartitionRequest,
-        dict,
+        metadata_.GetPartitionRequest(),
+        {},
     ],
 )
 def test_get_partition(request_type, transport: str = "grpc"):
@@ -3855,7 +3881,7 @@ def test_get_partition(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_partition), "__call__") as call:
@@ -3905,9 +3931,10 @@ def test_get_partition_non_empty_request_with_auto_populated_field():
         client.get_partition(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.GetPartitionRequest(
+        request_msg = metadata_.GetPartitionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_partition_use_cached_wrapped_rpc():
@@ -3988,9 +4015,14 @@ async def test_get_partition_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_partition_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.GetPartitionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.GetPartitionRequest(),
+        {},
+    ],
+)
+async def test_get_partition_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3998,7 +4030,7 @@ async def test_get_partition_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_partition), "__call__") as call:
@@ -4025,11 +4057,6 @@ async def test_get_partition_async(
     assert response.values == ["values_value"]
     assert response.location == "location_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_partition_async_from_dict():
-    await test_get_partition_async(request_type=dict)
 
 
 def test_get_partition_field_headers():
@@ -4174,8 +4201,8 @@ async def test_get_partition_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metadata_.ListPartitionsRequest,
-        dict,
+        metadata_.ListPartitionsRequest(),
+        {},
     ],
 )
 def test_list_partitions(request_type, transport: str = "grpc"):
@@ -4186,7 +4213,7 @@ def test_list_partitions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_partitions), "__call__") as call:
@@ -4232,11 +4259,12 @@ def test_list_partitions_non_empty_request_with_auto_populated_field():
         client.list_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metadata_.ListPartitionsRequest(
+        request_msg = metadata_.ListPartitionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_partitions_use_cached_wrapped_rpc():
@@ -4317,9 +4345,14 @@ async def test_list_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_partitions_async(
-    transport: str = "grpc_asyncio", request_type=metadata_.ListPartitionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metadata_.ListPartitionsRequest(),
+        {},
+    ],
+)
+async def test_list_partitions_async(request_type, transport: str = "grpc_asyncio"):
     client = MetadataServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4327,7 +4360,7 @@ async def test_list_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_partitions), "__call__") as call:
@@ -4348,11 +4381,6 @@ async def test_list_partitions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPartitionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_partitions_async_from_dict():
-    await test_list_partitions_async(request_type=dict)
 
 
 def test_list_partitions_field_headers():
@@ -6571,7 +6599,6 @@ def test_create_entity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6592,7 +6619,6 @@ def test_update_entity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.UpdateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6613,7 +6639,6 @@ def test_delete_entity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeleteEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6634,7 +6659,6 @@ def test_get_entity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6655,7 +6679,6 @@ def test_list_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6676,7 +6699,6 @@ def test_create_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreatePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6697,7 +6719,6 @@ def test_delete_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeletePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6718,7 +6739,6 @@ def test_get_partition_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetPartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6739,7 +6759,6 @@ def test_list_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6791,7 +6810,6 @@ async def test_create_entity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6829,7 +6847,6 @@ async def test_update_entity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.UpdateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6852,7 +6869,6 @@ async def test_delete_entity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeleteEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6890,7 +6906,6 @@ async def test_get_entity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -6917,7 +6932,6 @@ async def test_list_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6947,7 +6961,6 @@ async def test_create_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreatePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -6970,7 +6983,6 @@ async def test_delete_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeletePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7000,7 +7012,6 @@ async def test_get_partition_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetPartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7027,7 +7038,6 @@ async def test_list_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9159,7 +9169,6 @@ def test_create_entity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -9179,7 +9188,6 @@ def test_update_entity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.UpdateEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -9199,7 +9207,6 @@ def test_delete_entity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeleteEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -9219,7 +9226,6 @@ def test_get_entity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetEntityRequest()
-
         assert args[0] == request_msg
 
 
@@ -9239,7 +9245,6 @@ def test_list_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9259,7 +9264,6 @@ def test_create_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.CreatePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9279,7 +9283,6 @@ def test_delete_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.DeletePartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9299,7 +9302,6 @@ def test_get_partition_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.GetPartitionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9319,7 +9321,6 @@ def test_list_partitions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metadata_.ListPartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9410,7 +9411,10 @@ def test_metadata_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+            ),
             quota_project_id="octopus",
         )
 
@@ -9436,7 +9440,10 @@ def test_metadata_service_auth_adc():
         MetadataServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+            ),
             quota_project_id=None,
         )
 
@@ -9456,7 +9463,10 @@ def test_metadata_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+            ),
             quota_project_id="octopus",
         )
 
@@ -9509,7 +9519,10 @@ def test_metadata_service_transport_create_channel(transport_class, grpc_helpers
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataplex.read-write",
+            ),
             scopes=["1", "2"],
             default_host="dataplex.googleapis.com",
             ssl_credentials=None,

@@ -2304,7 +2304,7 @@ class TestReadRowsShardedAsync:
         from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
         from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
-        operation_timeout = 0.1
+        operation_timeout = 5.0
 
         # let the first batch complete, but the next batch times out
         num_queries = 15
@@ -2317,7 +2317,7 @@ class TestReadRowsShardedAsync:
             if isinstance(next_item, Exception):
                 raise next_item
             else:
-                await asyncio.sleep(next_item)
+                await CrossSync.sleep(next_item)
             return [mock.Mock()]
 
         async with self._make_client() as client:

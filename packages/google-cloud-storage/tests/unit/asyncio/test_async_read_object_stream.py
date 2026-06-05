@@ -38,9 +38,11 @@ async def instantiate_read_obj_stream(mock_client, mock_cls_async_bidi_rpc, open
     socket_like_rpc.open = AsyncMock()
 
     recv_response = mock.MagicMock(spec=_storage_v2.BidiReadObjectResponse)
-    recv_response.metadata = mock.MagicMock(spec=_storage_v2.Object)
+    recv_response.metadata = mock.MagicMock()
     recv_response.metadata.generation = _TEST_GENERATION_NUMBER
     recv_response.metadata.size = _TEST_OBJECT_SIZE
+    recv_response.metadata.finalize_time.second = 30
+    recv_response.metadata.checksums.crc32c = 98765
     recv_response.read_handle = _TEST_READ_HANDLE
     socket_like_rpc.recv = AsyncMock(return_value=recv_response)
 
@@ -130,6 +132,8 @@ async def test_open(mock_client, mock_cls_async_bidi_rpc):
     assert read_obj_stream.generation_number == _TEST_GENERATION_NUMBER
     assert read_obj_stream.read_handle == _TEST_READ_HANDLE
     assert read_obj_stream.persisted_size == _TEST_OBJECT_SIZE
+    assert read_obj_stream.is_finalized is True
+    assert read_obj_stream.full_obj_server_crc32c == 98765
     assert read_obj_stream.is_stream_open
 
 
@@ -381,3 +385,36 @@ async def test_recv_updates_read_handle_on_refresh(
 
     await stream.recv()
     assert stream.read_handle == refreshed_handle
+
+
+@mock.patch("google.cloud.storage.asyncio.async_read_object_stream.AsyncBidiRpc")
+@mock.patch(
+    "google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_open_unfinalized_object_skips_checksum(
+    mock_client, mock_cls_async_bidi_rpc
+):
+    socket_like_rpc = AsyncMock()
+    mock_cls_async_bidi_rpc.return_value = socket_like_rpc
+    socket_like_rpc.open = AsyncMock()
+
+    recv_response = mock.MagicMock(spec=_storage_v2.BidiReadObjectResponse)
+    recv_response.metadata = mock.MagicMock()
+    recv_response.metadata.generation = _TEST_GENERATION_NUMBER
+    recv_response.metadata.size = _TEST_OBJECT_SIZE
+    recv_response.metadata.finalize_time.second = 0  # NOT finalized!
+    recv_response.metadata.checksums.crc32c = 98765
+    recv_response.read_handle = _TEST_READ_HANDLE
+    socket_like_rpc.recv = AsyncMock(return_value=recv_response)
+
+    read_obj_stream = _AsyncReadObjectStream(
+        client=mock_client,
+        bucket_name=_TEST_BUCKET_NAME,
+        object_name=_TEST_OBJECT_NAME,
+    )
+
+    await read_obj_stream.open()
+
+    assert read_obj_stream.is_finalized is False
+    assert read_obj_stream.full_obj_server_crc32c is None

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1366,8 +1382,8 @@ def test_live_video_analytics_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        lva_service.ListAnalysesRequest,
-        dict,
+        lva_service.ListAnalysesRequest(),
+        {},
     ],
 )
 def test_list_analyses(request_type, transport: str = "grpc"):
@@ -1378,7 +1394,7 @@ def test_list_analyses(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_analyses), "__call__") as call:
@@ -1427,12 +1443,13 @@ def test_list_analyses_non_empty_request_with_auto_populated_field():
         client.list_analyses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lva_service.ListAnalysesRequest(
+        request_msg = lva_service.ListAnalysesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_analyses_use_cached_wrapped_rpc():
@@ -1513,9 +1530,14 @@ async def test_list_analyses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_analyses_async(
-    transport: str = "grpc_asyncio", request_type=lva_service.ListAnalysesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lva_service.ListAnalysesRequest(),
+        {},
+    ],
+)
+async def test_list_analyses_async(request_type, transport: str = "grpc_asyncio"):
     client = LiveVideoAnalyticsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1523,7 +1545,7 @@ async def test_list_analyses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_analyses), "__call__") as call:
@@ -1546,11 +1568,6 @@ async def test_list_analyses_async(
     assert isinstance(response, pagers.ListAnalysesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_analyses_async_from_dict():
-    await test_list_analyses_async(request_type=dict)
 
 
 def test_list_analyses_field_headers():
@@ -1889,8 +1906,8 @@ async def test_list_analyses_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lva_service.GetAnalysisRequest,
-        dict,
+        lva_service.GetAnalysisRequest(),
+        {},
     ],
 )
 def test_get_analysis(request_type, transport: str = "grpc"):
@@ -1901,7 +1918,7 @@ def test_get_analysis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_analysis), "__call__") as call:
@@ -1945,9 +1962,10 @@ def test_get_analysis_non_empty_request_with_auto_populated_field():
         client.get_analysis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lva_service.GetAnalysisRequest(
+        request_msg = lva_service.GetAnalysisRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_analysis_use_cached_wrapped_rpc():
@@ -2028,9 +2046,14 @@ async def test_get_analysis_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_analysis_async(
-    transport: str = "grpc_asyncio", request_type=lva_service.GetAnalysisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lva_service.GetAnalysisRequest(),
+        {},
+    ],
+)
+async def test_get_analysis_async(request_type, transport: str = "grpc_asyncio"):
     client = LiveVideoAnalyticsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2038,7 +2061,7 @@ async def test_get_analysis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_analysis), "__call__") as call:
@@ -2059,11 +2082,6 @@ async def test_get_analysis_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, lva_resources.Analysis)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_analysis_async_from_dict():
-    await test_get_analysis_async(request_type=dict)
 
 
 def test_get_analysis_field_headers():
@@ -2212,8 +2230,8 @@ async def test_get_analysis_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lva_service.CreateAnalysisRequest,
-        dict,
+        lva_service.CreateAnalysisRequest(),
+        {},
     ],
 )
 def test_create_analysis(request_type, transport: str = "grpc"):
@@ -2224,7 +2242,7 @@ def test_create_analysis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_analysis), "__call__") as call:
@@ -2267,11 +2285,12 @@ def test_create_analysis_non_empty_request_with_auto_populated_field():
         client.create_analysis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lva_service.CreateAnalysisRequest(
+        request_msg = lva_service.CreateAnalysisRequest(
             parent="parent_value",
             analysis_id="analysis_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_analysis_use_cached_wrapped_rpc():
@@ -2362,9 +2381,14 @@ async def test_create_analysis_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_analysis_async(
-    transport: str = "grpc_asyncio", request_type=lva_service.CreateAnalysisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lva_service.CreateAnalysisRequest(),
+        {},
+    ],
+)
+async def test_create_analysis_async(request_type, transport: str = "grpc_asyncio"):
     client = LiveVideoAnalyticsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2372,7 +2396,7 @@ async def test_create_analysis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_analysis), "__call__") as call:
@@ -2390,11 +2414,6 @@ async def test_create_analysis_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_analysis_async_from_dict():
-    await test_create_analysis_async(request_type=dict)
 
 
 def test_create_analysis_field_headers():
@@ -2563,8 +2582,8 @@ async def test_create_analysis_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lva_service.UpdateAnalysisRequest,
-        dict,
+        lva_service.UpdateAnalysisRequest(),
+        {},
     ],
 )
 def test_update_analysis(request_type, transport: str = "grpc"):
@@ -2575,7 +2594,7 @@ def test_update_analysis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_analysis), "__call__") as call:
@@ -2616,9 +2635,10 @@ def test_update_analysis_non_empty_request_with_auto_populated_field():
         client.update_analysis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lva_service.UpdateAnalysisRequest(
+        request_msg = lva_service.UpdateAnalysisRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_analysis_use_cached_wrapped_rpc():
@@ -2709,9 +2729,14 @@ async def test_update_analysis_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_analysis_async(
-    transport: str = "grpc_asyncio", request_type=lva_service.UpdateAnalysisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lva_service.UpdateAnalysisRequest(),
+        {},
+    ],
+)
+async def test_update_analysis_async(request_type, transport: str = "grpc_asyncio"):
     client = LiveVideoAnalyticsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2719,7 +2744,7 @@ async def test_update_analysis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_analysis), "__call__") as call:
@@ -2737,11 +2762,6 @@ async def test_update_analysis_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_analysis_async_from_dict():
-    await test_update_analysis_async(request_type=dict)
 
 
 def test_update_analysis_field_headers():
@@ -2900,8 +2920,8 @@ async def test_update_analysis_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        lva_service.DeleteAnalysisRequest,
-        dict,
+        lva_service.DeleteAnalysisRequest(),
+        {},
     ],
 )
 def test_delete_analysis(request_type, transport: str = "grpc"):
@@ -2912,7 +2932,7 @@ def test_delete_analysis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_analysis), "__call__") as call:
@@ -2954,10 +2974,11 @@ def test_delete_analysis_non_empty_request_with_auto_populated_field():
         client.delete_analysis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == lva_service.DeleteAnalysisRequest(
+        request_msg = lva_service.DeleteAnalysisRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_analysis_use_cached_wrapped_rpc():
@@ -3048,9 +3069,14 @@ async def test_delete_analysis_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_analysis_async(
-    transport: str = "grpc_asyncio", request_type=lva_service.DeleteAnalysisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lva_service.DeleteAnalysisRequest(),
+        {},
+    ],
+)
+async def test_delete_analysis_async(request_type, transport: str = "grpc_asyncio"):
     client = LiveVideoAnalyticsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3058,7 +3084,7 @@ async def test_delete_analysis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_analysis), "__call__") as call:
@@ -3076,11 +3102,6 @@ async def test_delete_analysis_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_analysis_async_from_dict():
-    await test_delete_analysis_async(request_type=dict)
 
 
 def test_delete_analysis_field_headers():
@@ -4387,7 +4408,6 @@ def test_list_analyses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.ListAnalysesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4408,7 +4428,6 @@ def test_get_analysis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.GetAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4429,7 +4448,6 @@ def test_create_analysis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.CreateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4450,7 +4468,6 @@ def test_update_analysis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.UpdateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4471,7 +4488,6 @@ def test_delete_analysis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.DeleteAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4513,7 +4529,6 @@ async def test_list_analyses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.ListAnalysesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4540,7 +4555,6 @@ async def test_get_analysis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.GetAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4565,7 +4579,6 @@ async def test_create_analysis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.CreateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4590,7 +4603,6 @@ async def test_update_analysis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.UpdateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -4615,7 +4627,6 @@ async def test_delete_analysis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.DeleteAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -6038,7 +6049,6 @@ def test_list_analyses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.ListAnalysesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6058,7 +6068,6 @@ def test_get_analysis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.GetAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -6078,7 +6087,6 @@ def test_create_analysis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.CreateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -6098,7 +6106,6 @@ def test_update_analysis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.UpdateAnalysisRequest()
-
         assert args[0] == request_msg
 
 
@@ -6118,7 +6125,6 @@ def test_delete_analysis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = lva_service.DeleteAnalysisRequest()
-
         assert args[0] == request_msg
 
 

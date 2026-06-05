@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.9.0...google-resumable-media-v2.10.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
 ## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.2...google-resumable-media-v2.9.0) (2026-05-06)
 
 

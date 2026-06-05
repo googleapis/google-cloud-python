@@ -22,6 +22,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
 
 import bigframes.core
+import bigframes.functions._function_session as bff_session
 from bigframes import exceptions as bfe
 from bigframes.session import (
     bq_caching_executor,
@@ -50,6 +51,7 @@ class DualCompilerProxyExecutor(executor.Executor):
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
+        function_manager: bff_session.FunctionSession,
         labels: tuple[tuple[str, str], ...] = (),
     ):
         self._enable_polars_execution = enable_polars_execution
@@ -65,6 +67,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             labels=labels,
             cache=shared_cache,
             compiler_name="ibis",
+            function_manager=function_manager,
         )
         self._sqlglot_executor = bq_caching_executor.BigQueryCachingExecutor(
             bqclient,
@@ -77,6 +80,7 @@ class DualCompilerProxyExecutor(executor.Executor):
             labels=labels,
             cache=shared_cache,
             compiler_name="sqlglot",
+            function_manager=function_manager,
         )
 
     def to_sql(

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1360,8 +1376,8 @@ def test_completion_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        completion_service.CompleteQueryRequest,
-        dict,
+        completion_service.CompleteQueryRequest(),
+        {},
     ],
 )
 def test_complete_query(request_type, transport: str = "grpc"):
@@ -1372,7 +1388,7 @@ def test_complete_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
@@ -1419,12 +1435,13 @@ def test_complete_query_non_empty_request_with_auto_populated_field():
         client.complete_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest(
+        request_msg = completion_service.CompleteQueryRequest(
             data_store="data_store_value",
             query="query_value",
             query_model="query_model_value",
             user_pseudo_id="user_pseudo_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_complete_query_use_cached_wrapped_rpc():
@@ -1505,10 +1522,14 @@ async def test_complete_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_complete_query_async(
-    transport: str = "grpc_asyncio",
-    request_type=completion_service.CompleteQueryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        completion_service.CompleteQueryRequest(),
+        {},
+    ],
+)
+async def test_complete_query_async(request_type, transport: str = "grpc_asyncio"):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1516,7 +1537,7 @@ async def test_complete_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
@@ -1537,11 +1558,6 @@ async def test_complete_query_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
     assert response.tail_match_triggered is True
-
-
-@pytest.mark.asyncio
-async def test_complete_query_async_from_dict():
-    await test_complete_query_async(request_type=dict)
 
 
 def test_complete_query_field_headers():
@@ -1608,8 +1624,8 @@ async def test_complete_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        completion_service.AdvancedCompleteQueryRequest,
-        dict,
+        completion_service.AdvancedCompleteQueryRequest(),
+        {},
     ],
 )
 def test_advanced_complete_query(request_type, transport: str = "grpc"):
@@ -1620,7 +1636,7 @@ def test_advanced_complete_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1671,12 +1687,13 @@ def test_advanced_complete_query_non_empty_request_with_auto_populated_field():
         client.advanced_complete_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.AdvancedCompleteQueryRequest(
+        request_msg = completion_service.AdvancedCompleteQueryRequest(
             completion_config="completion_config_value",
             query="query_value",
             query_model="query_model_value",
             user_pseudo_id="user_pseudo_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_advanced_complete_query_use_cached_wrapped_rpc():
@@ -1762,9 +1779,15 @@ async def test_advanced_complete_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        completion_service.AdvancedCompleteQueryRequest(),
+        {},
+    ],
+)
 async def test_advanced_complete_query_async(
-    transport: str = "grpc_asyncio",
-    request_type=completion_service.AdvancedCompleteQueryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1773,7 +1796,7 @@ async def test_advanced_complete_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1796,11 +1819,6 @@ async def test_advanced_complete_query_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.AdvancedCompleteQueryResponse)
     assert response.tail_match_triggered is True
-
-
-@pytest.mark.asyncio
-async def test_advanced_complete_query_async_from_dict():
-    await test_advanced_complete_query_async(request_type=dict)
 
 
 def test_advanced_complete_query_field_headers():
@@ -1871,8 +1889,8 @@ async def test_advanced_complete_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        import_config.ImportSuggestionDenyListEntriesRequest,
-        dict,
+        import_config.ImportSuggestionDenyListEntriesRequest(),
+        {},
     ],
 )
 def test_import_suggestion_deny_list_entries(request_type, transport: str = "grpc"):
@@ -1883,7 +1901,7 @@ def test_import_suggestion_deny_list_entries(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1928,9 +1946,10 @@ def test_import_suggestion_deny_list_entries_non_empty_request_with_auto_populat
         client.import_suggestion_deny_list_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportSuggestionDenyListEntriesRequest(
+        request_msg = import_config.ImportSuggestionDenyListEntriesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_suggestion_deny_list_entries_use_cached_wrapped_rpc():
@@ -2026,9 +2045,15 @@ async def test_import_suggestion_deny_list_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_config.ImportSuggestionDenyListEntriesRequest(),
+        {},
+    ],
+)
 async def test_import_suggestion_deny_list_entries_async(
-    transport: str = "grpc_asyncio",
-    request_type=import_config.ImportSuggestionDenyListEntriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2037,7 +2062,7 @@ async def test_import_suggestion_deny_list_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2057,11 +2082,6 @@ async def test_import_suggestion_deny_list_entries_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_suggestion_deny_list_entries_async_from_dict():
-    await test_import_suggestion_deny_list_entries_async(request_type=dict)
 
 
 def test_import_suggestion_deny_list_entries_field_headers():
@@ -2132,8 +2152,8 @@ async def test_import_suggestion_deny_list_entries_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        purge_config.PurgeSuggestionDenyListEntriesRequest,
-        dict,
+        purge_config.PurgeSuggestionDenyListEntriesRequest(),
+        {},
     ],
 )
 def test_purge_suggestion_deny_list_entries(request_type, transport: str = "grpc"):
@@ -2144,7 +2164,7 @@ def test_purge_suggestion_deny_list_entries(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2189,9 +2209,10 @@ def test_purge_suggestion_deny_list_entries_non_empty_request_with_auto_populate
         client.purge_suggestion_deny_list_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeSuggestionDenyListEntriesRequest(
+        request_msg = purge_config.PurgeSuggestionDenyListEntriesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_purge_suggestion_deny_list_entries_use_cached_wrapped_rpc():
@@ -2287,9 +2308,15 @@ async def test_purge_suggestion_deny_list_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        purge_config.PurgeSuggestionDenyListEntriesRequest(),
+        {},
+    ],
+)
 async def test_purge_suggestion_deny_list_entries_async(
-    transport: str = "grpc_asyncio",
-    request_type=purge_config.PurgeSuggestionDenyListEntriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2298,7 +2325,7 @@ async def test_purge_suggestion_deny_list_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2318,11 +2345,6 @@ async def test_purge_suggestion_deny_list_entries_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_purge_suggestion_deny_list_entries_async_from_dict():
-    await test_purge_suggestion_deny_list_entries_async(request_type=dict)
 
 
 def test_purge_suggestion_deny_list_entries_field_headers():
@@ -2393,8 +2415,8 @@ async def test_purge_suggestion_deny_list_entries_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        import_config.ImportCompletionSuggestionsRequest,
-        dict,
+        import_config.ImportCompletionSuggestionsRequest(),
+        {},
     ],
 )
 def test_import_completion_suggestions(request_type, transport: str = "grpc"):
@@ -2405,7 +2427,7 @@ def test_import_completion_suggestions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2450,9 +2472,10 @@ def test_import_completion_suggestions_non_empty_request_with_auto_populated_fie
         client.import_completion_suggestions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportCompletionSuggestionsRequest(
+        request_msg = import_config.ImportCompletionSuggestionsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_completion_suggestions_use_cached_wrapped_rpc():
@@ -2548,9 +2571,15 @@ async def test_import_completion_suggestions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_config.ImportCompletionSuggestionsRequest(),
+        {},
+    ],
+)
 async def test_import_completion_suggestions_async(
-    transport: str = "grpc_asyncio",
-    request_type=import_config.ImportCompletionSuggestionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2559,7 +2588,7 @@ async def test_import_completion_suggestions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2579,11 +2608,6 @@ async def test_import_completion_suggestions_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_completion_suggestions_async_from_dict():
-    await test_import_completion_suggestions_async(request_type=dict)
 
 
 def test_import_completion_suggestions_field_headers():
@@ -2654,8 +2678,8 @@ async def test_import_completion_suggestions_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        purge_config.PurgeCompletionSuggestionsRequest,
-        dict,
+        purge_config.PurgeCompletionSuggestionsRequest(),
+        {},
     ],
 )
 def test_purge_completion_suggestions(request_type, transport: str = "grpc"):
@@ -2666,7 +2690,7 @@ def test_purge_completion_suggestions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2711,9 +2735,10 @@ def test_purge_completion_suggestions_non_empty_request_with_auto_populated_fiel
         client.purge_completion_suggestions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeCompletionSuggestionsRequest(
+        request_msg = purge_config.PurgeCompletionSuggestionsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_purge_completion_suggestions_use_cached_wrapped_rpc():
@@ -2809,9 +2834,15 @@ async def test_purge_completion_suggestions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        purge_config.PurgeCompletionSuggestionsRequest(),
+        {},
+    ],
+)
 async def test_purge_completion_suggestions_async(
-    transport: str = "grpc_asyncio",
-    request_type=purge_config.PurgeCompletionSuggestionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CompletionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2820,7 +2851,7 @@ async def test_purge_completion_suggestions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2840,11 +2871,6 @@ async def test_purge_completion_suggestions_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_purge_completion_suggestions_async_from_dict():
-    await test_purge_completion_suggestions_async(request_type=dict)
 
 
 def test_purge_completion_suggestions_field_headers():
@@ -3846,7 +3872,6 @@ def test_complete_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.CompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3869,7 +3894,6 @@ def test_advanced_complete_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.AdvancedCompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -3892,7 +3916,6 @@ def test_import_suggestion_deny_list_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3915,7 +3938,6 @@ def test_purge_suggestion_deny_list_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3938,7 +3960,6 @@ def test_import_completion_suggestions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3961,7 +3982,6 @@ def test_purge_completion_suggestions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4002,7 +4022,6 @@ async def test_complete_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.CompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -4031,7 +4050,6 @@ async def test_advanced_complete_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.AdvancedCompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -4058,7 +4076,6 @@ async def test_import_suggestion_deny_list_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4085,7 +4102,6 @@ async def test_purge_suggestion_deny_list_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4112,7 +4128,6 @@ async def test_import_completion_suggestions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4139,7 +4154,6 @@ async def test_purge_completion_suggestions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5185,7 +5199,6 @@ def test_complete_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.CompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -5207,7 +5220,6 @@ def test_advanced_complete_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = completion_service.AdvancedCompleteQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -5229,7 +5241,6 @@ def test_import_suggestion_deny_list_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5251,7 +5262,6 @@ def test_purge_suggestion_deny_list_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeSuggestionDenyListEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5273,7 +5283,6 @@ def test_import_completion_suggestions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = import_config.ImportCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5295,7 +5304,6 @@ def test_purge_completion_suggestions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = purge_config.PurgeCompletionSuggestionsRequest()
-
         assert args[0] == request_msg
 
 

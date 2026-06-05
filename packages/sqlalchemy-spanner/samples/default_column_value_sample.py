@@ -15,11 +15,10 @@
 import datetime
 import uuid
 
+from model import Album, Singer, Track
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer, Album, Track
 
 
 # Shows how to use a default column with SQLAlchemy and Spanner.
@@ -53,8 +52,8 @@ def default_column_value_sample():
         )
         session.add_all([singer, album, track1, track2])
         session.commit()
-        print(f"Track 1 was recorded at: " f"{track1.recorded_at}")
-        print(f"Track 2 was recorded at: " f"{track2.recorded_at}")
+        print(f"Track 1 was recorded at: {track1.recorded_at}")
+        print(f"Track 2 was recorded at: {track2.recorded_at}")
 
 
 if __name__ == "__main__":

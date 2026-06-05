@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -123,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1388,8 +1404,8 @@ def test_os_config_zonal_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.CreateOSPolicyAssignmentRequest,
-        dict,
+        os_policy_assignments.CreateOSPolicyAssignmentRequest(),
+        {},
     ],
 )
 def test_create_os_policy_assignment(request_type, transport: str = "grpc"):
@@ -1400,7 +1416,7 @@ def test_create_os_policy_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1446,10 +1462,11 @@ def test_create_os_policy_assignment_non_empty_request_with_auto_populated_field
         client.create_os_policy_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest(
+        request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest(
             parent="parent_value",
             os_policy_assignment_id="os_policy_assignment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_os_policy_assignment_use_cached_wrapped_rpc():
@@ -1545,9 +1562,15 @@ async def test_create_os_policy_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.CreateOSPolicyAssignmentRequest(),
+        {},
+    ],
+)
 async def test_create_os_policy_assignment_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1556,7 +1579,7 @@ async def test_create_os_policy_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1576,11 +1599,6 @@ async def test_create_os_policy_assignment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_os_policy_assignment_async_from_dict():
-    await test_create_os_policy_assignment_async(request_type=dict)
 
 
 def test_create_os_policy_assignment_field_headers():
@@ -1765,8 +1783,8 @@ async def test_create_os_policy_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.UpdateOSPolicyAssignmentRequest,
-        dict,
+        os_policy_assignments.UpdateOSPolicyAssignmentRequest(),
+        {},
     ],
 )
 def test_update_os_policy_assignment(request_type, transport: str = "grpc"):
@@ -1777,7 +1795,7 @@ def test_update_os_policy_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1820,7 +1838,8 @@ def test_update_os_policy_assignment_non_empty_request_with_auto_populated_field
         client.update_os_policy_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_os_policy_assignment_use_cached_wrapped_rpc():
@@ -1916,9 +1935,15 @@ async def test_update_os_policy_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.UpdateOSPolicyAssignmentRequest(),
+        {},
+    ],
+)
 async def test_update_os_policy_assignment_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1927,7 +1952,7 @@ async def test_update_os_policy_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1947,11 +1972,6 @@ async def test_update_os_policy_assignment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_os_policy_assignment_async_from_dict():
-    await test_update_os_policy_assignment_async(request_type=dict)
 
 
 def test_update_os_policy_assignment_field_headers():
@@ -2126,8 +2146,8 @@ async def test_update_os_policy_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.GetOSPolicyAssignmentRequest,
-        dict,
+        os_policy_assignments.GetOSPolicyAssignmentRequest(),
+        {},
     ],
 )
 def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
@@ -2138,7 +2158,7 @@ def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2205,9 +2225,10 @@ def test_get_os_policy_assignment_non_empty_request_with_auto_populated_field():
         client.get_os_policy_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest(
+        request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_os_policy_assignment_use_cached_wrapped_rpc():
@@ -2293,9 +2314,15 @@ async def test_get_os_policy_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.GetOSPolicyAssignmentRequest(),
+        {},
+    ],
+)
 async def test_get_os_policy_assignment_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2304,7 +2331,7 @@ async def test_get_os_policy_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2346,11 +2373,6 @@ async def test_get_os_policy_assignment_async(
     assert response.deleted is True
     assert response.reconciling is True
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_os_policy_assignment_async_from_dict():
-    await test_get_os_policy_assignment_async(request_type=dict)
 
 
 def test_get_os_policy_assignment_field_headers():
@@ -2507,8 +2529,8 @@ async def test_get_os_policy_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.ListOSPolicyAssignmentsRequest,
-        dict,
+        os_policy_assignments.ListOSPolicyAssignmentsRequest(),
+        {},
     ],
 )
 def test_list_os_policy_assignments(request_type, transport: str = "grpc"):
@@ -2519,7 +2541,7 @@ def test_list_os_policy_assignments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2568,10 +2590,11 @@ def test_list_os_policy_assignments_non_empty_request_with_auto_populated_field(
         client.list_os_policy_assignments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest(
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_os_policy_assignments_use_cached_wrapped_rpc():
@@ -2657,9 +2680,15 @@ async def test_list_os_policy_assignments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.ListOSPolicyAssignmentsRequest(),
+        {},
+    ],
+)
 async def test_list_os_policy_assignments_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2668,7 +2697,7 @@ async def test_list_os_policy_assignments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2691,11 +2720,6 @@ async def test_list_os_policy_assignments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_os_policy_assignments_async_from_dict():
-    await test_list_os_policy_assignments_async(request_type=dict)
 
 
 def test_list_os_policy_assignments_field_headers():
@@ -3056,8 +3080,8 @@ async def test_list_os_policy_assignments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
-        dict,
+        os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(),
+        {},
     ],
 )
 def test_list_os_policy_assignment_revisions(request_type, transport: str = "grpc"):
@@ -3068,7 +3092,7 @@ def test_list_os_policy_assignment_revisions(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3119,10 +3143,11 @@ def test_list_os_policy_assignment_revisions_non_empty_request_with_auto_populat
         client.list_os_policy_assignment_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_os_policy_assignment_revisions_use_cached_wrapped_rpc():
@@ -3208,9 +3233,15 @@ async def test_list_os_policy_assignment_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(),
+        {},
+    ],
+)
 async def test_list_os_policy_assignment_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3219,7 +3250,7 @@ async def test_list_os_policy_assignment_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3242,11 +3273,6 @@ async def test_list_os_policy_assignment_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_os_policy_assignment_revisions_async_from_dict():
-    await test_list_os_policy_assignment_revisions_async(request_type=dict)
 
 
 def test_list_os_policy_assignment_revisions_field_headers():
@@ -3615,8 +3641,8 @@ async def test_list_os_policy_assignment_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignments.DeleteOSPolicyAssignmentRequest,
-        dict,
+        os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
+        {},
     ],
 )
 def test_delete_os_policy_assignment(request_type, transport: str = "grpc"):
@@ -3627,7 +3653,7 @@ def test_delete_os_policy_assignment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3672,9 +3698,10 @@ def test_delete_os_policy_assignment_non_empty_request_with_auto_populated_field
         client.delete_os_policy_assignment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest(
+        request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_os_policy_assignment_use_cached_wrapped_rpc():
@@ -3770,9 +3797,15 @@ async def test_delete_os_policy_assignment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
+        {},
+    ],
+)
 async def test_delete_os_policy_assignment_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3781,7 +3814,7 @@ async def test_delete_os_policy_assignment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3801,11 +3834,6 @@ async def test_delete_os_policy_assignment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_os_policy_assignment_async_from_dict():
-    await test_delete_os_policy_assignment_async(request_type=dict)
 
 
 def test_delete_os_policy_assignment_field_headers():
@@ -3962,8 +3990,8 @@ async def test_delete_os_policy_assignment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
-        dict,
+        instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(),
+        {},
     ],
 )
 def test_get_instance_os_policies_compliance(request_type, transport: str = "grpc"):
@@ -3974,7 +4002,7 @@ def test_get_instance_os_policies_compliance(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4038,11 +4066,12 @@ def test_get_instance_os_policies_compliance_non_empty_request_with_auto_populat
         client.get_instance_os_policies_compliance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
-            name="name_value",
+        request_msg = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_os_policies_compliance_use_cached_wrapped_rpc():
@@ -4128,9 +4157,15 @@ async def test_get_instance_os_policies_compliance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(),
+        {},
+    ],
+)
 async def test_get_instance_os_policies_compliance_async(
-    transport: str = "grpc_asyncio",
-    request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4139,7 +4174,7 @@ async def test_get_instance_os_policies_compliance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4176,11 +4211,6 @@ async def test_get_instance_os_policies_compliance_async(
     assert response.detailed_state == "detailed_state_value"
     assert response.detailed_state_reason == "detailed_state_reason_value"
     assert response.last_compliance_run_id == "last_compliance_run_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_instance_os_policies_compliance_async_from_dict():
-    await test_get_instance_os_policies_compliance_async(request_type=dict)
 
 
 def test_get_instance_os_policies_compliance_field_headers():
@@ -4343,8 +4373,8 @@ async def test_get_instance_os_policies_compliance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
-        dict,
+        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(),
+        {},
     ],
 )
 def test_list_instance_os_policies_compliances(request_type, transport: str = "grpc"):
@@ -4355,7 +4385,7 @@ def test_list_instance_os_policies_compliances(request_type, transport: str = "g
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4409,13 +4439,14 @@ def test_list_instance_os_policies_compliances_non_empty_request_with_auto_popul
         client.list_instance_os_policies_compliances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
-            filter="filter_value",
+        request_msg = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+                filter="filter_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_instance_os_policies_compliances_use_cached_wrapped_rpc():
@@ -4501,9 +4532,15 @@ async def test_list_instance_os_policies_compliances_async_use_cached_wrapped_rp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(),
+        {},
+    ],
+)
 async def test_list_instance_os_policies_compliances_async(
-    transport: str = "grpc_asyncio",
-    request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4512,7 +4549,7 @@ async def test_list_instance_os_policies_compliances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4537,11 +4574,6 @@ async def test_list_instance_os_policies_compliances_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceOSPoliciesCompliancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_instance_os_policies_compliances_async_from_dict():
-    await test_list_instance_os_policies_compliances_async(request_type=dict)
 
 
 def test_list_instance_os_policies_compliances_field_headers():
@@ -4912,8 +4944,8 @@ async def test_list_instance_os_policies_compliances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
-        dict,
+        os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
+        {},
     ],
 )
 def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
@@ -4924,7 +4956,7 @@ def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4978,11 +5010,10 @@ def test_get_os_policy_assignment_report_non_empty_request_with_auto_populated_f
         client.get_os_policy_assignment_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
+        request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_os_policy_assignment_report_use_cached_wrapped_rpc():
@@ -5068,9 +5099,15 @@ async def test_get_os_policy_assignment_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
+        {},
+    ],
+)
 async def test_get_os_policy_assignment_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5079,7 +5116,7 @@ async def test_get_os_policy_assignment_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5108,11 +5145,6 @@ async def test_get_os_policy_assignment_report_async(
     assert response.instance == "instance_value"
     assert response.os_policy_assignment == "os_policy_assignment_value"
     assert response.last_run_id == "last_run_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_os_policy_assignment_report_async_from_dict():
-    await test_get_os_policy_assignment_report_async(request_type=dict)
 
 
 def test_get_os_policy_assignment_report_field_headers():
@@ -5269,8 +5301,8 @@ async def test_get_os_policy_assignment_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
-        dict,
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
+        {},
     ],
 )
 def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"):
@@ -5281,7 +5313,7 @@ def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5333,13 +5365,12 @@ def test_list_os_policy_assignment_reports_non_empty_request_with_auto_populated
         client.list_os_policy_assignment_reports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+        request_msg = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_os_policy_assignment_reports_use_cached_wrapped_rpc():
@@ -5425,9 +5456,15 @@ async def test_list_os_policy_assignment_reports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
+        {},
+    ],
+)
 async def test_list_os_policy_assignment_reports_async(
-    transport: str = "grpc_asyncio",
-    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5436,7 +5473,7 @@ async def test_list_os_policy_assignment_reports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5459,11 +5496,6 @@ async def test_list_os_policy_assignment_reports_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentReportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_os_policy_assignment_reports_async_from_dict():
-    await test_list_os_policy_assignment_reports_async(request_type=dict)
 
 
 def test_list_os_policy_assignment_reports_field_headers():
@@ -5834,8 +5866,8 @@ async def test_list_os_policy_assignment_reports_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        inventory.GetInventoryRequest,
-        dict,
+        inventory.GetInventoryRequest(),
+        {},
     ],
 )
 def test_get_inventory(request_type, transport: str = "grpc"):
@@ -5846,7 +5878,7 @@ def test_get_inventory(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
@@ -5890,9 +5922,10 @@ def test_get_inventory_non_empty_request_with_auto_populated_field():
         client.get_inventory(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.GetInventoryRequest(
+        request_msg = inventory.GetInventoryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_inventory_use_cached_wrapped_rpc():
@@ -5973,9 +6006,14 @@ async def test_get_inventory_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_inventory_async(
-    transport: str = "grpc_asyncio", request_type=inventory.GetInventoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        inventory.GetInventoryRequest(),
+        {},
+    ],
+)
+async def test_get_inventory_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5983,7 +6021,7 @@ async def test_get_inventory_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
@@ -6004,11 +6042,6 @@ async def test_get_inventory_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, inventory.Inventory)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_inventory_async_from_dict():
-    await test_get_inventory_async(request_type=dict)
 
 
 def test_get_inventory_field_headers():
@@ -6153,8 +6186,8 @@ async def test_get_inventory_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        inventory.ListInventoriesRequest,
-        dict,
+        inventory.ListInventoriesRequest(),
+        {},
     ],
 )
 def test_list_inventories(request_type, transport: str = "grpc"):
@@ -6165,7 +6198,7 @@ def test_list_inventories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
@@ -6211,11 +6244,12 @@ def test_list_inventories_non_empty_request_with_auto_populated_field():
         client.list_inventories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.ListInventoriesRequest(
+        request_msg = inventory.ListInventoriesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_inventories_use_cached_wrapped_rpc():
@@ -6298,9 +6332,14 @@ async def test_list_inventories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_inventories_async(
-    transport: str = "grpc_asyncio", request_type=inventory.ListInventoriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        inventory.ListInventoriesRequest(),
+        {},
+    ],
+)
+async def test_list_inventories_async(request_type, transport: str = "grpc_asyncio"):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6308,7 +6347,7 @@ async def test_list_inventories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
@@ -6329,11 +6368,6 @@ async def test_list_inventories_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInventoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_inventories_async_from_dict():
-    await test_list_inventories_async(request_type=dict)
 
 
 def test_list_inventories_field_headers():
@@ -6672,8 +6706,8 @@ async def test_list_inventories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vulnerability.GetVulnerabilityReportRequest,
-        dict,
+        vulnerability.GetVulnerabilityReportRequest(),
+        {},
     ],
 )
 def test_get_vulnerability_report(request_type, transport: str = "grpc"):
@@ -6684,7 +6718,7 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6732,9 +6766,10 @@ def test_get_vulnerability_report_non_empty_request_with_auto_populated_field():
         client.get_vulnerability_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.GetVulnerabilityReportRequest(
+        request_msg = vulnerability.GetVulnerabilityReportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vulnerability_report_use_cached_wrapped_rpc():
@@ -6820,9 +6855,15 @@ async def test_get_vulnerability_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vulnerability.GetVulnerabilityReportRequest(),
+        {},
+    ],
+)
 async def test_get_vulnerability_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=vulnerability.GetVulnerabilityReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6831,7 +6872,7 @@ async def test_get_vulnerability_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6854,11 +6895,6 @@ async def test_get_vulnerability_report_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vulnerability_report_async_from_dict():
-    await test_get_vulnerability_report_async(request_type=dict)
 
 
 def test_get_vulnerability_report_field_headers():
@@ -7015,8 +7051,8 @@ async def test_get_vulnerability_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vulnerability.ListVulnerabilityReportsRequest,
-        dict,
+        vulnerability.ListVulnerabilityReportsRequest(),
+        {},
     ],
 )
 def test_list_vulnerability_reports(request_type, transport: str = "grpc"):
@@ -7027,7 +7063,7 @@ def test_list_vulnerability_reports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7077,11 +7113,12 @@ def test_list_vulnerability_reports_non_empty_request_with_auto_populated_field(
         client.list_vulnerability_reports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.ListVulnerabilityReportsRequest(
+        request_msg = vulnerability.ListVulnerabilityReportsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vulnerability_reports_use_cached_wrapped_rpc():
@@ -7167,9 +7204,15 @@ async def test_list_vulnerability_reports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vulnerability.ListVulnerabilityReportsRequest(),
+        {},
+    ],
+)
 async def test_list_vulnerability_reports_async(
-    transport: str = "grpc_asyncio",
-    request_type=vulnerability.ListVulnerabilityReportsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsConfigZonalServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7178,7 +7221,7 @@ async def test_list_vulnerability_reports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7201,11 +7244,6 @@ async def test_list_vulnerability_reports_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVulnerabilityReportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_vulnerability_reports_async_from_dict():
-    await test_list_vulnerability_reports_async(request_type=dict)
 
 
 def test_list_vulnerability_reports_field_headers():
@@ -10869,7 +10907,6 @@ def test_create_os_policy_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -10892,7 +10929,6 @@ def test_update_os_policy_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -10915,7 +10951,6 @@ def test_get_os_policy_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -10938,7 +10973,6 @@ def test_list_os_policy_assignments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10963,7 +10997,6 @@ def test_list_os_policy_assignment_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10986,7 +11019,6 @@ def test_delete_os_policy_assignment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11013,7 +11045,6 @@ def test_get_instance_os_policies_compliance_empty_call_grpc():
         request_msg = (
             instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11040,7 +11071,6 @@ def test_list_instance_os_policies_compliances_empty_call_grpc():
         request_msg = (
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11063,7 +11093,6 @@ def test_get_os_policy_assignment_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -11090,7 +11119,6 @@ def test_list_os_policy_assignment_reports_empty_call_grpc():
         request_msg = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11111,7 +11139,6 @@ def test_get_inventory_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.GetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11132,7 +11159,6 @@ def test_list_inventories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.ListInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11155,7 +11181,6 @@ def test_get_vulnerability_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.GetVulnerabilityReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -11178,7 +11203,6 @@ def test_list_vulnerability_reports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.ListVulnerabilityReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11219,7 +11243,6 @@ async def test_create_os_policy_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11246,7 +11269,6 @@ async def test_update_os_policy_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11283,7 +11305,6 @@ async def test_get_os_policy_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11312,7 +11333,6 @@ async def test_list_os_policy_assignments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11341,7 +11361,6 @@ async def test_list_os_policy_assignment_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11368,7 +11387,6 @@ async def test_delete_os_policy_assignment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11404,7 +11422,6 @@ async def test_get_instance_os_policies_compliance_empty_call_grpc_asyncio():
         request_msg = (
             instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11435,7 +11452,6 @@ async def test_list_instance_os_policies_compliances_empty_call_grpc_asyncio():
         request_msg = (
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11467,7 +11483,6 @@ async def test_get_os_policy_assignment_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -11498,7 +11513,6 @@ async def test_list_os_policy_assignment_reports_empty_call_grpc_asyncio():
         request_msg = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -11525,7 +11539,6 @@ async def test_get_inventory_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.GetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11552,7 +11565,6 @@ async def test_list_inventories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.ListInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11581,7 +11593,6 @@ async def test_get_vulnerability_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.GetVulnerabilityReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -11610,7 +11621,6 @@ async def test_list_vulnerability_reports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.ListVulnerabilityReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14056,7 +14066,6 @@ def test_create_os_policy_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14078,7 +14087,6 @@ def test_update_os_policy_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14100,7 +14108,6 @@ def test_get_os_policy_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14122,7 +14129,6 @@ def test_list_os_policy_assignments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14144,7 +14150,6 @@ def test_list_os_policy_assignment_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14166,7 +14171,6 @@ def test_delete_os_policy_assignment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14190,7 +14194,6 @@ def test_get_instance_os_policies_compliance_empty_call_rest():
         request_msg = (
             instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -14214,7 +14217,6 @@ def test_list_instance_os_policies_compliances_empty_call_rest():
         request_msg = (
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -14236,7 +14238,6 @@ def test_get_os_policy_assignment_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -14260,7 +14261,6 @@ def test_list_os_policy_assignment_reports_empty_call_rest():
         request_msg = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -14280,7 +14280,6 @@ def test_get_inventory_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.GetInventoryRequest()
-
         assert args[0] == request_msg
 
 
@@ -14300,7 +14299,6 @@ def test_list_inventories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = inventory.ListInventoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14322,7 +14320,6 @@ def test_get_vulnerability_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.GetVulnerabilityReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -14344,7 +14341,6 @@ def test_list_vulnerability_reports_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vulnerability.ListVulnerabilityReportsRequest()
-
         assert args[0] == request_msg
 
 

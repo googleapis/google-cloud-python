@@ -20,11 +20,7 @@ Storage.
 No longer supported.
 """
 
-
-from google.cloud.ndb import _datastore_types
-from google.cloud.ndb import model
-from google.cloud.ndb import exceptions
-
+from google.cloud.ndb import _datastore_types, exceptions, model
 
 __all__ = [
     "BLOB_INFO_KIND",

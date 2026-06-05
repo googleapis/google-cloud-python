@@ -1335,7 +1335,7 @@ def test_logging_service_v2_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.DeleteLogRequest({}),
+        logging.DeleteLogRequest(),
         {},
     ],
 )
@@ -1473,7 +1473,7 @@ async def test_delete_log_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.DeleteLogRequest({}),
+        logging.DeleteLogRequest(),
         {},
     ],
 )
@@ -1645,7 +1645,7 @@ async def test_delete_log_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.WriteLogEntriesRequest({}),
+        logging.WriteLogEntriesRequest(),
         {},
     ],
 )
@@ -1791,7 +1791,7 @@ async def test_write_log_entries_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.WriteLogEntriesRequest({}),
+        logging.WriteLogEntriesRequest(),
         {},
     ],
 )
@@ -1944,7 +1944,7 @@ async def test_write_log_entries_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogEntriesRequest({}),
+        logging.ListLogEntriesRequest(),
         {},
     ],
 )
@@ -2093,7 +2093,7 @@ async def test_list_log_entries_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogEntriesRequest({}),
+        logging.ListLogEntriesRequest(),
         {},
     ],
 )
@@ -2420,7 +2420,7 @@ async def test_list_log_entries_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListMonitoredResourceDescriptorsRequest({}),
+        logging.ListMonitoredResourceDescriptorsRequest(),
         {},
     ],
 )
@@ -2572,7 +2572,7 @@ async def test_list_monitored_resource_descriptors_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListMonitoredResourceDescriptorsRequest({}),
+        logging.ListMonitoredResourceDescriptorsRequest(),
         {},
     ],
 )
@@ -2819,7 +2819,7 @@ async def test_list_monitored_resource_descriptors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogsRequest({}),
+        logging.ListLogsRequest(),
         {},
     ],
 )
@@ -2964,7 +2964,7 @@ async def test_list_logs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.ListLogsRequest({}),
+        logging.ListLogsRequest(),
         {},
     ],
 )
@@ -3337,7 +3337,7 @@ async def test_list_logs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.TailLogEntriesRequest({}),
+        logging.TailLogEntriesRequest(),
         {},
     ],
 )
@@ -3451,7 +3451,7 @@ async def test_tail_log_entries_async_use_cached_wrapped_rpc(
 @pytest.mark.parametrize(
     "request_type",
     [
-        logging.TailLogEntriesRequest({}),
+        logging.TailLogEntriesRequest(),
         {},
     ],
 )

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1320,8 +1336,8 @@ def test_os_login_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.CreateSshPublicKeyRequest,
-        dict,
+        oslogin.CreateSshPublicKeyRequest(),
+        {},
     ],
 )
 def test_create_ssh_public_key(request_type, transport: str = "grpc"):
@@ -1332,7 +1348,7 @@ def test_create_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1386,9 +1402,10 @@ def test_create_ssh_public_key_non_empty_request_with_auto_populated_field():
         client.create_ssh_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.CreateSshPublicKeyRequest(
+        request_msg = oslogin.CreateSshPublicKeyRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_ssh_public_key_use_cached_wrapped_rpc():
@@ -1474,8 +1491,15 @@ async def test_create_ssh_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.CreateSshPublicKeyRequest(),
+        {},
+    ],
+)
 async def test_create_ssh_public_key_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.CreateSshPublicKeyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1484,7 +1508,7 @@ async def test_create_ssh_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1513,11 +1537,6 @@ async def test_create_ssh_public_key_async(
     assert response.expiration_time_usec == 2144
     assert response.fingerprint == "fingerprint_value"
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_ssh_public_key_async_from_dict():
-    await test_create_ssh_public_key_async(request_type=dict)
 
 
 def test_create_ssh_public_key_field_headers():
@@ -1680,8 +1699,8 @@ async def test_create_ssh_public_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.DeletePosixAccountRequest,
-        dict,
+        oslogin.DeletePosixAccountRequest(),
+        {},
     ],
 )
 def test_delete_posix_account(request_type, transport: str = "grpc"):
@@ -1692,7 +1711,7 @@ def test_delete_posix_account(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1737,9 +1756,10 @@ def test_delete_posix_account_non_empty_request_with_auto_populated_field():
         client.delete_posix_account(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeletePosixAccountRequest(
+        request_msg = oslogin.DeletePosixAccountRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_posix_account_use_cached_wrapped_rpc():
@@ -1824,8 +1844,15 @@ async def test_delete_posix_account_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.DeletePosixAccountRequest(),
+        {},
+    ],
+)
 async def test_delete_posix_account_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.DeletePosixAccountRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1834,7 +1861,7 @@ async def test_delete_posix_account_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1852,11 +1879,6 @@ async def test_delete_posix_account_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_posix_account_async_from_dict():
-    await test_delete_posix_account_async(request_type=dict)
 
 
 def test_delete_posix_account_field_headers():
@@ -2009,8 +2031,8 @@ async def test_delete_posix_account_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.DeleteSshPublicKeyRequest,
-        dict,
+        oslogin.DeleteSshPublicKeyRequest(),
+        {},
     ],
 )
 def test_delete_ssh_public_key(request_type, transport: str = "grpc"):
@@ -2021,7 +2043,7 @@ def test_delete_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2066,9 +2088,10 @@ def test_delete_ssh_public_key_non_empty_request_with_auto_populated_field():
         client.delete_ssh_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.DeleteSshPublicKeyRequest(
+        request_msg = oslogin.DeleteSshPublicKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_ssh_public_key_use_cached_wrapped_rpc():
@@ -2154,8 +2177,15 @@ async def test_delete_ssh_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.DeleteSshPublicKeyRequest(),
+        {},
+    ],
+)
 async def test_delete_ssh_public_key_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.DeleteSshPublicKeyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2164,7 +2194,7 @@ async def test_delete_ssh_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2182,11 +2212,6 @@ async def test_delete_ssh_public_key_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_ssh_public_key_async_from_dict():
-    await test_delete_ssh_public_key_async(request_type=dict)
 
 
 def test_delete_ssh_public_key_field_headers():
@@ -2339,8 +2364,8 @@ async def test_delete_ssh_public_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.GetLoginProfileRequest,
-        dict,
+        oslogin.GetLoginProfileRequest(),
+        {},
     ],
 )
 def test_get_login_profile(request_type, transport: str = "grpc"):
@@ -2351,7 +2376,7 @@ def test_get_login_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2401,11 +2426,12 @@ def test_get_login_profile_non_empty_request_with_auto_populated_field():
         client.get_login_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetLoginProfileRequest(
+        request_msg = oslogin.GetLoginProfileRequest(
             name="name_value",
             project_id="project_id_value",
             system_id="system_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_login_profile_use_cached_wrapped_rpc():
@@ -2488,9 +2514,14 @@ async def test_get_login_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_login_profile_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.GetLoginProfileRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.GetLoginProfileRequest(),
+        {},
+    ],
+)
+async def test_get_login_profile_async(request_type, transport: str = "grpc_asyncio"):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2498,7 +2529,7 @@ async def test_get_login_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2521,11 +2552,6 @@ async def test_get_login_profile_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.LoginProfile)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_login_profile_async_from_dict():
-    await test_get_login_profile_async(request_type=dict)
 
 
 def test_get_login_profile_field_headers():
@@ -2682,8 +2708,8 @@ async def test_get_login_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.GetSshPublicKeyRequest,
-        dict,
+        oslogin.GetSshPublicKeyRequest(),
+        {},
     ],
 )
 def test_get_ssh_public_key(request_type, transport: str = "grpc"):
@@ -2694,7 +2720,7 @@ def test_get_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2748,9 +2774,10 @@ def test_get_ssh_public_key_non_empty_request_with_auto_populated_field():
         client.get_ssh_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.GetSshPublicKeyRequest(
+        request_msg = oslogin.GetSshPublicKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_ssh_public_key_use_cached_wrapped_rpc():
@@ -2835,9 +2862,14 @@ async def test_get_ssh_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_ssh_public_key_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.GetSshPublicKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.GetSshPublicKeyRequest(),
+        {},
+    ],
+)
+async def test_get_ssh_public_key_async(request_type, transport: str = "grpc_asyncio"):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2845,7 +2877,7 @@ async def test_get_ssh_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2874,11 +2906,6 @@ async def test_get_ssh_public_key_async(
     assert response.expiration_time_usec == 2144
     assert response.fingerprint == "fingerprint_value"
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ssh_public_key_async_from_dict():
-    await test_get_ssh_public_key_async(request_type=dict)
 
 
 def test_get_ssh_public_key_field_headers():
@@ -3031,8 +3058,8 @@ async def test_get_ssh_public_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.ImportSshPublicKeyRequest,
-        dict,
+        oslogin.ImportSshPublicKeyRequest(),
+        {},
     ],
 )
 def test_import_ssh_public_key(request_type, transport: str = "grpc"):
@@ -3043,7 +3070,7 @@ def test_import_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3092,10 +3119,11 @@ def test_import_ssh_public_key_non_empty_request_with_auto_populated_field():
         client.import_ssh_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.ImportSshPublicKeyRequest(
+        request_msg = oslogin.ImportSshPublicKeyRequest(
             parent="parent_value",
             project_id="project_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_ssh_public_key_use_cached_wrapped_rpc():
@@ -3181,8 +3209,15 @@ async def test_import_ssh_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.ImportSshPublicKeyRequest(),
+        {},
+    ],
+)
 async def test_import_ssh_public_key_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.ImportSshPublicKeyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3191,7 +3226,7 @@ async def test_import_ssh_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3214,11 +3249,6 @@ async def test_import_ssh_public_key_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
     assert response.details == "details_value"
-
-
-@pytest.mark.asyncio
-async def test_import_ssh_public_key_async_from_dict():
-    await test_import_ssh_public_key_async(request_type=dict)
 
 
 def test_import_ssh_public_key_field_headers():
@@ -3395,8 +3425,8 @@ async def test_import_ssh_public_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        oslogin.UpdateSshPublicKeyRequest,
-        dict,
+        oslogin.UpdateSshPublicKeyRequest(),
+        {},
     ],
 )
 def test_update_ssh_public_key(request_type, transport: str = "grpc"):
@@ -3407,7 +3437,7 @@ def test_update_ssh_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3461,9 +3491,10 @@ def test_update_ssh_public_key_non_empty_request_with_auto_populated_field():
         client.update_ssh_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == oslogin.UpdateSshPublicKeyRequest(
+        request_msg = oslogin.UpdateSshPublicKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_ssh_public_key_use_cached_wrapped_rpc():
@@ -3549,8 +3580,15 @@ async def test_update_ssh_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oslogin.UpdateSshPublicKeyRequest(),
+        {},
+    ],
+)
 async def test_update_ssh_public_key_async(
-    transport: str = "grpc_asyncio", request_type=oslogin.UpdateSshPublicKeyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OsLoginServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3559,7 +3597,7 @@ async def test_update_ssh_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3588,11 +3626,6 @@ async def test_update_ssh_public_key_async(
     assert response.expiration_time_usec == 2144
     assert response.fingerprint == "fingerprint_value"
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_ssh_public_key_async_from_dict():
-    await test_update_ssh_public_key_async(request_type=dict)
 
 
 def test_update_ssh_public_key_field_headers():
@@ -5201,7 +5234,6 @@ def test_create_ssh_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.CreateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5224,7 +5256,6 @@ def test_delete_posix_account_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeletePosixAccountRequest()
-
         assert args[0] == request_msg
 
 
@@ -5247,7 +5278,6 @@ def test_delete_ssh_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeleteSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5270,7 +5300,6 @@ def test_get_login_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetLoginProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5293,7 +5322,6 @@ def test_get_ssh_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5316,7 +5344,6 @@ def test_import_ssh_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.ImportSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5339,7 +5366,6 @@ def test_update_ssh_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.UpdateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5385,7 +5411,6 @@ async def test_create_ssh_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.CreateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5410,7 +5435,6 @@ async def test_delete_posix_account_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeletePosixAccountRequest()
-
         assert args[0] == request_msg
 
 
@@ -5435,7 +5459,6 @@ async def test_delete_ssh_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeleteSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5464,7 +5487,6 @@ async def test_get_login_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetLoginProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5496,7 +5518,6 @@ async def test_get_ssh_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5525,7 +5546,6 @@ async def test_import_ssh_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.ImportSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5557,7 +5577,6 @@ async def test_update_ssh_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.UpdateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6703,7 +6722,6 @@ def test_create_ssh_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.CreateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6725,7 +6743,6 @@ def test_delete_posix_account_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeletePosixAccountRequest()
-
         assert args[0] == request_msg
 
 
@@ -6747,7 +6764,6 @@ def test_delete_ssh_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.DeleteSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6769,7 +6785,6 @@ def test_get_login_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetLoginProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -6791,7 +6806,6 @@ def test_get_ssh_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.GetSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6813,7 +6827,6 @@ def test_import_ssh_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.ImportSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -6835,7 +6848,6 @@ def test_update_ssh_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oslogin.UpdateSshPublicKeyRequest()
-
         assert args[0] == request_msg
 
 

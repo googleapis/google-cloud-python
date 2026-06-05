@@ -62,6 +62,7 @@ from google.maps.places_v1.types import (
     price_range,
     review,
     routing_summary,
+    transit,
 )
 
 from .client import PlacesClient

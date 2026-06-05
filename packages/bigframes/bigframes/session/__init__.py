@@ -71,7 +71,6 @@ import bigframes.core.indexes
 import bigframes.core.indexes.multi
 import bigframes.core.pyformat
 import bigframes.formatting_helpers
-import bigframes.functions._function_session as bff_session
 import bigframes.functions.function as bff
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session.clients
@@ -80,6 +79,7 @@ from bigframes import exceptions as bfe
 from bigframes import version
 from bigframes.core import blocks, utils
 from bigframes.core.logging import log_adapter
+from bigframes.functions import _function_client, _function_session
 from bigframes.session import bigquery_session, executor, proxy_executor
 
 # Avoid circular imports.
@@ -210,6 +210,7 @@ class Session(
             # this path is only for unit testing. Not meant to be used by end users.
             self._clients_provider = clients_provider
             self._location = context.location or "US"
+            project = "test_project"
         else:
             (
                 credentials,
@@ -305,13 +306,30 @@ class Session(
 
         self._metrics = metrics.ExecutionMetrics()
         self._publisher.subscribe(self._metrics.on_event)
-        self._function_session = bff_session.FunctionSession()
         self._anon_dataset_manager = anonymous_dataset.AnonymousDatasetManager(
             self._clients_provider.bqclient,
             location=self._location,
             session_id=self._session_id,
             kms_key=self._bq_kms_key_name,
             publisher=self._publisher,
+        )
+        self._function_session = _function_session.FunctionSession(
+            _function_client.FunctionClient(
+                gcp_project_id=project,
+                bq_location=self._location,
+                bq_client=self._clients_provider.bqclient,
+                bq_connection_manager=bigframes.clients.BqConnectionManager(
+                    self._clients_provider.bqconnectionclient,
+                    self._clients_provider.resourcemanagerclient,
+                ),
+                cloud_functions_client=self._clients_provider.cloudfunctionsclient,
+                publisher=self._publisher,
+            ),
+            dataset_manager=self._anon_dataset_manager,
+            default_connection=self._bq_connection,
+            location=self._location,
+            session_id=self._session_id,
+            manage_connections=not self._skip_bq_connection_check,
         )
         # Session temp tables don't support specifying kms key, so use anon dataset if kms key specified
         self._session_resource_manager = (
@@ -351,6 +369,7 @@ class Session(
             enable_polars_execution=context.enable_polars_execution,
             publisher=self._publisher,
             labels=tuple(labels.items()),
+            function_manager=self._function_session,
         )
 
     def __del__(self):
@@ -505,19 +524,15 @@ class Session(
             ]
 
         elif not all_cells:
-            try:
-                import IPython
+            from bigframes.core.utils import get_ipython_execution_count
 
-                ipy = IPython.get_ipython()
-                if ipy is not None and hasattr(ipy, "execution_count"):
-                    current_count = ipy.execution_count
-                    jobs = [
-                        job
-                        for job in jobs
-                        if job.get("cell_execution_count") == current_count
-                    ]
-            except (ImportError, NameError):
-                pass
+            current_count = get_ipython_execution_count()
+            if current_count is not None:
+                jobs = [
+                    job
+                    for job in jobs
+                    if job.get("cell_execution_count") == current_count
+                ]
 
         return _ExecutionHistory(jobs)
 
@@ -558,9 +573,7 @@ class Session(
 
         remote_function_session = getattr(self, "_function_session", None)
         if remote_function_session:
-            remote_function_session.clean_up(
-                self.bqclient, self.cloudfunctionsclient, self.session_id
-            )
+            remote_function_session.clean_up()
 
         publisher_session = getattr(self, "_publisher", None)
         if publisher_session:
@@ -1741,13 +1754,6 @@ class Session(
         """
         return self._function_session.deploy_remote_function(
             func,
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            bigquery_connection_client=self._clients_provider.bqconnectionclient,
-            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
-            resource_manager_client=self._clients_provider.resourcemanagerclient,
-            # User-provided arguments.
             **kwargs,
         )
 
@@ -1988,12 +1994,6 @@ class Session(
                 `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
         return self._function_session.remote_function(
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            bigquery_connection_client=self._clients_provider.bqconnectionclient,
-            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
-            resource_manager_client=self._clients_provider.resourcemanagerclient,
             # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
@@ -2040,10 +2040,6 @@ class Session(
         """
         return self._function_session.deploy_udf(
             func,
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            # User-provided arguments.
             **kwargs,
         )
 
@@ -2052,9 +2048,9 @@ class Session(
         *,
         input_types: Union[None, type, Sequence[type]] = None,
         output_type: Optional[type] = None,
-        dataset: str,
+        dataset: Optional[str] = None,
         bigquery_connection: Optional[str] = None,
-        name: str,
+        name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
         max_batching_rows: Optional[int] = None,
         container_cpu: Optional[float] = None,
@@ -2146,7 +2142,7 @@ class Session(
                 be specified. The supported output types are `bool`, `bytes`,
                 `float`, `int`, `str`, `list[bool]`, `list[float]`, `list[int]`
                 and `list[str]`.
-            dataset (str):
+            dataset (str, Optional):
                 Dataset in which to create a BigQuery managed function. It
                 should be in `<project_id>.<dataset_name>` or `<dataset_name>`
                 format.
@@ -2204,10 +2200,6 @@ class Session(
                 deployed for the user defined code.
         """
         return self._function_session.udf(
-            # Session-provided arguments.
-            session=self,
-            bigquery_client=self._clients_provider.bqclient,
-            # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
             dataset=dataset,

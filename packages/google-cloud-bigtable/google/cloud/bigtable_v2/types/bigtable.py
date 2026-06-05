@@ -1372,6 +1372,14 @@ class ExecuteQueryRequest(proto.Message):
             ``PrepareQueryRequest``. Any non-empty ``Value.type`` must
             match the corresponding ``param_types`` entry, or be
             rejected with ``INVALID_ARGUMENT``.
+        view_parameters (MutableMapping[str, google.cloud.bigtable_v2.types.Value]):
+            Optional. This map provides the runtime values returned by
+            the VIEW_PARAMETERS() function calls, typically used for
+            user-level scoping of data based on identity.
+
+            The key is the name of the view parameter e.g. ``user_id``,
+            and the value is the parameter value e.g.
+            ``alice@example.com``.
     """
 
     instance_name: str = proto.Field(
@@ -1404,6 +1412,12 @@ class ExecuteQueryRequest(proto.Message):
         proto.STRING,
         proto.MESSAGE,
         number=7,
+        message=data.Value,
+    )
+    view_parameters: MutableMapping[str, data.Value] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=12,
         message=data.Value,
     )
 

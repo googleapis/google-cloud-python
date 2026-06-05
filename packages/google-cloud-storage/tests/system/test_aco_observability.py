@@ -549,3 +549,40 @@ def test_sequential_cache_priming_multi_region(
         assert attrs["gcp.resource.destination.location"] == "global"
     finally:
         storage_client._bucket_metadata_cache.update_cache = original_update
+
+
+@pytest.mark.parametrize("env_value", ["true", "1", "yes", "on"])
+def test_disable_bucket_md_env_flag(
+    storage_client, exporter, buckets_to_delete, monkeypatch, env_value
+):
+    """Verifies that setting DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA to a truthy value disables GCS
+    destination annotations, even on cache hits."""
+    # Clear cache and OTel exporter logs
+    storage_client._bucket_metadata_cache.clear()
+    exporter.clear()
+
+    bucket_name = _helpers.unique_name("aco-disable")
+    bucket = storage_client.bucket(bucket_name)
+    storage_client.create_bucket(bucket)
+    buckets_to_delete.append(bucket)
+
+    blob_name = "test_blob.txt"
+    blob = bucket.blob(blob_name)
+    blob.upload_from_string("hello")
+
+    # Warm cache directly via GCS creation warming (client.create_bucket already primes the cache)
+    assert storage_client._bucket_metadata_cache.get(bucket_name) is not None
+
+    # Enable the DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA environment variable using monkeypatch
+    monkeypatch.setenv("DISABLE_GCS_PYTHON_CLIENT_OTEL_BUCKET_METADATA", env_value)
+
+    # Download (normally would be a cache hit with GCS annotations)
+    blob.download_as_bytes()
+
+    # Verify that ACO attributes are NOT present in the OTel span!
+    spans = exporter.get_finished_spans()
+    dl_spans = [s for s in spans if s.name == "Storage.Blob.downloadAsBytes"]
+    assert len(dl_spans) == 1
+    attrs = dl_spans[0].attributes
+    assert "gcp.resource.destination.id" not in attrs
+    assert "gcp.resource.destination.location" not in attrs

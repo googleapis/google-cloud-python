@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -132,6 +133,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1380,8 +1396,8 @@ def test_dashboards_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboards_service.CreateDashboardRequest,
-        dict,
+        dashboards_service.CreateDashboardRequest(),
+        {},
     ],
 )
 def test_create_dashboard(request_type, transport: str = "grpc"):
@@ -1392,7 +1408,7 @@ def test_create_dashboard(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
@@ -1440,9 +1456,10 @@ def test_create_dashboard_non_empty_request_with_auto_populated_field():
         client.create_dashboard(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboards_service.CreateDashboardRequest(
+        request_msg = dashboards_service.CreateDashboardRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dashboard_use_cached_wrapped_rpc():
@@ -1525,10 +1542,14 @@ async def test_create_dashboard_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_dashboard_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboards_service.CreateDashboardRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboards_service.CreateDashboardRequest(),
+        {},
+    ],
+)
+async def test_create_dashboard_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1536,7 +1557,7 @@ async def test_create_dashboard_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
@@ -1561,11 +1582,6 @@ async def test_create_dashboard_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_dashboard_async_from_dict():
-    await test_create_dashboard_async(request_type=dict)
 
 
 def test_create_dashboard_field_headers():
@@ -1724,8 +1740,8 @@ async def test_create_dashboard_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboards_service.ListDashboardsRequest,
-        dict,
+        dashboards_service.ListDashboardsRequest(),
+        {},
     ],
 )
 def test_list_dashboards(request_type, transport: str = "grpc"):
@@ -1736,7 +1752,7 @@ def test_list_dashboards(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dashboards), "__call__") as call:
@@ -1781,10 +1797,11 @@ def test_list_dashboards_non_empty_request_with_auto_populated_field():
         client.list_dashboards(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboards_service.ListDashboardsRequest(
+        request_msg = dashboards_service.ListDashboardsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_dashboards_use_cached_wrapped_rpc():
@@ -1865,10 +1882,14 @@ async def test_list_dashboards_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_dashboards_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboards_service.ListDashboardsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboards_service.ListDashboardsRequest(),
+        {},
+    ],
+)
+async def test_list_dashboards_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1876,7 +1897,7 @@ async def test_list_dashboards_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dashboards), "__call__") as call:
@@ -1897,11 +1918,6 @@ async def test_list_dashboards_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDashboardsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_dashboards_async_from_dict():
-    await test_list_dashboards_async(request_type=dict)
 
 
 def test_list_dashboards_field_headers():
@@ -2240,8 +2256,8 @@ async def test_list_dashboards_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboards_service.GetDashboardRequest,
-        dict,
+        dashboards_service.GetDashboardRequest(),
+        {},
     ],
 )
 def test_get_dashboard(request_type, transport: str = "grpc"):
@@ -2252,7 +2268,7 @@ def test_get_dashboard(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dashboard), "__call__") as call:
@@ -2300,9 +2316,10 @@ def test_get_dashboard_non_empty_request_with_auto_populated_field():
         client.get_dashboard(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboards_service.GetDashboardRequest(
+        request_msg = dashboards_service.GetDashboardRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dashboard_use_cached_wrapped_rpc():
@@ -2383,9 +2400,14 @@ async def test_get_dashboard_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dashboard_async(
-    transport: str = "grpc_asyncio", request_type=dashboards_service.GetDashboardRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboards_service.GetDashboardRequest(),
+        {},
+    ],
+)
+async def test_get_dashboard_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2393,7 +2415,7 @@ async def test_get_dashboard_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dashboard), "__call__") as call:
@@ -2418,11 +2440,6 @@ async def test_get_dashboard_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dashboard_async_from_dict():
-    await test_get_dashboard_async(request_type=dict)
 
 
 def test_get_dashboard_field_headers():
@@ -2567,8 +2584,8 @@ async def test_get_dashboard_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboards_service.DeleteDashboardRequest,
-        dict,
+        dashboards_service.DeleteDashboardRequest(),
+        {},
     ],
 )
 def test_delete_dashboard(request_type, transport: str = "grpc"):
@@ -2579,7 +2596,7 @@ def test_delete_dashboard(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dashboard), "__call__") as call:
@@ -2620,9 +2637,10 @@ def test_delete_dashboard_non_empty_request_with_auto_populated_field():
         client.delete_dashboard(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboards_service.DeleteDashboardRequest(
+        request_msg = dashboards_service.DeleteDashboardRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dashboard_use_cached_wrapped_rpc():
@@ -2705,10 +2723,14 @@ async def test_delete_dashboard_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_dashboard_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboards_service.DeleteDashboardRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboards_service.DeleteDashboardRequest(),
+        {},
+    ],
+)
+async def test_delete_dashboard_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2716,7 +2738,7 @@ async def test_delete_dashboard_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dashboard), "__call__") as call:
@@ -2732,11 +2754,6 @@ async def test_delete_dashboard_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_dashboard_async_from_dict():
-    await test_delete_dashboard_async(request_type=dict)
 
 
 def test_delete_dashboard_field_headers():
@@ -2881,8 +2898,8 @@ async def test_delete_dashboard_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dashboards_service.UpdateDashboardRequest,
-        dict,
+        dashboards_service.UpdateDashboardRequest(),
+        {},
     ],
 )
 def test_update_dashboard(request_type, transport: str = "grpc"):
@@ -2893,7 +2910,7 @@ def test_update_dashboard(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_dashboard), "__call__") as call:
@@ -2939,7 +2956,8 @@ def test_update_dashboard_non_empty_request_with_auto_populated_field():
         client.update_dashboard(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dashboards_service.UpdateDashboardRequest()
+        request_msg = dashboards_service.UpdateDashboardRequest()
+        assert args[0] == request_msg
 
 
 def test_update_dashboard_use_cached_wrapped_rpc():
@@ -3022,10 +3040,14 @@ async def test_update_dashboard_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_dashboard_async(
-    transport: str = "grpc_asyncio",
-    request_type=dashboards_service.UpdateDashboardRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dashboards_service.UpdateDashboardRequest(),
+        {},
+    ],
+)
+async def test_update_dashboard_async(request_type, transport: str = "grpc_asyncio"):
     client = DashboardsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3033,7 +3055,7 @@ async def test_update_dashboard_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_dashboard), "__call__") as call:
@@ -3058,11 +3080,6 @@ async def test_update_dashboard_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_dashboard_async_from_dict():
-    await test_update_dashboard_async(request_type=dict)
 
 
 def test_update_dashboard_field_headers():
@@ -4161,7 +4178,6 @@ def test_create_dashboard_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.CreateDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4182,7 +4198,6 @@ def test_list_dashboards_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.ListDashboardsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4203,7 +4218,6 @@ def test_get_dashboard_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.GetDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4224,7 +4238,6 @@ def test_delete_dashboard_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.DeleteDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4245,7 +4258,6 @@ def test_update_dashboard_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.UpdateDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4288,7 +4300,6 @@ async def test_create_dashboard_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.CreateDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4315,7 +4326,6 @@ async def test_list_dashboards_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.ListDashboardsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4344,7 +4354,6 @@ async def test_get_dashboard_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.GetDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4367,7 +4376,6 @@ async def test_delete_dashboard_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.DeleteDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -4396,7 +4404,6 @@ async def test_update_dashboard_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.UpdateDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -5581,7 +5588,6 @@ def test_create_dashboard_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.CreateDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -5601,7 +5607,6 @@ def test_list_dashboards_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.ListDashboardsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5621,7 +5626,6 @@ def test_get_dashboard_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.GetDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -5641,7 +5645,6 @@ def test_delete_dashboard_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.DeleteDashboardRequest()
-
         assert args[0] == request_msg
 
 
@@ -5661,7 +5664,6 @@ def test_update_dashboard_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dashboards_service.UpdateDashboardRequest()
-
         assert args[0] == request_msg
 
 
