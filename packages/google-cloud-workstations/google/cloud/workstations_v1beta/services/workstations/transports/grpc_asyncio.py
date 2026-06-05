@@ -929,7 +929,8 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
 
         Returns a short-lived credential that can be used to
         send authenticated and authorized traffic to a
-        workstation.
+        workstation. Once generated this token cannot be revoked
+        and is good for the lifetime of the token.
 
         Returns:
             Callable[[~.GenerateAccessTokenRequest],
@@ -948,6 +949,37 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
                 response_deserializer=workstations.GenerateAccessTokenResponse.deserialize,
             )
         return self._stubs["generate_access_token"]
+
+    @property
+    def push_credentials(
+        self,
+    ) -> Callable[
+        [workstations.PushCredentialsRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the push credentials method over gRPC.
+
+        Pushes credentials to a running workstation on behalf of a user.
+        Once complete, supported credential types
+        (application_default_credentials) are made available to
+        processes running in the user container.
+
+        Returns:
+            Callable[[~.PushCredentialsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "push_credentials" not in self._stubs:
+            self._stubs["push_credentials"] = self._logged_channel.unary_unary(
+                "/google.cloud.workstations.v1beta.Workstations/PushCredentials",
+                request_serializer=workstations.PushCredentialsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["push_credentials"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -1131,6 +1163,11 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.push_credentials: self._wrap_method(
+                self.push_credentials,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_iam_policy: self._wrap_method(

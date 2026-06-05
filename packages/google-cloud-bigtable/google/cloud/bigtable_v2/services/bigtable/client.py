@@ -928,11 +928,13 @@ class BigtableClient(metaclass=BigtableClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[bigtable.SampleRowKeysResponse]:
-        r"""Returns a sample of row keys in the table. The
-        returned row keys will delimit contiguous sections of
-        the table of approximately equal size, which can be used
-        to break up the data for distributed tasks like
-        mapreduces.
+        r"""Returns a sample of row keys in the table. The returned row keys
+        will delimit contiguous sections of the table of approximately
+        equal size, which can be used to break up the data for
+        distributed tasks like mapreduces.
+
+        If a ``row_range`` is provided in the request, the returned
+        samples will be restricted to the specified range.
 
         Args:
             request (Union[google.cloud.bigtable_v2.types.SampleRowKeysRequest, dict]):

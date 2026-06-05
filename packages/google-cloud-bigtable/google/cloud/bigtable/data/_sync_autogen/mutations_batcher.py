@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import time
 import warnings
 from collections import deque
 from typing import TYPE_CHECKING, Sequence, cast
@@ -29,6 +30,7 @@ from google.cloud.bigtable.data._helpers import (
     _get_retryable_errors,
     _get_timeouts,
 )
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
 from google.cloud.bigtable.data.exceptions import (
     FailedMutationEntryError,
     MutationsExceptionGroup,
@@ -39,6 +41,7 @@ from google.cloud.bigtable.data.mutations import (
 )
 
 if TYPE_CHECKING:
+    from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
     from google.cloud.bigtable.data._sync_autogen.client import (
         _DataApiTarget as TargetType,
     )
@@ -153,6 +156,22 @@ class _FlowControl:
                             lambda: self._has_capacity(next_count, next_size)
                         )
             yield mutations[start_idx:end_idx]
+
+    def add_to_flow_with_metrics(
+        self,
+        mutations: RowMutationEntry | list[RowMutationEntry],
+        metrics_controller: BigtableClientSideMetricsController,
+    ):
+        inner_generator = self.add_to_flow(mutations)
+        while True:
+            metric = metrics_controller.create_operation(OperationType.BULK_MUTATE_ROWS)
+            flow_start_time = time.monotonic_ns()
+            try:
+                value = inner_generator.__next__()
+            except CrossSync._Sync_Impl.StopIteration:
+                return
+            metric.flow_throttling_time_ns = time.monotonic_ns() - flow_start_time
+            yield (value, metric)
 
 
 class MutationsBatcher:
@@ -309,9 +328,14 @@ class MutationsBatcher:
         in_process_requests: list[
             CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]]
         ] = []
-        for batch in self._flow_control.add_to_flow(new_entries):
+        for batch, metric in self._flow_control.add_to_flow_with_metrics(
+            new_entries, self._target._metrics
+        ):
             batch_task = CrossSync._Sync_Impl.create_task(
-                self._execute_mutate_rows, batch, sync_executor=self._sync_rpc_executor
+                self._execute_mutate_rows,
+                batch,
+                metric,
+                sync_executor=self._sync_rpc_executor,
             )
             in_process_requests.append(batch_task)
         found_exceptions = self._wait_for_batch_results(*in_process_requests)
@@ -319,7 +343,7 @@ class MutationsBatcher:
         self._add_exceptions(found_exceptions)
 
     def _execute_mutate_rows(
-        self, batch: list[RowMutationEntry]
+        self, batch: list[RowMutationEntry], metric: ActiveOperationMetric
     ) -> list[FailedMutationEntryError]:
         """Helper to execute mutation operation on a batch
 
@@ -338,6 +362,7 @@ class MutationsBatcher:
                 batch,
                 operation_timeout=self._operation_timeout,
                 attempt_timeout=self._attempt_timeout,
+                metric=metric,
                 retryable_exceptions=self._retryable_errors,
             )
             operation.start()

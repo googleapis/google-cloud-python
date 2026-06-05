@@ -2481,6 +2481,7 @@ def test_get_data_agent(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
         response = client.get_data_agent(request)
 
@@ -2495,6 +2496,7 @@ def test_get_data_agent(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_data_agent_non_empty_request_with_auto_populated_field():
@@ -2629,6 +2631,7 @@ async def test_get_data_agent_async(request_type, transport: str = "grpc_asyncio
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         response = await client.get_data_agent(request)
@@ -2644,6 +2647,7 @@ async def test_get_data_agent_async(request_type, transport: str = "grpc_asyncio
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_data_agent_field_headers():
@@ -3217,6 +3221,7 @@ def test_create_data_agent_sync(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
         response = client.create_data_agent_sync(request)
 
@@ -3231,6 +3236,7 @@ def test_create_data_agent_sync(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_create_data_agent_sync_non_empty_request_with_auto_populated_field():
@@ -3378,6 +3384,7 @@ async def test_create_data_agent_sync_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         response = await client.create_data_agent_sync(request)
@@ -3393,6 +3400,7 @@ async def test_create_data_agent_sync_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_create_data_agent_sync_field_headers():
@@ -4014,6 +4022,7 @@ def test_update_data_agent_sync(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
         response = client.update_data_agent_sync(request)
 
@@ -4028,6 +4037,7 @@ def test_update_data_agent_sync(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_update_data_agent_sync_non_empty_request_with_auto_populated_field():
@@ -4169,6 +4179,7 @@ async def test_update_data_agent_sync_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         response = await client.update_data_agent_sync(request)
@@ -4184,6 +4195,7 @@ async def test_update_data_agent_sync_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_update_data_agent_sync_field_headers():
@@ -8471,6 +8483,7 @@ async def test_get_data_agent_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         await client.get_data_agent(request=None)
@@ -8527,6 +8540,7 @@ async def test_create_data_agent_sync_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         await client.create_data_agent_sync(request=None)
@@ -8583,6 +8597,7 @@ async def test_update_data_agent_sync_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                kms_key="kms_key_value",
             )
         )
         await client.update_data_agent_sync(request=None)
@@ -9034,6 +9049,7 @@ def test_get_data_agent_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9053,6 +9069,7 @@ def test_get_data_agent_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9202,7 +9219,14 @@ def test_create_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9238,6 +9262,9 @@ def test_create_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
                         "agent_context_reference": {
                             "context_set_id": "context_set_id_value"
@@ -9247,10 +9274,12 @@ def test_create_data_agent_rest_call_success(request_type):
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9262,6 +9291,7 @@ def test_create_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -9270,11 +9300,19 @@ def test_create_data_agent_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -9292,6 +9330,8 @@ def test_create_data_agent_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -9313,6 +9353,18 @@ def test_create_data_agent_rest_call_success(request_type):
                         "confidence_score": 0.1673,
                     }
                 ],
+                "user_functions": {
+                    "bq_routines": [
+                        {
+                            "routine_reference": {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "routine_id": "routine_id_value",
+                            },
+                            "description": "description_value",
+                        }
+                    ]
+                },
             },
             "published_context": {},
             "last_published_context": {},
@@ -9325,6 +9377,7 @@ def test_create_data_agent_rest_call_success(request_type):
         "update_time": {},
         "delete_time": {},
         "purge_time": {},
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9561,7 +9614,14 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9597,6 +9657,9 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
                         "agent_context_reference": {
                             "context_set_id": "context_set_id_value"
@@ -9606,10 +9669,12 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9621,6 +9686,7 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -9629,11 +9695,19 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -9651,6 +9725,8 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -9672,6 +9748,18 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                         "confidence_score": 0.1673,
                     }
                 ],
+                "user_functions": {
+                    "bq_routines": [
+                        {
+                            "routine_reference": {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "routine_id": "routine_id_value",
+                            },
+                            "description": "description_value",
+                        }
+                    ]
+                },
             },
             "published_context": {},
             "last_published_context": {},
@@ -9684,6 +9772,7 @@ def test_create_data_agent_sync_rest_call_success(request_type):
         "update_time": {},
         "delete_time": {},
         "purge_time": {},
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9761,6 +9850,7 @@ def test_create_data_agent_sync_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9780,6 +9870,7 @@ def test_create_data_agent_sync_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9933,7 +10024,14 @@ def test_update_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9969,6 +10067,9 @@ def test_update_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
                         "agent_context_reference": {
                             "context_set_id": "context_set_id_value"
@@ -9978,10 +10079,12 @@ def test_update_data_agent_rest_call_success(request_type):
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9993,6 +10096,7 @@ def test_update_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -10001,11 +10105,19 @@ def test_update_data_agent_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -10023,6 +10135,8 @@ def test_update_data_agent_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -10044,6 +10158,18 @@ def test_update_data_agent_rest_call_success(request_type):
                         "confidence_score": 0.1673,
                     }
                 ],
+                "user_functions": {
+                    "bq_routines": [
+                        {
+                            "routine_reference": {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "routine_id": "routine_id_value",
+                            },
+                            "description": "description_value",
+                        }
+                    ]
+                },
             },
             "published_context": {},
             "last_published_context": {},
@@ -10056,6 +10182,7 @@ def test_update_data_agent_rest_call_success(request_type):
         "update_time": {},
         "delete_time": {},
         "purge_time": {},
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10296,7 +10423,14 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -10332,6 +10466,9 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
                         "agent_context_reference": {
                             "context_set_id": "context_set_id_value"
@@ -10341,10 +10478,12 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -10356,6 +10495,7 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -10364,11 +10504,19 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                     "datasource": {"big_query_max_billed_bytes": {"value": 541}},
+                    "model": 1,
                 },
                 "example_queries": [
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "description": "description_value",
+                                "data_type": "data_type_value",
+                            }
+                        ],
                     }
                 ],
                 "looker_golden_queries": [
@@ -10386,6 +10534,8 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             ],
                             "sorts": ["sorts_value1", "sorts_value2"],
                             "limit": "limit_value",
+                            "query_id": "query_id_value",
+                            "client_id": "client_id_value",
                         },
                     }
                 ],
@@ -10407,6 +10557,18 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                         "confidence_score": 0.1673,
                     }
                 ],
+                "user_functions": {
+                    "bq_routines": [
+                        {
+                            "routine_reference": {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "routine_id": "routine_id_value",
+                            },
+                            "description": "description_value",
+                        }
+                    ]
+                },
             },
             "published_context": {},
             "last_published_context": {},
@@ -10419,6 +10581,7 @@ def test_update_data_agent_sync_rest_call_success(request_type):
         "update_time": {},
         "delete_time": {},
         "purge_time": {},
+        "kms_key": "kms_key_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10496,6 +10659,7 @@ def test_update_data_agent_sync_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -10515,6 +10679,7 @@ def test_update_data_agent_sync_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12211,10 +12376,41 @@ def test_data_agent_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_data_agent_path():
+def test_crypto_key_path():
     project = "squid"
     location = "clam"
-    data_agent = "whelk"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = DataAgentServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = DataAgentServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataAgentServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_data_agent_path():
+    project = "winkle"
+    location = "nautilus"
+    data_agent = "scallop"
     expected = "projects/{project}/locations/{location}/dataAgents/{data_agent}".format(
         project=project,
         location=location,
@@ -12226,9 +12422,9 @@ def test_data_agent_path():
 
 def test_parse_data_agent_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "data_agent": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "data_agent": "clam",
     }
     path = DataAgentServiceClient.data_agent_path(**expected)
 
@@ -12238,7 +12434,7 @@ def test_parse_data_agent_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -12248,7 +12444,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = DataAgentServiceClient.common_billing_account_path(**expected)
 
@@ -12258,7 +12454,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -12268,7 +12464,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = DataAgentServiceClient.common_folder_path(**expected)
 
@@ -12278,7 +12474,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -12288,7 +12484,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = DataAgentServiceClient.common_organization_path(**expected)
 
@@ -12298,7 +12494,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -12308,7 +12504,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = DataAgentServiceClient.common_project_path(**expected)
 
@@ -12318,8 +12514,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -12330,8 +12526,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = DataAgentServiceClient.common_location_path(**expected)
 

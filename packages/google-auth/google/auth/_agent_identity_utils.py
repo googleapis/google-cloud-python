@@ -89,6 +89,14 @@ def get_agent_identity_certificate_path():
     if not cert_config_path and not has_well_known_dir:
         return None
 
+    # If ECP config path is specified but does not exist, and we are on a workstation, fail-fast immediately.
+    if (
+        cert_config_path
+        and not has_well_known_dir
+        and not os.path.exists(cert_config_path)
+    ):
+        return None
+
     has_logged_config_warning = False
     has_logged_cert_warning = False
 

@@ -1674,9 +1674,13 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+                mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 row = table.read_row(
@@ -1685,30 +1689,33 @@ class TestReadRows:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
                 assert query.row_ranges == []
                 assert query.limit == 1
+                assert args[1] is table
 
     def test_read_row_w_filter(self):
         """Test reading a single row with an added filter"""
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+                mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
-                mock_filter = mock.Mock()
-                expected_filter = {"filter": "mock filter"}
-                mock_filter._to_dict.return_value = expected_filter
+                expected_filter = mock.Mock()
                 row = table.read_row(
                     row_key,
                     operation_timeout=expected_op_timeout,
@@ -1716,11 +1723,11 @@ class TestReadRows:
                     row_filter=expected_filter,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
@@ -1733,8 +1740,12 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                read_rows.side_effect = lambda *args, **kwargs: []
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                mock_op.start_operation.return_value = []
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 result = table.read_row(
@@ -1743,8 +1754,8 @@ class TestReadRows:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert result is None
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
                 assert isinstance(args[0], ReadRowsQuery)
@@ -1762,21 +1773,28 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                read_rows.side_effect = lambda *args, **kwargs: return_value
-                expected_op_timeout = 1
-                expected_req_timeout = 2
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                mock_op.start_operation.return_value = return_value
+                mock_op_constructor.return_value = mock_op
+                expected_op_timeout = 2
+                expected_req_timeout = 1
                 result = table.row_exists(
                     row_key,
                     operation_timeout=expected_op_timeout,
                     attempt_timeout=expected_req_timeout,
                 )
                 assert expected_result == result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert isinstance(args[0], ReadRowsQuery)
+                query = args[0]
+                assert isinstance(query, ReadRowsQuery)
+                assert query.row_keys == [row_key]
+                assert query.limit == 1
                 expected_filter = {
                     "chain": {
                         "filters": [
@@ -1785,10 +1803,6 @@ class TestReadRows:
                         ]
                     }
                 }
-                query = args[0]
-                assert query.row_keys == [row_key]
-                assert query.row_ranges == []
-                assert query.limit == 1
                 assert query.filter._to_dict() == expected_filter
 
 
@@ -2958,6 +2972,42 @@ class TestExecuteQuery:
         assert results[0]["b"] == 9
         assert execute_query_mock.call_count == 1
         assert prepare_mock.call_count == 1
+
+    def test_execute_query_with_view_parameters(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        values = [
+            *chunked_responses(2, str_val("test2"), int_val(9), token=b"r2"),
+        ]
+        execute_query_mock.return_value = self._make_gapic_stream(values)
+        query_str = f"SELECT a, b FROM {self.TABLE_NAME} WHERE user_id = VIEW_PARAMETERS('user_id')"
+        result = client.execute_query(
+            query_str,
+            self.INSTANCE_NAME,
+            view_parameters={"user_id": "alice"},
+        )
+        results = [r for r in result]
+        assert len(results) == 1
+        assert results[0]["a"] == "test2"
+        assert results[0]["b"] == 9
+        assert execute_query_mock.call_count == 1
+        assert prepare_mock.call_count == 1
+        assert prepare_mock.call_args[1]["request"]["query"] == query_str
+
+        request = execute_query_mock.call_args[0][0]
+        assert "user_id" in request.view_parameters
+        assert request.view_parameters["user_id"].string_value == "alice"
+
+    def test_execute_query_with_view_parameters_invalid_type(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        with pytest.raises(TypeError) as e:
+            client.execute_query(
+                f"SELECT a, b FROM {self.TABLE_NAME}",
+                self.INSTANCE_NAME,
+                view_parameters={"user_id": 123},
+            )
+        assert "View parameter user_id must be a string, got int" in str(e.value)
 
     def test_execute_query_error_before_metadata(
         self, client, execute_query_mock, prepare_mock

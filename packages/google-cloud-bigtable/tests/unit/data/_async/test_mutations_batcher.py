@@ -307,6 +307,10 @@ class TestMutationsBatcherAsync:
     def _make_one(self, table=None, **kwargs):
         from google.api_core.exceptions import DeadlineExceeded, ServiceUnavailable
 
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+        )
+
         if table is None:
             table = mock.Mock()
             table._request_path = {"table_name": "table"}
@@ -317,6 +321,7 @@ class TestMutationsBatcherAsync:
                 DeadlineExceeded,
                 ServiceUnavailable,
             )
+            table._metrics = BigtableClientSideMetricsController([])
 
         return self._get_target_class()(table, **kwargs)
 
@@ -935,14 +940,16 @@ class TestMutationsBatcherAsync:
             table.default_mutate_rows_retryable_errors = ()
             async with self._make_one(table) as instance:
                 batch = [self._make_mutation()]
-                result = await instance._execute_mutate_rows(batch)
+                expected_metric = mock.Mock()
+                result = await instance._execute_mutate_rows(batch, expected_metric)
                 assert start_operation.call_count == 1
                 args, kwargs = mutate_rows.call_args
                 assert args[0] == table.client._gapic_client
                 assert args[1] == table
                 assert args[2] == batch
-                kwargs["operation_timeout"] == 17
-                kwargs["attempt_timeout"] == 13
+                assert kwargs["operation_timeout"] == 17
+                assert kwargs["attempt_timeout"] == 13
+                assert kwargs["metric"] == expected_metric
                 assert result == []
 
     @CrossSync.pytest
@@ -963,7 +970,7 @@ class TestMutationsBatcherAsync:
             table.default_mutate_rows_retryable_errors = ()
             async with self._make_one(table) as instance:
                 batch = [self._make_mutation()]
-                result = await instance._execute_mutate_rows(batch)
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
@@ -1093,7 +1100,9 @@ class TestMutationsBatcherAsync:
                 assert instance._operation_timeout == expected_operation_timeout
                 assert instance._attempt_timeout == expected_attempt_timeout
                 # make simulated gapic call
-                await instance._execute_mutate_rows([self._make_mutation()])
+                await instance._execute_mutate_rows(
+                    [self._make_mutation()], mock.Mock()
+                )
                 assert mutate_rows.call_count == 1
                 kwargs = mutate_rows.call_args[1]
                 assert kwargs["operation_timeout"] == expected_operation_timeout
@@ -1192,6 +1201,8 @@ class TestMutationsBatcherAsync:
         Test that retryable functions support user-configurable arguments, and that the configured retryables are passed
         down to the gapic layer.
         """
+        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+
         with mock.patch.object(
             google.api_core.retry, "if_exception_type"
         ) as predicate_builder_mock:
@@ -1207,14 +1218,16 @@ class TestMutationsBatcherAsync:
                     predicate_builder_mock.return_value = expected_predicate
                     retry_fn_mock.side_effect = RuntimeError("stop early")
                     mutation = self._make_mutation(count=1, size=1)
-                    await instance._execute_mutate_rows([mutation])
+                    await instance._execute_mutate_rows(
+                        [mutation], ActiveOperationMetric("MUTATE_ROWS")
+                    )
                     # passed in errors should be used to build the predicate
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, _MutateRowsIncomplete
                     )
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
+                    retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
                     # output of if_exception_type should be sent in to retry constructor
-                    assert retry_call_args[1] is expected_predicate
+                    assert retry_call_kwargs["predicate"] is expected_predicate
 
     @CrossSync.pytest
     async def test_large_batch_write(self):
