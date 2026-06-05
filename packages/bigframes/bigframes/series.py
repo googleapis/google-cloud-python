@@ -2280,11 +2280,14 @@ class Series:
         return self.where(~cond, other)
 
     def to_frame(self, name: blocks.Label = None) -> bigframes.dataframe.DataFrame:
-        provided_name = name if name else self.name
+        provided_name = name if name is not None else self.name
         # To be consistent with Pandas, it assigns 0 as the column name if missing. 0 is the first element of RangeIndex.
-        block = self._block.with_column_labels(
-            [provided_name] if provided_name else [0]
-        )
+        column_names: List[blocks.Label]
+        if provided_name is None or pandas.isna([cast(Any, provided_name)])[0]:
+            column_names = [0]
+        else:
+            column_names = [provided_name]
+        block = self._block.with_column_labels(column_names)
         return bigframes.dataframe.DataFrame(block)
 
     def to_csv(
