@@ -163,6 +163,8 @@ class TestSessionsMtls:
             session = sessions.AsyncAuthorizedSession(
                 mock_creds, auth_request=mock_auth_request
             )
+
+
             await session.configure_mtls_channel()
 
             # If the request handler is not an AiohttpRequest, the library cannot configure

@@ -468,7 +468,9 @@ class TestSslCredentials(object):
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
 
-    @mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+    @mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", autospec=True
+    )
     def test_get_client_ssl_credentials_workload_cert(
         self,
         mock_has_default_client_cert_source,
@@ -492,7 +494,7 @@ class TestSslCredentials(object):
         ):
             ssl_credentials = google.auth.transport.grpc.SslCredentials()
 
-        # If a workload certificate config exists on the device (and use_client_cert is true), 
+        # If a workload certificate config exists on the device (and use_client_cert is true),
         # is_mtls must be True and get_client_ssl_credentials should be invoked.
         assert ssl_credentials.ssl_credentials is not None
         assert ssl_credentials.is_mtls

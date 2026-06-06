@@ -261,8 +261,8 @@ class TestAuthorizedHttp(object):
         ):
             is_mtls = authed_http.configure_mtls_channel()
 
-        assert is_mtls is False
-        # If client certificate and key are not found, the transport falls back to 
+        assert not is_mtls
+        # If client certificate and key are not found, the transport falls back to
         # a standard connection. _is_mtls must be False to reflect this fallback state.
         assert authed_http._is_mtls is False
         mock_get_client_cert_and_key.assert_called_once()
