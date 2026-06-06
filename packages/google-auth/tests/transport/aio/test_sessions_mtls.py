@@ -139,7 +139,9 @@ class TestSessionsMtls:
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_custom_request(self):
         """
-        Tests that if _auth_request is not an AiohttpRequest, it gracefully falls back to tLS.
+        """
+        Tests that if _auth_request is not an AiohttpRequest, _is_mtls is set to False
+        because we can't configure the custom request with mTLS.
         """
         with mock.patch.dict(
             os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
@@ -162,4 +164,10 @@ class TestSessionsMtls:
                 mock_creds, auth_request=mock_auth_request
             )
             await session.configure_mtls_channel()
+
+            # If the request handler is not an AiohttpRequest, the library cannot configure
+            # the connection to use mTLS, so _is_mtls must be False to reflect this unconfigured state.
             assert session._is_mtls is False
+            mock_make_context.assert_called_once_with(
+                b"fake_cert_data", b"fake_key_data"
+            )

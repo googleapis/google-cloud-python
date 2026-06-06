@@ -20,6 +20,7 @@ import logging
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
+from google.auth.transport import mtls
 from google.oauth2 import service_account
 
 try:
@@ -295,11 +296,7 @@ class SslCredentials:
         if not use_client_cert:
             self._is_mtls = False
         else:
-            # Load client SSL credentials.
-            metadata_path = _mtls_helper._check_config_path(
-                _mtls_helper.CONTEXT_AWARE_METADATA_PATH
-            )
-            self._is_mtls = metadata_path is not None
+            self._is_mtls = mtls.has_default_client_cert_source()
 
     @property
     def ssl_credentials(self):

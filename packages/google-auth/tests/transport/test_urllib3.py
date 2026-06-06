@@ -259,9 +259,14 @@ class TestAuthorizedHttp(object):
         with mock.patch.dict(
             os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
         ):
-            res = authed_http.configure_mtls_channel()
-        assert res is False
+            is_mtls = authed_http.configure_mtls_channel()
+
+        assert is_mtls is False
+        # If client certificate and key are not found, the transport falls back to 
+        # a standard connection. _is_mtls must be False to reflect this fallback state.
         assert authed_http._is_mtls is False
+        mock_get_client_cert_and_key.assert_called_once()
+        mock_make_mutual_tls_http.assert_not_called()
 
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True

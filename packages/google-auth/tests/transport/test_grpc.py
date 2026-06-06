@@ -468,6 +468,39 @@ class TestSslCredentials(object):
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
 
+    @mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+    def test_get_client_ssl_credentials_workload_cert(
+        self,
+        mock_has_default_client_cert_source,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        # Mock that context-aware metadata does not exist, but workload cert config does.
+        mock_check_config_path.return_value = None
+        mock_has_default_client_cert_source.return_value = True
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            PUBLIC_CERT_BYTES,
+            PRIVATE_KEY_BYTES,
+            None,
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        # If a workload certificate config exists on the device (and use_client_cert is true), 
+        # is_mtls must be True and get_client_ssl_credentials should be invoked.
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_get_client_ssl_credentials.assert_called_once()
+        mock_ssl_channel_credentials.assert_called_once_with(
+            certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
+        )
+
     def test_get_client_ssl_credentials_without_client_cert_env(
         self,
         mock_check_config_path,
