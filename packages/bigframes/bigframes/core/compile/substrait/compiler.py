@@ -31,6 +31,7 @@ import bigframes.operations.generic_ops as generic_ops
 import bigframes.operations.numeric_ops as numeric_ops
 import bigframes.operations.struct_ops as struct_ops
 from bigframes.core import bigframe_node, nodes
+from bigframes.core.compile import lowering
 
 
 class SubstraitCompiler:
@@ -53,6 +54,7 @@ class SubstraitCompiler:
         if not self.can_compile(plan):
             return None
 
+        plan = lowering.lower_ops_to_substrait(plan)
         pb_rel = self._compile_node(plan)
 
         pb_plan = plan_pb2.Plan()

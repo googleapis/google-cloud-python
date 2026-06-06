@@ -488,9 +488,17 @@ POLARS_LOWERING_RULES = (
     LowerFloorOp(),
 )
 
+SUBSTRAIT_LOWERING_RULES = (*LOWER_COMPARISONS,)
+
 
 def lower_ops_to_polars(root: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:
     return op_lowering.lower_ops(root, rules=POLARS_LOWERING_RULES)
+
+
+def lower_ops_to_substrait(
+    root: bigframe_node.BigFrameNode,
+) -> bigframe_node.BigFrameNode:
+    return op_lowering.lower_ops(root, rules=SUBSTRAIT_LOWERING_RULES)
 
 
 def _numeric_to_timedelta(expr: expression.Expression) -> expression.Expression:
