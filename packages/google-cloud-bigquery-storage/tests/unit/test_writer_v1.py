@@ -158,6 +158,8 @@ class TestAppendRowsStream(unittest.TestCase):
         stream._thread_lock = mock_lock
         reason = Exception("test exception")
         old_connection = stream._connection = self._make_mock_connection()
+        # Non-transient error: _shutdown returns no pending pairs.
+        old_connection._shutdown.return_value = []
 
         stream._renew_connection(reason=reason)
 
@@ -168,6 +170,33 @@ class TestAppendRowsStream(unittest.TestCase):
         # Verify that the lock was activated and closed.
         mock_lock.__enter__.assert_called_once()
         mock_lock.__exit__.assert_called_once()
+
+    @mock.patch(
+        "google.cloud.bigquery_storage_v1.writer._Connection._reopen_with_pending",
+        autospec=True,
+    )
+    def test__renew_connection_replays_on_transient_error(self, reopen_mock):
+        """On transient errors, pending in-flight requests are replayed."""
+        from google.cloud.bigquery_storage_v1 import writer
+
+        mock_client = self._make_mock_client()
+        stream = self._make_one(mock_client, REQUEST_TEMPLATE)
+        old_connection = stream._connection = self._make_mock_connection()
+
+        pending_request = gapic_types.AppendRowsRequest(
+            write_stream="projects/p/datasets/d/tables/t/streams/s"
+        )
+        pending_future = writer.AppendRowsFuture(stream)
+        old_connection._shutdown.return_value = [(pending_request, pending_future)]
+
+        reason = exceptions.ServiceUnavailable("server unavailable")
+        stream._renew_connection(reason=reason)
+
+        assert stream._connection is not old_connection
+        # New connection should have been asked to replay the pending request.
+        reopen_mock.assert_called_once_with(
+            stream._connection, [(pending_request, pending_future)]
+        )
 
     @mock.patch("threading.Thread", autospec=True)
     def test__on_rpc_done(self, thread):
@@ -382,8 +411,9 @@ class Test_Connection(unittest.TestCase):
         connection._rpc = bidi_rpc
 
         futures = [writer.AppendRowsFuture(connection._writer) for _ in range(3)]
+        fake_request = gapic_types.AppendRowsRequest()
         for f in futures:
-            connection._queue.put(f)
+            connection._queue.put((fake_request, f))
         close_exception = Exception("test exception")
 
         assert connection._closed is False
@@ -424,7 +454,8 @@ class Test_Connection(unittest.TestCase):
         connection = self._make_one(mock_client, mock_stream)
         connection._queue = mock.Mock()
         future = AppendRowsFuture(mock_stream)
-        connection._queue.get_nowait.return_value = future
+        fake_request = gapic_types.AppendRowsRequest()
+        connection._queue.get_nowait.return_value = (fake_request, future)
         response = gapic_types.AppendRowsResponse(
             {
                 "error": {
@@ -448,7 +479,8 @@ class Test_Connection(unittest.TestCase):
         connection = self._make_one(mock_client, mock_stream)
         connection._queue = mock.Mock()
         future = AppendRowsFuture(mock_stream)
-        connection._queue.get_nowait.return_value = future
+        fake_request = gapic_types.AppendRowsRequest()
+        connection._queue.get_nowait.return_value = (fake_request, future)
         response = gapic_types.AppendRowsResponse()
 
         connection._on_response(response)
