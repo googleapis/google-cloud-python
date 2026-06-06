@@ -504,6 +504,73 @@ class Test_Connection(unittest.TestCase):
         assert isinstance(reason, Exception)
         assert reason.args[0] is future
 
+    @mock.patch("google.api_core.bidi.BidiRpc", autospec=True)
+    @mock.patch("google.api_core.bidi.BackgroundConsumer", autospec=True)
+    def test__reopen_with_pending_resolves_futures(self, background_consumer, bidi_rpc):
+        """_reopen_with_pending replays requests and resolves the existing futures."""
+        from google.cloud.bigquery_storage_v1.writer import AppendRowsFuture
+
+        type(bidi_rpc.return_value).is_active = mock.PropertyMock(return_value=True)
+        type(background_consumer.return_value).is_active = mock.PropertyMock(
+            return_value=True
+        )
+
+        mock_client = self._make_mock_client()
+        mock_stream = self._make_mock_stream()
+        connection = self._make_one(mock_client, mock_stream)
+        connection._stream_name = "projects/p/datasets/d/tables/t/streams/s"
+
+        req1 = gapic_types.AppendRowsRequest(
+            write_stream="projects/p/datasets/d/tables/t/streams/s"
+        )
+        req2 = gapic_types.AppendRowsRequest(
+            write_stream="projects/p/datasets/d/tables/t/streams/s"
+        )
+        fut1 = AppendRowsFuture(mock_stream)
+        fut2 = AppendRowsFuture(mock_stream)
+
+        connection._reopen_with_pending([(req1, fut1), (req2, fut2)])
+
+        # BidiRpc should have been created with the merged initial request.
+        bidi_rpc.assert_called_once()
+        # The second request should have been sent via rpc.send().
+        bidi_rpc.return_value.send.assert_called_once_with(req2)
+        # Both futures should be in the queue awaiting responses.
+        assert connection._queue.qsize() == 2
+
+    @mock.patch("google.api_core.bidi.BidiRpc", autospec=True)
+    @mock.patch("google.api_core.bidi.BackgroundConsumer", autospec=True)
+    def test__reopen_with_pending_fails_futures_on_connection_failure(
+        self, background_consumer, bidi_rpc
+    ):
+        """When the reconnect itself fails, futures are failed (no infinite retry)."""
+        from google.cloud.bigquery_storage_v1.writer import AppendRowsFuture
+        from google.api_core import exceptions as core_exceptions
+
+        # Simulate consumer never becoming active (connection failure).
+        type(background_consumer.return_value).is_active = mock.PropertyMock(
+            return_value=False
+        )
+
+        mock_client = self._make_mock_client()
+        mock_stream = self._make_mock_stream()
+        connection = self._make_one(mock_client, mock_stream)
+        connection._stream_name = "projects/p/datasets/d/tables/t/streams/s"
+
+        req = gapic_types.AppendRowsRequest(
+            write_stream="projects/p/datasets/d/tables/t/streams/s"
+        )
+        fut = AppendRowsFuture(mock_stream)
+
+        connection._reopen_with_pending([(req, fut)])
+
+        # Future should be failed with a non-retryable Unknown error.
+        assert fut._is_done is True
+        with pytest.raises(core_exceptions.Unknown):
+            fut.result()
+        # Connection should be closed to prevent further use.
+        assert connection._closed is True
+
     def test__process_request_template(self):
         from google.cloud.bigquery_storage_v1.writer import _process_request_template
 
