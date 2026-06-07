@@ -575,36 +575,32 @@ class _Connection(object):
             self._queue.put((initial_user_request, initial_future))
 
             merged = self._make_initial_request(initial_user_request)
-            self._rpc = bidi.BidiRpc(
-                self._client.append_rows,
-                initial_request=merged,
-                metadata=tuple(
-                    itertools.chain(
-                        self._metadata,
-                        (
-                            (
-                                "x-goog-request-params",
-                                f"write_stream={self._stream_name}",
-                            ),
-                        ),
-                    )
+            metadata = tuple(self._metadata) + (
+                (
+                    "x-goog-request-params",
+                    f"write_stream={self._stream_name}",
                 ),
             )
-            self._rpc.add_done_callback(self._on_rpc_done)
+            rpc = bidi.BidiRpc(
+                self._client.append_rows,
+                initial_request=merged,
+                metadata=metadata,
+            )
+            rpc.add_done_callback(self._on_rpc_done)
 
-            self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
-            self._consumer.start()
+            consumer = bidi.BackgroundConsumer(rpc, self._on_response)
+            consumer.start()
+
+            self._rpc = rpc
+            self._consumer = consumer
 
         start_time = time.monotonic()
-        try:
-            while not self._rpc.is_active and self._consumer.is_active:
-                time.sleep(_WRITE_OPEN_INTERVAL)
-                if timeout is not None and time.monotonic() - start_time > timeout:
-                    break
-        except AttributeError:
-            pass
+        while not rpc.is_active and consumer.is_active:
+            time.sleep(_WRITE_OPEN_INTERVAL)
+            if timeout is not None and time.monotonic() - start_time > timeout:
+                break
 
-        if not self._consumer.is_active:
+        if not consumer.is_active:
             # Connection failed — drain the queue and fail futures directly
             # rather than going through close() to avoid triggering another
             # reconnect attempt (which would cause an infinite retry loop).
@@ -616,7 +612,11 @@ class _Connection(object):
                 self._closed = True
                 while not self._queue.empty():
                     _, future = self._queue.get_nowait()
-                    future.set_exception(exc)
+                    if not future.done():
+                        future.set_exception(exc)
+                for _, future in pending:
+                    if not future.done():
+                        future.set_exception(exc)
             return
 
         # Send remaining pending requests over the live connection.
