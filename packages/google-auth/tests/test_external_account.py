@@ -1028,6 +1028,35 @@ class TestCredentials(object):
             is credentials._impersonated_credentials._rab_manager
         )
 
+    def test_cached_token_initializes_impersonated_credentials(self):
+        # Initialize credentials with impersonation.
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+
+        assert credentials._impersonated_credentials is not None
+
+        # Simulate cached token by setting it directly.
+        credentials.token = "CACHED_SA_TOKEN"
+        credentials.expiry = _helpers.utcnow() + datetime.timedelta(seconds=3600)
+
+        assert credentials.token == "CACHED_SA_TOKEN"
+        assert credentials._impersonated_credentials.token == "CACHED_SA_TOKEN"
+        assert credentials._impersonated_credentials.expiry == credentials.expiry
+
+        request = self.make_mock_request(status=http_client.OK, data={})
+
+        # Mock RAB refresh on ImpersonatedCredentials to verify delegation.
+        with mock.patch(
+            "google.auth.impersonated_credentials.Credentials._maybe_start_regional_access_boundary_refresh"
+        ) as mock_rab_refresh:
+            headers = {}
+            credentials.before_request(request, "GET", "https://example.com", headers)
+
+            # Verify delegation occurred.
+            mock_rab_refresh.assert_called_once_with(request, "https://example.com")
+
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
         return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,

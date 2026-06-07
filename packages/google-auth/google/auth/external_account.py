@@ -213,6 +213,44 @@ class Credentials(
                 "credentials"
             )
 
+        # Initialize impersonated credentials immediately upon creation.
+        # This ensures that if an external client (like gcloud) loads a cached token,
+        # it flows to the inner Service Account and ensures RAB lookup targets 
+        # the Service Account endpoint.
+        if (
+            self._should_initialize_impersonated_credentials()
+            and self.service_account_email
+        ):
+            self._impersonated_credentials = self._initialize_impersonated_credentials()
+            self._impersonated_credentials.expiry = None
+            self._rab_manager = self._impersonated_credentials._rab_manager
+
+    @property
+    def token(self):
+        """Optional[str]: The access token."""
+        if getattr(self, "_impersonated_credentials", None):
+            return self._impersonated_credentials.token
+        return getattr(self, "_token", None)
+
+    @token.setter
+    def token(self, value):
+        self._token = value
+        if getattr(self, "_impersonated_credentials", None):
+            self._impersonated_credentials.token = value
+
+    @property
+    def expiry(self):
+        """Optional[datetime]: When the token expires."""
+        if getattr(self, "_impersonated_credentials", None):
+            return self._impersonated_credentials.expiry
+        return getattr(self, "_expiry", None)
+
+    @expiry.setter
+    def expiry(self, value):
+        self._expiry = value
+        if getattr(self, "_impersonated_credentials", None):
+            self._impersonated_credentials.expiry = value
+
     @property
     def info(self):
         """Generates the dictionary representation of the current credentials.
