@@ -206,6 +206,7 @@ class TestCredentials(object):
                 "access_token": "token",
                 "expires_in": 500,
             },
+            "googleapis.com",
         ]
 
         # Credentials should start as invalid
@@ -410,11 +411,7 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
 
-    @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    def test_is_regional_access_boundary_lookup_required(self, mock_enabled):
+    def test_is_regional_access_boundary_lookup_required(self):
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -443,14 +440,10 @@ class TestCredentials(object):
         assert url is None
 
     @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_regional_access_boundary_disabled_state_transitions(
-        self, mock_get_service_account_info, mock_enabled
+        self, mock_get_service_account_info
     ):
         mock_get_service_account_info.return_value = {
             "email": "spiffe://trust-domain/ns/ns/sa/sa",

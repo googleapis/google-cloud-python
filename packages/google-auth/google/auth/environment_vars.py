@@ -105,9 +105,6 @@ AWS_SESSION_TOKEN = "AWS_SESSION_TOKEN"
 AWS_REGION = "AWS_REGION"
 AWS_DEFAULT_REGION = "AWS_DEFAULT_REGION"
 
-GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED = "GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED"
-"""Environment variable controlling whether to enable trust boundary feature.
-The default value is false. Users have to explicitly set this value to true."""
 
 GOOGLE_API_CERTIFICATE_CONFIG = "GOOGLE_API_CERTIFICATE_CONFIG"
 """Environment variable defining the location of Google API certificate config

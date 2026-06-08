@@ -215,7 +215,7 @@ class Credentials(
 
         # Initialize impersonated credentials immediately upon creation.
         # This ensures that if an external client (like gcloud) loads a cached token,
-        # it flows to the inner Service Account and ensures RAB lookup targets 
+        # it flows to the inner Service Account and ensures RAB lookup targets
         # the Service Account endpoint.
         if (
             self._should_initialize_impersonated_credentials()
