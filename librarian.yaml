@@ -2231,7 +2231,7 @@ libraries:
           - python-gapic-name=developers_knowledge
       default_version: v1
   - name: google-devicesandservices-health
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"

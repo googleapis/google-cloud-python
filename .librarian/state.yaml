@@ -5421,7 +5421,7 @@ libraries:
       - packages/google-developers-knowledge/docs/
     tag_format: '{id}-v{version}'
   - id: google-devicesandservices-health
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/devicesandservices/health/v4
