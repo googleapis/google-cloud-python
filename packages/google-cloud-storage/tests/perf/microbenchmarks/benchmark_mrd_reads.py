@@ -6,6 +6,7 @@ import statistics
 import sys
 import time
 import uuid
+import logging
 
 try:
     import google_crc32c
@@ -97,8 +98,8 @@ async def upload_random_object(
     total_size_bytes: int,
     chunk_size_bytes: int,
 ):
-    print(f"Uploading a new random object of size {total_size_bytes} bytes to gs://{bucket_name}/{object_name}...")
-    print(f"Upload chunk size: {chunk_size_bytes} bytes")
+    logging.debug(f"Uploading a new random object of size {total_size_bytes} bytes to gs://{bucket_name}/{object_name}...")
+    logging.debug(f"Upload chunk size: {chunk_size_bytes} bytes")
     
     writer = AsyncAppendableObjectWriter(
         client=grpc_client,
@@ -123,7 +124,7 @@ async def upload_random_object(
         uploaded_bytes += bytes_to_write
         
     object_resource = await writer.finalize()
-    print(f"Appendable object {object_name} created and finalized. Uploaded {uploaded_bytes} bytes.")
+    logging.debug(f"Appendable object {object_name} created and finalized. Uploaded {uploaded_bytes} bytes.")
 
 
 async def run_benchmark():
@@ -132,12 +133,16 @@ async def run_benchmark():
     parser.add_argument("--sizes", type=str, default="1KiB,100KiB,1MiB,16MiB,100MiB,1GiB", help="Sizes to benchmark")
     parser.add_argument("--iterations", type=int, default=5, help="Number of iterations per size")
     parser.add_argument("--upload-chunk-size", type=str, default="2MiB", help="Chunk size for the upload (default: 2MiB, max: 100MiB)")
+    parser.add_argument("--debug", action="store_true", help="Print debug/progress logs")
     args = parser.parse_args()
 
+    log_level = logging.DEBUG if args.debug else logging.WARNING
+    logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
+
     impl = getattr(google_crc32c, "implementation", None)
-    print(f"google_crc32c implementation: {impl}")
+    logging.info(f"google_crc32c implementation: {impl}")
     if impl != "c":
-        print(f"Error: google_crc32c implementation is '{impl}', expected 'c'", file=sys.stderr)
+        logging.error(f"Error: google_crc32c implementation is '{impl}', expected 'c'")
         sys.exit(1)
 
     sizes_to_test = []
@@ -145,17 +150,17 @@ async def run_benchmark():
         try:
             sizes_to_test.append((s.strip(), parse_size(s)))
         except ValueError as e:
-            print(f"Error parsing size '{s}': {e}", file=sys.stderr)
+            logging.error(f"Error parsing size '{s}': {e}")
             sys.exit(1)
 
     try:
         upload_chunk_size_bytes = parse_size(args.upload_chunk_size)
     except ValueError as e:
-        print(f"Error parsing upload-chunk-size '{args.upload_chunk_size}': {e}", file=sys.stderr)
+        logging.error(f"Error parsing upload-chunk-size '{args.upload_chunk_size}': {e}")
         sys.exit(1)
 
     if upload_chunk_size_bytes > 100 * 1024 * 1024:
-        print("Error: max upload-chunk-size is 100MiB", file=sys.stderr)
+        logging.error("Error: max upload-chunk-size is 100MiB")
         sys.exit(1)
 
     grpc_client = AsyncGrpcClient()
@@ -178,7 +183,7 @@ async def run_benchmark():
                 chunk_size,
             )
         except Exception as e:
-            print(f"Upload failed for size {size_str}: {e}", file=sys.stderr)
+            logging.error(f"Upload failed for size {size_str}: {e}")
             sys.exit(1)
 
         try:
@@ -189,7 +194,7 @@ async def run_benchmark():
                 chk_label = "Enabled" if enable_chk else "Disabled"
 
                 # Warmup phase using the uploaded object
-                print(f"Warming up for 10 seconds using object {object_name} (Checksum {chk_label})...")
+                logging.info(f"Warming up for 10 seconds using object {object_name} (Checksum {chk_label})...")
                 warmup_start = time.perf_counter()
                 warmup_downloads = 0
                 warmup_chunk_size = min(10 * 1024 * 1024, size_bytes)
@@ -210,15 +215,13 @@ async def run_benchmark():
                         warmup_downloads += 1
                     except Exception:
                         pass
-                print(f"Warmup complete. Completed {warmup_downloads} warmup downloads.")
-                print()
+                logging.info(f"Warmup complete. Completed {warmup_downloads} warmup downloads.")
 
                 durations_full = []
                 durations_minus_1 = []
 
                 for i in range(args.iterations):
                     # Download entire object
-                    print(f"  [{size_str} (Full) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Downloading from offset 0...", end="", flush=True)
                     try:
                         duration = await download_range(
                             grpc_client,
@@ -229,13 +232,12 @@ async def run_benchmark():
                             enable_checksum=enable_chk,
                         )
                         durations_full.append(duration)
-                        print(f" Done in {format_time(duration)}")
+                        logging.debug(f"  [{size_str} (Full) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Done in {format_time(duration)}")
                     except Exception as e:
-                        print(f" Failed: {e}")
+                        logging.error(f"  [{size_str} (Full) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Failed: {e}")
 
                     # Download entire object - 1 byte
                     if size_bytes > 1:
-                        print(f"  [{size_str} (Full-1) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Downloading from offset 0...", end="", flush=True)
                         try:
                             duration = await download_range(
                                 grpc_client,
@@ -246,11 +248,9 @@ async def run_benchmark():
                                 enable_checksum=enable_chk,
                             )
                             durations_minus_1.append(duration)
-                            print(f" Done in {format_time(duration)}")
+                            logging.debug(f"  [{size_str} (Full-1) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Done in {format_time(duration)}")
                         except Exception as e:
-                            print(f" Failed: {e}")
-
-                print()
+                            logging.error(f"  [{size_str} (Full-1) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Failed: {e}")
 
                 # Reporting for Full
                 if not durations_full:
@@ -314,11 +314,11 @@ async def run_benchmark():
                 print("-" * 150)
         finally:
             try:
-                print(f"Cleaning up object gs://{args.bucket}/{object_name}...")
+                logging.info(f"Cleaning up object gs://{args.bucket}/{object_name}...")
                 await grpc_client.delete_object(args.bucket, object_name)
-                print(f"Cleanup complete.")
+                logging.info(f"Cleanup complete.")
             except Exception as e:
-                print(f"Warning: failed to delete test object {object_name}: {e}", file=sys.stderr)
+                logging.warning(f"Warning: failed to delete test object {object_name}: {e}")
 
 
 def main():
