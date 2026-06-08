@@ -5405,7 +5405,7 @@ libraries:
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
   - id: google-developers-knowledge
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/developers/knowledge/v1

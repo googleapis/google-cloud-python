@@ -2220,7 +2220,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-developers-knowledge
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/developers/knowledge/v1
     copyright_year: "2026"
