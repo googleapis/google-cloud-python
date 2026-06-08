@@ -171,26 +171,26 @@ async def run_benchmark():
     print("-" * 150)
 
     for size_str, size_bytes in sizes_to_test:
-        object_name = f"checksum_benchmarking_{size_str}_{uuid.uuid4().hex[:12]}"
+        enabled_throughput_full = None
+        enabled_throughput_minus_1 = None
 
-        try:
-            chunk_size = min(upload_chunk_size_bytes, size_bytes)
-            await upload_random_object(
-                grpc_client,
-                args.bucket,
-                object_name,
-                size_bytes,
-                chunk_size,
-            )
-        except Exception as e:
-            logging.error(f"Upload failed for size {size_str}: {e}")
-            sys.exit(1)
+        for enable_chk in [True, False]:
+            object_name = f"checksum_benchmarking_{size_str}_{uuid.uuid4().hex[:12]}"
 
-        try:
-            enabled_throughput_full = None
-            enabled_throughput_minus_1 = None
+            try:
+                chunk_size = min(upload_chunk_size_bytes, size_bytes)
+                await upload_random_object(
+                    grpc_client,
+                    args.bucket,
+                    object_name,
+                    size_bytes,
+                    chunk_size,
+                )
+            except Exception as e:
+                logging.error(f"Upload failed for size {size_str}: {e}")
+                sys.exit(1)
 
-            for enable_chk in [True, False]:
+            try:
                 chk_label = "Enabled" if enable_chk else "Disabled"
 
                 # Warmup phase using the uploaded object
@@ -312,13 +312,13 @@ async def run_benchmark():
                         )
 
                 print("-" * 150)
-        finally:
-            try:
-                logging.info(f"Cleaning up object gs://{args.bucket}/{object_name}...")
-                await grpc_client.delete_object(args.bucket, object_name)
-                logging.info(f"Cleanup complete.")
-            except Exception as e:
-                logging.warning(f"Warning: failed to delete test object {object_name}: {e}")
+            finally:
+                try:
+                    logging.info(f"Cleaning up object gs://{args.bucket}/{object_name}...")
+                    await grpc_client.delete_object(args.bucket, object_name)
+                    logging.info(f"Cleanup complete.")
+                except Exception as e:
+                    logging.warning(f"Warning: failed to delete test object {object_name}: {e}")
 
 
 def main():
