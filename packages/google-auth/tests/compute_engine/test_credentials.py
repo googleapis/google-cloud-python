@@ -13,6 +13,7 @@
 # limitations under the License.
 import base64
 import datetime
+import re
 from unittest import mock
 
 import pytest  # type: ignore
@@ -762,6 +763,15 @@ class TestIDTokenCredentials(object):
             json={},
         )
 
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
+        )
+
         # mock token for credentials
         responses.add(
             responses.GET,
@@ -780,8 +790,10 @@ class TestIDTokenCredentials(object):
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@example\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
@@ -944,12 +956,23 @@ class TestIDTokenCredentials(object):
             json={},
         )
 
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
+        )
+
         # mock sign blob endpoint
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@example\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
