@@ -32,6 +32,7 @@ if TYPE_CHECKING:
     import pandas as pd
 
     import bigframes.dataframe
+    import bigframes.ml.base as ml_base
     import bigframes.series
     import bigframes.session
 
@@ -213,6 +214,107 @@ class AIAccessor(AbstractBigQueryDataFrameAccessor[T, S]):
             model_params=model_params,
         )
         return self._to_series(result)
+
+    def generate_embedding(
+        self,
+        model: ml_base.BaseEstimator | str | pd.Series,
+        *,
+        output_dimensionality: int | None = None,
+        task_type: str | None = None,
+        start_second: float | None = None,
+        end_second: float | None = None,
+        interval_seconds: float | None = None,
+        trial_id: int | None = None,
+        session: bigframes.session.Session | None = None,
+    ) -> T:
+        """
+        Creates embeddings that describe an entity — for example, a piece of text or an image.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_embedding`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        bf_df = self._bf_from_dataframe(session)
+        result = bigframes.bigquery.ai.generate_embedding(
+            model,
+            bf_df,
+            output_dimensionality=output_dimensionality,
+            task_type=task_type,
+            start_second=start_second,
+            end_second=end_second,
+            interval_seconds=interval_seconds,
+            trial_id=trial_id,
+        )
+        return self._to_dataframe(result)
+
+    def generate_text(
+        self,
+        model: ml_base.BaseEstimator | str | pd.Series,
+        *,
+        temperature: float | None = None,
+        max_output_tokens: int | None = None,
+        top_k: int | None = None,
+        top_p: float | None = None,
+        stop_sequences: List[str] | None = None,
+        ground_with_google_search: bool | None = None,
+        request_type: str | None = None,
+        session: bigframes.session.Session | None = None,
+    ) -> T:
+        """
+        Generates text using a BigQuery ML model.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_text`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        bf_df = self._bf_from_dataframe(session)
+        result = bigframes.bigquery.ai.generate_text(
+            model,
+            bf_df,
+            temperature=temperature,
+            max_output_tokens=max_output_tokens,
+            top_k=top_k,
+            top_p=top_p,
+            stop_sequences=stop_sequences,
+            ground_with_google_search=ground_with_google_search,
+            request_type=request_type,
+        )
+        return self._to_dataframe(result)
+
+    def generate_table(
+        self,
+        model: ml_base.BaseEstimator | str | pd.Series,
+        *,
+        output_schema: str | Mapping[str, str],
+        temperature: float | None = None,
+        top_p: float | None = None,
+        max_output_tokens: int | None = None,
+        stop_sequences: List[str] | None = None,
+        request_type: str | None = None,
+        session: bigframes.session.Session | None = None,
+    ) -> T:
+        """
+        Generates a table using a BigQuery ML model.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.generate_table`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        bf_df = self._bf_from_dataframe(session)
+        result = bigframes.bigquery.ai.generate_table(
+            model,
+            bf_df,
+            output_schema=output_schema,
+            temperature=temperature,
+            top_p=top_p,
+            max_output_tokens=max_output_tokens,
+            stop_sequences=stop_sequences,
+            request_type=request_type,
+        )
+        return self._to_dataframe(result)
 
 
 class BigQueryDataFrameAccessor(AbstractBigQueryDataFrameAccessor[T, S]):
