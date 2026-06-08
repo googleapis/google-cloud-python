@@ -237,7 +237,7 @@ async def run_benchmark():
                         logging.error(f"  [{size_str} (Full) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Failed: {e}")
 
                     # Download entire object - 1 byte
-                    if size_bytes > 1:
+                    if size_bytes > 1 and enable_chk:
                         try:
                             duration = await download_range(
                                 grpc_client,
@@ -282,7 +282,7 @@ async def run_benchmark():
                     )
 
                 # Reporting for Full-1
-                if size_bytes > 1:
+                if size_bytes > 1 and enable_chk:
                     if not durations_minus_1:
                         print(f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
                     else:
