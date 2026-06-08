@@ -606,7 +606,13 @@ class SubstraitCompiler:
     def _compile_op_expr(
         self, expr: ex.OpExpression, child: nodes.BigFrameNode
     ) -> algebra_pb2.Expression:
-        return self._compile_op(expr.op, expr.inputs, child)
+        pb_expr = self._compile_op(expr.op, expr.inputs, child)
+        if pb_expr.HasField("scalar_function"):
+            if not pb_expr.scalar_function.HasField("output_type"):
+                output_dtype = self._get_expression_dtype(expr, child)
+                type_dict = self._convert_type(output_dtype)
+                json_format.ParseDict(type_dict, pb_expr.scalar_function.output_type)
+        return pb_expr
 
     @singledispatchmethod
     def _compile_op(
@@ -677,7 +683,9 @@ class SubstraitCompiler:
         json_format.ParseDict(type_dict, cast.type)
 
         # alternative: FAILURE_BEHAVIOR_RETURN_NULL not supported by acero
-        cast.failure_behavior = algebra_pb2.Expression.Cast.FAILURE_BEHAVIOR_THROW_EXCEPTION
+        cast.failure_behavior = (
+            algebra_pb2.Expression.Cast.FAILURE_BEHAVIOR_THROW_EXCEPTION
+        )
         return pb_expr
 
     def _get_expression_dtype(

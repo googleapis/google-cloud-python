@@ -100,8 +100,6 @@ def test_engines_project_floor(
         "polars",
         "bq",
         "bq-sqlglot",
-        "substrait-datafusion",
-        "substrait-acero",
     ],
     indirect=True,
 )

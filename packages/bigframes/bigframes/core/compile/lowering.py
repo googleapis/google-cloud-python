@@ -459,7 +459,47 @@ def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
     return cast_op.as_expr(arg)
 
 
-LOWER_COMPARISONS = tuple(
+class LowerEqNullsMatchRule(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return comparison_ops.EqNullsMatchOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, comparison_ops.EqNullsMatchOp)
+        arg1, arg2 = _coerce_comparables(expr.children[0], expr.children[1])
+
+        # True constant
+        true_const = expression.const(True)
+        # False constant
+        false_const = expression.const(False)
+
+        # equal = arg1 == arg2
+        equal_expr = ops.eq_op.as_expr(arg1, arg2)
+
+        # isnull1 = arg1.isnull()
+        isnull1_expr = ops.isnull_op.as_expr(arg1)
+
+        # isnull2 = arg2.isnull()
+        isnull2_expr = ops.isnull_op.as_expr(arg2)
+
+        # both_null = isnull1 & isnull2
+        both_null_expr = ops.and_op.as_expr(isnull1_expr, isnull2_expr)
+
+        # any_null = isnull1 | isnull2
+        any_null_expr = ops.or_op.as_expr(isnull1_expr, isnull2_expr)
+
+        # inner_where = where(false, any_null, equal)
+        inner_where_expr = ops.where_op.as_expr(false_const, any_null_expr, equal_expr)
+
+        # outer_where = where(true, both_null, inner_where)
+        null_safe_eq_expr = ops.where_op.as_expr(
+            true_const, both_null_expr, inner_where_expr
+        )
+
+        return null_safe_eq_expr
+
+
+POLARS_LOWER_COMPARISONS = tuple(
     CoerceArgsRule(op)
     for op in (
         comparison_ops.EqOp,
@@ -472,8 +512,20 @@ LOWER_COMPARISONS = tuple(
     )
 )
 
+SUBSTRAIT_LOWER_COMPARISONS = tuple(
+    CoerceArgsRule(op)
+    for op in (
+        comparison_ops.EqOp,
+        comparison_ops.NeOp,
+        comparison_ops.LtOp,
+        comparison_ops.GtOp,
+        comparison_ops.LeOp,
+        comparison_ops.GeOp,
+    )
+)
+
 POLARS_LOWERING_RULES = (
-    *LOWER_COMPARISONS,
+    *POLARS_LOWER_COMPARISONS,
     LowerAddRule(),
     LowerSubRule(),
     LowerMulRule(),
@@ -488,7 +540,10 @@ POLARS_LOWERING_RULES = (
     LowerFloorOp(),
 )
 
-SUBSTRAIT_LOWERING_RULES = (*LOWER_COMPARISONS,)
+SUBSTRAIT_LOWERING_RULES = (
+    LowerEqNullsMatchRule(),
+    *SUBSTRAIT_LOWER_COMPARISONS,
+)
 
 
 def lower_ops_to_polars(root: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:
