@@ -30,7 +30,7 @@ import bigframes.operations.comparison_ops as comparison_ops
 import bigframes.operations.generic_ops as generic_ops
 import bigframes.operations.numeric_ops as numeric_ops
 import bigframes.operations.struct_ops as struct_ops
-from bigframes.core import bigframe_node, nodes
+from bigframes.core import bigframe_node, nodes, rewrite
 from bigframes.core.compile import lowering
 
 
@@ -54,6 +54,8 @@ class SubstraitCompiler:
         if not self.can_compile(plan):
             return None
 
+        # Need to bind types in before lowering
+        plan = rewrite.bind_schema_to_tree(plan)
         plan = lowering.lower_ops_to_substrait(plan)
         pb_rel = self._compile_node(plan)
 
@@ -674,7 +676,8 @@ class SubstraitCompiler:
         type_dict = self._convert_type(target_dtype)
         json_format.ParseDict(type_dict, cast.type)
 
-        cast.failure_behavior = algebra_pb2.Expression.Cast.FAILURE_BEHAVIOR_RETURN_NULL
+        # alternative: FAILURE_BEHAVIOR_RETURN_NULL not supported by acero
+        cast.failure_behavior = algebra_pb2.Expression.Cast.FAILURE_BEHAVIOR_THROW_EXCEPTION
         return pb_expr
 
     def _get_expression_dtype(

@@ -24,7 +24,17 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_filter_bool_col(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -35,7 +45,17 @@ def test_engines_filter_bool_col(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_filter_expr_cond(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -47,7 +67,17 @@ def test_engines_filter_expr_cond(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_filter_true(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -57,7 +87,17 @@ def test_engines_filter_true(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_filter_false(
     scalars_array_value: array_value.ArrayValue,
     engine,

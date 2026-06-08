@@ -52,7 +52,17 @@ def apply_op(
     return new_arr
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_int(scalars_array_value: array_value.ArrayValue, engine):
     polars_version = tuple([int(part) for part in polars.__version__.split(".")])
     if polars_version >= (1, 34, 0):
@@ -69,7 +79,11 @@ def test_engines_astype_int(scalars_array_value: array_value.ArrayValue, engine)
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"],
+    indirect=True,
+)
 def test_engines_astype_string_int(scalars_array_value: array_value.ArrayValue, engine):
     vals = ["1", "100", "-3"]
     arr, _ = scalars_array_value.compute_values(
@@ -84,7 +98,17 @@ def test_engines_astype_string_int(scalars_array_value: array_value.ArrayValue, 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_float(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -95,7 +119,17 @@ def test_engines_astype_float(scalars_array_value: array_value.ArrayValue, engin
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string_float(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -112,7 +146,17 @@ def test_engines_astype_string_float(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_bool(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value, ops.AsTypeOp(to_type=bigframes.dtypes.BOOL_DTYPE)
@@ -121,7 +165,17 @@ def test_engines_astype_bool(scalars_array_value: array_value.ArrayValue, engine
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string(scalars_array_value: array_value.ArrayValue, engine):
     # floats work slightly different with trailing zeroes rn
     arr = apply_op(
@@ -133,7 +187,17 @@ def test_engines_astype_string(scalars_array_value: array_value.ArrayValue, engi
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_numeric(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -144,7 +208,17 @@ def test_engines_astype_numeric(scalars_array_value: array_value.ArrayValue, eng
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string_numeric(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -161,7 +235,17 @@ def test_engines_astype_string_numeric(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_date(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -172,7 +256,17 @@ def test_engines_astype_date(scalars_array_value: array_value.ArrayValue, engine
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string_date(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -189,7 +283,17 @@ def test_engines_astype_string_date(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_datetime(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -200,7 +304,17 @@ def test_engines_astype_datetime(scalars_array_value: array_value.ArrayValue, en
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string_datetime(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -217,7 +331,17 @@ def test_engines_astype_string_datetime(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_timestamp(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -228,7 +352,17 @@ def test_engines_astype_timestamp(scalars_array_value: array_value.ArrayValue, e
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_string_timestamp(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -249,7 +383,17 @@ def test_engines_astype_string_timestamp(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_time(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -260,7 +404,17 @@ def test_engines_astype_time(scalars_array_value: array_value.ArrayValue, engine
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
         ops.JSONDecode(to_type=bigframes.dtypes.INT_DTYPE).as_expr(
@@ -281,7 +435,17 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
         ops.ToJSON().as_expr(expression.deref("int64_col")),
@@ -300,7 +464,17 @@ def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, eng
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+    indirect=True,
+)
 def test_engines_astype_timedelta(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
