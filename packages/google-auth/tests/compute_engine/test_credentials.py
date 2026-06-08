@@ -267,7 +267,6 @@ class TestCredentials(object):
         assert headers["authorization"] == "Bearer token"
         assert headers["x-goog-api-client"] == "cred-type/mds"
 
-
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain",
         return_value="fake_universe_domain",
