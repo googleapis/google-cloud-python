@@ -115,6 +115,28 @@ async def run_benchmark():
 
     grpc_client = AsyncGrpcClient()
 
+    # Warmup phase
+    print("Warming up for 10 seconds to establish connections...")
+    warmup_start = time.perf_counter()
+    warmup_downloads = 0
+    while time.perf_counter() - warmup_start < 10.0:
+        # download a small chunk (1MiB) to warm up channels
+        start_byte = random.randint(0, object_size_bytes - 1024 * 1024)
+        try:
+            await download_range(
+                grpc_client,
+                args.bucket,
+                args.object,
+                start_byte,
+                1024 * 1024,
+                enable_checksum=True,
+            )
+            warmup_downloads += 1
+        except Exception:
+            pass
+    print(f"Warmup complete. Completed {warmup_downloads} warmup downloads.")
+    print()
+
     print(f"Benchmarking MRD Reads on gs://{args.bucket}/{args.object} with {args.iterations} iterations:")
     print("-" * 125)
     print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput':<15}")
