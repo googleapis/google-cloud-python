@@ -105,6 +105,9 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
     asyncio.set_event_loop(loop)
     grpc_client = AsyncGrpcClient()
 
+    download_bytes_list = []
+    download_elapsed_times = []
+
     object_name = f"checksum_benchmarking_{download_size}_{uuid.uuid4().hex[:12]}"
 
     # 1. upload an object
@@ -144,6 +147,7 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
 
         # 3. download range (0, download_size) for 5 rounds
         def run_download():
+            start_time = time.perf_counter()
             loop.run_until_complete(
                 download_range(
                     grpc_client,
@@ -154,6 +158,9 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
                     enable_checksum,
                 )
             )
+            elapsed = time.perf_counter() - start_time
+            download_bytes_list.append(download_size)
+            download_elapsed_times.append(elapsed)
 
         benchmark.pedantic(
             target=run_download,
@@ -162,6 +169,13 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
         )
 
     finally:
+        if download_elapsed_times:
+            total_bytes = sum(download_bytes_list)
+            total_time = sum(download_elapsed_times)
+            throughput_mib_s = (total_bytes / total_time) / (1024 * 1024)
+            benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
+            print(f"\nAvg Throughput: {throughput_mib_s:.2f} MiB/s")
+
         # 4. delete the object
         try:
             loop.run_until_complete(grpc_client.delete_object(DEFAULT_BUCKET, object_name))
