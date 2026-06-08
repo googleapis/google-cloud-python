@@ -142,13 +142,14 @@ async def run_benchmark():
     print()
 
     print(f"Benchmarking MRD Reads on gs://{args.bucket}/{args.object} with {args.iterations} iterations:")
-    print("-" * 125)
-    print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput':<15}")
-    print("-" * 125)
+    print("-" * 150)
+    print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput':<15} | {'% Chk-Disabled Change':<22}")
+    print("-" * 150)
 
     for size_str, size_bytes in sizes_to_test:
         # Pre-generate random offsets so that both Enabled and Disabled configurations run on the exact same offsets
         offsets = [random.randint(0, object_size_bytes - size_bytes) for _ in range(args.iterations)]
+        enabled_throughput = None
 
         for enable_chk in [True, False]:
             chk_label = "Enabled" if enable_chk else "Disabled"
@@ -166,7 +167,7 @@ async def run_benchmark():
                     continue
 
             if not durations:
-                print(f"{size_str:<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15}")
+                print(f"{size_str:<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
                 continue
 
             min_time = min(durations)
@@ -177,13 +178,25 @@ async def run_benchmark():
             # Throughput in MiB/s
             avg_throughput = (size_bytes / (1024 * 1024)) / mean_time
 
+            percent_diff_str = ""
+            if enable_chk:
+                enabled_throughput = avg_throughput
+                percent_diff_str = "N/A"
+            else:
+                if enabled_throughput is not None and enabled_throughput > 0:
+                    percent_increase = ((avg_throughput - enabled_throughput) / enabled_throughput) * 100
+                    percent_diff_str = f"{percent_increase:+.2f}%"
+                else:
+                    percent_diff_str = "N/A"
+
             print(
                 f"{size_str:<15} | {chk_label:<10} | {size_bytes:<12} | "
                 f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
                 f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
-                f"{avg_throughput:.2f} MiB/s"
+                f"{avg_throughput:.2f} MiB/s | "
+                f"{percent_diff_str:<22}"
             )
-        print("-" * 125)
+        print("-" * 150)
 
 
 def main():
