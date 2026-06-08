@@ -26,7 +26,7 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
 
         >>> from bigframes.ml.linear_model import LogisticRegression  # doctest: +SKIP
         >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> X = bpd.DataFrame({ \  # doctest: +SKIP
+        >>> X = bpd.DataFrame({  # doctest: +SKIP
                 "feature0": [20, 21, 19, 18], \
                 "feature1": [0, 1, 1, 0], \
                 "feature2": [0.2, 0.3, 0.4, 0.5]})
