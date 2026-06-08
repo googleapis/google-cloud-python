@@ -94,6 +94,7 @@ async def run_benchmark():
     parser.add_argument("--object", type=str, default="large_20260507_10737418240", help="Object name (10GiB size)")
     parser.add_argument("--sizes", type=str, default="1KiB,2MiB,10MiB,100MiB,1GiB", help="Sizes to benchmark")
     parser.add_argument("--iterations", type=int, default=5, help="Number of iterations per size")
+    parser.add_argument("--object-size", type=str, default="10GiB", help="Size of the target GCS object (default: '10GiB')")
     args = parser.parse_args()
 
     impl = getattr(google_crc32c, "implementation", None)
@@ -110,8 +111,11 @@ async def run_benchmark():
             print(f"Error parsing size '{s}': {e}", file=sys.stderr)
             sys.exit(1)
 
-    # 10 GiB in bytes
-    object_size_bytes = 10 * 1024 * 1024 * 1024
+    try:
+        object_size_bytes = parse_size(args.object_size)
+    except ValueError as e:
+        print(f"Error parsing object-size '{args.object_size}': {e}", file=sys.stderr)
+        sys.exit(1)
 
     grpc_client = AsyncGrpcClient()
 
