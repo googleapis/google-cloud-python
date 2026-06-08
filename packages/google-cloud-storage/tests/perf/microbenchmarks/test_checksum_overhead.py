@@ -23,7 +23,7 @@ from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMultiRangeDownloader
 from google.cloud.storage.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
 
-DEFAULT_BUCKET = os.environ.get("DEFAULT_RAPID_ZONAL_BUCKET", "chandrasiri-benchmarks-zb")
+DEFAULT_BUCKET = os.environ.get("DEFAULT_RAPID_ZONAL_BUCKET", "chandrasiri-gcsfs-zb")
 
 
 class VoidBuffer:
@@ -88,19 +88,35 @@ async def upload_random_object(
 
 
 @pytest.mark.parametrize(
-    "download_size",
+    "object_size,download_size",
     [
-        1024,                  # 1KiB
-        100 * 1024,            # 100KiB
-        1024 * 1024,           # 1MiB
-        16 * 1024 * 1024,      # 16MiB
-        100 * 1024 * 1024,     # 100MiB
-        1024 * 1024 * 1024,    # 1GiB
+        (1024, 1024),                  # 1KiB Full
+        (1024, 1024 - 1),              # 1KiB Full-1
+        (100 * 1024, 100 * 1024),      # 100KiB Full
+        (100 * 1024, 100 * 1024 - 1),  # 100KiB Full-1
+        (1024 * 1024, 1024 * 1024),    # 1MiB Full
+        (1024 * 1024, 1024 * 1024 - 1),# 1MiB Full-1
+        (16 * 1024 * 1024, 16 * 1024 * 1024),      # 16MiB Full
+        (16 * 1024 * 1024, 16 * 1024 * 1024 - 1),  # 16MiB Full-1
+        (100 * 1024 * 1024, 100 * 1024 * 1024),    # 100MiB Full
+        (100 * 1024 * 1024, 100 * 1024 * 1024 - 1),# 100MiB Full-1
+        (1024 * 1024 * 1024, 1024 * 1024 * 1024),  # 1GiB Full
+        (1024 * 1024 * 1024, 1024 * 1024 * 1024 - 1),# 1GiB Full-1
     ],
-    ids=["1KiB", "100KiB", "1MiB", "16MiB", "100MiB", "1GiB"],
+    ids=[
+        "1KiB-Full", "1KiB-Full-1",
+        "100KiB-Full", "100KiB-Full-1",
+        "1MiB-Full", "1MiB-Full-1",
+        "16MiB-Full", "16MiB-Full-1",
+        "100MiB-Full", "100MiB-Full-1",
+        "1GiB-Full", "1GiB-Full-1"
+    ],
 )
 @pytest.mark.parametrize("enable_checksum", [True, False], ids=["checksum_enabled", "checksum_disabled"])
-def test_checksum_overhead(benchmark, download_size, enable_checksum):
+def test_checksum_overhead(benchmark, object_size, download_size, enable_checksum):
+    if not enable_checksum and download_size == object_size - 1:
+        pytest.skip("Skip Full-1 range download when checksum is disabled")
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     grpc_client = AsyncGrpcClient()
@@ -108,16 +124,16 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
     download_bytes_list = []
     download_elapsed_times = []
 
-    object_name = f"checksum_benchmarking_{download_size}_{uuid.uuid4().hex[:12]}"
+    object_name = f"checksum_benchmarking_{object_size}_{uuid.uuid4().hex[:12]}"
 
     # 1. upload an object
-    chunk_size = min(2 * 1024 * 1024, download_size)
+    chunk_size = min(2 * 1024 * 1024, object_size)
     loop.run_until_complete(
         upload_random_object(
             grpc_client,
             DEFAULT_BUCKET,
             object_name,
-            download_size,
+            object_size,
             chunk_size,
         )
     )
@@ -125,10 +141,10 @@ def test_checksum_overhead(benchmark, download_size, enable_checksum):
     try:
         # 2. warmup
         warmup_start = time.perf_counter()
-        warmup_chunk_size = min(10 * 1024 * 1024, download_size)
+        warmup_chunk_size = min(10 * 1024 * 1024, object_size)
         while time.perf_counter() - warmup_start < 10.0:
-            if download_size > warmup_chunk_size:
-                start_byte = random.randint(0, download_size - warmup_chunk_size)
+            if object_size > warmup_chunk_size:
+                start_byte = random.randint(0, object_size - warmup_chunk_size)
             else:
                 start_byte = 0
             try:
