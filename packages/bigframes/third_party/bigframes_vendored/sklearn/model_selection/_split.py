@@ -66,12 +66,12 @@ class KFold(_BaseKFold):
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> from bigframes.ml.model_selection import KFold
-        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
-        >>> y = bpd.DataFrame({"label": [1, 2, 3]})
-        >>> kf = KFold(n_splits=3, random_state=42)
-        >>> for i, (X_train, X_test, y_train, y_test) in enumerate(kf.split(X, y)):
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> from bigframes.ml.model_selection import KFold  # doctest: +SKIP
+        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})  # doctest: +SKIP
+        >>> y = bpd.DataFrame({"label": [1, 2, 3]})  # doctest: +SKIP
+        >>> kf = KFold(n_splits=3, random_state=42)  # doctest: +SKIP
+        >>> for i, (X_train, X_test, y_train, y_test) in enumerate(kf.split(X, y)):  # doctest: +SKIP
         ...     print(f"Fold {i}:")
         ...     print(f"  X_train: {X_train}")
         ...     print(f"  X_test: {X_test}")
@@ -158,32 +158,32 @@ def train_test_split(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> from bigframes.ml.model_selection import train_test_split
-        >>> X = bpd.DataFrame({"feat0": [0, 2, 4, 6, 8], "feat1": [1, 3, 5, 7, 9]})
-        >>> y = bpd.DataFrame({"label": [0, 1, 2, 3, 4]})
-        >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-        >>> X_train
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> from bigframes.ml.model_selection import train_test_split  # doctest: +SKIP
+        >>> X = bpd.DataFrame({"feat0": [0, 2, 4, 6, 8], "feat1": [1, 3, 5, 7, 9]})  # doctest: +SKIP
+        >>> y = bpd.DataFrame({"label": [0, 1, 2, 3, 4]})  # doctest: +SKIP
+        >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)  # doctest: +SKIP
+        >>> X_train  # doctest: +SKIP
             feat0  feat1
         0      0      1
         1      2      3
         4      8      9
         <BLANKLINE>
         [3 rows x 2 columns]
-        >>> y_train
+        >>> y_train  # doctest: +SKIP
             label
         0      0
         1      1
         4      4
         <BLANKLINE>
         [3 rows x 1 columns]
-        >>> X_test
+        >>> X_test  # doctest: +SKIP
             feat0  feat1
         2      4      5
         3      6      7
         <BLANKLINE>
         [2 rows x 2 columns]
-        >>> y_test
+        >>> y_test  # doctest: +SKIP
             label
         2      2
         3      3

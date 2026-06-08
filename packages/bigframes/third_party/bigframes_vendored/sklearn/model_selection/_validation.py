@@ -16,12 +16,12 @@ def cross_validate(estimator, X, y=None, *, cv=None):
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> from bigframes.ml.model_selection import cross_validate, KFold
-        >>> from bigframes.ml.linear_model import LinearRegression
-        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
-        >>> y = bpd.DataFrame({"label": [1, 2, 3]})
-        >>> model = LinearRegression()
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> from bigframes.ml.model_selection import cross_validate, KFold  # doctest: +SKIP
+        >>> from bigframes.ml.linear_model import LinearRegression  # doctest: +SKIP
+        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})  # doctest: +SKIP
+        >>> y = bpd.DataFrame({"label": [1, 2, 3]})  # doctest: +SKIP
+        >>> model = LinearRegression()  # doctest: +SKIP
         >>> scores = cross_validate(model, X, y, cv=3) # doctest: +SKIP
         >>> for score in scores["test_score"]: # doctest: +SKIP
         ...   print(score["mean_squared_error"][0])

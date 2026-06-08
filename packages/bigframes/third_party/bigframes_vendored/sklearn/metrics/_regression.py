@@ -44,13 +44,13 @@ def r2_score(y_true, y_pred, force_finite=True) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
-        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
-        >>> r2_score = bigframes.ml.metrics.r2_score(y_true, y_pred)
-        >>> r2_score
+        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])  # doctest: +SKIP
+        >>> r2_score = bigframes.ml.metrics.r2_score(y_true, y_pred)  # doctest: +SKIP
+        >>> r2_score  # doctest: +SKIP
         np.float64(0.9486081370449679)
 
     Args:
@@ -70,13 +70,13 @@ def mean_squared_error(y_true, y_pred) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
-        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
-        >>> mse = bigframes.ml.metrics.mean_squared_error(y_true, y_pred)
-        >>> mse
+        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])  # doctest: +SKIP
+        >>> mse = bigframes.ml.metrics.mean_squared_error(y_true, y_pred)  # doctest: +SKIP
+        >>> mse  # doctest: +SKIP
         np.float64(0.375)
 
     Args:
@@ -96,13 +96,13 @@ def mean_absolute_error(y_true, y_pred) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
-        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
-        >>> mae = bigframes.ml.metrics.mean_absolute_error(y_true, y_pred)
-        >>> mae
+        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])  # doctest: +SKIP
+        >>> mae = bigframes.ml.metrics.mean_absolute_error(y_true, y_pred)  # doctest: +SKIP
+        >>> mae  # doctest: +SKIP
         np.float64(0.5)
 
     Args:

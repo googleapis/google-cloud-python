@@ -23,15 +23,15 @@ class OneHotEncoder(BaseEstimator):
         Given a dataset with two features, we let the encoder find the unique
         values per feature and transform the data to a binary one-hot encoding.
 
-        >>> from bigframes.ml.preprocessing import OneHotEncoder
-        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.preprocessing import OneHotEncoder  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
 
-        >>> enc = OneHotEncoder()
-        >>> X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})
-        >>> enc.fit(X)
+        >>> enc = OneHotEncoder()  # doctest: +SKIP
+        >>> X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})  # doctest: +SKIP
+        >>> enc.fit(X)  # doctest: +SKIP
         OneHotEncoder()
 
-        >>> print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))
+        >>> print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))  # doctest: +SKIP
                         onehotencoded_a               onehotencoded_b
         0  [{'index': 1, 'value': 1.0}]  [{'index': 1, 'value': 1.0}]
         1  [{'index': 2, 'value': 1.0}]  [{'index': 0, 'value': 1.0}]

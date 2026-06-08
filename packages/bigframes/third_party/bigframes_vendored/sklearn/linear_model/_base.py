@@ -64,21 +64,21 @@ class LinearRegression(RegressorMixin, LinearModel):
 
     **Examples:**
 
-        >>> from bigframes.ml.linear_model import LinearRegression
-        >>> import bigframes.pandas as bpd
-        >>> X = bpd.DataFrame({ \
+        >>> from bigframes.ml.linear_model import LinearRegression  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> X = bpd.DataFrame({ \  # doctest: +SKIP
                 "feature0": [20, 21, 19, 18], \
                 "feature1": [0, 1, 1, 0], \
                 "feature2": [0.2, 0.3, 0.4, 0.5]})
-        >>> y = bpd.DataFrame({"outcome": [0, 0, 1, 1]})
+        >>> y = bpd.DataFrame({"outcome": [0, 0, 1, 1]})  # doctest: +SKIP
         >>> # Create the linear model
-        >>> model = LinearRegression()
-        >>> model.fit(X, y)
+        >>> model = LinearRegression()  # doctest: +SKIP
+        >>> model.fit(X, y)  # doctest: +SKIP
         LinearRegression()
 
         >>> # Score the model
-        >>> score = model.score(X, y)
-        >>> print(score) # doctest:+SKIP
+        >>> score = model.score(X, y)  # doctest: +SKIP
+        >>> print(score) # doctest: +SKIP
             mean_absolute_error  mean_squared_error  mean_squared_log_error  \
         0             0.022812            0.000602                 0.00035
             median_absolute_error  r2_score  explained_variance

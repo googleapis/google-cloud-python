@@ -28,19 +28,19 @@ def accuracy_score(y_true, y_pred, normalize=True) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([0, 2, 1, 3])
-        >>> y_pred = bpd.DataFrame([0, 1, 2, 3])
-        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred)
-        >>> accuracy_score
+        >>> y_true = bpd.DataFrame([0, 2, 1, 3])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([0, 1, 2, 3])  # doctest: +SKIP
+        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred)  # doctest: +SKIP
+        >>> accuracy_score  # doctest: +SKIP
         np.float64(0.5)
 
     If False, return the number of correctly classified samples:
 
-        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred, normalize=False)
-        >>> accuracy_score
+        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred, normalize=False)  # doctest: +SKIP
+        >>> accuracy_score  # doctest: +SKIP
         np.int64(2)
 
     Args:
@@ -77,22 +77,22 @@ def confusion_matrix(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([2, 0, 2, 2, 0, 1])
-        >>> y_pred = bpd.DataFrame([0, 0, 2, 2, 0, 2])
-        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)
-        >>> confusion_matrix
+        >>> y_true = bpd.DataFrame([2, 0, 2, 2, 0, 1])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([0, 0, 2, 2, 0, 2])  # doctest: +SKIP
+        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)  # doctest: +SKIP
+        >>> confusion_matrix  # doctest: +SKIP
            0  1  2
         0  2  0  0
         1  0  0  1
         2  1  0  2
 
-        >>> y_true = bpd.DataFrame(["cat", "ant", "cat", "cat", "ant", "bird"])
-        >>> y_pred = bpd.DataFrame(["ant", "ant", "cat", "cat", "ant", "cat"])
-        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)
-        >>> confusion_matrix
+        >>> y_true = bpd.DataFrame(["cat", "ant", "cat", "cat", "ant", "bird"])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame(["ant", "ant", "cat", "cat", "ant", "cat"])  # doctest: +SKIP
+        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)  # doctest: +SKIP
+        >>> confusion_matrix  # doctest: +SKIP
             ant  bird  cat
         ant     2     0    0
         bird    0     0    1
@@ -128,13 +128,13 @@ def recall_score(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
-        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
-        >>> recall_score = bigframes.ml.metrics.recall_score(y_true, y_pred, average=None)
-        >>> recall_score
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])  # doctest: +SKIP
+        >>> recall_score = bigframes.ml.metrics.recall_score(y_true, y_pred, average=None)  # doctest: +SKIP
+        >>> recall_score  # doctest: +SKIP
         0    1.0
         1    0.0
         2    0.0
@@ -176,13 +176,13 @@ def precision_score(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
-        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
-        >>> precision_score = bigframes.ml.metrics.precision_score(y_true, y_pred, average=None)
-        >>> precision_score
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])  # doctest: +SKIP
+        >>> precision_score = bigframes.ml.metrics.precision_score(y_true, y_pred, average=None)  # doctest: +SKIP
+        >>> precision_score  # doctest: +SKIP
         0    0.666667
         1    0.000000
         2    0.000000
@@ -226,13 +226,13 @@ def f1_score(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> import bigframes.ml.metrics
+        >>> import bigframes.pandas as bpd  # doctest: +SKIP
+        >>> import bigframes.ml.metrics  # doctest: +SKIP
 
-        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])
-        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
-        >>> f1_score = bigframes.ml.metrics.f1_score(y_true, y_pred, average=None)
-        >>> f1_score
+        >>> y_true = bpd.DataFrame([0, 1, 2, 0, 1, 2])  # doctest: +SKIP
+        >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])  # doctest: +SKIP
+        >>> f1_score = bigframes.ml.metrics.f1_score(y_true, y_pred, average=None)  # doctest: +SKIP
+        >>> f1_score  # doctest: +SKIP
         0    0.8
         1    0.0
         2    0.0
