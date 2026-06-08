@@ -295,7 +295,11 @@ async def run_benchmark():
                         percent_diff_str = ""
                         if enable_chk:
                             enabled_throughput_minus_1 = avg_throughput
-                            percent_diff_str = "N/A"
+                            if enabled_throughput_full is not None and enabled_throughput_full > 0:
+                                percent_increase = ((enabled_throughput_minus_1 - enabled_throughput_full) / enabled_throughput_full) * 100
+                                percent_diff_str = f"{percent_increase:+.2f}%"
+                            else:
+                                percent_diff_str = "N/A"
                         else:
                             if enabled_throughput_minus_1 is not None and enabled_throughput_minus_1 > 0:
                                 percent_increase = ((avg_throughput - enabled_throughput_minus_1) / enabled_throughput_minus_1) * 100
