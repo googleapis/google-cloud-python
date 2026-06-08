@@ -5,6 +5,7 @@ import random
 import statistics
 import sys
 import time
+import uuid
 
 try:
     import google_crc32c
@@ -128,11 +129,8 @@ async def upload_random_object(
 async def run_benchmark():
     parser = argparse.ArgumentParser(description="Benchmark GCS Object Range Downloads using MRD.")
     parser.add_argument("--bucket", type=str, default="chandrasiri-benchmarks-zb", help="Bucket name")
-    parser.add_argument("--object", type=str, default="large_20260507_10737418240", help="Object name (10GiB size)")
-    parser.add_argument("--sizes", type=str, default="1KiB,2MiB,10MiB,100MiB,1GiB", help="Sizes to benchmark")
+    parser.add_argument("--sizes", type=str, default="1KiB,100KiB,1MiB,16MiB,100MiB,1GiB", help="Sizes to benchmark")
     parser.add_argument("--iterations", type=int, default=5, help="Number of iterations per size")
-    parser.add_argument("--object-size", type=str, default="10GiB", help="Size of the target GCS object (default: '10GiB')")
-    parser.add_argument("--upload", action="store_true", help="Upload a new random object before running the benchmark")
     parser.add_argument("--upload-chunk-size", type=str, default="2MiB", help="Chunk size for the upload (default: 2MiB, max: 100MiB)")
     args = parser.parse_args()
 
@@ -144,21 +142,11 @@ async def run_benchmark():
 
     sizes_to_test = []
     for s in args.sizes.split(","):
-        s_clean = s.strip().upper()
-        if s_clean == "FULL":
-            sizes_to_test.append(("full", 0))
-        else:
-            try:
-                sizes_to_test.append((s.strip(), parse_size(s)))
-            except ValueError as e:
-                print(f"Error parsing size '{s}': {e}", file=sys.stderr)
-                sys.exit(1)
-
-    try:
-        object_size_bytes = parse_size(args.object_size)
-    except ValueError as e:
-        print(f"Error parsing object-size '{args.object_size}': {e}", file=sys.stderr)
-        sys.exit(1)
+        try:
+            sizes_to_test.append((s.strip(), parse_size(s)))
+        except ValueError as e:
+            print(f"Error parsing size '{s}': {e}", file=sys.stderr)
+            sys.exit(1)
 
     try:
         upload_chunk_size_bytes = parse_size(args.upload_chunk_size)
@@ -172,101 +160,165 @@ async def run_benchmark():
 
     grpc_client = AsyncGrpcClient()
 
-    if args.upload:
-        try:
-            await upload_random_object(
-                grpc_client,
-                args.bucket,
-                args.object,
-                object_size_bytes,
-                upload_chunk_size_bytes,
-            )
-        except Exception as e:
-            print(f"Upload failed: {e}", file=sys.stderr)
-            sys.exit(1)
-
-    # Warmup phase
-    print("Warming up for 10 seconds to establish connections...")
-    warmup_start = time.perf_counter()
-    warmup_downloads = 0
-    while time.perf_counter() - warmup_start < 10.0:
-        # download a small chunk (10MiB) to warm up channels
-        start_byte = random.randint(0, object_size_bytes - 10 * 1024 * 1024)
-        try:
-            await download_range(
-                grpc_client,
-                args.bucket,
-                args.object,
-                start_byte,
-                10 * 1024 * 1024,
-                enable_checksum=True,
-            )
-            warmup_downloads += 1
-        except Exception:
-            pass
-    print(f"Warmup complete. Completed {warmup_downloads} warmup downloads.")
-    print()
-
-    print(f"Benchmarking MRD Reads on gs://{args.bucket}/{args.object} with {args.iterations} iterations:")
+    print(f"Benchmarking MRD Reads on gs://{args.bucket}/checksum_benchmarking_<size>_<random> with {args.iterations} iterations:")
     print("-" * 150)
     print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput':<15} | {'% Chk-Disabled Change':<22}")
     print("-" * 150)
 
     for size_str, size_bytes in sizes_to_test:
-        # Pre-generate random offsets so that both Enabled and Disabled configurations run on the exact same offsets
-        if size_bytes == 0:
-            offsets = [0 for _ in range(args.iterations)]
-        else:
-            offsets = [random.randint(0, object_size_bytes - size_bytes) for _ in range(args.iterations)]
-        enabled_throughput = None
+        object_name = f"checksum_benchmarking_{size_str}_{uuid.uuid4().hex[:12]}"
 
-        for enable_chk in [True, False]:
-            chk_label = "Enabled" if enable_chk else "Disabled"
-            durations = []
-            
-            for i, start_byte in enumerate(offsets):
-                print(f"  [{size_str} - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Downloading from offset {start_byte}...", end="", flush=True)
-                
-                try:
-                    duration = await download_range(grpc_client, args.bucket, args.object, start_byte, size_bytes, enable_checksum=enable_chk)
-                    durations.append(duration)
-                    print(f" Done in {format_time(duration)}")
-                except Exception as e:
-                    print(f" Failed: {e}")
-                    continue
-
-            if not durations:
-                print(f"{size_str:<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
-                continue
-
-            min_time = min(durations)
-            max_time = max(durations)
-            mean_time = statistics.mean(durations)
-            median_time = statistics.median(durations)
-            
-            # Throughput in MiB/s
-            actual_size = object_size_bytes if size_bytes == 0 else size_bytes
-            avg_throughput = (actual_size / (1024 * 1024)) / mean_time
-
-            percent_diff_str = ""
-            if enable_chk:
-                enabled_throughput = avg_throughput
-                percent_diff_str = "N/A"
-            else:
-                if enabled_throughput is not None and enabled_throughput > 0:
-                    percent_increase = ((avg_throughput - enabled_throughput) / enabled_throughput) * 100
-                    percent_diff_str = f"{percent_increase:+.2f}%"
-                else:
-                    percent_diff_str = "N/A"
-
-            print(
-                f"{size_str:<15} | {chk_label:<10} | {size_bytes:<12} | "
-                f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
-                f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
-                f"{avg_throughput:.2f} MiB/s | "
-                f"{percent_diff_str:<22}"
+        try:
+            chunk_size = min(upload_chunk_size_bytes, size_bytes)
+            await upload_random_object(
+                grpc_client,
+                args.bucket,
+                object_name,
+                size_bytes,
+                chunk_size,
             )
-        print("-" * 150)
+        except Exception as e:
+            print(f"Upload failed for size {size_str}: {e}", file=sys.stderr)
+            sys.exit(1)
+
+        try:
+            enabled_throughput_full = None
+            enabled_throughput_minus_1 = None
+
+            for enable_chk in [True, False]:
+                chk_label = "Enabled" if enable_chk else "Disabled"
+
+                # Warmup phase using the uploaded object
+                print(f"Warming up for 10 seconds using object {object_name} (Checksum {chk_label})...")
+                warmup_start = time.perf_counter()
+                warmup_downloads = 0
+                warmup_chunk_size = min(10 * 1024 * 1024, size_bytes)
+                while time.perf_counter() - warmup_start < 10.0:
+                    if size_bytes > warmup_chunk_size:
+                        start_byte = random.randint(0, size_bytes - warmup_chunk_size)
+                    else:
+                        start_byte = 0
+                    try:
+                        await download_range(
+                            grpc_client,
+                            args.bucket,
+                            object_name,
+                            start_byte,
+                            warmup_chunk_size,
+                            enable_checksum=enable_chk,
+                        )
+                        warmup_downloads += 1
+                    except Exception:
+                        pass
+                print(f"Warmup complete. Completed {warmup_downloads} warmup downloads.")
+                print()
+
+                durations_full = []
+                durations_minus_1 = []
+
+                for i in range(args.iterations):
+                    # Download entire object
+                    print(f"  [{size_str} (Full) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Downloading from offset 0...", end="", flush=True)
+                    try:
+                        duration = await download_range(
+                            grpc_client,
+                            args.bucket,
+                            object_name,
+                            0,
+                            size_bytes,
+                            enable_checksum=enable_chk,
+                        )
+                        durations_full.append(duration)
+                        print(f" Done in {format_time(duration)}")
+                    except Exception as e:
+                        print(f" Failed: {e}")
+
+                    # Download entire object - 1 byte
+                    if size_bytes > 1:
+                        print(f"  [{size_str} (Full-1) - Checksum {chk_label}] Iteration {i+1}/{args.iterations}: Downloading from offset 0...", end="", flush=True)
+                        try:
+                            duration = await download_range(
+                                grpc_client,
+                                args.bucket,
+                                object_name,
+                                0,
+                                size_bytes - 1,
+                                enable_checksum=enable_chk,
+                            )
+                            durations_minus_1.append(duration)
+                            print(f" Done in {format_time(duration)}")
+                        except Exception as e:
+                            print(f" Failed: {e}")
+
+                print()
+
+                # Reporting for Full
+                if not durations_full:
+                    print(f"{f'{size_str} (Full)':<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
+                else:
+                    min_time = min(durations_full)
+                    max_time = max(durations_full)
+                    mean_time = statistics.mean(durations_full)
+                    median_time = statistics.median(durations_full)
+                    avg_throughput = (size_bytes / (1024 * 1024)) / mean_time
+
+                    percent_diff_str = ""
+                    if enable_chk:
+                        enabled_throughput_full = avg_throughput
+                        percent_diff_str = "N/A"
+                    else:
+                        if enabled_throughput_full is not None and enabled_throughput_full > 0:
+                            percent_increase = ((avg_throughput - enabled_throughput_full) / enabled_throughput_full) * 100
+                            percent_diff_str = f"{percent_increase:+.2f}%"
+                        else:
+                            percent_diff_str = "N/A"
+
+                    print(
+                        f"{f'{size_str} (Full)':<15} | {chk_label:<10} | {size_bytes:<12} | "
+                        f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
+                        f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
+                        f"{avg_throughput:.2f} MiB/s | "
+                        f"{percent_diff_str:<22}"
+                    )
+
+                # Reporting for Full-1
+                if size_bytes > 1:
+                    if not durations_minus_1:
+                        print(f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
+                    else:
+                        min_time = min(durations_minus_1)
+                        max_time = max(durations_minus_1)
+                        mean_time = statistics.mean(durations_minus_1)
+                        median_time = statistics.median(durations_minus_1)
+                        avg_throughput = ((size_bytes - 1) / (1024 * 1024)) / mean_time
+
+                        percent_diff_str = ""
+                        if enable_chk:
+                            enabled_throughput_minus_1 = avg_throughput
+                            percent_diff_str = "N/A"
+                        else:
+                            if enabled_throughput_minus_1 is not None and enabled_throughput_minus_1 > 0:
+                                percent_increase = ((avg_throughput - enabled_throughput_minus_1) / enabled_throughput_minus_1) * 100
+                                percent_diff_str = f"{percent_increase:+.2f}%"
+                            else:
+                                percent_diff_str = "N/A"
+
+                        print(
+                            f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | "
+                            f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
+                            f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
+                            f"{avg_throughput:.2f} MiB/s | "
+                            f"{percent_diff_str:<22}"
+                        )
+
+                print("-" * 150)
+        finally:
+            try:
+                print(f"Cleaning up object gs://{args.bucket}/{object_name}...")
+                await grpc_client.delete_object(args.bucket, object_name)
+                print(f"Cleanup complete.")
+            except Exception as e:
+                print(f"Warning: failed to delete test object {object_name}: {e}", file=sys.stderr)
 
 
 def main():
