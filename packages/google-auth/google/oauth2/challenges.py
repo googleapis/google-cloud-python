@@ -151,7 +151,12 @@ class SecurityKeyChallenge(ReauthChallenge):
     def _obtain_challenge_input_fido2(self, metadata):
         CtapHidDevice, Ctap1, APDU, ApduError, CtapError = self._get_fido2_classes()
 
-        devices = list(CtapHidDevice.list_devices())
+        try:
+            devices = list(CtapHidDevice.list_devices())
+        except OSError as caught_exc:
+            sys.stderr.write("Failed to list security keys: {}.\n".format(caught_exc))
+            return None
+
         if not devices:
             sys.stderr.write("No security key found.\n")
             return None
@@ -203,6 +208,13 @@ class SecurityKeyChallenge(ReauthChallenge):
                             )
                             return None
                         raise
+                    except OSError as caught_exc:
+                        sys.stderr.write(
+                            "Failed to communicate with security key: {}.\n".format(
+                                caught_exc
+                            )
+                        )
+                        continue
                     else:
                         return {
                             "securityKey": {

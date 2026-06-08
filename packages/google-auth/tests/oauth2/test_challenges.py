@@ -262,6 +262,30 @@ def test_security_key():
     with use_fake_fido2(challenge, devices=[]):
         assert challenge.obtain_challenge_input(metadata) is None
 
+    with (
+        use_fake_fido2(challenge),
+        mock.patch.object(
+            FakeCtapHidDevice,
+            "list_devices",
+            side_effect=OSError("permission denied"),
+        ),
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
+
+    with use_fake_fido2(
+        challenge,
+        devices=["first-key", "second-key"],
+        side_effects=[
+            OSError("permission denied"),
+            b"security key response",
+        ],
+    ):
+        assert (
+            challenge.obtain_challenge_input(metadata)["securityKey"]["applicationId"]
+            == "security_key_application_id"
+        )
+        assert [call[0] for call in FakeCtap1.calls] == ["first-key", "second-key"]
+
     real_import = __import__
 
     def block_fido2(name, *args, **kwargs):
