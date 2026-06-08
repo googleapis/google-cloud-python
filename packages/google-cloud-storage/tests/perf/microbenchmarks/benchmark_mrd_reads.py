@@ -14,6 +14,7 @@ except ImportError:
 
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMultiRangeDownloader
+from google.cloud.storage.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
 
 
 class VoidBuffer:
@@ -88,6 +89,42 @@ async def download_range(
             await mrd.close()
 
 
+async def upload_random_object(
+    grpc_client: AsyncGrpcClient,
+    bucket_name: str,
+    object_name: str,
+    total_size_bytes: int,
+    chunk_size_bytes: int,
+):
+    print(f"Uploading a new random object of size {total_size_bytes} bytes to gs://{bucket_name}/{object_name}...")
+    print(f"Upload chunk size: {chunk_size_bytes} bytes")
+    
+    writer = AsyncAppendableObjectWriter(
+        client=grpc_client,
+        bucket_name=bucket_name,
+        object_name=object_name,
+        generation=0,
+    )
+    
+    await writer.open()
+    
+    uploaded_bytes = 0
+    # Generate 10MiB of random buffer to slice from to avoid CPU urandom overhead
+    buffer_size = min(10 * 1024 * 1024, total_size_bytes)
+    random_buffer = os.urandom(buffer_size)
+    
+    while uploaded_bytes < total_size_bytes:
+        bytes_to_write = min(chunk_size_bytes, total_size_bytes - uploaded_bytes)
+        slice_start = (uploaded_bytes) % (buffer_size - bytes_to_write + 1)
+        data = random_buffer[slice_start : slice_start + bytes_to_write]
+        
+        await writer.append(data)
+        uploaded_bytes += bytes_to_write
+        
+    object_resource = await writer.finalize()
+    print(f"Appendable object {object_name} created and finalized. Uploaded {uploaded_bytes} bytes.")
+
+
 async def run_benchmark():
     parser = argparse.ArgumentParser(description="Benchmark GCS Object Range Downloads using MRD.")
     parser.add_argument("--bucket", type=str, default="chandrasiri-benchmarks-zb", help="Bucket name")
@@ -95,6 +132,8 @@ async def run_benchmark():
     parser.add_argument("--sizes", type=str, default="1KiB,2MiB,10MiB,100MiB,1GiB", help="Sizes to benchmark")
     parser.add_argument("--iterations", type=int, default=5, help="Number of iterations per size")
     parser.add_argument("--object-size", type=str, default="10GiB", help="Size of the target GCS object (default: '10GiB')")
+    parser.add_argument("--upload", action="store_true", help="Upload a new random object before running the benchmark")
+    parser.add_argument("--upload-chunk-size", type=str, default="2MiB", help="Chunk size for the upload (default: 2MiB, max: 100MiB)")
     args = parser.parse_args()
 
     impl = getattr(google_crc32c, "implementation", None)
@@ -105,11 +144,15 @@ async def run_benchmark():
 
     sizes_to_test = []
     for s in args.sizes.split(","):
-        try:
-            sizes_to_test.append((s.strip(), parse_size(s)))
-        except ValueError as e:
-            print(f"Error parsing size '{s}': {e}", file=sys.stderr)
-            sys.exit(1)
+        s_clean = s.strip().upper()
+        if s_clean == "FULL":
+            sizes_to_test.append(("full", 0))
+        else:
+            try:
+                sizes_to_test.append((s.strip(), parse_size(s)))
+            except ValueError as e:
+                print(f"Error parsing size '{s}': {e}", file=sys.stderr)
+                sys.exit(1)
 
     try:
         object_size_bytes = parse_size(args.object_size)
@@ -117,7 +160,30 @@ async def run_benchmark():
         print(f"Error parsing object-size '{args.object_size}': {e}", file=sys.stderr)
         sys.exit(1)
 
+    try:
+        upload_chunk_size_bytes = parse_size(args.upload_chunk_size)
+    except ValueError as e:
+        print(f"Error parsing upload-chunk-size '{args.upload_chunk_size}': {e}", file=sys.stderr)
+        sys.exit(1)
+
+    if upload_chunk_size_bytes > 100 * 1024 * 1024:
+        print("Error: max upload-chunk-size is 100MiB", file=sys.stderr)
+        sys.exit(1)
+
     grpc_client = AsyncGrpcClient()
+
+    if args.upload:
+        try:
+            await upload_random_object(
+                grpc_client,
+                args.bucket,
+                args.object,
+                object_size_bytes,
+                upload_chunk_size_bytes,
+            )
+        except Exception as e:
+            print(f"Upload failed: {e}", file=sys.stderr)
+            sys.exit(1)
 
     # Warmup phase
     print("Warming up for 10 seconds to establish connections...")
@@ -148,7 +214,10 @@ async def run_benchmark():
 
     for size_str, size_bytes in sizes_to_test:
         # Pre-generate random offsets so that both Enabled and Disabled configurations run on the exact same offsets
-        offsets = [random.randint(0, object_size_bytes - size_bytes) for _ in range(args.iterations)]
+        if size_bytes == 0:
+            offsets = [0 for _ in range(args.iterations)]
+        else:
+            offsets = [random.randint(0, object_size_bytes - size_bytes) for _ in range(args.iterations)]
         enabled_throughput = None
 
         for enable_chk in [True, False]:
@@ -176,7 +245,8 @@ async def run_benchmark():
             median_time = statistics.median(durations)
             
             # Throughput in MiB/s
-            avg_throughput = (size_bytes / (1024 * 1024)) / mean_time
+            actual_size = object_size_bytes if size_bytes == 0 else size_bytes
+            avg_throughput = (actual_size / (1024 * 1024)) / mean_time
 
             percent_diff_str = ""
             if enable_chk:
