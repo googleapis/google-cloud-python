@@ -34,6 +34,15 @@ class SystemTestRunner:
     used by standard system tests, and metrics tests
     """
 
+    @pytest.fixture(scope="session", autouse=True)
+    def cleanup_old_instances(self, project_id):
+        """
+        Automatically deletes any test instances older than 1 day.
+        """
+        from tests.system.utils import clear_stale_instances
+
+        clear_stale_instances(project_id, "python-bigtable-tests", older_than_days=1)
+
     @pytest.fixture(scope="session")
     def init_table_id(self):
         """
@@ -128,8 +137,8 @@ class SystemTestRunner:
                     admin_client.instance_admin_client.delete_instance(
                         name=f"projects/{project_id}/instances/{instance_id}"
                     )
-                except exceptions.NotFound:
-                    pass
+                except Exception as e:
+                    print(f"Failed to delete instance {instance_id}: {e}")
 
     @pytest.fixture(scope="session")
     def column_split_config(self):
@@ -195,8 +204,8 @@ class SystemTestRunner:
                 admin_client.table_admin_client.delete_table(
                     name=f"{parent_path}/tables/{init_table_id}"
                 )
-            except exceptions.NotFound:
-                print(f"Table {init_table_id} not found, skipping deletion")
+            except Exception as e:
+                print(f"Failed to delete table {init_table_id}: {e}")
 
     @pytest.fixture(scope="session")
     def authorized_view_id(
@@ -256,8 +265,8 @@ class SystemTestRunner:
                     admin_client.table_admin_client.delete_authorized_view(
                         name=new_path
                     )
-                except exceptions.NotFound:
-                    print(f"View {new_view_id} not found, skipping deletion")
+                except Exception as e:
+                    print(f"Failed to delete view {new_view_id}: {e}")
 
     @pytest.fixture(scope="session")
     def project_id(self, client):

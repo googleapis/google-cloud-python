@@ -13,4 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.1.0"  # {x-release-please-version}
+include README.rst LICENSE
+recursive-include google *.py *.pyi *.json *.proto py.typed
+recursive-include tests *
+global-exclude *.py[co]
+global-exclude __pycache__

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.16.0
+version: v0.16.1-0.20260608172125-d123ec9cac76
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -240,7 +240,7 @@ libraries:
     python:
       library_type: AUTH
   - name: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: backstory
     keep:
@@ -278,6 +278,13 @@ libraries:
       - path: google/cloud/advisorynotifications/v1
     python:
       metadata_name_override: advisorynotifications
+      default_version: v1
+  - name: google-cloud-agentidentitycredentials
+    version: 0.0.0
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    copyright_year: "2026"
+    python:
       default_version: v1
   - name: google-cloud-alloydb
     version: 0.10.0
@@ -2231,7 +2238,7 @@ libraries:
           - python-gapic-name=developers_knowledge
       default_version: v1
   - name: google-devicesandservices-health
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"

@@ -13,4 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.1.0"  # {x-release-please-version}
+from .auth_provider_credentials_service import (
+    FinalizeCredentialsRequest,
+    FinalizeCredentialsResponse,
+    RetrieveCredentialsRequest,
+    RetrieveCredentialsResponse,
+)
+
+__all__ = (
+    "FinalizeCredentialsRequest",
+    "FinalizeCredentialsResponse",
+    "RetrieveCredentialsRequest",
+    "RetrieveCredentialsResponse",
+)
