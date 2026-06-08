@@ -120,15 +120,15 @@ async def run_benchmark():
     warmup_start = time.perf_counter()
     warmup_downloads = 0
     while time.perf_counter() - warmup_start < 10.0:
-        # download a small chunk (1MiB) to warm up channels
-        start_byte = random.randint(0, object_size_bytes - 1024 * 1024)
+        # download a small chunk (10MiB) to warm up channels
+        start_byte = random.randint(0, object_size_bytes - 10 * 1024 * 1024)
         try:
             await download_range(
                 grpc_client,
                 args.bucket,
                 args.object,
                 start_byte,
-                1024 * 1024,
+                10 * 1024 * 1024,
                 enable_checksum=True,
             )
             warmup_downloads += 1
