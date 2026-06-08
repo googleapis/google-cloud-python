@@ -240,7 +240,7 @@ libraries:
     python:
       library_type: AUTH
   - name: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: backstory
     keep:

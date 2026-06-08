@@ -432,7 +432,7 @@ libraries:
       - packages/google-auth-oauthlib/docs/
     tag_format: '{id}-v{version}'
   - id: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: backstory
