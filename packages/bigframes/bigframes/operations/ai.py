@@ -45,15 +45,15 @@ class AIAccessor:
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
-            >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})  # doctest: +SKIP
-            >>> df.ai.filter("{city} is the capital of {country}", model)  # doctest: +SKIP
+            >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})
+            >>> df.ai.filter("{city} is the capital of {country}", model)
                country    city
             1  Germany  Berlin
             <BLANKLINE>
@@ -114,15 +114,15 @@ class AIAccessor:
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
-            >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})  # doctest: +SKIP
-            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", model=model, output_schema={"food": "string"}) # doctest: +SKIP
+            >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
+            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", model=model, output_schema={"food": "string"}) # doctest: +ELLIPSIS
               ingredient_1 ingredient_2...
             0   Burger Bun   Beef Patty...
             1     Soy Bean      Bittern...Tofu
@@ -130,15 +130,15 @@ class AIAccessor:
             [2 rows x 3 columns]
 
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
-            >>> df = bpd.DataFrame({"text": ["Elmo lives at 123 Sesame Street."]})  # doctest: +SKIP
-            >>> df.ai.map("{text}", model=model, output_schema={"person": "string", "address": "string"})  # doctest: +SKIP
+            >>> df = bpd.DataFrame({"text": ["Elmo lives at 123 Sesame Street."]})
+            >>> df.ai.map("{text}", model=model, output_schema={"person": "string", "address": "string"})
                                            text person            address
             0  Elmo lives at 123 Sesame Street.   Elmo  123 Sesame Street
             <BLANKLINE>
@@ -261,21 +261,21 @@ class AIAccessor:
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
-            >>> df = bpd.DataFrame({  # doctest: +SKIP
+            >>> df = bpd.DataFrame({
             ...     "feedback_text": [
             ...         "The product is amazing, but the shipping was slow.",
             ...         "I had an issue with my recent bill.",
             ...         "The user interface is very intuitive."
             ...     ],
             ... })
-            >>> df.ai.classify("{feedback_text}", model=model, labels=["Shipping", "Billing", "UI"])  # doctest: +SKIP
+            >>> df.ai.classify("{feedback_text}", model=model, labels=["Shipping", "Billing", "UI"])
                                                    feedback_text     result
             0  The product is amazing, but the shipping was s...   Shipping
             1                I had an issue with my recent bill.    Billing
@@ -350,17 +350,17 @@ class AIAccessor:
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
-            >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})  # doctest: +SKIP
-            >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})  # doctest: +SKIP
+            >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})
+            >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})
 
-            >>> cities.ai.join(continents, "{city} is in {continent}", model)  # doctest: +SKIP
+            >>> cities.ai.join(continents, "{city} is in {continent}", model)
                     city      continent
             0    Seattle  North America
             1     Ottawa  North America
@@ -489,17 +489,17 @@ class AIAccessor:
 
         ** Examples: **
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
 
-            >>> import bigframes  # doctest: +SKIP
-            >>> bigframes.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes
+            >>> bigframes.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
 
-            >>> df = bpd.DataFrame({"creatures": ["salmon", "sea urchin", "frog", "chimpanzee"]})  # doctest: +SKIP
-            >>> df.ai.search("creatures", "monkey", top_k=1, model=model, score_column='distance')  # doctest: +SKIP
+            >>> df = bpd.DataFrame({"creatures": ["salmon", "sea urchin", "frog", "chimpanzee"]})
+            >>> df.ai.search("creatures", "monkey", top_k=1, model=model, score_column='distance')
                 creatures  distance
             3  chimpanzee  0.635844
             <BLANKLINE>
@@ -600,18 +600,18 @@ class AIAccessor:
 
         ** Examples: **
 
-            >>> import bigframes.pandas as bpd  # doctest: +SKIP
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25  # doctest: +SKIP
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
-            >>> import bigframes.ml.llm as llm  # doctest: +SKIP
-            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")  # doctest: +SKIP
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
 
-            >>> df1 = bpd.DataFrame({'animal': ['monkey', 'spider']})  # doctest: +SKIP
-            >>> df2 = bpd.DataFrame({'animal': ['scorpion', 'baboon']})  # doctest: +SKIP
+            >>> df1 = bpd.DataFrame({'animal': ['monkey', 'spider']})
+            >>> df2 = bpd.DataFrame({'animal': ['scorpion', 'baboon']})
 
-            >>> res = df1.ai.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)  # doctest: +SKIP
-            >>> print("---"); print(res) # doctest: +SKIP
+            >>> res = df1.ai.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)
+            >>> print("---"); print(res) # doctest: +ELLIPSIS
             ---
             ...
                animal  animal_1

@@ -31,23 +31,23 @@ def auc(x, y) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> import bigframes.ml.metrics  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
 
-        >>> x = bpd.DataFrame([1, 1, 2, 2])  # doctest: +SKIP
-        >>> y = bpd.DataFrame([2, 3, 4, 5])  # doctest: +SKIP
-        >>> auc = bigframes.ml.metrics.auc(x, y)  # doctest: +SKIP
-        >>> auc  # doctest: +SKIP
+        >>> x = bpd.DataFrame([1, 1, 2, 2])
+        >>> y = bpd.DataFrame([2, 3, 4, 5])
+        >>> auc = bigframes.ml.metrics.auc(x, y)
+        >>> auc
         np.float64(3.5)
 
         The input can be Series:
 
-        >>> df = bpd.DataFrame(  # doctest: +SKIP
+        >>> df = bpd.DataFrame(
         ...     {"x": [1, 1, 2, 2],
         ...      "y": [2, 3, 4, 5],}
         ... )
-        >>> auc = bigframes.ml.metrics.auc(df["x"], df["y"])  # doctest: +SKIP
-        >>> auc  # doctest: +SKIP
+        >>> auc = bigframes.ml.metrics.auc(df["x"], df["y"])
+        >>> auc
         np.float64(3.5)
 
 
@@ -86,23 +86,23 @@ def roc_auc_score(y_true, y_score) -> float:
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> import bigframes.ml.metrics  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
 
-        >>> y_true = bpd.DataFrame([0, 0, 1, 1, 0, 1, 0, 1, 1, 1])  # doctest: +SKIP
-        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45])  # doctest: +SKIP
-        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(y_true, y_score)  # doctest: +SKIP
-        >>> roc_auc_score  # doctest: +SKIP
+        >>> y_true = bpd.DataFrame([0, 0, 1, 1, 0, 1, 0, 1, 1, 1])
+        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45])
+        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(y_true, y_score)
+        >>> roc_auc_score
         np.float64(0.625)
 
     The input can be Series:
 
-        >>> df = bpd.DataFrame(  # doctest: +SKIP
+        >>> df = bpd.DataFrame(
         ...     {"y_true": [0, 0, 1, 1, 0, 1, 0, 1, 1, 1],
         ...      "y_score": [0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45],}
         ... )
-        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(df["y_true"], df["y_score"])  # doctest: +SKIP
-        >>> roc_auc_score  # doctest: +SKIP
+        >>> roc_auc_score = bigframes.ml.metrics.roc_auc_score(df["y_true"], df["y_score"])
+        >>> roc_auc_score
         np.float64(0.625)
 
     Args:
@@ -135,13 +135,13 @@ def roc_curve(
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> import bigframes.ml.metrics  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
 
-        >>> y_true = bpd.DataFrame([1, 1, 2, 2])  # doctest: +SKIP
-        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8])  # doctest: +SKIP
-        >>> fpr, tpr, thresholds = bigframes.ml.metrics.roc_curve(y_true, y_score, drop_intermediate=False)  # doctest: +SKIP
-        >>> fpr  # doctest: +SKIP
+        >>> y_true = bpd.DataFrame([1, 1, 2, 2])
+        >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8])
+        >>> fpr, tpr, thresholds = bigframes.ml.metrics.roc_curve(y_true, y_score, drop_intermediate=False)
+        >>> fpr
         0    0.0
         1    0.0
         2    0.0
@@ -149,7 +149,7 @@ def roc_curve(
         4    0.0
         Name: fpr, dtype: Float64
 
-        >>> tpr  # doctest: +SKIP
+        >>> tpr
         0         0.0
         1    0.333333
         2         0.5
@@ -157,7 +157,7 @@ def roc_curve(
         4         1.0
         Name: tpr, dtype: Float64
 
-        >>> thresholds  # doctest: +SKIP
+        >>> thresholds
         0     inf
         1     0.8
         2     0.4

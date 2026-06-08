@@ -21,14 +21,14 @@ class MatrixFactorization(BaseEstimator, metaclass=ABCMeta):
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> from bigframes.ml.decomposition import MatrixFactorization  # doctest: +SKIP
-        >>> X = bpd.DataFrame({  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.decomposition import MatrixFactorization
+        >>> X = bpd.DataFrame({
         ... "row": [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6],
         ... "column": [0,1] * 7,
         ... "value": [1, 1, 2, 1, 3, 1.2, 4, 1, 5, 0.8, 6, 1, 2, 3],
         ... })
-        >>> model = MatrixFactorization(feedback_type='explicit', num_factors=6, user_col='row', item_col='column', rating_col='value', l2_reg=2.06)  # doctest: +SKIP
+        >>> model = MatrixFactorization(feedback_type='explicit', num_factors=6, user_col='row', item_col='column', rating_col='value', l2_reg=2.06)
         >>> W = model.fit(X) # doctest: +SKIP
 
     Args:

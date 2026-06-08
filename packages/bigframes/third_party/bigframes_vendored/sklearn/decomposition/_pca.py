@@ -21,11 +21,11 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> from bigframes.ml.decomposition import PCA  # doctest: +SKIP
-        >>> X = bpd.DataFrame({"feat0": [-1, -2, -3, 1, 2, 3], "feat1": [-1, -1, -2, 1, 1, 2]})  # doctest: +SKIP
-        >>> pca = PCA(n_components=2).fit(X)  # doctest: +SKIP
-        >>> pca.predict(X) # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.decomposition import PCA
+        >>> X = bpd.DataFrame({"feat0": [-1, -2, -3, 1, 2, 3], "feat1": [-1, -1, -2, 1, 1, 2]})
+        >>> pca = PCA(n_components=2).fit(X)
+        >>> pca.predict(X) # doctest:+SKIP
             principal_component_1  principal_component_2
         0              -0.755243               0.157628
         1               -1.05405              -0.141179
@@ -35,7 +35,7 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
         5               1.809292              -0.016449
         <BLANKLINE>
         [6 rows x 2 columns]
-        >>> pca.explained_variance_ratio_ # doctest: +SKIP
+        >>> pca.explained_variance_ratio_ # doctest:+SKIP
             principal_component_id  explained_variance_ratio
         0                       1                   0.00901
         1                       0                   0.99099

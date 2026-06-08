@@ -29,17 +29,17 @@ class KMeans(_BaseKMeans):
 
     **Examples:**
 
-        >>> import bigframes.pandas as bpd  # doctest: +SKIP
-        >>> from bigframes.ml.cluster import KMeans  # doctest: +SKIP
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.cluster import KMeans
 
-        >>> X = bpd.DataFrame({"feat0": [1, 1, 1, 10, 10, 10], "feat1": [2, 4, 0, 2, 4, 0]})  # doctest: +SKIP
-        >>> kmeans = KMeans(n_clusters=2).fit(X)  # doctest: +SKIP
-        >>> kmeans.predict(bpd.DataFrame({"feat0": [0, 12], "feat1": [0, 3]}))["CENTROID_ID"] # doctest: +SKIP
+        >>> X = bpd.DataFrame({"feat0": [1, 1, 1, 10, 10, 10], "feat1": [2, 4, 0, 2, 4, 0]})
+        >>> kmeans = KMeans(n_clusters=2).fit(X)
+        >>> kmeans.predict(bpd.DataFrame({"feat0": [0, 12], "feat1": [0, 3]}))["CENTROID_ID"] # doctest:+SKIP
         0    1
         1    2
         Name: CENTROID_ID, dtype: Int64
 
-        >>> kmeans.cluster_centers_ # doctest: +SKIP
+        >>> kmeans.cluster_centers_ # doctest:+SKIP
         centroid_id feature  numerical_value categorical_value
         0            1   feat0              5.5                []
         1            1   feat1              1.0                []

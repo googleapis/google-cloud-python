@@ -67,27 +67,28 @@ class SQLScalarColumnTransformer:
 
     **Examples:**
 
-        >>> from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer # doctest: +SKIP
-        >>> import bigframes.pandas as bpd # doctest: +SKIP
+        >>> from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer
+        >>> import bigframes.pandas as bpd
 
-        >>> df = bpd.DataFrame({'name': ["James", None, "Mary"], 'city': ["New York", "Boston", None]}) # doctest: +SKIP
-        >>> col_trans = ColumnTransformer([ # doctest: +SKIP
+        >>> df = bpd.DataFrame({'name': ["James", None, "Mary"], 'city': ["New York", "Boston", None]})
+        >>> col_trans = ColumnTransformer([
         ...     ("strlen",
         ...      SQLScalarColumnTransformer("CASE WHEN {0} IS NULL THEN 15 ELSE LENGTH({0}) END"),
         ...      ['name', 'city']),
         ... ])
-        >>> col_trans = col_trans.fit(df) # doctest: +SKIP
-        >>> df_transformed = col_trans.transform(df) # doctest: +SKIP
-        >>> df_transformed # doctest: +SKIP
+        >>> col_trans = col_trans.fit(df)
+        >>> df_transformed = col_trans.transform(df)
+        >>> df_transformed
            transformed_name  transformed_city
         0                 5                 8
         1                15                 6
         2                 4                15
+        <BLANKLINE>
         [3 rows x 2 columns]
 
     SQLScalarColumnTransformer can be combined with other transformers, like StandardScaler:
 
-        >>> col_trans = ColumnTransformer([ # doctest: +SKIP
+        >>> col_trans = ColumnTransformer([
         ...     ("identity", SQLScalarColumnTransformer("{0}", target_column="{0}"), ["col1", "col5"]),
         ...     ("increment", SQLScalarColumnTransformer("{0}+1", target_column="inc_{0}"), "col2"),
         ...     ("stdscale", preprocessing.StandardScaler(), "col3"),

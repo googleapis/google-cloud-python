@@ -40,10 +40,10 @@ Key capabilities include:
 
 **Example usage:**
 
-    >>> import bigframes.pandas as bpd  # doctest: +SKIP
-    >>> import bigframes.bigquery as bbq  # doctest: +SKIP
+    >>> import bigframes.pandas as bpd
+    >>> import bigframes.bigquery as bbq
 
-    >>> df = bpd.DataFrame({  # doctest: +SKIP
+    >>> df = bpd.DataFrame({
     ...     "text_input": [
     ...         "Is this a positive review? The food was terrible.",
     ...     ],
