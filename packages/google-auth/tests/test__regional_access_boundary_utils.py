@@ -161,8 +161,17 @@ class TestCredentialsWithRegionalAccessBoundary(object):
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://my-service.us-east1.rep.googleapis.com",
+            "https://my-service.us-east1.rep.sandbox.googleapis.com",
+            "https://my-service.us-east1.rep.mtls.googleapis.com",
+            "https://my-service.us-east1.rep.mtls.sandbox.googleapis.com",
+        ],
+    )
     def test_maybe_start_refresh_is_skipped_for_regional_endpoint(
-        self, mock_start_refresh
+        self, mock_start_refresh, url
     ):
         creds = CredentialsImpl()
         with mock.patch.dict(
@@ -170,7 +179,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
         ):
             creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "https://my-service.us-east1.rep.googleapis.com"
+                mock.Mock(), url
             )
         mock_start_refresh.assert_not_called()
 

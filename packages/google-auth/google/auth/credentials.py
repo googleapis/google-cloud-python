@@ -446,10 +446,12 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         try:
             # Do not perform a lookup if the request is for a regional endpoint.
             hostname = urlparse(url).hostname
-            if hostname and (
-                hostname.endswith(".rep.googleapis.com")
-                or hostname.endswith(".rep.sandbox.googleapis.com")
-            ):
+            if hostname and hostname.endswith((
+                ".rep.googleapis.com",
+                ".rep.sandbox.googleapis.com",
+                ".rep.mtls.googleapis.com",
+                ".rep.mtls.sandbox.googleapis.com",
+            )):
                 return True
         except (ValueError, TypeError, AttributeError):
             # If the URL is malformed, proceed with the default lookup behavior.
