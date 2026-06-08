@@ -15,12 +15,11 @@
 """Tests for the reauth module."""
 
 import base64
-import os
-import sys
+import hashlib
+import json
 from unittest import mock
 
 import pytest  # type: ignore
-import pyu2f  # type: ignore
 
 from google.auth import exceptions
 from google.oauth2 import challenges
@@ -31,6 +30,81 @@ from google.oauth2.webauthn_types import (
     GetResponse,
     PublicKeyCredentialDescriptor,
 )
+
+
+class FakeAPDU:
+    WRONG_DATA = "wrong data"
+    USE_NOT_SATISFIED = "use not satisfied"
+
+
+class FakeApduError(Exception):
+    def __init__(self, code):
+        self.code = code
+
+
+class FakeCtapError(Exception):
+    class ERR:
+        TIMEOUT = "timeout"
+        ACTION_TIMEOUT = "action timeout"
+        KEEPALIVE_CANCEL = "keepalive cancel"
+        OPERATION_DENIED = "operation denied"
+
+    def __init__(self, code):
+        self.code = code
+
+
+class FakeCtapHidDevice:
+    devices = []
+
+    @classmethod
+    def list_devices(cls):
+        return iter(cls.devices)
+
+
+class FakeCtap1:
+    calls = []
+    side_effects = []
+
+    def __init__(self, device):
+        self.device = device
+
+    def authenticate(self, client_param, app_param, key_handle):
+        self.calls.append((self.device, client_param, app_param, key_handle))
+        effect = self.side_effects.pop(0)
+        if isinstance(effect, Exception):
+            raise effect
+        return effect
+
+
+def use_fake_fido2(challenge, devices=None, side_effects=None):
+    FakeCtapHidDevice.devices = devices if devices is not None else ["security-key"]
+    FakeCtap1.calls = []
+    FakeCtap1.side_effects = (
+        side_effects if side_effects is not None else [b"signature data"]
+    )
+    return mock.patch.object(
+        challenge,
+        "_get_fido2_classes",
+        return_value=(
+            FakeCtapHidDevice,
+            FakeCtap1,
+            FakeAPDU,
+            FakeApduError,
+            FakeCtapError,
+        ),
+    )
+
+
+def expected_client_data(challenge):
+    challenge_b64 = base64.urlsafe_b64encode(challenge).decode().rstrip("=")
+    return json.dumps(
+        {
+            "challenge": challenge_b64,
+            "origin": challenges.REAUTH_ORIGIN,
+            "typ": challenges.U2F_AUTHENTICATION_TYPE,
+        },
+        sort_keys=True,
+    ).encode()
 
 
 def test_get_user_password():
@@ -56,143 +130,151 @@ def test_security_key():
             "relyingPartyId": "security_key_application_id",
         },
     }
-    mock_key = mock.Mock()
-
     challenge = challenges.SecurityKeyChallenge()
+    assert challenge._get_fido2_classes()
 
     # Test the case that security key challenge is passed with applicationId and
     # relyingPartyId the same.
-    os.environ.pop('"GOOGLE_AUTH_WEBAUTHN_PLUGIN"', None)
-
-    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.return_value = "security key response"
-            assert challenge.name == "SECURITY_KEY"
-            assert challenge.is_locally_eligible
-            assert challenge.obtain_challenge_input(metadata) == {
-                "securityKey": "security key response"
+    with use_fake_fido2(challenge):
+        assert challenge.name == "SECURITY_KEY"
+        assert challenge.is_locally_eligible
+        assert challenge.obtain_challenge_input(metadata) == {
+            "securityKey": {
+                "clientData": base64.urlsafe_b64encode(
+                    expected_client_data(b"some_challenge")
+                )
+                .decode()
+                .rstrip("="),
+                "signatureData": "c2lnbmF0dXJlIGRhdGE",
+                "applicationId": "security_key_application_id",
+                "keyHandle": "some_key",
             }
-            mock_authenticate.assert_called_with(
-                "security_key_application_id",
-                [{"key": mock_key, "challenge": b"some_challenge"}],
-                print_callback=sys.stderr.write,
+        }
+        assert FakeCtap1.calls == [
+            (
+                "security-key",
+                hashlib.sha256(expected_client_data(b"some_challenge")).digest(),
+                hashlib.sha256(b"security_key_application_id").digest(),
+                base64.urlsafe_b64decode("some_key"),
             )
+        ]
 
     # Test the case that webauthn plugin is available
-    os.environ["GOOGLE_AUTH_WEBAUTHN_PLUGIN"] = "plugin"
-
-    with mock.patch(
-        "google.oauth2.challenges.SecurityKeyChallenge._obtain_challenge_input_webauthn",
-        return_value={"securityKey": "security key response"},
+    with (
+        mock.patch(
+            "google.oauth2.challenges.SecurityKeyChallenge._obtain_challenge_input_webauthn",
+            return_value={"securityKey": "security key response"},
+        ),
+        mock.patch(
+            "google.oauth2.webauthn_handler.PluginHandler.is_available",
+            return_value=True,
+        ),
     ):
         assert challenge.obtain_challenge_input(metadata) == {
             "securityKey": "security key response"
         }
-    os.environ.pop('"GOOGLE_AUTH_WEBAUTHN_PLUGIN"', None)
+
+    with (
+        mock.patch(
+            "google.oauth2.challenges.webauthn_handler_factory.WebauthnHandlerFactory",
+            side_effect=Exception(),
+        ),
+        use_fake_fido2(challenge),
+    ):
+        assert (
+            challenge.obtain_challenge_input(metadata)["securityKey"]["applicationId"]
+            == "security_key_application_id"
+        )
 
     # Test the case that security key challenge is passed with applicationId and
     # relyingPartyId different, first call works.
     metadata["securityKey"]["relyingPartyId"] = "security_key_relying_party_id"
-    sys.stderr.write("metadata=" + str(metadata) + "\n")
-    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.return_value = "security key response"
-            assert challenge.name == "SECURITY_KEY"
-            assert challenge.is_locally_eligible
-            assert challenge.obtain_challenge_input(metadata) == {
-                "securityKey": "security key response"
+    with use_fake_fido2(challenge):
+        assert challenge.name == "SECURITY_KEY"
+        assert challenge.is_locally_eligible
+        assert challenge.obtain_challenge_input(metadata) == {
+            "securityKey": {
+                "clientData": base64.urlsafe_b64encode(
+                    expected_client_data(b"some_challenge")
+                )
+                .decode()
+                .rstrip("="),
+                "signatureData": "c2lnbmF0dXJlIGRhdGE",
+                "applicationId": "security_key_relying_party_id",
+                "keyHandle": "some_key",
             }
-            mock_authenticate.assert_called_with(
-                "security_key_relying_party_id",
-                [{"key": mock_key, "challenge": b"some_challenge"}],
-                print_callback=sys.stderr.write,
+        }
+        assert FakeCtap1.calls == [
+            (
+                "security-key",
+                hashlib.sha256(expected_client_data(b"some_challenge")).digest(),
+                hashlib.sha256(b"security_key_relying_party_id").digest(),
+                base64.urlsafe_b64decode("some_key"),
             )
+        ]
 
     # Test the case that security key challenge is passed with applicationId and
     # relyingPartyId different, first call fails, requires retry.
     metadata["securityKey"]["relyingPartyId"] = "security_key_relying_party_id"
-    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            assert challenge.name == "SECURITY_KEY"
-            assert challenge.is_locally_eligible
-            mock_authenticate.side_effect = [
-                pyu2f.errors.U2FError(pyu2f.errors.U2FError.DEVICE_INELIGIBLE),
-                "security key response",
-            ]
-            assert challenge.obtain_challenge_input(metadata) == {
-                "securityKey": "security key response"
-            }
-            calls = [
-                mock.call(
-                    "security_key_relying_party_id",
-                    [{"key": mock_key, "challenge": b"some_challenge"}],
-                    print_callback=sys.stderr.write,
-                ),
-                mock.call(
-                    "security_key_application_id",
-                    [{"key": mock_key, "challenge": b"some_challenge"}],
-                    print_callback=sys.stderr.write,
-                ),
-            ]
-            mock_authenticate.assert_has_calls(calls)
+    with use_fake_fido2(
+        challenge,
+        side_effects=[
+            FakeApduError(FakeAPDU.WRONG_DATA),
+            b"security key response",
+        ],
+    ):
+        assert challenge.name == "SECURITY_KEY"
+        assert challenge.is_locally_eligible
+        assert (
+            challenge.obtain_challenge_input(metadata)["securityKey"]["applicationId"]
+            == "security_key_application_id"
+        )
+        assert [call[2] for call in FakeCtap1.calls] == [
+            hashlib.sha256(b"security_key_relying_party_id").digest(),
+            hashlib.sha256(b"security_key_application_id").digest(),
+        ]
 
     # Test various types of exceptions.
-    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.U2FError(
-                pyu2f.errors.U2FError.DEVICE_INELIGIBLE
-            )
-            assert challenge.obtain_challenge_input(metadata) is None
+    metadata["securityKey"]["relyingPartyId"] = "security_key_application_id"
+    with use_fake_fido2(challenge, side_effects=[FakeApduError(FakeAPDU.WRONG_DATA)]):
+        assert challenge.obtain_challenge_input(metadata) is None
 
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.U2FError(
-                pyu2f.errors.U2FError.TIMEOUT
-            )
-            assert challenge.obtain_challenge_input(metadata) is None
+    with use_fake_fido2(
+        challenge,
+        side_effects=[FakeApduError(FakeAPDU.USE_NOT_SATISFIED)],
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
 
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.PluginError()
-            assert challenge.obtain_challenge_input(metadata) is None
+    with use_fake_fido2(
+        challenge,
+        side_effects=[FakeCtapError(FakeCtapError.ERR.TIMEOUT)],
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
 
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.U2FError(
-                pyu2f.errors.U2FError.BAD_REQUEST
-            )
-            with pytest.raises(pyu2f.errors.U2FError):
-                challenge.obtain_challenge_input(metadata)
+    with use_fake_fido2(challenge, side_effects=[FakeApduError("bad request")]):
+        with pytest.raises(FakeApduError):
+            challenge.obtain_challenge_input(metadata)
 
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.NoDeviceFoundError()
-            assert challenge.obtain_challenge_input(metadata) is None
+    with use_fake_fido2(challenge, side_effects=[FakeCtapError("bad request")]):
+        with pytest.raises(FakeCtapError):
+            challenge.obtain_challenge_input(metadata)
 
-        with mock.patch(
-            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
-        ) as mock_authenticate:
-            mock_authenticate.side_effect = pyu2f.errors.UnsupportedVersionException()
-            with pytest.raises(pyu2f.errors.UnsupportedVersionException):
-                challenge.obtain_challenge_input(metadata)
+    with use_fake_fido2(challenge, devices=[]):
+        assert challenge.obtain_challenge_input(metadata) is None
 
-        with mock.patch.dict("sys.modules"):
-            sys.modules["pyu2f"] = None
-            with pytest.raises(exceptions.ReauthFailError) as excinfo:
-                challenge.obtain_challenge_input(metadata)
-            assert excinfo.match(r"pyu2f dependency is required")
+    real_import = __import__
+
+    def block_fido2(name, *args, **kwargs):
+        if name == "fido2" or name.startswith("fido2."):
+            raise ImportError(name)
+        return real_import(name, *args, **kwargs)
+
+    assert block_fido2("json") is json
+
+    with mock.patch("builtins.__import__", side_effect=block_fido2):
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge._get_fido2_classes()
+        assert excinfo.match(r"fido2 dependency is required")
 
 
 def test_security_key_webauthn():

@@ -33,7 +33,7 @@ aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
-reauth_extra_require = ["pyu2f>=0.1.5"]
+reauth_extra_require = ["fido2>=2.0.0,<3.0.0"]
 
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1738): Add bounds for pyopenssl dependency.
 enterprise_cert_extra_require = ["pyopenssl"]
