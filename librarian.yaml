@@ -279,6 +279,13 @@ libraries:
     python:
       metadata_name_override: advisorynotifications
       default_version: v1
+  - name: google-cloud-agentidentitycredentials
+    version: 0.0.0
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-alloydb
     version: 0.10.0
     apis:
