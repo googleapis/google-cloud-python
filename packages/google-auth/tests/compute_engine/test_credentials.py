@@ -254,7 +254,11 @@ class TestCredentials(object):
         assert creds.universe_domain == "universe_domain"
         assert creds._universe_domain_cached
 
-    def test_token_usage_metrics(self):
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain",
+        return_value="googleapis.com",
+    )
+    def test_token_usage_metrics(self, mock_get_universe_domain):
         self.credentials.token = "token"
         self.credentials.expiry = None
 
@@ -262,6 +266,7 @@ class TestCredentials(object):
         self.credentials.before_request(mock.Mock(), None, None, headers)
         assert headers["authorization"] == "Bearer token"
         assert headers["x-goog-api-client"] == "cred-type/mds"
+
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain",

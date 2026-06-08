@@ -324,6 +324,8 @@ class Credentials(external_account.Credentials):
             :meth:`from_info` are used instead of calling the constructor directly.
         """
 
+        if subject_token_supplier is not None:
+            self._subject_token_supplier = subject_token_supplier
         super(Credentials, self).__init__(
             audience=audience,
             subject_token_type=subject_token_type,
