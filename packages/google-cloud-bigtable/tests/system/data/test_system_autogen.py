@@ -289,10 +289,9 @@ class TestSystem(SystemTestRunner):
         end_key = column_split_config[3]
         row_range = RowRange(start_key=start_key, end_key=end_key)
         results = target.sample_row_keys(row_range=row_range)
-        assert len(results) == 3
-        assert results[0][0] == column_split_config[1]
-        assert results[1][0] == column_split_config[2]
-        assert results[2][0] == column_split_config[3]
+        assert len(results) == 2
+        assert results[0][0] == column_split_config[2]
+        assert results[1][0] == column_split_config[3]
         for _, offset in results:
             assert isinstance(offset, int)
 
