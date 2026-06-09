@@ -1,0 +1,36 @@
+# BigQuery DataFrames (bigframes) release procedure
+
+*   Obtain GitHub token:
+
+        export LIBRARIAN_GITHUB_TOKEN=$(gh auth token)
+
+*   Stash changes (repo must be clean):
+
+        git stash -u
+
+*   Fetch and checkout base:
+
+        git fetch origin main
+        git fetch origin --tags
+        git checkout origin/main
+
+*   Check image updates:
+
+        legacylibrarian update-image -push
+
+*   Create release PR:
+
+        # Option A: Push directly
+        legacylibrarian release stage --repo=https://github.com/googleapis/google-cloud-python --library=bigframes --library-version=X.X.X --push
+
+        # Option B: Manual edit first (omit -push, edit files in /tmp/librarian-*, commit/push from there)
+        legacylibrarian release stage --repo=https://github.com/googleapis/google-cloud-python --library=bigframes --library-version=X.X.X
+        # In /tmp repository:
+        git commit -a -m "chore: create release" --no-verify  # keep librarian config pristine
+        # Push branch & create PR on GitHub with release:pending label
+
+*   Post-release restore:
+
+        # Move back any stashed/relocated files (like .vscode)
+        git checkout main
+        git stash pop
