@@ -105,7 +105,10 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
-        return getattr(self, "_key_id", None) or self._impl.key_id
+        key_id = getattr(self, "_key_id", None)
+        if key_id is not None:
+            return key_id
+        return self._impl.key_id
 
     @_helpers.copy_docstring(base.Signer)
     def sign(self, message):
