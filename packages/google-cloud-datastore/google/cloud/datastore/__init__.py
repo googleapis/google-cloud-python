@@ -13,64 +13,121 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Shortcut methods for getting set up with Google Cloud Datastore.
+from google.cloud.datastore import gapic_version as package_version
 
-You'll typically use these to get started with the API:
+__version__ = package_version.__version__
 
-.. doctest:: constructors
 
-   >>> from google.cloud import datastore
-   >>>
-   >>> client = datastore.Client()
-   >>> key = client.key('EntityKind', 1234)
-   >>> key
-   <Key('EntityKind', 1234), project=...>
-   >>> entity = datastore.Entity(key)
-   >>> entity['question'] = u'Life, universe?'  # Explicit unicode for text
-   >>> entity['answer'] = 42
-   >>> entity
-   <Entity('EntityKind', 1234) {'question': 'Life, universe?', 'answer': 42}>
-   >>> query = client.query(kind='EntityKind')
+from google.cloud.datastore_v1.services.datastore.async_client import (
+    DatastoreAsyncClient,
+)
+from google.cloud.datastore_v1.services.datastore.client import DatastoreClient
+from google.cloud.datastore_v1.types.aggregation_result import (
+    AggregationResult,
+    AggregationResultBatch,
+)
+from google.cloud.datastore_v1.types.datastore import (
+    AllocateIdsRequest,
+    AllocateIdsResponse,
+    BeginTransactionRequest,
+    BeginTransactionResponse,
+    CommitRequest,
+    CommitResponse,
+    LookupRequest,
+    LookupResponse,
+    Mutation,
+    MutationResult,
+    PropertyMask,
+    PropertyTransform,
+    ReadOptions,
+    ReserveIdsRequest,
+    ReserveIdsResponse,
+    RollbackRequest,
+    RollbackResponse,
+    RunAggregationQueryRequest,
+    RunAggregationQueryResponse,
+    RunQueryRequest,
+    RunQueryResponse,
+    TransactionOptions,
+)
+from google.cloud.datastore_v1.types.entity import (
+    ArrayValue,
+    Entity,
+    Key,
+    PartitionId,
+    Value,
+)
+from google.cloud.datastore_v1.types.query import (
+    AggregationQuery,
+    CompositeFilter,
+    EntityResult,
+    Filter,
+    FindNearest,
+    GqlQuery,
+    GqlQueryParameter,
+    KindExpression,
+    Projection,
+    PropertyFilter,
+    PropertyOrder,
+    PropertyReference,
+    Query,
+    QueryResultBatch,
+)
+from google.cloud.datastore_v1.types.query_profile import (
+    ExecutionStats,
+    ExplainMetrics,
+    ExplainOptions,
+    PlanSummary,
+)
 
-The main concepts with this API are:
-
-- :class:`~google.cloud.datastore.client.Client`
-  which represents a project (string), database (string), and namespace
-  (string) bundled with a connection and has convenience methods for
-  constructing objects with that project/database/namespace.
-
-- :class:`~google.cloud.datastore.entity.Entity`
-  which represents a single entity in the datastore
-  (akin to a row in relational database world).
-
-- :class:`~google.cloud.datastore.key.Key`
-  which represents a pointer to a particular entity in the datastore
-  (akin to a unique identifier in relational database world).
-
-- :class:`~google.cloud.datastore.query.Query`
-  which represents a lookup or search over the rows in the datastore.
-
-- :class:`~google.cloud.datastore.transaction.Transaction`
-  which represents an all-or-none transaction and enables consistency
-  when race conditions may occur.
-"""
-
-from google.cloud.datastore.batch import Batch
-from google.cloud.datastore.client import Client
-from google.cloud.datastore.entity import Entity
-from google.cloud.datastore.key import Key
-from google.cloud.datastore.query import Query
-from google.cloud.datastore.query_profile import ExplainOptions
-from google.cloud.datastore.transaction import Transaction
-from google.cloud.datastore.version import __version__
-
-__all__ = [
-    "__version__",
-    "Batch",
-    "Client",
+__all__ = (
+    "DatastoreClient",
+    "DatastoreAsyncClient",
+    "AggregationResult",
+    "AggregationResultBatch",
+    "AllocateIdsRequest",
+    "AllocateIdsResponse",
+    "BeginTransactionRequest",
+    "BeginTransactionResponse",
+    "CommitRequest",
+    "CommitResponse",
+    "LookupRequest",
+    "LookupResponse",
+    "Mutation",
+    "MutationResult",
+    "PropertyMask",
+    "PropertyTransform",
+    "ReadOptions",
+    "ReserveIdsRequest",
+    "ReserveIdsResponse",
+    "RollbackRequest",
+    "RollbackResponse",
+    "RunAggregationQueryRequest",
+    "RunAggregationQueryResponse",
+    "RunQueryRequest",
+    "RunQueryResponse",
+    "TransactionOptions",
+    "ArrayValue",
     "Entity",
     "Key",
+    "PartitionId",
+    "Value",
+    "AggregationQuery",
+    "CompositeFilter",
+    "EntityResult",
+    "Filter",
+    "FindNearest",
+    "GqlQuery",
+    "GqlQueryParameter",
+    "KindExpression",
+    "Projection",
+    "PropertyFilter",
+    "PropertyOrder",
+    "PropertyReference",
     "Query",
+    "QueryResultBatch",
+    "ExecutionStats",
+    "ExplainMetrics",
     "ExplainOptions",
-    "Transaction",
-]
+    "PlanSummary",
+)

@@ -107,6 +107,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        "--config-file=../../mypy.ini",
         "-p",
         "google",
         # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)
@@ -317,8 +318,7 @@ def install_systemtest_dependencies(session, *constraints):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize("disable_grpc", [False, True])
-def system(session, disable_grpc):
+def system(session):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -341,10 +341,6 @@ def system(session, disable_grpc):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
-    env = {}
-    if disable_grpc:
-        env["GOOGLE_CLOUD_DISABLE_GRPC"] = "True"
-
     # Run py.test against the system tests.
     if system_test_exists:
         session.run(
@@ -352,7 +348,6 @@ def system(session, disable_grpc):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
-            env=env,
             *session.posargs,
         )
     if system_test_folder_exists:
@@ -361,7 +356,6 @@ def system(session, disable_grpc):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
-            env=env,
             *session.posargs,
         )
 
