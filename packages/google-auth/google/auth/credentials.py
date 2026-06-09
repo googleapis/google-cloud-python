@@ -532,7 +532,8 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         Returns:
             Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
         """
-        from google.oauth2 import _client
+        import importlib
+        _client = importlib.import_module("google.oauth2._client")
 
         url = self._build_regional_access_boundary_lookup_url(request=request)
         if not url:

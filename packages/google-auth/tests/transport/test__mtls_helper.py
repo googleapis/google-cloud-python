@@ -657,7 +657,13 @@ class TestGetCertConfigPath(object):
         returned_path = _mtls_helper._get_cert_config_path(config_path)
         assert returned_path is None
 
-    @mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""})
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_CERTIFICATE_CONFIG": "",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
+    )
     @mock.patch("os.path.exists", autospec=True)
     def test_default(self, mock_path_exists):
         mock_path_exists.return_value = True
@@ -788,13 +794,16 @@ class TestCheckUseClientCert(object):
 
     @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "garbage"})
     def test_env_var_explicit_garbage(self):
-        assert _mtls_helper.check_use_client_cert() is False
+        import pytest
+        with pytest.raises(ValueError, match="must be either `true` or `false`"):
+            _mtls_helper.check_use_client_cert()
 
     @mock.patch("builtins.open", autospec=True)
     @mock.patch.dict(
         os.environ,
         {
             "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
             "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
         },
     )
@@ -810,6 +819,7 @@ class TestCheckUseClientCert(object):
         os.environ,
         {
             "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
             "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
         },
     )
@@ -822,6 +832,7 @@ class TestCheckUseClientCert(object):
         os.environ,
         {
             "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
             "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
         },
     )
@@ -834,6 +845,7 @@ class TestCheckUseClientCert(object):
         os.environ,
         {
             "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
             "GOOGLE_API_CERTIFICATE_CONFIG": "/path/does/not/exist",
         },
     )

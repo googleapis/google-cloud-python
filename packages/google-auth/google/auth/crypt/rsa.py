@@ -95,7 +95,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         module_str = private_key.__class__.__module__
         if isinstance(private_key, RSAPrivateKey):
             impl_lib = _cryptography_rsa
-        elif module_str.startswith(RSA_KEY_MODULE_PREFIX):
+        elif private_key is None or module_str.startswith(RSA_KEY_MODULE_PREFIX):
             from google.auth.crypt import _python_rsa
 
             impl_lib = _python_rsa
@@ -106,7 +106,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
-        return self._impl.key_id
+        return getattr(self, "_key_id", None) or self._impl.key_id
 
     @_helpers.copy_docstring(base.Signer)
     def sign(self, message):
