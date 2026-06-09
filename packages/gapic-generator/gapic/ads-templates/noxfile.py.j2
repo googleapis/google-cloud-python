@@ -44,6 +44,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
+        "--config-file=../../mypy.ini",
         {% if api.naming.module_namespace %}
         '{{ api.naming.module_namespace[0] }}',
         {% else %}
