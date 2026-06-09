@@ -280,7 +280,7 @@ libraries:
       metadata_name_override: advisorynotifications
       default_version: v1
   - name: google-cloud-agentidentitycredentials
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/cloud/agentidentitycredentials/v1
     copyright_year: "2026"
