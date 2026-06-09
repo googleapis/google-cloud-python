@@ -3,8 +3,14 @@
 {% block content %}
 
 import os
+import pathlib
 
 import nox  # type: ignore
+
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
 
 
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
@@ -44,7 +50,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
-        "--config-file=../../mypy.ini",
+        f"--config-file={MYPY_CONFIG_FILE}",
         {% if api.naming.module_namespace %}
         '{{ api.naming.module_namespace[0] }}',
         {% else %}
