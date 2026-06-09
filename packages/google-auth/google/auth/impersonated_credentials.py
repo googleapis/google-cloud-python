@@ -262,9 +262,10 @@ class Credentials(
             ):
                 self._source_credentials._create_self_signed_jwt(None)
 
+        universe_domain = getattr(source_credentials, "universe_domain", None)
         self._universe_domain = (
-            source_credentials.universe_domain
-            if isinstance(getattr(source_credentials, "universe_domain", None), str)
+            universe_domain
+            if isinstance(universe_domain, str)
             else credentials.DEFAULT_UNIVERSE_DOMAIN
         )
         self._target_principal = target_principal
