@@ -33,6 +33,8 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.14",
 ]
 CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(CURRENT_DIRECTORY)), "mypy.ini")
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -62,7 +64,14 @@ def mypy(session):
         "types-mock",
         "types-protobuf!=4.24.0.20240106",
     )
-    session.run("mypy", "-p", "google", "-p", "tests")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
