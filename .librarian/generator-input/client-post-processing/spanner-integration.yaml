@@ -146,7 +146,17 @@ replacements:
           "google-cloud-monitoring >= 2.16.0",
           "mmh3 >= 4.1.0",
       ]
-      extras = {"libcst": "libcst >= 0.2.5"}
+      extras = {
+          "libcst": "libcst >= 0.2.5",
+          "test": [
+              "pytest",
+              "mock",
+              "asyncmock",
+              "pytest-cov",
+              "pytest-asyncio",
+              "pytest-xdist",
+          ],
+      }
     count: 1
   - paths: [packages/google-cloud-spanner/docs/index.rst]
     before: '(?s)API Reference\n-------------.*'
@@ -647,6 +657,7 @@ replacements:
           "pytest",
           "pytest-cov",
           "pytest-asyncio",
+          "pytest-xdist",
       ]
       MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
           "google-cloud-testutils",
@@ -844,6 +855,8 @@ replacements:
           # Run py.test against the unit tests.
           args = [
               "py.test",
+              "-n",
+              "auto",
               "-s",
               f"--junitxml=unit_{session.python}_sponge_log.xml",
               "--cov=google",
@@ -1358,7 +1371,6 @@ replacements:
       def mypy(session):
           """Run the type checker."""
           session.skip("Mypy is not yet supported")
-
           # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
           # use the latest version of mypy
           session.install(
@@ -1400,6 +1412,25 @@ replacements:
       mmh3==4.1.0
       libcst==0.2.5
       googleapis-common-protos==1.60.0
+    count: 1
+  - paths: [
+      packages/google-cloud-spanner/noxfile.py
+    ]
+    before: |
+        session.install\(\*dep_paths, "--no-deps", "--ignore-installed"\)
+        [\s\S]*?session.run\(\s+"py.test",\s+"tests/unit",
+    after: |
+        session.install(*dep_paths, "--no-deps", "--ignore-installed")
+            session.install("pytest-xdist")
+            print(
+                f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+            )
+
+            session.run(
+                "py.test",
+                "-n",
+                "auto",
+                "tests/unit",
     count: 1
   - paths: [packages/google-cloud-spanner/testing/constraints-3.10.txt]
     before: 'grpcio==1.59.0\n(?!grpcio-status)'
