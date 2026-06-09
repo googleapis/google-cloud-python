@@ -900,7 +900,8 @@ class WorkstationsGrpcTransport(WorkstationsTransport):
 
         Returns a short-lived credential that can be used to
         send authenticated and authorized traffic to a
-        workstation.
+        workstation. Once generated this token cannot be revoked
+        and is good for the lifetime of the token.
 
         Returns:
             Callable[[~.GenerateAccessTokenRequest],

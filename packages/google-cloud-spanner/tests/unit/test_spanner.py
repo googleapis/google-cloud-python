@@ -15,7 +15,6 @@
 import threading
 
 import mock
-import pytest
 from google.api_core import gapic_v1
 from google.protobuf.struct_pb2 import Struct
 
@@ -135,6 +134,33 @@ class TestTransaction(OpenTelemetryBase):
 
         return mock.create_autospec(SpannerClient, instance=True)
 
+    def _assert_concurrent_transaction_invariants(
+        self, call_args_list, expected_count=2
+    ):
+        self.assertEqual(len(call_args_list), expected_count)
+
+        begin_calls = []
+        reused_calls = []
+
+        for call in call_args_list:
+            request = call.kwargs["request"]
+            pb_transaction = request.transaction._pb
+            if pb_transaction.HasField("begin"):
+                begin_calls.append(call)
+            elif pb_transaction.id:
+                reused_calls.append(call)
+
+        self.assertEqual(
+            len(begin_calls),
+            1,
+            "Exactly one concurrent thread must initiate the transaction.",
+        )
+        self.assertEqual(
+            len(reused_calls),
+            expected_count - 1,
+            f"Remaining {expected_count - 1} thread(s) must reuse the transaction ID.",
+        )
+
     def _execute_update_helper(
         self,
         transaction,
@@ -227,6 +253,7 @@ class TestTransaction(OpenTelemetryBase):
         sql_count=0,
         query_options=None,
         directed_read_options=None,
+        concurrent=False,
     ):
         VALUES = [["bharney", "rhubbyl", 31], ["phred", "phlyntstone", 32]]
         VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
@@ -253,8 +280,9 @@ class TestTransaction(OpenTelemetryBase):
         api.execute_streaming_sql.side_effect = lambda *a, **kw: _MockIterator(
             *result_sets
         )
-        transaction._execute_sql_request_count = sql_count
-        transaction._read_request_count = count
+        if not concurrent:
+            transaction._execute_sql_request_count = sql_count
+            transaction._read_request_count = count
 
         result_set = transaction.execute_sql(
             SQL_QUERY_WITH_PARAM,
@@ -269,12 +297,14 @@ class TestTransaction(OpenTelemetryBase):
             directed_read_options=directed_read_options,
         )
 
-        self.assertEqual(transaction._read_request_count, count + 1)
+        if not concurrent:
+            self.assertEqual(transaction._read_request_count, count + 1)
 
         self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
-        self.assertEqual(transaction._execute_sql_request_count, sql_count + 1)
+        if not concurrent:
+            self.assertEqual(transaction._execute_sql_request_count, sql_count + 1)
 
     def _execute_sql_expected_request(
         self,
@@ -359,7 +389,7 @@ class TestTransaction(OpenTelemetryBase):
         for i in range(len(result_sets)):
             result_sets[i].values.extend(VALUE_PBS[i])
 
-        api.streaming_read.return_value = _MockIterator(*result_sets)
+        api.streaming_read.side_effect = lambda *a, **kw: _MockIterator(*result_sets)
         if not concurrent:
             transaction._read_request_count = count
 
@@ -986,49 +1016,9 @@ class TestTransaction(OpenTelemetryBase):
 
         self._batch_update_helper(transaction=transaction, database=database, api=api)
 
-        api.execute_sql.assert_any_call(
-            request=self._execute_update_expected_request(database),
-            retry=RETRY,
-            timeout=TIMEOUT,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                ),
-            ],
+        self._assert_concurrent_transaction_invariants(
+            api.execute_sql.call_args_list, 2
         )
-
-        api.execute_sql.assert_any_call(
-            request=self._execute_update_expected_request(database, begin=False),
-            retry=RETRY,
-            timeout=TIMEOUT,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.2.1",
-                ),
-            ],
-        )
-
-        api.execute_batch_dml.assert_any_call(
-            request=self._batch_update_expected_request(begin=False),
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.3.1",
-                ),
-            ],
-            retry=RETRY,
-            timeout=TIMEOUT,
-        )
-
-        self.assertEqual(api.execute_sql.call_count, 2)
         self.assertEqual(api.execute_batch_dml.call_count, 1)
 
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_batch_update(
@@ -1060,47 +1050,10 @@ class TestTransaction(OpenTelemetryBase):
         self._execute_update_helper(transaction=transaction, api=api)
         self.assertEqual(api.execute_sql.call_count, 1)
 
-        api.execute_sql.assert_any_call(
-            request=self._execute_update_expected_request(database, begin=False),
-            retry=RETRY,
-            timeout=TIMEOUT,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.3.1",
-                ),
-            ],
+        self._assert_concurrent_transaction_invariants(
+            api.execute_batch_dml.call_args_list, 2
         )
 
-        self.assertEqual(api.execute_batch_dml.call_count, 2)
-
-        call_args_list = api.execute_batch_dml.call_args_list
-
-        request_ids = []
-        for call in call_args_list:
-            metadata = call.kwargs["metadata"]
-            self.assertEqual(len(metadata), 3)
-            self.assertEqual(
-                metadata[0], ("google-cloud-resource-prefix", database.name)
-            )
-            self.assertEqual(metadata[1], ("x-goog-spanner-route-to-leader", "true"))
-            self.assertEqual(metadata[2][0], "x-goog-spanner-request-id")
-            request_ids.append(metadata[2][1])
-            self.assertEqual(call.kwargs["retry"], RETRY)
-            self.assertEqual(call.kwargs["timeout"], TIMEOUT)
-
-        expected_id_suffixes = ["1.1", "2.1"]
-        actual_id_suffixes = sorted(
-            [".".join(rid.split(".")[-2:]) for rid in request_ids]
-        )
-        self.assertEqual(actual_id_suffixes, expected_id_suffixes)
-
-    @pytest.mark.skip(
-        reason="Concurrent statement execution at transaction start is not deterministic. "
-        "Will be fixed in a separate change."
-    )
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_read(
         self,
     ):
@@ -1130,55 +1083,11 @@ class TestTransaction(OpenTelemetryBase):
 
         self._execute_update_helper(transaction=transaction, api=api)
 
-        api.execute_sql.assert_any_call(
-            request=self._execute_update_expected_request(database, begin=False),
-            retry=RETRY,
-            timeout=TIMEOUT,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.3.1",
-                ),
-            ],
-        )
-
         self.assertEqual(api.execute_sql.call_count, 1)
-        self.assertEqual(api.streaming_read.call_count, 2)
-
-        call_args_list = api.streaming_read.call_args_list
-
-        expected_requests = [
-            self._read_helper_expected_request(),
-            self._read_helper_expected_request(begin=False),
-        ]
-        actual_requests = [call.kwargs["request"] for call in call_args_list]
-        self.assertCountEqual(actual_requests, expected_requests)
-
-        request_ids = []
-        for call in call_args_list:
-            metadata = call.kwargs["metadata"]
-            self.assertEqual(len(metadata), 3)
-            self.assertEqual(
-                metadata[0], ("google-cloud-resource-prefix", database.name)
-            )
-            self.assertEqual(metadata[1], ("x-goog-spanner-route-to-leader", "true"))
-            self.assertEqual(metadata[2][0], "x-goog-spanner-request-id")
-            request_ids.append(metadata[2][1])
-            self.assertEqual(call.kwargs["retry"], RETRY)
-            self.assertEqual(call.kwargs["timeout"], TIMEOUT)
-
-        expected_id_suffixes = ["1.1", "2.1"]
-        actual_id_suffixes = sorted(
-            [".".join(rid.split(".")[-2:]) for rid in request_ids]
+        self._assert_concurrent_transaction_invariants(
+            api.streaming_read.call_args_list, 2
         )
-        self.assertEqual(actual_id_suffixes, expected_id_suffixes)
 
-    @pytest.mark.skip(
-        reason="Concurrent statement execution at transaction start is not deterministic. "
-        "Will be fixed in a separate change."
-    )
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_query(
         self,
     ):
@@ -1190,13 +1099,13 @@ class TestTransaction(OpenTelemetryBase):
         threads.append(
             threading.Thread(
                 target=self._execute_sql_helper,
-                kwargs={"transaction": transaction, "api": api},
+                kwargs={"transaction": transaction, "api": api, "concurrent": True},
             )
         )
         threads.append(
             threading.Thread(
                 target=self._execute_sql_helper,
-                kwargs={"transaction": transaction, "api": api},
+                kwargs={"transaction": transaction, "api": api, "concurrent": True},
             )
         )
         for thread in threads:
@@ -1207,59 +1116,10 @@ class TestTransaction(OpenTelemetryBase):
 
         self._execute_update_helper(transaction=transaction, api=api)
 
-        begin_read_write_count = sum(
-            [1 for call in api.mock_calls if "read_write" in call.kwargs.__str__()]
-        )
-
-        self.assertEqual(begin_read_write_count, 1)
-        api.execute_sql.assert_any_call(
-            request=self._execute_update_expected_request(database, begin=False),
-            retry=RETRY,
-            timeout=TIMEOUT,
-            metadata=[
-                ("google-cloud-resource-prefix", database.name),
-                ("x-goog-spanner-route-to-leader", "true"),
-                (
-                    "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.3.1",
-                ),
-            ],
-        )
-
-        self.assertEqual(
-            api.execute_streaming_sql.call_args_list,
-            [
-                mock.call(
-                    request=self._execute_sql_expected_request(database),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-                mock.call(
-                    request=self._execute_sql_expected_request(database, begin=False),
-                    metadata=[
-                        ("google-cloud-resource-prefix", database.name),
-                        ("x-goog-spanner-route-to-leader", "true"),
-                        (
-                            "x-goog-spanner-request-id",
-                            f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.2.1",
-                        ),
-                    ],
-                    retry=RETRY,
-                    timeout=TIMEOUT,
-                ),
-            ],
-        )
-
         self.assertEqual(api.execute_sql.call_count, 1)
-        self.assertEqual(api.execute_streaming_sql.call_count, 2)
+        self._assert_concurrent_transaction_invariants(
+            api.execute_streaming_sql.call_args_list, 2
+        )
 
     def test_transaction_should_execute_sql_with_route_to_leader_disabled(self):
         database = _Database()

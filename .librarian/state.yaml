@@ -14,7 +14,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
-    version: 2.41.0
+    version: 2.42.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -431,6 +431,24 @@ libraries:
       - packages/google-auth-oauthlib/README.rst
       - packages/google-auth-oauthlib/docs/
     tag_format: '{id}-v{version}'
+  - id: google-backstory
+    version: 0.1.0
+    last_generated_commit: ""
+    apis:
+      - path: backstory
+    source_roots:
+      - packages/google-backstory
+    preserve_regex:
+      - tests/unit/test_backstory.py
+      - tests/unit/test_packaging.py
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-backstory/.repo-metadata.json
+      - packages/google-backstory/noxfile.py
+      - packages/google-backstory/tests/
+      - packages/google-backstory/README.rst
+      - packages/google-backstory/docs/
+    tag_format: '{id}-v{version}'
   - id: google-cloud-access-approval
     version: 1.20.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
@@ -495,6 +513,22 @@ libraries:
       - packages/google-cloud-advisorynotifications/tests/
       - packages/google-cloud-advisorynotifications/README.rst
       - packages/google-cloud-advisorynotifications/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-agentidentitycredentials
+    version: 0.1.0
+    last_generated_commit: ""
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    source_roots:
+      - packages/google-cloud-agentidentitycredentials
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-agentidentitycredentials/.repo-metadata.json
+      - packages/google-cloud-agentidentitycredentials/noxfile.py
+      - packages/google-cloud-agentidentitycredentials/tests/
+      - packages/google-cloud-agentidentitycredentials/README.rst
+      - packages/google-cloud-agentidentitycredentials/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.10.0
@@ -5385,6 +5419,38 @@ libraries:
       - packages/google-crc32c/tests/
       - packages/google-crc32c/README.rst
       - packages/google-crc32c/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-developers-knowledge
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/developers/knowledge/v1
+    source_roots:
+      - packages/google-developers-knowledge
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-developers-knowledge/.repo-metadata.json
+      - packages/google-developers-knowledge/noxfile.py
+      - packages/google-developers-knowledge/tests/
+      - packages/google-developers-knowledge/README.rst
+      - packages/google-developers-knowledge/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-devicesandservices-health
+    version: 0.1.0
+    last_generated_commit: ""
+    apis:
+      - path: google/devicesandservices/health/v4
+    source_roots:
+      - packages/google-devicesandservices-health
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-devicesandservices-health/.repo-metadata.json
+      - packages/google-devicesandservices-health/noxfile.py
+      - packages/google-devicesandservices-health/tests/
+      - packages/google-devicesandservices-health/README.rst
+      - packages/google-devicesandservices-health/docs/
     tag_format: '{id}-v{version}'
   - id: google-geo-type
     version: 0.7.0

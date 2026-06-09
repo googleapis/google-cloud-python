@@ -75,6 +75,7 @@ from google.cloud.bigtable.data.exceptions import (
 )
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
+    _format_execute_query_view_params,
     _to_param_types,
 )
 from google.cloud.bigtable.data.execute_query.metadata import (
@@ -532,6 +533,7 @@ class BigtableDataClient(ClientWithProject):
         *,
         parameters: dict[str, ExecuteQueryValueType] | None = None,
         parameter_types: dict[str, SqlType.Type] | None = None,
+        view_parameters: dict[str, str] | None = None,
         app_profile_id: str | None = None,
         operation_timeout: float = 600,
         attempt_timeout: float | None = 20,
@@ -572,6 +574,8 @@ class BigtableDataClient(ClientWithProject):
                 Required to contain entries only for parameters whose type cannot be
                 detected automatically (i.e. the value can be None, an empty list or
                 an empty dict).
+            view_parameters: Dictionary with values for all view parameters. Currently only
+                string values are supported.
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             operation_timeout: the time budget for the entire executeQuery operation, in seconds.
@@ -692,11 +696,13 @@ class BigtableDataClient(ClientWithProject):
         prepare_metadata = _pb_metadata_to_metadata_types(prepare_result.metadata)
         retryable_excs = [_get_error_type(e) for e in retryable_errors]
         pb_params = _format_execute_query_params(parameters, parameter_types)
+        pb_view_params = _format_execute_query_view_params(view_parameters)
         request_body = {
             "instance_name": instance_name,
             "app_profile_id": app_profile_id,
             "prepared_query": prepare_result.prepared_query,
             "params": pb_params,
+            "view_parameters": pb_view_params,
         }
         operation_timeout, attempt_timeout = _align_timeouts(
             operation_timeout, attempt_timeout
@@ -907,6 +913,9 @@ class _DataApiTarget(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=True
+            ),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -993,15 +1002,26 @@ class _DataApiTarget(abc.ABC):
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
         query = ReadRowsQuery(row_keys=row_key, row_filter=row_filter, limit=1)
-        results = self.read_rows(
+        operation_timeout, attempt_timeout = _get_timeouts(
+            operation_timeout, attempt_timeout, self
+        )
+        retryable_excs = _get_retryable_errors(retryable_errors, self)
+        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
+            self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            retryable_errors=retryable_errors,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=False
+            ),
+            retryable_exceptions=retryable_excs,
         )
-        if len(results) == 0:
+        results_generator = row_merger.start_operation()
+        try:
+            results = [a for a in results_generator]
+            return results[0]
+        except IndexError:
             return None
-        return results[0]
 
     def read_rows_sharded(
         self,
@@ -1049,10 +1069,12 @@ class _DataApiTarget(abc.ABC):
             operation_timeout, operation_timeout
         )
         concurrency_sem = CrossSync._Sync_Impl.Semaphore(_CONCURRENCY_LIMIT)
+        gen_lock = CrossSync._Sync_Impl.Semaphore(1)
 
         def read_rows_with_semaphore(query):
             with concurrency_sem:
-                shard_timeout = next(rpc_timeout_generator)
+                with gen_lock:
+                    shard_timeout = next(rpc_timeout_generator)
                 if shard_timeout <= 0:
                     raise DeadlineExceeded(
                         "Operation timeout exceeded before starting query"
@@ -1123,19 +1145,17 @@ class _DataApiTarget(abc.ABC):
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error"""
-        if row_key is None:
-            raise ValueError("row_key must be string or bytes")
         strip_filter = StripValueTransformerFilter(flag=True)
         limit_filter = CellsRowLimitFilter(1)
         chain_filter = RowFilterChain(filters=[limit_filter, strip_filter])
-        query = ReadRowsQuery(row_keys=row_key, limit=1, row_filter=chain_filter)
-        results = self.read_rows(
-            query,
+        result = self.read_row(
+            row_key=row_key,
+            row_filter=chain_filter,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
             retryable_errors=retryable_errors,
         )
-        return len(results) > 0
+        return result is not None
 
     def sample_row_keys(
         self,
@@ -1373,6 +1393,7 @@ class _DataApiTarget(abc.ABC):
             mutation_entries,
             operation_timeout,
             attempt_timeout,
+            metric=self._metrics.create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
         )
         operation.start()

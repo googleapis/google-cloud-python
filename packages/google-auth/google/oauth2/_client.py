@@ -549,7 +549,7 @@ def _lookup_regional_access_boundary(request, url, headers=None, fail_fast=False
         # Error was already logged by _lookup_regional_access_boundary_request
         return None
 
-    if "encodedLocations" not in response_data:
+    if not isinstance(response_data, dict) or "encodedLocations" not in response_data:
         _LOGGER.error(
             "Regional Access Boundary response malformed: missing 'encodedLocations' key in %s",
             response_data,

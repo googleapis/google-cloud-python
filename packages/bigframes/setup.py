@@ -38,7 +38,7 @@ dependencies = [
     "fsspec >=2023.3.0",
     "gcsfs >=2023.3.0, !=2025.5.0, !=2026.2.0, !=2026.3.0",
     "geopandas >=0.12.2",
-    "google-auth >=2.15.0,<3.0",
+    "google-auth[pyopenssl] >=2.15.0,<3.0",
     "google-cloud-bigquery[bqstorage,pandas] >=3.36.0",
     # 2.30 needed for arrow support.
     "google-cloud-bigquery-storage >= 2.30.0, < 3.0.0",
@@ -75,6 +75,7 @@ extras = {
         "pytest-snapshot",
         "google-cloud-bigtable >=2.24.0",
         "google-cloud-pubsub >=2.21.4",
+        "tzdata",
     ],
     # used for local engine
     "polars": ["polars >= 1.21.0"],

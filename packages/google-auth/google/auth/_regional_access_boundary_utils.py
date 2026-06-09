@@ -14,9 +14,11 @@
 
 """Utilities for Regional Access Boundary management."""
 
+import asyncio
 import copy
 import datetime
 import functools
+import inspect
 import logging
 import os
 import threading
@@ -170,12 +172,11 @@ class _RegionalAccessBoundaryManager(object):
         else:
             headers.pop(_REGIONAL_ACCESS_BOUNDARY_HEADER, None)
 
-    def maybe_start_refresh(self, credentials, request):
-        """Starts a background thread to refresh the Regional Access Boundary if needed.
+    def _should_refresh(self):
+        """Checks if the Regional Access Boundary data needs a refresh and is not in cooldown.
 
-        Args:
-            credentials (google.auth.credentials.Credentials): The credentials to refresh.
-            request (google.auth.transport.Request): The object used to make HTTP requests.
+        Returns:
+            bool: True if a refresh is required, False otherwise.
         """
         rab_data = self._data
 
@@ -186,15 +187,43 @@ class _RegionalAccessBoundaryManager(object):
             and _helpers.utcnow()
             < (rab_data.expiry - REGIONAL_ACCESS_BOUNDARY_REFRESH_THRESHOLD)
         ):
-            return
+            return False
 
         # Don't start a new refresh if the cooldown is still in effect.
         if rab_data.cooldown_expiry and _helpers.utcnow() < rab_data.cooldown_expiry:
+            return False
+
+        return True
+
+    def maybe_start_refresh(self, credentials, request):
+        """Starts a background thread to refresh the Regional Access Boundary if needed.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
             return
 
         # If all checks pass, start the background refresh.
         if self._use_blocking_regional_access_boundary_lookup:
             self.start_blocking_refresh(credentials, request)
+        else:
+            self.refresh_manager.start_refresh(credentials, request, self)
+
+    async def maybe_start_refresh_async(self, credentials, request):
+        """Starts a background refresh or performs a blocking refresh asynchronously.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        if not self._should_refresh():
+            return
+
+        # If all checks pass, start the refresh.
+        if self._use_blocking_regional_access_boundary_lookup:
+            await self.start_blocking_refresh_async(credentials, request)
         else:
             self.refresh_manager.start_refresh(credentials, request, self)
 
@@ -209,6 +238,15 @@ class _RegionalAccessBoundaryManager(object):
             credentials (google.auth.credentials.Credentials): The credentials to refresh.
             request (google.auth.transport.Request): The object used to make HTTP requests.
         """
+        # Async credentials do not support blocking lookups.
+        if inspect.iscoroutinefunction(credentials._lookup_regional_access_boundary):
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.warning(
+                    "Blocking Regional Access Boundary lookup is not supported for async credentials."
+                )
+            self.process_regional_access_boundary_info(None)
+            return
+
         try:
             # The fail_fast parameter is set to True to ensure we don't block the calling
             # thread for too long. This will do two things: 1) set a timeout to 3s
@@ -220,6 +258,37 @@ class _RegionalAccessBoundaryManager(object):
             if _helpers.is_logging_enabled(_LOGGER):
                 _LOGGER.warning(
                     "Blocking Regional Access Boundary lookup raised an exception: %s",
+                    e,
+                    exc_info=True,
+                )
+            regional_access_boundary_info = None
+
+        self.process_regional_access_boundary_info(regional_access_boundary_info)
+
+    async def start_blocking_refresh_async(self, credentials, request):
+        """Initiates a blocking lookup of the Regional Access Boundary asynchronously.
+
+        If the lookup raises an exception, it is caught and logged as a warning,
+        and the lookup is treated as a failure (entering cooldown). Exceptions
+        are not propagated to the caller.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The credentials to refresh.
+            request (google.auth.aio.transport.Request): The object used to make HTTP requests.
+        """
+        try:
+            # The fail_fast parameter is set to True to ensure we don't block the calling
+            # thread for too long. This will do two things: 1) set a timeout to 3s
+            # instead of the default 120s and 2) ensure we do not retry at all
+            regional_access_boundary_info = (
+                await credentials._lookup_regional_access_boundary(
+                    request, fail_fast=True
+                )
+            )
+        except Exception as e:
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.warning(
+                    "Regional Access Boundary lookup raised an exception: %s",
                     e,
                     exc_info=True,
                 )
@@ -384,3 +453,120 @@ class _RegionalAccessBoundaryRefreshManager(object):
                 credentials, copied_request, rab_manager
             )
             self._worker.start()
+
+
+class _AsyncRegionalAccessBoundaryRefreshManager(object):
+    """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def __getstate__(self):
+        """Pickle helper that excludes the un-picklable _lock and _worker_task attributes from serialization."""
+        state = self.__dict__.copy()
+        state["_lock"] = None
+        state["_worker_task"] = None
+        return state
+
+    def __setstate__(self, state):
+        """Pickle helper that restores state and re-initializes the _lock and _worker_task attributes."""
+        self.__dict__.update(state)
+        self._lock = threading.Lock()
+        self._worker_task = None
+
+    def start_refresh(self, credentials, request, rab_manager):
+        """
+        Starts a background task to refresh the Regional Access Boundary if one is not already running.
+
+        Args:
+            credentials (CredentialsWithRegionalAccessBoundary): The credentials
+                to refresh.
+            request (google.auth.aio.transport.Request): The object used to make
+                HTTP requests.
+            rab_manager (_RegionalAccessBoundaryManager): The manager container to update.
+        """
+        with self._lock:
+            if self._worker_task and not self._worker_task.done():
+                # A refresh is already in progress.
+                return
+
+            async def _worker():
+                try:
+                    # credentials._lookup_regional_access_boundary should be async in the async creds class
+                    regional_access_boundary_info = (
+                        await credentials._lookup_regional_access_boundary(request)
+                    )
+                except Exception as e:
+                    if _helpers.is_logging_enabled(_LOGGER):
+                        _LOGGER.warning(
+                            "Asynchronous Regional Access Boundary lookup raised an exception: %s",
+                            e,
+                            exc_info=True,
+                        )
+                    regional_access_boundary_info = None
+
+                rab_manager.process_regional_access_boundary_info(
+                    regional_access_boundary_info
+                )
+
+            coro = _worker()
+            try:
+                self._worker_task = asyncio.create_task(coro)
+            except Exception:
+                coro.close()
+                raise
+
+
+def _get_domain() -> str:
+    """Dynamically determines the domain for IAM credentials based on active mTLS configuration.
+
+    Returns:
+        str: The dynamic domain string.
+    """
+    from google.auth.transport import _mtls_helper
+
+    if (
+        hasattr(_mtls_helper, "check_use_client_cert")
+        and _mtls_helper.check_use_client_cert()
+    ):
+        return f"iamcredentials.mtls.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+    else:
+        return f"iamcredentials.{_helpers.DEFAULT_UNIVERSE_DOMAIN}"
+
+
+def get_service_account_rab_endpoint(service_account_email: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for service accounts.
+
+    Args:
+        service_account_email: The service account email.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/-/serviceAccounts/{service_account_email}/allowedLocations"
+
+
+def get_workforce_pool_rab_endpoint(pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workforce pools.
+
+    Args:
+        pool_id: The workforce pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/locations/global/workforcePools/{pool_id}/allowedLocations"
+
+
+def get_workload_identity_pool_rab_endpoint(project_number: str, pool_id: str) -> str:
+    """Builds the Regional Access Boundary lookup URL for workload identity pools.
+
+    Args:
+        project_number: The Google Cloud project number.
+        pool_id: The workload identity pool ID.
+
+    Returns:
+        str: The complete lookup URL.
+    """
+    return f"https://{_get_domain()}/v1/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/allowedLocations"

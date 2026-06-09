@@ -717,13 +717,31 @@ class TestImpersonatedCredentials(object):
 
         assert credentials._build_regional_access_boundary_lookup_url() is None
 
-    def test_build_regional_access_boundary_lookup_url_success(self):
+    def test_build_regional_access_boundary_lookup_url_success_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_credentials()
-        # Ensure service_account_email is properly set by default mock
+        url = credentials._build_regional_access_boundary_lookup_url()
         expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
             credentials.service_account_email
         )
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_success_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+        assert url == expected_url
 
     def test_with_scopes_provide_default_scopes(self):
         credentials = self.make_credentials()

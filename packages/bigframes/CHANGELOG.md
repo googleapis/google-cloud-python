@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.41.0...bigframes-v2.42.0) (2026-06-08)
+
+
+### Features
+
+* create `Series.bigquery.function_name` accessors for array and AEAD functions (#17279) ([d01a4ba30040cfcb6498d0e9ef3ed3a54d56239d](https://github.com/googleapis/google-cloud-python/commit/d01a4ba30040cfcb6498d0e9ef3ed3a54d56239d))
+* support automatic per-cell execution history filtering and isolated callbacks (#17144) ([7d440111d836b94f0ce22f6b08c7ce0e7bf4a38a](https://github.com/googleapis/google-cloud-python/commit/7d440111d836b94f0ce22f6b08c7ce0e7bf4a38a))
+* Add ai_generate functions to the dataframe bq accessor (#17302) ([6b62cb6fb3de94326b8944ae08a400c12529cad2](https://github.com/googleapis/google-cloud-python/commit/6b62cb6fb3de94326b8944ae08a400c12529cad2))
+
+
+### Bug Fixes
+
+* nameless column to_frame bug for pandas 3.0 (#17371) ([b23bfa4ceb819bca8201a7fe8b64a9bed56733f0](https://github.com/googleapis/google-cloud-python/commit/b23bfa4ceb819bca8201a7fe8b64a9bed56733f0))
+* include pyopenssl as a dependency (#17362) ([1f6205ee5a370249ece2c2cc7131a47830ef00ea](https://github.com/googleapis/google-cloud-python/commit/1f6205ee5a370249ece2c2cc7131a47830ef00ea))
+* Fix IsInOp literal bug with sqlglot (#17356) ([a3d93afe74dd2b5ec8a2ae92f91c95962764debe](https://github.com/googleapis/google-cloud-python/commit/a3d93afe74dd2b5ec8a2ae92f91c95962764debe))
+
 ## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.40.0...bigframes-v2.41.0) (2026-05-28)
 
 
