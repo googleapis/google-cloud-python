@@ -432,7 +432,7 @@ libraries:
       - packages/google-auth-oauthlib/docs/
     tag_format: '{id}-v{version}'
   - id: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: backstory
@@ -513,6 +513,22 @@ libraries:
       - packages/google-cloud-advisorynotifications/tests/
       - packages/google-cloud-advisorynotifications/README.rst
       - packages/google-cloud-advisorynotifications/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-agentidentitycredentials
+    version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    source_roots:
+      - packages/google-cloud-agentidentitycredentials
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-cloud-agentidentitycredentials/.repo-metadata.json
+      - packages/google-cloud-agentidentitycredentials/noxfile.py
+      - packages/google-cloud-agentidentitycredentials/tests/
+      - packages/google-cloud-agentidentitycredentials/README.rst
+      - packages/google-cloud-agentidentitycredentials/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.10.0
@@ -5404,8 +5420,24 @@ libraries:
       - packages/google-crc32c/README.rst
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
-  - id: google-devicesandservices-health
+  - id: google-developers-knowledge
     version: 0.0.0
+    last_generated_commit: ""
+    apis:
+      - path: google/developers/knowledge/v1
+    source_roots:
+      - packages/google-developers-knowledge
+    preserve_regex: []
+    remove_regex: []
+    release_exclude_paths:
+      - packages/google-developers-knowledge/.repo-metadata.json
+      - packages/google-developers-knowledge/noxfile.py
+      - packages/google-developers-knowledge/tests/
+      - packages/google-developers-knowledge/README.rst
+      - packages/google-developers-knowledge/docs/
+    tag_format: '{id}-v{version}'
+  - id: google-devicesandservices-health
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/devicesandservices/health/v4

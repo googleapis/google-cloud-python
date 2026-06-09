@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.16.1-0.20260605194008-9ebe31201f8d
+version: v0.16.1-0.20260608172125-d123ec9cac76
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -29,6 +29,7 @@ default:
       - google.maps
       - google.shopping
       - google.devicesandservices
+      - google.developers
     common_gapic_paths:
       - samples/generated_samples
       - tests/unit/gapic
@@ -239,7 +240,7 @@ libraries:
     python:
       library_type: AUTH
   - name: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: backstory
     keep:
@@ -277,6 +278,13 @@ libraries:
       - path: google/cloud/advisorynotifications/v1
     python:
       metadata_name_override: advisorynotifications
+      default_version: v1
+  - name: google-cloud-agentidentitycredentials
+    version: 0.0.0
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    copyright_year: "2026"
+    python:
       default_version: v1
   - name: google-cloud-alloydb
     version: 0.10.0
@@ -2218,8 +2226,19 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
-  - name: google-devicesandservices-health
+  - name: google-developers-knowledge
     version: 0.0.0
+    apis:
+      - path: google/developers/knowledge/v1
+    copyright_year: "2026"
+    python:
+      opt_args_by_api:
+        google/developers/knowledge/v1:
+          - python-gapic-namespace=google
+          - python-gapic-name=developers_knowledge
+      default_version: v1
+  - name: google-devicesandservices-health
+    version: 0.1.0
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"
