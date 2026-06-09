@@ -23,7 +23,9 @@ import nox
 
 HERE = os.path.dirname(__file__)
 # Path to the centralized mypy configuration file at the repository root.
-MYPY_CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(HERE))), "mypy.ini")
+MYPY_CONFIG_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(HERE))), "mypy.ini"
+)
 
 # Constants
 DEFAULT_PYTHON_VERSION = "3.14"
