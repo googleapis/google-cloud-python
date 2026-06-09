@@ -1,4 +1,4 @@
-# Copyright 2026 Google Inc.
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from unittest import mock
 
 import pytest  # type: ignore
 
+from google.auth import _credentials_async
 from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
@@ -301,6 +302,24 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert unpickled.refresh_manager._lock is not None
         assert unpickled.refresh_manager._worker is None
 
+    def test_unpickle_old_credentials_without_rab(self):
+        creds = CredentialsImpl()
+        old_state = creds.__dict__.copy()
+        if "_rab_manager" in old_state:
+            del old_state["_rab_manager"]
+        if "_use_non_blocking_refresh" in old_state:
+            del old_state["_use_non_blocking_refresh"]
+        if "_refresh_worker" in old_state:
+            del old_state["_refresh_worker"]
+
+        new_instance = CredentialsImpl.__new__(CredentialsImpl)
+        new_instance.__setstate__(old_state)
+
+        assert hasattr(new_instance, "_rab_manager")
+        assert new_instance._rab_manager is not None
+        assert new_instance._use_non_blocking_refresh is False
+        assert new_instance._refresh_worker is not None
+
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
@@ -376,6 +395,21 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             creds._rab_manager.start_blocking_refresh(creds, request)
 
             mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert creds._rab_manager._data.encoded_locations is None
+            assert creds._rab_manager._data.cooldown_expiry is not None
+
+    def test_start_blocking_refresh_with_async_credentials(self):
+        creds = CredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+        ) as mock_lookup:
+            creds._rab_manager.start_blocking_refresh(creds, request)
+
+            mock_lookup.assert_not_called()
             assert creds._rab_manager._data.encoded_locations is None
             assert creds._rab_manager._data.cooldown_expiry is not None
 
@@ -552,3 +586,178 @@ class TestCredentialsWithRegionalAccessBoundary(object):
 
             mock_thread_class.assert_not_called()
             assert manager._worker == mock_worker
+
+
+class AsyncCredentialsImpl(_credentials_async.CredentialsWithRegionalAccessBoundary):
+    def __init__(self, universe_domain=None):
+        super().__init__()
+        if universe_domain:
+            self._universe_domain = universe_domain
+
+    async def _perform_refresh_token(self, request):
+        self.token = "refreshed-token"
+        self.expiry = (
+            _helpers.utcnow()
+            + _helpers.REFRESH_THRESHOLD
+            + datetime.timedelta(seconds=5)
+        )
+
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError()
+
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        # Using self.token here to make the URL dynamic for testing purposes
+        return "http://mock.url/lookup_for_{}".format(self.token)
+
+    def _make_copy(self):
+        new_credentials = self.__class__()
+        self._copy_regional_access_boundary_manager(new_credentials)
+        return new_credentials
+
+
+class TestAsyncCredentialsWithRegionalAccessBoundary(object):
+    @pytest.mark.asyncio
+    async def test_maybe_start_refresh_async_blocking(self):
+        creds = AsyncCredentialsImpl()
+        creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
+        request = mock.Mock()
+
+        with mock.patch.dict(
+            os.environ,
+            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
+        ):
+            with mock.patch.object(
+                creds._rab_manager,
+                "start_blocking_refresh_async",
+                new_callable=mock.AsyncMock,
+            ) as mock_start_blocking:
+                await creds._maybe_start_regional_access_boundary_refresh_async(
+                    request, "http://example.com"
+                )
+                mock_start_blocking.assert_called_once_with(creds, request)
+
+    @pytest.mark.asyncio
+    async def test_start_blocking_refresh_async_success(self):
+        creds = AsyncCredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+            return_value={"encodedLocations": "0xABC"},
+        ) as mock_lookup:
+            await creds._rab_manager.start_blocking_refresh_async(creds, request)
+
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert creds._rab_manager._data.encoded_locations == "0xABC"
+
+    @pytest.mark.asyncio
+    async def test_start_blocking_refresh_async_failure(self):
+        creds = AsyncCredentialsImpl()
+        request = mock.Mock()
+
+        with mock.patch.object(
+            creds,
+            "_lookup_regional_access_boundary",
+            new_callable=mock.AsyncMock,
+            side_effect=Exception("error"),
+        ) as mock_lookup:
+            await creds._rab_manager.start_blocking_refresh_async(creds, request)
+
+            mock_lookup.assert_called_once_with(request, fail_fast=True)
+            assert creds._rab_manager._data.encoded_locations is None
+            assert creds._rab_manager._data.cooldown_expiry is not None
+
+    @pytest.mark.asyncio
+    async def test_async_refresh_manager_session_closed_ignored(self):
+        credentials = mock.AsyncMock()
+        # Simulate a closed session RuntimeError when invoking the boundary lookup
+        credentials._lookup_regional_access_boundary.side_effect = RuntimeError(
+            "Session is closed"
+        )
+
+        request = mock.Mock()
+        rab_manager = mock.Mock()
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        # Trigger refresh, which starts a background task that should swallow the error
+        manager.start_refresh(credentials, request, rab_manager)
+
+        # Wait for the background worker task to terminate
+        await manager._worker_task
+
+        # Verify that the lookup was still triggered but failed open cleanly
+        credentials._lookup_regional_access_boundary.assert_called_once_with(request)
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+
+def test_get_service_account_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_service_account_rab_endpoint(
+        "test@example.com"
+    )
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/test@example.com/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_service_account_rab_endpoint(
+        "test@example.com"
+    )
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/test@example.com/allowedLocations"
+    )
+
+
+def test_get_workforce_pool_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint("POOL_ID")
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint("POOL_ID")
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+    )
+
+
+def test_get_workload_identity_pool_rab_endpoint(monkeypatch):
+    from google.auth.transport import _mtls_helper
+
+    # Test Standard TLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+    url = _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+        "PROJECT_NUM", "POOL_ID"
+    )
+    assert (
+        url
+        == "https://iamcredentials.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+    )
+
+    # Test mTLS
+    monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+    url = _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+        "PROJECT_NUM", "POOL_ID"
+    )
+    assert (
+        url
+        == "https://iamcredentials.mtls.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+    )

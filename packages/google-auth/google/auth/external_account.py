@@ -40,9 +40,9 @@ from typing import Optional, TYPE_CHECKING
 
 
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
-from google.auth import iam
 from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
@@ -526,9 +526,10 @@ class Credentials(
         )
         if workload_match:
             project_number, pool_id = workload_match.groups()
-            url = iam._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                project_number=project_number,
-                pool_id=pool_id,
+            url = (
+                _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+                    project_number, pool_id
+                )
             )
         else:
             # If that fails, try to parse as a workforce pool.
@@ -538,10 +539,8 @@ class Credentials(
             )
             if workforce_match:
                 pool_id = workforce_match.groups()[0]
-                url = (
-                    iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                        pool_id=pool_id
-                    )
+                url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint(
+                    pool_id
                 )
 
         if url:
@@ -620,7 +619,7 @@ class Credentials(
 
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         # Initialize and return impersonated credentials.
-        return impersonated_credentials.Credentials(
+        impersonated_creds = impersonated_credentials.Credentials(
             source_credentials=source_credentials,
             target_principal=target_principal,
             target_scopes=scopes,
@@ -631,6 +630,9 @@ class Credentials(
             ),
             trust_boundary=self._trust_boundary,
         )
+        if self._rab_manager._use_blocking_regional_access_boundary_lookup:
+            impersonated_creds._set_blocking_regional_access_boundary_lookup()
+        return impersonated_creds
 
     def _create_default_metrics_options(self):
         metrics_options = {}

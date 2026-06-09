@@ -1626,6 +1626,8 @@ def test_create_conversation(request_type, transport: str = "grpc"):
         call.return_value = gcg_conversation.Conversation(
             name="name_value",
             agents=["agents_value"],
+            kms_key="kms_key_value",
+            memory_paused=True,
         )
         response = client.create_conversation(request)
 
@@ -1639,6 +1641,8 @@ def test_create_conversation(request_type, transport: str = "grpc"):
     assert isinstance(response, gcg_conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 def test_create_conversation_non_empty_request_with_auto_populated_field():
@@ -1782,6 +1786,8 @@ async def test_create_conversation_async(request_type, transport: str = "grpc_as
             gcg_conversation.Conversation(
                 name="name_value",
                 agents=["agents_value"],
+                kms_key="kms_key_value",
+                memory_paused=True,
             )
         )
         response = await client.create_conversation(request)
@@ -1796,6 +1802,8 @@ async def test_create_conversation_async(request_type, transport: str = "grpc_as
     assert isinstance(response, gcg_conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 def test_create_conversation_field_headers():
@@ -2322,6 +2330,8 @@ def test_get_conversation(request_type, transport: str = "grpc"):
         call.return_value = conversation.Conversation(
             name="name_value",
             agents=["agents_value"],
+            kms_key="kms_key_value",
+            memory_paused=True,
         )
         response = client.get_conversation(request)
 
@@ -2335,6 +2345,8 @@ def test_get_conversation(request_type, transport: str = "grpc"):
     assert isinstance(response, conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 def test_get_conversation_non_empty_request_with_auto_populated_field():
@@ -2470,6 +2482,8 @@ async def test_get_conversation_async(request_type, transport: str = "grpc_async
             conversation.Conversation(
                 name="name_value",
                 agents=["agents_value"],
+                kms_key="kms_key_value",
+                memory_paused=True,
             )
         )
         response = await client.get_conversation(request)
@@ -2484,6 +2498,8 @@ async def test_get_conversation_async(request_type, transport: str = "grpc_async
     assert isinstance(response, conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 def test_get_conversation_field_headers():
@@ -5610,6 +5626,8 @@ async def test_create_conversation_empty_call_grpc_asyncio():
             gcg_conversation.Conversation(
                 name="name_value",
                 agents=["agents_value"],
+                kms_key="kms_key_value",
+                memory_paused=True,
             )
         )
         await client.create_conversation(request=None)
@@ -5661,6 +5679,8 @@ async def test_get_conversation_empty_call_grpc_asyncio():
             conversation.Conversation(
                 name="name_value",
                 agents=["agents_value"],
+                kms_key="kms_key_value",
+                memory_paused=True,
             )
         )
         await client.get_conversation(request=None)
@@ -5936,6 +5956,8 @@ def test_create_conversation_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "last_used_time": {},
         "labels": {},
+        "kms_key": "kms_key_value",
+        "memory_paused": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6012,6 +6034,8 @@ def test_create_conversation_rest_call_success(request_type):
         return_value = gcg_conversation.Conversation(
             name="name_value",
             agents=["agents_value"],
+            kms_key="kms_key_value",
+            memory_paused=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -6030,6 +6054,8 @@ def test_create_conversation_rest_call_success(request_type):
     assert isinstance(response, gcg_conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6257,6 +6283,8 @@ def test_get_conversation_rest_call_success(request_type):
         return_value = conversation.Conversation(
             name="name_value",
             agents=["agents_value"],
+            kms_key="kms_key_value",
+            memory_paused=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -6275,6 +6303,8 @@ def test_get_conversation_rest_call_success(request_type):
     assert isinstance(response, conversation.Conversation)
     assert response.name == "name_value"
     assert response.agents == ["agents_value"]
+    assert response.kms_key == "kms_key_value"
+    assert response.memory_paused is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7766,10 +7796,41 @@ def test_parse_conversation_path():
     assert expected == actual
 
 
-def test_data_agent_path():
+def test_crypto_key_path():
     project = "cuttlefish"
     location = "mussel"
-    data_agent = "winkle"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = DataChatServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = DataChatServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataChatServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_data_agent_path():
+    project = "whelk"
+    location = "octopus"
+    data_agent = "oyster"
     expected = "projects/{project}/locations/{location}/dataAgents/{data_agent}".format(
         project=project,
         location=location,
@@ -7781,9 +7842,9 @@ def test_data_agent_path():
 
 def test_parse_data_agent_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "data_agent": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "data_agent": "mussel",
     }
     path = DataChatServiceClient.data_agent_path(**expected)
 
@@ -7793,7 +7854,7 @@ def test_parse_data_agent_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7803,7 +7864,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = DataChatServiceClient.common_billing_account_path(**expected)
 
@@ -7813,7 +7874,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7823,7 +7884,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = DataChatServiceClient.common_folder_path(**expected)
 
@@ -7833,7 +7894,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7843,7 +7904,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = DataChatServiceClient.common_organization_path(**expected)
 
@@ -7853,7 +7914,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7863,7 +7924,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = DataChatServiceClient.common_project_path(**expected)
 
@@ -7873,8 +7934,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7885,8 +7946,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = DataChatServiceClient.common_location_path(**expected)
 

@@ -626,15 +626,16 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import Type, TypeCode
 
         value = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=timezone.utc
+            2016, 12, 20, 21, 13, 47, nanosecond=123456000, tzinfo=timezone.utc
         )
         field_type = Type(code=TypeCode.TIMESTAMP)
         field_name = "nanos_column"
-        value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
+        value_pb = Value(string_value="2016-12-20T21:13:47.123456Z")
 
         parsed = self._callFUT(value_pb, field_type, field_name)
         self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
+        self.assertEqual(parsed.nanosecond, value.nanosecond)
 
     def test_w_timestamp_w_nanos(self):
         from google.api_core import datetime_helpers
@@ -647,11 +648,141 @@ class Test_parse_value_pb(unittest.TestCase):
         )
         field_type = Type(code=TypeCode.TIMESTAMP)
         field_name = "timestamp_column"
-        value_pb = Value(string_value=datetime_helpers.to_rfc3339(value))
+        value_pb = Value(string_value="2016-12-20T21:13:47.123456789Z")
 
         parsed = self._callFUT(value_pb, field_type, field_name)
         self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
         self.assertEqual(parsed, value)
+        self.assertEqual(parsed.nanosecond, value.nanosecond)
+
+    def test_w_timestamp_w_offset(self):
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        value_pb = Value(string_value="2016-12-20T12:13:47.123456789+01:00")
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 11, 13, 47, nanosecond=123456789, tzinfo=timezone.utc
+        )
+
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+        value_pb_neg = Value(string_value="2016-12-20T12:13:47.123456789-05:00")
+        expected_neg = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 17, 13, 47, nanosecond=123456789, tzinfo=timezone.utc
+        )
+        parsed_neg = self._callFUT(value_pb_neg, field_type, field_name)
+        self.assertEqual(parsed_neg, expected_neg)
+        self.assertEqual(parsed_neg.nanosecond, expected_neg.nanosecond)
+
+    def test_w_timestamp_various_formats(self):
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        # 1. No seconds fraction, UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=0, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+        # 2. Single digit fraction (nanoseconds), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.1Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=100000000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+        # 3. Milliseconds (3 digits fraction), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.123Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123000000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+        # 4. Microseconds (6 digits fraction), UTC (Z)
+        value_pb = Value(string_value="2016-12-20T21:13:47.123456Z")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123456000, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+        # 5. Offset without seconds fraction
+        value_pb = Value(string_value="2016-12-20T21:13:47+02:00")
+        expected = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 19, 13, 47, nanosecond=0, tzinfo=timezone.utc
+        )
+        parsed = self._callFUT(value_pb, field_type, field_name)
+        self.assertEqual(parsed, expected)
+        self.assertEqual(parsed.nanosecond, expected.nanosecond)
+
+    def test_datetime_with_nanoseconds_equality_ignores_nanoseconds(self):
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        # Actual parsed timestamp has nanoseconds = 123456789
+        value_pb = Value(string_value="2016-12-20T21:13:47.123456789Z")
+        parsed = self._callFUT(value_pb, field_type, field_name)
+
+        # Expected object with DIFFERENT nanoseconds but SAME microseconds (123456)
+        expected_different_nanos = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, nanosecond=123456000, tzinfo=timezone.utc
+        )
+
+        # Assert that standard assertEqual would FALSE POSITIVE (return True / pass)
+        self.assertEqual(parsed, expected_different_nanos)
+
+        # Assert that their actual nanosecond property values are DIFFERENT
+        self.assertNotEqual(parsed.nanosecond, expected_different_nanos.nanosecond)
+
+    def test_w_timestamp_invalid_formats(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        field_type = Type(code=TypeCode.TIMESTAMP)
+        field_name = "timestamp_column"
+
+        invalid_strings = [
+            "2016-12-20T21:13:47",  # Missing timezone offset
+            "2016-12-20 21:13:47Z",  # Space instead of 'T' separator
+            "2016-12-20T21:13:47+0100",  # Missing colon in offset
+            "2016-12-20T21:13:47.1234567890Z",  # Too many sub-seconds digits (10 digits)
+            "2016-12-20T21:13:4Z",  # Single digit second
+            "2016-12-20T21:1:47Z",  # Single digit minute
+            "2016-12-20T2:13:47Z",  # Single digit hour
+            "2016-12-20T21:13:47+1:00",  # Single digit hour in offset
+        ]
+
+        for invalid_string in invalid_strings:
+            value_pb = Value(string_value=invalid_string)
+            with self.assertRaises((ValueError, IndexError)):
+                self._callFUT(value_pb, field_type, field_name)
 
     def test_w_array_empty(self):
         from google.protobuf.struct_pb2 import ListValue, Value

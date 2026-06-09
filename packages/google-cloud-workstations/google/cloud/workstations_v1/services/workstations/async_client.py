@@ -1413,7 +1413,9 @@ class WorkstationsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             workstation_config (:class:`google.cloud.workstations_v1.types.WorkstationConfig`):
-                Required. Config to create.
+                Required. Workstation configuration
+                to create.
+
                 This corresponds to the ``workstation_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1562,7 +1564,9 @@ class WorkstationsAsyncClient:
                 The request object. Request message for
                 UpdateWorkstationConfig.
             workstation_config (:class:`google.cloud.workstations_v1.types.WorkstationConfig`):
-                Required. Config to update.
+                Required. Workstation configuration
+                to update.
+
                 This corresponds to the ``workstation_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2221,7 +2225,14 @@ class WorkstationsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             workstation (:class:`google.cloud.workstations_v1.types.Workstation`):
-                Required. Workstation to create.
+                Required. Workstation to create. If source_workstation
+                is specified, the user must have
+                ``workstations.workstations.use`` permission on the
+                source workstation, and the Cloud Workstations Service
+                Agent for the project where you are creating the new
+                workstation must have compute.disks.createSnapshot and
+                compute.snapshots.useReadOnly on the source project.
+
                 This corresponds to the ``workstation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2363,8 +2374,8 @@ class WorkstationsAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask specifying which
-                fields in the workstation configuration
-                should be updated.
+                fields in the workstation should be
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2839,7 +2850,8 @@ class WorkstationsAsyncClient:
     ) -> workstations.GenerateAccessTokenResponse:
         r"""Returns a short-lived credential that can be used to
         send authenticated and authorized traffic to a
-        workstation.
+        workstation. Once generated this token cannot be revoked
+        and is good for the lifetime of the token.
 
         .. code-block:: python
 
