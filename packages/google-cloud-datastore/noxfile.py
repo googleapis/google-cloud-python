@@ -318,7 +318,8 @@ def install_systemtest_dependencies(session, *constraints):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+@nox.parametrize("disable_grpc", [False, True])
+def system(session, disable_grpc):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -341,6 +342,10 @@ def system(session):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
+    env = {}
+    if disable_grpc:
+        env["GOOGLE_CLOUD_DISABLE_GRPC"] = "True"
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run(
@@ -348,6 +353,7 @@ def system(session):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
+            env=env,
             *session.posargs,
         )
     if system_test_folder_exists:
@@ -356,6 +362,7 @@ def system(session):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
+            env=env,
             *session.posargs,
         )
 
