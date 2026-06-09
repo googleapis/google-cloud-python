@@ -34,11 +34,6 @@ User Guide
 .. toctree::
    :caption: Data Types
    :maxdepth: 1
-   Pypi <../notebooks/dataframes/pypi.ipynb>
-
-.. toctree::
-   :caption: Data Types
-   :maxdepth: 1
 
    Array <../notebooks/data_types/array.ipynb>
    Json <../notebooks/data_types/json.ipynb>
