@@ -22,6 +22,8 @@ import sys
 import nox
 
 HERE = os.path.dirname(__file__)
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(HERE))), "mypy.ini")
 
 # Constants
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -84,7 +86,12 @@ def mypy(session):
         "types-setuptools",
     )
     session.env["MYPYPATH"] = "src"
-    session.run("mypy", "src/google_crc32c/", "tests/")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "src/google_crc32c/",
+        "tests/",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

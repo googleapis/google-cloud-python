@@ -114,6 +114,9 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
+
 
 # Sessions are executed in the order so putting the smaller sessions
 # ahead to fail fast at presubmit running.
@@ -1085,6 +1088,7 @@ def mypy(session):
     shutil.rmtree(".mypy_cache", ignore_errors=True)
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "bigframes",
         os.path.join("tests", "system"),
         os.path.join("tests", "unit"),

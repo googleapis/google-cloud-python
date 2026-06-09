@@ -39,6 +39,9 @@ BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["test_utils", "setup.py"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
+
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -113,7 +116,8 @@ def mypy(session):
         "types-mock",
         "types-setuptools",
     )
-    session.run("mypy", "test_utils/", "tests/")
+    session.run("mypy",
+        f"--config-file={MYPY_CONFIG_FILE}", "test_utils/", "tests/")
 
 
 @nox.session(python=ALL_PYTHON)

@@ -21,6 +21,9 @@ import shutil
 import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
+
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 RUFF_VERSION = "ruff==0.14.14"
@@ -251,7 +254,8 @@ def mypy(session):
         "types-requests",
         "types-mock",
     )
-    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run("mypy",
+        f"--config-file={MYPY_CONFIG_FILE}", "-p", "google", "-p", "tests", "-p", "tests_async")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
