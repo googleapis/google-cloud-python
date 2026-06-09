@@ -17,6 +17,7 @@
 import base64
 import hashlib
 import json
+import types
 from unittest import mock
 
 import pytest  # type: ignore
@@ -76,6 +77,41 @@ class FakeCtap1:
         return effect
 
 
+class FakeRegisteredKey:
+    def __init__(self, key):
+        self.key = key
+
+
+class FakeU2FError(Exception):
+    DEVICE_INELIGIBLE = "device ineligible"
+    TIMEOUT = "timeout"
+    BAD_REQUEST = "bad request"
+
+    def __init__(self, code):
+        self.code = code
+
+
+class FakePluginError(Exception):
+    pass
+
+
+class FakeNoDeviceFoundError(Exception):
+    pass
+
+
+class FakeCompositeAuthenticator:
+    origins = []
+    calls = []
+    side_effects = []
+
+    def Authenticate(self, app_id, challenge_data, print_callback=None):
+        self.calls.append((app_id, challenge_data, print_callback))
+        effect = self.side_effects.pop(0)
+        if isinstance(effect, Exception):
+            raise effect
+        return effect
+
+
 def use_fake_fido2(challenge, devices=None, side_effects=None):
     FakeCtapHidDevice.devices = devices if devices is not None else ["security-key"]
     FakeCtap1.calls = []
@@ -92,6 +128,46 @@ def use_fake_fido2(challenge, devices=None, side_effects=None):
             FakeApduError,
             FakeCtapError,
         ),
+    )
+
+
+def create_composite_authenticator(origin):
+    FakeCompositeAuthenticator.origins.append(origin)
+    return FakeCompositeAuthenticator()
+
+
+def use_fake_pyu2f(side_effects=None):
+    FakeCompositeAuthenticator.origins = []
+    FakeCompositeAuthenticator.calls = []
+    FakeCompositeAuthenticator.side_effects = (
+        side_effects if side_effects is not None else ["security key response"]
+    )
+
+    pyu2f = types.ModuleType("pyu2f")
+    convenience = types.ModuleType("pyu2f.convenience")
+    authenticator = types.ModuleType("pyu2f.convenience.authenticator")
+    errors = types.ModuleType("pyu2f.errors")
+    model = types.ModuleType("pyu2f.model")
+
+    authenticator.CreateCompositeAuthenticator = create_composite_authenticator
+    convenience.authenticator = authenticator
+    errors.U2FError = FakeU2FError
+    errors.PluginError = FakePluginError
+    errors.NoDeviceFoundError = FakeNoDeviceFoundError
+    model.RegisteredKey = FakeRegisteredKey
+    pyu2f.convenience = convenience
+    pyu2f.errors = errors
+    pyu2f.model = model
+
+    return mock.patch.dict(
+        "sys.modules",
+        {
+            "pyu2f": pyu2f,
+            "pyu2f.convenience": convenience,
+            "pyu2f.convenience.authenticator": authenticator,
+            "pyu2f.errors": errors,
+            "pyu2f.model": model,
+        },
     )
 
 
@@ -286,6 +362,101 @@ def test_security_key():
         )
         assert [call[0] for call in FakeCtap1.calls] == ["first-key", "second-key"]
 
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) == {
+            "securityKey": "security key response"
+        }
+        assert FakeCompositeAuthenticator.origins == [challenges.REAUTH_ORIGIN]
+        assert FakeCompositeAuthenticator.calls[0][0] == "security_key_application_id"
+
+    metadata["securityKey"]["relyingPartyId"] = "security_key_relying_party_id"
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(
+            side_effects=[
+                FakeU2FError(FakeU2FError.DEVICE_INELIGIBLE),
+                "security key response",
+            ],
+        ),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) == {
+            "securityKey": "security key response"
+        }
+        assert [call[0] for call in FakeCompositeAuthenticator.calls] == [
+            "security_key_relying_party_id",
+            "security_key_application_id",
+        ]
+
+    metadata["securityKey"]["relyingPartyId"] = "security_key_application_id"
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(side_effects=[FakeU2FError(FakeU2FError.DEVICE_INELIGIBLE)]),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
+
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(side_effects=[FakeU2FError(FakeU2FError.TIMEOUT)]),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
+
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(side_effects=[FakePluginError("plugin error")]),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
+
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(side_effects=[FakeNoDeviceFoundError()]),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        assert challenge.obtain_challenge_input(metadata) is None
+
+    with (
+        mock.patch.object(
+            challenge,
+            "_get_fido2_classes",
+            side_effect=ImportError("fido2"),
+        ),
+        use_fake_pyu2f(side_effects=[FakeU2FError(FakeU2FError.BAD_REQUEST)]),
+        pytest.warns(DeprecationWarning, match="pyu2f is deprecated"),
+    ):
+        with pytest.raises(FakeU2FError):
+            challenge.obtain_challenge_input(metadata)
+
     real_import = __import__
 
     def block_fido2(name, *args, **kwargs):
@@ -296,8 +467,24 @@ def test_security_key():
     assert block_fido2("json") is json
 
     with mock.patch("builtins.__import__", side_effect=block_fido2):
-        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+        with pytest.raises(ImportError):
             challenge._get_fido2_classes()
+
+    def block_security_key_imports(name, *args, **kwargs):
+        if (
+            name == "fido2"
+            or name.startswith("fido2.")
+            or name == "pyu2f"
+            or name.startswith("pyu2f.")
+        ):
+            raise ImportError(name)
+        return real_import(name, *args, **kwargs)
+
+    assert block_security_key_imports("json") is json
+
+    with mock.patch("builtins.__import__", side_effect=block_security_key_imports):
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
         assert excinfo.match(r"fido2 dependency is required")
 
 
