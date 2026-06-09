@@ -16,18 +16,20 @@
 """Interfaces for credentials."""
 
 import abc
-from enum import Enum
 import logging
 import os
-from typing import Dict, List, Optional, TYPE_CHECKING
-from urllib.parse import urlparse
 import warnings
+from enum import Enum
+from typing import TYPE_CHECKING, Dict, List, Optional
+from urllib.parse import urlparse
 
-
-from google.auth import _helpers, environment_vars
-from google.auth import _regional_access_boundary_utils
-from google.auth import exceptions
-from google.auth import metrics
+from google.auth import (
+    _helpers,
+    _regional_access_boundary_utils,
+    environment_vars,
+    exceptions,
+    metrics,
+)
 from google.auth._credentials_base import _BaseCredentials
 from google.auth._refresh_worker import RefreshThreadManager
 
@@ -533,6 +535,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
         """
         import importlib
+
         _client = importlib.import_module("google.oauth2._client")
 
         url = self._build_regional_access_boundary_lookup_url(request=request)
@@ -548,7 +551,8 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
 
     @abc.abstractmethod
     def _build_regional_access_boundary_lookup_url(
-        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+        self,
+        request: "Optional[google.auth.transport.Request]" = None,  # noqa: F821
     ):
         """
         Builds and returns the URL for the Regional Access Boundary lookup API.

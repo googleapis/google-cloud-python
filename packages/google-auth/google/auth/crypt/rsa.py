@@ -19,12 +19,10 @@ This file provides a shared wrapper, that defers to _python_rsa or _cryptography
 for implmentations using different third party libraries
 """
 
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 
 from google.auth import _helpers
-from google.auth.crypt import _cryptography_rsa
-from google.auth.crypt import base
+from google.auth.crypt import _cryptography_rsa, base
 
 RSA_KEY_MODULE_PREFIX = "rsa.key"
 
@@ -94,7 +92,9 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     def __init__(self, private_key, key_id=None):
         if isinstance(private_key, RSAPrivateKey):
             impl_lib = _cryptography_rsa
-        elif private_key is None or private_key.__class__.__module__.startswith(RSA_KEY_MODULE_PREFIX):
+        elif private_key is None or private_key.__class__.__module__.startswith(
+            RSA_KEY_MODULE_PREFIX
+        ):
             from google.auth.crypt import _python_rsa
 
             impl_lib = _python_rsa

@@ -16,8 +16,8 @@ import os
 import re
 from unittest import mock
 
-from OpenSSL import crypto
 import pytest  # type: ignore
+from OpenSSL import crypto
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -795,6 +795,7 @@ class TestCheckUseClientCert(object):
     @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "garbage"})
     def test_env_var_explicit_garbage(self):
         import pytest
+
         with pytest.raises(ValueError, match="must be either `true` or `false`"):
             _mtls_helper.check_use_client_cert()
 

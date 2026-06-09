@@ -16,13 +16,11 @@
 
 import json
 import logging
-from os import environ, getenv, path
 import re
 import subprocess
+from os import environ, getenv, path
 
-from google.auth import _agent_identity_utils
-from google.auth import environment_vars
-from google.auth import exceptions
+from google.auth import _agent_identity_utils, environment_vars, exceptions
 
 CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 
