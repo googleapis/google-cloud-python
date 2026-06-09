@@ -159,8 +159,16 @@ def mypy(session):
         "types-mock",
         "pytest<8.0.0",
     )
-    session.run("mypy",
-        f"--config-file={MYPY_CONFIG_FILE}", "-p", "google", "-p", "tests", "-p", "tests_async")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+        "-p",
+        "tests_async",
+    )
 
 
 @nox.session(python=ALL_PYTHON)
