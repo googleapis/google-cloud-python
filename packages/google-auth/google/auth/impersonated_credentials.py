@@ -27,11 +27,11 @@ service account.
 
 import base64
 import copy
+from datetime import datetime
 import http.client as http_client
 import json
 import logging
-from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
 from google.auth import (
     _exponential_backoff,

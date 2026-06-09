@@ -16,12 +16,12 @@
 """Interfaces for credentials."""
 
 import abc
+from enum import Enum
 import logging
 import os
-import warnings
-from enum import Enum
-from typing import TYPE_CHECKING, Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
 from urllib.parse import urlparse
+import warnings
 
 from google.auth import (
     _helpers,

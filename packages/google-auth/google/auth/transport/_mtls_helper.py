@@ -16,9 +16,9 @@
 
 import json
 import logging
+from os import environ, getenv, path
 import re
 import subprocess
-from os import environ, getenv, path
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
 

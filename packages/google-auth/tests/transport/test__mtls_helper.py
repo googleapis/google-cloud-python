@@ -16,8 +16,8 @@ import os
 import re
 from unittest import mock
 
-import pytest  # type: ignore
 from OpenSSL import crypto
+import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
