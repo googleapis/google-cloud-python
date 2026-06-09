@@ -72,12 +72,12 @@ UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.10": ["tests", "scikit-learn", "anywidget"],
-    "3.11": ["tests", "polars", "scikit-learn", "anywidget"],
+    "3.10": ["tests", "polars", "datafusion", "substrait", "scikit-learn", "anywidget"],
+    "3.11": ["tests", "polars", "datafusion", "substrait", "scikit-learn", "anywidget"],
     # Make sure we leave some versions without "extras" so we know those
     # dependencies are actually optional.
-    "3.13": ["tests", "polars", "scikit-learn", "anywidget"],
-    "3.14": ["tests", "polars", "scikit-learn", "anywidget"],
+    "3.13": ["tests", "polars", "datafusion", "substrait", "scikit-learn", "anywidget"],
+    "3.14": ["tests", "polars", "datafusion", "substrait", "scikit-learn", "anywidget"],
 }
 
 # 3.11 is used by colab.
@@ -106,9 +106,9 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     # Make sure we leave some versions without "extras" so we know those
     # dependencies are actually optional.
     "3.10": ["tests", "scikit-learn", "anywidget"],
-    "3.12": ["tests", "scikit-learn", "polars", "anywidget"],
-    "3.13": ["tests", "polars", "anywidget"],
-    "3.14": ["tests", "polars", "anywidget"],
+    "3.12": ["tests", "scikit-learn", "polars", "datafusion", "substrait", "anywidget"],
+    "3.13": ["tests", "polars", "datafusion", "substrait", "anywidget"],
+    "3.14": ["tests", "polars", "datafusion", "substrait", "anywidget"],
 }
 
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"

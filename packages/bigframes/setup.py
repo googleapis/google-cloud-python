@@ -79,6 +79,8 @@ extras = {
     ],
     # used for local engine
     "polars": ["polars >= 1.21.0"],
+    "datafusion": ["datafusion >= 45.0.0", "substrait >= 0.29"],
+    "substrait": ["substrait >= 0.29"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
     # Packages required for basic development flow.
     "dev": [

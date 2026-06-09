@@ -17,6 +17,18 @@ from typing import Generator
 import google.cloud.bigquery_storage_v1
 import pandas as pd
 import pytest
+
+# Skip the entire engines test directory if required libraries are missing
+try:
+    import datafusion  # noqa: F401
+    import polars  # noqa: F401
+    import substrait  # noqa: F401
+except ImportError as e:
+    pytest.skip(
+        f"Skipping engines tests because dependencies are missing: {e}",
+        allow_module_level=True,
+    )
+
 from google.cloud import bigquery
 
 import bigframes
