@@ -66,7 +66,7 @@ class DataFusionSubstraitConsumer(SubstraitConsumer):
         ctx = datafusion.SessionContext()
 
         for name, table in tables.items():
-            df = ctx.from_arrow_table(table)
+            df = ctx.from_arrow(table)
             ctx.register_table(name, df)
 
         import datafusion.substrait
