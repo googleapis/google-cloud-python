@@ -166,9 +166,9 @@ async def run_benchmark():
     grpc_client = AsyncGrpcClient()
 
     print(f"Benchmarking MRD Reads on gs://{args.bucket}/checksum_benchmarking_<size>_<random> with {args.iterations} iterations:")
-    print("-" * 150)
-    print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput':<15} | {'% Chk-Disabled Change':<22}")
-    print("-" * 150)
+    print("-" * 161)
+    print(f"{'Size (String)':<15} | {'Checksum':<10} | {'Size (Bytes)':<12} | {'Min':<12} | {'Max':<12} | {'Mean':<12} | {'Median':<12} | {'Avg Throughput (\u00b1 StdDev)':<26} | {'% Chk-Disabled Change':<22}")
+    print("-" * 161)
 
     for size_str, size_bytes in sizes_to_test:
         enabled_throughput_full = None
@@ -254,13 +254,16 @@ async def run_benchmark():
 
                 # Reporting for Full
                 if not durations_full:
-                    print(f"{f'{size_str} (Full)':<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
+                    print(f"{f'{size_str} (Full)':<15} | {chk_label:<10} | {size_bytes:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<26} | {'N/A':<22}")
                 else:
                     min_time = min(durations_full)
                     max_time = max(durations_full)
                     mean_time = statistics.mean(durations_full)
                     median_time = statistics.median(durations_full)
+                    throughputs = [(size_bytes / (1024 * 1024)) / d for d in durations_full]
                     avg_throughput = (size_bytes / (1024 * 1024)) / mean_time
+                    std_dev = statistics.stdev(throughputs) if len(throughputs) >= 2 else 0.0
+                    throughput_str = f"{avg_throughput:.2f} \u00b1 {std_dev:.2f} MiB/s"
 
                     percent_diff_str = ""
                     if enable_chk:
@@ -277,20 +280,23 @@ async def run_benchmark():
                         f"{f'{size_str} (Full)':<15} | {chk_label:<10} | {size_bytes:<12} | "
                         f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
                         f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
-                        f"{avg_throughput:.2f} MiB/s | "
+                        f"{throughput_str:<26} | "
                         f"{percent_diff_str:<22}"
                     )
 
                 # Reporting for Full-1
                 if size_bytes > 1 and enable_chk:
                     if not durations_minus_1:
-                        print(f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<15} | {'N/A':<22}")
+                        print(f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'FAILED':<12} | {'N/A':<26} | {'N/A':<22}")
                     else:
                         min_time = min(durations_minus_1)
                         max_time = max(durations_minus_1)
                         mean_time = statistics.mean(durations_minus_1)
                         median_time = statistics.median(durations_minus_1)
+                        throughputs = [((size_bytes - 1) / (1024 * 1024)) / d for d in durations_minus_1]
                         avg_throughput = ((size_bytes - 1) / (1024 * 1024)) / mean_time
+                        std_dev = statistics.stdev(throughputs) if len(throughputs) >= 2 else 0.0
+                        throughput_str = f"{avg_throughput:.2f} \u00b1 {std_dev:.2f} MiB/s"
 
                         percent_diff_str = ""
                         if enable_chk:
@@ -311,11 +317,11 @@ async def run_benchmark():
                             f"{f'{size_str} (Full-1)':<15} | {chk_label:<10} | {size_bytes - 1:<12} | "
                             f"{format_time(min_time):<12} | {format_time(max_time):<12} | "
                             f"{format_time(mean_time):<12} | {format_time(median_time):<12} | "
-                            f"{avg_throughput:.2f} MiB/s | "
+                            f"{throughput_str:<26} | "
                             f"{percent_diff_str:<22}"
                         )
 
-                print("-" * 150)
+                print("-" * 161)
             finally:
                 try:
                     logging.info(f"Cleaning up object gs://{args.bucket}/{object_name}...")
