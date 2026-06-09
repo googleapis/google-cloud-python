@@ -30,8 +30,14 @@ def mock_executor():
     bqstoragereadclient = mock.Mock()
     loader = mock.Mock()
     publisher = mock.Mock()
+    function_manager = mock.Mock()
     return DualCompilerProxyExecutor(
-        bqclient, storage_manager, bqstoragereadclient, loader, publisher=publisher
+        bqclient,
+        storage_manager,
+        bqstoragereadclient,
+        loader,
+        publisher=publisher,
+        function_manager=function_manager,
     )
 
 

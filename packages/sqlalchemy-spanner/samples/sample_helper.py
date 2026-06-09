@@ -20,12 +20,11 @@ from google.api_core.exceptions import AlreadyExists
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.database import Database
+from model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.dialects import registry
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_for_logs
-
-from model import Base
 
 
 def run_sample(sample_method: Callable):

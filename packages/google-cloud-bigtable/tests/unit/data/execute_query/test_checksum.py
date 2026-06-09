@@ -11,11 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import sys
 import warnings
 from unittest import mock
-
-import pytest
 
 with warnings.catch_warnings(record=True) as suppressed_warning:
     warnings.warn("Supressed warning", RuntimeWarning)
@@ -44,10 +41,6 @@ def test_import_warning_is_rewritten():
                 assert second_call_warning == []
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 9) or sys.version_info > (3, 12),
-    reason="google_crc32c currently uses pure python for versions not between 3.9 & 3.12",
-)
 def test_no_warning():
     with warnings.catch_warnings(record=True) as first_call_warning:
         from google.cloud.bigtable.data.execute_query._checksum import _CRC32C

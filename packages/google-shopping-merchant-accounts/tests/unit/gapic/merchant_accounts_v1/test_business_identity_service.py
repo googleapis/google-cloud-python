@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -105,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1376,8 +1392,8 @@ def test_business_identity_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        businessidentity.GetBusinessIdentityRequest,
-        dict,
+        businessidentity.GetBusinessIdentityRequest(),
+        {},
     ],
 )
 def test_get_business_identity(request_type, transport: str = "grpc"):
@@ -1388,7 +1404,7 @@ def test_get_business_identity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1441,9 +1457,10 @@ def test_get_business_identity_non_empty_request_with_auto_populated_field():
         client.get_business_identity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == businessidentity.GetBusinessIdentityRequest(
+        request_msg = businessidentity.GetBusinessIdentityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_business_identity_use_cached_wrapped_rpc():
@@ -1529,9 +1546,15 @@ async def test_get_business_identity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        businessidentity.GetBusinessIdentityRequest(),
+        {},
+    ],
+)
 async def test_get_business_identity_async(
-    transport: str = "grpc_asyncio",
-    request_type=businessidentity.GetBusinessIdentityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessIdentityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1540,7 +1563,7 @@ async def test_get_business_identity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1568,11 +1591,6 @@ async def test_get_business_identity_async(
         response.promotions_consent
         == businessidentity.BusinessIdentity.PromotionsConsent.PROMOTIONS_CONSENT_GIVEN
     )
-
-
-@pytest.mark.asyncio
-async def test_get_business_identity_async_from_dict():
-    await test_get_business_identity_async(request_type=dict)
 
 
 def test_get_business_identity_field_headers():
@@ -1729,8 +1747,8 @@ async def test_get_business_identity_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        businessidentity.UpdateBusinessIdentityRequest,
-        dict,
+        businessidentity.UpdateBusinessIdentityRequest(),
+        {},
     ],
 )
 def test_update_business_identity(request_type, transport: str = "grpc"):
@@ -1741,7 +1759,7 @@ def test_update_business_identity(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1792,7 +1810,8 @@ def test_update_business_identity_non_empty_request_with_auto_populated_field():
         client.update_business_identity(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == businessidentity.UpdateBusinessIdentityRequest()
+        request_msg = businessidentity.UpdateBusinessIdentityRequest()
+        assert args[0] == request_msg
 
 
 def test_update_business_identity_use_cached_wrapped_rpc():
@@ -1878,9 +1897,15 @@ async def test_update_business_identity_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        businessidentity.UpdateBusinessIdentityRequest(),
+        {},
+    ],
+)
 async def test_update_business_identity_async(
-    transport: str = "grpc_asyncio",
-    request_type=businessidentity.UpdateBusinessIdentityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BusinessIdentityServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1889,7 +1914,7 @@ async def test_update_business_identity_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1917,11 +1942,6 @@ async def test_update_business_identity_async(
         response.promotions_consent
         == businessidentity.BusinessIdentity.PromotionsConsent.PROMOTIONS_CONSENT_GIVEN
     )
-
-
-@pytest.mark.asyncio
-async def test_update_business_identity_async_from_dict():
-    await test_update_business_identity_async(request_type=dict)
 
 
 def test_update_business_identity_field_headers():
@@ -2578,7 +2598,6 @@ def test_get_business_identity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.GetBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 
@@ -2601,7 +2620,6 @@ def test_update_business_identity_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.UpdateBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 
@@ -2645,7 +2663,6 @@ async def test_get_business_identity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.GetBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 
@@ -2675,7 +2692,6 @@ async def test_update_business_identity_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.UpdateBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 
@@ -3069,7 +3085,6 @@ def test_get_business_identity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.GetBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 
@@ -3091,7 +3106,6 @@ def test_update_business_identity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = businessidentity.UpdateBusinessIdentityRequest()
-
         assert args[0] == request_msg
 
 

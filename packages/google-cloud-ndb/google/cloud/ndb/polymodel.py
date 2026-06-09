@@ -31,7 +31,6 @@ of Model.
 
 from google.cloud.ndb import model
 
-
 __all__ = ["PolyModel"]
 
 _CLASS_KEY_PROPERTY = "class"

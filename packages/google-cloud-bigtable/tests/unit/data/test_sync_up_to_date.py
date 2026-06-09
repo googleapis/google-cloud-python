@@ -20,9 +20,6 @@ from difflib import unified_diff
 
 import pytest
 
-if sys.version_info < (3, 9):
-    pytest.skip("ast.unparse is only available in 3.9+", allow_module_level=True)
-
 # add cross_sync to path
 test_dir_name = os.path.dirname(__file__)
 repo_root = os.path.join(test_dir_name, "..", "..", "..")

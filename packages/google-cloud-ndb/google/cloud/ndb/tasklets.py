@@ -72,12 +72,11 @@ Calling a tasklet automatically schedules it with the event loop::
         eventloop.run()  # Run until no tasklets left to do
         f.done()  # Returns True
 """
+
 import functools
 import types
 
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _remote
+from google.cloud.ndb import _eventloop, _remote, exceptions
 
 __all__ = [
     "add_flow_exception",

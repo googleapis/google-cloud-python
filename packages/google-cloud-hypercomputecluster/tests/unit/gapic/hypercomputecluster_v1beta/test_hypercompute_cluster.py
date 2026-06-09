@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -118,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1383,8 +1399,8 @@ def test_hypercompute_cluster_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        hypercompute_cluster.ListClustersRequest,
-        dict,
+        hypercompute_cluster.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -1395,7 +1411,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1444,12 +1460,13 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hypercompute_cluster.ListClustersRequest(
+        request_msg = hypercompute_cluster.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -1530,10 +1547,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=hypercompute_cluster.ListClustersRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hypercompute_cluster.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = HypercomputeClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1541,7 +1562,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1564,11 +1585,6 @@ async def test_list_clusters_async(
     assert isinstance(response, pagers.ListClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -1907,8 +1923,8 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hypercompute_cluster.GetClusterRequest,
-        dict,
+        hypercompute_cluster.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -1919,7 +1935,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -1967,9 +1983,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hypercompute_cluster.GetClusterRequest(
+        request_msg = hypercompute_cluster.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -2050,9 +2067,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio", request_type=hypercompute_cluster.GetClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hypercompute_cluster.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = HypercomputeClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2060,7 +2082,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -2085,11 +2107,6 @@ async def test_get_cluster_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.reconciling is True
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -2238,8 +2255,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hypercompute_cluster.CreateClusterRequest,
-        dict,
+        hypercompute_cluster.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -2250,7 +2267,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2292,10 +2309,11 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hypercompute_cluster.CreateClusterRequest(
+        request_msg = hypercompute_cluster.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -2386,10 +2404,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=hypercompute_cluster.CreateClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hypercompute_cluster.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = HypercomputeClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2397,7 +2419,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2415,11 +2437,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -2588,8 +2605,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hypercompute_cluster.UpdateClusterRequest,
-        dict,
+        hypercompute_cluster.UpdateClusterRequest(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -2600,7 +2617,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2639,7 +2656,8 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hypercompute_cluster.UpdateClusterRequest()
+        request_msg = hypercompute_cluster.UpdateClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -2730,10 +2748,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=hypercompute_cluster.UpdateClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hypercompute_cluster.UpdateClusterRequest(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = HypercomputeClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2741,7 +2763,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2759,11 +2781,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -2922,8 +2939,8 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        hypercompute_cluster.DeleteClusterRequest,
-        dict,
+        hypercompute_cluster.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -2934,7 +2951,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -2975,9 +2992,10 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == hypercompute_cluster.DeleteClusterRequest(
+        request_msg = hypercompute_cluster.DeleteClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -3068,10 +3086,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=hypercompute_cluster.DeleteClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hypercompute_cluster.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = HypercomputeClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3079,7 +3101,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -3097,11 +3119,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -4395,7 +4412,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -4416,7 +4432,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4437,7 +4452,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4458,7 +4472,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4479,7 +4492,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4521,7 +4533,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -4550,7 +4561,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4575,7 +4585,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4600,7 +4609,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -4625,7 +4633,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -5940,7 +5947,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -5960,7 +5966,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -5980,7 +5985,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6000,7 +6004,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -6020,7 +6023,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hypercompute_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 

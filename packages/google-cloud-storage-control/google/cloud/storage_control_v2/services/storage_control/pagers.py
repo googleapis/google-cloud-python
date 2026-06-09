@@ -507,3 +507,485 @@ class ListAnywhereCachesAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListIntelligenceFindingsPager:
+    """A pager for iterating through ``list_intelligence_findings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``intelligence_findings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListIntelligenceFindings`` requests and continue to iterate
+    through the ``intelligence_findings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., storage_control.ListIntelligenceFindingsResponse],
+        request: storage_control.ListIntelligenceFindingsRequest,
+        response: storage_control.ListIntelligenceFindingsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.ListIntelligenceFindingsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.ListIntelligenceFindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[storage_control.ListIntelligenceFindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[storage_control.IntelligenceFinding]:
+        for page in self.pages:
+            yield from page.intelligence_findings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListIntelligenceFindingsAsyncPager:
+    """A pager for iterating through ``list_intelligence_findings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``intelligence_findings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListIntelligenceFindings`` requests and continue to iterate
+    through the ``intelligence_findings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[storage_control.ListIntelligenceFindingsResponse]
+        ],
+        request: storage_control.ListIntelligenceFindingsRequest,
+        response: storage_control.ListIntelligenceFindingsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.ListIntelligenceFindingsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.ListIntelligenceFindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.ListIntelligenceFindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[storage_control.ListIntelligenceFindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[storage_control.IntelligenceFinding]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.intelligence_findings:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SummarizeIntelligenceFindingsPager:
+    """A pager for iterating through ``summarize_intelligence_findings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``finding_summaries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``SummarizeIntelligenceFindings`` requests and continue to iterate
+    through the ``finding_summaries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., storage_control.SummarizeIntelligenceFindingsResponse],
+        request: storage_control.SummarizeIntelligenceFindingsRequest,
+        response: storage_control.SummarizeIntelligenceFindingsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.SummarizeIntelligenceFindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[storage_control.SummarizeIntelligenceFindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[storage_control.FindingSummary]:
+        for page in self.pages:
+            yield from page.finding_summaries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SummarizeIntelligenceFindingsAsyncPager:
+    """A pager for iterating through ``summarize_intelligence_findings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``finding_summaries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``SummarizeIntelligenceFindings`` requests and continue to iterate
+    through the ``finding_summaries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[storage_control.SummarizeIntelligenceFindingsResponse]
+        ],
+        request: storage_control.SummarizeIntelligenceFindingsRequest,
+        response: storage_control.SummarizeIntelligenceFindingsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.SummarizeIntelligenceFindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[storage_control.SummarizeIntelligenceFindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[storage_control.FindingSummary]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.finding_summaries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListIntelligenceFindingRevisionsPager:
+    """A pager for iterating through ``list_intelligence_finding_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``intelligence_finding_revisions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListIntelligenceFindingRevisions`` requests and continue to iterate
+    through the ``intelligence_finding_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., storage_control.ListIntelligenceFindingRevisionsResponse],
+        request: storage_control.ListIntelligenceFindingRevisionsRequest,
+        response: storage_control.ListIntelligenceFindingRevisionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.ListIntelligenceFindingRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[storage_control.ListIntelligenceFindingRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[storage_control.IntelligenceFindingRevision]:
+        for page in self.pages:
+            yield from page.intelligence_finding_revisions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListIntelligenceFindingRevisionsAsyncPager:
+    """A pager for iterating through ``list_intelligence_finding_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``intelligence_finding_revisions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListIntelligenceFindingRevisions`` requests and continue to iterate
+    through the ``intelligence_finding_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[storage_control.ListIntelligenceFindingRevisionsResponse]
+        ],
+        request: storage_control.ListIntelligenceFindingRevisionsRequest,
+        response: storage_control.ListIntelligenceFindingRevisionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsRequest):
+                The initial request object.
+            response (google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = storage_control.ListIntelligenceFindingRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[storage_control.ListIntelligenceFindingRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[storage_control.IntelligenceFindingRevision]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.intelligence_finding_revisions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

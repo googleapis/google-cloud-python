@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1352,8 +1368,8 @@ def test_synonym_set_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        synonymset_service_request.CreateSynonymSetRequest,
-        dict,
+        synonymset_service_request.CreateSynonymSetRequest(),
+        {},
     ],
 )
 def test_create_synonym_set(request_type, transport: str = "grpc"):
@@ -1364,7 +1380,7 @@ def test_create_synonym_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1414,9 +1430,10 @@ def test_create_synonym_set_non_empty_request_with_auto_populated_field():
         client.create_synonym_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == synonymset_service_request.CreateSynonymSetRequest(
+        request_msg = synonymset_service_request.CreateSynonymSetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_synonym_set_use_cached_wrapped_rpc():
@@ -1501,10 +1518,14 @@ async def test_create_synonym_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_synonym_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=synonymset_service_request.CreateSynonymSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.CreateSynonymSetRequest(),
+        {},
+    ],
+)
+async def test_create_synonym_set_async(request_type, transport: str = "grpc_asyncio"):
     client = SynonymSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1512,7 +1533,7 @@ async def test_create_synonym_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1537,11 +1558,6 @@ async def test_create_synonym_set_async(
     assert isinstance(response, synonymset.SynonymSet)
     assert response.name == "name_value"
     assert response.context == "context_value"
-
-
-@pytest.mark.asyncio
-async def test_create_synonym_set_async_from_dict():
-    await test_create_synonym_set_async(request_type=dict)
 
 
 def test_create_synonym_set_field_headers():
@@ -1708,8 +1724,8 @@ async def test_create_synonym_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        synonymset_service_request.GetSynonymSetRequest,
-        dict,
+        synonymset_service_request.GetSynonymSetRequest(),
+        {},
     ],
 )
 def test_get_synonym_set(request_type, transport: str = "grpc"):
@@ -1720,7 +1736,7 @@ def test_get_synonym_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_synonym_set), "__call__") as call:
@@ -1766,9 +1782,10 @@ def test_get_synonym_set_non_empty_request_with_auto_populated_field():
         client.get_synonym_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == synonymset_service_request.GetSynonymSetRequest(
+        request_msg = synonymset_service_request.GetSynonymSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_synonym_set_use_cached_wrapped_rpc():
@@ -1849,10 +1866,14 @@ async def test_get_synonym_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_synonym_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=synonymset_service_request.GetSynonymSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.GetSynonymSetRequest(),
+        {},
+    ],
+)
+async def test_get_synonym_set_async(request_type, transport: str = "grpc_asyncio"):
     client = SynonymSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1860,7 +1881,7 @@ async def test_get_synonym_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_synonym_set), "__call__") as call:
@@ -1883,11 +1904,6 @@ async def test_get_synonym_set_async(
     assert isinstance(response, synonymset.SynonymSet)
     assert response.name == "name_value"
     assert response.context == "context_value"
-
-
-@pytest.mark.asyncio
-async def test_get_synonym_set_async_from_dict():
-    await test_get_synonym_set_async(request_type=dict)
 
 
 def test_get_synonym_set_field_headers():
@@ -2036,8 +2052,8 @@ async def test_get_synonym_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        synonymset_service_request.UpdateSynonymSetRequest,
-        dict,
+        synonymset_service_request.UpdateSynonymSetRequest(),
+        {},
     ],
 )
 def test_update_synonym_set(request_type, transport: str = "grpc"):
@@ -2048,7 +2064,7 @@ def test_update_synonym_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2098,9 +2114,10 @@ def test_update_synonym_set_non_empty_request_with_auto_populated_field():
         client.update_synonym_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == synonymset_service_request.UpdateSynonymSetRequest(
+        request_msg = synonymset_service_request.UpdateSynonymSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_synonym_set_use_cached_wrapped_rpc():
@@ -2185,10 +2202,14 @@ async def test_update_synonym_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_synonym_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=synonymset_service_request.UpdateSynonymSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.UpdateSynonymSetRequest(),
+        {},
+    ],
+)
+async def test_update_synonym_set_async(request_type, transport: str = "grpc_asyncio"):
     client = SynonymSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2196,7 +2217,7 @@ async def test_update_synonym_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2221,11 +2242,6 @@ async def test_update_synonym_set_async(
     assert isinstance(response, synonymset.SynonymSet)
     assert response.name == "name_value"
     assert response.context == "context_value"
-
-
-@pytest.mark.asyncio
-async def test_update_synonym_set_async_from_dict():
-    await test_update_synonym_set_async(request_type=dict)
 
 
 def test_update_synonym_set_field_headers():
@@ -2392,8 +2408,8 @@ async def test_update_synonym_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        synonymset_service_request.DeleteSynonymSetRequest,
-        dict,
+        synonymset_service_request.DeleteSynonymSetRequest(),
+        {},
     ],
 )
 def test_delete_synonym_set(request_type, transport: str = "grpc"):
@@ -2404,7 +2420,7 @@ def test_delete_synonym_set(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2449,9 +2465,10 @@ def test_delete_synonym_set_non_empty_request_with_auto_populated_field():
         client.delete_synonym_set(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == synonymset_service_request.DeleteSynonymSetRequest(
+        request_msg = synonymset_service_request.DeleteSynonymSetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_synonym_set_use_cached_wrapped_rpc():
@@ -2536,10 +2553,14 @@ async def test_delete_synonym_set_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_synonym_set_async(
-    transport: str = "grpc_asyncio",
-    request_type=synonymset_service_request.DeleteSynonymSetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.DeleteSynonymSetRequest(),
+        {},
+    ],
+)
+async def test_delete_synonym_set_async(request_type, transport: str = "grpc_asyncio"):
     client = SynonymSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2547,7 +2568,7 @@ async def test_delete_synonym_set_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2565,11 +2586,6 @@ async def test_delete_synonym_set_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_synonym_set_async_from_dict():
-    await test_delete_synonym_set_async(request_type=dict)
 
 
 def test_delete_synonym_set_field_headers():
@@ -2722,8 +2738,8 @@ async def test_delete_synonym_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        synonymset_service_request.ListSynonymSetsRequest,
-        dict,
+        synonymset_service_request.ListSynonymSetsRequest(),
+        {},
     ],
 )
 def test_list_synonym_sets(request_type, transport: str = "grpc"):
@@ -2734,7 +2750,7 @@ def test_list_synonym_sets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2783,10 +2799,11 @@ def test_list_synonym_sets_non_empty_request_with_auto_populated_field():
         client.list_synonym_sets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == synonymset_service_request.ListSynonymSetsRequest(
+        request_msg = synonymset_service_request.ListSynonymSetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_synonym_sets_use_cached_wrapped_rpc():
@@ -2869,10 +2886,14 @@ async def test_list_synonym_sets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_synonym_sets_async(
-    transport: str = "grpc_asyncio",
-    request_type=synonymset_service_request.ListSynonymSetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        synonymset_service_request.ListSynonymSetsRequest(),
+        {},
+    ],
+)
+async def test_list_synonym_sets_async(request_type, transport: str = "grpc_asyncio"):
     client = SynonymSetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2880,7 +2901,7 @@ async def test_list_synonym_sets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2903,11 +2924,6 @@ async def test_list_synonym_sets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSynonymSetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_synonym_sets_async_from_dict():
-    await test_list_synonym_sets_async(request_type=dict)
 
 
 def test_list_synonym_sets_field_headers():
@@ -4394,7 +4410,6 @@ def test_create_synonym_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.CreateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4415,7 +4430,6 @@ def test_get_synonym_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.GetSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4438,7 +4452,6 @@ def test_update_synonym_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.UpdateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4461,7 +4474,6 @@ def test_delete_synonym_set_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.DeleteSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4484,7 +4496,6 @@ def test_list_synonym_sets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.ListSynonymSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4528,7 +4539,6 @@ async def test_create_synonym_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.CreateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4556,7 +4566,6 @@ async def test_get_synonym_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.GetSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4586,7 +4595,6 @@ async def test_update_synonym_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.UpdateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4611,7 +4619,6 @@ async def test_delete_synonym_set_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.DeleteSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -4640,7 +4647,6 @@ async def test_list_synonym_sets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.ListSynonymSetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5534,7 +5540,6 @@ def test_create_synonym_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.CreateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5554,7 +5559,6 @@ def test_get_synonym_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.GetSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5576,7 +5580,6 @@ def test_update_synonym_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.UpdateSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5598,7 +5601,6 @@ def test_delete_synonym_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.DeleteSynonymSetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5620,7 +5622,6 @@ def test_list_synonym_sets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = synonymset_service_request.ListSynonymSetsRequest()
-
         assert args[0] == request_msg
 
 

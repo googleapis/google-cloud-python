@@ -43,25 +43,19 @@ _GCF_FUNCTION_NAME_SEPERATOR = "-"
 _pickle_protocol_version = 4
 
 
-def get_remote_function_locations(bq_location):
-    """Get BQ location and cloud functions region given a BQ client."""
-    # TODO(shobs, b/274647164): Find the best way to determine default location.
-    # For now let's assume that if no BQ location is set in the client then it
-    # defaults to US multi region
-    bq_location = bq_location.lower() if bq_location else "us"
-
-    # Cloud function should be in the same region as the bigquery remote function
-    cloud_function_region = bq_location
+def gcf_location_from_bq_location(bq_location: str) -> str:
+    """Get the cloud functions region that corresponds to a BQ location."""
+    bq_location = bq_location.lower()
 
     # BigQuery has multi region but cloud functions does not.
     # Any region in the multi region that supports cloud functions should work
     # https://cloud.google.com/functions/docs/locations
     if bq_location == "us":
-        cloud_function_region = "us-central1"
+        return "us-central1"
     elif bq_location == "eu":
-        cloud_function_region = "europe-west1"
+        return "europe-west1"
 
-    return bq_location, cloud_function_region
+    return bq_location
 
 
 def _package_existed(package_requirements: list[str], package: str) -> bool:
@@ -164,7 +158,7 @@ def clean_up_by_session_id(
 
     # Now clean up the cloud functions
     bq_location = bqclient.get_dataset(dataset).location
-    bq_location, gcf_location = get_remote_function_locations(bq_location)
+    gcf_location = gcf_location_from_bq_location(bq_location)
     parent_path = gcfclient.common_location_path(
         project=dataset.project, location=gcf_location
     )

@@ -306,8 +306,9 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url(request=mock_request)
 
         mock_get_service_account_info.assert_called_once_with(mock_request, "default")
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        assert url == expected_url
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_build_regional_access_boundary_lookup_url_http_client_request(
@@ -323,8 +324,9 @@ class TestCredentials(object):
 
         url = creds._build_regional_access_boundary_lookup_url(request=req)
 
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        assert url == expected_url
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
@@ -332,9 +334,14 @@ class TestCredentials(object):
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
     )
-    def test_build_regional_access_boundary_lookup_url_explicit_email(
-        self, mock_get_universe_domain, mock_get_service_account_info
+    def test_build_regional_access_boundary_lookup_url_explicit_email_standard(
+        self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
     ):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return False
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         # Test with an explicit service account email, no resolution needed
         creds = self.credentials
         creds._service_account_email = FAKE_SERVICE_ACCOUNT_EMAIL
@@ -343,9 +350,33 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
 
         mock_get_service_account_info.assert_not_called()
-        assert url == (
-            "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
-        )
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        assert url == expected_url
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
+    )
+    def test_build_regional_access_boundary_lookup_url_explicit_email_mtls(
+        self, mock_get_universe_domain, mock_get_service_account_info, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        # Mock check_use_client_cert to return True
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        # Test with an explicit service account email, no resolution needed
+        creds = self.credentials
+        creds._service_account_email = FAKE_SERVICE_ACCOUNT_EMAIL
+        mock_get_universe_domain.return_value = "googleapis.com"
+
+        url = creds._build_regional_access_boundary_lookup_url()
+
+        mock_get_service_account_info.assert_not_called()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        assert url == expected_url
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_universe_domain", autospec=True
@@ -378,6 +409,68 @@ class TestCredentials(object):
 
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
+
+    @mock.patch(
+        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
+        return_value=True,
+    )
+    def test_is_regional_access_boundary_lookup_required(self, mock_enabled):
+        creds = self.credentials
+        creds._universe_domain_cached = True
+
+        # Valid email formats should pass.
+        creds._service_account_email = "my-sa@my-project.iam.gserviceaccount.com"
+        assert creds._is_regional_access_boundary_lookup_required() is True
+
+        # GCE default email placeholder should pass to allow dynamic resolution.
+        creds._service_account_email = "default"
+        assert creds._is_regional_access_boundary_lookup_required() is True
+
+        # Lookup for non-email based identities should be skipped.
+        creds._service_account_email = "my-gcp-project.svc.id.goog"
+        assert creds._is_regional_access_boundary_lookup_required() is False
+
+        creds._service_account_email = "principal://iam.googleapis.com/projects/1234567890/locations/global/workloadIdentityPools/my-project.svc.id.goog/subject/ns/my-namespace/sa/my-kubernetes-sa"
+        assert creds._is_regional_access_boundary_lookup_required() is False
+
+    def test_build_regional_access_boundary_lookup_url_with_invalid_email(self):
+        creds = self.credentials
+        creds._universe_domain_cached = True
+
+        # Set a non-email identity.
+        creds._service_account_email = "my-gcp-project.svc.id.goog"
+        url = creds._build_regional_access_boundary_lookup_url()
+        assert url is None
+
+    @mock.patch(
+        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
+        return_value=True,
+    )
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    def test_regional_access_boundary_disabled_state_transitions(
+        self, mock_get_service_account_info, mock_enabled
+    ):
+        mock_get_service_account_info.return_value = {
+            "email": "spiffe://trust-domain/ns/ns/sa/sa",
+            "scopes": ["one", "two"],
+        }
+        creds = self.credentials
+        creds._universe_domain_cached = True
+        creds._service_account_email = "default"
+
+        # Initially, GCE 'default' placeholder passes the pre-check
+        assert not creds._rab_disabled
+        assert creds._is_regional_access_boundary_lookup_required() is True
+
+        # Resolving a non-email identity should disable RAB lookup
+        url = creds._build_regional_access_boundary_lookup_url()
+        assert url is None
+        assert creds._rab_disabled is True
+
+        # Subsequent check calls should return False early
+        assert creds._is_regional_access_boundary_lookup_required() is False
 
     @mock.patch("google.auth.compute_engine._metadata.get")
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")

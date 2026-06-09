@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -112,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1317,8 +1333,8 @@ def test_project_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.GetProjectRequest,
-        dict,
+        project_service.GetProjectRequest(),
+        {},
     ],
 )
 def test_get_project(request_type, transport: str = "grpc"):
@@ -1329,7 +1345,7 @@ def test_get_project(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_project), "__call__") as call:
@@ -1377,9 +1393,10 @@ def test_get_project_non_empty_request_with_auto_populated_field():
         client.get_project(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.GetProjectRequest(
+        request_msg = project_service.GetProjectRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_project_use_cached_wrapped_rpc():
@@ -1460,9 +1477,14 @@ async def test_get_project_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_project_async(
-    transport: str = "grpc_asyncio", request_type=project_service.GetProjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.GetProjectRequest(),
+        {},
+    ],
+)
+async def test_get_project_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1470,7 +1492,7 @@ async def test_get_project_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_project), "__call__") as call:
@@ -1495,11 +1517,6 @@ async def test_get_project_async(
     assert response.enrolled_solutions == [
         common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_project_async_from_dict():
-    await test_get_project_async(request_type=dict)
 
 
 def test_get_project_field_headers():
@@ -1644,8 +1661,8 @@ async def test_get_project_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.AcceptTermsRequest,
-        dict,
+        project_service.AcceptTermsRequest(),
+        {},
     ],
 )
 def test_accept_terms(request_type, transport: str = "grpc"):
@@ -1656,7 +1673,7 @@ def test_accept_terms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
@@ -1704,9 +1721,10 @@ def test_accept_terms_non_empty_request_with_auto_populated_field():
         client.accept_terms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.AcceptTermsRequest(
+        request_msg = project_service.AcceptTermsRequest(
             project="project_value",
         )
+        assert args[0] == request_msg
 
 
 def test_accept_terms_use_cached_wrapped_rpc():
@@ -1787,9 +1805,14 @@ async def test_accept_terms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_accept_terms_async(
-    transport: str = "grpc_asyncio", request_type=project_service.AcceptTermsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.AcceptTermsRequest(),
+        {},
+    ],
+)
+async def test_accept_terms_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1797,7 +1820,7 @@ async def test_accept_terms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.accept_terms), "__call__") as call:
@@ -1822,11 +1845,6 @@ async def test_accept_terms_async(
     assert response.enrolled_solutions == [
         common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
-
-
-@pytest.mark.asyncio
-async def test_accept_terms_async_from_dict():
-    await test_accept_terms_async(request_type=dict)
 
 
 def test_accept_terms_field_headers():
@@ -1971,8 +1989,8 @@ async def test_accept_terms_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.EnrollSolutionRequest,
-        dict,
+        project_service.EnrollSolutionRequest(),
+        {},
     ],
 )
 def test_enroll_solution(request_type, transport: str = "grpc"):
@@ -1983,7 +2001,7 @@ def test_enroll_solution(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
@@ -2024,9 +2042,10 @@ def test_enroll_solution_non_empty_request_with_auto_populated_field():
         client.enroll_solution(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.EnrollSolutionRequest(
+        request_msg = project_service.EnrollSolutionRequest(
             project="project_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enroll_solution_use_cached_wrapped_rpc():
@@ -2117,9 +2136,14 @@ async def test_enroll_solution_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enroll_solution_async(
-    transport: str = "grpc_asyncio", request_type=project_service.EnrollSolutionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.EnrollSolutionRequest(),
+        {},
+    ],
+)
+async def test_enroll_solution_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2127,7 +2151,7 @@ async def test_enroll_solution_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enroll_solution), "__call__") as call:
@@ -2145,11 +2169,6 @@ async def test_enroll_solution_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_enroll_solution_async_from_dict():
-    await test_enroll_solution_async(request_type=dict)
 
 
 def test_enroll_solution_field_headers():
@@ -2216,8 +2235,8 @@ async def test_enroll_solution_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.ListEnrolledSolutionsRequest,
-        dict,
+        project_service.ListEnrolledSolutionsRequest(),
+        {},
     ],
 )
 def test_list_enrolled_solutions(request_type, transport: str = "grpc"):
@@ -2228,7 +2247,7 @@ def test_list_enrolled_solutions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2278,9 +2297,10 @@ def test_list_enrolled_solutions_non_empty_request_with_auto_populated_field():
         client.list_enrolled_solutions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.ListEnrolledSolutionsRequest(
+        request_msg = project_service.ListEnrolledSolutionsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_enrolled_solutions_use_cached_wrapped_rpc():
@@ -2366,9 +2386,15 @@ async def test_list_enrolled_solutions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.ListEnrolledSolutionsRequest(),
+        {},
+    ],
+)
 async def test_list_enrolled_solutions_async(
-    transport: str = "grpc_asyncio",
-    request_type=project_service.ListEnrolledSolutionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2377,7 +2403,7 @@ async def test_list_enrolled_solutions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2402,11 +2428,6 @@ async def test_list_enrolled_solutions_async(
     assert response.enrolled_solutions == [
         common.SolutionType.SOLUTION_TYPE_RECOMMENDATION
     ]
-
-
-@pytest.mark.asyncio
-async def test_list_enrolled_solutions_async_from_dict():
-    await test_list_enrolled_solutions_async(request_type=dict)
 
 
 def test_list_enrolled_solutions_field_headers():
@@ -2563,8 +2584,8 @@ async def test_list_enrolled_solutions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.GetLoggingConfigRequest,
-        dict,
+        project_service.GetLoggingConfigRequest(),
+        {},
     ],
 )
 def test_get_logging_config(request_type, transport: str = "grpc"):
@@ -2575,7 +2596,7 @@ def test_get_logging_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2623,9 +2644,10 @@ def test_get_logging_config_non_empty_request_with_auto_populated_field():
         client.get_logging_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.GetLoggingConfigRequest(
+        request_msg = project_service.GetLoggingConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_logging_config_use_cached_wrapped_rpc():
@@ -2710,10 +2732,14 @@ async def test_get_logging_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_logging_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=project_service.GetLoggingConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.GetLoggingConfigRequest(),
+        {},
+    ],
+)
+async def test_get_logging_config_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2721,7 +2747,7 @@ async def test_get_logging_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2744,11 +2770,6 @@ async def test_get_logging_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, project.LoggingConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_logging_config_async_from_dict():
-    await test_get_logging_config_async(request_type=dict)
 
 
 def test_get_logging_config_field_headers():
@@ -2905,8 +2926,8 @@ async def test_get_logging_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.UpdateLoggingConfigRequest,
-        dict,
+        project_service.UpdateLoggingConfigRequest(),
+        {},
     ],
 )
 def test_update_logging_config(request_type, transport: str = "grpc"):
@@ -2917,7 +2938,7 @@ def test_update_logging_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2963,7 +2984,8 @@ def test_update_logging_config_non_empty_request_with_auto_populated_field():
         client.update_logging_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.UpdateLoggingConfigRequest()
+        request_msg = project_service.UpdateLoggingConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_logging_config_use_cached_wrapped_rpc():
@@ -3049,9 +3071,15 @@ async def test_update_logging_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.UpdateLoggingConfigRequest(),
+        {},
+    ],
+)
 async def test_update_logging_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=project_service.UpdateLoggingConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3060,7 +3088,7 @@ async def test_update_logging_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3083,11 +3111,6 @@ async def test_update_logging_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, project.LoggingConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_logging_config_async_from_dict():
-    await test_update_logging_config_async(request_type=dict)
 
 
 def test_update_logging_config_field_headers():
@@ -3254,8 +3277,8 @@ async def test_update_logging_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.GetAlertConfigRequest,
-        dict,
+        project_service.GetAlertConfigRequest(),
+        {},
     ],
 )
 def test_get_alert_config(request_type, transport: str = "grpc"):
@@ -3266,7 +3289,7 @@ def test_get_alert_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
@@ -3310,9 +3333,10 @@ def test_get_alert_config_non_empty_request_with_auto_populated_field():
         client.get_alert_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.GetAlertConfigRequest(
+        request_msg = project_service.GetAlertConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_alert_config_use_cached_wrapped_rpc():
@@ -3395,9 +3419,14 @@ async def test_get_alert_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_alert_config_async(
-    transport: str = "grpc_asyncio", request_type=project_service.GetAlertConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.GetAlertConfigRequest(),
+        {},
+    ],
+)
+async def test_get_alert_config_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3405,7 +3434,7 @@ async def test_get_alert_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_alert_config), "__call__") as call:
@@ -3426,11 +3455,6 @@ async def test_get_alert_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, project.AlertConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_alert_config_async_from_dict():
-    await test_get_alert_config_async(request_type=dict)
 
 
 def test_get_alert_config_field_headers():
@@ -3575,8 +3599,8 @@ async def test_get_alert_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        project_service.UpdateAlertConfigRequest,
-        dict,
+        project_service.UpdateAlertConfigRequest(),
+        {},
     ],
 )
 def test_update_alert_config(request_type, transport: str = "grpc"):
@@ -3587,7 +3611,7 @@ def test_update_alert_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3633,7 +3657,8 @@ def test_update_alert_config_non_empty_request_with_auto_populated_field():
         client.update_alert_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == project_service.UpdateAlertConfigRequest()
+        request_msg = project_service.UpdateAlertConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_alert_config_use_cached_wrapped_rpc():
@@ -3718,10 +3743,14 @@ async def test_update_alert_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_alert_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=project_service.UpdateAlertConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        project_service.UpdateAlertConfigRequest(),
+        {},
+    ],
+)
+async def test_update_alert_config_async(request_type, transport: str = "grpc_asyncio"):
     client = ProjectServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3729,7 +3758,7 @@ async def test_update_alert_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3752,11 +3781,6 @@ async def test_update_alert_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, project.AlertConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_alert_config_async_from_dict():
-    await test_update_alert_config_async(request_type=dict)
 
 
 def test_update_alert_config_field_headers():
@@ -5433,7 +5457,6 @@ def test_get_project_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -5454,7 +5477,6 @@ def test_accept_terms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.AcceptTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5475,7 +5497,6 @@ def test_enroll_solution_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.EnrollSolutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5498,7 +5519,6 @@ def test_list_enrolled_solutions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.ListEnrolledSolutionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5521,7 +5541,6 @@ def test_get_logging_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5544,7 +5563,6 @@ def test_update_logging_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5565,7 +5583,6 @@ def test_get_alert_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetAlertConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5588,7 +5605,6 @@ def test_update_alert_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateAlertConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5630,7 +5646,6 @@ async def test_get_project_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -5658,7 +5673,6 @@ async def test_accept_terms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.AcceptTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5683,7 +5697,6 @@ async def test_enroll_solution_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.EnrollSolutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -5712,7 +5725,6 @@ async def test_list_enrolled_solutions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.ListEnrolledSolutionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5741,7 +5753,6 @@ async def test_get_logging_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5770,7 +5781,6 @@ async def test_update_logging_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5797,7 +5807,6 @@ async def test_get_alert_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetAlertConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5826,7 +5835,6 @@ async def test_update_alert_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateAlertConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7199,7 +7207,6 @@ def test_get_project_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetProjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -7219,7 +7226,6 @@ def test_accept_terms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.AcceptTermsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7239,7 +7245,6 @@ def test_enroll_solution_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.EnrollSolutionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7261,7 +7266,6 @@ def test_list_enrolled_solutions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.ListEnrolledSolutionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7283,7 +7287,6 @@ def test_get_logging_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7305,7 +7308,6 @@ def test_update_logging_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateLoggingConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7325,7 +7327,6 @@ def test_get_alert_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.GetAlertConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7347,7 +7348,6 @@ def test_update_alert_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = project_service.UpdateAlertConfigRequest()
-
         assert args[0] == request_msg
 
 

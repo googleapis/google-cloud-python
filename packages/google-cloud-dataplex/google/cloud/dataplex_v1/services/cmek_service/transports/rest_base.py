@@ -425,10 +425,6 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/dataScans/*}:getIamPolicy",
                 },
                 {
@@ -487,6 +483,10 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                     "method": "get",
                     "uri": "/v1/{resource=organizations/*/locations/*/encryptionConfigs/*}:getIamPolicy",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:getIamPolicy",
+                },
             ]
             return http_options
 
@@ -526,11 +526,6 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/lakes/*/tasks/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -608,6 +603,11 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                     "uri": "/v1/{resource=projects/*/locations/*/dataProducts/*}:setIamPolicy",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -652,11 +652,6 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/lakes/*/tasks/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
@@ -732,6 +727,11 @@ class _BaseCmekServiceRestTransport(CmekServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/dataProducts/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:testIamPermissions",
                     "body": "*",
                 },
             ]

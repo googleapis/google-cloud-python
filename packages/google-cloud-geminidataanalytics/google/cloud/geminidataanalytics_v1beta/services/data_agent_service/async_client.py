@@ -88,6 +88,8 @@ class DataAgentServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DataAgentServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataAgentServiceClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(DataAgentServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DataAgentServiceClient.parse_crypto_key_path)
     data_agent_path = staticmethod(DataAgentServiceClient.data_agent_path)
     parse_data_agent_path = staticmethod(DataAgentServiceClient.parse_data_agent_path)
     common_billing_account_path = staticmethod(

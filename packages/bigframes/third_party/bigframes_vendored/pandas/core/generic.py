@@ -629,9 +629,9 @@ class NDFrame(indexing.IndexingMixin):
 
             >>> df = bpd.DataFrame({'float': [1.0], 'int': [1], 'string': ['foo']})
             >>> df.dtypes
-            float             Float64
-            int                 Int64
-            string    string[pyarrow]
+            float     Float64
+            int         Int64
+            string     string
             dtype: object
 
         Returns:

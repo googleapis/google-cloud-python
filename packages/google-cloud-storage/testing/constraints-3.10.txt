@@ -10,8 +10,8 @@ cryptography==38.0.0
 google-api-core==2.27.0
 google-cloud-core==2.4.2
 google-resumable-media==2.7.2
-grpcio==1.44.0
-grpcio-status==1.44.0
+grpcio==1.59.0
+grpcio-status==1.59.0
 proto-plus==1.22.3
 protobuf==4.25.8
 grpc-google-iam-v1==0.14.0

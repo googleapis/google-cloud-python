@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1421,8 +1437,8 @@ def test_quota_adjuster_settings_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest,
-        dict,
+        gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest(),
+        {},
     ],
 )
 def test_update_quota_adjuster_settings(request_type, transport: str = "grpc"):
@@ -1433,7 +1449,7 @@ def test_update_quota_adjuster_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1490,9 +1506,8 @@ def test_update_quota_adjuster_settings_non_empty_request_with_auto_populated_fi
         client.update_quota_adjuster_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest()
-        )
+        request_msg = gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest()
+        assert args[0] == request_msg
 
 
 def test_update_quota_adjuster_settings_use_cached_wrapped_rpc():
@@ -1578,9 +1593,15 @@ async def test_update_quota_adjuster_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest(),
+        {},
+    ],
+)
 async def test_update_quota_adjuster_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = QuotaAdjusterSettingsManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1589,7 +1610,7 @@ async def test_update_quota_adjuster_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1623,11 +1644,6 @@ async def test_update_quota_adjuster_settings_async(
     assert response.etag == "etag_value"
     assert response.inherited is True
     assert response.inherited_from == "inherited_from_value"
-
-
-@pytest.mark.asyncio
-async def test_update_quota_adjuster_settings_async_from_dict():
-    await test_update_quota_adjuster_settings_async(request_type=dict)
 
 
 def test_update_quota_adjuster_settings_field_headers():
@@ -1802,8 +1818,8 @@ async def test_update_quota_adjuster_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        quota_adjuster_settings.GetQuotaAdjusterSettingsRequest,
-        dict,
+        quota_adjuster_settings.GetQuotaAdjusterSettingsRequest(),
+        {},
     ],
 )
 def test_get_quota_adjuster_settings(request_type, transport: str = "grpc"):
@@ -1814,7 +1830,7 @@ def test_get_quota_adjuster_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1873,9 +1889,10 @@ def test_get_quota_adjuster_settings_non_empty_request_with_auto_populated_field
         client.get_quota_adjuster_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == quota_adjuster_settings.GetQuotaAdjusterSettingsRequest(
+        request_msg = quota_adjuster_settings.GetQuotaAdjusterSettingsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_quota_adjuster_settings_use_cached_wrapped_rpc():
@@ -1961,9 +1978,15 @@ async def test_get_quota_adjuster_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        quota_adjuster_settings.GetQuotaAdjusterSettingsRequest(),
+        {},
+    ],
+)
 async def test_get_quota_adjuster_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=quota_adjuster_settings.GetQuotaAdjusterSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = QuotaAdjusterSettingsManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1972,7 +1995,7 @@ async def test_get_quota_adjuster_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2006,11 +2029,6 @@ async def test_get_quota_adjuster_settings_async(
     assert response.etag == "etag_value"
     assert response.inherited is True
     assert response.inherited_from == "inherited_from_value"
-
-
-@pytest.mark.asyncio
-async def test_get_quota_adjuster_settings_async_from_dict():
-    await test_get_quota_adjuster_settings_async(request_type=dict)
 
 
 def test_get_quota_adjuster_settings_field_headers():
@@ -2686,7 +2704,6 @@ def test_update_quota_adjuster_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2709,7 +2726,6 @@ def test_get_quota_adjuster_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_adjuster_settings.GetQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2756,7 +2772,6 @@ async def test_update_quota_adjuster_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2789,7 +2804,6 @@ async def test_get_quota_adjuster_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_adjuster_settings.GetQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3214,7 +3228,6 @@ def test_update_quota_adjuster_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3236,7 +3249,6 @@ def test_get_quota_adjuster_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = quota_adjuster_settings.GetQuotaAdjusterSettingsRequest()
-
         assert args[0] == request_msg
 
 

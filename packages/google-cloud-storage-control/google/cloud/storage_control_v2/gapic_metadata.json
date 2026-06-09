@@ -65,6 +65,16 @@
                 "get_iam_policy"
               ]
             },
+            "GetIntelligenceFinding": {
+              "methods": [
+                "get_intelligence_finding"
+              ]
+            },
+            "GetIntelligenceFindingRevision": {
+              "methods": [
+                "get_intelligence_finding_revision"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -95,6 +105,16 @@
                 "list_folders"
               ]
             },
+            "ListIntelligenceFindingRevisions": {
+              "methods": [
+                "list_intelligence_finding_revisions"
+              ]
+            },
+            "ListIntelligenceFindings": {
+              "methods": [
+                "list_intelligence_findings"
+              ]
+            },
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
@@ -118,6 +138,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SummarizeIntelligenceFindings": {
+              "methods": [
+                "summarize_intelligence_findings"
               ]
             },
             "TestIamPermissions": {
@@ -205,6 +230,16 @@
                 "get_iam_policy"
               ]
             },
+            "GetIntelligenceFinding": {
+              "methods": [
+                "get_intelligence_finding"
+              ]
+            },
+            "GetIntelligenceFindingRevision": {
+              "methods": [
+                "get_intelligence_finding_revision"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -235,6 +270,16 @@
                 "list_folders"
               ]
             },
+            "ListIntelligenceFindingRevisions": {
+              "methods": [
+                "list_intelligence_finding_revisions"
+              ]
+            },
+            "ListIntelligenceFindings": {
+              "methods": [
+                "list_intelligence_findings"
+              ]
+            },
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
@@ -258,6 +303,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SummarizeIntelligenceFindings": {
+              "methods": [
+                "summarize_intelligence_findings"
               ]
             },
             "TestIamPermissions": {
@@ -345,6 +395,16 @@
                 "get_iam_policy"
               ]
             },
+            "GetIntelligenceFinding": {
+              "methods": [
+                "get_intelligence_finding"
+              ]
+            },
+            "GetIntelligenceFindingRevision": {
+              "methods": [
+                "get_intelligence_finding_revision"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -375,6 +435,16 @@
                 "list_folders"
               ]
             },
+            "ListIntelligenceFindingRevisions": {
+              "methods": [
+                "list_intelligence_finding_revisions"
+              ]
+            },
+            "ListIntelligenceFindings": {
+              "methods": [
+                "list_intelligence_findings"
+              ]
+            },
             "ListManagedFolders": {
               "methods": [
                 "list_managed_folders"
@@ -398,6 +468,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SummarizeIntelligenceFindings": {
+              "methods": [
+                "summarize_intelligence_findings"
               ]
             },
             "TestIamPermissions": {

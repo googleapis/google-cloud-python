@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -32366,7 +32382,6 @@ def test_add_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32388,7 +32403,6 @@ def test_add_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32410,7 +32424,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32430,7 +32443,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32450,7 +32462,6 @@ def test_attach_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AttachDiskInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32470,7 +32481,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32490,7 +32500,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32512,7 +32521,6 @@ def test_delete_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32534,7 +32542,6 @@ def test_delete_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32554,7 +32561,6 @@ def test_detach_disk_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DetachDiskInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32574,7 +32580,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32596,7 +32601,6 @@ def test_get_effective_firewalls_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetEffectiveFirewallsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32618,7 +32622,6 @@ def test_get_guest_attributes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetGuestAttributesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32638,7 +32641,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32658,7 +32660,6 @@ def test_get_screenshot_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetScreenshotInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32680,7 +32681,6 @@ def test_get_serial_port_output_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetSerialPortOutputInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32702,7 +32702,6 @@ def test_get_shielded_instance_identity_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetShieldedInstanceIdentityInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32722,7 +32721,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32742,7 +32740,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32762,7 +32759,6 @@ def test_list_referrers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListReferrersInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32784,7 +32780,6 @@ def test_perform_maintenance_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PerformMaintenanceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32806,7 +32801,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32828,7 +32822,6 @@ def test_report_host_as_faulty_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ReportHostAsFaultyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32848,7 +32841,6 @@ def test_reset_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32868,7 +32860,6 @@ def test_resume_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32890,7 +32881,6 @@ def test_send_diagnostic_interrupt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SendDiagnosticInterruptInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32912,7 +32902,6 @@ def test_set_deletion_protection_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDeletionProtectionInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32934,7 +32923,6 @@ def test_set_disk_auto_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetDiskAutoDeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32954,7 +32942,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32974,7 +32961,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -32996,7 +32982,6 @@ def test_set_machine_resources_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMachineResourcesInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33016,7 +33001,6 @@ def test_set_machine_type_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMachineTypeInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33036,7 +33020,6 @@ def test_set_metadata_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMetadataInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33058,7 +33041,6 @@ def test_set_min_cpu_platform_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetMinCpuPlatformInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33078,7 +33060,6 @@ def test_set_name_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetNameInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33098,7 +33079,6 @@ def test_set_scheduling_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetSchedulingInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33120,7 +33100,6 @@ def test_set_security_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetSecurityPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33142,7 +33121,6 @@ def test_set_service_account_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetServiceAccountInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33164,7 +33142,6 @@ def test_set_shielded_instance_integrity_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33184,7 +33161,6 @@ def test_set_tags_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTagsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33206,7 +33182,6 @@ def test_simulate_maintenance_event_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SimulateMaintenanceEventInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33226,7 +33201,6 @@ def test_start_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33248,7 +33222,6 @@ def test_start_with_encryption_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartWithEncryptionKeyInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33268,7 +33241,6 @@ def test_stop_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33288,7 +33260,6 @@ def test_suspend_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33310,7 +33281,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33330,7 +33300,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33352,7 +33321,6 @@ def test_update_access_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateAccessConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33374,7 +33342,6 @@ def test_update_display_device_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateDisplayDeviceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33396,7 +33363,6 @@ def test_update_network_interface_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateNetworkInterfaceInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -33418,7 +33384,6 @@ def test_update_shielded_instance_config_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateShieldedInstanceConfigInstanceRequest()
-
         assert args[0] == request_msg
 
 

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -121,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1284,8 +1300,8 @@ def test_dep_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.ListLbTrafficExtensionsRequest,
-        dict,
+        dep.ListLbTrafficExtensionsRequest(),
+        {},
     ],
 )
 def test_list_lb_traffic_extensions(request_type, transport: str = "grpc"):
@@ -1296,7 +1312,7 @@ def test_list_lb_traffic_extensions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1349,12 +1365,13 @@ def test_list_lb_traffic_extensions_non_empty_request_with_auto_populated_field(
         client.list_lb_traffic_extensions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.ListLbTrafficExtensionsRequest(
+        request_msg = dep.ListLbTrafficExtensionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lb_traffic_extensions_use_cached_wrapped_rpc():
@@ -1440,8 +1457,15 @@ async def test_list_lb_traffic_extensions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.ListLbTrafficExtensionsRequest(),
+        {},
+    ],
+)
 async def test_list_lb_traffic_extensions_async(
-    transport: str = "grpc_asyncio", request_type=dep.ListLbTrafficExtensionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1450,7 +1474,7 @@ async def test_list_lb_traffic_extensions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1475,11 +1499,6 @@ async def test_list_lb_traffic_extensions_async(
     assert isinstance(response, pagers.ListLbTrafficExtensionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_lb_traffic_extensions_async_from_dict():
-    await test_list_lb_traffic_extensions_async(request_type=dict)
 
 
 def test_list_lb_traffic_extensions_field_headers():
@@ -1836,8 +1855,8 @@ async def test_list_lb_traffic_extensions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.GetLbTrafficExtensionRequest,
-        dict,
+        dep.GetLbTrafficExtensionRequest(),
+        {},
     ],
 )
 def test_get_lb_traffic_extension(request_type, transport: str = "grpc"):
@@ -1848,7 +1867,7 @@ def test_get_lb_traffic_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1902,9 +1921,10 @@ def test_get_lb_traffic_extension_non_empty_request_with_auto_populated_field():
         client.get_lb_traffic_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.GetLbTrafficExtensionRequest(
+        request_msg = dep.GetLbTrafficExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_lb_traffic_extension_use_cached_wrapped_rpc():
@@ -1990,8 +2010,15 @@ async def test_get_lb_traffic_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.GetLbTrafficExtensionRequest(),
+        {},
+    ],
+)
 async def test_get_lb_traffic_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.GetLbTrafficExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2000,7 +2027,7 @@ async def test_get_lb_traffic_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2029,11 +2056,6 @@ async def test_get_lb_traffic_extension_async(
     assert response.description == "description_value"
     assert response.forwarding_rules == ["forwarding_rules_value"]
     assert response.load_balancing_scheme == dep.LoadBalancingScheme.INTERNAL_MANAGED
-
-
-@pytest.mark.asyncio
-async def test_get_lb_traffic_extension_async_from_dict():
-    await test_get_lb_traffic_extension_async(request_type=dict)
 
 
 def test_get_lb_traffic_extension_field_headers():
@@ -2190,8 +2212,8 @@ async def test_get_lb_traffic_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.CreateLbTrafficExtensionRequest,
-        dict,
+        dep.CreateLbTrafficExtensionRequest(),
+        {},
     ],
 )
 def test_create_lb_traffic_extension(request_type, transport: str = "grpc"):
@@ -2202,7 +2224,7 @@ def test_create_lb_traffic_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2248,10 +2270,11 @@ def test_create_lb_traffic_extension_non_empty_request_with_auto_populated_field
         client.create_lb_traffic_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.CreateLbTrafficExtensionRequest(
+        request_msg = dep.CreateLbTrafficExtensionRequest(
             parent="parent_value",
             lb_traffic_extension_id="lb_traffic_extension_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_lb_traffic_extension_use_cached_wrapped_rpc():
@@ -2347,8 +2370,15 @@ async def test_create_lb_traffic_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.CreateLbTrafficExtensionRequest(),
+        {},
+    ],
+)
 async def test_create_lb_traffic_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.CreateLbTrafficExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2357,7 +2387,7 @@ async def test_create_lb_traffic_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2377,11 +2407,6 @@ async def test_create_lb_traffic_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_lb_traffic_extension_async_from_dict():
-    await test_create_lb_traffic_extension_async(request_type=dict)
 
 
 def test_create_lb_traffic_extension_field_headers():
@@ -2558,8 +2583,8 @@ async def test_create_lb_traffic_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.UpdateLbTrafficExtensionRequest,
-        dict,
+        dep.UpdateLbTrafficExtensionRequest(),
+        {},
     ],
 )
 def test_update_lb_traffic_extension(request_type, transport: str = "grpc"):
@@ -2570,7 +2595,7 @@ def test_update_lb_traffic_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2613,7 +2638,8 @@ def test_update_lb_traffic_extension_non_empty_request_with_auto_populated_field
         client.update_lb_traffic_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.UpdateLbTrafficExtensionRequest()
+        request_msg = dep.UpdateLbTrafficExtensionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_lb_traffic_extension_use_cached_wrapped_rpc():
@@ -2709,8 +2735,15 @@ async def test_update_lb_traffic_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.UpdateLbTrafficExtensionRequest(),
+        {},
+    ],
+)
 async def test_update_lb_traffic_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.UpdateLbTrafficExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2719,7 +2752,7 @@ async def test_update_lb_traffic_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2739,11 +2772,6 @@ async def test_update_lb_traffic_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_lb_traffic_extension_async_from_dict():
-    await test_update_lb_traffic_extension_async(request_type=dict)
 
 
 def test_update_lb_traffic_extension_field_headers():
@@ -2910,8 +2938,8 @@ async def test_update_lb_traffic_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.DeleteLbTrafficExtensionRequest,
-        dict,
+        dep.DeleteLbTrafficExtensionRequest(),
+        {},
     ],
 )
 def test_delete_lb_traffic_extension(request_type, transport: str = "grpc"):
@@ -2922,7 +2950,7 @@ def test_delete_lb_traffic_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2967,9 +2995,10 @@ def test_delete_lb_traffic_extension_non_empty_request_with_auto_populated_field
         client.delete_lb_traffic_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.DeleteLbTrafficExtensionRequest(
+        request_msg = dep.DeleteLbTrafficExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_lb_traffic_extension_use_cached_wrapped_rpc():
@@ -3065,8 +3094,15 @@ async def test_delete_lb_traffic_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.DeleteLbTrafficExtensionRequest(),
+        {},
+    ],
+)
 async def test_delete_lb_traffic_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.DeleteLbTrafficExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3075,7 +3111,7 @@ async def test_delete_lb_traffic_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3095,11 +3131,6 @@ async def test_delete_lb_traffic_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_lb_traffic_extension_async_from_dict():
-    await test_delete_lb_traffic_extension_async(request_type=dict)
 
 
 def test_delete_lb_traffic_extension_field_headers():
@@ -3256,8 +3287,8 @@ async def test_delete_lb_traffic_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.ListLbRouteExtensionsRequest,
-        dict,
+        dep.ListLbRouteExtensionsRequest(),
+        {},
     ],
 )
 def test_list_lb_route_extensions(request_type, transport: str = "grpc"):
@@ -3268,7 +3299,7 @@ def test_list_lb_route_extensions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3321,12 +3352,13 @@ def test_list_lb_route_extensions_non_empty_request_with_auto_populated_field():
         client.list_lb_route_extensions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.ListLbRouteExtensionsRequest(
+        request_msg = dep.ListLbRouteExtensionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lb_route_extensions_use_cached_wrapped_rpc():
@@ -3412,8 +3444,15 @@ async def test_list_lb_route_extensions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.ListLbRouteExtensionsRequest(),
+        {},
+    ],
+)
 async def test_list_lb_route_extensions_async(
-    transport: str = "grpc_asyncio", request_type=dep.ListLbRouteExtensionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3422,7 +3461,7 @@ async def test_list_lb_route_extensions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3447,11 +3486,6 @@ async def test_list_lb_route_extensions_async(
     assert isinstance(response, pagers.ListLbRouteExtensionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_lb_route_extensions_async_from_dict():
-    await test_list_lb_route_extensions_async(request_type=dict)
 
 
 def test_list_lb_route_extensions_field_headers():
@@ -3808,8 +3842,8 @@ async def test_list_lb_route_extensions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.GetLbRouteExtensionRequest,
-        dict,
+        dep.GetLbRouteExtensionRequest(),
+        {},
     ],
 )
 def test_get_lb_route_extension(request_type, transport: str = "grpc"):
@@ -3820,7 +3854,7 @@ def test_get_lb_route_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3874,9 +3908,10 @@ def test_get_lb_route_extension_non_empty_request_with_auto_populated_field():
         client.get_lb_route_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.GetLbRouteExtensionRequest(
+        request_msg = dep.GetLbRouteExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_lb_route_extension_use_cached_wrapped_rpc():
@@ -3962,8 +3997,15 @@ async def test_get_lb_route_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.GetLbRouteExtensionRequest(),
+        {},
+    ],
+)
 async def test_get_lb_route_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.GetLbRouteExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3972,7 +4014,7 @@ async def test_get_lb_route_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4001,11 +4043,6 @@ async def test_get_lb_route_extension_async(
     assert response.description == "description_value"
     assert response.forwarding_rules == ["forwarding_rules_value"]
     assert response.load_balancing_scheme == dep.LoadBalancingScheme.INTERNAL_MANAGED
-
-
-@pytest.mark.asyncio
-async def test_get_lb_route_extension_async_from_dict():
-    await test_get_lb_route_extension_async(request_type=dict)
 
 
 def test_get_lb_route_extension_field_headers():
@@ -4162,8 +4199,8 @@ async def test_get_lb_route_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.CreateLbRouteExtensionRequest,
-        dict,
+        dep.CreateLbRouteExtensionRequest(),
+        {},
     ],
 )
 def test_create_lb_route_extension(request_type, transport: str = "grpc"):
@@ -4174,7 +4211,7 @@ def test_create_lb_route_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4220,10 +4257,11 @@ def test_create_lb_route_extension_non_empty_request_with_auto_populated_field()
         client.create_lb_route_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.CreateLbRouteExtensionRequest(
+        request_msg = dep.CreateLbRouteExtensionRequest(
             parent="parent_value",
             lb_route_extension_id="lb_route_extension_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_lb_route_extension_use_cached_wrapped_rpc():
@@ -4319,8 +4357,15 @@ async def test_create_lb_route_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.CreateLbRouteExtensionRequest(),
+        {},
+    ],
+)
 async def test_create_lb_route_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.CreateLbRouteExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4329,7 +4374,7 @@ async def test_create_lb_route_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4349,11 +4394,6 @@ async def test_create_lb_route_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_lb_route_extension_async_from_dict():
-    await test_create_lb_route_extension_async(request_type=dict)
 
 
 def test_create_lb_route_extension_field_headers():
@@ -4530,8 +4570,8 @@ async def test_create_lb_route_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.UpdateLbRouteExtensionRequest,
-        dict,
+        dep.UpdateLbRouteExtensionRequest(),
+        {},
     ],
 )
 def test_update_lb_route_extension(request_type, transport: str = "grpc"):
@@ -4542,7 +4582,7 @@ def test_update_lb_route_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4585,7 +4625,8 @@ def test_update_lb_route_extension_non_empty_request_with_auto_populated_field()
         client.update_lb_route_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.UpdateLbRouteExtensionRequest()
+        request_msg = dep.UpdateLbRouteExtensionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_lb_route_extension_use_cached_wrapped_rpc():
@@ -4681,8 +4722,15 @@ async def test_update_lb_route_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.UpdateLbRouteExtensionRequest(),
+        {},
+    ],
+)
 async def test_update_lb_route_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.UpdateLbRouteExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4691,7 +4739,7 @@ async def test_update_lb_route_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4711,11 +4759,6 @@ async def test_update_lb_route_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_lb_route_extension_async_from_dict():
-    await test_update_lb_route_extension_async(request_type=dict)
 
 
 def test_update_lb_route_extension_field_headers():
@@ -4882,8 +4925,8 @@ async def test_update_lb_route_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.DeleteLbRouteExtensionRequest,
-        dict,
+        dep.DeleteLbRouteExtensionRequest(),
+        {},
     ],
 )
 def test_delete_lb_route_extension(request_type, transport: str = "grpc"):
@@ -4894,7 +4937,7 @@ def test_delete_lb_route_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4939,9 +4982,10 @@ def test_delete_lb_route_extension_non_empty_request_with_auto_populated_field()
         client.delete_lb_route_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.DeleteLbRouteExtensionRequest(
+        request_msg = dep.DeleteLbRouteExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_lb_route_extension_use_cached_wrapped_rpc():
@@ -5037,8 +5081,15 @@ async def test_delete_lb_route_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.DeleteLbRouteExtensionRequest(),
+        {},
+    ],
+)
 async def test_delete_lb_route_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.DeleteLbRouteExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5047,7 +5098,7 @@ async def test_delete_lb_route_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5067,11 +5118,6 @@ async def test_delete_lb_route_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_lb_route_extension_async_from_dict():
-    await test_delete_lb_route_extension_async(request_type=dict)
 
 
 def test_delete_lb_route_extension_field_headers():
@@ -5228,8 +5274,8 @@ async def test_delete_lb_route_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.ListLbEdgeExtensionsRequest,
-        dict,
+        dep.ListLbEdgeExtensionsRequest(),
+        {},
     ],
 )
 def test_list_lb_edge_extensions(request_type, transport: str = "grpc"):
@@ -5240,7 +5286,7 @@ def test_list_lb_edge_extensions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5293,12 +5339,13 @@ def test_list_lb_edge_extensions_non_empty_request_with_auto_populated_field():
         client.list_lb_edge_extensions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.ListLbEdgeExtensionsRequest(
+        request_msg = dep.ListLbEdgeExtensionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_lb_edge_extensions_use_cached_wrapped_rpc():
@@ -5384,8 +5431,15 @@ async def test_list_lb_edge_extensions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.ListLbEdgeExtensionsRequest(),
+        {},
+    ],
+)
 async def test_list_lb_edge_extensions_async(
-    transport: str = "grpc_asyncio", request_type=dep.ListLbEdgeExtensionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5394,7 +5448,7 @@ async def test_list_lb_edge_extensions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5419,11 +5473,6 @@ async def test_list_lb_edge_extensions_async(
     assert isinstance(response, pagers.ListLbEdgeExtensionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_lb_edge_extensions_async_from_dict():
-    await test_list_lb_edge_extensions_async(request_type=dict)
 
 
 def test_list_lb_edge_extensions_field_headers():
@@ -5778,8 +5827,8 @@ async def test_list_lb_edge_extensions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.GetLbEdgeExtensionRequest,
-        dict,
+        dep.GetLbEdgeExtensionRequest(),
+        {},
     ],
 )
 def test_get_lb_edge_extension(request_type, transport: str = "grpc"):
@@ -5790,7 +5839,7 @@ def test_get_lb_edge_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5844,9 +5893,10 @@ def test_get_lb_edge_extension_non_empty_request_with_auto_populated_field():
         client.get_lb_edge_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.GetLbEdgeExtensionRequest(
+        request_msg = dep.GetLbEdgeExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_lb_edge_extension_use_cached_wrapped_rpc():
@@ -5932,8 +5982,15 @@ async def test_get_lb_edge_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.GetLbEdgeExtensionRequest(),
+        {},
+    ],
+)
 async def test_get_lb_edge_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.GetLbEdgeExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5942,7 +5999,7 @@ async def test_get_lb_edge_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5971,11 +6028,6 @@ async def test_get_lb_edge_extension_async(
     assert response.description == "description_value"
     assert response.forwarding_rules == ["forwarding_rules_value"]
     assert response.load_balancing_scheme == dep.LoadBalancingScheme.INTERNAL_MANAGED
-
-
-@pytest.mark.asyncio
-async def test_get_lb_edge_extension_async_from_dict():
-    await test_get_lb_edge_extension_async(request_type=dict)
 
 
 def test_get_lb_edge_extension_field_headers():
@@ -6128,8 +6180,8 @@ async def test_get_lb_edge_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.CreateLbEdgeExtensionRequest,
-        dict,
+        dep.CreateLbEdgeExtensionRequest(),
+        {},
     ],
 )
 def test_create_lb_edge_extension(request_type, transport: str = "grpc"):
@@ -6140,7 +6192,7 @@ def test_create_lb_edge_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6186,10 +6238,11 @@ def test_create_lb_edge_extension_non_empty_request_with_auto_populated_field():
         client.create_lb_edge_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.CreateLbEdgeExtensionRequest(
+        request_msg = dep.CreateLbEdgeExtensionRequest(
             parent="parent_value",
             lb_edge_extension_id="lb_edge_extension_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_lb_edge_extension_use_cached_wrapped_rpc():
@@ -6285,8 +6338,15 @@ async def test_create_lb_edge_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.CreateLbEdgeExtensionRequest(),
+        {},
+    ],
+)
 async def test_create_lb_edge_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.CreateLbEdgeExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6295,7 +6355,7 @@ async def test_create_lb_edge_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6315,11 +6375,6 @@ async def test_create_lb_edge_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_lb_edge_extension_async_from_dict():
-    await test_create_lb_edge_extension_async(request_type=dict)
 
 
 def test_create_lb_edge_extension_field_headers():
@@ -6496,8 +6551,8 @@ async def test_create_lb_edge_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.UpdateLbEdgeExtensionRequest,
-        dict,
+        dep.UpdateLbEdgeExtensionRequest(),
+        {},
     ],
 )
 def test_update_lb_edge_extension(request_type, transport: str = "grpc"):
@@ -6508,7 +6563,7 @@ def test_update_lb_edge_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6551,7 +6606,8 @@ def test_update_lb_edge_extension_non_empty_request_with_auto_populated_field():
         client.update_lb_edge_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.UpdateLbEdgeExtensionRequest()
+        request_msg = dep.UpdateLbEdgeExtensionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_lb_edge_extension_use_cached_wrapped_rpc():
@@ -6647,8 +6703,15 @@ async def test_update_lb_edge_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.UpdateLbEdgeExtensionRequest(),
+        {},
+    ],
+)
 async def test_update_lb_edge_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.UpdateLbEdgeExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6657,7 +6720,7 @@ async def test_update_lb_edge_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6677,11 +6740,6 @@ async def test_update_lb_edge_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_lb_edge_extension_async_from_dict():
-    await test_update_lb_edge_extension_async(request_type=dict)
 
 
 def test_update_lb_edge_extension_field_headers():
@@ -6848,8 +6906,8 @@ async def test_update_lb_edge_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.DeleteLbEdgeExtensionRequest,
-        dict,
+        dep.DeleteLbEdgeExtensionRequest(),
+        {},
     ],
 )
 def test_delete_lb_edge_extension(request_type, transport: str = "grpc"):
@@ -6860,7 +6918,7 @@ def test_delete_lb_edge_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6905,9 +6963,10 @@ def test_delete_lb_edge_extension_non_empty_request_with_auto_populated_field():
         client.delete_lb_edge_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.DeleteLbEdgeExtensionRequest(
+        request_msg = dep.DeleteLbEdgeExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_lb_edge_extension_use_cached_wrapped_rpc():
@@ -7003,8 +7062,15 @@ async def test_delete_lb_edge_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.DeleteLbEdgeExtensionRequest(),
+        {},
+    ],
+)
 async def test_delete_lb_edge_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.DeleteLbEdgeExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7013,7 +7079,7 @@ async def test_delete_lb_edge_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7033,11 +7099,6 @@ async def test_delete_lb_edge_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_lb_edge_extension_async_from_dict():
-    await test_delete_lb_edge_extension_async(request_type=dict)
 
 
 def test_delete_lb_edge_extension_field_headers():
@@ -7194,8 +7255,8 @@ async def test_delete_lb_edge_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.ListAuthzExtensionsRequest,
-        dict,
+        dep.ListAuthzExtensionsRequest(),
+        {},
     ],
 )
 def test_list_authz_extensions(request_type, transport: str = "grpc"):
@@ -7206,7 +7267,7 @@ def test_list_authz_extensions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7259,12 +7320,13 @@ def test_list_authz_extensions_non_empty_request_with_auto_populated_field():
         client.list_authz_extensions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.ListAuthzExtensionsRequest(
+        request_msg = dep.ListAuthzExtensionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_authz_extensions_use_cached_wrapped_rpc():
@@ -7350,8 +7412,15 @@ async def test_list_authz_extensions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.ListAuthzExtensionsRequest(),
+        {},
+    ],
+)
 async def test_list_authz_extensions_async(
-    transport: str = "grpc_asyncio", request_type=dep.ListAuthzExtensionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7360,7 +7429,7 @@ async def test_list_authz_extensions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7385,11 +7454,6 @@ async def test_list_authz_extensions_async(
     assert isinstance(response, pagers.ListAuthzExtensionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_authz_extensions_async_from_dict():
-    await test_list_authz_extensions_async(request_type=dict)
 
 
 def test_list_authz_extensions_field_headers():
@@ -7744,8 +7808,8 @@ async def test_list_authz_extensions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.GetAuthzExtensionRequest,
-        dict,
+        dep.GetAuthzExtensionRequest(),
+        {},
     ],
 )
 def test_get_authz_extension(request_type, transport: str = "grpc"):
@@ -7756,7 +7820,7 @@ def test_get_authz_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7818,9 +7882,10 @@ def test_get_authz_extension_non_empty_request_with_auto_populated_field():
         client.get_authz_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.GetAuthzExtensionRequest(
+        request_msg = dep.GetAuthzExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_authz_extension_use_cached_wrapped_rpc():
@@ -7905,9 +7970,14 @@ async def test_get_authz_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_authz_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.GetAuthzExtensionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.GetAuthzExtensionRequest(),
+        {},
+    ],
+)
+async def test_get_authz_extension_async(request_type, transport: str = "grpc_asyncio"):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7915,7 +7985,7 @@ async def test_get_authz_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7952,11 +8022,6 @@ async def test_get_authz_extension_async(
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
-
-
-@pytest.mark.asyncio
-async def test_get_authz_extension_async_from_dict():
-    await test_get_authz_extension_async(request_type=dict)
 
 
 def test_get_authz_extension_field_headers():
@@ -8109,8 +8174,8 @@ async def test_get_authz_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.CreateAuthzExtensionRequest,
-        dict,
+        dep.CreateAuthzExtensionRequest(),
+        {},
     ],
 )
 def test_create_authz_extension(request_type, transport: str = "grpc"):
@@ -8121,7 +8186,7 @@ def test_create_authz_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8167,10 +8232,11 @@ def test_create_authz_extension_non_empty_request_with_auto_populated_field():
         client.create_authz_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.CreateAuthzExtensionRequest(
+        request_msg = dep.CreateAuthzExtensionRequest(
             parent="parent_value",
             authz_extension_id="authz_extension_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_authz_extension_use_cached_wrapped_rpc():
@@ -8266,8 +8332,15 @@ async def test_create_authz_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.CreateAuthzExtensionRequest(),
+        {},
+    ],
+)
 async def test_create_authz_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.CreateAuthzExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8276,7 +8349,7 @@ async def test_create_authz_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8296,11 +8369,6 @@ async def test_create_authz_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_authz_extension_async_from_dict():
-    await test_create_authz_extension_async(request_type=dict)
 
 
 def test_create_authz_extension_field_headers():
@@ -8477,8 +8545,8 @@ async def test_create_authz_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.UpdateAuthzExtensionRequest,
-        dict,
+        dep.UpdateAuthzExtensionRequest(),
+        {},
     ],
 )
 def test_update_authz_extension(request_type, transport: str = "grpc"):
@@ -8489,7 +8557,7 @@ def test_update_authz_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8532,7 +8600,8 @@ def test_update_authz_extension_non_empty_request_with_auto_populated_field():
         client.update_authz_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.UpdateAuthzExtensionRequest()
+        request_msg = dep.UpdateAuthzExtensionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_authz_extension_use_cached_wrapped_rpc():
@@ -8628,8 +8697,15 @@ async def test_update_authz_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.UpdateAuthzExtensionRequest(),
+        {},
+    ],
+)
 async def test_update_authz_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.UpdateAuthzExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8638,7 +8714,7 @@ async def test_update_authz_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8658,11 +8734,6 @@ async def test_update_authz_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_authz_extension_async_from_dict():
-    await test_update_authz_extension_async(request_type=dict)
 
 
 def test_update_authz_extension_field_headers():
@@ -8829,8 +8900,8 @@ async def test_update_authz_extension_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        dep.DeleteAuthzExtensionRequest,
-        dict,
+        dep.DeleteAuthzExtensionRequest(),
+        {},
     ],
 )
 def test_delete_authz_extension(request_type, transport: str = "grpc"):
@@ -8841,7 +8912,7 @@ def test_delete_authz_extension(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8886,9 +8957,10 @@ def test_delete_authz_extension_non_empty_request_with_auto_populated_field():
         client.delete_authz_extension(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == dep.DeleteAuthzExtensionRequest(
+        request_msg = dep.DeleteAuthzExtensionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_authz_extension_use_cached_wrapped_rpc():
@@ -8984,8 +9056,15 @@ async def test_delete_authz_extension_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dep.DeleteAuthzExtensionRequest(),
+        {},
+    ],
+)
 async def test_delete_authz_extension_async(
-    transport: str = "grpc_asyncio", request_type=dep.DeleteAuthzExtensionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DepServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8994,7 +9073,7 @@ async def test_delete_authz_extension_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9014,11 +9093,6 @@ async def test_delete_authz_extension_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_authz_extension_async_from_dict():
-    await test_delete_authz_extension_async(request_type=dict)
 
 
 def test_delete_authz_extension_field_headers():
@@ -13526,7 +13600,6 @@ def test_list_lb_traffic_extensions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbTrafficExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13549,7 +13622,6 @@ def test_get_lb_traffic_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13572,7 +13644,6 @@ def test_create_lb_traffic_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13595,7 +13666,6 @@ def test_update_lb_traffic_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13618,7 +13688,6 @@ def test_delete_lb_traffic_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13641,7 +13710,6 @@ def test_list_lb_route_extensions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbRouteExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13664,7 +13732,6 @@ def test_get_lb_route_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13687,7 +13754,6 @@ def test_create_lb_route_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13710,7 +13776,6 @@ def test_update_lb_route_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13733,7 +13798,6 @@ def test_delete_lb_route_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13756,7 +13820,6 @@ def test_list_lb_edge_extensions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbEdgeExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13779,7 +13842,6 @@ def test_get_lb_edge_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13802,7 +13864,6 @@ def test_create_lb_edge_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13825,7 +13886,6 @@ def test_update_lb_edge_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13848,7 +13908,6 @@ def test_delete_lb_edge_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13871,7 +13930,6 @@ def test_list_authz_extensions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListAuthzExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13894,7 +13952,6 @@ def test_get_authz_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13917,7 +13974,6 @@ def test_create_authz_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13940,7 +13996,6 @@ def test_update_authz_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13963,7 +14018,6 @@ def test_delete_authz_extension_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14007,7 +14061,6 @@ async def test_list_lb_traffic_extensions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbTrafficExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14039,7 +14092,6 @@ async def test_get_lb_traffic_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14066,7 +14118,6 @@ async def test_create_lb_traffic_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14093,7 +14144,6 @@ async def test_update_lb_traffic_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14120,7 +14170,6 @@ async def test_delete_lb_traffic_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14150,7 +14199,6 @@ async def test_list_lb_route_extensions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbRouteExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14182,7 +14230,6 @@ async def test_get_lb_route_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14209,7 +14256,6 @@ async def test_create_lb_route_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14236,7 +14282,6 @@ async def test_update_lb_route_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14263,7 +14308,6 @@ async def test_delete_lb_route_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14293,7 +14337,6 @@ async def test_list_lb_edge_extensions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbEdgeExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14325,7 +14368,6 @@ async def test_get_lb_edge_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14352,7 +14394,6 @@ async def test_create_lb_edge_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14379,7 +14420,6 @@ async def test_update_lb_edge_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14406,7 +14446,6 @@ async def test_delete_lb_edge_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14436,7 +14475,6 @@ async def test_list_authz_extensions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListAuthzExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14472,7 +14510,6 @@ async def test_get_authz_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14499,7 +14536,6 @@ async def test_create_authz_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14526,7 +14562,6 @@ async def test_update_authz_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14553,7 +14588,6 @@ async def test_delete_authz_extension_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18582,7 +18616,6 @@ def test_list_lb_traffic_extensions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbTrafficExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18604,7 +18637,6 @@ def test_get_lb_traffic_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18626,7 +18658,6 @@ def test_create_lb_traffic_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18648,7 +18679,6 @@ def test_update_lb_traffic_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18670,7 +18700,6 @@ def test_delete_lb_traffic_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbTrafficExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18692,7 +18721,6 @@ def test_list_lb_route_extensions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbRouteExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18714,7 +18742,6 @@ def test_get_lb_route_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18736,7 +18763,6 @@ def test_create_lb_route_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18758,7 +18784,6 @@ def test_update_lb_route_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18780,7 +18805,6 @@ def test_delete_lb_route_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbRouteExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18802,7 +18826,6 @@ def test_list_lb_edge_extensions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListLbEdgeExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18824,7 +18847,6 @@ def test_get_lb_edge_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18846,7 +18868,6 @@ def test_create_lb_edge_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18868,7 +18889,6 @@ def test_update_lb_edge_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18890,7 +18910,6 @@ def test_delete_lb_edge_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteLbEdgeExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18912,7 +18931,6 @@ def test_list_authz_extensions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.ListAuthzExtensionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18934,7 +18952,6 @@ def test_get_authz_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.GetAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18956,7 +18973,6 @@ def test_create_authz_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.CreateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18978,7 +18994,6 @@ def test_update_authz_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.UpdateAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19000,7 +19015,6 @@ def test_delete_authz_extension_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = dep.DeleteAuthzExtensionRequest()
-
         assert args[0] == request_msg
 
 
