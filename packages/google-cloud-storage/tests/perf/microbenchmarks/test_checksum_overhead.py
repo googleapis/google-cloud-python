@@ -24,6 +24,7 @@ from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMulti
 from google.cloud.storage.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
 
 DEFAULT_BUCKET = os.environ.get("DEFAULT_RAPID_ZONAL_BUCKET", "chandrasiri-gcsfs-zb")
+DEFAULT_ROUNDS = int(os.environ.get("BENCHMARK_ROUNDS", "5"))
 
 
 class VoidBuffer:
@@ -181,7 +182,7 @@ def test_checksum_overhead(benchmark, object_size, download_size, enable_checksu
         benchmark.pedantic(
             target=run_download,
             iterations=1,
-            rounds=5,
+            rounds=DEFAULT_ROUNDS,
         )
 
     finally:
