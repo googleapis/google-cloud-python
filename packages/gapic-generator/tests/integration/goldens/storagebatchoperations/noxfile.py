@@ -47,7 +47,6 @@ DEFAULT_PYTHON_VERSION = "3.14"
 PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
-
 # Path to the centralized mypy configuration file at the repository root.
 MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
 
