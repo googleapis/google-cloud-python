@@ -17,6 +17,7 @@ import os
 import random
 import time
 import uuid
+import statistics
 import pytest
 
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
@@ -192,6 +193,18 @@ def test_checksum_overhead(benchmark, object_size, download_size, enable_checksu
             throughput_mib_s = (total_bytes / total_time) / (1024 * 1024)
             benchmark.extra_info["avg_throughput_mib_s"] = f"{throughput_mib_s:.2f}"
             print(f"\nAvg Throughput: {throughput_mib_s:.2f} MiB/s")
+
+            if len(download_elapsed_times) > 1:
+                stdev_time = statistics.stdev(download_elapsed_times)
+                throughputs = [download_size / t / (1024 * 1024) for t in download_elapsed_times]
+                stdev_throughput = statistics.stdev(throughputs)
+            else:
+                stdev_time = 0.0
+                stdev_throughput = 0.0
+
+            benchmark.extra_info["stdev_throughput_mib_s"] = f"{stdev_throughput:.2f}"
+            benchmark.extra_info["avg_elapsed_time_s"] = f"{total_time / len(download_elapsed_times):.4f}"
+            benchmark.extra_info["stdev_elapsed_time_s"] = f"{stdev_time:.4f}"
 
         # 4. delete the object
         try:
