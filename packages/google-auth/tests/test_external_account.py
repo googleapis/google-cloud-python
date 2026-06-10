@@ -2373,7 +2373,10 @@ class TestCredentials(object):
                 token_url=self.TOKEN_URL,
                 credential_source=None,
             )
-        assert "A valid credential source or a subject token supplier must be provided" in str(excinfo.value)
+        assert (
+            "A valid credential source or a subject token supplier must be provided"
+            in str(excinfo.value)
+        )
 
         with pytest.raises(exceptions.InvalidValue) as excinfo:
             identity_pool.Credentials(
@@ -2383,7 +2386,10 @@ class TestCredentials(object):
                 credential_source=self.CREDENTIAL_SOURCE,
                 subject_token_supplier=mock.Mock(),
             )
-        assert "cannot have both a credential source and a subject token supplier" in str(excinfo.value)
+        assert (
+            "cannot have both a credential source and a subject token supplier"
+            in str(excinfo.value)
+        )
 
     def test_before_request_multithreaded_lazy_initialization(self):
         from google.auth import identity_pool
