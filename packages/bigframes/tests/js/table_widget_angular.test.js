@@ -32,11 +32,9 @@ describe('TableWidgetAngular', () => {
   });
 
   it('should bootstrap multiple widgets independently on their respective elements', async () => {
-    // Container 1
     const el1 = document.createElement('div');
     document.body.appendChild(el1);
 
-    // Mock model 1
     const model1 = {
       get: jest.fn((prop) => {
         if (prop === 'table_html') return '<table><tr><td>Widget 1 Content</td></tr></table>';
@@ -51,11 +49,9 @@ describe('TableWidgetAngular', () => {
       on: jest.fn(),
     };
 
-    // Container 2
     const el2 = document.createElement('div');
     document.body.appendChild(el2);
 
-    // Mock model 2
     const model2 = {
       get: jest.fn((prop) => {
         if (prop === 'table_html') return '<table><tr><td>Widget 2 Content</td></tr></table>';
@@ -70,28 +66,24 @@ describe('TableWidgetAngular', () => {
       on: jest.fn(),
     };
 
-    // Render both widgets
     render({ model: model1, el: el1 });
     render({ model: model2, el: el2 });
 
     // Wait for async angular bootstrap to complete
     await new Promise((resolve) => setTimeout(resolve, 200));
 
-    // Verify widget 1 is bootstrapped under el1 and has correct content/model values
     const appRoot1 = el1.querySelector('app-root');
     expect(appRoot1).not.toBeNull();
     expect(el1.textContent).toContain('Widget 1 Content');
     expect(el1.textContent).toContain('100 total rows');
     expect(el1.textContent).toContain('Page 1 of 10');
 
-    // Verify widget 2 is bootstrapped under el2 and has correct content/model values
     const appRoot2 = el2.querySelector('app-root');
     expect(appRoot2).not.toBeNull();
     expect(el2.textContent).toContain('Widget 2 Content');
     expect(el2.textContent).toContain('200 total rows');
     expect(el2.textContent).toContain('Page 1 of 8');
 
-    // Cleanup
     document.body.removeChild(el1);
     document.body.removeChild(el2);
   });
