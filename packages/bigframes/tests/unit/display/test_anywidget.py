@@ -194,10 +194,6 @@ def test_cell_execution_count_propagation(mock_df):
 
 
 def test_json_column_converted_to_string_for_display():
-    from bigframes.core.blocks import Block
-    from bigframes.dataframe import DataFrame
-    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE
-    from bigframes.operations import SqlScalarOp
     mock_block = mock.Mock(spec=Block)
     mock_block.column_labels = pd.Index(["col_json"])
     mock_block.value_columns = ["col_json"]
@@ -224,10 +220,6 @@ def test_json_column_converted_to_string_for_display():
 
 
 def test_struct_column_with_nested_json_converted_to_string_for_display():
-    from bigframes.core.blocks import Block
-    from bigframes.dataframe import DataFrame
-    from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
-    from bigframes.operations import SqlScalarOp
     nested_struct_dtype = struct_type(
         [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
     )
