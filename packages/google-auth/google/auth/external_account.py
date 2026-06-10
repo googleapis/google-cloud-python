@@ -213,7 +213,6 @@ class Credentials(
                 "credentials"
             )
 
-
     @property
     def info(self):
         """Generates the dictionary representation of the current credentials.
@@ -449,9 +448,7 @@ class Credentials(
             self._should_initialize_impersonated_credentials()
             and self.service_account_email
         ):
-            self._impersonated_credentials = (
-                self._initialize_impersonated_credentials()
-            )
+            self._impersonated_credentials = self._initialize_impersonated_credentials()
             if getattr(self, "token", None):
                 self._impersonated_credentials.token = self.token
             if getattr(self, "expiry", None):

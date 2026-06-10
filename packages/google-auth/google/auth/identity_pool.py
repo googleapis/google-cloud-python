@@ -526,9 +526,7 @@ class Credentials(external_account.Credentials):
         Raises:
             ValueError: For invalid parameters.
         """
-        kwargs.setdefault(
-            "subject_token_supplier", info.get("subject_token_supplier")
-        )
+        kwargs.setdefault("subject_token_supplier", info.get("subject_token_supplier"))
         return super(Credentials, cls).from_info(info, **kwargs)
 
     @classmethod

@@ -612,7 +612,9 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
         }
-        credentials = identity_pool.Credentials.from_info(info, subject_token_supplier=supplier)
+        credentials = identity_pool.Credentials.from_info(
+            info, subject_token_supplier=supplier
+        )
 
         assert isinstance(credentials, identity_pool.Credentials)
         assert mock_init.call_args[1]["subject_token_supplier"] == supplier

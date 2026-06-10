@@ -1046,7 +1046,9 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
             "token_url": TOKEN_URL,
         }
-        credentials = aws.Credentials.from_info(info, aws_security_credentials_supplier=supplier)
+        credentials = aws.Credentials.from_info(
+            info, aws_security_credentials_supplier=supplier
+        )
 
         assert isinstance(credentials, aws.Credentials)
         assert mock_init.call_args[1]["aws_security_credentials_supplier"] == supplier
