@@ -1243,7 +1243,7 @@ async def test_list_collections_with_read_time(client, cleanup, database):
     }
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1272,13 +1272,13 @@ async def query_docs(client):
         await operation()
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def collection(query_docs):
     collection, _, _ = query_docs
     yield collection
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def async_query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 

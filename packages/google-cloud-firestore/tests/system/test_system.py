@@ -1268,7 +1268,7 @@ def test_unicode_doc(client, cleanup, database):
     assert snapshot2.reference.id == explicit_doc_id
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1297,13 +1297,13 @@ def query_docs(client, database):
         operation()
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def collection(query_docs):
     collection, _, _ = query_docs
     return collection
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 
