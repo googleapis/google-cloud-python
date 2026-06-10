@@ -1811,10 +1811,6 @@ class FirestoreAsyncClient:
                 For example:
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
 
-                Use
-                ``projects/{project_id}/databases/{database_id}/documents``
-                to list top-level collections.
-
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

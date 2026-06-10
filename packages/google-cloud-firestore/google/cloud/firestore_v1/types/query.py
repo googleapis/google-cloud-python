@@ -60,13 +60,10 @@ class StructuredQuery(proto.Message):
         order_by (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.Order]):
             The order to apply to the query results.
 
-            Callers can provide a full ordering, a partial ordering, or
-            no ordering at all. While Firestore will always respect the
-            provided order, the behavior for queries without a full
-            ordering is different per database edition:
-
-            In Standard edition, Firestore guarantees a stable ordering
-            through the following rules:
+            Firestore allows callers to provide a full ordering, a
+            partial ordering, or no ordering at all. In all cases,
+            Firestore guarantees a stable ordering through the following
+            rules:
 
             - The ``order_by`` is required to reference all fields used
               with an inequality filter.
@@ -87,14 +84,6 @@ class StructuredQuery(proto.Message):
               ``WHERE a > 1 ORDER BY a ASC, __name__ ASC``
             - ``WHERE __name__ > ... AND a > 1`` becomes
               ``WHERE __name__ > ... AND a > 1 ORDER BY a ASC, __name__ ASC``
-
-            In Enterprise edition, Firestore does not guarantee a stable
-            ordering. Instead it will pick the most efficient ordering
-            based on the indexes available at the time of query
-            execution. This will result in a different ordering for
-            queries that are otherwise identical. To ensure a stable
-            ordering, always include a unique field in the ``order_by``
-            clause, such as ``__name__``.
         start_at (google.cloud.firestore_v1.types.Cursor):
             A potential prefix of a position in the result set to start
             the query at.

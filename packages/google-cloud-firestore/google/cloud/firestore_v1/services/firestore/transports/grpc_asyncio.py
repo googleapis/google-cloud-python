@@ -999,6 +999,7 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ServiceUnavailable,
                     ),

@@ -111,53 +111,20 @@ class TransactionOptions(proto.Message):
             This field is a member of `oneof`_ ``mode``.
     """
 
-    class ConcurrencyMode(proto.Enum):
-        r"""The type of concurrency control mode for transactions.
-
-        Values:
-            CONCURRENCY_MODE_UNSPECIFIED (0):
-                Start the transaction with the database-level
-                default concurrency mode.
-            OPTIMISTIC (1):
-                Use optimistic concurrency control for the
-                new transaction.
-            PESSIMISTIC (2):
-                Use pessimistic concurrency control for the
-                new transaction.
-        """
-
-        CONCURRENCY_MODE_UNSPECIFIED = 0
-        OPTIMISTIC = 1
-        PESSIMISTIC = 2
-
     class ReadWrite(proto.Message):
         r"""Options for a transaction that can be used to read and write
         documents.
+        Firestore does not allow 3rd party auth requests to create
+        read-write. transactions.
 
         Attributes:
             retry_transaction (bytes):
                 An optional transaction to retry.
-            concurrency_mode (google.cloud.firestore_v1.types.TransactionOptions.ConcurrencyMode):
-                Optional. The concurrency control mode to use
-                for this transaction.
-                A database is able to use different concurrency
-                modes for different transactions simultaneously.
-
-                3rd party auth requests are only allowed to
-                create optimistic read-write transactions and
-                must specify that here even if the
-                database-level setting is already configured to
-                optimistic.
         """
 
         retry_transaction: bytes = proto.Field(
             proto.BYTES,
             number=1,
-        )
-        concurrency_mode: "TransactionOptions.ConcurrencyMode" = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="TransactionOptions.ConcurrencyMode",
         )
 
     class ReadOnly(proto.Message):

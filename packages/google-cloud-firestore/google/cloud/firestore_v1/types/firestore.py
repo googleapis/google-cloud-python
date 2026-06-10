@@ -884,10 +884,6 @@ class ExecutePipelineRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
-        auto_commit_transaction (bool):
-            Optional. Automatically commits the transaction after the
-            pipeline has been executed. Only permitted in combination
-            with ``transaction`` or ``new_transaction``.
     """
 
     database: str = proto.Field(
@@ -916,10 +912,6 @@ class ExecutePipelineRequest(proto.Message):
         number=7,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
-    )
-    auto_commit_transaction: bool = proto.Field(
-        proto.BOOL,
-        number=9,
     )
 
 
@@ -1789,10 +1781,6 @@ class ListCollectionIdsRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
             For example:
             ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
-
-            Use
-            ``projects/{project_id}/databases/{database_id}/documents``
-            to list top-level collections.
         page_size (int):
             The maximum number of results to return.
         page_token (str):
