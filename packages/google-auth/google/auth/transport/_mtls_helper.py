@@ -20,7 +20,7 @@ import logging
 from os import environ, getenv, path
 import re
 import subprocess
-from typing import Generator, Optional, Tuple, Union
+from typing import cast, Generator, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
 from google.auth import environment_vars
@@ -124,7 +124,9 @@ def secure_cert_key_paths(
                 if (cert_path is None or os.path.exists(cert_path)) and (
                     key_path is None or os.path.exists(key_path)
                 ):
-                    yield cert_path or cert, key_path or key, passphrase
+                    yield cast(str, cert_path or cert), cast(
+                        str, key_path or key
+                    ), passphrase
                     return
             finally:
                 import sys
@@ -143,7 +145,7 @@ def secure_cert_key_paths(
         key_path,
         new_passphrase,
     ):
-        yield cert_path or cert, key_path or key, new_passphrase
+        yield cast(str, cert_path or cert), cast(str, key_path or key), new_passphrase
 
 
 def _encrypt_key_if_plaintext(
@@ -205,7 +207,9 @@ def _secure_wipe_and_remove(file_path: str):
 
 
 @contextlib.contextmanager
-def _memfd_cert_key_paths(cert_bytes: Optional[bytes], key_bytes: Optional[bytes]):
+def _memfd_cert_key_paths(
+    cert_bytes: Optional[bytes], key_bytes: Optional[bytes]
+) -> Generator[Tuple[Optional[str], Optional[str]], None, None]:
     """Creates secure, in-memory virtual files on Linux using memfd_create.
 
     Yields:
@@ -243,8 +247,10 @@ def _memfd_cert_key_paths(cert_bytes: Optional[bytes], key_bytes: Optional[bytes
 
 @contextlib.contextmanager
 def _tempfile_cert_key_paths(
-    cert_bytes: Optional[bytes], key_bytes: Optional[bytes], passphrase: Optional[bytes]
-):
+    cert_bytes: Optional[bytes],
+    key_bytes: Optional[bytes],
+    passphrase: Optional[bytes],
+) -> Generator[Tuple[Optional[str], Optional[str], Optional[bytes]], None, None]:
     """Creates secure temporary file paths on disk, encrypting private keys.
 
     Yields:

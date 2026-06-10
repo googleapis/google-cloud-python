@@ -14,7 +14,6 @@
 
 import http.client as http_client
 import os
-import sys
 from unittest import mock
 
 import pytest  # type: ignore

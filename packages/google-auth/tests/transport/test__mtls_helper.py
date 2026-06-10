@@ -16,9 +16,8 @@ import os
 import re
 from unittest import mock
 
-from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
-from cryptography.hazmat.primitives import hashes
 import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
