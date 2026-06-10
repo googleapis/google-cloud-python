@@ -156,7 +156,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Client Libraries for google-developers-knowledge",
+    "description": "Google Developers Client Libraries for google-developers-knowledge",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
