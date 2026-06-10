@@ -14,6 +14,8 @@
 
 import os
 import re
+import sys
+import tempfile
 from unittest import mock
 
 from cryptography.hazmat.primitives import hashes, serialization
@@ -1022,3 +1024,279 @@ class TestMtlsHelper:
         mock_get_client_ssl_credentials.assert_called_once_with(
             generate_encrypted_key=True
         )
+
+
+class TestSecureCertKeyPaths(object):
+    def test_tier1_pass_through(self):
+        with _mtls_helper.secure_cert_key_paths(
+            "/path/to/cert", "/path/to/key", b"passphrase"
+        ) as (cert_path, key_path, passphrase):
+            assert cert_path == "/path/to/cert"
+            assert key_path == "/path/to/key"
+            assert passphrase == b"passphrase"
+
+    @mock.patch.object(sys, "platform", "linux")
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(_mtls_helper, "_memfd_cert_key_paths", autospec=True)
+    def test_tier2_memfd_success(self, mock_memfd_cm, mock_memfd_create):
+        mock_memfd_ctx = mock.MagicMock()
+        mock_memfd_ctx.__enter__.return_value = (
+            "/proc/self/fd/3",
+            "/proc/self/fd/4",
+        )
+        mock_memfd_cm.return_value = mock_memfd_ctx
+
+        with mock.patch.object(os.path, "exists", return_value=True):
+            with _mtls_helper.secure_cert_key_paths(
+                pytest.public_cert_bytes,
+                pytest.private_key_bytes,
+                b"passphrase",
+            ) as (cert_path, key_path, passphrase):
+                assert cert_path == "/proc/self/fd/3"
+                assert key_path == "/proc/self/fd/4"
+                assert passphrase == b"passphrase"
+            assert mock_memfd_ctx.__exit__.called
+
+    @mock.patch.object(sys, "platform", "linux")
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(_mtls_helper, "_memfd_cert_key_paths", autospec=True)
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_tier2_restricted_filesystem(
+        self, mock_tempfile_cm, mock_memfd_cm, mock_memfd_create
+    ):
+        mock_memfd_ctx = mock.MagicMock()
+        mock_memfd_ctx.__enter__.return_value = (
+            "/proc/self/fd/3",
+            "/proc/self/fd/4",
+        )
+        mock_memfd_cm.return_value = mock_memfd_ctx
+
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.return_value = (
+            "/tmp/cert",
+            "/tmp/key",
+            b"new_pass",
+        )
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        with mock.patch.object(os.path, "exists", return_value=False):
+            with _mtls_helper.secure_cert_key_paths(
+                pytest.public_cert_bytes, pytest.private_key_bytes, b"passphrase"
+            ) as (cert_path, key_path, passphrase):
+                assert cert_path == "/tmp/cert"
+                assert key_path == "/tmp/key"
+                assert passphrase == b"new_pass"
+            mock_memfd_ctx.__exit__.assert_called_once_with(None, None, None)
+
+    @mock.patch.object(sys, "platform", "linux")
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(_mtls_helper, "_memfd_cert_key_paths", autospec=True)
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_tier2_fallback_to_tier3_on_oserror(
+        self, mock_tempfile_cm, mock_memfd_cm, mock_memfd_create
+    ):
+        mock_memfd_ctx = mock.MagicMock()
+        mock_memfd_ctx.__enter__.side_effect = OSError("memfd failed")
+        mock_memfd_cm.return_value = mock_memfd_ctx
+
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.return_value = (
+            "/tmp/cert",
+            "/tmp/key",
+            b"new_pass",
+        )
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        with _mtls_helper.secure_cert_key_paths(
+            pytest.public_cert_bytes, pytest.private_key_bytes, b"passphrase"
+        ) as (cert_path, key_path, passphrase):
+            assert cert_path == "/tmp/cert"
+            assert key_path == "/tmp/key"
+            assert passphrase == b"new_pass"
+
+    @mock.patch.object(sys, "platform", "darwin")
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_tier3_tempfile_success_non_linux(self, mock_tempfile_cm):
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.return_value = (
+            "/tmp/cert",
+            "/tmp/key",
+            b"new_pass",
+        )
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        with _mtls_helper.secure_cert_key_paths(
+            pytest.public_cert_bytes, pytest.private_key_bytes, b"passphrase"
+        ) as (cert_path, key_path, passphrase):
+            assert cert_path == "/tmp/cert"
+            assert key_path == "/tmp/key"
+            assert passphrase == b"new_pass"
+
+    @mock.patch.object(sys, "platform", "darwin")
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_hybrid_inputs(self, mock_tempfile_cm):
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.return_value = (
+            None,
+            "/tmp/key",
+            b"new_pass",
+        )
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        with _mtls_helper.secure_cert_key_paths(
+            "/pass/through/cert.pem", pytest.private_key_bytes, b"passphrase"
+        ) as (cert_path, key_path, passphrase):
+            assert cert_path == "/pass/through/cert.pem"
+            assert key_path == "/tmp/key"
+            assert passphrase == b"new_pass"
+
+
+class TestMemfdCertKeyPaths(object):
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "close")
+    def test_success_both_bytes(self, mock_close, mock_write, mock_memfd_create):
+        mock_memfd_create.side_effect = [10, 11]
+        with _mtls_helper._memfd_cert_key_paths(b"cert", b"key") as (
+            cert_path,
+            key_path,
+        ):
+            assert cert_path == "/proc/self/fd/10"
+            assert key_path == "/proc/self/fd/11"
+        mock_write.assert_has_calls([mock.call(10, b"cert"), mock.call(11, b"key")])
+        assert mock_close.call_count == 2
+
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "close")
+    def test_close_ignores_oserror(self, mock_close, mock_write, mock_memfd_create):
+        mock_memfd_create.return_value = 12
+        mock_close.side_effect = OSError("close error")
+        with _mtls_helper._memfd_cert_key_paths(b"cert", None) as (cert_path, key_path):
+            assert cert_path == "/proc/self/fd/12"
+            assert key_path is None
+        mock_close.assert_called_once_with(12)
+
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "close")
+    def test_write_oserror_prevents_fd_leak(
+        self, mock_close, mock_write, mock_memfd_create
+    ):
+        mock_memfd_create.return_value = 15
+        mock_write.side_effect = OSError("write fault")
+        with pytest.raises(OSError):
+            with _mtls_helper._memfd_cert_key_paths(b"cert", None):
+                pass
+        mock_close.assert_called_once_with(15)
+
+
+class TestTempfileCertKeyPaths(object):
+    @mock.patch.object(os.path, "isdir", return_value=True)
+    @mock.patch.object(tempfile, "mkstemp")
+    @mock.patch.object(os, "fdopen")
+    @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
+    @mock.patch.object(_mtls_helper, "_secure_wipe_and_remove", autospec=True)
+    def test_success_shm(
+        self,
+        mock_wipe,
+        mock_encrypt,
+        mock_fdopen,
+        mock_mkstemp,
+        mock_isdir,
+    ):
+        mock_mkstemp.side_effect = [(1, "/shm/cert"), (2, "/shm/key")]
+        mock_encrypt.return_value = (b"encrypted_key", b"new_pass")
+        mock_file = mock.MagicMock()
+        mock_file.fileno.return_value = 1
+        mock_fdopen.return_value.__enter__.return_value = mock_file
+
+        with mock.patch.object(os, "remove") as mock_remove, mock.patch.object(
+            os.path, "exists", return_value=True
+        ):
+            with _mtls_helper._tempfile_cert_key_paths(b"cert", b"key", b"pass") as (
+                cert_path,
+                key_path,
+                passphrase,
+            ):
+                assert cert_path == "/shm/cert"
+                assert key_path == "/shm/key"
+                assert passphrase == b"new_pass"
+            mock_remove.assert_called_once_with("/shm/cert")
+
+        mock_mkstemp.assert_has_calls(
+            [mock.call(dir="/dev/shm"), mock.call(dir="/dev/shm")]
+        )
+        mock_wipe.assert_called_once_with("/shm/key")
+
+    @mock.patch.object(os.path, "isdir", return_value=True)
+    @mock.patch.object(tempfile, "mkstemp")
+    @mock.patch.object(os, "fdopen")
+    @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
+    @mock.patch.object(_mtls_helper, "_secure_wipe_and_remove", autospec=True)
+    def test_permission_error_loop_resilience(
+        self,
+        mock_wipe,
+        mock_encrypt,
+        mock_fdopen,
+        mock_mkstemp,
+        mock_isdir,
+    ):
+        mock_mkstemp.side_effect = [(1, "/shm/cert"), (2, "/shm/key")]
+        mock_encrypt.return_value = (b"encrypted_key", b"new_pass")
+        mock_file = mock.MagicMock()
+        mock_file.fileno.return_value = 1
+        mock_fdopen.return_value.__enter__.return_value = mock_file
+
+        mock_wipe.side_effect = PermissionError("lock error")
+
+        with mock.patch.object(os, "remove") as mock_remove, mock.patch.object(
+            os.path, "exists", return_value=True
+        ):
+            with _mtls_helper._tempfile_cert_key_paths(b"cert", b"key", b"pass"):
+                pass
+            mock_remove.assert_called_once_with("/shm/cert")
+
+
+class TestEncryptKeyIfPlaintext(object):
+    def test_encrypts_plaintext_key(self):
+        encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+            pytest.private_key_bytes, b"my_passphrase"
+        )
+        assert passphrase == b"my_passphrase"
+        assert encrypted_bytes != pytest.private_key_bytes
+        assert b"ENCRYPTED PRIVATE KEY" in encrypted_bytes
+
+        decrypted = serialization.load_pem_private_key(
+            encrypted_bytes, password=b"my_passphrase"
+        )
+        assert decrypted
+
+    @mock.patch("secrets.token_hex", return_value="0123456789abcdef0123456789abcdef")
+    def test_default_passphrase_generation(self, mock_secrets):
+        encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+            pytest.private_key_bytes, None
+        )
+        assert passphrase == b"0123456789abcdef0123456789abcdef"
+        assert b"ENCRYPTED PRIVATE KEY" in encrypted_bytes
+
+
+class TestSecureWipeAndRemove(object):
+    @mock.patch.object(os.path, "exists", return_value=True)
+    @mock.patch.object(os.path, "getsize", return_value=10)
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.object(os, "fsync")
+    @mock.patch.object(os, "remove")
+    def test_success(
+        self, mock_remove, mock_fsync, mock_open, mock_getsize, mock_exists
+    ):
+        mock_fh = mock.MagicMock()
+        mock_fh.fileno.return_value = 1
+        mock_open.return_value.__enter__.return_value = mock_fh
+
+        _mtls_helper._secure_wipe_and_remove("/path/to/secret")
+
+        mock_open.assert_called_once_with("/path/to/secret", "r+b")
+        mock_fh.write.assert_called_once_with(b"\0" * 10)
+        mock_fsync.assert_called_once()
+        mock_remove.assert_called_once_with("/path/to/secret")

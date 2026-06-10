@@ -189,7 +189,9 @@ def _make_mutual_tls_http(cert, key):
     ):
         try:
             ctx.load_cert_chain(
-                certfile=cert_path, keyfile=key_path, password=passphrase
+                certfile=cert_path,
+                keyfile=key_path,
+                password=passphrase or "",
             )
         except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
             raise exceptions.MutualTLSChannelError(
