@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient",
           "shortName": "DeveloperKnowledgeAsyncClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient.batch_get_documents",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient.batch_get_documents",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.BatchGetDocumentsRequest"
+            "type": "google.developers.knowledge_v1.types.BatchGetDocumentsRequest"
           },
           {
             "name": "retry",
@@ -46,7 +46,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.types.BatchGetDocumentsResponse",
+        "resultType": "google.developers.knowledge_v1.types.BatchGetDocumentsResponse",
         "shortName": "batch_get_documents"
       },
       "description": "Sample for BatchGetDocuments",
@@ -92,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient",
           "shortName": "DeveloperKnowledgeClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient.batch_get_documents",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient.batch_get_documents",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.BatchGetDocuments",
           "service": {
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.BatchGetDocumentsRequest"
+            "type": "google.developers.knowledge_v1.types.BatchGetDocumentsRequest"
           },
           {
             "name": "retry",
@@ -122,7 +122,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.types.BatchGetDocumentsResponse",
+        "resultType": "google.developers.knowledge_v1.types.BatchGetDocumentsResponse",
         "shortName": "batch_get_documents"
       },
       "description": "Sample for BatchGetDocuments",
@@ -169,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient",
           "shortName": "DeveloperKnowledgeAsyncClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient.get_document",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient.get_document",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.GetDocument",
           "service": {
@@ -184,7 +184,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.GetDocumentRequest"
+            "type": "google.developers.knowledge_v1.types.GetDocumentRequest"
           },
           {
             "name": "name",
@@ -203,7 +203,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.types.Document",
+        "resultType": "google.developers.knowledge_v1.types.Document",
         "shortName": "get_document"
       },
       "description": "Sample for GetDocument",
@@ -249,10 +249,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient",
           "shortName": "DeveloperKnowledgeClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient.get_document",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient.get_document",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.GetDocument",
           "service": {
@@ -264,7 +264,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.GetDocumentRequest"
+            "type": "google.developers.knowledge_v1.types.GetDocumentRequest"
           },
           {
             "name": "name",
@@ -283,7 +283,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.types.Document",
+        "resultType": "google.developers.knowledge_v1.types.Document",
         "shortName": "get_document"
       },
       "description": "Sample for GetDocument",
@@ -330,10 +330,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient",
           "shortName": "DeveloperKnowledgeAsyncClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeAsyncClient.search_document_chunks",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeAsyncClient.search_document_chunks",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks",
           "service": {
@@ -345,7 +345,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.SearchDocumentChunksRequest"
+            "type": "google.developers.knowledge_v1.types.SearchDocumentChunksRequest"
           },
           {
             "name": "retry",
@@ -360,7 +360,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksAsyncPager",
+        "resultType": "google.developers.knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksAsyncPager",
         "shortName": "search_document_chunks"
       },
       "description": "Sample for SearchDocumentChunks",
@@ -406,10 +406,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient",
+          "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient",
           "shortName": "DeveloperKnowledgeClient"
         },
-        "fullName": "google.developers_knowledge_v1.DeveloperKnowledgeClient.search_document_chunks",
+        "fullName": "google.developers.knowledge_v1.DeveloperKnowledgeClient.search_document_chunks",
         "method": {
           "fullName": "google.developers.knowledge.v1.DeveloperKnowledge.SearchDocumentChunks",
           "service": {
@@ -421,7 +421,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.developers_knowledge_v1.types.SearchDocumentChunksRequest"
+            "type": "google.developers.knowledge_v1.types.SearchDocumentChunksRequest"
           },
           {
             "name": "retry",
@@ -436,7 +436,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.developers_knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksPager",
+        "resultType": "google.developers.knowledge_v1.services.developer_knowledge.pagers.SearchDocumentChunksPager",
         "shortName": "search_document_chunks"
       },
       "description": "Sample for SearchDocumentChunks",
