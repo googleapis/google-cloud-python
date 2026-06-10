@@ -96,6 +96,7 @@ export class WidgetStateService {
 
   setPageSize(pageSize: number) {
     this.pageSize.set(pageSize);
+    this.page.set(0);
     if (this.model) {
       this.model.set('page_size', pageSize);
       // Reset to page 0 on page size change
