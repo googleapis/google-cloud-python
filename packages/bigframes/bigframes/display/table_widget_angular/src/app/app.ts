@@ -591,8 +591,8 @@ export class App {
       if (!headerDiv) return;
 
       const columnName = headerDiv.textContent?.trim() || '';
+      const columnName = this.getColumnName(headerDiv);
       if (columnName && sortableColumns.includes(columnName)) {
-        header.style.cursor = 'pointer';
 
         let indicatorSpan = headerDiv.querySelector(
           '.sort-indicator'
