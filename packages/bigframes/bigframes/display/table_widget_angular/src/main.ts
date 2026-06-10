@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { bootstrapApplication } from '@angular/platform-browser';
+import { createApplication } from '@angular/platform-browser';
 import { App } from './app/app';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 
@@ -31,7 +31,10 @@ function render({ model, el }: { model: any, el: HTMLElement }) {
     ]
   };
 
-  bootstrapApplication(App, appConfig)
+  createApplication(appConfig)
+    .then((appRef) => {
+      appRef.bootstrap(App, appRoot);
+    })
     .catch((err) => console.error(err));
 }
 
