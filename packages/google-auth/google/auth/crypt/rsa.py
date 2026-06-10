@@ -90,11 +90,9 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     """
 
     def __init__(self, private_key, key_id=None):
-        if isinstance(private_key, RSAPrivateKey):
+        if private_key is None or isinstance(private_key, RSAPrivateKey):
             impl_lib = _cryptography_rsa
-        elif private_key is None or private_key.__class__.__module__.startswith(
-            RSA_KEY_MODULE_PREFIX
-        ):
+        elif private_key.__class__.__module__.startswith(RSA_KEY_MODULE_PREFIX):
             from google.auth.crypt import _python_rsa
 
             impl_lib = _python_rsa
