@@ -56,6 +56,13 @@ from google.cloud.oracledatabase_v1.types import (
     exadb_vm_cluster,
     exascale_db_storage_vault,
     gi_version,
+    goldengate_connection,
+    goldengate_connection_assignment,
+    goldengate_connection_type,
+    goldengate_deployment,
+    goldengate_deployment_environment,
+    goldengate_deployment_type,
+    goldengate_deployment_version,
     minor_version,
     odb_network,
     odb_subnet,
@@ -3265,6 +3272,1041 @@ class ListDbSystemsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListGoldengateDeploymentsPager:
+    """A pager for iterating through ``list_goldengate_deployments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_deployments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateDeployments`` requests and continue to iterate
+    through the ``goldengate_deployments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., goldengate_deployment.ListGoldengateDeploymentsResponse],
+        request: goldengate_deployment.ListGoldengateDeploymentsRequest,
+        response: goldengate_deployment.ListGoldengateDeploymentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment.ListGoldengateDeploymentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[goldengate_deployment.ListGoldengateDeploymentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[goldengate_deployment.GoldengateDeployment]:
+        for page in self.pages:
+            yield from page.goldengate_deployments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentsAsyncPager:
+    """A pager for iterating through ``list_goldengate_deployments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_deployments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateDeployments`` requests and continue to iterate
+    through the ``goldengate_deployments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[goldengate_deployment.ListGoldengateDeploymentsResponse]
+        ],
+        request: goldengate_deployment.ListGoldengateDeploymentsRequest,
+        response: goldengate_deployment.ListGoldengateDeploymentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment.ListGoldengateDeploymentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[goldengate_deployment.ListGoldengateDeploymentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[goldengate_deployment.GoldengateDeployment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_deployments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionsPager:
+    """A pager for iterating through ``list_goldengate_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_connections`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateConnections`` requests and continue to iterate
+    through the ``goldengate_connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., goldengate_connection.ListGoldengateConnectionsResponse],
+        request: goldengate_connection.ListGoldengateConnectionsRequest,
+        response: goldengate_connection.ListGoldengateConnectionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_connection.ListGoldengateConnectionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[goldengate_connection.ListGoldengateConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[goldengate_connection.GoldengateConnection]:
+        for page in self.pages:
+            yield from page.goldengate_connections
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionsAsyncPager:
+    """A pager for iterating through ``list_goldengate_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_connections`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateConnections`` requests and continue to iterate
+    through the ``goldengate_connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[goldengate_connection.ListGoldengateConnectionsResponse]
+        ],
+        request: goldengate_connection.ListGoldengateConnectionsRequest,
+        response: goldengate_connection.ListGoldengateConnectionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_connection.ListGoldengateConnectionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[goldengate_connection.ListGoldengateConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[goldengate_connection.GoldengateConnection]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_connections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentVersionsPager:
+    """A pager for iterating through ``list_goldengate_deployment_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_deployment_versions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateDeploymentVersions`` requests and continue to iterate
+    through the ``goldengate_deployment_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
+        ],
+        request: goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest,
+        response: goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[goldengate_deployment_version.GoldengateDeploymentVersion]:
+        for page in self.pages:
+            yield from page.goldengate_deployment_versions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentVersionsAsyncPager:
+    """A pager for iterating through ``list_goldengate_deployment_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_deployment_versions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateDeploymentVersions`` requests and continue to iterate
+    through the ``goldengate_deployment_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
+            ],
+        ],
+        request: goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest,
+        response: goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentVersionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[goldengate_deployment_version.GoldengateDeploymentVersion]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_deployment_versions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentTypesPager:
+    """A pager for iterating through ``list_goldengate_deployment_types`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_deployment_types`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateDeploymentTypes`` requests and continue to iterate
+    through the ``goldengate_deployment_types`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., goldengate_deployment_type.ListGoldengateDeploymentTypesResponse
+        ],
+        request: goldengate_deployment_type.ListGoldengateDeploymentTypesRequest,
+        response: goldengate_deployment_type.ListGoldengateDeploymentTypesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment_type.ListGoldengateDeploymentTypesRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[goldengate_deployment_type.ListGoldengateDeploymentTypesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[goldengate_deployment_type.GoldengateDeploymentType]:
+        for page in self.pages:
+            yield from page.goldengate_deployment_types
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentTypesAsyncPager:
+    """A pager for iterating through ``list_goldengate_deployment_types`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_deployment_types`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateDeploymentTypes`` requests and continue to iterate
+    through the ``goldengate_deployment_types`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[goldengate_deployment_type.ListGoldengateDeploymentTypesResponse],
+        ],
+        request: goldengate_deployment_type.ListGoldengateDeploymentTypesRequest,
+        response: goldengate_deployment_type.ListGoldengateDeploymentTypesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentTypesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment_type.ListGoldengateDeploymentTypesRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        goldengate_deployment_type.ListGoldengateDeploymentTypesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[goldengate_deployment_type.GoldengateDeploymentType]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_deployment_types:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentEnvironmentsPager:
+    """A pager for iterating through ``list_goldengate_deployment_environments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_deployment_environments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateDeploymentEnvironments`` requests and continue to iterate
+    through the ``goldengate_deployment_environments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse,
+        ],
+        request: goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest,
+        response: goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[goldengate_deployment_environment.GoldengateDeploymentEnvironment]:
+        for page in self.pages:
+            yield from page.goldengate_deployment_environments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateDeploymentEnvironmentsAsyncPager:
+    """A pager for iterating through ``list_goldengate_deployment_environments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_deployment_environments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateDeploymentEnvironments`` requests and continue to iterate
+    through the ``goldengate_deployment_environments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse
+            ],
+        ],
+        request: goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest,
+        response: goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateDeploymentEnvironmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        goldengate_deployment_environment.GoldengateDeploymentEnvironment
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_deployment_environments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionTypesPager:
+    """A pager for iterating through ``list_goldengate_connection_types`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_connection_types`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateConnectionTypes`` requests and continue to iterate
+    through the ``goldengate_connection_types`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., goldengate_connection_type.ListGoldengateConnectionTypesResponse
+        ],
+        request: goldengate_connection_type.ListGoldengateConnectionTypesRequest,
+        response: goldengate_connection_type.ListGoldengateConnectionTypesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_connection_type.ListGoldengateConnectionTypesRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[goldengate_connection_type.ListGoldengateConnectionTypesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[goldengate_connection_type.GoldengateConnectionType]:
+        for page in self.pages:
+            yield from page.goldengate_connection_types
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionTypesAsyncPager:
+    """A pager for iterating through ``list_goldengate_connection_types`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_connection_types`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateConnectionTypes`` requests and continue to iterate
+    through the ``goldengate_connection_types`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[goldengate_connection_type.ListGoldengateConnectionTypesResponse],
+        ],
+        request: goldengate_connection_type.ListGoldengateConnectionTypesRequest,
+        response: goldengate_connection_type.ListGoldengateConnectionTypesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionTypesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = goldengate_connection_type.ListGoldengateConnectionTypesRequest(
+            request
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        goldengate_connection_type.ListGoldengateConnectionTypesResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[goldengate_connection_type.GoldengateConnectionType]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_connection_types:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListDbVersionsPager:
     """A pager for iterating through ``list_db_versions`` requests.
 
@@ -3575,6 +4617,190 @@ class ListDatabaseCharacterSetsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.database_character_sets:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionAssignmentsPager:
+    """A pager for iterating through ``list_goldengate_connection_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``goldengate_connection_assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGoldengateConnectionAssignments`` requests and continue to iterate
+    through the ``goldengate_connection_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse,
+        ],
+        request: goldengate_connection_assignment.ListGoldengateConnectionAssignmentsRequest,
+        response: goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            goldengate_connection_assignment.ListGoldengateConnectionAssignmentsRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[goldengate_connection_assignment.GoldengateConnectionAssignment]:
+        for page in self.pages:
+            yield from page.goldengate_connection_assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGoldengateConnectionAssignmentsAsyncPager:
+    """A pager for iterating through ``list_goldengate_connection_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``goldengate_connection_assignments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGoldengateConnectionAssignments`` requests and continue to iterate
+    through the ``goldengate_connection_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse
+            ],
+        ],
+        request: goldengate_connection_assignment.ListGoldengateConnectionAssignmentsRequest,
+        response: goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.oracledatabase_v1.types.ListGoldengateConnectionAssignmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            goldengate_connection_assignment.ListGoldengateConnectionAssignmentsRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[goldengate_connection_assignment.GoldengateConnectionAssignment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.goldengate_connection_assignments:
                     yield response
 
         return async_generator()

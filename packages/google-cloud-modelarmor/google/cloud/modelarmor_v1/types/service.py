@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DetectionConfidenceLevel",
         "SdpFindingLikelihood",
         "InvocationResult",
+        "StreamingMode",
         "Template",
         "FloorSetting",
         "AiPlatformFloorSetting",
@@ -203,6 +204,23 @@ class InvocationResult(proto.Enum):
     SUCCESS = 1
     PARTIAL = 2
     FAILURE = 3
+
+
+class StreamingMode(proto.Enum):
+    r"""Streaming Mode for Sanitize\* API.
+
+    Values:
+        STREAMING_MODE_UNSPECIFIED (0):
+            Default value.
+        STREAMING_MODE_BUFFERED (1):
+            Buffered Streaming mode.
+        STREAMING_MODE_REALTIME (2):
+            Real Time Streaming mode.
+    """
+
+    STREAMING_MODE_UNSPECIFIED = 0
+    STREAMING_MODE_BUFFERED = 1
+    STREAMING_MODE_REALTIME = 2
 
 
 class Template(proto.Message):
@@ -1076,6 +1094,8 @@ class SdpAdvancedConfig(proto.Message):
 class SanitizeUserPromptRequest(proto.Message):
     r"""Sanitize User Prompt request.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. Represents resource name of
@@ -1086,6 +1106,10 @@ class SanitizeUserPromptRequest(proto.Message):
         multi_language_detection_metadata (google.cloud.modelarmor_v1.types.MultiLanguageDetectionMetadata):
             Optional. Metadata related to Multi Language
             Detection.
+        streaming_mode (google.cloud.modelarmor_v1.types.StreamingMode):
+            Optional. Streaming Mode for StreamSanitize\* API.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     name: str = proto.Field(
@@ -1102,10 +1126,18 @@ class SanitizeUserPromptRequest(proto.Message):
         number=6,
         message="MultiLanguageDetectionMetadata",
     )
+    streaming_mode: "StreamingMode" = proto.Field(
+        proto.ENUM,
+        number=7,
+        optional=True,
+        enum="StreamingMode",
+    )
 
 
 class SanitizeModelResponseRequest(proto.Message):
     r"""Sanitize Model Response request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -1120,6 +1152,10 @@ class SanitizeModelResponseRequest(proto.Message):
         multi_language_detection_metadata (google.cloud.modelarmor_v1.types.MultiLanguageDetectionMetadata):
             Optional. Metadata related for multi language
             detection.
+        streaming_mode (google.cloud.modelarmor_v1.types.StreamingMode):
+            Optional. Streaming Mode for StreamSanitize\* API.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     name: str = proto.Field(
@@ -1139,6 +1175,12 @@ class SanitizeModelResponseRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="MultiLanguageDetectionMetadata",
+    )
+    streaming_mode: "StreamingMode" = proto.Field(
+        proto.ENUM,
+        number=8,
+        optional=True,
+        enum="StreamingMode",
     )
 
 
@@ -1217,6 +1259,9 @@ class SanitizationResult(proto.Message):
                 Passthrough field defined in TemplateMetadata
                 to indicate whether to ignore partial invocation
                 failures.
+            stream_chunk_processed (google.cloud.modelarmor_v1.types.DataItem):
+                Output only. The stream chunk processed by
+                the Sanitization service.
         """
 
         error_code: int = proto.Field(
@@ -1230,6 +1275,11 @@ class SanitizationResult(proto.Message):
         ignore_partial_invocation_failures: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        stream_chunk_processed: "DataItem" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="DataItem",
         )
 
     filter_match_state: "FilterMatchState" = proto.Field(
