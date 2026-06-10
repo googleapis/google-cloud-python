@@ -36,6 +36,7 @@ import io
 import json
 import logging
 import re
+import threading
 from typing import Optional, TYPE_CHECKING
 
 
@@ -200,6 +201,7 @@ class Credentials(
         self._metrics_options = self._create_default_metrics_options()
 
         self._impersonated_credentials = None
+        self._impersonation_lock = threading.Lock()
         self._project_id = None
         self._supplier_context = SupplierContext(
             self._subject_token_type, self._audience
@@ -212,6 +214,15 @@ class Credentials(
                 "workforce_pool_user_project should not be set for non-workforce pool "
                 "credentials"
             )
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state.pop("_impersonation_lock", None)
+        return state
+
+    def __setstate__(self, state):
+        super().__setstate__(state)
+        self._impersonation_lock = threading.Lock()
 
     @property
     def info(self):
@@ -444,16 +455,16 @@ class Credentials(
                 HTTP requests.
             url (str): The URL of the request.
         """
-        if (
-            self._should_initialize_impersonated_credentials()
-            and self.service_account_email
-        ):
-            self._impersonated_credentials = self._initialize_impersonated_credentials()
-            if getattr(self, "token", None):
-                self._impersonated_credentials.token = self.token
-            if getattr(self, "expiry", None):
-                self._impersonated_credentials.expiry = self.expiry
-            self._rab_manager = self._impersonated_credentials._rab_manager
+        if self._should_initialize_impersonated_credentials():
+            with self._impersonation_lock:
+                if self._impersonated_credentials is None:
+                    impersonated = self._initialize_impersonated_credentials()
+                    if getattr(self, "token", None):
+                        impersonated.token = self.token
+                    if getattr(self, "expiry", None):
+                        impersonated.expiry = self.expiry
+                    self._impersonated_credentials = impersonated
+                    self._rab_manager = impersonated._rab_manager
 
         if getattr(self, "_impersonated_credentials", None):
             self._impersonated_credentials._maybe_start_regional_access_boundary_refresh(
@@ -473,7 +484,11 @@ class Credentials(
             )
 
         if self._should_initialize_impersonated_credentials():
-            self._impersonated_credentials = self._initialize_impersonated_credentials()
+            with self._impersonation_lock:
+                if self._impersonated_credentials is None:
+                    self._impersonated_credentials = (
+                        self._initialize_impersonated_credentials()
+                    )
 
         if self._impersonated_credentials:
             self._impersonated_credentials.refresh(request)
@@ -592,9 +607,10 @@ class Credentials(
         return cred
 
     def _should_initialize_impersonated_credentials(self):
+        """Determines if the underlying Service Account credential should be initialized."""
         return (
-            self._service_account_impersonation_url is not None
-            and self._impersonated_credentials is None
+            getattr(self, "_service_account_impersonation_url", None) is not None
+            and getattr(self, "_impersonated_credentials", None) is None
         )
 
     def _initialize_impersonated_credentials(self):
