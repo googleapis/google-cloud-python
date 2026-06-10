@@ -233,6 +233,7 @@ class AsyncMultiRangeDownloader:
         self._open_retries: int = 0
         self.is_finalized: bool = False
         self.full_obj_server_crc32c: Optional[int] = None
+        self.object_metadata: Optional[_storage_v2.Object] = None
 
     async def __aenter__(self):
         """Opens the underlying bidi-gRPC connection to read from the object."""
@@ -330,6 +331,7 @@ class AsyncMultiRangeDownloader:
                 self.persisted_size = self.read_obj_str.persisted_size
             self.is_finalized = self.read_obj_str.is_finalized
             self.full_obj_server_crc32c = self.read_obj_str.full_obj_server_crc32c
+            self.object_metadata = self.read_obj_str.object_metadata
 
             self._is_stream_open = True
 
@@ -368,6 +370,7 @@ class AsyncMultiRangeDownloader:
                 self.read_handle = stream.read_handle
             self.is_finalized = stream.is_finalized
             self.full_obj_server_crc32c = stream.full_obj_server_crc32c
+            self.object_metadata = stream.object_metadata
 
             self.read_obj_str = stream
             self._is_stream_open = True
