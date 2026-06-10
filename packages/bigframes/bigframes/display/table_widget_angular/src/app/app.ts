@@ -411,7 +411,7 @@ export class App {
     const headerDiv = header.querySelector('div.bf-header-content');
     if (!headerDiv) return;
 
-    const columnName = headerDiv.textContent?.trim() || '';
+    const columnName = this.getColumnName(headerDiv);
     const sortableColumns = this.state.orderableColumns();
     if (!columnName || !sortableColumns.includes(columnName)) return;
 
