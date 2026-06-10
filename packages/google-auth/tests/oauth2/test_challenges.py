@@ -18,6 +18,7 @@ import base64
 import hashlib
 import json
 import types
+from typing import Any
 from unittest import mock
 
 import pytest  # type: ignore
@@ -55,7 +56,7 @@ class FakeCtapError(Exception):
 
 
 class FakeCtapHidDevice:
-    devices = []
+    devices: list[Any] = []
 
     @classmethod
     def list_devices(cls):
@@ -63,8 +64,8 @@ class FakeCtapHidDevice:
 
 
 class FakeCtap1:
-    calls = []
-    side_effects = []
+    calls: list[Any] = []
+    side_effects: list[Any] = []
 
     def __init__(self, device):
         self.device = device
@@ -100,9 +101,9 @@ class FakeNoDeviceFoundError(Exception):
 
 
 class FakeCompositeAuthenticator:
-    origins = []
-    calls = []
-    side_effects = []
+    origins: list[str] = []
+    calls: list[Any] = []
+    side_effects: list[Any] = []
 
     def Authenticate(self, app_id, challenge_data, print_callback=None):
         self.calls.append((app_id, challenge_data, print_callback))

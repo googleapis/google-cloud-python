@@ -140,10 +140,10 @@ class SecurityKeyChallenge(ReauthChallenge):
     def _get_fido2_classes(self) -> tuple[Any, Any, Any, Any, Any]:
         """Return fido2 classes used by security key reauth."""
         from fido2.ctap import CtapError  # type: ignore
-        from fido2.ctap1 import (
-            APDU,  # type: ignore
-            ApduError,  # type: ignore
-            Ctap1,  # type: ignore
+        from fido2.ctap1 import (  # type: ignore[import-not-found]
+            APDU,
+            ApduError,
+            Ctap1,
         )
         from fido2.hid import CtapHidDevice  # type: ignore
 
@@ -171,7 +171,7 @@ class SecurityKeyChallenge(ReauthChallenge):
         try:
             devices = list(CtapHidDevice.list_devices())
         except OSError as caught_exc:
-            sys.stderr.write("Failed to list security keys: {}.\n".format(caught_exc))
+            sys.stderr.write(f"Failed to list security keys: {caught_exc}.\n")
             return None
 
         if not devices:
@@ -227,9 +227,7 @@ class SecurityKeyChallenge(ReauthChallenge):
                         raise
                     except OSError as caught_exc:
                         sys.stderr.write(
-                            "Failed to communicate with security key: {}.\n".format(
-                                caught_exc
-                            )
+                            f"Failed to communicate with security key: {caught_exc}.\n"
                         )
                         continue
                     else:
@@ -315,6 +313,8 @@ class SecurityKeyChallenge(ReauthChallenge):
             except pyu2f.errors.NoDeviceFoundError:
                 sys.stderr.write("No security key found.\n")
             return None
+
+        return None
 
     def _obtain_challenge_input_webauthn(self, metadata, webauthn_handler):
         sk = metadata.get("securityKey")
