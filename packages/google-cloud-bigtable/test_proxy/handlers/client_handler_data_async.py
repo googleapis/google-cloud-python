@@ -250,7 +250,11 @@ class TestProxyClientHandlerAsync:
         kwargs["operation_timeout"] = (
             kwargs.get("operation_timeout", self.per_operation_timeout) or 20
         )
-        result = CrossSync.rm_aio(await table.sample_row_keys(**kwargs))
+        row_range = None
+        if "row_range" in request:
+            from google.cloud.bigtable.data.read_rows_query import RowRange
+            row_range = RowRange._from_dict(request["row_range"])
+        result = CrossSync.rm_aio(await table.sample_row_keys(row_range=row_range, **kwargs))
         return result
 
     @error_safe

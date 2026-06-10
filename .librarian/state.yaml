@@ -14,7 +14,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
-    version: 2.41.0
+    version: 2.42.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -515,7 +515,7 @@ libraries:
       - packages/google-cloud-advisorynotifications/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-agentidentitycredentials
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/cloud/agentidentitycredentials/v1
