@@ -111,6 +111,9 @@ class PasswordChallenge(ReauthChallenge):
 class SecurityKeyChallenge(ReauthChallenge):
     """Challenge that asks for user's security key touch."""
 
+    class _SecurityKeyTimeout(Exception):
+        """Raised when the security key touch request times out."""
+
     @property
     def name(self):
         return "SECURITY_KEY"
@@ -149,6 +152,40 @@ class SecurityKeyChallenge(ReauthChallenge):
 
         return CtapHidDevice, Ctap1, APDU, ApduError, CtapError
 
+    def _authenticate_device(
+        self, device: Any, client_param: bytes, app_param: bytes, key_handle: bytes
+    ) -> Optional[Any]:
+        """Authenticate one fido2 device.
+
+        Returns None when the caller should continue with another device.
+        """
+        _, Ctap1, APDU, ApduError, CtapError = self._get_fido2_classes()
+
+        try:
+            return Ctap1(device).authenticate(client_param, app_param, key_handle)
+        except ApduError as caught_exc:
+            if caught_exc.code == APDU.WRONG_DATA:
+                return None
+            if caught_exc.code == APDU.USE_NOT_SATISFIED:
+                sys.stderr.write("Timed out while waiting for security key touch.\n")
+                raise self._SecurityKeyTimeout()
+            raise
+        except CtapError as caught_exc:
+            if caught_exc.code in (
+                CtapError.ERR.TIMEOUT,
+                CtapError.ERR.ACTION_TIMEOUT,
+                CtapError.ERR.KEEPALIVE_CANCEL,
+                CtapError.ERR.OPERATION_DENIED,
+            ):
+                sys.stderr.write("Timed out while waiting for security key touch.\n")
+                raise self._SecurityKeyTimeout()
+            raise
+        except OSError as caught_exc:
+            sys.stderr.write(
+                f"Failed to communicate with security key: {caught_exc}.\n"
+            )
+            return None
+
     def _get_pyu2f_module(self) -> Any:
         """Return pyu2f module used by the legacy security key fallback."""
         try:
@@ -166,7 +203,7 @@ class SecurityKeyChallenge(ReauthChallenge):
         self, metadata: Mapping[str, Any]
     ) -> Optional[dict]:
         """Obtain security key challenge input using fido2."""
-        CtapHidDevice, Ctap1, APDU, ApduError, CtapError = self._get_fido2_classes()
+        CtapHidDevice = self._get_fido2_classes()[0]
 
         try:
             devices = list(CtapHidDevice.list_devices())
@@ -192,45 +229,20 @@ class SecurityKeyChallenge(ReauthChallenge):
             application_parameters = [application_id]
 
         sys.stderr.write("Please touch your security key.\n")
-        for app_id in application_parameters:
-            app_param = hashlib.sha256(app_id.encode("utf-8")).digest()
-            for challenge in challenges:
-                key_handle = self._urlsafe_b64decode(challenge["keyHandle"])
-                challenge_bytes = self._urlsafe_b64decode(challenge["challenge"])
-                client_data = self._create_u2f_client_data(challenge_bytes)
-                client_param = hashlib.sha256(client_data).digest()
-                for device in devices:
-                    try:
-                        signature = Ctap1(device).authenticate(
-                            client_param, app_param, key_handle
+        try:
+            for app_id in application_parameters:
+                app_param = hashlib.sha256(app_id.encode("utf-8")).digest()
+                for challenge in challenges:
+                    key_handle = self._urlsafe_b64decode(challenge["keyHandle"])
+                    challenge_bytes = self._urlsafe_b64decode(challenge["challenge"])
+                    client_data = self._create_u2f_client_data(challenge_bytes)
+                    client_param = hashlib.sha256(client_data).digest()
+                    for device in devices:
+                        signature = self._authenticate_device(
+                            device, client_param, app_param, key_handle
                         )
-                    except ApduError as caught_exc:
-                        if caught_exc.code == APDU.WRONG_DATA:
+                        if signature is None:
                             continue
-                        if caught_exc.code == APDU.USE_NOT_SATISFIED:
-                            sys.stderr.write(
-                                "Timed out while waiting for security key touch.\n"
-                            )
-                            return None
-                        raise
-                    except CtapError as caught_exc:
-                        if caught_exc.code in (
-                            CtapError.ERR.TIMEOUT,
-                            CtapError.ERR.ACTION_TIMEOUT,
-                            CtapError.ERR.KEEPALIVE_CANCEL,
-                            CtapError.ERR.OPERATION_DENIED,
-                        ):
-                            sys.stderr.write(
-                                "Timed out while waiting for security key touch.\n"
-                            )
-                            return None
-                        raise
-                    except OSError as caught_exc:
-                        sys.stderr.write(
-                            f"Failed to communicate with security key: {caught_exc}.\n"
-                        )
-                        continue
-                    else:
                         return {
                             "securityKey": {
                                 "clientData": self._unpadded_urlsafe_b64encode(
@@ -245,6 +257,9 @@ class SecurityKeyChallenge(ReauthChallenge):
                                 ),
                             }
                         }
+        except self._SecurityKeyTimeout:
+            return None
+
         sys.stderr.write("Ineligible security key.\n")
         return None
 
