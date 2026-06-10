@@ -120,7 +120,7 @@ class MdsMtlsAdapter(HTTPAdapter):
         self.ssl_context = ssl.create_default_context()
         self.ssl_context.load_verify_locations(cafile=mds_mtls_config.ca_cert_path)
         self.ssl_context.load_cert_chain(
-            certfile=mds_mtls_config.client_combined_cert_path
+            certfile=mds_mtls_config.client_combined_cert_path, password=""
         )
         super(MdsMtlsAdapter, self).__init__(*args, **kwargs)
 
