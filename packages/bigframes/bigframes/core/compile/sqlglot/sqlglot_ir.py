@@ -253,7 +253,10 @@ class SQLGlotIR:
                     this=expr,
                     alias=sql.identifier(id),
                 )
-                if expr.alias_or_name != id
+                if not (
+                    (isinstance(expr, sge.Column) and expr.name == id)
+                    or (isinstance(expr, sge.Alias) and expr.alias == id)
+                )
                 else expr
                 for id, expr in selections
             ]
