@@ -639,12 +639,19 @@ class TestImpersonatedCredentials(object):
 
         assert signature == b"signature"
 
-    @mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel", autospec=True)
-    def test_sign_bytes_configures_mtls(self, mock_configure_mtls, mock_donor_credentials, mock_authorizedsession_sign):
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_sign_bytes_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials, mock_authorizedsession_sign
+    ):
         credentials = self.make_credentials(lifetime=None)
         # Refresh is needed to make credentials valid before signing
         request = self.make_request(
-            data=json.dumps({"accessToken": "token", "expireTime": "2026-06-09T00:00:00Z"}),
+            data=json.dumps(
+                {"accessToken": "token", "expireTime": "2026-06-09T00:00:00Z"}
+            ),
             status=http_client.OK,
         )
         credentials.refresh(request)
@@ -764,8 +771,13 @@ class TestImpersonatedCredentials(object):
         )
         assert credentials._target_scopes == ["fake_scope1"]
 
-    @mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel", autospec=True)
-    def test_id_token_refresh_configures_mtls(self, mock_configure_mtls, mock_donor_credentials):
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_id_token_refresh_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials
+    ):
         credentials = self.make_credentials(lifetime=None)
         credentials.token = "token"
         id_creds = impersonated_credentials.IDTokenCredentials(
@@ -775,7 +787,9 @@ class TestImpersonatedCredentials(object):
         with mock.patch(
             "google.auth.transport.requests.AuthorizedSession.post", autospec=True
         ) as mock_post:
-            mock_post.return_value = MockResponse({"token": ID_TOKEN_DATA}, http_client.OK)
+            mock_post.return_value = MockResponse(
+                {"token": ID_TOKEN_DATA}, http_client.OK
+            )
             id_creds.refresh(None)
 
             mock_configure_mtls.assert_called_once()
