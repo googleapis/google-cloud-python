@@ -605,6 +605,19 @@ class TestCredentials(object):
         )
 
     @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
+    def test_from_info_programmatic_supplier_keyword(self, mock_init):
+        supplier = TestSubjectTokenSupplier()
+        info = {
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+        }
+        credentials = identity_pool.Credentials.from_info(info, subject_token_supplier=supplier)
+
+        assert isinstance(credentials, identity_pool.Credentials)
+        assert mock_init.call_args[1]["subject_token_supplier"] == supplier
+
+    @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
     def test_from_file_full_options(self, mock_init, tmpdir):
         info = {
             "audience": AUDIENCE,

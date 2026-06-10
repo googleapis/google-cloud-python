@@ -1039,6 +1039,19 @@ class TestCredentials(object):
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
+    def test_from_info_programmatic_supplier_keyword(self, mock_init):
+        supplier = TestAwsSecurityCredentialsSupplier()
+        info = {
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+        }
+        credentials = aws.Credentials.from_info(info, aws_security_credentials_supplier=supplier)
+
+        assert isinstance(credentials, aws.Credentials)
+        assert mock_init.call_args[1]["aws_security_credentials_supplier"] == supplier
+
+    @mock.patch.object(aws.Credentials, "__init__", return_value=None)
     def test_from_file_full_options(self, mock_init, tmpdir):
         info = {
             "audience": AUDIENCE,
