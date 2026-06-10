@@ -63,6 +63,7 @@ from google.cloud.ces_v1beta.services.tool_service import (
 from google.cloud.ces_v1beta.types import (
     mocks,
     schema,
+    search_suggestions,
     session_service,
     tool,
     tool_service,
