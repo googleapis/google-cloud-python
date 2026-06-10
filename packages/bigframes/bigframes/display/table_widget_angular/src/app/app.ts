@@ -575,6 +575,12 @@ export class App {
     this.state.setSortContext(newContext);
   }
 
+  private getColumnName(headerDiv: HTMLElement): string {
+    const clone = headerDiv.cloneNode(true) as HTMLElement;
+    clone.querySelector('.sort-indicator')?.remove();
+    return clone.textContent?.trim() || '';
+  }
+
   private applySortIndicators() {
     const container = this.tableContainerRef?.nativeElement;
     if (!container) return;
