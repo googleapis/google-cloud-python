@@ -6440,9 +6440,8 @@ var rd = (() => {
   }
   return e12;
 })();
-async function Ea(e12, t, n) {
-  let r = N({ rootComponent: e12 }, xm(t, n));
-  return Zu(r);
+async function Ea(e12, t) {
+  return Zu(xm(e12, t));
 }
 function xm(e12, t) {
   return { platformRef: t?.platformRef, appProviders: [...Pm, ...e12?.providers ?? []], platformProviders: km };
@@ -6735,7 +6734,9 @@ function Bm({ model: e12, el: t }) {
   let n = document.createElement("app-root");
   t.appendChild(n);
   let r = { providers: [Oi(), sa(), { provide: "ANYWIDGET_MODEL", useValue: e12 }] };
-  Ea(fo, r).catch((o) => console.error(o));
+  Ea(r).then((o) => {
+    o.bootstrap(fo, n);
+  }).catch((o) => console.error(o));
 }
 var tS = { render: Bm };
 export {
