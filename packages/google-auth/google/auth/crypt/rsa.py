@@ -103,6 +103,9 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
+        # Support subclasses or mock signer implementations (e.g. in test suites)
+        # that define `_key_id` directly on the outer instance instead of fully
+        # initializing an underlying `_impl` backend.
         key_id = getattr(self, "_key_id", None)
         if key_id is not None:
             return key_id
