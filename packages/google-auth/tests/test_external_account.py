@@ -1035,15 +1035,13 @@ class TestCredentials(object):
             scopes=self.SCOPES,
         )
 
-        assert credentials._impersonated_credentials is not None
+        assert credentials._impersonated_credentials is None
 
         # Simulate cached token by setting it directly.
         credentials.token = "CACHED_SA_TOKEN"
         credentials.expiry = _helpers.utcnow() + datetime.timedelta(seconds=3600)
 
         assert credentials.token == "CACHED_SA_TOKEN"
-        assert credentials._impersonated_credentials.token == "CACHED_SA_TOKEN"
-        assert credentials._impersonated_credentials.expiry == credentials.expiry
 
         request = self.make_mock_request(status=http_client.OK, data={})
 
@@ -1053,6 +1051,10 @@ class TestCredentials(object):
         ) as mock_rab_refresh:
             headers = {}
             credentials.before_request(request, "GET", "https://example.com", headers)
+
+            assert credentials._impersonated_credentials is not None
+            assert credentials._impersonated_credentials.token == "CACHED_SA_TOKEN"
+            assert credentials._impersonated_credentials.expiry == credentials.expiry
 
             # Verify delegation occurred.
             mock_rab_refresh.assert_called_once_with(request, "https://example.com")

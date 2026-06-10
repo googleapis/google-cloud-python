@@ -660,8 +660,6 @@ class Credentials(external_account.Credentials):
             :meth:`from_file` or
             :meth:`from_info` are used instead of calling the constructor directly.
         """
-        if aws_security_credentials_supplier is not None:
-            self._aws_security_credentials_supplier = aws_security_credentials_supplier
         super(Credentials, self).__init__(
             audience=audience,
             subject_token_type=subject_token_type,
