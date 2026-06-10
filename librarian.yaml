@@ -2226,7 +2226,7 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
-  - name: google-developers-knowledge
+  - name: google-developer-knowledge
     version: 0.0.0
     apis:
       - path: google/developers/knowledge/v1
@@ -2235,7 +2235,7 @@ libraries:
       opt_args_by_api:
         google/developers/knowledge/v1:
           - python-gapic-namespace=google
-          - python-gapic-name=developers_knowledge
+          - python-gapic-name=developer_knowledge
       default_version: v1
   - name: google-devicesandservices-health
     version: 0.1.0
