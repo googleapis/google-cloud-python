@@ -254,6 +254,10 @@ class VerifyAttestationRequest(proto.Message):
         attester (str):
             Optional. An optional indicator of the
             attester, only applies to certain products.
+        instance (str):
+            Optional. Optional resource link of the Compute Engine
+            instance. Format:
+            ``projects/{project_number}/zones/{zone}/instances/{instance_id}``
     """
 
     td_ccel: "TdxCcelAttestation" = proto.Field(
@@ -301,6 +305,10 @@ class VerifyAttestationRequest(proto.Message):
     attester: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

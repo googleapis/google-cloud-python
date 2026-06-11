@@ -5420,21 +5420,21 @@ libraries:
       - packages/google-crc32c/README.rst
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
-  - id: google-developers-knowledge
+  - id: google-developer-knowledge
     version: 0.0.0
     last_generated_commit: ""
     apis:
       - path: google/developers/knowledge/v1
     source_roots:
-      - packages/google-developers-knowledge
+      - packages/google-developer-knowledge
     preserve_regex: []
     remove_regex: []
     release_exclude_paths:
-      - packages/google-developers-knowledge/.repo-metadata.json
-      - packages/google-developers-knowledge/noxfile.py
-      - packages/google-developers-knowledge/tests/
-      - packages/google-developers-knowledge/README.rst
-      - packages/google-developers-knowledge/docs/
+      - packages/google-developer-knowledge/.repo-metadata.json
+      - packages/google-developer-knowledge/noxfile.py
+      - packages/google-developer-knowledge/tests/
+      - packages/google-developer-knowledge/README.rst
+      - packages/google-developer-knowledge/docs/
     tag_format: '{id}-v{version}'
   - id: google-devicesandservices-health
     version: 0.1.0
