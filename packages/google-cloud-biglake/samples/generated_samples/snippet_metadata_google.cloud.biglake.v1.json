@@ -46,6 +46,10 @@
             "type": "str"
           },
           {
+            "name": "primary_location",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -131,6 +135,10 @@
           },
           {
             "name": "iceberg_catalog_id",
+            "type": "str"
+          },
+          {
+            "name": "primary_location",
             "type": "str"
           },
           {

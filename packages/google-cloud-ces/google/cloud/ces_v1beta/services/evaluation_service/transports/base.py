@@ -309,6 +309,21 @@ class EvaluationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_evaluation_runs: gapic_v1.method.wrap_method(
+                self.export_evaluation_runs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_results: gapic_v1.method.wrap_method(
+                self.export_evaluation_results,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_evaluation_result_metrics: gapic_v1.method.wrap_method(
+                self.run_evaluation_result_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -681,6 +696,33 @@ class EvaluationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [evaluation_service.ExportEvaluationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluation_runs(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationRunsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluation_results(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationResultsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_evaluation_result_metrics(
+        self,
+    ) -> Callable[
+        [evaluation_service.RunEvaluationResultMetricsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

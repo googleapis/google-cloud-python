@@ -592,7 +592,6 @@ class DepServiceAsyncClient:
                 lb_traffic_extension.name = "name_value"
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_traffic_extension.extension_chains.extensions.name = "name_value"
                 lb_traffic_extension.extension_chains.extensions.service = "service_value"
                 lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -748,7 +747,6 @@ class DepServiceAsyncClient:
                 lb_traffic_extension.name = "name_value"
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_traffic_extension.extension_chains.extensions.name = "name_value"
                 lb_traffic_extension.extension_chains.extensions.service = "service_value"
                 lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1273,7 +1271,6 @@ class DepServiceAsyncClient:
                 lb_route_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_route_extension.extension_chains.name = "name_value"
                 lb_route_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_route_extension.extension_chains.extensions.name = "name_value"
                 lb_route_extension.extension_chains.extensions.service = "service_value"
                 lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1427,7 +1424,6 @@ class DepServiceAsyncClient:
                 lb_route_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_route_extension.extension_chains.name = "name_value"
                 lb_route_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_route_extension.extension_chains.extensions.name = "name_value"
                 lb_route_extension.extension_chains.extensions.service = "service_value"
                 lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1950,7 +1946,6 @@ class DepServiceAsyncClient:
                 lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_edge_extension.extension_chains.name = "name_value"
                 lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_edge_extension.extension_chains.extensions.name = "name_value"
                 lb_edge_extension.extension_chains.extensions.service = "service_value"
                 lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -2105,7 +2100,6 @@ class DepServiceAsyncClient:
                 lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_edge_extension.extension_chains.name = "name_value"
                 lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_edge_extension.extension_chains.extensions.name = "name_value"
                 lb_edge_extension.extension_chains.extensions.service = "service_value"
                 lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -2626,8 +2620,6 @@ class DepServiceAsyncClient:
                 # Initialize request argument(s)
                 authz_extension = network_services_v1.AuthzExtension()
                 authz_extension.name = "name_value"
-                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-                authz_extension.authority = "authority_value"
                 authz_extension.service = "service_value"
 
                 request = network_services_v1.CreateAuthzExtensionRequest(
@@ -2778,8 +2770,6 @@ class DepServiceAsyncClient:
                 # Initialize request argument(s)
                 authz_extension = network_services_v1.AuthzExtension()
                 authz_extension.name = "name_value"
-                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-                authz_extension.authority = "authority_value"
                 authz_extension.service = "service_value"
 
                 request = network_services_v1.UpdateAuthzExtensionRequest(

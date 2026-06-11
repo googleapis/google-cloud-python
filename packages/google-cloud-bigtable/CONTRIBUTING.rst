@@ -95,10 +95,10 @@ On Debian/Ubuntu::
 ************
 Coding Style
 ************
-- We use the automatic code formatter ``black``. You can run it using
-  the nox session ``blacken``. This will eliminate many lint errors. Run via::
+- We use the automatic code formatter ``ruff``. You can run it using
+  the nox session ``format``. This will eliminate many lint errors. Run via::
 
-   $ nox -s blacken
+   $ nox -s format
 
 - PEP8 compliance is required, with exceptions defined in the linter configuration.
   If you have ``nox`` installed, you can test that you have not introduced
