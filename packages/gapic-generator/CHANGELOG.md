@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.1...gapic-generator-v1.35.0) (2026-06-11)
+
+
+### Features
+
+* setup.py matches prerelease versions (#17370) ([25b857e1bc196da5b56cf599ec346967c6559922](https://github.com/googleapis/google-cloud-python/commit/25b857e1bc196da5b56cf599ec346967c6559922))
+
+
+### Bug Fixes
+
+* require protobuf 6.33.5 to address CVE-2026-0994 (#17349) ([66422636633e980324877f2ff3805a284001ad38](https://github.com/googleapis/google-cloud-python/commit/66422636633e980324877f2ff3805a284001ad38))
+
 ## [1.34.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.0...gapic-generator-v1.34.1) (2026-05-27)
 
 ## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.33.0...gapic-generator-v1.34.0) (2026-05-27)
