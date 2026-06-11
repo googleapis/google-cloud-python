@@ -2336,6 +2336,10 @@ def test_watch_document(client, cleanup, database):
     doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
     sleep(0.2)
 
     # Setup listener
@@ -2384,6 +2388,10 @@ def test_watch_collection(client, cleanup, database):
 
     collection_ref.on_snapshot(on_snapshot)
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
     # delay here so initial on_snapshot occurs and isn't combined with set
     sleep(0.2)
 
@@ -2411,6 +2419,10 @@ def test_watch_query(client, cleanup, database):
     doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
     sleep(0.2)
 
     # Setup listener
@@ -2806,6 +2818,10 @@ def test_watch_query_order(client, cleanup, database):
     on_snapshot.failed = None
     query_ref.on_snapshot(on_snapshot)
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
     sleep(0.2)
 
     doc_ref1.set({"first": "Ada", "last": "Lovelace", "born": 1815})
