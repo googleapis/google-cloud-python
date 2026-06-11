@@ -25,6 +25,15 @@ from importlib import metadata
 
 from .services.dep_service import DepServiceAsyncClient, DepServiceClient
 from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
+from .types.agent_gateway import (
+    AgentGateway,
+    CreateAgentGatewayRequest,
+    DeleteAgentGatewayRequest,
+    GetAgentGatewayRequest,
+    ListAgentGatewaysRequest,
+    ListAgentGatewaysResponse,
+    UpdateAgentGatewayRequest,
+)
 from .types.common import (
     EndpointMatcher,
     EnvoyHeaders,
@@ -33,6 +42,7 @@ from .types.common import (
 )
 from .types.dep import (
     AuthzExtension,
+    BodySendMode,
     CreateAuthzExtensionRequest,
     CreateLbEdgeExtensionRequest,
     CreateLbRouteExtensionRequest,
@@ -259,7 +269,10 @@ else:  # pragma: NO COVER
 __all__ = (
     "DepServiceAsyncClient",
     "NetworkServicesAsyncClient",
+    "AgentGateway",
     "AuthzExtension",
+    "BodySendMode",
+    "CreateAgentGatewayRequest",
     "CreateAuthzExtensionRequest",
     "CreateEndpointPolicyRequest",
     "CreateGatewayRequest",
@@ -275,6 +288,7 @@ __all__ = (
     "CreateTlsRouteRequest",
     "CreateWasmPluginRequest",
     "CreateWasmPluginVersionRequest",
+    "DeleteAgentGatewayRequest",
     "DeleteAuthzExtensionRequest",
     "DeleteEndpointPolicyRequest",
     "DeleteGatewayRequest",
@@ -298,6 +312,7 @@ __all__ = (
     "ExtensionChain",
     "Gateway",
     "GatewayRouteView",
+    "GetAgentGatewayRequest",
     "GetAuthzExtensionRequest",
     "GetEndpointPolicyRequest",
     "GetGatewayRequest",
@@ -320,6 +335,8 @@ __all__ = (
     "LbEdgeExtension",
     "LbRouteExtension",
     "LbTrafficExtension",
+    "ListAgentGatewaysRequest",
+    "ListAgentGatewaysResponse",
     "ListAuthzExtensionsRequest",
     "ListAuthzExtensionsResponse",
     "ListEndpointPoliciesRequest",
@@ -364,6 +381,7 @@ __all__ = (
     "TcpRoute",
     "TlsRoute",
     "TrafficPortSelector",
+    "UpdateAgentGatewayRequest",
     "UpdateAuthzExtensionRequest",
     "UpdateEndpointPolicyRequest",
     "UpdateGatewayRequest",

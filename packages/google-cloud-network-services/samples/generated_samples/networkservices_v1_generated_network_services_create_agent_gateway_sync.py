@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateLbRouteExtension
+# Snippet for CreateAgentGateway
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-network-services
 
 
-# [START networkservices_v1_generated_DepService_UpdateLbRouteExtension_async]
+# [START networkservices_v1_generated_NetworkServices_CreateAgentGateway_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,37 +34,25 @@
 from google.cloud import network_services_v1
 
 
-async def sample_update_lb_route_extension():
+def sample_create_agent_gateway():
     # Create a client
-    client = network_services_v1.DepServiceAsyncClient()
+    client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    lb_route_extension = network_services_v1.LbRouteExtension()
-    lb_route_extension.name = "name_value"
-    lb_route_extension.forwarding_rules = [
-        "forwarding_rules_value1",
-        "forwarding_rules_value2",
-    ]
-    lb_route_extension.extension_chains.name = "name_value"
-    lb_route_extension.extension_chains.match_condition.cel_expression = (
-        "cel_expression_value"
-    )
-    lb_route_extension.extension_chains.extensions.service = "service_value"
-    lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-
-    request = network_services_v1.UpdateLbRouteExtensionRequest(
-        lb_route_extension=lb_route_extension,
+    request = network_services_v1.CreateAgentGatewayRequest(
+        parent="parent_value",
+        agent_gateway_id="agent_gateway_id_value",
     )
 
     # Make the request
-    operation = await client.update_lb_route_extension(request=request)
+    operation = client.create_agent_gateway(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
 
-# [END networkservices_v1_generated_DepService_UpdateLbRouteExtension_async]
+# [END networkservices_v1_generated_NetworkServices_CreateAgentGateway_sync]
