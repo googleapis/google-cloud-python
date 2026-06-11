@@ -2,6 +2,7 @@ urn: extension:google:bq_scalar_functions
 scalar_functions:
   - name: "bool"
     description: "Converts a JSON boolean to a SQL BOOL value."
+    series_accessor_arg: json_string_expression
     impls:
       # Signature: bool:str
       - args:
@@ -12,6 +13,7 @@ scalar_functions:
         return: boolean
   - name: "double"
     description: "Converts a JSON number to a SQL FLOAT64 value."
+    series_accessor_arg: json_string_expression
     impls:
       # Signature: double:str_str
       - args:
@@ -26,6 +28,7 @@ scalar_functions:
         return: fp64
   - name: "float64"
     description: "Converts a JSON number to a SQL FLOAT64 value."
+    series_accessor_arg: json_string_expression
     impls:
       # Signature: float64:str_str
       - args:
@@ -40,6 +43,7 @@ scalar_functions:
         return: fp64
   - name: "int64"
     description: "Converts a JSON number to a SQL INT64 value."
+    series_accessor_arg: json_string_expression
     impls:
       # Signature: int64:str
       - args:
@@ -50,6 +54,7 @@ scalar_functions:
         return: i64
   - name: "parse_bignumeric"
     description: "Converts a STRING to a BIGNUMERIC value."
+    series_accessor_arg: string_expression
     impls:
       # Signature: parse_bignumeric:str
       - args:
@@ -60,6 +65,7 @@ scalar_functions:
         return: decimal<76,38>
   - name: "parse_numeric"
     description: "Converts a STRING to a NUMERIC value."
+    series_accessor_arg: string_expression
     impls:
       # Signature: parse_numeric:str
       - args:
@@ -70,6 +76,7 @@ scalar_functions:
         return: decimal<38,9>
   - name: "string"
     description: "Converts a value to a STRING value."
+    series_accessor_arg: expression
     impls:
       # Signature: string:pts_str
       - args:
