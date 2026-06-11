@@ -51,7 +51,7 @@ jobs:
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           
           # Read the first 50 lines to prevent blowing up the issue body if it's massive
-          CSV_PREVIEW=$(head -n 50 scanner_output.csv)
+          CSV_PREVIEW=$(head -n 50 version_scanner_output.csv)
           
           BODY="The [Version Scanner]($RUN_URL) found deprecated dependencies in the repository.
           
