@@ -32,8 +32,15 @@ jobs:
           
       - name: Run Version Scanner
         run: |
-          # We pipe the output to a file so we can read it in the next step
-          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout > scanner_output.csv
+          # Use -o to output the raw CSV to a file, and --stdout to print the summary to the GitHub Actions UI
+          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout -o scanner_output.csv
+          
+      - name: Upload CSV Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-scanner-results
+          path: scanner_output.csv
           
       - name: Create or update issue on finding
         if: failure()
