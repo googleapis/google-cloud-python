@@ -37,11 +37,12 @@
         # Option A: Push directly
         legacylibrarian release stage --repo=https://github.com/googleapis/google-cloud-python --library=bigframes --library-version=X.X.X --push
 
-        # Option B: Manual edit first (omit -push, edit files in /tmp/librarian-*, commit/push from there)
+        # Option B: Manual edit first (omit --push, edit files in /tmp/librarian-*, commit/push from there)
         legacylibrarian release stage --repo=https://github.com/googleapis/google-cloud-python --library=bigframes --library-version=X.X.X
         # In /tmp repository:
         git commit -a -m "chore: create release" --no-verify  # keep librarian config pristine
-        # Push branch & create PR on GitHub with release:pending label
+        git push origin HEAD
+        gh pr create --fill --label "release:pending"
 
 *   Post-release restore:
 
