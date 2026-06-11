@@ -513,7 +513,7 @@ def test_main_stdout(capsys):
     assert "=== CSV Output ===" in captured.out
     assert "test.py," in captured.out
     assert "test," in captured.out
-    assert '="3.7"' in captured.out
+    assert '"=""3.7"""' in captured.out
 
 def test_scan_file_truncation_bug(tmp_path):
     """Test that searching for 3.1 does NOT match 3.10 (truncation bug)."""
