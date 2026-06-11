@@ -2065,9 +2065,13 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.Udf):
+        from bigframes._config import options
+
+        if isinstance(func, bigframes.functions.Udf) or (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
             # We are working with bigquery function at this point
-            result_series = self._apply_nary_op(ops.func_to_op(func), args)
+            result_series = self._apply_callable_expr(ops.func_to_expr(func), args)
             # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
             # `name`. Manually reassigning it here as a temporary fix.
             result_series.name = self.name
@@ -2119,8 +2123,12 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+        from bigframes._config import options
+
+        if isinstance(func, bigframes.functions.Udf) or (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
+            result_series = self._apply_callable_expr(ops.func_to_expr(func), (other,))
             if hasattr(other, "name") and other.name != self._name:  # type: ignore
                 result_series.name = None
             else:
@@ -2725,6 +2733,19 @@ class Series:
             others, ignore_self=ignore_self, cast_scalars=False
         )
         block, result_id = block.project_expr(op.as_expr(*values))
+        return Series(block.select_column(result_id).with_column_labels([None]))
+
+    def _apply_callable_expr(
+        self,
+        callable_expr: bigframes.operations.to_op.CallableExpression,
+        others: Sequence[typing.Union[Series, scalars.Scalar]],
+        ignore_self=False,
+    ):
+        """Applies a CallableExpression to the series and others."""
+        values, block = self._align_n(
+            others, ignore_self=ignore_self, cast_scalars=False
+        )
+        block, result_id = block.project_expr(callable_expr.apply(*values))
         return Series(block.select_column(result_id).with_column_labels([None]))
 
     def _apply_binary_aggregation(

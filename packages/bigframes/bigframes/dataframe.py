@@ -4692,13 +4692,17 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.Udf):
+        from bigframes._config import options
+
+        if not isinstance(func, bigframes.functions.Udf) and not (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        expr = ops.func_to_op(func).as_expr(ex.free_var("input"))
+        expr = ops.func_to_expr(func).apply(ex.free_var("input"))
         if na_action == "ignore":
             # True case, predicate, False case
             expr = ops.where_op.as_expr(
@@ -4718,10 +4722,73 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(func, bigframes.functions.Udf):
+            from bigframes._config import options
+
+            if not isinstance(func, bigframes.functions.Udf) and not (
+                options.experiments.enable_python_transpiler and callable(func)
+            ):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
+
+            if (
+                not isinstance(func, bigframes.functions.Udf)
+                and options.experiments.enable_python_transpiler
+                and callable(func)
+            ):
+                from bigframes.operations.to_op import CallableExpression
+
+                callable_expr = CallableExpression.from_callable(
+                    func, unpack_mode=False
+                )
+
+                # Bind the extra arguments (args and kwargs) starting from parameter 1
+                bindings = {}
+                # Positional arguments:
+                for idx, val in enumerate(args):
+                    param_name = callable_expr.arg_specs[idx + 1].name
+                    bindings[param_name] = val
+                # Keyword arguments:
+                for key, val in kwargs.items():
+                    bindings[key] = val
+
+                # Bind defaults for other parameters (excluding the first 'row' parameter)
+                for spec in callable_expr.arg_specs[1:]:
+                    if (
+                        spec.name not in bindings
+                        and spec.default_value is not inspect.Parameter.empty
+                    ):
+                        bindings[spec.name] = spec.default_value
+
+                # Wrap all values in bindings as expressions
+                def to_expr(val):
+                    if isinstance(val, ex.Expression):
+                        return val
+                    return ex.const(val)
+
+                bindings = {k: to_expr(v) for k, v in bindings.items()}
+
+                # Now bind these variables in the expression!
+                expr = callable_expr.expr.bind_variables(
+                    bindings, allow_partial_bindings=True
+                )
+
+                # Now bind the remaining free variables to the DataFrame columns:
+                col_bindings = {}
+                block = self._get_block()
+                for col in self.columns:
+                    if col in expr.free_variables:
+                        col_id = block.resolve_label_exact(col)
+                        if col_id is not None:
+                            col_bindings[col] = ex.deref(col_id)
+
+                expr = expr.bind_variables(col_bindings)
+
+                # Project the expression on the DataFrame block to get a new Series!
+                block, result_id = self._get_block().project_expr(expr)
+                from bigframes.series import Series
+
+                return Series(block.select_column(result_id))
 
             if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
@@ -4777,7 +4844,7 @@ class DataFrame:
 
                 # Apply the function
                 result_series = rows_as_json_series._apply_nary_op(
-                    ops.func_to_op(func),
+                    ops.func_to_expr(func).expr.op,
                     list(args),
                 )
 
@@ -4837,8 +4904,8 @@ class DataFrame:
 
                 series_list = [self[col] for col in self.columns]
                 op_list = series_list[1:] + list(args)
-                result_series = series_list[0]._apply_nary_op(
-                    ops.func_to_op(func), op_list
+                result_series = series_list[0]._apply_callable_expr(
+                    ops.func_to_expr(func), op_list
                 )
             result_series.name = None
 
