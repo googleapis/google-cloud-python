@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - main
+      - feat/add-version-scanner
   schedule:
     - cron: '0 7 * * 2' # Run weekly on Tuesdays at 7 AM UTC (mirrors main.yml)
   workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   scan:
@@ -27,4 +32,38 @@ jobs:
           
       - name: Run Version Scanner
         run: |
-          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout
+          # We pipe the output to a file so we can read it in the next step
+          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout > scanner_output.csv
+          
+      - name: Create or update issue on finding
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Version Scanner found deprecated dependencies"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          # Read the first 50 lines to prevent blowing up the issue body if it's massive
+          CSV_PREVIEW=$(head -n 50 scanner_output.csv)
+          
+          BODY="The [Version Scanner]($RUN_URL) found deprecated dependencies in the repository.
+          
+          **Matches Found:**
+          \`\`\`csv
+          $CSV_PREVIEW
+          \`\`\`
+          *(If there are more than 50 matches, see the workflow logs for the full list)*"
+
+          # Mirroring regenerate-all.yml: check if an issue already exists to prevent spam
+          EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+          
+          if [ -z "$EXISTING_ISSUE" ]; then
+            echo "WOULD HAVE CREATED ISSUE:"
+            echo "gh issue create --title \"$TITLE\" --body \"$BODY\""
+            # gh issue create --title "$TITLE" --body "$BODY"
+          else
+            echo "Issue #$EXISTING_ISSUE already exists."
+            echo "WOULD HAVE ADDED COMMENT:"
+            echo "gh issue comment \"$EXISTING_ISSUE\" --body \"Another scanner run found deprecated dependencies: $RUN_URL\""
+            # gh issue comment "$EXISTING_ISSUE" --body "Another scanner run found deprecated dependencies: $RUN_URL"
+          fi
