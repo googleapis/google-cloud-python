@@ -156,7 +156,7 @@ def test_write_csv_report(tmp_path):
     assert rows[0]["file_path"] == "./setup.py"
     assert rows[0]["rule_name"] == "python_requires_check"
     assert rows[0]["line_number"] == "1"
-    assert rows[0]["matched_string"] == "python_requires = '>=3.7'"
+    assert rows[0]["matched_string"] == '="python_requires = \'>=3.7\'"'
     assert rows[0]["context_line"] == "python_requires = '>=3.7'"
 
 
@@ -513,7 +513,7 @@ def test_main_stdout(capsys):
     assert "=== CSV Output ===" in captured.out
     assert "test.py," in captured.out
     assert "test," in captured.out
-    assert "3.7" in captured.out
+    assert '="3.7"' in captured.out
 
 def test_scan_file_truncation_bug(tmp_path):
     """Test that searching for 3.1 does NOT match 3.10 (truncation bug)."""
