@@ -74,6 +74,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
     "google-cloud-testutils",
+    "pytest-xdist",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -337,6 +338,8 @@ def system(session):
     if system_test_exists:
         session.run(
             "py.test",
+            "-n",
+            "auto",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
@@ -345,6 +348,8 @@ def system(session):
     if system_test_folder_exists:
         session.run(
             "py.test",
+            "-n",
+            "auto",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
