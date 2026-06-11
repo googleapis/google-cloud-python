@@ -376,7 +376,10 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     
     with mock.patch('sys.argv', test_args):
         from version_scanner import main
-        main()
+        try:
+            main()
+        except SystemExit:
+            pass
         
     mock_load_ignore.assert_called_once()
     args, kwargs = mock_load_ignore.call_args
@@ -385,6 +388,13 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     assert "scripts/version_scanner" in path
 
 
+try:
+    import googleapiclient
+    HAS_GOOGLE_API = True
+except ImportError:
+    HAS_GOOGLE_API = False
+
+@pytest.mark.skipif(not HAS_GOOGLE_API, reason="Requires googleapiclient")
 @mock.patch('googleapiclient.discovery.build')
 @mock.patch('google.auth.default')
 def test_upload_to_drive(mock_auth, mock_build):
@@ -478,6 +488,48 @@ def test_regex_examples_from_config():
                     matched = True
                     break
             assert matched, f"Example '{example}' in group '{name}' did not match any pattern."
+
+def test_main_exit_code_1():
+    """Test that main() calls sys.exit(1) when matches are found."""
+    # We can mock scan_repository to return a dummy match
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[{'file_path': 'test', 'line_number': 1, 'matched_string': '3.7', 'rule_name': 'test'}]):
+            with pytest.raises(SystemExit) as excinfo:
+                main()
+            assert excinfo.value.code == 1
+
+def test_main_stdout(capsys):
+    """Test that --stdout prints the CSV output to stdout."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7', '--stdout']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[{'file_path': 'test.py', 'line_number': 1, 'matched_string': '3.7', 'rule_name': 'test'}]):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    assert "=== CSV Output ===" in captured.out
+    assert "test.py," in captured.out
+    assert "test," in captured.out
+    assert "3.7" in captured.out
+
+def test_scan_file_truncation_bug(tmp_path):
+    """Test that searching for 3.1 does NOT match 3.10 (truncation bug)."""
+    # Create a file with 3.10
+    test_file = tmp_path / "test_file.py"
+    test_file.write_text("python_requires = '>=3.10'\npython3.10\nPython310\n")
+    
+    from version_scanner import ConfigManager, scan_file
+    
+    # Init config for 3.1
+    config_manager = ConfigManager("python", "3.1")
+    config_manager.load_config("regex_config.yaml")
+    
+    # It should not match anything because all strings are 3.10, not 3.1
+    matches = scan_file(str(test_file), config_manager.rules)
+    assert len(matches) == 0, f"Expected 0 matches for 3.1 in 3.10 content, but got {len(matches)}: {matches}"
 
 
 def test_scan_repository_layout_agnostic(tmp_path):
