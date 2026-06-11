@@ -44,7 +44,7 @@ class HttpRoute(proto.Message):
         name (str):
             Identifier. Name of the HttpRoute resource. It matches
             pattern
-            ``projects/*/locations/global/httpRoutes/http_route_name>``.
+            ``projects/*/locations/*/httpRoutes/http_route_name>``.
         self_link (str):
             Output only. Server-defined URL of this
             resource
@@ -95,7 +95,7 @@ class HttpRoute(proto.Message):
             requests served by the mesh.
 
             Each mesh reference should match the pattern:
-            ``projects/*/locations/global/meshes/<mesh_name>``
+            ``projects/*/locations/*/meshes/<mesh_name>``
 
             The attached Mesh should be of a type SIDECAR
         gateways (MutableSequence[str]):
@@ -104,7 +104,7 @@ class HttpRoute(proto.Message):
             requests served by the gateway.
 
             Each gateway reference should match the pattern:
-            ``projects/*/locations/global/gateways/<gateway_name>``
+            ``projects/*/locations/*/gateways/<gateway_name>``
         labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the HttpRoute resource.
@@ -1120,7 +1120,7 @@ class ListHttpRoutesRequest(proto.Message):
         parent (str):
             Required. The project and location from which the HttpRoutes
             should be listed, specified in the format
-            ``projects/*/locations/global``.
+            ``projects/*/locations/*``.
         page_size (int):
             Maximum number of HttpRoutes to return per
             call.
@@ -1135,6 +1135,9 @@ class ListHttpRoutesRequest(proto.Message):
             Otherwise if one of the locations is down or
             unreachable, the Aggregated List request will
             fail.
+        filter (str):
+            Optional. Filter expression to restrict the
+            list.
     """
 
     parent: str = proto.Field(
@@ -1152,6 +1155,10 @@ class ListHttpRoutesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1198,7 +1205,7 @@ class GetHttpRouteRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the HttpRoute to get. Must be in the
-            format ``projects/*/locations/global/httpRoutes/*``.
+            format ``projects/*/locations/*/httpRoutes/*``.
     """
 
     name: str = proto.Field(
@@ -1213,12 +1220,14 @@ class CreateHttpRouteRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource of the HttpRoute. Must be in
-            the format ``projects/*/locations/global``.
+            the format ``projects/*/locations/*``.
         http_route_id (str):
             Required. Short name of the HttpRoute
             resource to be created.
         http_route (google.cloud.network_services_v1.types.HttpRoute):
             Required. HttpRoute resource to be created.
+        request_id (str):
+            Optional. Idempotent request UUID.
     """
 
     parent: str = proto.Field(
@@ -1233,6 +1242,10 @@ class CreateHttpRouteRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="HttpRoute",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1269,7 +1282,7 @@ class DeleteHttpRouteRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the HttpRoute to delete. Must be in the
-            format ``projects/*/locations/global/httpRoutes/*``.
+            format ``projects/*/locations/*/httpRoutes/*``.
     """
 
     name: str = proto.Field(

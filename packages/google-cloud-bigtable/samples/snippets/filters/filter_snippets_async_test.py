@@ -20,9 +20,7 @@ from typing import AsyncGenerator
 
 import pytest
 import pytest_asyncio
-from google.cloud._helpers import (
-    _microseconds_from_datetime,
-)
+from google.cloud._helpers import _microseconds_from_datetime
 
 from ...utils import create_table_cm
 from . import filter_snippets_async

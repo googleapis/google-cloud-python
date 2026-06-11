@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 # [START bigtable_reads_row]
 def read_row(project_id, instance_id, table_id):
     from google.cloud import bigtable

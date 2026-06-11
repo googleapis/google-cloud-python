@@ -35,6 +35,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     endpoint_policy,
     extensibility,
     gateway,
@@ -47,6 +48,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -1948,6 +1950,144 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
                 response_deserializer=route_view.ListMeshRouteViewsResponse.deserialize,
             )
         return self._stubs["list_mesh_route_views"]
+
+    @property
+    def list_agent_gateways(
+        self,
+    ) -> Callable[
+        [agent_gateway.ListAgentGatewaysRequest],
+        agent_gateway.ListAgentGatewaysResponse,
+    ]:
+        r"""Return a callable for the list agent gateways method over gRPC.
+
+        Lists AgentGateways in a given project and location.
+
+        Returns:
+            Callable[[~.ListAgentGatewaysRequest],
+                    ~.ListAgentGatewaysResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_agent_gateways" not in self._stubs:
+            self._stubs["list_agent_gateways"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/ListAgentGateways",
+                request_serializer=agent_gateway.ListAgentGatewaysRequest.serialize,
+                response_deserializer=agent_gateway.ListAgentGatewaysResponse.deserialize,
+            )
+        return self._stubs["list_agent_gateways"]
+
+    @property
+    def get_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.GetAgentGatewayRequest], agent_gateway.AgentGateway]:
+        r"""Return a callable for the get agent gateway method over gRPC.
+
+        Gets details of a single AgentGateway.
+
+        Returns:
+            Callable[[~.GetAgentGatewayRequest],
+                    ~.AgentGateway]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_agent_gateway" not in self._stubs:
+            self._stubs["get_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/GetAgentGateway",
+                request_serializer=agent_gateway.GetAgentGatewayRequest.serialize,
+                response_deserializer=agent_gateway.AgentGateway.deserialize,
+            )
+        return self._stubs["get_agent_gateway"]
+
+    @property
+    def create_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.CreateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create agent gateway method over gRPC.
+
+        Creates a new AgentGateway in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAgentGatewayRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_agent_gateway" not in self._stubs:
+            self._stubs["create_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateAgentGateway",
+                request_serializer=gcn_agent_gateway.CreateAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_agent_gateway"]
+
+    @property
+    def update_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.UpdateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update agent gateway method over gRPC.
+
+        Updates the parameters of a single AgentGateway.
+
+        Returns:
+            Callable[[~.UpdateAgentGatewayRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_agent_gateway" not in self._stubs:
+            self._stubs["update_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateAgentGateway",
+                request_serializer=gcn_agent_gateway.UpdateAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_agent_gateway"]
+
+    @property
+    def delete_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.DeleteAgentGatewayRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete agent gateway method over gRPC.
+
+        Deletes a single AgentGateway.
+
+        Returns:
+            Callable[[~.DeleteAgentGatewayRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_agent_gateway" not in self._stubs:
+            self._stubs["delete_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteAgentGateway",
+                request_serializer=agent_gateway.DeleteAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_agent_gateway"]
 
     def close(self):
         self._logged_channel.close()
