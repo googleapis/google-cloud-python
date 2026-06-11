@@ -74,7 +74,7 @@ libraries:
       - packages/django-google-spanner/docs/
     tag_format: '{id}-v{version}'
   - id: gapic-generator
-    version: 1.34.1
+    version: 1.35.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -387,7 +387,7 @@ libraries:
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.53.0
+    version: 2.54.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -531,7 +531,7 @@ libraries:
       - packages/google-cloud-agentidentitycredentials/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
-    version: 0.10.0
+    version: 0.11.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/alloydb/v1beta
@@ -1095,7 +1095,7 @@ libraries:
       - packages/google-cloud-beyondcorp-clientgateways/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-biglake
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/biglake/v1
@@ -1577,7 +1577,7 @@ libraries:
       - packages/google-cloud-certificate-manager/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 582172de2d9b6443e1fecf696167867c6d8a5fc4
     apis:
       - path: google/cloud/ces/v1
@@ -1769,7 +1769,7 @@ libraries:
       - packages/google-cloud-compute-v1beta/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-confidentialcomputing
-    version: 0.10.0
+    version: 0.11.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/confidentialcomputing/v1
@@ -3493,7 +3493,7 @@ libraries:
       - packages/google-cloud-migrationcenter/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-modelarmor
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/modelarmor/v1beta
@@ -3686,7 +3686,7 @@ libraries:
       - packages/google-cloud-network-security/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-services
-    version: 0.9.0
+    version: 0.10.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/networkservices/v1
@@ -3750,7 +3750,7 @@ libraries:
       - packages/google-cloud-optimization/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
     apis:
       - path: google/cloud/oracledatabase/v1
@@ -4616,7 +4616,7 @@ libraries:
       - packages/google-cloud-source-context/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
-    version: 3.67.0
+    version: 3.68.0
     last_generated_commit: 3e09ac03bab9dba5b8800248cf10190219938a26
     apis:
       - path: google/spanner/admin/instance/v1
@@ -4734,7 +4734,7 @@ libraries:
       - packages/google-cloud-speech/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage
-    version: 3.11.0
+    version: 3.12.0
     last_generated_commit: 2233f63baf69c2a481f30180045fcf036242781d
     apis:
       - path: google/storage/v2
@@ -5421,7 +5421,7 @@ libraries:
       - packages/google-crc32c/docs/
     tag_format: '{id}-v{version}'
   - id: google-developer-knowledge
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: ""
     apis:
       - path: google/developers/knowledge/v1
