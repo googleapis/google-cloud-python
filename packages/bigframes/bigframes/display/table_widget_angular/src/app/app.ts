@@ -471,7 +471,6 @@ export class App {
 
   protected readonly isDarkMode = signal(false);
   private themeObserver: MutationObserver | null = null;
-  private isHeightInitialized = false;
 
   @ViewChild('tableContainer', { static: true })
   tableContainerRef!: ElementRef<HTMLDivElement>;
@@ -486,7 +485,6 @@ export class App {
       // Schedule DOM post-processing once the innerHTML render completes
       setTimeout(() => {
         this.applySortIndicators();
-        this.initializeHeight();
       }, 0);
     });
   }
@@ -528,7 +526,7 @@ export class App {
     const header = target.closest('th');
     if (!header) return;
 
-    const headerDiv = header.querySelector('div.bf-header-content');
+    const headerDiv = header.querySelector('div.bf-header-content') as HTMLElement | null;
     if (!headerDiv) return;
 
     const columnName = this.getColumnName(headerDiv);
@@ -593,10 +591,9 @@ export class App {
 
     const headers = container.querySelectorAll('th');
     headers.forEach((header: HTMLElement) => {
-      const headerDiv = header.querySelector('div.bf-header-content');
+      const headerDiv = header.querySelector('div.bf-header-content') as HTMLElement | null;
       if (!headerDiv) return;
 
-      const columnName = headerDiv.textContent?.trim() || '';
       const columnName = this.getColumnName(headerDiv);
       if (columnName && sortableColumns.includes(columnName)) {
 
@@ -623,20 +620,6 @@ export class App {
     });
   }
 
-  private initializeHeight() {
-    if (this.isHeightInitialized) return;
-    const container = this.tableContainerRef?.nativeElement;
-    if (!container) return;
-
-    const table = container.querySelector('table');
-    if (table) {
-      const tableHeight = table.offsetHeight;
-      if (tableHeight > 0) {
-        container.style.height = `${tableHeight + 2}px`;
-        this.isHeightInitialized = true;
-      }
-    }
-  }
 
   private initThemeDetection() {
     this.updateTheme();
