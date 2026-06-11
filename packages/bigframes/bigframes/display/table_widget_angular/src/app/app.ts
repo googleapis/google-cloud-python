@@ -406,7 +406,9 @@ export class App {
     const header = target.closest('th');
     if (!header) return;
 
-    const headerDiv = header.querySelector('div.bf-header-content') as HTMLElement | null;
+    const headerDiv = header.querySelector(
+      'div.bf-header-content'
+    ) as HTMLElement | null;
     if (!headerDiv) return;
 
     const columnName = this.getColumnName(headerDiv);
@@ -471,7 +473,9 @@ export class App {
 
     const headers = container.querySelectorAll('th');
     headers.forEach((header: HTMLElement) => {
-      const headerDiv = header.querySelector('div.bf-header-content') as HTMLElement | null;
+      const headerDiv = header.querySelector(
+        'div.bf-header-content'
+      ) as HTMLElement | null;
       if (!headerDiv) return;
 
       const columnName = this.getColumnName(headerDiv);
