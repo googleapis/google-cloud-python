@@ -1120,8 +1120,32 @@ class Blob(_PropertyMixin):
                 attributes=extra_attributes,
                 api_request=args,
             ):
+                response = None
                 while not download.finished:
-                    download.consume_next_chunk(transport, timeout=timeout)
+                    response = download.consume_next_chunk(transport, timeout=timeout)
+
+        requested_length = None
+        if start is not None and start < 0 and end is None:
+            requested_length = -start
+        elif start is not None and end is not None:
+            requested_length = end - start + 1
+        elif start is None and end is not None:
+            requested_length = end + 1
+
+        if requested_length is not None and requested_length >= 0:
+            received_bytes = getattr(download, "_bytes_downloaded", 0)
+            if isinstance(received_bytes, int) and received_bytes > requested_length:
+                from google.cloud.storage._media import _helpers as media_helpers
+
+                if response is not None and not media_helpers._is_decompressive_transcoding(
+                    response, download._get_headers
+                ):
+                    _logger.warning(
+                        "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+                        received_bytes - requested_length,
+                        self.bucket.name,
+                        self.name,
+                    )
 
     def download_to_file(
         self,
