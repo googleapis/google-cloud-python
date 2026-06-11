@@ -16,8 +16,8 @@ version: v0.19.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: ff15be54722218705740b9fc6223d264c4cdb6dd
-    sha256: 13dc3b1a01767be8d486980d3ddcb7fe6f6b89c3da8d41c358d5c2536c86de3c
+    commit: f93e046328794785ad89869f00c0358dfcff2c35
+    sha256: 415249f584d57e5a2298c36ae9ff71563403112dee04ac961023a1b0098404d2
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -1151,6 +1151,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_COMBO
@@ -2226,7 +2227,7 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
-  - name: google-developers-knowledge
+  - name: google-developer-knowledge
     version: 0.0.0
     apis:
       - path: google/developers/knowledge/v1
@@ -2235,7 +2236,7 @@ libraries:
       opt_args_by_api:
         google/developers/knowledge/v1:
           - python-gapic-namespace=google
-          - python-gapic-name=developers_knowledge
+          - python-gapic-name=developer_knowledge
       default_version: v1
   - name: google-devicesandservices-health
     version: 0.1.0
