@@ -87,7 +87,7 @@ rules:
       - "Python3.7"
     rules:
       - |
-        python3\.{minor}
+        python3\.{minor}(?!\d)
 
   - name: combined_version_string
     description: Finds combined version strings often used in class or variable names.
@@ -97,6 +97,6 @@ rules:
       - "Python37DeprecationWarning"
     rules:
       - |
-        Python{major}{minor}
+        Python{major}{minor}(?!\d)
 
 

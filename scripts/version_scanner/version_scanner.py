@@ -601,6 +601,12 @@ def main():
         help="Upload results to a Google Sheet in Drive"
     )
     
+    parser.add_argument(
+        "--stdout",
+        action="store_true",
+        help="Print the full CSV report to stdout instead of/in addition to writing to a file"
+    )
+    
     args = parser.parse_args()
     
     # Resolve target packages if filtering is requested
@@ -669,6 +675,21 @@ def main():
     
     if args.upload:
         upload_to_drive(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+
+    if args.stdout:
+        print("\n=== CSV Output ===")
+        import io
+        output = io.StringIO()
+        write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch) # this writes to the file, but we want stdout too
+        # Let's just read the file and print it
+        with open(output_path, 'r', encoding='utf-8') as f:
+            print(f.read(), end='')
+            
+    # Distinct exit codes for CI/CD
+    if all_matches:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
