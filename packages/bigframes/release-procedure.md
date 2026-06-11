@@ -30,7 +30,7 @@
 
 *   Check image updates:
 
-        legacylibrarian update-image -push
+        legacylibrarian update-image --push
 
 *   Create release PR:
 
