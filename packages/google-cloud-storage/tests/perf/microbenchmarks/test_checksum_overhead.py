@@ -15,14 +15,19 @@
 import asyncio
 import os
 import random
+import statistics
 import time
 import uuid
-import statistics
+
 import pytest
 
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
+    AsyncAppendableObjectWriter,
+)
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
-from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMultiRangeDownloader
-from google.cloud.storage.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
+from google.cloud.storage.asyncio.async_multi_range_downloader import (
+    AsyncMultiRangeDownloader,
+)
 
 DEFAULT_BUCKET = os.environ.get("DEFAULT_RAPID_ZONAL_BUCKET", "chandrasiri-gcsfs-zb")
 DEFAULT_ROUNDS = int(os.environ.get("BENCHMARK_ROUNDS", "5"))
@@ -30,6 +35,7 @@ DEFAULT_ROUNDS = int(os.environ.get("BENCHMARK_ROUNDS", "5"))
 
 class VoidBuffer:
     """A writeable file-like object that discards written data to save memory."""
+
     def __init__(self):
         self.size = 0
 
@@ -92,29 +98,37 @@ async def upload_random_object(
 @pytest.mark.parametrize(
     "object_size,download_size",
     [
-        (1024, 1024),                  # 1KiB Full
-        (1024, 1024 - 1),              # 1KiB Full-1
-        (100 * 1024, 100 * 1024),      # 100KiB Full
+        (1024, 1024),  # 1KiB Full
+        (1024, 1024 - 1),  # 1KiB Full-1
+        (100 * 1024, 100 * 1024),  # 100KiB Full
         (100 * 1024, 100 * 1024 - 1),  # 100KiB Full-1
-        (1024 * 1024, 1024 * 1024),    # 1MiB Full
-        (1024 * 1024, 1024 * 1024 - 1),# 1MiB Full-1
-        (16 * 1024 * 1024, 16 * 1024 * 1024),      # 16MiB Full
+        (1024 * 1024, 1024 * 1024),  # 1MiB Full
+        (1024 * 1024, 1024 * 1024 - 1),  # 1MiB Full-1
+        (16 * 1024 * 1024, 16 * 1024 * 1024),  # 16MiB Full
         (16 * 1024 * 1024, 16 * 1024 * 1024 - 1),  # 16MiB Full-1
-        (100 * 1024 * 1024, 100 * 1024 * 1024),    # 100MiB Full
-        (100 * 1024 * 1024, 100 * 1024 * 1024 - 1),# 100MiB Full-1
+        (100 * 1024 * 1024, 100 * 1024 * 1024),  # 100MiB Full
+        (100 * 1024 * 1024, 100 * 1024 * 1024 - 1),  # 100MiB Full-1
         (1024 * 1024 * 1024, 1024 * 1024 * 1024),  # 1GiB Full
-        (1024 * 1024 * 1024, 1024 * 1024 * 1024 - 1),# 1GiB Full-1
+        (1024 * 1024 * 1024, 1024 * 1024 * 1024 - 1),  # 1GiB Full-1
     ],
     ids=[
-        "1KiB-Full", "1KiB-Full-1",
-        "100KiB-Full", "100KiB-Full-1",
-        "1MiB-Full", "1MiB-Full-1",
-        "16MiB-Full", "16MiB-Full-1",
-        "100MiB-Full", "100MiB-Full-1",
-        "1GiB-Full", "1GiB-Full-1"
+        "1KiB-Full",
+        "1KiB-Full-1",
+        "100KiB-Full",
+        "100KiB-Full-1",
+        "1MiB-Full",
+        "1MiB-Full-1",
+        "16MiB-Full",
+        "16MiB-Full-1",
+        "100MiB-Full",
+        "100MiB-Full-1",
+        "1GiB-Full",
+        "1GiB-Full-1",
     ],
 )
-@pytest.mark.parametrize("enable_checksum", [True, False], ids=["checksum_enabled", "checksum_disabled"])
+@pytest.mark.parametrize(
+    "enable_checksum", [True, False], ids=["checksum_enabled", "checksum_disabled"]
+)
 def test_checksum_overhead(benchmark, object_size, download_size, enable_checksum):
     if not enable_checksum and download_size == object_size - 1:
         pytest.skip("Skip Full-1 range download when checksum is disabled")
@@ -196,19 +210,25 @@ def test_checksum_overhead(benchmark, object_size, download_size, enable_checksu
 
             if len(download_elapsed_times) > 1:
                 stdev_time = statistics.stdev(download_elapsed_times)
-                throughputs = [download_size / t / (1024 * 1024) for t in download_elapsed_times]
+                throughputs = [
+                    download_size / t / (1024 * 1024) for t in download_elapsed_times
+                ]
                 stdev_throughput = statistics.stdev(throughputs)
             else:
                 stdev_time = 0.0
                 stdev_throughput = 0.0
 
             benchmark.extra_info["stdev_throughput_mib_s"] = f"{stdev_throughput:.2f}"
-            benchmark.extra_info["avg_elapsed_time_s"] = f"{total_time / len(download_elapsed_times):.4f}"
+            benchmark.extra_info["avg_elapsed_time_s"] = (
+                f"{total_time / len(download_elapsed_times):.4f}"
+            )
             benchmark.extra_info["stdev_elapsed_time_s"] = f"{stdev_time:.4f}"
 
         # 4. delete the object
         try:
-            loop.run_until_complete(grpc_client.delete_object(DEFAULT_BUCKET, object_name))
+            loop.run_until_complete(
+                grpc_client.delete_object(DEFAULT_BUCKET, object_name)
+            )
         except Exception:
             pass
 

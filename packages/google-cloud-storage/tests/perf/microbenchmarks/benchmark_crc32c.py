@@ -7,7 +7,10 @@ import time
 try:
     import google_crc32c
 except ImportError:
-    print("Error: google_crc32c package is not installed in the python environment.", file=sys.stderr)
+    print(
+        "Error: google_crc32c package is not installed in the python environment.",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 
@@ -46,18 +49,20 @@ def format_time(seconds: float) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Benchmark google_crc32c.value execution time.")
+    parser = argparse.ArgumentParser(
+        description="Benchmark google_crc32c.value execution time."
+    )
     parser.add_argument(
         "--sizes",
         type=str,
         default="1KiB,100KiB,2MiB",
-        help="Comma-separated list of sizes (e.g. '1KiB,100KiB,2MiB')"
+        help="Comma-separated list of sizes (e.g. '1KiB,100KiB,2MiB')",
     )
     parser.add_argument(
         "--iterations",
         type=int,
         default=100,
-        help="Number of iterations for benchmark (default: 100)"
+        help="Number of iterations for benchmark (default: 100)",
     )
     args = parser.parse_args()
 
@@ -65,7 +70,10 @@ def main():
     impl = getattr(google_crc32c, "implementation", None)
     print(f"google_crc32c implementation: {impl}")
     if impl != "c":
-        print(f"Error: google_crc32c is not using the accelerated C code (got '{impl}').", file=sys.stderr)
+        print(
+            f"Error: google_crc32c is not using the accelerated C code (got '{impl}').",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     sizes_to_test = []
@@ -78,7 +86,9 @@ def main():
 
     print(f"Benchmarking google_crc32c.value(data) with {args.iterations} iterations:")
     print("-" * 80)
-    print(f"{'Size (String)':<15} | {'Size (Bytes)':<12} | {'Min':<10} | {'Max':<10} | {'Mean':<10} | {'Median':<10}")
+    print(
+        f"{'Size (String)':<15} | {'Size (Bytes)':<12} | {'Min':<10} | {'Max':<10} | {'Mean':<10} | {'Median':<10}"
+    )
     print("-" * 80)
 
     for size_str, size_bytes in sizes_to_test:
