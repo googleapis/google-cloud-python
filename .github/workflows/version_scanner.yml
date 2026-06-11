@@ -1,10 +1,12 @@
 name: Version Scanner
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: '0 0 * * *' # Run daily at midnight UTC
-  pull_request:
+    - cron: '0 7 * * 2' # Run weekly on Tuesdays at 7 AM UTC (mirrors main.yml)
+  workflow_dispatch:
 
 jobs:
   scan:
@@ -16,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.14'
           
       - name: Install dependencies
         run: |
