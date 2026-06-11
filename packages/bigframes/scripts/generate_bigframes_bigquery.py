@@ -77,6 +77,7 @@ DTYPE_MAP = {
     "datetime": "dtypes.DATETIME_DTYPE",
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
+    "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
 }
 
 PY_TYPE_MAP = {
@@ -96,6 +97,7 @@ PY_TYPE_MAP = {
     "timestamp": "datetime.datetime",
     "struct": "dict",
     "decimal<38,9>": "decimal.Decimal",
+    "decimal<76,38>": "decimal.Decimal",
 }
 
 YAML_TYPE_TO_COL = {
@@ -113,6 +115,20 @@ YAML_TYPE_TO_COL = {
     "datetime": "datetime_col",
     "timestamp": "timestamp_col",
     "decimal<38,9>": "numeric_col",
+    "decimal<76,38>": "bignumeric_col",
+}
+
+_PYTHON_BUILTINS = {
+    "abs", "all", "any", "ascii", "bin", "bool", "breakpoint", "bytearray",
+    "bytes", "callable", "chr", "classmethod", "compile", "complex",
+    "delattr", "dict", "dir", "divmod", "enumerate", "eval", "exec",
+    "filter", "float", "format", "frozenset", "getattr", "globals",
+    "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance",
+    "issubclass", "iter", "len", "list", "locals", "map", "max", "memoryview",
+    "min", "next", "object", "oct", "open", "ord", "pow", "print", "property",
+    "range", "repr", "reversed", "round", "set", "setattr", "slice",
+    "sorted", "staticmethod", "str", "sum", "super", "tuple", "type",
+    "vars", "zip"
 }
 
 
@@ -311,7 +327,11 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
         if not is_global and python_name.startswith(module_name + "_"):
             python_name = python_name[len(module_name) + 1 :]
 
-        internal_op_name = f"_{python_name.upper()}_OP"
+        op_base_name = python_name
+        if python_name in _PYTHON_BUILTINS:
+            python_name = python_name + "_"
+
+        internal_op_name = f"_{op_base_name.upper()}_OP"
 
         # Aggregate args across impls
         args_by_name, arg_order = _collect_args(func_data["impls"])
@@ -324,7 +344,7 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
 
         # Determine return dtype
         sig_name, sig_def = _generate_signature_def(
-            python_name,
+            op_base_name,
             func_data["impls"],
             sql_name,
             signature_def_template,
