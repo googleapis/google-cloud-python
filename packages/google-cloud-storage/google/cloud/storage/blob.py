@@ -1137,8 +1137,11 @@ class Blob(_PropertyMixin):
             if isinstance(received_bytes, int) and received_bytes > requested_length:
                 from google.cloud.storage._media import _helpers as media_helpers
 
-                if response is not None and not media_helpers._is_decompressive_transcoding(
-                    response, download._get_headers
+                if (
+                    response is not None
+                    and not media_helpers._is_decompressive_transcoding(
+                        response, download._get_headers
+                    )
                 ):
                     _logger.warning(
                         "storage: received %d more bytes than requested from GCS for bucket %r, object %r",

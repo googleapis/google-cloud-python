@@ -500,15 +500,23 @@ class ChunkedDownload(DownloadBase):
             elif self.start is None and self.end is not None:
                 requested_length = self.end + 1
 
-            if requested_length is not None and self._bytes_downloaded > requested_length:
-                if headers.get("x-goog-stored-content-encoding") != "gzip":
+            if (
+                requested_length is not None
+                and self._bytes_downloaded > requested_length
+            ):
+                if response.headers.get("x-goog-stored-content-encoding") != "gzip":
                     import logging
+
                     logger = logging.getLogger(__name__)
-                    bucket_name = getattr(self, "client_info_bucket_name", "unknown")
-                    object_name = getattr(self, "client_info_object_name", "unknown")
+                    bucket_name = (
+                        getattr(self, "client_info_bucket_name", None) or "unknown"
+                    )
+                    object_name = (
+                        getattr(self, "client_info_object_name", None) or "unknown"
+                    )
                     diff = self._bytes_downloaded - requested_length
                     logger.warning(
-                        f'storage: received {diff} more bytes than requested from GCS '
+                        f"storage: received {diff} more bytes than requested from GCS "
                         f'for bucket "{bucket_name}", object "{object_name}"'
                     )
 

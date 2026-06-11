@@ -1390,10 +1390,11 @@ class Test_Blob(unittest.TestCase):
         with patch as patched:
             download = patched.return_value
             download._bytes_downloaded = 10
-            
+            type(download).finished = mock.PropertyMock(side_effect=[False, True])
+
             mock_response = mock.Mock()
             mock_response.headers = {}
-            download.consume.return_value = mock_response
+            download.consume_next_chunk.return_value = mock_response
             download._get_headers.return_value = {}
 
             blob._do_download(
