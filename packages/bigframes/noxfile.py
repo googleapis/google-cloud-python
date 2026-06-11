@@ -327,7 +327,7 @@ def run_system(
     print_duration=False,
     extra_pytest_options=(),
     timeout_seconds=900,
-    num_workers=20,
+    num_workers=10,
 ):
     """Run the system test suite."""
     constraints_path = str(
