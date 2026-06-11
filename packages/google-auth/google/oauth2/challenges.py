@@ -167,7 +167,6 @@ class SecurityKeyChallenge(ReauthChallenge):
             if caught_exc.code == APDU.WRONG_DATA:
                 return None
             if caught_exc.code == APDU.USE_NOT_SATISFIED:
-                sys.stderr.write("Timed out while waiting for security key touch.\n")
                 raise self._SecurityKeyTimeout()
             raise
         except CtapError as caught_exc:
@@ -177,7 +176,6 @@ class SecurityKeyChallenge(ReauthChallenge):
                 CtapError.ERR.KEEPALIVE_CANCEL,
                 CtapError.ERR.OPERATION_DENIED,
             ):
-                sys.stderr.write("Timed out while waiting for security key touch.\n")
                 raise self._SecurityKeyTimeout()
             raise
         except OSError as caught_exc:
@@ -208,12 +206,12 @@ class SecurityKeyChallenge(ReauthChallenge):
         try:
             devices = list(CtapHidDevice.list_devices())
         except OSError as caught_exc:
-            sys.stderr.write(f"Failed to list security keys: {caught_exc}.\n")
-            return None
+            raise exceptions.ReauthFailError(
+                "Failed to list security keys."
+            ) from caught_exc
 
         if not devices:
-            sys.stderr.write("No security key found.\n")
-            return None
+            raise exceptions.ReauthFailError("No security key found.")
 
         sk = metadata["securityKey"]
         challenges = sk["challenges"]
@@ -258,10 +256,11 @@ class SecurityKeyChallenge(ReauthChallenge):
                             }
                         }
         except self._SecurityKeyTimeout:
-            return None
+            raise exceptions.ReauthFailError(
+                "Timed out waiting for security key touch."
+            )
 
-        sys.stderr.write("Ineligible security key.\n")
-        return None
+        raise exceptions.ReauthFailError("Ineligible security key.")
 
     def _obtain_challenge_input_pyu2f(
         self, metadata: Mapping[str, Any]

@@ -314,19 +314,25 @@ def test_security_key():
     # Test various types of exceptions.
     metadata["securityKey"]["relyingPartyId"] = "security_key_application_id"
     with use_fake_fido2(challenge, side_effects=[FakeApduError(FakeAPDU.WRONG_DATA)]):
-        assert challenge.obtain_challenge_input(metadata) is None
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
+        assert excinfo.match("Ineligible security key.")
 
     with use_fake_fido2(
         challenge,
         side_effects=[FakeApduError(FakeAPDU.USE_NOT_SATISFIED)],
     ):
-        assert challenge.obtain_challenge_input(metadata) is None
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
+        assert excinfo.match("Timed out waiting for security key touch.")
 
     with use_fake_fido2(
         challenge,
         side_effects=[FakeCtapError(FakeCtapError.ERR.TIMEOUT)],
     ):
-        assert challenge.obtain_challenge_input(metadata) is None
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
+        assert excinfo.match("Timed out waiting for security key touch.")
 
     with use_fake_fido2(challenge, side_effects=[FakeApduError("bad request")]):
         with pytest.raises(FakeApduError):
@@ -337,7 +343,9 @@ def test_security_key():
             challenge.obtain_challenge_input(metadata)
 
     with use_fake_fido2(challenge, devices=[]):
-        assert challenge.obtain_challenge_input(metadata) is None
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
+        assert excinfo.match("No security key found.")
 
     with (
         use_fake_fido2(challenge),
@@ -347,7 +355,10 @@ def test_security_key():
             side_effect=OSError("permission denied"),
         ),
     ):
-        assert challenge.obtain_challenge_input(metadata) is None
+        with pytest.raises(exceptions.ReauthFailError) as excinfo:
+            challenge.obtain_challenge_input(metadata)
+        assert excinfo.match("Failed to list security keys.")
+        assert isinstance(excinfo.value.__cause__, OSError)
 
     with use_fake_fido2(
         challenge,
