@@ -1,5 +1,19 @@
 # BigQuery DataFrames (bigframes) release procedure
 
+*(Note: bigframes releases are marked with `skip_release: true` in `librarian.yaml` and must be kicked off manually using legacylibrarian.)*
+
+## Setup (First Time Only)
+
+*   Install `legacylibrarian`:
+
+        go install github.com/googleapis/librarian/cmd/legacylibrarian@latest
+
+*   Authenticate with GitHub CLI:
+
+        gh auth login
+
+## Release Steps
+
 *   Obtain GitHub token:
 
         export LIBRARIAN_GITHUB_TOKEN=$(gh auth token)
