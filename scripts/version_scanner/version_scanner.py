@@ -225,6 +225,11 @@ def format_match_for_csv(
     context = formatted.get("context_line", "")
     matched = formatted.get("matched_string", "")
     
+    # Force spreadsheet apps (Google Sheets, Excel) to treat the match as a string.
+    # Otherwise, they parse "3.10" as a number and drop the trailing zero, displaying "3.1".
+    if matched:
+        formatted["matched_string"] = f'="{matched}"'
+    
     if len(context) > 500:
         match_start = context.find(matched)
         if match_start != -1:
