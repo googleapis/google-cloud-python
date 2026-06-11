@@ -192,6 +192,7 @@ def create_html_representation(
 ) -> str:
     """Create an HTML representation of the DataFrame or Series."""
     import bigframes.series
+
     opts = options.display
     with display_options.pandas_repr(opts):
         if isinstance(obj, bigframes.series.Series):
@@ -217,6 +218,7 @@ def _get_obj_metadata(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> tuple[bool, bool]:
     import bigframes.series
+
     is_series = isinstance(obj, bigframes.series.Series)
     if is_series:
         has_index = len(obj._block.index_columns) > 0
@@ -294,6 +296,7 @@ def repr_mimebundle_head(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> dict[str, str]:
     import bigframes.series
+
     opts = options.display
     if isinstance(obj, bigframes.series.Series):
         df = obj.to_frame()
