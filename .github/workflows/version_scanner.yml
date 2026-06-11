@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feat/add-version-scanner
+      - feat/version-scanner-cicd-upgrades
   schedule:
     - cron: '0 7 * * 2' # Run weekly on Tuesdays at 7 AM UTC (mirrors main.yml)
   workflow_dispatch:
