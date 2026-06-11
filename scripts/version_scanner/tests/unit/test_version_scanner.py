@@ -524,11 +524,11 @@ def test_scan_file_truncation_bug(tmp_path):
     from version_scanner import ConfigManager, scan_file
     
     # Init config for 3.1
-    config_manager = ConfigManager("python", "3.1")
-    config_manager.load_config("regex_config.yaml")
+    config_manager = ConfigManager("regex_config.yaml", "python", "3.1")
+    rules = config_manager.load_config()
     
     # It should not match anything because all strings are 3.10, not 3.1
-    matches = scan_file(str(test_file), config_manager.rules)
+    matches = scan_file(str(test_file), rules)
     assert len(matches) == 0, f"Expected 0 matches for 3.1 in 3.10 content, but got {len(matches)}: {matches}"
 
 
