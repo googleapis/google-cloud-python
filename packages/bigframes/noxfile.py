@@ -354,6 +354,7 @@ def run_system(
         "py.test",
         "-v",
         f"-n={num_workers}",
+        "--dist=worksteal",
         # Any individual test taking longer than 15 mins will be terminated.
         f"--timeout={timeout_seconds}",
         # Log 20 slowest tests
