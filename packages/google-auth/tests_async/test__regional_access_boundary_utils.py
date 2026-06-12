@@ -83,3 +83,85 @@ async def test_async_refresh_manager_duplicate_refresh_prevented():
 
     # Verify that the second refresh request was ignored and only one lookup occurred.
     assert credentials._lookup_regional_access_boundary.call_count == 1
+
+
+def test_prepare_async_lookup_callable_no_clone():
+    request = mock.Mock(spec=[])  # explicitly no _clone
+    (
+        new_request,
+        cloned,
+        is_cloned,
+    ) = _regional_access_boundary_utils._prepare_async_lookup_callable(request)
+    assert new_request is request
+    assert cloned is request
+    assert is_cloned is False
+
+
+def test_prepare_async_lookup_callable_with_clone():
+    request = mock.Mock()
+    cloned_req = mock.Mock()
+    request._clone.return_value = cloned_req
+
+    (
+        new_request,
+        cloned,
+        is_cloned,
+    ) = _regional_access_boundary_utils._prepare_async_lookup_callable(request)
+    assert new_request is cloned_req
+    assert cloned is cloned_req
+    assert is_cloned is True
+
+
+def test_prepare_async_lookup_callable_partial():
+    import functools
+
+    request = mock.Mock()
+    cloned_req = mock.Mock()
+    request._clone.return_value = cloned_req
+
+    partial_req = functools.partial(request, 1, a=2)
+    (
+        new_request,
+        cloned,
+        is_cloned,
+    ) = _regional_access_boundary_utils._prepare_async_lookup_callable(partial_req)
+
+    assert isinstance(new_request, functools.partial)
+    assert new_request.func is cloned_req
+    assert new_request.args == (1,)
+    assert new_request.keywords == {"a": 2}
+    assert cloned is cloned_req
+    assert is_cloned is True
+
+
+@pytest.mark.asyncio
+async def test_close_cloned_request_not_cloned():
+    request = mock.Mock()
+    await _regional_access_boundary_utils._close_cloned_request(
+        request, is_cloned=False
+    )
+    request.close.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_close_cloned_request_sync():
+    request = mock.Mock()
+    await _regional_access_boundary_utils._close_cloned_request(request, is_cloned=True)
+    request.close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_close_cloned_request_async():
+    request = mock.Mock()
+    request.close = mock.AsyncMock()
+    await _regional_access_boundary_utils._close_cloned_request(request, is_cloned=True)
+    request.close.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_close_cloned_request_async_exception():
+    request = mock.Mock()
+    request.close = mock.AsyncMock(side_effect=Exception("close error"))
+    # Should swallow the exception and not raise
+    await _regional_access_boundary_utils._close_cloned_request(request, is_cloned=True)
+    request.close.assert_awaited_once()

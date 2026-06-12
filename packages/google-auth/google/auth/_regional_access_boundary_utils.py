@@ -455,6 +455,61 @@ class _RegionalAccessBoundaryRefreshManager(object):
             self._worker.start()
 
 
+def _prepare_async_lookup_callable(request):
+    """Unwraps a request callable, clones the transport, and returns the new callable.
+
+    Args:
+        request: The original request callable (e.g. functools.partial or raw Request).
+
+    Returns:
+        Tuple[Callable, Any, bool]: A tuple containing the new lookup callable, the
+            underlying request object, and a boolean indicating if it was cloned.
+    """
+    is_partial = isinstance(request, functools.partial)
+    base_callable = request.func if is_partial else request
+
+    if not hasattr(base_callable, "_clone"):
+        return request, base_callable, False
+
+    cloned_callable = base_callable._clone()
+    is_cloned = cloned_callable is not base_callable
+
+    if is_partial:
+        new_request = functools.partial(
+            cloned_callable, *request.args, **request.keywords
+        )
+    else:
+        new_request = cloned_callable
+
+    return new_request, cloned_callable, is_cloned
+
+
+async def _close_cloned_request(lookup_request, is_cloned):
+    """Safely closes the underlying cloned request transport, if applicable.
+
+    Args:
+        lookup_request (Any): The request object/transport to close.
+        is_cloned (bool): Whether the request was actually cloned.
+    """
+    if not is_cloned or not hasattr(lookup_request, "close"):
+        return
+
+    is_async = False
+    try:
+        maybe_coro = lookup_request.close()
+        if is_async := inspect.iscoroutine(maybe_coro):
+            await maybe_coro
+    except Exception as e:
+        if _helpers.is_logging_enabled(_LOGGER):
+            adapter_type = " asynchronous " if is_async else " "
+            _LOGGER.warning(
+                "Failed to cleanly close cloned%srequest transport: %s",
+                adapter_type,
+                e,
+                exc_info=True,
+            )
+
+
 class _AsyncRegionalAccessBoundaryRefreshManager(object):
     """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
 
@@ -491,32 +546,15 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 # A refresh is already in progress.
                 return
 
-            # Safely unwrap functools.partial wrappers to isolate the genuine request callable.
-            actual_request = request
-            partial_args = ()
-            partial_kwargs = {}
-
-            if isinstance(request, functools.partial):
-                actual_request = request.func
-                partial_args = request.args
-                partial_kwargs = request.keywords
-
             async def _worker():
-                lookup_request = actual_request
+                lookup_request = None
+                is_cloned = False
                 try:
-                    # Create a separate session so background lookups aren't broken by user teardown.
-                    if hasattr(actual_request, "_clone"):
-                        lookup_request = actual_request._clone()
-
-                    # Re-apply initial partial call arguments to the new request adapter.
-                    if isinstance(request, functools.partial):
-                        lookup_callable = functools.partial(
-                            lookup_request, *partial_args, **partial_kwargs
-                        )
-                    else:
-                        lookup_callable = lookup_request
-
-                    # credentials._lookup_regional_access_boundary should be async in the async creds class
+                    (
+                        lookup_callable,
+                        lookup_request,
+                        is_cloned,
+                    ) = _prepare_async_lookup_callable(request)
                     regional_access_boundary_info = (
                         await credentials._lookup_regional_access_boundary(
                             lookup_callable
@@ -531,24 +569,7 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                         )
                     regional_access_boundary_info = None
                 finally:
-                    # Cleanly terminate the detached private socket pool.
-                    if lookup_request is not actual_request and hasattr(
-                        lookup_request, "close"
-                    ):
-                        is_async = False
-                        try:
-                            maybe_coro = lookup_request.close()
-                            if inspect.iscoroutine(maybe_coro):
-                                is_async = True
-                                await maybe_coro
-                        except Exception as e:
-                            if _helpers.is_logging_enabled(_LOGGER):
-                                adapter_type = " async " if is_async else " "
-                                _LOGGER.warning(
-                                    "Failed to close cloned%srequest adapter: %s",
-                                    adapter_type,
-                                    e,
-                                )
+                    await _close_cloned_request(lookup_request, is_cloned)
 
                 rab_manager.process_regional_access_boundary_info(
                     regional_access_boundary_info
