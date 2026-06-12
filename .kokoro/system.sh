@@ -76,6 +76,10 @@ run_package_test() {
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
   
+  # Isolate PIP cache to prevent concurrent pip file lock deadlocks
+  export PIP_CACHE_DIR="/tmpfs/.pip_cache_$(basename ${package_name})"
+  mkdir -p "$PIP_CACHE_DIR"
+
   # Isolate gcloud state to prevent SQLite lock deadlocks and project race conditions
   export CLOUDSDK_CONFIG="/tmpfs/.gcloud_config_$(basename ${package_name})"
   mkdir -p "$CLOUDSDK_CONFIG"
@@ -152,10 +156,10 @@ done
 
 if [ -n "$PACKAGES_TO_TEST" ]; then
   mkdir -p .logs
-  export -f run_package_test
-  export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
-  
-  echo "$PACKAGES_TO_TEST" | tr ' ' '\n' | awk 'NF' | xargs -P 3 -I {} bash -c 'run_package_test "{}" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
+  echo "Running system tests in parallel (3 workers)..."
+  mkdir -p .logs
+  # Use timeout to prevent infinite hangs, and < /dev/null to prevent stdin blocks
+  echo "$PACKAGES_TO_TEST" | tr ' ' '\n' | awk 'NF' | xargs -P 3 -I {} bash -c 'timeout 15m bash -c "run_package_test \"{}\" < /dev/null" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
   
   for failed in .logs/*.failed; do
     if [ -f "$failed" ]; then
