@@ -598,6 +598,160 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         )
         return self._to_series(cast(series.Series, result))
 
+    def bool_(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a JSON boolean to a SQL BOOL value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            bool_ as bool__impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = bool__impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def double(
+        self,
+        wide_number_mode: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a JSON number to a SQL FLOAT64 value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            double as double_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                wide_number_mode,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = double_impl(
+            bf_series,
+            wide_number_mode,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def float64(
+        self,
+        wide_number_mode: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a JSON number to a SQL FLOAT64 value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            float64 as float64_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                wide_number_mode,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = float64_impl(
+            bf_series,
+            wide_number_mode,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def int64(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a JSON number to a SQL INT64 value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            int64 as int64_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = int64_impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def parse_bignumeric(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a STRING to a BIGNUMERIC value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            parse_bignumeric as parse_bignumeric_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = parse_bignumeric_impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def parse_numeric(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a STRING to a NUMERIC value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            parse_numeric as parse_numeric_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = parse_numeric_impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def string(
+        self,
+        timezone: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a value to a STRING value."""
+        from bigframes.operations.googlesql.global_namespace.conversion import (
+            string as string_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                timezone,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = string_impl(
+            bf_series,
+            timezone,
+        )
+        return self._to_series(cast(series.Series, result))
+
 
 class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     """Series accessor for BigQuery aead functions."""
