@@ -119,14 +119,21 @@ handle_finished_job() {
   # so we ignore its exit code and use the resfile.
   wait "$pid" 2>/dev/null || true
   
-  local res=$(cat "$resfile")
-  rm "$resfile"
+  local res=1
+  if [ -f "$resfile" ]; then
+    res=$(cat "$resfile")
+    rm "$resfile"
+  fi
   
   echo "------------------------------------------------------------"
   echo "System tests for ${pkg} finished (Exit code: ${res})"
   echo "------------------------------------------------------------"
-  cat "$log"
-  rm "$log"
+  if [ -f "$log" ]; then
+    cat "$log"
+    rm "$log"
+  else
+    echo "Log file missing for ${pkg}"
+  fi
   
   if [ "${res}" -ne 0 ]; then
     RETVAL=${res}
@@ -185,7 +192,9 @@ for path in `find 'packages' \
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
       # Wait if we have reached MAX_PARALLEL
       while [[ ${#running_pids[@]} -ge $MAX_PARALLEL ]]; do
+        set +e
         wait -n
+        set -e
         # Find which job finished
         new_pids=()
         for pid in "${running_pids[@]}"; do
