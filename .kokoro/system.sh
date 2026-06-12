@@ -76,6 +76,11 @@ run_package_test() {
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
   
+  # Limit pytest-xdist to 4 workers per package. When 3 packages run in parallel,
+  # if each uses -n=auto they will spawn 16 workers each (48 total threads), 
+  # completely thrashing the CPU and causing all tests to hang/timeout.
+  export PYTEST_ADDOPTS="-n 4"
+
   # Isolate PIP cache to prevent concurrent pip file lock deadlocks
   export PIP_CACHE_DIR="/tmpfs/.pip_cache_$(basename ${package_name})"
   mkdir -p "$PIP_CACHE_DIR"
@@ -83,6 +88,10 @@ run_package_test() {
   # Isolate gcloud state to prevent SQLite lock deadlocks and project race conditions
   export CLOUDSDK_CONFIG="/tmpfs/.gcloud_config_$(basename ${package_name})"
   mkdir -p "$CLOUDSDK_CONFIG"
+  
+  # Isolate boto config (used by storage/bigquery) to prevent lock contention
+  export BOTO_CONFIG="/tmpfs/.boto_$(basename ${package_name})"
+  touch "$BOTO_CONFIG"
 
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
   gcloud config set project "$PROJECT_ID"
