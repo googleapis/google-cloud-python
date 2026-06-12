@@ -349,6 +349,7 @@ except ImportError:
 @mock.patch('googleapiclient.discovery.build')
 @mock.patch('google.auth.default')
 def test_upload_to_drive(mock_auth, mock_build):
+    """Test the ability to upload results to drive for visibility in gSheets."""
     from unittest import mock
     
     mock_creds = mock.Mock()

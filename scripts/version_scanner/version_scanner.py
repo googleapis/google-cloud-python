@@ -617,7 +617,7 @@ def main():
     parser.add_argument(
         "--soft-fail",
         action="store_true",
-        help="Exit with code 0 even if matches are found (useful for advisory runs in CI/CD)"
+        help="Exit with code 0 even if matches are found (useful during development and testing runs)"
     )
     
     args = parser.parse_args()
