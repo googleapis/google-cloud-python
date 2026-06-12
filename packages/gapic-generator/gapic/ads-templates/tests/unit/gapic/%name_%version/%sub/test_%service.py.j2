@@ -965,6 +965,9 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
@@ -1737,6 +1740,9 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
 
 
         pager = client.{{ method_name }}(request=sample_request)
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         {% if method.paged_result_field.map %}
         assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
