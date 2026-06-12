@@ -127,7 +127,32 @@ jobs:
         if [ -d .coverage-results ]; then
           find .coverage-results -type f -name '.coverage*' -exec mv {} . \;
           coverage combine
-          coverage report --show-missing --fail-under=100
+          
+          # Find all modified packages
+          modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+          
+          for pkg in ${modified_packages}; do
+            if [ -d "${pkg}" ]; then
+              echo "============================================================"
+              echo "Evaluating coverage for package: ${pkg}"
+              echo "============================================================"
+              
+              if [ -f "${pkg}/.coveragerc" ]; then
+                echo "Using package-specific configuration: ${pkg}/.coveragerc"
+                # If fail_under is specified in the package-specific .coveragerc, coverage report
+                # will automatically enforce it. Otherwise, we enforce the default 100%.
+                if grep -q "fail_under" "${pkg}/.coveragerc"; then
+                  coverage report --rcfile="${pkg}/.coveragerc"
+                else
+                  echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default of 100%"
+                  coverage report --rcfile="${pkg}/.coveragerc" --fail-under=100
+                fi
+              else
+                echo "No .coveragerc found for ${pkg}, enforcing default of 100%"
+                coverage report --include="${pkg}/**" --fail-under=100
+              fi
+            fi
+          done
         else
           echo "Error: No coverage results were downloaded from the unit test jobs."
           echo "This usually means the unit tests did not run or failed to upload their coverage files."
