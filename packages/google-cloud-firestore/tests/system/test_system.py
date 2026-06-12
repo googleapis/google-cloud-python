@@ -80,7 +80,6 @@ def cleanup():
     operations = []
     yield operations.append
 
-    import concurrent.futures
     with concurrent.futures.ThreadPoolExecutor() as executor:
         list(executor.map(lambda op: op(), operations))
 

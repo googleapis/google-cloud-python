@@ -160,7 +160,6 @@ async def cleanup():
     operations = []
     yield operations.append
 
-    import asyncio
     if operations:
         await asyncio.gather(*[operation() for operation in operations])
 
