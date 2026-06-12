@@ -75,6 +75,10 @@ run_package_test() {
   # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
+  
+  # Isolate gcloud state to prevent SQLite lock deadlocks and project race conditions
+  export CLOUDSDK_CONFIG="/tmpfs/.gcloud_config_$(basename ${package_name})"
+  mkdir -p "$CLOUDSDK_CONFIG"
 
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
   gcloud config set project "$PROJECT_ID"
