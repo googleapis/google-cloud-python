@@ -156,8 +156,10 @@ done
 
 if [ -n "$PACKAGES_TO_TEST" ]; then
   mkdir -p .logs
+  export -f run_package_test
+  export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
+  
   echo "Running system tests in parallel (3 workers)..."
-  mkdir -p .logs
   # Use timeout to prevent infinite hangs, and < /dev/null to prevent stdin blocks
   echo "$PACKAGES_TO_TEST" | tr ' ' '\n' | awk 'NF' | xargs -P 3 -I {} bash -c 'timeout 15m bash -c "run_package_test \"{}\" < /dev/null" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
   
