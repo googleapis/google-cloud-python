@@ -38,7 +38,15 @@ pwd
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
-  
+
+  # Create a dedicated directory for this package's artifacts
+  local artifact_dir="${KOKORO_ARTIFACTS_DIR}/${package_name}"
+  mkdir -p "${artifact_dir}"
+
+  # Define standard output paths for logs and XML results
+  export XML_OUTPUT_FILE="${artifact_dir}/sponge_log.xml"
+  local log_file="${artifact_dir}/sponge_log.log"
+
   # Isolate gcloud config for parallel execution
   export CLOUDSDK_CONFIG=$(mktemp -d)
 
@@ -51,6 +59,8 @@ run_package_test() {
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
+  echo "Log file: ${log_file}"
+  echo "XML results: ${XML_OUTPUT_FILE}"
   echo "------------------------------------------------------------"
 
   case "${package_name}" in
@@ -85,11 +95,12 @@ run_package_test() {
   # Run the actual test
   pushd "${package_path}" > /dev/null
   set +e
-  "${system_test_script}"
+  # *** CRITICAL: system-single.sh MUST use XML_OUTPUT_FILE to generate the JUnit XML ***
+  "${system_test_script}" > "${log_file}" 2>&1
   local res=$?
   set -e
   popd > /dev/null
-  
+
   # Clean up isolated gcloud config
   rm -rf "${CLOUDSDK_CONFIG}"
 
@@ -103,7 +114,6 @@ system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 MAX_PARALLEL=4
 running_pids=()
 declare -A pid_to_pkg
-declare -A pid_to_log
 declare -A pid_to_resfile
 
 # Array to keep track of results for the final summary
@@ -112,7 +122,6 @@ results=()
 handle_finished_job() {
   local pid=$1
   local pkg=${pid_to_pkg[$pid]}
-  local log=${pid_to_log[$pid]}
   local resfile=${pid_to_resfile[$pid]}
   
   # wait $pid might fail if it was already reaped by wait -n, 
@@ -127,13 +136,8 @@ handle_finished_job() {
   
   echo "------------------------------------------------------------"
   echo "System tests for ${pkg} finished (Exit code: ${res})"
+  echo "Artifacts in: ${KOKORO_ARTIFACTS_DIR}/${pkg}"
   echo "------------------------------------------------------------"
-  if [ -f "$log" ]; then
-    cat "$log"
-    rm "$log"
-  else
-    echo "Log file missing for ${pkg}"
-  fi
   
   if [ "${res}" -ne 0 ]; then
     RETVAL=${res}
@@ -208,16 +212,14 @@ for path in `find 'packages' \
       done
 
       # Start the next test in the background
-      log_file=$(mktemp)
       res_file=$(mktemp)
       (
-        run_package_test "$package_name" > "$log_file" 2>&1
+        run_package_test "$package_name"
         echo $? > "$res_file"
       ) &
       pid=$!
       running_pids+=($pid)
       pid_to_pkg[$pid]=$package_name
-      pid_to_log[$pid]=$log_file
       pid_to_resfile[$pid]=$res_file
       echo "Started system tests for ${package_name} (PID: ${pid})"
   else
