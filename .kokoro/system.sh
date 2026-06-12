@@ -151,7 +151,7 @@ if [ -n "$PACKAGES_TO_TEST" ]; then
   export -f run_package_test
   export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
   
-  echo "$PACKAGES_TO_TEST" | xargs -n 1 -P 8 -I {} bash -c 'run_package_test "{}" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
+  echo "$PACKAGES_TO_TEST" | tr ' ' '\n' | awk 'NF' | xargs -P 8 -I {} bash -c 'run_package_test "{}" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
   
   for failed in .logs/*.failed; do
     if [ -f "$failed" ]; then
