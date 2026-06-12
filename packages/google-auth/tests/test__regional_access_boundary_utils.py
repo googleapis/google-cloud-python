@@ -737,6 +737,28 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         )
 
     @pytest.mark.asyncio
+    async def test_start_refresh_suppresses_request_clone_exception(self):
+        from google.auth import exceptions
+
+        credentials = mock.AsyncMock()
+
+        request = mock.Mock()
+        request.clone.side_effect = exceptions.TransportError(
+            "Cannot clone a closed transport."
+        )
+
+        rab_manager = mock.Mock()
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        manager.start_refresh(credentials, request, rab_manager)
+        await manager._worker_task
+
+        credentials._lookup_regional_access_boundary.assert_not_called()
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+    @pytest.mark.asyncio
     async def test_start_refresh_async_mimics_ephemeral_session_closed_bug(self):
         # Specifically mimics the real-world race condition where a fast foreground main call
         # pulls the rug out from under the background worker when using an un-cloned session.
