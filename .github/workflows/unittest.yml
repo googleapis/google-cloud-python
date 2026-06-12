@@ -36,7 +36,7 @@ jobs:
         python -m pip install nox
     - name: Run unit tests
       env:
-        COVERAGE_FILE: .coverage-${{ matrix.python }}
+        COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
