@@ -491,11 +491,36 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 # A refresh is already in progress.
                 return
 
+            # Safely unwrap functools.partial wrappers to isolate the genuine request callable.
+            actual_request = request
+            partial_args = ()
+            partial_kwargs = {}
+
+            if isinstance(request, functools.partial):
+                actual_request = request.func
+                partial_args = request.args
+                partial_kwargs = request.keywords
+
+            # Execute the clone protocol on the concrete underlying request adapter.
+            lookup_request = actual_request
+            if hasattr(actual_request, "clone"):
+                lookup_request = actual_request.clone()
+
+            # Re-apply initial partial call arguments to the detached request adapter.
+            if isinstance(request, functools.partial):
+                lookup_callable = functools.partial(
+                    lookup_request, *partial_args, **partial_kwargs
+                )
+            else:
+                lookup_callable = lookup_request
+
             async def _worker():
                 try:
                     # credentials._lookup_regional_access_boundary should be async in the async creds class
                     regional_access_boundary_info = (
-                        await credentials._lookup_regional_access_boundary(request)
+                        await credentials._lookup_regional_access_boundary(
+                            lookup_callable
+                        )
                     )
                 except Exception as e:
                     if _helpers.is_logging_enabled(_LOGGER):
@@ -505,6 +530,22 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                             exc_info=True,
                         )
                     regional_access_boundary_info = None
+                finally:
+                    # Cleanly terminate the detached private socket pool.
+                    if (
+                        lookup_request is not actual_request
+                        and hasattr(lookup_request, "close")
+                    ):
+                        if inspect.iscoroutinefunction(lookup_request.close):
+                            try:
+                                await lookup_request.close()
+                            except (NotImplementedError, AttributeError):
+                                pass
+                        else:
+                            try:
+                                lookup_request.close()
+                            except (NotImplementedError, AttributeError):
+                                pass
 
                 rab_manager.process_regional_access_boundary_info(
                     regional_access_boundary_info

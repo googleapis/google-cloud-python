@@ -203,6 +203,38 @@ class Request(transport.Request):
             new_exc = exceptions.TransportError(caught_exc)
             raise new_exc from caught_exc
 
+    def clone(self):
+        """Create an independent detached copy of this request adapter.
+
+        Returns:
+            google.auth.transport._aiohttp_requests.Request: An independent request adapter
+            running an isolated aiohttp.ClientSession with identical environment proxy and
+            observability configurations.
+        """
+        new_session = None
+        if self.session:
+            trust_env = getattr(self.session, "_trust_env", True)
+            trace_configs = getattr(self.session, "_trace_configs", None)
+            new_session = aiohttp.ClientSession(
+                auto_decompress=False,
+                trust_env=trust_env,
+                trace_configs=list(trace_configs) if trace_configs else None,
+            )
+        else:
+            new_session = aiohttp.ClientSession(
+                auto_decompress=False,
+                trust_env=True,
+            )
+
+        return Request(session=new_session)
+
+    async def close(self):
+        """Cleanly release the underlying aiohttp ClientSession resources."""
+        if not getattr(self, "_closed", False) and self.session:
+            await self.session.close()
+        self._closed = True
+
+
 
 class AuthorizedSession(aiohttp.ClientSession):
     """This is an async implementation of the Authorized Session class. We utilize an

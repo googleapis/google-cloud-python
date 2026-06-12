@@ -142,3 +142,8 @@ class Request(metaclass=abc.ABCMeta):
         Close the underlying session.
         """
         raise NotImplementedError("close must be implemented.")
+
+    def clone(self) -> "Request":
+        """Create an independent detached copy of this request callable."""
+        return self
+

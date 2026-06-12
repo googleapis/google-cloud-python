@@ -203,3 +203,29 @@ class Request(transport.Request):
         if not self._closed and self._session:
             await self._session.close()
         self._closed = True
+
+    def clone(self) -> "Request":
+        """Creates a detached copy of this request adapter.
+
+        Returns:
+            google.auth.aio.transport.aiohttp.Request: An independent request adapter
+            running a new aiohttp.ClientSession with identical environment proxy and
+            trace configurations.
+        """
+        new_session = None
+        if self._session:
+            trust_env = getattr(self._session, "_trust_env", True)
+            trace_configs = getattr(self._session, "_trace_configs", None)
+            new_session = aiohttp.ClientSession(
+                auto_decompress=False,
+                trust_env=trust_env,
+                trace_configs=list(trace_configs) if trace_configs else None,
+            )
+        else:
+            new_session = aiohttp.ClientSession(
+                auto_decompress=False,
+                trust_env=True,
+            )
+
+        return Request(session=new_session)
+
