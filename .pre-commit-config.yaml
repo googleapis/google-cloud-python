@@ -19,9 +19,7 @@ repos:
     rev: v6.0.0
     hooks:
     -   id: trailing-whitespace
-        exclude: /snapshots/
     -   id: end-of-file-fixer
-        exclude: /snapshots/
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
   rev: v0.14.14

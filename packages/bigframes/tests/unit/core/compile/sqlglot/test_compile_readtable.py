@@ -91,4 +91,4 @@ def test_compile_astype_aliases(scalar_types_df: bpd.DataFrame, snapshot):
             "int64_col": "Float64",
         }
     )
-    snapshot.assert_match(result.sql, "out.sql")
+    snapshot.assert_match(result.sql + "\n", "out.sql")
