@@ -88,6 +88,9 @@ else
 fi
 
 # Sharding logic (fallback for manual runs)
+subdirs=(
+    packages
+)
 TOTAL_SHARDS="${TOTAL_SHARDS:-1}"
 SHARD_INDEX="${SHARD_INDEX:-1}"
 count=0
