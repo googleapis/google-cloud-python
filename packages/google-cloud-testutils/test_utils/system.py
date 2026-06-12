@@ -74,7 +74,8 @@ def unique_resource_id(delimiter="_"):
     testing environments and at particular times.
     """
     build_id = os.getenv("CIRCLE_BUILD_NUM", "")
+    pid = os.getpid()
     if build_id == "":
-        return "%s%d" % (delimiter, 1000 * time.time())
+        return "%s%d%s%d" % (delimiter, 1000 * time.time(), delimiter, pid)
     else:
-        return "%s%s%s%d" % (delimiter, build_id, delimiter, time.time())
+        return "%s%s%s%d%s%d" % (delimiter, build_id, delimiter, time.time(), delimiter, pid)
