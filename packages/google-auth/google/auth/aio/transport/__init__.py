@@ -146,4 +146,3 @@ class Request(metaclass=abc.ABCMeta):
     def clone(self) -> "Request":
         """Create an independent detached copy of this request callable."""
         return self
-

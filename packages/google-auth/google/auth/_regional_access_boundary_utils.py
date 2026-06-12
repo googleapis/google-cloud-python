@@ -532,20 +532,27 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                     regional_access_boundary_info = None
                 finally:
                     # Cleanly terminate the detached private socket pool.
-                    if (
-                        lookup_request is not actual_request
-                        and hasattr(lookup_request, "close")
+                    if lookup_request is not actual_request and hasattr(
+                        lookup_request, "close"
                     ):
                         if inspect.iscoroutinefunction(lookup_request.close):
                             try:
                                 await lookup_request.close()
-                            except (NotImplementedError, AttributeError):
-                                pass
+                            except Exception as e:
+                                if _helpers.is_logging_enabled(_LOGGER):
+                                    _LOGGER.warning(
+                                        "Failed to close cloned async request adapter: %s",
+                                        e,
+                                    )
                         else:
                             try:
                                 lookup_request.close()
-                            except (NotImplementedError, AttributeError):
-                                pass
+                            except Exception as e:
+                                if _helpers.is_logging_enabled(_LOGGER):
+                                    _LOGGER.warning(
+                                        "Failed to close cloned request adapter: %s",
+                                        e,
+                                    )
 
                 rab_manager.process_regional_access_boundary_info(
                     regional_access_boundary_info

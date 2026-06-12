@@ -228,4 +228,3 @@ class Request(transport.Request):
             )
 
         return Request(session=new_session)
-

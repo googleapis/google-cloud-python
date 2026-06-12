@@ -235,7 +235,6 @@ class Request(transport.Request):
         self._closed = True
 
 
-
 class AuthorizedSession(aiohttp.ClientSession):
     """This is an async implementation of the Authorized Session class. We utilize an
     aiohttp transport instance, and the interface mirrors the google.auth.transport.requests

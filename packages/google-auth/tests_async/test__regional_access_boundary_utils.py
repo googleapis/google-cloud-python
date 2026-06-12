@@ -28,6 +28,7 @@ async def test_async_refresh_manager_start_refresh():
     }
 
     request = mock.Mock()
+    request.clone.return_value = request
     rab_manager = mock.Mock()
 
     manager = (
