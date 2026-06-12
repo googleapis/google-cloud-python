@@ -85,8 +85,10 @@ def test_compile_readtable_w_columns_filters(compiler_session, snapshot):
 def test_compile_astype_aliases(scalar_types_df: bpd.DataFrame, snapshot):
     # Test case for issue #17394 (CAST columns lose their aliases)
     bf_df = scalar_types_df[["timestamp_col", "int64_col"]]
-    result = bf_df.astype({
-        "timestamp_col": "string[pyarrow]",
-        "int64_col": "Float64",
-    })
+    result = bf_df.astype(
+        {
+            "timestamp_col": "string[pyarrow]",
+            "int64_col": "Float64",
+        }
+    )
     snapshot.assert_match(result.sql, "out.sql")
