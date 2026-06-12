@@ -140,6 +140,13 @@ for subdir in ${subdirs[@]}; do
             pushd ${d}
             # Temporarily allow failure.
             set +e
+            
+            # Ensure unique coverage file per package to avoid DataError
+            # when combining statement and branch coverage.
+            # Strip trailing slash from directory name for the filename.
+            pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
+            export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
+            
             ${test_script}
             ret=$?
             set -e

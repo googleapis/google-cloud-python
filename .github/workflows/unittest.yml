@@ -65,7 +65,6 @@ jobs:
         python -m pip install nox
     - name: Run unit tests
       env:
-        COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
@@ -77,7 +76,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: coverage-artifact-${{ matrix.python }}-${{ matrix.package_shard.index }}
-        path: .coverage-${{ matrix.python }}
+        path: .coverage.${{ matrix.python }}.*
 
   unit-complete:
     needs: [discover, unit]
