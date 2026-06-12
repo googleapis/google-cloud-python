@@ -327,10 +327,8 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     
     with mock.patch('sys.argv', test_args):
         from version_scanner import main
-        try:
+        with pytest.raises(SystemExit):
             main()
-        except SystemExit:
-            pass
         
     mock_load_ignore.assert_called_once()
     args, kwargs = mock_load_ignore.call_args
