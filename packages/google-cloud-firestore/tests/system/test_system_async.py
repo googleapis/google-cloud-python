@@ -160,8 +160,9 @@ async def cleanup():
     operations = []
     yield operations.append
 
-    for operation in operations:
-        await operation()
+    import asyncio
+    if operations:
+        await asyncio.gather(*[operation() for operation in operations])
 
 
 @pytest.fixture

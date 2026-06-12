@@ -80,8 +80,9 @@ def cleanup():
     operations = []
     yield operations.append
 
-    for operation in operations:
-        operation()
+    import concurrent.futures
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        list(executor.map(lambda op: op(), operations))
 
 
 @pytest.fixture
