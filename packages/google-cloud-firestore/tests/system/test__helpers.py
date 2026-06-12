@@ -22,8 +22,8 @@ FIRESTORE_EMULATOR = os.environ.get(_FIRESTORE_EMULATOR_HOST) is not None
 FIRESTORE_OTHER_DB = os.environ.get("SYSTEM_TESTS_DATABASE", "system-tests-named-db")
 FIRESTORE_ENTERPRISE_DB = os.environ.get("ENTERPRISE_DATABASE", "enterprise-db-native")
 
-# To eliminate test duplication, we use the default database for the 
-# core test suites. The named database is ONLY tested explicitly in dedicated 
+# To eliminate test duplication, we use the default database for the
+# core test suites. The named database is ONLY tested explicitly in dedicated
 # routing tests to prove path construction works.
 TEST_DATABASES = [None]
 TEST_DATABASES_W_ENTERPRISE = TEST_DATABASES + [FIRESTORE_ENTERPRISE_DB]

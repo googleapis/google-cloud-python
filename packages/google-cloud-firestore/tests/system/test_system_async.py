@@ -1047,7 +1047,7 @@ def check_snapshot(snapshot, document, data, write_result):
     assert snapshot.update_time == write_result.update_time
 
 
-# We explicitly parameterize test_document_get with FIRESTORE_OTHER_DB to test 
+# We explicitly parameterize test_document_get with FIRESTORE_OTHER_DB to test
 # named database path routing natively, without inflating the rest of the test suite.
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 async def test_document_get(client, cleanup, database):
