@@ -28,16 +28,6 @@ def get_packages_to_test():
     else:
         return all_packages
 
-    # Check if ci/ changed
-    try:
-        subprocess.check_call(['git', 'diff', '--quiet', git_diff_arg, 'ci'])
-        ci_changed = False
-    except subprocess.CalledProcessError:
-        ci_changed = True
-    
-    if ci_changed:
-        return all_packages
-    
     try:
         res = subprocess.check_output(['git', 'diff', '--name-only', git_diff_arg]).decode('utf-8')
         changed_files = res.splitlines()
