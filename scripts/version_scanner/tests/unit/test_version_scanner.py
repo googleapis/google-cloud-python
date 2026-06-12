@@ -26,6 +26,7 @@ from version_scanner import (
     _truncate_context,
     _wrap_sheet_hyperlink,
     _wrap_sheet_string,
+    _safe_int,
     format_for_raw_csv,
     format_for_spreadsheet,
     format_for_console
@@ -475,6 +476,42 @@ def test_main_stdout(capsys):
     assert "test.py:1 [test] 3.7" in captured.out
 
 
+def test_main_without_stdout_limits_output(capsys):
+    """Test that main() without --stdout prints only 10 matches and shows a suffix."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    matches = [{'file_path': f'test_{i}.py', 'line_number': i, 'matched_string': '3.7', 'rule_name': 'test'} for i in range(15)]
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=matches):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    # Should only print first 10 matches
+    for i in range(10):
+        assert f"test_{i}.py:{i} [test] 3.7" in captured.out
+    for i in range(10, 15):
+        assert f"test_{i}.py:{i} [test] 3.7" not in captured.out
+    assert "... and 5 more matches." in captured.out
+
+
+def test_main_with_stdout_prints_all(capsys):
+    """Test that main() with --stdout prints all matches without limiting."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7', '--stdout']
+    matches = [{'file_path': f'test_{i}.py', 'line_number': i, 'matched_string': '3.7', 'rule_name': 'test'} for i in range(15)]
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=matches):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    # Should print all 15 matches
+    for i in range(15):
+        assert f"test_{i}.py:{i} [test] 3.7" in captured.out
+    assert "... and 5 more matches." not in captured.out
+
+
 def test_main_does_not_print_rules(capsys):
     """Test that main() does not print the list of loaded rules to stdout."""
     test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
@@ -576,8 +613,28 @@ def test_wrap_sheet_hyperlink():
 
 def test_wrap_sheet_string():
     assert _wrap_sheet_string("3.10") == '="3.10"'
+    assert _wrap_sheet_string('python_requires = ">=3.7"') == '="python_requires = "">=3.7"""'
     assert _wrap_sheet_string("") == ""
     assert _wrap_sheet_string(None) == ""
+
+def test_safe_int():
+    assert _safe_int("123") == 123
+    assert _safe_int("") == 0
+    assert _safe_int(None) == 0
+    assert _safe_int("abc") == 0
+
+def test_format_for_raw_csv_handles_empty_line_number():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'"
+    }
+    formatted = format_for_raw_csv(match)
+    assert formatted["line_number"] == 0
 
 def test_format_for_raw_csv():
     match = {

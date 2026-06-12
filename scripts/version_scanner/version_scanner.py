@@ -23,7 +23,7 @@ import datetime
 import os
 import re
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 import yaml
 
 class ConfigManager:
@@ -208,7 +208,15 @@ def _wrap_sheet_hyperlink(url: str, label: str) -> str:
 def _wrap_sheet_string(value: str) -> str:
     if value is None:
         return ""
-    return f'="{value}"' if value else ""
+    escaped_value = value.replace('"', '""')
+    return f'="{escaped_value}"' if value else ""
+
+
+def _safe_int(value: Any, default: int = 0) -> int:
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
 
 
 def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
@@ -217,7 +225,7 @@ def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
         "file_path": match.get("file_path", ""),
         "package_name": match.get("package_name", ""),
         "rule_name": match.get("rule_name", ""),
-        "line_number": int(match.get("line_number", 0)) if match.get("line_number") is not None else 0,
+        "line_number": _safe_int(match.get("line_number")),
         "matched_string": match.get("matched_string", ""),
         "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", ""))
     }
@@ -661,8 +669,12 @@ def main():
     all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
     
     print(f"\nFound {len(all_matches)} matches.")
-    for m in all_matches:
+    display_matches = all_matches if args.stdout else all_matches[:10]
+    for m in display_matches:
         print(format_for_console(m))
+        
+    if not args.stdout and len(all_matches) > 10:
+        print(f"  ... and {len(all_matches) - 10} more matches.")
         
     # Get and print summary counts
     rule_counts, package_counts = get_match_counts(all_matches)
