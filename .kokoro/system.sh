@@ -144,6 +144,7 @@ handle_finished_job() {
   echo "Artifacts in: ${KOKORO_ARTIFACTS_DIR}/${pkg}"
   echo "============================================================"
 
+  # Print the package log to the console
   if [ -f "${pkg_log}" ]; then
     echo "--- Start of Logs for ${pkg} ---"
     cat "${pkg_log}"
@@ -154,8 +155,22 @@ handle_finished_job() {
   echo ""
 
   if [ -z "${res}" ] || [ "${res}" -ne 0 ]; then
-    RETVAL=1
-    results+=("${pkg}: FAILED")
+    echo "============================================================"
+    echo "FAIL-FAST: System tests for ${pkg} failed!"
+    echo "Cancelling all remaining running background jobs..."
+    echo "============================================================"
+    
+    # Kill all other active background processes
+    for active_pid in "${running_pids[@]}"; do
+      if [ "$active_pid" != "$pid" ] && kill -0 "$active_pid" 2>/dev/null; then
+        pkg_to_cancel=${pid_to_pkg[$active_pid]}
+        echo "Cancelling active system tests for ${pkg_to_cancel} (PID: ${active_pid})..."
+        # Send SIGTERM to allow graceful cleanup of resources if possible, or SIGKILL
+        kill -9 "$active_pid" 2>/dev/null || true
+      fi
+    done
+    
+    exit "${res}"
   else
     results+=("${pkg}: PASSED")
   fi

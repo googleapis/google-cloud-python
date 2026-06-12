@@ -42,7 +42,7 @@ jobs:
     if: needs.discover.outputs.matrix != '[]' && needs.discover.outputs.matrix != ''
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
         package_shard: ${{ fromJson(needs.discover.outputs.matrix) }}
