@@ -120,11 +120,11 @@ declare -A pid_to_resfile
 
 # Array to keep track of results for the final summary
 results=()
-
 handle_finished_job() {
   local pid=$1
   local pkg=${pid_to_pkg[$pid]}
   local resfile=${pid_to_resfile[$pid]}
+  local pkg_log="${KOKORO_ARTIFACTS_DIR}/${pkg}/sponge_log.log"
 
   # wait $pid might fail if it was already reaped by wait -n, 
   # so we ignore its exit code and use the resfile.
@@ -139,10 +139,20 @@ handle_finished_job() {
     res=1
   fi
 
-  echo "------------------------------------------------------------"
+  echo "============================================================"
   echo "System tests for ${pkg} finished (Exit code: ${res})"
   echo "Artifacts in: ${KOKORO_ARTIFACTS_DIR}/${pkg}"
-  echo "------------------------------------------------------------"
+  echo "============================================================"
+
+  if [ -f "${pkg_log}" ]; then
+    echo "--- Start of Logs for ${pkg} ---"
+    cat "${pkg_log}"
+    echo "--- End of Logs for ${pkg} ---"
+  else
+    echo "Console Fallback Warning: Log file not found at ${pkg_log}"
+  fi
+  echo ""
+
   if [ -z "${res}" ] || [ "${res}" -ne 0 ]; then
     RETVAL=1
     results+=("${pkg}: FAILED")
@@ -150,7 +160,6 @@ handle_finished_job() {
     results+=("${pkg}: PASSED")
   fi
 }
-
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
   \( -type d -wholename 'packages/*/tests/system' \) -o \
