@@ -52,7 +52,7 @@ def get_packages_to_test():
     
     return to_test
 
-def group_packages(packages, max_packages_per_shard=25, max_total_shards=20):
+def group_packages(packages, max_packages_per_shard=50, max_total_shards=10):
     if not packages:
         return []
     
@@ -75,20 +75,18 @@ def group_packages(packages, max_packages_per_shard=25, max_total_shards=20):
             break
         
         shard_packages = packages[start:end]
-        if len(shard_packages) == 1:
-            name = shard_packages[0].strip('/').split('/')[-1]
-        else:
-            name = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]}"
+        index = i + 1
+        name = f"Shard {index}"
         
         shards.append({
             "name": name,
-            "index": i + 1,
+            "index": index,
             "packages": " ".join(shard_packages)
         })
     return shards
 
 if __name__ == "__main__":
     packages = get_packages_to_test()
-    # Shard into groups of ~25 libraries, up to 20 parallel jobs
-    shards = group_packages(packages, max_packages_per_shard=25, max_total_shards=20)
+    # Shard into groups of ~50 libraries, up to 10 parallel jobs
+    shards = group_packages(packages, max_packages_per_shard=50, max_total_shards=10)
     print(json.dumps(shards))
