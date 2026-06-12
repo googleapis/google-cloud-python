@@ -171,12 +171,17 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
 
     def close(self):
         """Delete tables that were created with this session's session_id."""
-        with ThreadPoolExecutor() as executor:
-            for table_ref in self._table_ids:
-                executor.submit(
-                    self.bqclient.delete_table, table_ref, not_found_ok=True
-                )
-        self._table_ids.clear()
+        if self._table_ids:
+            try:
+                with ThreadPoolExecutor() as executor:
+                    futures = [
+                        executor.submit(self.bqclient.delete_table, table_ref, not_found_ok=True)
+                        for table_ref in self._table_ids
+                    ]
+                    for future in futures:
+                        future.result()
+            finally:
+                self._table_ids.clear()
 
         def run_cleanup():
             try:
