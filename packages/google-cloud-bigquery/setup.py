@@ -15,3 +15,5 @@
 import setuptools  # type: ignore
 
 setuptools.setup()
+
+# trigger system test
